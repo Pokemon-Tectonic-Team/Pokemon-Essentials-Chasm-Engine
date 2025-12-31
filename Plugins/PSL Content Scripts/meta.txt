@@ -1,3 +1,0 @@
-Name         = PSL Content Scripts
-Credits      = Zinnia
-Requires	 = Tectonic Modding Base
