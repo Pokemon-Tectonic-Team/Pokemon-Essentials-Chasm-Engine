@@ -1,0 +1,83 @@
+AllCops:
+    NewCops:
+        disable
+    TargetRubyVersion: 3.1
+    
+Naming:
+  Enabled: false
+  
+Style:
+  AutoCorrect: true
+  
+Metrics:
+  Enabled: false
+     
+Layout/IndentationStyle:
+  EnforcedStyle: spaces
+  IndentationWidth: 4
+  
+Layout/IndentationWidth:
+  Width: 4
+    
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/LineLength:
+    Max: 120
+    
+Style/AccessorGrouping:
+  Enabled: false
+  
+Style/RedundantReturn:
+  Enabled: false
+  
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Style/ConditionalAssignment:
+  Enabled: false
+  
+Style/TernaryParentheses:
+  Enabled: false
+  
+Style/GuardClause:
+  Enabled: false
+  
+Style/Documentation:
+  Enabled: false
+  
+Style/FrozenStringLiteralComment:
+  Enabled: false
+  
+Style/GlobalVars:
+  Enabled: false
+  
+Style/NumericPredicate:
+ Enabled: false
+  
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+  
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+  
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+  
+Style/SingleLineMethods:
+  Enabled: false
+  
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false
+  
+Layout/HashAlignment:
+  Enabled: false
+  
+Layout/ArgumentAlignment:
+  Enabled: false
+  
+Layout/FirstHashElementIndentation:
+  Enabled: false
+  
+Style/HashSyntax:
+  Enabled: false

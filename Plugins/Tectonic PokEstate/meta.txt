@@ -1,0 +1,4 @@
+Name         = Tectonic PokEstate
+Requires	 = Tectonic Game Processing
+Credits      = Zinnia
+Scripts		 = PokEstateMain.rb

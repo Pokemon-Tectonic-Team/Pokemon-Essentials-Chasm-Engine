@@ -1,0 +1,629 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[AIRLOCK]
+Name = Air Lock
+Description = Suppresses the effects of weather.
+#-------------------------------
+[ANALYTIC]
+Name = Analytic
+Description = Boosts move power when this Pokémon moves last by 30%.
+#-------------------------------
+[ASONEGHOST]
+Name = As One
+Description = Possesses two Abilities: Unnerve and Grim Neigh.
+Flags = Immutable
+#-------------------------------
+[ASONEICE]
+Name = As One
+Description = Possesses two Abilities: Unnerve and Chilling Neigh.
+Flags = Immutable
+#-------------------------------
+[BADDREAMS]
+Name = Bad Dreams
+Description = Reduces a sleeping foe's HP by 1/8th at the end of a round.
+#-------------------------------
+[BATTERY]
+Name = Battery
+Description = Powers up ally Pokémon's special moves by 30%.
+#-------------------------------
+[BERSERK]
+Name = Berserk
+Description = Raises Attack and Sp. Atk by two steps when its HP is lowered below half.
+#-------------------------------
+[CHEEKPOUCH]
+Name = Cheek Pouch
+Description = When this Pokémon eats a Berry, it restores 33% of its max health.
+#-------------------------------
+[CHILLINGNEIGH]
+Name = Chilling Neigh
+Description = Boosts Attack after knocking out any Pokémon.
+#-------------------------------
+[CHLOROPHYLL]
+Name = Chlorophyll
+Description = Doubles this Pokémon's Speed in sunshine.
+Flags = SunshineSynergy
+#-------------------------------
+[CLEARBODY]
+Name = Clear Body
+Description = Prevents stat steps from being lowered (except when self-inflicted).
+Flags = OtherStatDropImmunity
+#-------------------------------
+[COMATOSE]
+Name = Comatose
+Description = It's always drowsing, and attacks without waking.
+Flags = Immutable
+#-------------------------------
+[COMPETITIVE]
+Name = Competitive
+Description = Raises Sp. Atk by four steps when a stat is lowered by a foe.
+#-------------------------------
+[CONTRARY]
+Name = Contrary
+Description = Makes stat changes have an opposite effect.
+#-------------------------------
+[COTTONDOWN]
+Name = Cotton Down
+Description = Lowers everyone else's Speed by two steps when hit by an attack.
+#-------------------------------
+[CUDCHEW]
+Name = Cud Chew
+Description = When this Pokémon eats a Berry, it will regurgitate that Berry at the end of the next turn and eat it one more time.
+#-------------------------------
+[CURIOUSMEDICINE]
+Name = Curious Medicine
+Description = Upon entry, clears the stat changes of other Pokémon.
+Flags = SetupCounterAI
+#-------------------------------
+[DANCER]
+Name = Dancer
+Description = Repeats another Pokémon's dance move immediately.
+#-------------------------------
+[DARKAURA]
+Name = Dark Aura
+Description = Powers up each Pokémon's Dark-type moves.
+#-------------------------------
+[DAUNTLESSSHIELD]
+Name = Dauntless Shield
+Description = Raises Defense upon entry.
+#-------------------------------
+[DEFEATIST]
+Name = Defeatist
+Description = Halves move damage when HP becomes half or less.
+#-------------------------------
+[DEFIANT]
+Name = Defiant
+Description = Raises Attack by four steps when a stat is lowered by a foe.
+#-------------------------------
+[DELTASTREAM]
+Name = Delta Stream
+Description = Summons Strong Winds, which remove Flying-type's weaknesses. Lingers for three turns after leaving.
+#-------------------------------
+[DESOLATELAND]
+Name = Desolate Land
+Description = Summons Harsh Sunlight, which prevents most moves from critting. Lingers for three turns after leaving.
+Flags = SunshineSynergy
+#-------------------------------
+[DISGUISE]
+Name = Disguise
+Description = Its shroud protects it from an attack just once.
+Flags = Immutable
+#-------------------------------
+[DOWNLOAD]
+Name = Download
+Description = Boosts either Attack or Sp. Atk by two steps according to the foe's defenses.
+#-------------------------------
+[DRAGONSMAW]
+Name = Dragon's Maw
+Description = Powers up Dragon-type moves by 50%.
+#-------------------------------
+[DRIZZLE]
+Name = Drizzle
+Description = Summons rainstorm for four turns upon entry.
+Flags = RainstormSynergy
+#-------------------------------
+[DROUGHT]
+Name = Drought
+Description = Summons sunshine for four turns upon entry.
+Flags = SunshineSynergy
+#-------------------------------
+[DRYSKIN]
+Name = Dry Skin
+Description = Heals 1/8th HP in rainstorm, 1/4th when hit by Water-type moves. Loses 1/8th in sunshine, Fire-type moves do 25% more.
+Flags = RainstormSynergy
+#-------------------------------
+[EMERGENCYEXIT]
+Name = Emergency Exit
+Description = Switches out if its HP is lowered below half.
+#-------------------------------
+[FAIRYAURA]
+Name = Fairy Aura
+Description = Powers up each Pokémon's Fairy-type moves.
+#-------------------------------
+[FILTER]
+Name = Filter
+Description = Reduces damage from super-effective attacks by 25%.
+#-------------------------------
+[FLAMEBODY]
+Name = Flame Body
+Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from a foe, they become burned.
+#-------------------------------
+[FLOWERGIFT]
+Name = Flower Gift
+Description = In sunshine, boosts its and allies' Attack and Sp. Def by 50%.
+Flags = SunshineSynergy,Immutable
+#-------------------------------
+[FLOWERVEIL]
+Name = Flower Veil
+Description = Protects Grass-type allies from non-volatile status conditions or stat reductions (except self-inflicted).
+#-------------------------------
+[FLUFFY]
+Name = Fluffy
+Description = Doubles Defense. This Pokémon takes double damage from Fire-type moves.
+#-------------------------------
+[FORECAST]
+Name = Forecast
+Description = Castform transforms with the weather.
+Flags = Immutable,AllWeatherSynergy
+#-------------------------------
+[FRIENDGUARD]
+Name = Friend Guard
+Description = Reduces damage done to allies by 25%.
+#-------------------------------
+[FULLMETALBODY]
+Name = Full Metal Body
+Description = Prevents stat steps from being lowered (except when self-inflicted).
+Flags = OtherStatDropImmunity
+#-------------------------------
+[FURCOAT]
+Name = Fur Coat
+Description = Doubles this Pokémon's Defense.
+#-------------------------------
+[GALEWINGS]
+Name = Gale Wings
+Description = The user's Speed is doubled while using Flying-type moves.
+#-------------------------------
+[GALVANIZE]
+Name = Galvanize
+Description = Normal-type moves become Electric-type and power up by 30%.
+#-------------------------------
+[GLUTTONY]
+Name = Gluttony
+Description = Will eat berries normally eaten at 25% HP (in a pinch) at 50% instead.
+#-------------------------------
+[GOOEY]
+Name = Gooey
+Description = Physical moves against it lower the attacker's Speed and Attack.
+#-------------------------------
+[GORILLATACTICS]
+Name = Gorilla Tactics
+Description = Boosts Attack by 50% but the user is locked into the first move they use.
+Flags = ChoiceLocking
+#-------------------------------
+[GRIMNEIGH]
+Name = Grim Neigh
+Description = Boosts Sp. Atk after knocking out any Pokémon.
+#-------------------------------
+[HEAVYMETAL]
+Name = Heavy Metal
+Description = Doubles this Pokémon's weight.
+#-------------------------------
+[HUNGERSWITCH]
+Name = Hunger Switch
+Description = It alternates between an Electric-type Mode and a Dark-type Mode.
+Flags = Immutable
+#-------------------------------
+[HUSTLE]
+Name = Hustle
+Description = Boosts move damage by 50%, but lowers Accuracy by 20%.
+#-------------------------------
+[HYDRATION]
+Name = Hydration
+Description = Heals non-volatile status conditions each turn if in rainstorm.
+Flags = RainstormSynergy
+#-------------------------------
+[ICEBODY]
+Name = Ice Body
+Description = Heals 1/8th of its max HP each turn in a hail.
+Flags = HailSynergy
+#-------------------------------
+[ICESCALES]
+Name = Ice Scales
+Description = Doubles this Pokémon's Sp. Def.
+#-------------------------------
+[ILLUSION]
+Name = Illusion
+Description = Comes out disguised as this Pokémon in back.
+Flags = Immutable
+#-------------------------------
+[IMPOSTER]
+Name = Imposter
+Description = It transforms itself into this Pokémon it is facing.
+Flags = Immutable
+#-------------------------------
+[INNARDSOUT]
+Name = Innards Out
+Description = Damages an attacker that lands the finishing hit.
+#-------------------------------
+[INNERFOCUS]
+Name = Inner Focus
+Description = This Pokémon is protected from flinching, Intimidate, Fascinate, and Frustrate.
+Flags = FlinchImmunity
+#-------------------------------
+[INTIMIDATE]
+Name = Intimidate
+Description = Upon entry, lowers the foe's Attack stat by two steps.
+#-------------------------------
+[INTREPIDSWORD]
+Name = Intrepid Sword
+Description = Raises Attack upon entry.
+#-------------------------------
+[IRONBARBS]
+Name = Iron Barbs
+Description = Physical moves against it inflict 1/8th max HP damage to the foe.
+#-------------------------------
+[IRONFIST]
+Name = Iron Fist
+Description = Boosts the power of punching moves by 30%.
+#-------------------------------
+[LEVITATE]
+Name = Levitate
+Description = Immune to Ground-type moves. Immune to grounded hazards.
+Flags = Levitation
+#-------------------------------
+[MAGICBOUNCE]
+Name = Magic Bounce
+Description = Reflects enemy status moves that target this Pokémon or create hazards around it.
+#-------------------------------
+[MAGICGUARD]
+Name = Magic Guard
+Description = This Pokémon only takes damage from attacks.
+#-------------------------------
+[MAGICIAN]
+Name = Magician
+Description = Steals the held item of a Pokémon it hits.
+#-------------------------------
+[MEGALAUNCHER]
+Name = Mega Launcher
+Description = Boosts the power of pulse moves by 50%.
+#-------------------------------
+[MERCILESS]
+Name = Merciless
+Description = Its attacks are critical against poisoned targets.
+#-------------------------------
+[MIRRORARMOR]
+Name = Mirror Armor
+Description = Bounces back stat-lowering effects.
+#-------------------------------
+[MOTORDRIVE]
+Name = Motor Drive
+Description = Grants immunity to Electric-type moves and boosts Speed when hit by one.
+#-------------------------------
+[MOXIE]
+Name = Moxie
+Description = Raises Attack after knocking out any Pokémon.
+#-------------------------------
+[MULTISCALE]
+Name = Multiscale
+Description = Reduces move damage taken by 50% when HP is full.
+#-------------------------------
+[MULTITYPE]
+Name = Multitype
+Description = Changes type to match the held Plate.
+Flags = Immutable
+#-------------------------------
+[MUMMY]
+Name = Mummy
+Description = When this Pokémon is hit by an attack, the attacker's ability becomes Mummy.
+#-------------------------------
+[NATURALCURE]
+Name = Natural Cure
+Description = All non-volatile status conditions heal when switched out.
+#-------------------------------
+[NEUROFORCE]
+Name = Neuroforce
+Description = Powers up super-effective moves by 30%.
+#-------------------------------
+[NEUTRALIZINGGAS]
+Name = Neutralizing Gas
+Description = Abilities will be nullified or will not be triggered.
+Flags = Immutable
+#-------------------------------
+[NOGUARD]
+Name = No Guard
+Description = Attacks by or against this Pokémon can't miss and hit hidden Pokémon.
+#-------------------------------
+[NORMALIZE]
+Name = Normalize
+Description = Non-Normal moves become Normal-type and are powered up by 50%.
+#-------------------------------
+[PARENTALBOND]
+Name = Parental Bond
+Description = Child attacks after the parent, for 25% of the previous damage.
+#-------------------------------
+[PERISHBODY]
+Name = Perish Body
+Description = When it takes a hit, this Pokémon and the attacker both faint after three turns.
+Flags = SetupCounterAI
+#-------------------------------
+[POISONPOINT]
+Name = Poison Point
+Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from a foe, they become poisoned.
+#-------------------------------
+[POISONTOUCH]
+Name = Poison Touch
+Description = Physical moves have a 30% chance to poison targets.
+#-------------------------------
+[POWERCONSTRUCT]
+Name = Power Construct
+Description = Changes with other Cells if HP becomes half or less.
+Flags = Immutable
+#-------------------------------
+[POWEROFALCHEMY]
+Name = Power of Alchemy
+Description = When an ally faints, this Pokémon also gains their ability or abilities.
+Flags = Uncopyable
+#-------------------------------
+[POWERSPOT]
+Name = Power Spot
+Description = Powers up nearby allies' moves by 30%.
+#-------------------------------
+[PRANKSTER]
+Name = Prankster
+Description = Gives priority to status moves, but makes Dark-types immune to them.
+#-------------------------------
+[PRESSURE]
+Name = Pressure
+Description = This Pokémon raises the foe's PP usage.
+#-------------------------------
+[PRIMORDIALSEA]
+Name = Primordial Sea
+Description = Summons Heavy Rain, which prevents most moves' random added effects. Lingers for three turns after leaving.
+Flags = RainstormSynergy
+#-------------------------------
+[PRISMARMOR]
+Name = Prism Armor
+Description = This Pokémon receives 25% less move damage from super-effective attacks.
+#-------------------------------
+[PROTEAN]
+Name = Protean
+Description = It changes type to that of the move it's about to use.
+#-------------------------------
+[RAINDISH]
+Name = Rain Dish
+Description = Heals 1/8th of its max HP each turn if in rainstorm.
+Flags = RainstormSynergy
+#-------------------------------
+[RECKLESS]
+Name = Reckless
+Description = Powers up moves that have recoil damage by 30%.
+#-------------------------------
+[REGENERATOR]
+Name = Regenerator
+Description = Restores 25% of max HP when switched out.
+#-------------------------------
+[RIPEN]
+Name = Ripen
+Description = Ripens Berries and doubles their effect.
+#-------------------------------
+[RKSSYSTEM]
+Name = RKS System
+Description = Its type matches the memory disc it holds.
+Flags = Immutable
+#-------------------------------
+[ROCKHEAD]
+Name = Rock Head
+Description = Protects this Pokémon from recoil damage.
+#-------------------------------
+[ROUGHSKIN]
+Name = Rough Skin
+Description = Physical moves against it inflict 1/8th max HP damage to the foe.
+#-------------------------------
+[SANDRUSH]
+Name = Sand Rush
+Description = Doubles this Pokémon's Speed in a sandstorm.
+Flags = SandstormSynergy
+#-------------------------------
+[SANDSTREAM]
+Name = Sand Stream
+Description = Summons a sandstorm for four turns upon entry.
+Flags = SandstormSynergy
+#-------------------------------
+[SAPSIPPER]
+Name = Sap Sipper
+Description = Immune to Grass-type moves, and raises Attack and Sp. Atk when hit by one.
+#-------------------------------
+[SCHOOLING]
+Name = Schooling
+Description = Forms a powerful school while it has a lot of HP.
+Flags = Immutable
+#-------------------------------
+[SERENEGRACE]
+Name = Serene Grace
+Description = Doubles the likelihood of the user's random added effects activating.
+#-------------------------------
+[SHADOWSHIELD]
+Name = Shadow Shield
+Description = Resists damage while its HP is full.
+#-------------------------------
+[SHEDSKIN]
+Name = Shed Skin
+Description = At the end of each turn, heals from every non-volatile status condition (except Sleep).
+#-------------------------------
+[SHEERFORCE]
+Name = Sheer Force
+Description = Removes random added effects of attacks to increase their damage by 30%.
+#-------------------------------
+[SHIELDDUST]
+Name = Shield Dust
+Description = Blocks all random added effects of attacks taken.
+#-------------------------------
+[SHIELDSDOWN]
+Name = Shields Down
+Description = Immune to non-volatile status conditions while it has its shell. Below half HP, its shell breaks and it turns aggressive.
+Flags = Immutable
+#-------------------------------
+[SIMPLE]
+Name = Simple
+Description = Stat changes in this Pokémon are doubled.
+#-------------------------------
+[SKILLLINK]
+Name = Skill Link
+Description = Maximizes the frequency of "two to five" multi-hit moves.
+#-------------------------------
+[SLOWSTART]
+Name = Slow Start
+Description = Halves Attack and Speed for three turns.
+#-------------------------------
+[SLUSHRUSH]
+Name = Slush Rush
+Description = Doubles this Pokémon's Speed stat in a hail.
+Flags = HailSynergy
+#-------------------------------
+[SNIPER]
+Name = Sniper
+Description = Doubles the critical hit chance of random crit moves. Powers up critical hits by another 50%.
+#-------------------------------
+[SNOWWARNING]
+Name = Snow Warning
+Description = Summons a hailstorm for four turns upon entry.
+Flags = HailSynergy
+#-------------------------------
+[SOLARPOWER]
+Name = Solar Power
+Description = In sunshine, Sp. Atk is boosted by 50%, but this Pokémon is hurt for 1/10th HP each turn.
+Flags = SunshineSynergy
+#-------------------------------
+[SOULHEART]
+Name = Soul-Heart
+Description = Boosts Sp. Atk each time a Pokémon faints.
+#-------------------------------
+[SPEEDBOOST]
+Name = Speed Boost
+Description = Speed is raised by two steps at the end of each of its turns.
+#-------------------------------
+[STAMINA]
+Name = Stamina
+Description = Raises Defense when hit by an attack.
+#-------------------------------
+[STANCECHANGE]
+Name = Stance Change
+Description = Changes between Blade and Shield Forme with attacks and King's Shield.
+Flags = Immutable
+#-------------------------------
+[STATIC]
+Name = Static
+Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from a foe, they become numbed.
+#-------------------------------
+[STEELWORKER]
+Name = Steelworker
+Description = Powers up Steel-type moves by 50%.
+#-------------------------------
+[STEELYSPIRIT]
+Name = Steely Spirit
+Description = Powers up Steel-type moves of itself and its allies by 50%.
+#-------------------------------
+[STRONGJAW]
+Name = Strong Jaw
+Description = Boosts the power of biting moves by 50%.
+#-------------------------------
+[STURDY]
+Name = Sturdy
+Description = It can't be knocked out with one hit.
+#-------------------------------
+[SUPERLUCK]
+Name = Super Luck
+Description = Quadruples the critical hit chance of random crit moves.
+#-------------------------------
+[SWIFTSWIM]
+Name = Swift Swim
+Description = Doubles this Pokémon's Speed in rainstorm.
+Flags = RainstormSynergy
+#-------------------------------
+[SYNCHRONIZE]
+Name = Synchronize
+Description = When this Pokémon is given a non-volatile status condition by another Pokémon, that Pokémon also gets that condition.
+#-------------------------------
+[TECHNICIAN]
+Name = Technician
+Description = Moves with base power 60 or less deal 50% more damage.
+#-------------------------------
+[TELEPATHY]
+Name = Telepathy
+Description = Anticipates an ally's attack and dodges it.
+#-------------------------------
+[THICKFAT]
+Name = Thick Fat
+Description = Takes half damage from Fire- and Ice-type moves.
+#-------------------------------
+[TINTEDLENS]
+Name = Tinted Lens
+Description = Doubles the damage of "not very effective" moves.
+#-------------------------------
+[TOUGHCLAWS]
+Name = Tough Claws
+Description = Increases Attack by 30%.
+#-------------------------------
+[TRANSISTOR]
+Name = Transistor
+Description = Powers up Electric-type moves by 50%.
+#-------------------------------
+[TRIAGE]
+Name = Triage
+Description = Gives +3 priority to healing and draining moves.
+#-------------------------------
+[TRUANT]
+Name = Truant
+Description = Every other turn, this Pokémon can't use any move but Slack Off.
+#-------------------------------
+[UNAWARE]
+Name = Unaware
+Description = Ignores modified Defense and Sp. Def while attacking, and ignores modified Attack and Sp. Atk while being attacked.
+#-------------------------------
+[UNBURDEN]
+Name = Unburden
+Description = Doubles this Pokémon's Speed if its held item is consumed or lost.
+#-------------------------------
+[UNNERVE]
+Name = Unnerve
+Description = Makes the foe nervous and unable to eat Berries or Leftovers.
+#-------------------------------
+[UNSEENFIST]
+Name = Unseen Fist
+Description = Physical moves negate all protection effects.
+#-------------------------------
+[VICTORYSTAR]
+Name = Victory Star
+Description = Doubles the Accuracy, critical hit rate, and chance to activate random added effects for its allies and itself.
+#-------------------------------
+[VITALSPIRIT]
+Name = Vital Spirit
+Description = Prevents this Pokémon from falling asleep.
+#-------------------------------
+[VOLTABSORB]
+Name = Volt Absorb
+Description = Immune to Electric-type moves and restores 25% of max HP when hit by one.
+#-------------------------------
+[WANDERINGSPIRIT]
+Name = Wandering Spirit
+Description = When this Pokémon is hit by an attack, this Pokémon and the attacker switch abilities.
+#-------------------------------
+[WATERABSORB]
+Name = Water Absorb
+Description = Immune to Water-type moves and restores 25% of max HP when hit by one.
+#-------------------------------
+[WATERBUBBLE]
+Name = Water Bubble
+Description = Weakens incoming Fire-type moves, and doubles Water-type damage.
+#-------------------------------
+[WEAKARMOR]
+Name = Weak Armor
+Description = Physical attacks against this Pokémon raise its Speed by two steps but lower its Defense.
+#-------------------------------
+[WIMPOUT]
+Name = Wimp Out
+Description = Cowardly switches out if its HP is lowered below half.
+#-------------------------------
+[WONDERGUARD]
+Name = Wonder Guard
+Description = Only super-effective moves will hit.
+Flags = Immutable

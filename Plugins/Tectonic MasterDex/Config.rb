@@ -1,0 +1,39 @@
+# Pokemon are assumed to be at this level for calculating EHP
+EHP_LEVEL = 50
+
+SEARCHES_STACK = true
+
+LEVEL_CAPS = [15,20,25,30,35,40,45,50,55,60,65,70]
+  
+ITEMS_AVAILABLE_BY_CAP = {
+	35 => [:FIRESTONE,:WATERSTONE,:LEAFSTONE,:THUNDERSTONE,:DAWNSTONE,
+	:DUSKSTONE,:SUNSTONE,:SHINYSTONE,:ICESTONE,:MOONSTONE,:ALOLANWREATH,:GALARICAWREATH], # Stones from Chasm ID challenges
+	40 => [:NINJASCARF,:KNIGHTHELMET], # Found surfing
+	55 => [:DIAMONDTIARA], # Avatar of Diancie
+}
+
+SURFING_LEVEL = 35
+
+def hidden_map_encounter_switch_hash
+	return {
+		193 => VOLCANIC_SHORE_VISITED_SWITCH, # Volcanic Shore
+		196 => VOLCANIC_SHORE_VISITED_SWITCH, # Boiling Cave
+		288 => UNDERGROUND_RIVER_VISITED_SWITCH, # Underground River
+		218 => UNDERGROUND_RIVER_VISITED_SWITCH, # Absysal Cavern
+		215 => TEMPEST_REALM_VISITED_SWITCH, # Tempest Realm
+		377 => GUARDIAN_ISLAND_VISITED_SWITCH, # Guardian Island
+		413 => EVENTIDE_ISLE_VISITED_SWITCH, # Eventide Isle
+		414 => EVENTIDE_ISLE_VISITED_SWITCH, # Eventide Peak
+		411 => TRI_ISLAND_VISITED_SWITCH, # Tri Island
+		415 => TRI_ISLAND_VISITED_SWITCH, # Tri Island -- Articuno
+		416 => TRI_ISLAND_VISITED_SWITCH, # Tri Island -- Moltres
+		417 => TRI_ISLAND_VISITED_SWITCH, # Tri Island -- Zapos
+		357 => BATTLE_MONUMENT_VISITED_SWITCH, # Battle Monument
+		182 => SPIRIT_ATOLL_VISITED_SWITCH, # Spirit Atoll
+		2   => WINDBORN_ISLAND_VISITED_SWITCH, # Windborn Island
+		180 => BLUSTERY_BOSK_VISITED_SWITCH, # Blustery Bosk
+		264 => STORM_SOUND_VISITED_SWITCH, # Storm Sound
+		192 => FIELD_OF_SPIRES_VISITED_SWITCH, # Field of Spires
+		425 => SHIMMER_HAVEN_VISITED_SWITCH, # Blustery Bosk
+	}
+end

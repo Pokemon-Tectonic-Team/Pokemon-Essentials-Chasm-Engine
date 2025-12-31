@@ -1,0 +1,413 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[CHOICECROWN]
+Name = Choice Crown
+NamePlural = Choice Crowns
+Pocket = 12
+Price = 0
+Flags = Clothing,ChoiceLocking
+Description = Held item which ups Attacking stats and Speed by 50%, but allows the use of only one move.
+#-------------------------------
+[ZENITHBAND]
+Name = Zenith Band
+NamePlural = Zenith Bands
+Pocket = 12
+Price = 0
+Flags = Clothing,ChoiceLocking
+Description = Held item which doubles Attack, but allows the use of only one move.
+#-------------------------------
+[ZENITHSPECS]
+Name = Zenith Specs
+NamePlural = Zenith Specs
+Pocket = 12
+Price = 0
+Flags = Clothing,ChoiceLocking
+Description = Held item which doubles Sp. Atk, but allows the use of only one move.
+#-------------------------------
+[ZENITHSCARF]
+Name = Zenith Scarf
+NamePlural = Zenith Scarves
+Pocket = 12
+Price = 0
+Flags = Clothing,ChoiceLocking
+Description = Held item which doubles Speed, but allows the use of only one move.
+#-------------------------------
+[CLARITYSASH]
+Name = Clarity Sash
+NamePlural = Clarity Sashes
+Pocket = 12
+Price = 0
+Flags = Clothing
+Description = An item to be held by a Pokémon. The holder will endure one potential KO attack, leaving 1 HP.
+#-------------------------------
+[ALLPURPOSEVEST]
+Name = All-Purpose Vest
+NamePlural = All-Purpose Vests
+Pocket = 12
+Price = 0
+Flags = Clothing,NoStatusUse
+Description = An item to be held by a Pokémon. The holder's defenses are raised 50% but it can't use status moves.
+#-------------------------------
+[STRIKECORSET]
+Name = Strike Corset
+NamePlural = Strike Corsets
+Pocket = 12
+Price = 0
+Flags = Clothing,NoStatusUse
+Description = The holder's Defense is raised 50%, and it harms those who use special attacks against it for 1/6th HP.
+#-------------------------------
+[ASSAULTCORSET]
+Name = Assault Corset
+NamePlural = Assault Corsets
+Pocket = 12
+Price = 0
+Flags = Clothing,NoStatusUse
+Description = The holder's Sp. Def is raised 50%, and it harms those who use physical attacks against it for 1/6th HP.
+#-------------------------------
+[JAGGEDHELMET]
+Name = Jagged Helmet
+NamePlural = Jagged Helmets
+Pocket = 12
+Price = 0
+Flags = Clothing,AttackerRecoil
+Description = Damages attackers for 1/3rd of their HP when they hit the holder with physical attacks.
+#-------------------------------
+[LUSTROUSJACKET]
+Name = Lustrous Radio
+NamePlural = Lustrous Radios
+Pocket = 12
+Price = 0
+Flags = Clothing,AttackerRecoil
+Description = Damages attackers for 1/3rd of their HP when they hit the holder with special attacks.
+#-------------------------------
+[SITREONBERRY]
+Name = Sitreon Berry
+NamePlural = Sitreon Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = If held by a Pokémon, it heals its HP by 50% at half health.
+#-------------------------------
+[ROSELIFEAST]
+Name = Roseli Feast
+NamePlural = Roseli Feasts
+Pocket = 9
+Price = 0
+Flags = Berry,Leftovers
+Description = Halves the damage from one supereffective Fairy-type attack. Holder heals 1/16th HP each turn.
+#-------------------------------
+[OCCAFEAST]
+Name = Occa Feast
+NamePlural = Occa Feasts
+Pocket = 9
+Price = 0
+Flags = Berry,Leftovers
+Description = Halves the damage from one supereffective Fire-type attack. Holder heals 1/16th HP each turn.
+#-------------------------------
+[RINDOFEAST]
+Name = Rindo Feast
+NamePlural = Rindo Feasts
+Pocket = 9
+Price = 0
+Flags = Berry,Leftovers
+Description = Halves the damage from one supereffective Ground-type attack. Holder heals 1/16th HP each turn.
+#-------------------------------
+[LUNUSBERRY]
+Name = Lunus Berry
+NamePlural = Lunus Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Held to recover from a status problem once per battle. Then, all of the holder's stats are raised by two stages.
+#-------------------------------
+[ZALAKABERRY]
+Name = Zalaka Berry
+NamePlural = Zalaka Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = If held by a Pokémon which goes below 50% health, it maximizes its Speed stat.
+#-------------------------------
+[LUCENTGEM]
+Name = Lucent Gem
+NamePlural = Lucent Gems
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = A brilliant gem. Boosts the power of an attacking move by 50% once per battle.
+#-------------------------------
+[NORMALRING]
+Name = Normal Ring
+NamePlural = Normal Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Normal move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[FIRERING]
+Name = Fire Ring
+NamePlural = Fire Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Fire move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[WATERRING]
+Name = Water Ring
+NamePlural = Water Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Water move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[GRASSRING]
+Name = Grass Ring
+NamePlural = Grass Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Grass move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[ELECTRICRING]
+Name = Electric Ring
+NamePlural = Electric Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Electric move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[ICERING]
+Name = Ice Ring
+NamePlural = Ice Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Ice move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[FIGHTINGRING]
+Name = Fighting Ring
+NamePlural = Fighting Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Fighting move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[POISONRING]
+Name = Poison Ring
+NamePlural = Poison Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Poison move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[GROUNDRING]
+Name = Ground Ring
+NamePlural = Ground Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Ground move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[FLYINGRING]
+Name = Flying Ring
+NamePlural = Flying Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Flying move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[PSYCHICRING]
+Name = Psychic Ring
+NamePlural = Psychic Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Psychic move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[BUGRING]
+Name = Bug Ring
+NamePlural = Bug Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Bug move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[ROCKRING]
+Name = Rock Ring
+NamePlural = Rock Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Rock move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[GHOSTRING]
+Name = Ghost Ring
+NamePlural = Ghost Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Ghost move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[DARKRING]
+Name = Dark Ring
+NamePlural = Dark Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Dark move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[DRAGONRING]
+Name = Dragon Ring
+NamePlural = Dragon Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Dragon move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[STEELRING]
+Name = Steel Ring
+NamePlural = Steel Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Steel move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[FAIRYRING]
+Name = Fairy Ring
+NamePlural = Fairy Rings
+Pocket = 10
+Price = 0
+Flags = TypeGem
+Description = Boosts the power of a Fairy move by 50% once per battle. Holder heals 1/16th HP each round.
+#-------------------------------
+[WHITEBOUGH]
+Name = White Bough
+NamePlural = White Boughs
+Pocket = 13
+Price = 0
+Description = A held item. Restores any lowered stats, then heals the holder by 50% HP.
+#-------------------------------
+[TERRAINSEALANT]
+Name = Terrain Sealant
+NamePlural = Terrain Sealant
+Pocket = 13
+Price = 0
+Description = While held, terrains set by the holder do not expire.
+#-------------------------------
+[LEADBALLOON]
+Name = Lead Balloon
+NamePlural = Lead Balloons
+Pocket = 13
+Price = 0
+Flags = Levitation
+Description = An item to be held by a Pokémon. The holder floats in the air, making Ground attacks miss.
+#-------------------------------
+[SPELLBELL]
+Name = Spell Bell
+NamePlural = Spell Bells
+Pocket = 13
+Price = 0
+Description = The holder's HP is restored a little every time it inflicts damage. Boosts Ghost-type moves by 20%.
+#-------------------------------
+[BIGREDBUTTON]
+Name = Big Red Button
+NamePlural = Big Red Buttons
+Pocket = 13
+Price = 0
+Description = When the holder is struck by a foe, it switches out, leaving a layer of spikes around the foe.
+#-------------------------------
+[HEATSASH]
+Name = Heat Sash
+NamePlural = Heat Sashes
+Pocket = 12
+Price = 0
+Flags = Clothing,Endure
+Description = The user summons Sunshine for twice as long. The holder will endure one potential KO.
+#-------------------------------
+[DAMPSASH]
+Name = Damp Sash
+NamePlural = Damp Sashes
+Pocket = 12
+Price = 0
+Flags = Clothing,Endure
+Description = The user summons Rain for twice as long. The holder will endure one potential KO.
+#-------------------------------
+[SMOOTHSASH]
+Name = Smooth Sash
+NamePlural = Smooth Sashes
+Pocket = 12
+Price = 0
+Flags = Clothing,Endure
+Description = The user summons Sandstorm for twice as long. The holder will endure one potential KO.
+#-------------------------------
+[ICYSASH]
+Name = Icy Sash
+NamePlural = Icy Sashes
+Pocket = 12
+Price = 0
+Flags = Clothing,Endure
+Description = The user summons Hail for twice as long. The holder will endure one potential KO.
+#-------------------------------
+[HOOHSASHES]
+Name = Ho-oh's Ashes
+NamePlural = Ho-oh's Ashes
+Pocket = 13
+Price = 0
+Description = A held item. When the holder faints, a random other party member is fully revived.
+#-------------------------------
+[DEATHORB]
+Name = Death Orb
+NamePlural = Death Orbs
+Pocket = 13
+Price = 0
+Description = A held item. It boosts the power of moves by 30%. The user heals for a third of all move damage they deal.
+#-------------------------------
+[POWERKEY]
+Name = Power Key
+NamePlural = Power Locks
+Pocket = 13
+Price = 0
+Description = A held item. In battles, it sets the holder's base Attack and base Defense stats to 120.
+#-------------------------------
+[ENERGYKEY]
+Name = Energy Key
+NamePlural = Power Locks
+Pocket = 13
+Price = 0
+Description = A held item. In battles, it sets the holder's base Sp. Atk and base Sp. Def stats to 120.
+#-------------------------------
+[GRANDMASTERSCROLL]
+Name = Grandmaster Scroll
+NamePlural = Grandmaster Scroll
+Pocket = 13
+Price = 0
+Description = An ancient scroll that makes the user  that boosts the holder's supereffective moves by 20%.
+#-------------------------------
+[LUNCHBOX]
+Name = Lunch Box
+NamePlural = Lunch Boxes
+Pocket = 13
+Price = 0
+Description = The holder's HP is restored by 1/8th each turn, and takes a third less damage at full HP. The holder won't drop it.
+#-------------------------------
+[BRIGHTCLAY]
+Name = Bright Clay
+NamePlural = Bright Clays
+Pocket = 13
+Price = 0
+Description = An item to be held by a Pokémon. Protective moves like Light Screen and Reflect will be effective for 6 turns longer.
+#-------------------------------
+[PEARLOFWISDOM]
+Name = Pearl of Wisdom
+NamePlural = Pearls of Wisdom
+Pocket = 13
+Price = 0
+Flags = Leftovers
+Description = User heals 1/16th HP every turn. Will sacrifice itself to cure the user of status.
+#-------------------------------
+[CRYSTALCALIBURN]
+Name = Crystal Caliburn
+NamePlural = Crystal Caliburns
+Pocket = 5
+Price = 0
+Description = Boosts the power of Light and Blade moves by 50%.

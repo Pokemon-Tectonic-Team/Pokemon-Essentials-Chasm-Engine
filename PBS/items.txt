@@ -1,0 +1,2821 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[REPEL]
+Name = Repel
+NamePlural = Repels
+Pocket = 1
+Price = 400
+FieldUse = Direct
+Description = An item that prevents wild Pokémon from appearing for 100 steps after its use.
+#-------------------------------
+[STINKBOMB]
+Name = Stink Bomb
+NamePlural = Stink Bomb
+Pocket = 1
+Price = 5000
+FieldUse = Direct
+Description = Rare contraband. Any average solo trainer will flee from the stench of its explosion.
+#-------------------------------
+[FIRESTONE]
+Name = Fire Stone
+NamePlural = Fire Stones
+Pocket = 4
+Price = 5000
+FieldUse = OnPokemon
+Flags = EvolutionItem,EvolutionStone
+Description = A peculiar stone that makes certain species of Pokémon evolve. It is colored orange.
+#-------------------------------
+[THUNDERSTONE]
+Name = Thunder Stone
+NamePlural = Thunder Stones
+Pocket = 4
+Price = 5000
+FieldUse = OnPokemon
+Flags = EvolutionItem,EvolutionStone
+Description = A peculiar stone that makes certain species of Pokémon evolve. It has a thunderbolt pattern.
+#-------------------------------
+[WATERSTONE]
+Name = Water Stone
+NamePlural = Water Stones
+Pocket = 4
+Price = 5000
+FieldUse = OnPokemon
+Flags = EvolutionItem,EvolutionStone
+Description = A peculiar stone that makes certain species of Pokémon evolve. It is a clear, light blue.
+#-------------------------------
+[LEAFSTONE]
+Name = Leaf Stone
+NamePlural = Leaf Stones
+Pocket = 4
+Price = 5000
+FieldUse = OnPokemon
+Flags = EvolutionItem,EvolutionStone
+Description = A peculiar stone that makes certain species of Pokémon evolve. It has a leaf pattern.
+#-------------------------------
+[MOONSTONE]
+Name = Moon Stone
+NamePlural = Moon Stones
+Pocket = 4
+Price = 5000
+FieldUse = OnPokemon
+Flags = EvolutionItem,EvolutionStone
+Description = A peculiar stone that makes certain species of Pokémon evolve. It is as black as the night sky.
+#-------------------------------
+[SUNSTONE]
+Name = Sun Stone
+NamePlural = Sun Stones
+Pocket = 4
+Price = 5000
+FieldUse = OnPokemon
+Flags = EvolutionItem,EvolutionStone
+Description = A peculiar stone that makes certain species of Pokémon evolve. It is as red as the sun.
+#-------------------------------
+[DUSKSTONE]
+Name = Dusk Stone
+NamePlural = Dusk Stones
+Pocket = 4
+Price = 5000
+FieldUse = OnPokemon
+Flags = EvolutionItem,EvolutionStone
+Description = A peculiar stone that makes certain species of Pokémon evolve. It is as dark as dark can be.
+#-------------------------------
+[DAWNSTONE]
+Name = Dawn Stone
+NamePlural = Dawn Stones
+Pocket = 4
+Price = 5000
+FieldUse = OnPokemon
+Flags = EvolutionItem,EvolutionStone
+Description = A peculiar stone that makes certain species of Pokémon evolve. It sparkles like eyes.
+#-------------------------------
+[SHINYSTONE]
+Name = Shiny Stone
+NamePlural = Shiny Stones
+Pocket = 4
+Price = 5000
+FieldUse = OnPokemon
+Flags = EvolutionItem,EvolutionStone
+Description = A peculiar stone that makes certain species of Pokémon evolve. It shines with a dazzling light.
+#-------------------------------
+[ICESTONE]
+Name = Ice Stone
+NamePlural = Ice Stones
+Pocket = 4
+Price = 5000
+FieldUse = OnPokemon
+Flags = EvolutionItem,EvolutionStone
+Description = A peculiar stone that makes certain species of Pokémon evolve. It has a snowflake pattern.
+#-------------------------------
+[PRISMSTONE]
+Name = Prism Stone
+NamePlural = Prism Stones
+Pocket = 4
+Price = 15000
+FieldUse = OnPokemon
+Flags = EvolutionItem,EvolutionStone
+Description = A many-colored stone that makes a lot of Pokémon evolve. Can be used in place of any evolution stone.
+#-------------------------------
+[DIAMONDTIARA]
+Name = Diamond Tiara
+NamePlural = Diamond Tiaras
+Pocket = 4
+Price = 50000
+FieldUse = OnPokemon
+Flags = EvolutionItem,Clothing
+Description = A glimmering tiara made of diamonds. It makes a certain Pokémon evolve.
+#-------------------------------
+[KNIGHTHELMET]
+Name = Knight Helmet
+NamePlural = Knight Helmets
+Pocket = 4
+Price = 3000
+FieldUse = OnPokemon
+Flags = EvolutionItem,Clothing
+Description = A shining helmet. It makes a certain Pokémon evolve.
+#-------------------------------
+[NINJASCARF]
+Name = Ninja Scarf
+NamePlural = Ninja Scarves
+Pocket = 4
+Price = 3000
+FieldUse = OnPokemon
+Flags = EvolutionItem,Clothing
+Description = A cool scarf. It makes a certain Pokémon evolve.
+#-------------------------------
+[ALOLANWREATH]
+Name = Alolan Wreath
+NamePlural = Alolan Wreathes
+Pocket = 4
+Price = 4000
+FieldUse = OnPokemon
+Flags = EvolutionItem,Clothing
+Description = A beautiful floral wreath from Alola that makes certain species of Pokémon evolve.
+#-------------------------------
+[GALARICAWREATH]
+Name = Galarica Wreath
+NamePlural = Galarica Wreaths
+Pocket = 4
+Price = 4000
+FieldUse = OnPokemon
+Flags = EvolutionItem,Clothing
+Description = A wreath made from woven Galarica Twigs. It makes certain species of Pokémon evolve.
+#-------------------------------
+[SWEETAPPLE]
+Name = Sweet Apple
+NamePlural = Sweet Apples
+Pocket = 4
+Price = 2000
+FieldUse = OnPokemon
+Flags = EvolutionItem
+Description = A peculiar apple that can make a certain species of Pokémon evolve. It's exceptionally sweet.
+#-------------------------------
+[TARTAPPLE]
+Name = Tart Apple
+NamePlural = Tart Apples
+Pocket = 4
+Price = 2000
+FieldUse = OnPokemon
+Flags = EvolutionItem
+Description = A peculiar apple that can make a certain species of Pokémon evolve. It's exceptionally tart.
+#-------------------------------
+[SYRUPYAPPLE]
+Name = Syrupy Apple
+NamePlural = Syrupy Apples
+Pocket = 4
+Price = 2000
+FieldUse = OnPokemon
+Flags = EvolutionItem
+Description = A peculiar apple that can make a certain species of Pokémon evolve. It's exceptionally syrupy.
+#-------------------------------
+[HELIXFOSSIL]
+Name = Helix Fossil
+NamePlural = Helix Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil of an ancient Pokémon that lived in the sea. It resembles Omanyte.
+#-------------------------------
+[DOMEFOSSIL]
+Name = Dome Fossil
+NamePlural = Dome Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil of an ancient Pokémon that lived in the sea. It resembles Kabuto.
+#-------------------------------
+[OLDAMBER]
+Name = Old Amber
+NamePlural = Old Ambers
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A piece of amber that contains the genes of an Aerodactyl. It is clear with a reddish tint.
+#-------------------------------
+[ROOTFOSSIL]
+Name = Root Fossil
+NamePlural = Root Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil of an ancient Pokémon that lived in the sea. It resembles Lileep.
+#-------------------------------
+[CLAWFOSSIL]
+Name = Claw Fossil
+NamePlural = Claw Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil of an ancient Pokémon that lived in the sea. It resembles Anorith.
+#-------------------------------
+[SKULLFOSSIL]
+Name = Skull Fossil
+NamePlural = Skull Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil from a prehistoric Pokémon that lived on the land. It resembles Cranidos.
+#-------------------------------
+[ARMORFOSSIL]
+Name = Armor Fossil
+NamePlural = Armor Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil from a prehistoric Pokémon that lived on the land. It resembles Shieldon.
+#-------------------------------
+[COVERFOSSIL]
+Name = Cover Fossil
+NamePlural = Cover Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil of an ancient Pokémon that lived in the sea in ancient times. It resembles Tirtouga.
+#-------------------------------
+[PLUMEFOSSIL]
+Name = Plume Fossil
+NamePlural = Plume Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil of an ancient Pokémon that flew in the sky in ancient times. It resembles Archen.
+#-------------------------------
+[JAWFOSSIL]
+Name = Jaw Fossil
+NamePlural = Jaw Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil from a prehistoric Pokémon that once lived on the land. It resembles Tyrunt.
+#-------------------------------
+[SAILFOSSIL]
+Name = Sail Fossil
+NamePlural = Sail Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil from a prehistoric Pokémon that once lived on the land. It resembles Amaura.
+#-------------------------------
+[ELDRITCHFOSSIL]
+Name = Eldritch Fossil
+NamePlural = Eldritch Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil from a strange Pokémon that once lived on the land. It resembles Makyan Omanyte.
+#-------------------------------
+[HONEY]
+Name = Honey
+NamePlural = Honey
+Pocket = 15
+Price = 1500
+FieldUse = Direct
+Description = A sweet honey with a sweeter aroma. It can be sold to shops for $750.
+#-------------------------------
+[PRETTYFEATHER]
+Name = Pretty Feather
+NamePlural = Pretty Feathers
+Pocket = 15
+Price = 3000
+Description = A beautiful feather. It can be sold to shops for $1500.
+#-------------------------------
+[TINYMUSHROOM]
+Name = Tiny Mushroom
+NamePlural = Tiny Mushrooms
+Pocket = 15
+Price = 500
+Description = A small and rare mushroom. It can be sold to shops for $250.
+#-------------------------------
+[BIGMUSHROOM]
+Name = Big Mushroom
+NamePlural = Big Mushrooms
+Pocket = 15
+Price = 5000
+Description = A large and rare mushroom. It can be sold to shops for $2500.
+#-------------------------------
+[BALMMUSHROOM]
+Name = Balm Mushroom
+NamePlural = Balm Mushrooms
+Pocket = 15
+Price = 15000
+Description = A rare mushroom which gives off a nice fragrance. It can be sold to shops for $7500.
+#-------------------------------
+[PEARL]
+Name = Pearl
+NamePlural = Pearls
+Pocket = 15
+Price = 2000
+Description = A somewhat-small pearl that sparkles in a pretty silver color. It can be sold to shops for $1000.
+#-------------------------------
+[BIGPEARL]
+Name = Big Pearl
+NamePlural = Big Pearls
+Pocket = 15
+Price = 8000
+Description = A quite-large pearl that sparkles in a pretty silver color. It can be sold to shops for $4000.
+#-------------------------------
+[PEARLSTRING]
+Name = Pearl String
+NamePlural = Pearl Strings
+Pocket = 15
+Price = 20000
+Description = Very large pearls that sparkle in a pretty silver color. It can be sold to shops for $10000.
+#-------------------------------
+[STARDUST]
+Name = Stardust
+NamePlural = Stardusts
+Pocket = 15
+Price = 3000
+Description = Lovely, red-colored sand with a loose, silky feel. It can be sold to shops for $1500.
+#-------------------------------
+[STARPIECE]
+Name = Star Piece
+NamePlural = Star Pieces
+Pocket = 15
+Price = 12000
+Description = A shard of a pretty gem that sparkles in a red color. It can be sold to shops for $6000.
+#-------------------------------
+[COMETSHARD]
+Name = Comet Shard
+NamePlural = Comet Shards
+Pocket = 15
+Price = 25000
+Description = A shard which fell to the ground when a comet approached. It can be sold to shops for $12500.
+#-------------------------------
+[NUGGET]
+Name = Gold Nugget
+NamePlural = Gold Nuggets
+Pocket = 15
+Price = 10000
+Description = A nugget of pure gold that gives off a lustrous gleam. It can be sold to shops for $5000.
+#-------------------------------
+[BIGNUGGET]
+Name = Big Nugget
+NamePlural = Big Nuggets
+Pocket = 15
+Price = 40000
+Description = A big nugget of pure gold that gives off a lustrous gleam. It can be sold to shops for $20000.
+#-------------------------------
+[SLOWPOKETAIL]
+Name = Slowpoke Tail
+NamePlural = Slowpoke Tails
+Pocket = 15
+Price = 8000
+Description = A very tasty tail of something. It can be sold to shops for $4000.
+#-------------------------------
+[RAREBONE]
+Name = Rare Bone
+NamePlural = Rare Bones
+Pocket = 15
+Price = 5000
+Description = A bone that is extremely valuable for Pokémon archaeology. It can be sold to shops for $2500.
+#-------------------------------
+[RELICCOPPER]
+Name = Relic Copper
+NamePlural = Relic Coppers
+Pocket = 15
+Price = 2000
+Description = A copper coin used in a civilization about 3,000 years ago. It can be sold to shops for $1000.
+#-------------------------------
+[RELICSILVER]
+Name = Relic Silver
+NamePlural = Relic Silvers
+Pocket = 15
+Price = 10000
+Description = A silver coin used in a civilization about 3,000 years ago. It can be sold to shops for $5000.
+#-------------------------------
+[RELICGOLD]
+Name = Relic Gold
+NamePlural = Relic Golds
+Pocket = 15
+Price = 20000
+Description = A gold coin used in a civilization about 3,000 years ago. It can be sold to shops for $10,000.
+#-------------------------------
+[RELICVASE]
+Name = Relic Vase
+NamePlural = Relic Vases
+Pocket = 15
+Price = 60000
+Description = A vase made in a civilization about 3,000 years ago. It can be sold to shops for $30,000.
+#-------------------------------
+[RELICBAND]
+Name = Relic Band
+NamePlural = Relic Bands
+Pocket = 15
+Price = 160000
+Description = A bracelet made in a civilization about 3,000 years ago. It can be sold to shops for $80,000.
+#-------------------------------
+[RELICSTATUE]
+Name = Relic Statue
+NamePlural = Relic Statues
+Pocket = 15
+Price = 300000
+Description = A stone figure made in a civilization about 3,000 years ago. Can be sold for $150,000.
+#-------------------------------
+[RELICCROWN]
+Name = Relic Crown
+NamePlural = Relic Crowns
+Pocket = 15
+Price = 600000
+Description = A crown made in a civilization about 3,000 years ago. Can be sold for $300,000.
+#-------------------------------
+[AIRBALLOON]
+Name = Air Balloon
+NamePlural = Air Balloons
+Pocket = 13
+Price = 4000
+Flags = Levitation
+Description = An item to be held by a Pokémon. The holder will float in the air until hit. Once hit, this item will burst.
+#-------------------------------
+[EVIOLITE]
+Name = Eviolite
+NamePlural = Eviolites
+Pocket = 13
+Price = 4000
+Description = When held by a Pokémon who can still evolve, reduces move damage taken by 33%. Prevents evolution.
+#-------------------------------
+[POWERLOCK]
+Name = Power Lock
+NamePlural = Power Locks
+Pocket = 13
+Price = 4000
+Description = A held item. In battles, it sets the holder's base Attack stat to 120.
+#-------------------------------
+[ENERGYLOCK]
+Name = Energy Lock
+NamePlural = Energy Locks
+Pocket = 13
+Price = 4000
+Description = A held item. In battles, it sets the holder's base Sp. Atk stat to 120.
+#-------------------------------
+[FLOATSTONE]
+Name = Float Stone
+NamePlural = Float Stones
+Pocket = 13
+Price = 4000
+Description = A very light stone. It reduces the weight of a Pokémon when held.
+#-------------------------------
+[ASSAULTVEST]
+Name = Assault Vest
+NamePlural = Assault Vests
+Pocket = 12
+Price = 8000
+Flags = Clothing,NoStatusUse
+Description = An item to be held by a Pokémon. It raises Sp. Def by 50% but prevents the use of status moves.
+#-------------------------------
+[STRIKEVEST]
+Name = Strike Vest
+NamePlural = Strike Vests
+Pocket = 12
+Price = 8000
+Flags = Clothing,NoStatusUse
+Description = An item to be held by a Pokémon. It raises Defense by 50% but prevents the use of status moves.
+#-------------------------------
+[WEAKNESSPOLICY]
+Name = Weakness Policy
+NamePlural = Weakness Policies
+Pocket = 13
+Price = 3000
+Description = An item to be held by a Pokémon. Its Attack and Sp. Atk raise by four steps if hit by a move it's weak to.
+#-------------------------------
+[ADRENALINEORB]
+Name = Adrenaline Orb
+NamePlural = Adrenaline Orbs
+Pocket = 13
+Price = 4000
+Description = When held, it boosts Speed by two steps when intimidated, fascinated, or frustrated once per battle.
+#-------------------------------
+[ROCKYHELMET]
+Name = Rocky Helmet
+NamePlural = Rocky Helmets
+Pocket = 12
+Price = 6000
+Flags = Clothing,AttackerRecoil
+Description = Damages attackers for 1/8th of their HP when they hit the holder with physical attacks.
+#-------------------------------
+[HIVISJACKET]
+Name = Hi-Viz Jacket
+NamePlural = Hi-Viz Jackets
+Pocket = 12
+Price = 6000
+Flags = Clothing,AttackerRecoil
+Description = Damages attackers for 1/8th of their HP when they hit the holder with special attacks.
+#-------------------------------
+[EJECTBUTTON]
+Name = Eject Button
+NamePlural = Eject Buttons
+Pocket = 13
+Price = 4000
+Description = If the holder is hit by an attack, it will switch with another Pokémon in your party.
+#-------------------------------
+[REDCARD]
+Name = Red Card
+NamePlural = Red Cards
+Pocket = 13
+Price = 4000
+Description = A card with a mysterious power. When the holder is struck by a foe, the attacker is removed from battle.
+#-------------------------------
+[SHEDSHELL]
+Name = Shed Shell
+NamePlural = Shed Shells
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. This discarded carapace lets the holder switch out of battle without fail.
+#-------------------------------
+[SMOKEBALL]
+Name = Smoke Ball
+NamePlural = Smoke Balls
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It enables the holder to flee from any wild Pokémon without fail.
+#-------------------------------
+[LUCKYEGG]
+Name = Lucky Egg
+NamePlural = Lucky Eggs
+Pocket = 13
+Price = 10000
+Description = An item to be held by a Pokémon. It is an egg filled with happiness that earns extra Exp. Points in battle.
+#-------------------------------
+[AMULETCOIN]
+Name = Amulet Coin
+NamePlural = Amulet Coins
+Pocket = 13
+Price = 10000
+Description = A held item. If the wielder enters a battle, money and coins generated in that battle are increased by 50%.
+#-------------------------------
+[SOOTHEBELL]
+Name = Soothe Bell
+NamePlural = Soothe Bells
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. The comforting chime of this bell makes it gain happiness twice as fast.
+#-------------------------------
+[CLEANSETAG]
+Name = Cleanse Tag
+NamePlural = Cleanse Tags
+Pocket = 13
+Price = 5000
+Description = An item to be held by a Pokémon. It prevents wild Pokémon encounters if the holder is the first one in the party.
+#-------------------------------
+[CHOICEBAND]
+Name = Choice Band
+NamePlural = Choice Bands
+Pocket = 12
+Price = 8000
+Flags = Clothing,ChoiceLocking
+Description = Held item which ups Attack by 40%, but allows the use of only one move.
+#-------------------------------
+[CHOICESPECS]
+Name = Choice Specs
+NamePlural = Choice Specs
+Pocket = 12
+Price = 8000
+Flags = Clothing,ChoiceLocking
+Description = Held item which ups Sp. Atk by 40%, but allows the use of only one move.
+#-------------------------------
+[CHOICESCARF]
+Name = Choice Scarf
+NamePlural = Choice Scarves
+Pocket = 12
+Price = 8000
+Flags = Clothing,ChoiceLocking
+Description = Held item which boosts Speed by 40% but allows the use of only one move.
+#-------------------------------
+[LUMBERAXE]
+Name = Lumber Axe
+NamePlural = Lumber Axes
+Pocket = 13
+Price = 8000
+Description = Held item which boosts move damage by 25%, but lowers the user's Speed by 15%.
+#-------------------------------
+[HEATROCK]
+Name = Heat Rock
+NamePlural = Heat Rocks
+Pocket = 13
+Price = 4000
+Flags = WeatherRock
+Description = A Pokémon held item. When the holder summons sunshine, it lasts twice as long.
+#-------------------------------
+[DAMPROCK]
+Name = Damp Rock
+NamePlural = Damp Rocks
+Pocket = 13
+Price = 4000
+Description = A Pokémon held item. When the holder summons rainstorm, it lasts twice as long.
+#-------------------------------
+[SMOOTHROCK]
+Name = Smooth Rock
+NamePlural = Smooth Rocks
+Pocket = 13
+Price = 4000
+Flags = WeatherRock
+Description = A Pokémon held item. When the holder summons a sandstorm, it lasts twice as long.
+#-------------------------------
+[ICYROCK]
+Name = Icy Rock
+NamePlural = Icy Rocks
+Pocket = 13
+Price = 4000
+Flags = WeatherRock
+Description = A Pokémon held item. When the holder summons hail, it lasts twice as long.
+#-------------------------------
+[PINPOINTROCK]
+Name = Pin-Point Rock
+NamePlural = Pin-Point Rocks
+Pocket = 13
+Price = 4000
+Flags = WeatherRock
+Description = A Pokémon held item. When the holder summons eclipse, it lasts twice as long.
+#-------------------------------
+[MIRROREDROCK]
+Name = Mirrored Rock
+NamePlural = Mirrored Rocks
+Pocket = 13
+Price = 4000
+Flags = WeatherRock
+Description = A Pokémon held item. When the holder summons moonglow, it lasts twice as long.
+#-------------------------------
+[LIGHTCLAY]
+Name = Light Clay
+NamePlural = Light Clays
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. Protective screens will be effective for 3 more turns.
+#-------------------------------
+[REINFORCINGROD]
+Name = Reinforcing Rod
+NamePlural = Reinforcing Rods
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It doubles the duration of Rooms created by the holder.
+#-------------------------------
+[GRIPCLAW]
+Name = Grip Claw
+NamePlural = Grip Claws
+Pocket = 13
+Price = 4000
+Description = A Pokémon held item that doubles the duration of binding moves and abilities.
+#-------------------------------
+[LOADEDDICE]
+Name = Loaded Dice
+NamePlural = Loaded Dices
+Pocket = 13
+Price = 4000
+Description = A held item. It makes multi-hit attacks consistently hit 4 or 5 times.
+#-------------------------------
+[FRAGILELOCKET]
+Name = Fragile Locket
+NamePlural = Fragile Lockets
+Pocket = 13
+Price = 12000
+Description = An item to be held by a Pokémon. The user gets both of its legal abilities, but its stats are cut by 10%.
+#-------------------------------
+[BIGROOT]
+Name = Big Root
+NamePlural = Big Roots
+Pocket = 13
+Price = 4000
+Description = A held item. The holder recovers 30% more HP from draining moves, Aqua Ring, and leech.
+#-------------------------------
+[BLACKSLUDGE]
+Name = Black Sludge
+NamePlural = Black Sludges
+Pocket = 13
+Price = 6000
+Description = A held item that gradually restores the HP of Poison-type Pokémon. It inflicts damage on all other types.
+#-------------------------------
+[LEFTOVERS]
+Name = Leftovers
+NamePlural = Leftovers
+Pocket = 13
+Price = 8000
+Flags = Leftovers
+Description = A held item. The holder's HP is restored by 1/16th at the end of each turn.
+#-------------------------------
+[SHELLBELL]
+Name = Shell Bell
+NamePlural = Shell Bells
+Pocket = 13
+Price = 6000
+Description = An item to be held by a Pokémon. The holder restores 1/5th HP of the damage it deals with moves.
+#-------------------------------
+[WATERBALLOON]
+Name = Water Balloon
+NamePlural = Water Balloons
+Pocket = 13
+Price = 8000
+Description = A held item. At half health, the holder breaks the balloon and gains an Aqua Ring.
+#-------------------------------
+[MENTALHERB]
+Name = Mental Herb
+NamePlural = Mental Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = An item to be held by a Pokémon. It snaps the holder out of a variety of mental warping effects.
+#-------------------------------
+[WHITEHERB]
+Name = White Herb
+NamePlural = White Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = An item to be held by a Pokémon. It restores any lowered stat in battle.
+#-------------------------------
+[BLACKHERB]
+Name = Black Herb
+NamePlural = Black Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = An item to be held by a Pokémon. Lowered stats on the holder are also applied to foes.
+#-------------------------------
+[AGILITYHERB]
+Name = Agility Herb
+NamePlural = Agility Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = An item to be held by a Pokémon. Doubles the Speed of the holder's move once per battle.
+#-------------------------------
+[STRENGTHHERB]
+Name = Strength Herb
+NamePlural = Strength Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = A held item. Boosts the power of a special move by 15% and makes it physical, once per battle.
+#-------------------------------
+[INTELLECTHERB]
+Name = Intellect Herb
+NamePlural = Intellect Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = A held item. Boosts the power of a physical move by 15% and makes it special, once per battle.
+#-------------------------------
+[POWERHERB]
+Name = Power Herb
+NamePlural = Power Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = A single-use item to be held by a Pokémon. It allows the immediate use of a move that charges up first.
+#-------------------------------
+[ENERGYHERB]
+Name = Energy Herb
+NamePlural = Energy Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = A single-use item to be held by a Pokémon. It allows user to skip the recharging turn of an exhausting move.
+#-------------------------------
+[MIRRORHERB]
+Name = Mirror Herb
+NamePlural = Mirror Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = A held item. When a foe raises their stats, the herb is consumed to copy the increase.
+#-------------------------------
+[PARADOXHERB]
+Name = Paradox Herb
+NamePlural = Paradox Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = A held item. When a foe raises their stats, the herb is consumed to reset their stats.
+#-------------------------------
+[LUCKHERB]
+Name = Luck Herb
+NamePlural = Luck Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = An item to be held by a Pokémon. Ensures a random additional effect activates once per battle.
+#-------------------------------
+[SKILLHERB]
+Name = Skill Herb
+NamePlural = Skill Herbs
+Pocket = 11
+Price = 4000
+Flags = Herb
+Description = An item to be held by a Pokémon. Ensures a less than full accuracy move lands once per battle.
+#-------------------------------
+[LIFEORB]
+Name = Life Orb
+NamePlural = Life Orbs
+Pocket = 13
+Price = 10000
+Description = A held item. It boosts the power of moves by 30%, but at the cost of 10% HP on each hit.
+#-------------------------------
+[EXPERTBELT]
+Name = Expert Belt
+NamePlural = Expert Belts
+Pocket = 12
+Price = 4000
+Flags = Clothing
+Description = A well-worn belt that boosts the holder's supereffective moves by 20%.
+#-------------------------------
+[METRONOME]
+Name = Metronome
+NamePlural = Metronomes
+Pocket = 13
+Price = 4000
+Description = A held item. Boosts a move used consecutively by 20% more each time. This resets if another move is used.
+#-------------------------------
+[MUSCLEBAND]
+Name = Muscle Band
+NamePlural = Muscle Bands
+Pocket = 12
+Price = 4000
+Flags = Clothing
+Description = An item to be held by a Pokémon. It is a headband that boosts the power of physical moves by 10%.
+#-------------------------------
+[WISEGLASSES]
+Name = Wise Glasses
+NamePlural = Wise Glasses
+Pocket = 12
+Price = 4000
+Flags = Clothing
+Description = An item to be held by a Pokémon. It is a thick pair of glasses that boosts the power of special moves by 10%.
+#-------------------------------
+[SEVENLEAGUEBOOTS]
+Name = 7-League Boots
+NamePlural = 7-League Boots
+Pocket = 12
+Price = 4000
+Flags = Clothing
+Description = An item to be held by a Pokémon. They are boots that boost Speed by 10%.
+#-------------------------------
+[SCOPELENS]
+Name = Scope Lens
+NamePlural = Scope Lenses
+Pocket = 13
+Price = 4000
+Description = A held item. Doubles the holder's critical-hit chance.
+#-------------------------------
+[WIDELENS]
+Name = Wide Lens
+NamePlural = Wide Lenses
+Pocket = 13
+Price = 4000
+Description = A held item. It is a magnifying lens that boosts the Accuracy of moves by 35%.
+#-------------------------------
+[LAGGINGTAIL]
+Name = Lagging Tail
+NamePlural = Lagging Tails
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It is tremendously heavy and makes the holder move slower than usual.
+#-------------------------------
+[FOCUSSASH]
+Name = Focus Sash
+NamePlural = Focus Sashes
+Pocket = 12
+Price = 4000
+Flags = Clothing,Endure
+Description = An item to be held by a Pokémon. If it has full HP, the holder will endure one potential KO attack, leaving 1 HP.
+#-------------------------------
+[FLAMEORB]
+Name = Flame Orb
+NamePlural = Flame Orbs
+Pocket = 13
+Price = 4000
+FieldUse = OnPokemon
+Consumable = false
+Description = An item to be held by a Pokémon. A bizarre orb that inflicts burn on the holder at the end of a turn.
+#-------------------------------
+[FROSTORB]
+Name = Frost Orb
+NamePlural = Frost Orbs
+Pocket = 13
+Price = 4000
+FieldUse = OnPokemon
+Consumable = false
+Description = An item to be held by a Pokémon. A bizarre orb that inflicts frostbite on the holder at the end of a turn.
+#-------------------------------
+[POISONORB]
+Name = Poison Orb
+NamePlural = Poison Orbs
+Pocket = 13
+Price = 4000
+FieldUse = OnPokemon
+Consumable = false
+Description = An item to be held by a Pokémon. A bizarre orb that inflicts poison on the holder at the end of a turn.
+#-------------------------------
+[STICKYBARB]
+Name = Sticky Barb
+NamePlural = Sticky Barbs
+Pocket = 13
+Price = 4000
+Description = A held item that damages the holder on every turn. It may latch on to Pokémon that attacks the holder.
+#-------------------------------
+[EJECTPACK]
+Name = Eject Pack
+NamePlural = Eject Packs
+Pocket = 12
+Price = 4000
+Flags = Clothing
+Description = An item to be held by a Pokémon. When the holder's stats are lowered, it will be switched out of battle.
+#-------------------------------
+[HEAVYDUTYBOOTS]
+Name = Heavy-Duty Boots
+NamePlural = Heavy-Duty Boots
+Pocket = 12
+Price = 4000
+Flags = Clothing
+Description = These boots prevent the effects of hazards set on the battlefield.
+#-------------------------------
+[THROATSPRAY]
+Name = Throat Spray
+NamePlural = Throat Sprays
+Pocket = 13
+Price = 4000
+Description = Raises Sp. Atk by two steps when the Pokémon uses a sound move the first time each battle.
+#-------------------------------
+[WHETSTONE]
+Name = Whetstone
+NamePlural = Whetstones
+Pocket = 13
+Price = 4000
+Description = Raises Attack by two steps when the Pokémon uses a blade move the first time each battle.
+#-------------------------------
+[PINWHEEL]
+Name = Pinwheel
+NamePlural = Pinwheels
+Pocket = 13
+Price = 4000
+Description = Raises Speed by two steps when the Pokémon uses a wind move the first time each battle.
+#-------------------------------
+[INSOLES]
+Name = Insoles
+NamePlural = Insoles
+Pocket = 13
+Price = 4000
+Description = Raises Speed by two steps when the Pokémon uses a kicking move the first time each battle.
+#-------------------------------
+[PROTEINSHAKE]
+Name = Protein Shake
+NamePlural = Protein Shakes
+Pocket = 13
+Price = 4000
+Description = Consumed to heal for one third of max HP when the Pokémon uses a punching move. This can overheal.
+#-------------------------------
+[STRESSBALL]
+Name = Stress Ball
+NamePlural = Stress Balls
+Pocket = 13
+Price = 4000
+Description = Consumed to heal for one third of max HP when the Pokémon uses a pulse move. This can overheal.
+#-------------------------------
+[WHITENINGPASTE]
+Name = Whitening Paste
+NamePlural = Whitening Pastes
+Pocket = 13
+Price = 4000
+Description = Blinds all foes when the Pokémon uses a biting move the first time each battle.
+#-------------------------------
+[FLASHBULB]
+Name = Flash Bulb
+NamePlural = Flash Bulbs
+Pocket = 13
+Price = 4000
+Description = Blinds all foes when the Pokémon uses a light move the first time each battle.
+#-------------------------------
+[UTILITYUMBRELLA]
+Name = Utility Umbrella
+NamePlural = Utility Umbrellas
+Pocket = 12
+Price = 4000
+Flags = Clothing
+Description = A held item. The holder is protected from the negative effects of weather.
+#-------------------------------
+[CRYSTALVEIL]
+Name = Crystal Veil
+NamePlural = Crystal Veils
+Pocket = 12
+Price = 6000
+Flags = TypeSetting,Clothing
+Description = A held item. It changes the holder's type in battle. You can change which type between battles.
+#-------------------------------
+[MEMORYSET]
+Name = Memory Set
+NamePlural = Memory Sets
+Pocket = 13
+Price = 0
+Flags = TypeSetting
+Description = A set of memory discs, one for each type. If held by a Silvally, you can change its type between battles.
+#-------------------------------
+[PRISMATICPLATE]
+Name = Prismatic Plate
+NamePlural = Prismatic Plates
+Pocket = 13
+Price = 0
+Flags = TypeSetting
+Description = A tablet that boosts same-type moves by 20%. If held by Arceus, you can change its type between battles.
+#-------------------------------
+[WILDCARD]
+Name = Wild Card
+NamePlural = Wild Cards
+Pocket = 13
+Price = 10000
+Description = An item to be held by a Pokémon. It counts as a member of every tribe.
+#-------------------------------
+[PROXYFIST]
+Name = Proxy Fist
+NamePlural = Proxy Fists
+Pocket = 13
+Price = 3000
+Description = A held item. The holder doesn't trigger items, abilities, or effects of targets it hits.
+#-------------------------------
+[COVERTCLOAK]
+Name = Covert Cloak
+NamePlural = Covert Cloaks
+Pocket = 12
+Price = 3000
+Flags = Clothing
+Description = A held item. Moves used against the holder deal 10% less move damage and can't trigger random added effects.
+#-------------------------------
+[COURAGEBADGE]
+Name = Courage Badge
+NamePlural = Courage Badges
+Pocket = 12
+Price = 3000
+Flags = Clothing,FlinchImmunity
+Description = A held item. The holder is protected from flinching.
+#-------------------------------
+[CLEARAMULET]
+Name = Clear Amulet
+NamePlural = Clear Amulets
+Pocket = 12
+Price = 3000
+Flags = Clothing
+Description = A held item. The holder is protected from stat drops (except when self-inflicted).
+#-------------------------------
+[ADAMANTORB]
+Name = Adamant Orb
+NamePlural = Adamant Orbs
+Pocket = 13
+Price = 10000
+Description = A brightly gleaming orb to be held by Dialga. It boosts the power of Dragon- and Steel-type moves.
+#-------------------------------
+[LUSTROUSORB]
+Name = Lustrous Orb
+NamePlural = Lustrous Orbs
+Pocket = 13
+Price = 10000
+Description = A beautifully glowing orb to be held by Palkia. It boosts the power of Dragon- and Water-type moves.
+#-------------------------------
+[GRISEOUSORB]
+Name = Griseous Orb
+NamePlural = Griseous Orbs
+Pocket = 13
+Price = 10000
+Description = A glowing orb to be held by Giratina. It boosts the power of Dragon- and Ghost-type moves.
+#-------------------------------
+[ADAMANTCRYSTAL]
+Name = Adamant Crystal
+NamePlural = Adamant Crystals
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = When used on Dialga, this large, glowing gem wells with power and allows the Pokémon to change form.
+#-------------------------------
+[LUSTROUSGLOBE]
+Name = Lustrous Globe
+NamePlural = Lustrous Globes
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = When used on Palkia, this large, glowing orb wells with power and allows the Pokémon to change form.
+#-------------------------------
+[GRISEOUSCORE]
+Name = Griseous Core
+NamePlural = Griseous Cores
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = When used on Giratina, this large, glowing gem wells with power and allows the Pokémon to change form.
+#-------------------------------
+[DOUSEDRIVE]
+Name = Douse Drive
+NamePlural = Douse Drives
+Pocket = 13
+Price = 1000
+Description = A cassette to be held by Genesect. It changes Techno Blast to a Water-type move.
+#-------------------------------
+[SHOCKDRIVE]
+Name = Shock Drive
+NamePlural = Shock Drives
+Pocket = 13
+Price = 1000
+Description = A cassette to be held by Genesect. It changes Techno Blast to an Electric-type move.
+#-------------------------------
+[BURNDRIVE]
+Name = Burn Drive
+NamePlural = Burn Drives
+Pocket = 13
+Price = 1000
+Description = A cassette to be held by Genesect. It changes Techno Blast to a Fire-type move.
+#-------------------------------
+[CHILLDRIVE]
+Name = Chill Drive
+NamePlural = Chill Drives
+Pocket = 13
+Price = 1000
+Description = A cassette to be held by Genesect. It changes Techno Blast to an Ice-type move.
+#-------------------------------
+[EVERSTONE]
+Name = Everstone
+NamePlural = Everstones
+Pocket = 13
+Price = 3000
+Description = An item to be held by a Pokémon. The Pokémon holding this peculiar stone is prevented from evolving.
+#-------------------------------
+[IRONBALL]
+Name = Iron Ball
+NamePlural = Iron Balls
+Pocket = 13
+Price = 4000
+Description = A Pokémon held item that cuts Speed. It makes Flying-type and levitating holders susceptible to Ground moves.
+#-------------------------------
+[CHARCOAL]
+Name = Charcoal
+NamePlural = Charcoals
+Pocket = 13
+Price = 1000
+Description = A combustible fuel that boosts the holder's Fire-type moves by 20%.
+#-------------------------------
+[MYSTICWATER]
+Name = Mystic Water
+NamePlural = Mystic Waters
+Pocket = 13
+Price = 1000
+Description = A teardrop-shaped gem that boosts the holder's Water-type moves by 20%.
+#-------------------------------
+[MAGNET]
+Name = Magnet
+NamePlural = Magnets
+Pocket = 13
+Price = 1000
+Description = A powerful magnet that boosts the holder's Electric-type moves by 20%.
+#-------------------------------
+[MIRACLESEED]
+Name = Miracle Seed
+NamePlural = Miracle Seeds
+Pocket = 13
+Price = 1000
+Description = A seed imbued with life that boosts the holder's Grass-type moves by 20%.
+#-------------------------------
+[NEVERMELTICE]
+Name = Never-Melt Ice
+NamePlural = Never-Melt Ices
+Pocket = 13
+Price = 1000
+Description = A piece of ice that repels heat and boosts Ice-type moves by 20%.
+#-------------------------------
+[BLACKBELT]
+Name = Black Belt
+NamePlural = Black Belts
+Pocket = 12
+Price = 1000
+Flags = Clothing
+Description = A belt that boosts determination and Fighting-type moves by 20%.
+#-------------------------------
+[POISONBARB]
+Name = Poison Barb
+NamePlural = Poison Barbs
+Pocket = 13
+Price = 1000
+Description = A small, poisonous barb that boosts the holder's Poison-type moves by 20%.
+#-------------------------------
+[SOFTSAND]
+Name = Soft Sand
+NamePlural = Soft Sand
+Pocket = 13
+Price = 1000
+Description = A loose, silky sand that boosts the holder's Ground-type moves by 20%.
+#-------------------------------
+[SHARPBEAK]
+Name = Sharp Beak
+NamePlural = Sharp Beaks
+Pocket = 13
+Price = 1000
+Description = A long, sharp beak that boosts the holder's Flying-type moves by 20%.
+#-------------------------------
+[TWISTEDSPOON]
+Name = Twisted Spoon
+NamePlural = Twisted Spoons
+Pocket = 13
+Price = 1000
+Description = A spoon imbued with telekinetic power that boosts Psychic-type moves by 20%.
+#-------------------------------
+[SILVERPOWDER]
+Name = Silver Powder
+NamePlural = Silver Powders
+Pocket = 13
+Price = 1000
+Description = A shiny, silver powder that boosts the holder's Bug-type moves by 20%.
+#-------------------------------
+[HARDSTONE]
+Name = Hard Stone
+NamePlural = Hard Stones
+Pocket = 13
+Price = 1000
+Description = An unbreakable stone that boosts the holder's Rock-type moves by 20%.
+#-------------------------------
+[SPELLTAG]
+Name = Spell Tag
+NamePlural = Spell Tags
+Pocket = 13
+Price = 1000
+Description = A sinister, eerie tag that boosts the holder's Ghost-type moves by 20%.
+#-------------------------------
+[DRAGONFANG]
+Name = Dragon Fang
+NamePlural = Dragon Fangs
+Pocket = 13
+Price = 1000
+Description = A hard and sharp fang that boosts the holder's Dragon-type moves by 20%.
+#-------------------------------
+[BLACKGLASSES]
+Name = Black Glasses
+NamePlural = Black Glasses
+Pocket = 12
+Price = 1000
+Flags = Clothing
+Description = A shady-looking pair of glasses that boosts the holder's Dark-type moves by 20%.
+#-------------------------------
+[METALCOAT]
+Name = Metal Coat
+NamePlural = Metal Coats
+Pocket = 13
+Price = 1000
+Description = A special metallic film that boosts the holder's Steel-type moves by 20%.
+#-------------------------------
+[SILKSCARF]
+Name = Silk Scarf
+NamePlural = Silk Scarves
+Pocket = 12
+Price = 1000
+Flags = Clothing
+Description = A sumptuous scarf that boosts the holder's Normal-type moves by 20%.
+#-------------------------------
+[FAIRYFEATHER]
+Name = Fairy Feather
+NamePlural = Fairy Feathers
+Pocket = 13
+Price = 1000
+Description = A gleaming feather that boosts the holder's Fairy-type moves by 20%.
+#-------------------------------
+[FIREGEM]
+Name = Fire Gem
+NamePlural = Fire Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of fire. Boosts the power of a Fire-type move by 50% once per battle.
+#-------------------------------
+[WATERGEM]
+Name = Water Gem
+NamePlural = Water Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of water. Boosts the power of a Water-type move by 50% once per battle.
+#-------------------------------
+[ELECTRICGEM]
+Name = Electric Gem
+NamePlural = Electric Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of electricity. Boosts the power of an Electric-type move by 50% once per battle.
+#-------------------------------
+[GRASSGEM]
+Name = Grass Gem
+NamePlural = Grass Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of nature. Boosts the power of a Grass-type move by 50% once per battle.
+#-------------------------------
+[ICEGEM]
+Name = Ice Gem
+NamePlural = Ice Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of ice. Boosts the power of an Ice-type move by 50% once per battle.
+#-------------------------------
+[FIGHTINGGEM]
+Name = Fighting Gem
+NamePlural = Fighting Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of combat. Boosts the power of a Fighting-type move by 50% once per battle.
+#-------------------------------
+[POISONGEM]
+Name = Poison Gem
+NamePlural = Poison Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of poison. Boosts the power of a Poison-type move by 50% once per battle.
+#-------------------------------
+[GROUNDGEM]
+Name = Ground Gem
+NamePlural = Ground Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of land. Boosts the power of a Ground-type move by 50% once per battle.
+#-------------------------------
+[FLYINGGEM]
+Name = Flying Gem
+NamePlural = Flying Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of air. Boosts the power of a Flying-type move by 50% once per battle.
+#-------------------------------
+[PSYCHICGEM]
+Name = Psychic Gem
+NamePlural = Psychic Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of the mind. Boosts the power of a Psychic-type move by 50% once per battle.
+#-------------------------------
+[BUGGEM]
+Name = Bug Gem
+NamePlural = Bug Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an insect-like essence. Boosts the power of a Bug-type move by 50% once per battle.
+#-------------------------------
+[ROCKGEM]
+Name = Rock Gem
+NamePlural = Rock Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of rock. Boosts the power of a Rock-type move by 50% once per battle.
+#-------------------------------
+[GHOSTGEM]
+Name = Ghost Gem
+NamePlural = Ghost Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with a spectral essence. Boosts the power of a Ghost-type move by 50% once per battle.
+#-------------------------------
+[DRAGONGEM]
+Name = Dragon Gem
+NamePlural = Dragon Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with a draconic essence. Boosts the power of a Dragon-type move by 50% once per battle.
+#-------------------------------
+[DARKGEM]
+Name = Dark Gem
+NamePlural = Dark Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of darkness. Boosts the power of a Dark-type move by 50% once per battle.
+#-------------------------------
+[STEELGEM]
+Name = Steel Gem
+NamePlural = Steel Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of steel. Boosts the power of a Steel-type move by 50% once per battle.
+#-------------------------------
+[NORMALGEM]
+Name = Normal Gem
+NamePlural = Normal Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an ordinary essence. Boosts the power of a Normal-type move by 50% once per battle.
+#-------------------------------
+[FAIRYGEM]
+Name = Fairy Gem
+NamePlural = Fairy Gems
+Pocket = 10
+Price = 5000
+Flags = TypeGem
+Description = A gem with an essence of the fey. Boosts the power of a Fairy-type move by 50% once per battle.
+#-------------------------------
+[POTION]
+Name = Potion
+NamePlural = Potions
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Flags = SkipPocketMessage
+Description = A spray-type medicine for wounds. It restores the HP of one Pokémon, fainted or able, by 40 points.
+#-------------------------------
+[SUPERPOTION]
+Name = Super Potion
+NamePlural = Super Potions
+Pocket = 2
+Price = 600
+FieldUse = OnPokemon
+Flags = SkipPocketMessage
+Description = A spray-type medicine for wounds. It restores the HP of one Pokémon, fainted or able, by 80 points.
+#-------------------------------
+[HYPERPOTION]
+Name = Hyper Potion
+NamePlural = Hyper Potions
+Pocket = 2
+Price = 900
+FieldUse = OnPokemon
+Flags = SkipPocketMessage
+Description = A spray-type medicine for wounds. It restores the HP of one Pokémon, fainted or able, by 120 points.
+#-------------------------------
+[MAXPOTION]
+Name = Max Potion
+NamePlural = Max Potions
+Pocket = 2
+Price = 1200
+FieldUse = OnPokemon
+Flags = SkipPocketMessage
+Description = A spray-type medicine for wounds. It completely restores the HP of a single Pokémon, fainted or able.
+#-------------------------------
+[FULLRESTORE]
+Name = Full Restore
+NamePlural = Full Restores
+Pocket = 2
+Price = 1500
+FieldUse = OnPokemon
+Flags = SkipPocketMessage
+Description = A medicine that fully restores the HP and heals any status problems of a single Pokémon, fainted or able.
+#-------------------------------
+[SACREDASH]
+Name = Sacred Ash
+NamePlural = Sacred Ashes
+Pocket = 2
+Price = 50000
+FieldUse = Direct
+Description = It revives all fainted Pokémon. In doing so, it also fully restores their HP.
+#-------------------------------
+[LAVACOOKIE]
+Name = Lava Cookie
+NamePlural = Lava Cookies
+Pocket = 2
+Price = 350
+FieldUse = OnPokemon
+Description = Lavaridge Town's local specialty. It heals all the status problems of one Pokémon.
+#-------------------------------
+[OLDGATEAU]
+Name = Old Gateau
+NamePlural = Old Gateaux
+Pocket = 2
+Price = 350
+FieldUse = OnPokemon
+Description = Old Chateau's hidden specialty. It heals all the status problems of a single Pokémon.
+#-------------------------------
+[CASTELIACONE]
+Name = Casteliacone
+NamePlural = Casteliacones
+Pocket = 2
+Price = 350
+FieldUse = OnPokemon
+Description = Castelia City's specialty, soft-serve ice cream. It heals all the status problems of a single Pokémon.
+#-------------------------------
+[BERRYJUICE]
+Name = Berry Juice
+NamePlural = Berry Juices
+Pocket = 2
+Price = 100
+FieldUse = OnPokemon
+Flags = Berry
+Description = A 100% pure juice made of Berries. It restores the HP of one Pokémon by just 20 points.
+#-------------------------------
+[RAGECANDYBAR]
+Name = Rage Candy Bar
+NamePlural = Rage Candy Bars
+Pocket = 2
+Price = 350
+FieldUse = OnPokemon
+Description = Mahogany Town's famous candy. It can be used once to heal all the status conditions of a Pokémon.
+#-------------------------------
+[SWEETHEART]
+Name = Sweet Heart
+NamePlural = Sweet Hearts
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Description = Very sweet chocolate. It restores the HP of one Pokémon by 40 points and makes it happier.
+#-------------------------------
+[FRESHWATER]
+Name = Fresh Water
+NamePlural = Fresh Waters
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Description = Water with a high mineral content. It restores the HP of one Pokémon by 50 points.
+#-------------------------------
+[SODAPOP]
+Name = Soda Pop
+NamePlural = Soda Pops
+Pocket = 2
+Price = 550
+FieldUse = OnPokemon
+Description = A fizzy soda drink. It restores the HP of one Pokémon by 100 points.
+#-------------------------------
+[LEMONADE]
+Name = Lemonade
+NamePlural = Lemonades
+Pocket = 2
+Price = 800
+FieldUse = OnPokemon
+Description = A very sweet drink. It restores the HP of one Pokémon by 150 points.
+#-------------------------------
+[MOOMOOMILK]
+Name = Moomoo Milk
+NamePlural = Moomoo Milks
+Pocket = 2
+Price = 1000
+FieldUse = OnPokemon
+Description = Nutritious milk. It fully restores the HP and heals any status problems of a single Pokémon.
+#-------------------------------
+[RARECANDY]
+Name = Rare Candy
+NamePlural = Rare Candies
+Pocket = 3
+Price = 1000
+FieldUse = OnPokemon
+Flags = SkipPocketMessage
+Description = A candy that is packed with energy. It raises the level of a single Pokémon by one.
+#-------------------------------
+[VANILLATULUMBA]
+Name = Vanilla Tulumba
+NamePlural = Vanilla Tulumba
+Pocket = 2
+Price = 800
+FieldUse = OnPokemon
+Description = Fried dough dipped in vanilla syrup. Heals a single Pokémon by 100 HP, and grants it 4000 Experience points.
+#-------------------------------
+[MASTERBALL]
+Name = Master Ball
+NamePlural = Master Balls
+Pocket = 14
+Price = 0
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,NoBallSwap
+Description = The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.
+#-------------------------------
+[RADIANTBALL]
+Name = Radiant Ball
+NamePlural = Radiant Balls
+Pocket = 14
+Price = 0
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,NoBallSwap
+Description = A ball with a mythical quality. It will catch any wild Pokémon without fail, and turn that Pokémon shiny.
+#-------------------------------
+[ARCBALL]
+Name = Arc Ball
+NamePlural = Arc Balls
+Pocket = 14
+Price = 0
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,NoBallSwap
+Description = The Poke ball that contains Arceus. Unable to be replicated by humans, so how did you see this description.
+#-------------------------------
+[ULTRABALL]
+Name = Ultra Ball
+NamePlural = Ultra Balls
+Pocket = 14
+Price = 800
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = An ultra-performance Ball with 2x the strength of a regular ball.
+#-------------------------------
+[GREATBALL]
+Name = Great Ball
+NamePlural = Great Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A good, high-performance Ball with 1.5x strength compared to a regular ball.
+#-------------------------------
+[POKEBALL]
+Name = Poké Ball
+NamePlural = Poké Balls
+Pocket = 14
+Price = 200
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A device for catching wild Pokémon. It is thrown like a ball at the target. It is designed as a capsule system.
+#-------------------------------
+[SAFARIBALL]
+Name = Safari Ball
+NamePlural = Safari Balls
+Pocket = 14
+Price = 0
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A special Poké Ball that is used only in the Safari Zone. It is decorated in a camouflage pattern.
+#-------------------------------
+[SPORTBALL]
+Name = Sport Ball
+NamePlural = Sport Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A special Poké Ball for the Bug-Catching Contest.
+#-------------------------------
+[NESTBALL]
+Name = Nest Ball
+NamePlural = Nest Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A somewhat different Poké Ball that works better the lower the Pokémon's level is below your level cap.
+#-------------------------------
+[REPEATBALL]
+Name = Repeat Ball
+NamePlural = Repeat Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A somewhat different Poké Ball that works at 3.5x strength on Pokémon species that were previously caught.
+#-------------------------------
+[TIMERBALL]
+Name = Timer Ball
+NamePlural = Timer Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A somewhat different Ball that becomes up to 4x better the more turns there are in a battle.
+#-------------------------------
+[LUXURYBALL]
+Name = Luxury Ball
+NamePlural = Luxury Balls
+Pocket = 14
+Price = 800
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A comfortable Poké Ball that makes a caught wild Pokémon gain happiness twice as quickly.
+#-------------------------------
+[PREMIERBALL]
+Name = Premier Ball
+NamePlural = Premier Balls
+Pocket = 14
+Price = 20
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A somewhat rare Poké Ball that has been specially made to commemorate an event of some sort.
+#-------------------------------
+[HEALBALL]
+Name = Heal Ball
+NamePlural = Heal Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A remedial Poké Ball that restores the caught Pokémon's HP and eliminates any status problem.
+#-------------------------------
+[QUICKBALL]
+Name = Quick Ball
+NamePlural = Quick Balls
+Pocket = 14
+Price = 800
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A somewhat different Poké Ball which has 3x strength on the first turn of a wild encounter.
+#-------------------------------
+[CHERISHBALL]
+Name = Cherish Ball
+NamePlural = Cherish Balls
+Pocket = 14
+Price = 800
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage,NoBallSwap
+Description = A quite rare Poké Ball that has been specially crafted to commemorate an occasion of some sort.
+#-------------------------------
+[FRIENDBALL]
+Name = Friend Ball
+NamePlural = Friend Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A Poké Ball that makes caught Pokémon more friendly.
+#-------------------------------
+[HEAVYBALL]
+Name = Heavy Ball
+NamePlural = Heavy Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall
+Description = A Poké Ball whose strength varies with the Pokémon's weight.
+#-------------------------------
+[FASTBALL]
+Name = Fast Ball
+NamePlural = Fast Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall
+Description = A Poké Ball with 4x strength against Pokémon species with 100 or more base Speed.
+#-------------------------------
+[DREAMBALL]
+Name = Dream Ball
+NamePlural = Dream Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A somewhat different Poké Ball that makes it easier to catch wild Pokémon while they're asleep.
+#-------------------------------
+[BEASTBALL]
+Name = Beast Ball
+NamePlural = Beast Balls
+Pocket = 14
+Price = 1000
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage,NoBallSwap
+Description = A special Poké Ball with 5x strength against Ultra Beasts.
+#-------------------------------
+[SLICEBALL]
+Name = Slice Ball
+NamePlural = Slice Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A sharp Poké Ball that damages the Pokémon for 1/4th of its HP if it fails to catch it.
+#-------------------------------
+[LEECHBALL]
+Name = Leech Ball
+NamePlural = Leech Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A parasitic Poké Ball that leeches the Pokémon if it fails to catch it.
+#-------------------------------
+[POTIONBALL]
+Name = Potion Ball
+NamePlural = Potion Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A medicinal Poké Ball that heals the Pokémon for 1/4th of its HP if it fails to catch it.
+#-------------------------------
+[DISABLEBALL]
+Name = Disable Ball
+NamePlural = Disable Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A mentally disrupting Poké Ball that disables the Pokémon's last used move for 10 turns if it fails to catch it.
+#-------------------------------
+[ROYALBALL]
+Name = Royal Ball
+NamePlural = Royal Balls
+Pocket = 14
+Price = 1000
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage,NoBallSwap
+Description = A ball whose striking appearance makes it popular despite its poor performance.
+#-------------------------------
+[CHERIBERRY]
+Name = Cheri Berry
+NamePlural = Cheri Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = It may be held by a Pokémon to recover from numbing.
+#-------------------------------
+[CHESTOBERRY]
+Name = Chesto Berry
+NamePlural = Chesto Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = It may be held by a Pokémon to recover from sleep.
+#-------------------------------
+[PECHABERRY]
+Name = Pecha Berry
+NamePlural = Pecha Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = It may be held by a Pokémon to recover from poison.
+#-------------------------------
+[RAWSTBERRY]
+Name = Rawst Berry
+NamePlural = Rawst Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = It may be held by a Pokémon to recover from a burn.
+#-------------------------------
+[ASPEARBERRY]
+Name = Aspear Berry
+NamePlural = Aspear Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = It may be held by a Pokémon to recover from a frostbite.
+#-------------------------------
+[PERSIMBERRY]
+Name = Persim Berry
+NamePlural = Persim Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = It may be held by a Pokémon to recover from being dizzy.
+#-------------------------------
+[SPELONBERRY]
+Name = Spelon Berry
+NamePlural = Spelon Berries
+Pocket = 9
+Price = 500
+Flags = Berry
+Description = It may be held by a Pokémon to recover from being leeched.
+#-------------------------------
+[BELUEBERRY]
+Name = Belue Berry
+NamePlural = Belue Berries
+Pocket = 9
+Price = 500
+Flags = Berry
+Description = It may be held by a Pokémon to recover from being waterlogged.
+#-------------------------------
+[LEPPABERRY]
+Name = Leppa Berry
+NamePlural = Leppa Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = It may be held by a Pokémon to restore a move's PP by 10.
+#-------------------------------
+[LUMBERRY]
+Name = Lum Berry
+NamePlural = Lum Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = It may be held by a Pokémon to recover from any status problem.
+#-------------------------------
+[SITRUSBERRY]
+Name = Sitrus Berry
+NamePlural = Sitrus Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = If held by a Pokémon, it heals its HP by 25% at half health.
+#-------------------------------
+[CADOBERRY]
+Name = Cado Berry
+NamePlural = Cado Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = It may be held by a Pokémon to heal the user by 33% in a pinch (below 25% HP).
+#-------------------------------
+[OCCABERRY]
+Name = Occa Berry
+NamePlural = Occa Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Fire-type attack against the holding Pokémon.
+#-------------------------------
+[PASSHOBERRY]
+Name = Passho Berry
+NamePlural = Passho Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Water-type attack against the holding Pokémon.
+#-------------------------------
+[WACANBERRY]
+Name = Wacan Berry
+NamePlural = Wacan Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Electric-type attack against the holding Pokémon.
+#-------------------------------
+[RINDOBERRY]
+Name = Rindo Berry
+NamePlural = Rindo Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Grass-type attack against the holding Pokémon.
+#-------------------------------
+[YACHEBERRY]
+Name = Yache Berry
+NamePlural = Yache Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Ice-type attack against the holding Pokémon.
+#-------------------------------
+[CHOPLEBERRY]
+Name = Chople Berry
+NamePlural = Chople Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Fighting-type attack against the holding Pokémon.
+#-------------------------------
+[KEBIABERRY]
+Name = Kebia Berry
+NamePlural = Kebia Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Poison-type attack against the holding Pokémon.
+#-------------------------------
+[SHUCABERRY]
+Name = Shuca Berry
+NamePlural = Shuca Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Ground-type attack against the holding Pokémon.
+#-------------------------------
+[COBABERRY]
+Name = Coba Berry
+NamePlural = Coba Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Flying-type attack against the holding Pokémon.
+#-------------------------------
+[PAYAPABERRY]
+Name = Payapa Berry
+NamePlural = Payapa Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Psychic-type attack against the holding Pokémon.
+#-------------------------------
+[TANGABERRY]
+Name = Tanga Berry
+NamePlural = Tanga Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Bug-type attack against the holding Pokémon.
+#-------------------------------
+[CHARTIBERRY]
+Name = Charti Berry
+NamePlural = Charti Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Rock-type attack against the holding Pokémon.
+#-------------------------------
+[KASIBBERRY]
+Name = Kasib Berry
+NamePlural = Kasib Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Ghost-type attack against the holding Pokémon.
+#-------------------------------
+[HABANBERRY]
+Name = Haban Berry
+NamePlural = Haban Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Dragon-type attack against the holding Pokémon.
+#-------------------------------
+[COLBURBERRY]
+Name = Colbur Berry
+NamePlural = Colbur Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Dark-type attack against the holding Pokémon.
+#-------------------------------
+[BABIRIBERRY]
+Name = Babiri Berry
+NamePlural = Babiri Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Steel-type attack against the holding Pokémon.
+#-------------------------------
+[ROSELIBERRY]
+Name = Roseli Berry
+NamePlural = Roseli Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a supereffective Fairy-type attack against the holding Pokémon.
+#-------------------------------
+[CHILANBERRY]
+Name = Chilan Berry
+NamePlural = Chilan Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = Weakens a Normal-type attack against the holding Pokémon.
+#-------------------------------
+[LIECHIBERRY]
+Name = Liechi Berry
+NamePlural = Liechi Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = If held by a Pokémon, it raises its Attack by two steps in a pinch.
+#-------------------------------
+[GANLONBERRY]
+Name = Ganlon Berry
+NamePlural = Ganlon Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = If held by a Pokémon, it raises its Defense by two steps in a pinch.
+#-------------------------------
+[SALACBERRY]
+Name = Salac Berry
+NamePlural = Salac Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = If held by a Pokémon, it raises its Speed by two steps in a pinch.
+#-------------------------------
+[PETAYABERRY]
+Name = Petaya Berry
+NamePlural = Petaya Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = If held by a Pokémon, it raises its Sp. Atk by two steps in a pinch.
+#-------------------------------
+[APICOTBERRY]
+Name = Apicot Berry
+NamePlural = Apicot Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = If held by a Pokémon, it raises its Sp. Def by two steps in a pinch.
+#-------------------------------
+[LANSATBERRY]
+Name = Lansat Berry
+NamePlural = Lansat Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = If held by a Pokémon, it raises its critical-hit ratio in a pinch.
+#-------------------------------
+[STARFBERRY]
+Name = Starf Berry
+NamePlural = Starf Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = If held by a Pokémon, it raises one of its stats by three steps in a pinch.
+#-------------------------------
+[ENIGMABERRY]
+Name = Enigma Berry
+NamePlural = Enigma Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = If held by a Pokémon, it restores its HP if it is hit by any supereffective attack.
+#-------------------------------
+[MICLEBERRY]
+Name = Micle Berry
+NamePlural = Micle Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = If held by a Pokémon, it raises its Accuracy by four steps in a pinch.
+#-------------------------------
+[CUSTAPBERRY]
+Name = Custap Berry
+NamePlural = Custap Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = If held by a Pokémon, it gets to move first just once in a pinch.
+#-------------------------------
+[JABOCABERRY]
+Name = Jaboca Berry
+NamePlural = Jaboca Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = If held by a Pokémon and a physical attack hits it, the attacker takes 25% HP damage.
+#-------------------------------
+[ROWAPBERRY]
+Name = Rowap Berry
+NamePlural = Rowap Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = If held by a Pokémon and a special attack hits it, the attacker takes 25% HP damage.
+#-------------------------------
+[KEEBERRY]
+Name = Kee Berry
+NamePlural = Kee Berries
+Pocket = 9
+Price = 20
+Flags = Berry
+Description = If held by a Pokémon, this Berry will increase the holder's Defense by four steps if it's hit with a physical move.
+#-------------------------------
+[MARANGABERRY]
+Name = Maranga Berry
+NamePlural = Maranga Berries
+Pocket = 9
+Price = 20
+Flags = Berry
+Description = If held by a Pokémon, this Berry will increase the holder's Sp. Def by four steps if it's hit with a special move.
+#-------------------------------
+[BICYCLE]
+Name = Bicycle
+NamePlural = Bicycles
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A folding Bicycle that enables much faster movement than the Running Shoes.
+#-------------------------------
+[TOWNMAP]
+Name = Region Map
+NamePlural = Region Maps
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A very convenient map that can be viewed anytime. It even shows your present location.
+#-------------------------------
+[GRACIDEA]
+Name = Gracidea
+NamePlural = Gracideas
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = A flower that conveys gratitude. Use it to transform Shaymin into or out of Sky form.
+#-------------------------------
+[DNASPLICERS]
+Name = DNA Splicers
+NamePlural = DNA Splicers
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = A splicer that fuses Kyurem and a certain Pokémon. They are said to have been one in the beginning.
+#-------------------------------
+[REVEALGLASS]
+Name = Reveal Glass
+NamePlural = Reveal Glasses
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = A glass that reveals the truth. It is a mysterious glass that returns a Pokémon back to its original shape.
+#-------------------------------
+[SHINYCHARM]
+Name = Shiny Charm
+NamePlural = Shiny Charms
+Pocket = 7
+Price = 0
+Consumable = true
+Flags = KeyItem,SkipPocketMessage
+Description = A shiny charm which doubles the chance of finding a Shiny Pokémon.
+#-------------------------------
+[SWEETTOOTH]
+Name = Sweet Tooth
+NamePlural = Sweet Teeth
+Pocket = 7
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = A charm in the shape of a tooth. It increases the EXP. gained from EXP Candy by 15%.
+#-------------------------------
+[SOOTHECHARM]
+Name = Soothe Charm
+NamePlural = Soothe Charms
+Pocket = 7
+Price = 0
+Consumable = true
+Flags = KeyItem,SkipPocketMessage
+Description = A comforting charm which doubles the happiness your Pokémon gain from being close to you.
+#-------------------------------
+[REDORB]
+Name = Red Orb
+NamePlural = Red Orbs
+Pocket = 13
+Price = 0
+Description = A shiny red orb that is said to have a legend tied to it. It's known to be connected with the Hoenn region.
+#-------------------------------
+[BLUEORB]
+Name = Blue Orb
+NamePlural = Blue Orbs
+Pocket = 13
+Price = 0
+Description = A shiny blue orb that is said to have a legend tied to it. It's known to be connected with the Hoenn region.
+#-------------------------------
+[LUMIOSEGALETTE]
+Name = Lumiose Galette
+NamePlural = Lumiose Galettes
+Pocket = 2
+Price = 350
+FieldUse = OnPokemon
+Description = A popular treat in Lumiose City. It can be used once to heal all the status conditions of a Pokémon.
+#-------------------------------
+[SHALOURSABLE]
+Name = Shalour Sable
+NamePlural = Shalour Sables
+Pocket = 2
+Price = 350
+FieldUse = OnPokemon
+Description = Shalour City's famous shortbread. It can be used once to heal all the status conditions of a Pokémon.
+#-------------------------------
+[BIGMALASADA]
+Name = Big Malasada
+NamePlural = Big Malasadas
+Pocket = 2
+Price = 350
+FieldUse = OnPokemon
+Description = The Alola region's specialty--fried bread. It can be used once to heal all the status conditions of a Pokémon.
+#-------------------------------
+[ABILITYCAPSULE]
+Name = Ability Capsule
+NamePlural = Ability Capsule
+Pocket = 2
+Price = 1000
+FieldUse = OnPokemon
+Description = A capsule that allows a Pokémon with two Abilities to switch between these Abilities when it is used.
+#-------------------------------
+[SPRINKLOTAD]
+Name = Sprinklotad
+NamePlural = Sprinklotads
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A watering can shaped like a Lotad. It helps promote the healthy growth of any Berries planted in soft soil.
+#-------------------------------
+[PRISONBOTTLE]
+Name = Prison Bottle
+NamePlural = Prison Bottles
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = A bottle believed to have been used to seal away the power of a certain Pokémon long, long ago.
+#-------------------------------
+[NSOLARIZER]
+Name = N-Solarizer
+NamePlural = N-Solarizers
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = A machine to fuse Necrozma, which needs light, and Solgaleo.
+#-------------------------------
+[NLUNARIZER]
+Name = N-Lunarizer
+NamePlural = N-Lunarizers
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = A machine to fuse Necrozma, which needs light, and Lunala.
+#-------------------------------
+[ZYGARDECUBE]
+Name = Zygarde Cube
+NamePlural = Zygarde Cubes
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = An item holding Zygarde's Cores and Cells. You can use it to change Zygarde's ability.
+#-------------------------------
+[EXPCANDYXS]
+Name = Exp. Candy XS
+NamePlural = Exp. Candies XS
+Pocket = 3
+Price = 60
+FieldUse = OnPokemon
+Flags = SkipPocketMessage
+Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 250 Exp. Points.
+#-------------------------------
+[EXPCANDYS]
+Name = Exp. Candy S
+NamePlural = Exp. Candies S
+Pocket = 3
+Price = 225
+FieldUse = OnPokemon
+Flags = SkipPocketMessage
+Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 1000 Exp. Points.
+#-------------------------------
+[EXPCANDYM]
+Name = Exp. Candy M
+NamePlural = Exp. Candies M
+Pocket = 3
+Price = 800
+FieldUse = OnPokemon
+Flags = SkipPocketMessage
+Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 4,000 Exp. Points.
+#-------------------------------
+[EXPCANDYL]
+Name = Exp. Candy L
+NamePlural = Exp. Candies L
+Pocket = 3
+Price = 3200
+FieldUse = OnPokemon
+Flags = SkipPocketMessage
+Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 16,000 Exp. Points.
+#-------------------------------
+[EXPCANDYXL]
+Name = Exp. Candy XL
+NamePlural = Exp. Candies XL
+Pocket = 3
+Price = 12000
+FieldUse = OnPokemon
+Flags = SkipPocketMessage
+Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 64,000 Exp. Points.
+#-------------------------------
+[FOSSILIZEDBIRD]
+Name = Fossilized Bird
+NamePlural = Fossilized Birds
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = The fossil of an ancient Pokémon that once soared through the sky. Is it Arctozolt or Dracozolt...?
+#-------------------------------
+[FOSSILIZEDFISH]
+Name = Fossilized Fish
+NamePlural = Fossilized Fishes
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = The fossil of an ancient Pokémon that once lived in the sea. Is it Arctovish or Dracovish...?
+#-------------------------------
+[FOSSILIZEDDRAKE]
+Name = Fossilized Drake
+NamePlural = Fossilized Drakes
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = The fossil of an ancient Pokémon that once roamed the land. Is it Dracozolt or Dracovish...?
+#-------------------------------
+[FOSSILIZEDDINO]
+Name = Fossilized Dino
+NamePlural = Fossilized Dinos
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = The fossil of an ancient Pokémon that once lived in the sea. Is it Arctozolt or Arctovish...?
+#-------------------------------
+[RUSTEDSHIELD]
+Name = Rusted Shield
+NamePlural = Rusted Shields
+Pocket = 13
+Price = 0
+Description = Used by a hero to halt a terrible disaster. If given to Zamazenta, turns it into its Crowned form.
+#-------------------------------
+[RUSTEDSWORD]
+Name = Rusted Sword
+NamePlural = Rusted Swords
+Pocket = 13
+Price = 0
+Description = Used by a hero to halt a terrible disaster. If given to Zacian, turns it into its Crowned form.
+#-------------------------------
+[REINSOFUNITY]
+Name = Reins of Unity
+NamePlural = Reins of Unity
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = Reins that people presented to the king. They enable Calyrex to connect and communicate with its beloved steed.
+#-------------------------------
+[EXPCHARM]
+Name = EXP Charm
+NamePlural = EXP Charms
+Pocket = 7
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = A charm that increases the Exp. Points that Pokémon can get by 10%. A machine-like object is inside the charm.
+#-------------------------------
+[CATCHINGCHARM]
+Name = Catching Charm
+NamePlural = Catching Charms
+Pocket = 7
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = A charm that doubles the chance of getting a critical catch.
+#-------------------------------
+[INFINITEROPE]
+Name = Escape Rope
+NamePlural = Escape Ropes
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A long, durable rope. Use it to escape instantly from a cave or a dungeon.
+#-------------------------------
+[GRASSTOKEN]
+Name = Grass Token
+NamePlural = Grass Tokens
+Pocket = 16
+Price = 10000
+Description = A token which can be exchanged for a Grass-type at the Starter Store in Novo Town.
+#-------------------------------
+[WATERTOKEN]
+Name = Water Token
+NamePlural = Water Tokens
+Pocket = 16
+Price = 10000
+Description = A token which can be exchanged for a Water-type at the Starter Store in Novo Town.
+#-------------------------------
+[ORIGINORE]
+Name = Origin Ore
+NamePlural = Origin Ores
+Pocket = 4
+Price = 8000
+FieldUse = OnPokemon
+Flags = EvolutionItem
+Description = A peculiar ore that makes certain species of Pokémon evolve. Associated with Arceus.
+#-------------------------------
+[FIRETOKEN]
+Name = Fire Token
+NamePlural = Fire Tokens
+Pocket = 16
+Price = 10000
+Description = A token which can be exchanged for a Fire-type at the Starter Store in Novo Town.
+#-------------------------------
+[DRATINIEGG]
+Name = Dratini Egg
+NamePlural = Dratini Eggs
+Pocket = 16
+Price = 10000
+Description = An abandoned Dratini egg that is cold and calm. Only an expert would be able to hatch it.
+#-------------------------------
+[BAGONEGG]
+Name = Bagon Egg
+NamePlural = Bagon Eggs
+Pocket = 16
+Price = 10000
+Description = An abandoned Bagon egg that is cold and calm. Only an expert would be able to hatch it.
+#-------------------------------
+[GIBLEEGG]
+Name = Gible Egg
+NamePlural = Gible Eggs
+Pocket = 16
+Price = 10000
+Description = An abandoned Gible egg that is cold and calm. Only an expert would be able to hatch it.
+#-------------------------------
+[DEINOEGG]
+Name = Deino Egg
+NamePlural = Deino Eggs
+Pocket = 16
+Price = 10000
+Description = An abandoned Deino egg that is cold and calm. Only an expert would be able to hatch it.
+#-------------------------------
+[GOOMYEGG]
+Name = Goomy Egg
+NamePlural = Goomy Eggs
+Pocket = 16
+Price = 10000
+Description = An abandoned Goomy egg that is cold and calm. Only an expert would be able to hatch it.
+#-------------------------------
+[JANGMOOEGG]
+Name = Jangmo-o Egg
+NamePlural = Jangmo-o Eggs
+Pocket = 16
+Price = 10000
+Description = An abandoned Jangmo-o egg that is cold and calm. Only an expert would be able to hatch it.
+#-------------------------------
+[DREEPYEGG]
+Name = Dreepy Egg
+NamePlural = Dreepy Eggs
+Pocket = 16
+Price = 10000
+Description = An abandoned Dreepy egg that is cold and calm. Only an expert would be able to hatch it.
+#-------------------------------
+[EEVEETICKET]
+Name = Eevee Ticket
+NamePlural = Eevee Tickets
+Pocket = 16
+Price = 20000
+Description = A ticket that can be exchanged for an Eevee at the Skeevy Eevee Pub.
+#-------------------------------
+[AIDKIT]
+Name = Aid Kit
+NamePlural = Aid Kits
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = Heals your whole team a limited number of times. Restocked at PokeCenters and after resting.
+#-------------------------------
+[KITEXPANSION]
+Name = Kit Expansion
+NamePlural = Kit Expansion
+Pocket = 2
+Price = 0
+FieldUse = Direct
+Description = A pack for holding medicine. If you use it, your Aid Kit will gain a max charge.
+#-------------------------------
+[MEDICALUPGRADE]
+Name = Medical Upgrade
+NamePlural = Medical Upgrades
+Pocket = 2
+Price = 0
+FieldUse = Direct
+Description = A suite of medicines. If you use it, your Aid Kit will heal more efficiently.
+#-------------------------------
+[DYNAMITESTICK]
+Name = Dynamite Stick
+NamePlural = Dynamite Sticks
+Pocket = 1
+Price = 0
+FieldUse = Direct
+Consumable = true
+Flags = KeyItem
+Description = A stick of dynamite, perfectly suited to destroying small bits of rock.
+#-------------------------------
+[FIGMENT]
+Name = Figment
+NamePlural = Figments
+Pocket = 1
+Price = 8000
+FieldUse = OnPokemon
+Description = A wisp of ideas with infinite potential. Use it on a Pokémon to teach any one of their legal moves.
+#-------------------------------
+[SACCHARITEPICK]
+Name = Saccharite Pick
+NamePlural = Saccharite Picks
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = A food grade mining tool. Allows you to extract EXP. Candy from saccharite deposits.
+#-------------------------------
+[SURFBOARD]
+Name = Surf Board
+NamePlural = Surf Boards
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = A surf board, allowing you to surf on water.
+#-------------------------------
+[CHASMIDCARD]
+Name = Chasm ID Card
+NamePlural = Chasm ID Cards
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = An ID card which unlocks Team Chasm gates and doors, giving access to dangers and rewards.
+#-------------------------------
+[CLIMBINGGEAR]
+Name = Climbing Gear
+NamePlural = Climbing Gears
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = A set of climbing gear, allowing you to climb on white rocks.
+#-------------------------------
+[FLORASCEPTRE]
+Name = Flora Sceptre
+NamePlural = Flora Sceptres
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = An ancient kingly rod. You can use it to make certain plants grow.
+#-------------------------------
+[ABRAPORTER]
+Name = Abraporter
+NamePlural = Abraporters
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A teleporter which brings you to your last safe spot using the power of Abras.
+#-------------------------------
+[REMATERIALIZER]
+Name = Rematerializer
+NamePlural = Rematerializers
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = A 3D printer which automatically copies consumed held items after battles.
+#-------------------------------
+[EXPEZDISPENSER]
+Name = EXP-EZ Dispenser
+NamePlural = EXP-EZ Dispensers
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A machine that stores excess EXP. You can activate it to turn that stored EXP into candies.
+#-------------------------------
+[UNIVERSALFORMALIZER]
+Name = Universal Formalizer
+NamePlural = Universal Formalizers
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = Use on a Pokémon to switch it into another one of its forms.
+#-------------------------------
+[BOXLINK]
+Name = Box Link
+NamePlural = Box Links
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = An advanced transporter which allows you to access your Pokémon Storage to withdraw or deposit Pokémon.
+#-------------------------------
+[STYLINGKIT]
+Name = Styling Kit
+NamePlural = Styling Kits
+Pocket = 7
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A suite of training tools which allows you to modify your Pokémon's style points.
+#-------------------------------
+[TAROTAMULET]
+Name = Tarot Amulet
+NamePlural = Tarot Amulets
+Pocket = 7
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = If reversed, gym leaders and story fights will become harder through unique curses.
+#-------------------------------
+[NOISEMACHINE]
+Name = Noise Machine
+NamePlural = Noise Machines
+Pocket = 7
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A small, versatile machine that can be used to repel wild Pokémon, or draw them near.
+#-------------------------------
+[POKEXRAY]
+Name = Poké X-Ray
+NamePlural = Poké X-Rays
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A high tech surveillance device. Use it to scout out the teams of nearby trainers.
+#-------------------------------
+[CELLBOOSTER]
+Name = Cell Booster
+NamePlural = Cell Boosters
+Pocket = 7
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = Condensed essence of life. Holding it allows you to run, bike, and surf faster. Can be toggled on or off.
+#-------------------------------
+[RUSTEDCOMPASS]
+Name = Rusted Compass
+NamePlural = Rusted Compass
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A small compass. Relic of a heroic age. It can be used to find lootable items nearby.
+#-------------------------------
+[MAGNETICGAUNTLET]
+Name = Magnetic Gauntlet
+NamePlural = Magnetic Gauntlets
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = An electrified glove with a claw-like shape. Recovers the first failed Poké Ball thrown in a wild battle.
+#-------------------------------
+[CHROMACLARION]
+Name = Chroma Clarion
+NamePlural = Chroma Clarions
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = An ancient horn. Sound it to start a 3v3 wild battle. Foes will be higher level and likely to have rare moves.
+#-------------------------------
+[GLEAMPOWDER]
+Name = Gleam Powder
+NamePlural = Gleam Powder
+Pocket = 1
+Price = 100000
+FieldUse = Direct
+Description = A small vial of gleaming powder. Can be used once to ensure the next wild Pokémon you find is shiny.
+#-------------------------------
+[VIRALHELIX]
+Name = Viral Helix
+NamePlural = Viral Helices
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = Infinitely mutating alien DNA. It allows a Pokémon with two abilities to switch abilities when used.
+#-------------------------------
+[BALLLAUNCHER]
+Name = Ball Launcher
+NamePlural = Ball Launchers
+Pocket = 14
+Price = 0
+BattleUse = OnFoe
+Flags = KeyItem,PokeBall,SnagBall
+Description = A device which creates then launches regular Poké Balls, never running out.
+#-------------------------------
+[PERFORMANCEANALYZER]
+Name = Performance Analyzer
+NamePlural = Performance Analyzers
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = A hi-tech recording device which creates a Battle Report by analyzing the results of momentous battles.
+#-------------------------------
+[PERFORMANCEANALYZER2]
+Name = Performance Analyzer 2
+NamePlural = Performance Analyzers 2
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = An upgraded, hi-tech recording device. It increases experience earned from battles by 10%.
+#-------------------------------
+[BATTLEREPORT]
+Name = Battle Report
+NamePlural = Battle Reports
+Pocket = 1
+Price = 0
+FieldUse = Direct
+Consumable = true
+Flags = KeyItem
+Description = A detailed report on how to improve as a trainer. If you decide to read it, your level cap will be raised by 5.
+#-------------------------------
+[MILKBONETREAT]
+Name = Milk Bone Treat
+NamePlural = Milk Bone Treats
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = It would be a delicious treat if you were a Pokémon.
+#-------------------------------
+[OMNIDRIVE]
+Name = OmniDrive
+NamePlural = OmniDrives
+Pocket = 7
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = A mysterious data storage device. Plug it into any PC to unlock The Omnitutor.
+#-------------------------------
+[ANCIENTSEAWATER]
+Name = Ancient Sea Water
+NamePlural = Ancient Sea Water
+Pocket = 4
+Price = 50000
+FieldUse = OnPokemon
+Flags = EvolutionItem
+Description = A vial of shimmering ocean water. It makes a certain Pokémon evolve.

@@ -1,0 +1,4840 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[BINDINGBAND]
+Name = Binding Band
+NamePlural = Binding Bands
+Pocket = 12
+Price = 4000
+Flags = Clothing
+Description = A band that doubles the damage dealt each turn by binding moves and abilities when held.
+#-------------------------------
+[CASSBERRY]
+Name = Cass Berry
+NamePlural = Cass Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = If held by a Pokémon, it hangs on at 1 HP if it would be fainted from full health.
+#-------------------------------
+[ABSORBBULB]
+Name = Absorb Bulb
+NamePlural = Absorb Bulbs
+Pocket = 13
+Price = 4000
+Description = A consumable bulb. If the holder is hit by a Water-type move, its Sp. Atk will rise.
+#-------------------------------
+[CELLBATTERY]
+Name = Cell Battery
+NamePlural = Cell Batteries
+Pocket = 13
+Price = 4000
+Description = A consumable battery. If the holder is hit by an Electric-type move, its Attack will rise.
+#-------------------------------
+[LUMINOUSMOSS]
+Name = Luminous Moss
+NamePlural = Luminous Mosses
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It boosts Sp. Def if hit by a Water-type attack once per battle.
+#-------------------------------
+[TERRAINEXTENDER]
+Name = Terrain Extender
+NamePlural = Terrain Extenders
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It extends the duration of the terrain caused by the holder.
+#-------------------------------
+[ELECTRICSEED]
+Name = Electric Seed
+NamePlural = Electric Seeds
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It boosts Defense on Electric Terrain once per battle.
+#-------------------------------
+[PSYCHICSEED]
+Name = Psychic Seed
+NamePlural = Psychic Seeds
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It boosts Sp. Def on Psychic Terrain once per battle.
+#-------------------------------
+[FAIRYSEED]
+Name = Fairy Seed
+NamePlural = Fairy Seeds
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It boosts Sp. Def on Fairy Terrain once per battle.
+#-------------------------------
+[GRASSYSEED]
+Name = Grassy Seed
+NamePlural = Grassy Seeds
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It boosts Defense on Grassy Terrain once per battle.
+#-------------------------------
+[KINGSROCK]
+Name = King's Rock
+NamePlural = King's Rocks
+Pocket = 13
+Price = 5000
+Description = An item to be held by a Pokémon. When the holder inflicts damage, the target may flinch.
+#-------------------------------
+[RAZORFANG]
+Name = Razor Fang
+NamePlural = Razor Fangs
+Pocket = 13
+Price = 5000
+Description = An item to be held by a Pokémon. It may make foes and allies flinch when the holder inflicts damage.
+#-------------------------------
+[REDNECTAR]
+Name = Red Nectar
+NamePlural = Red Nectars
+Pocket = 1
+Price = 300
+FieldUse = OnPokemon
+Description = A flower nectar obtained at Ula'ula Meadow. It changes the form of certain species of Pokémon.
+#-------------------------------
+[YELLOWNECTAR]
+Name = Yellow Nectar
+NamePlural = Yellow Nectars
+Pocket = 1
+Price = 300
+FieldUse = OnPokemon
+Description = A flower nectar obtained at Melemele Meadow. It changes the form of certain species of Pokémon.
+#-------------------------------
+[PINKNECTAR]
+Name = Pink Nectar
+NamePlural = Pink Nectars
+Pocket = 1
+Price = 300
+FieldUse = OnPokemon
+Description = A flower nectar obtained from shrubs on Royal Avenue. It changes the form of certain species of Pokémon.
+#-------------------------------
+[PURPLENECTAR]
+Name = Purple Nectar
+NamePlural = Purple Nectars
+Pocket = 1
+Price = 300
+FieldUse = OnPokemon
+Description = A flower nectar obtained at Poni Meadow. It changes the form of certain species of Pokémon.
+#-------------------------------
+[SNOWBALL]
+Name = Snowball
+NamePlural = Snowballs
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It boosts Attack if hit by an Ice-type attack once per battle.
+#-------------------------------
+[MACHOBRACE]
+Name = Macho Brace
+NamePlural = Macho Braces
+Pocket = 12
+Price = 3000
+Flags = Clothing
+Description = An item to be held by a Pokémon. It is a stiff, heavy brace that promotes strong growth but lowers Speed.
+#-------------------------------
+[POWERWEIGHT]
+Name = Power Weight
+NamePlural = Power Weights
+Pocket = 12
+Price = 3000
+Flags = Clothing
+Description = A Pokémon held item that promotes HP gain on leveling, but reduces the Speed stat.
+#-------------------------------
+[POWERBRACER]
+Name = Power Bracer
+NamePlural = Power Bracers
+Pocket = 12
+Price = 3000
+Flags = Clothing
+Description = A Pokémon held item that promotes Attack gain on leveling, but reduces the Speed stat.
+#-------------------------------
+[POWERBELT]
+Name = Power Belt
+NamePlural = Power Belts
+Pocket = 12
+Price = 3000
+Flags = Clothing
+Description = A Pokémon held item that promotes Defense gain on leveling, but reduces the Speed stat.
+#-------------------------------
+[POWERLENS]
+Name = Power Lens
+NamePlural = Power Lenses
+Pocket = 12
+Price = 3000
+Flags = Clothing
+Description = A Pokémon held item that promotes Sp. Atk gain on leveling, but reduces the Speed stat.
+#-------------------------------
+[POWERBAND]
+Name = Power Band
+NamePlural = Power Bands
+Pocket = 12
+Price = 3000
+Flags = Clothing
+Description = A Pokémon held item that promotes Sp. Def gain on leveling, but reduces the Speed stat.
+#-------------------------------
+[POWERANKLET]
+Name = Power Anklet
+NamePlural = Power Anklets
+Pocket = 12
+Price = 3000
+Flags = Clothing
+Description = A Pokémon held item that promotes Speed gain on leveling, but reduces the Speed stat.
+#-------------------------------
+[LAXINCENSE]
+Name = Lax Incense
+NamePlural = Lax Incenses
+Pocket = 13
+Price = 5000
+Description = An item to be held by a Pokémon. The tricky aroma of this incense may make attacks miss the holder.
+#-------------------------------
+[FULLINCENSE]
+Name = Full Incense
+NamePlural = Full Incenses
+Pocket = 13
+Price = 5000
+Description = An item to be held by a Pokémon. This exotic-smelling incense makes the holder bloated and slow moving.
+#-------------------------------
+[LUCKINCENSE]
+Name = Luck Incense
+NamePlural = Luck Incenses
+Pocket = 13
+Price = 11000
+Description = An item to be held by a Pokémon. It doubles a battle's prize money if the holding Pokémon joins in.
+#-------------------------------
+[PUREINCENSE]
+Name = Pure Incense
+NamePlural = Pure Incenses
+Pocket = 13
+Price = 6000
+Description = An item to be held by a Pokémon. It helps keep wild Pokémon away if the holder is the first one in the party.
+#-------------------------------
+[SEAINCENSE]
+Name = Sea Incense
+NamePlural = Sea Incenses
+Pocket = 13
+Price = 2000
+Description = An item to be held by a Pokémon. It has a curious aroma that boosts the power of Water-type moves.
+#-------------------------------
+[WAVEINCENSE]
+Name = Wave Incense
+NamePlural = Wave Incenses
+Pocket = 13
+Price = 2000
+Description = An item to be held by a Pokémon. It has a curious aroma that boosts the power of Water-type moves.
+#-------------------------------
+[ROSEINCENSE]
+Name = Rose Incense
+NamePlural = Rose Incenses
+Pocket = 13
+Price = 2000
+Description = An item to be held by a Pokémon. This exotic-smelling incense boosts the power of Grass-type moves.
+#-------------------------------
+[ODDINCENSE]
+Name = Odd Incense
+NamePlural = Odd Incenses
+Pocket = 13
+Price = 2000
+Description = An item to be held by a Pokémon. This exotic-smelling incense boosts the power of Psychic-type moves.
+#-------------------------------
+[ROCKINCENSE]
+Name = Rock Incense
+NamePlural = Rock Incenses
+Pocket = 13
+Price = 2000
+Description = An item to be held by a Pokémon. This exotic-smelling incense boosts the power of Rock-type moves.
+#-------------------------------
+[GRASSMAIL]
+Name = Grass Mail
+NamePlural = Grass Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print of a refreshingly green field. Let a Pokémon hold it for delivery.
+#-------------------------------
+[FLAMEMAIL]
+Name = Flame Mail
+NamePlural = Flame Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print of flames in blazing red. Let a Pokémon hold it for delivery.
+#-------------------------------
+[BUBBLEMAIL]
+Name = Bubble Mail
+NamePlural = Bubble Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print of a blue world underwater. Let a Pokémon hold it for delivery.
+#-------------------------------
+[BLOOMMAIL]
+Name = Bloom Mail
+NamePlural = Bloom Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print of pretty floral patterns. Let a Pokémon hold it for delivery.
+#-------------------------------
+[TUNNELMAIL]
+Name = Tunnel Mail
+NamePlural = Tunnel Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print of a dimly lit coal mine. Let a Pokémon hold it for delivery.
+#-------------------------------
+[STEELMAIL]
+Name = Steel Mail
+NamePlural = Steel Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print of cool mechanical designs. Let a Pokémon hold it for delivery.
+#-------------------------------
+[HEARTMAIL]
+Name = Heart Mail
+NamePlural = Heart Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print of giant heart patterns. Let a Pokémon hold it for delivery.
+#-------------------------------
+[SNOWMAIL]
+Name = Snow Mail
+NamePlural = Snow Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print of a chilly, snow-covered world. Let a Pokémon hold it for delivery.
+#-------------------------------
+[SPACEMAIL]
+Name = Space Mail
+NamePlural = Space Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print depicting the huge expanse of space. Let a Pokémon hold it for delivery.
+#-------------------------------
+[AIRMAIL]
+Name = Air Mail
+NamePlural = Air Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print of colorful letter sets. Let a Pokémon hold it for delivery.
+#-------------------------------
+[MOSAICMAIL]
+Name = Mosaic Mail
+NamePlural = Mosaic Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print of a vivid rainbow pattern. Let a Pokémon hold it for delivery.
+#-------------------------------
+[BRICKMAIL]
+Name = Brick Mail
+NamePlural = Brick Mail
+Pocket = 15
+Price = 50
+Flags = Mail,IconMail
+Description = Stationery featuring a print of a tough-looking brick pattern. Let a Pokémon hold it for delivery.
+#-------------------------------
+[XATTACK]
+Name = X Attack
+NamePlural = X Attacks
+Pocket = 6
+Price = 1000
+BattleUse = OnBattler
+Description = An item that sharply boosts the Attack stat of a Pokémon while it remains in battle.
+#-------------------------------
+[XATTACK2]
+Name = X Attack 2
+NamePlural = X Attack 2s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It sharply raises the Attack stat of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XATTACK3]
+Name = X Attack 3
+NamePlural = X Attack 3s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It drastically raises the Attack stat of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XATTACK6]
+Name = X Attack 6
+NamePlural = X Attack 6s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It raises the Attack stat of a Pokémon in battle immensely. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XDEFENSE]
+Name = X Defense
+NamePlural = X Defenses
+Pocket = 6
+Price = 2000
+BattleUse = OnBattler
+Description = An item that sharply boosts the Defense of a Pokémon while it remains in battle.
+#-------------------------------
+[XDEFENSE2]
+Name = X Defense 2
+NamePlural = X Defense 2s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It sharply raises the Defense stat of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XDEFENSE3]
+Name = X Defense 3
+NamePlural = X Defense 3s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It drastically raises the Defense stat of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XDEFENSE6]
+Name = X Defense 6
+NamePlural = X Defense 6s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It raises the Defense stat of a Pokémon in battle immensely. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XSPATK]
+Name = X Sp. Atk
+NamePlural = X Sp. Atks
+Pocket = 6
+Price = 1000
+BattleUse = OnBattler
+Description = An item that sharply boosts the Sp. Atk stat of a Pokémon while it remains in battle.
+#-------------------------------
+[XSPATK2]
+Name = X Sp. Atk 2
+NamePlural = X Sp. Atk 2s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It sharply raises the Sp. Atk stat of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XSPATK3]
+Name = X Sp. Atk 3
+NamePlural = X Sp. Atk 3s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It drastically raises the Sp. Atk stat of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XSPATK6]
+Name = X Sp. Atk 6
+NamePlural = X Sp. Atk 6s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It raises the Sp. Atk stat of a Pokémon in battle immensely. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XSPDEF]
+Name = X Sp. Def
+NamePlural = X Sp. Defs
+Pocket = 6
+Price = 2000
+BattleUse = OnBattler
+Description = An item that sharply boosts the Sp. Def stat of a Pokémon while it remains in battle.
+#-------------------------------
+[XSPDEF2]
+Name = X Sp. Def 2
+NamePlural = X Sp. Def 2s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It sharply raises the Sp. Def stat of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XSPDEF3]
+Name = X Sp. Def 3
+NamePlural = X Sp. Def 3s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It drastically raises the Sp. Def stat of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XSPDEF6]
+Name = X Sp. Def 6
+NamePlural = X Sp. Def 6s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It raises the Sp. Def stat of a Pokémon in battle immensely. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XSPEED]
+Name = X Speed
+NamePlural = X Speeds
+Pocket = 6
+Price = 1000
+BattleUse = OnBattler
+Description = An item that sharply boosts the Speed stat of a Pokémon while it remains in battle.
+#-------------------------------
+[XSPEED2]
+Name = X Speed 2
+NamePlural = X Speed 2s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It sharply raises the Speed stat of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XSPEED3]
+Name = X Speed 3
+NamePlural = X Speed 3s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It drastically raises the Speed stat of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XSPEED6]
+Name = X Speed 6
+NamePlural = X Speed 6s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It raises the Speed stat of a Pokémon in battle immensely. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XACCURACY]
+Name = X Accuracy
+NamePlural = X Accuracies
+Pocket = 6
+Price = 1000
+BattleUse = OnBattler
+Description = An item that sharply boosts the accuracy of a Pokémon while it remains in battle.
+#-------------------------------
+[XACCURACY2]
+Name = X Accuracy 2
+NamePlural = X Accuracy 2s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It sharply raises the accuracy of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XACCURACY3]
+Name = X Accuracy 3
+NamePlural = X Accuracy 3s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It drastically raises the accuracy of a Pokémon in battle. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[XACCURACY6]
+Name = X Accuracy 6
+NamePlural = X Accuracy 6s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It raises the accuracy of a Pokémon in battle immensely. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[DIREHIT]
+Name = Dire Hit
+NamePlural = Dire Hits
+Pocket = 6
+Price = 1000
+BattleUse = OnBattler
+Description = An item that raises the critical-hit ratio greatly. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[DIREHIT2]
+Name = Dire Hit 2
+NamePlural = Dire Hit 2s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It sharply raises the critical-hit ratio. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[DIREHIT3]
+Name = Dire Hit 3
+NamePlural = Dire Hit 3s
+Pocket = 6
+Price = 0
+BattleUse = OnBattler
+Description = It greatly raises the critical-hit ratio. It wears off if the Pokémon is withdrawn.
+#-------------------------------
+[GUARDSPEC]
+Name = Guard Spec.
+NamePlural = Guard Specs.
+Pocket = 6
+Price = 1500
+BattleUse = Direct
+Description = An item that prevents stat reduction among the Trainer's party Pokémon for five turns after use.
+#-------------------------------
+[RESETURGE]
+Name = Reset Urge
+NamePlural = Reset Urges
+Pocket = 6
+Price = 0
+Description = When used, it restores any stat changes of an ally Pokémon.
+#-------------------------------
+[ABILITYURGE]
+Name = Ability Urge
+NamePlural = Ability Urges
+Pocket = 6
+Price = 0
+Description = When used, it activates the Ability of an ally Pokémon.
+#-------------------------------
+[ITEMURGE]
+Name = Item Urge
+NamePlural = Item Urges
+Pocket = 6
+Price = 0
+Description = When used, it causes an ally Pokémon to use its held item.
+#-------------------------------
+[ITEMDROP]
+Name = Item Drop
+NamePlural = Item Drops
+Pocket = 6
+Price = 0
+Description = When used, it causes an ally Pokémon to drop a held item.
+#-------------------------------
+[BLUEFLUTE]
+Name = Blue Flute
+NamePlural = Blue Flutes
+Pocket = 6
+Price = 100
+FieldUse = OnPokemon
+Consumable = false
+Description = A blue flute made from blown glass. Its melody awakens a single Pokémon from sleep.
+#-------------------------------
+[YELLOWFLUTE]
+Name = Yellow Flute
+NamePlural = Yellow Flutes
+Pocket = 6
+Price = 300
+Description = A yellow flute made from blown glass. Its melody snaps a single Pokémon out of confusion.
+#-------------------------------
+[REDFLUTE]
+Name = Red Flute
+NamePlural = Red Flutes
+Pocket = 6
+Price = 200
+Description = A red flute made from blown glass. Its melody snaps a single Pokémon out of infatuation.
+#-------------------------------
+[POKEDOLL]
+Name = Poké Doll
+NamePlural = Poké Dolls
+Pocket = 6
+Price = 100
+Description = A doll that attracts Pokémon. Use it to flee from any battle with a wild Pokémon.
+#-------------------------------
+[FLUFFYTAIL]
+Name = Fluffy Tail
+NamePlural = Fluffy Tails
+Pocket = 6
+Price = 100
+Description = An item that attracts Pokémon. Use it to flee from any battle with a wild Pokémon.
+#-------------------------------
+[POKETOY]
+Name = Poké Toy
+NamePlural = Poké Toys
+Pocket = 6
+Price = 100
+Description = An item that attracts Pokémon. Use it to flee from any battle with a wild Pokémon.
+#-------------------------------
+[VENUSAURITE]
+Name = Venusaurite
+NamePlural = Venusaurites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Venusaur hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[CHARIZARDITEX]
+Name = Charizardite X
+NamePlural = Charizardites X
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Charizard hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[CHARIZARDITEY]
+Name = Charizardite Y
+NamePlural = Charizardites Y
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Charizard hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[BLASTOISINITE]
+Name = Blastoisinite
+NamePlural = Blastoisinites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Blastoise hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[BEEDRILLITE]
+Name = Beedrillite
+NamePlural = Beedrillites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Beedrill hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[PIDGEOTITE]
+Name = Pidgeotite
+NamePlural = Pidgeotites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Pidgeot hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[ALAKAZITE]
+Name = Alakazite
+NamePlural = Alakazites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Alakazam hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SLOWBRONITE]
+Name = Slowbronite
+NamePlural = Slowbronites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Slowbro hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GENGARITE]
+Name = Gengarite
+NamePlural = Gengarites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Gengar hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[KANGASKHANITE]
+Name = Kangaskhanite
+NamePlural = Kangaskhanites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Kangaskhan hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[PINSIRITE]
+Name = Pinsirite
+NamePlural = Pinsirites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Pinsir hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GYARADOSITE]
+Name = Gyaradosite
+NamePlural = Gyaradosites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Gyarados hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[AERODACTYLITE]
+Name = Aerodactylite
+NamePlural = Aerodactylites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Aerodactyl hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MEWTWONITEX]
+Name = Mewtwonite X
+NamePlural = Mewtwonites X
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Mewtwo hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MEWTWONITEY]
+Name = Mewtwonite Y
+NamePlural = Mewtwonites Y
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Mewtwo hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[AMPHAROSITE]
+Name = Ampharosite
+NamePlural = Ampharosites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Ampharos hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[STEELIXITE]
+Name = Steelixite
+NamePlural = Steelixites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Steelix hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SCIZORITE]
+Name = Scizorite
+NamePlural = Scizorites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Scizor hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[HERACRONITE]
+Name = Heracronite
+NamePlural = Heracronites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Heracross hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[HOUNDOOMINITE]
+Name = Houndoominite
+NamePlural = Houndoominites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Houndoom hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[TYRANITARITE]
+Name = Tyranitarite
+NamePlural = Tyranitarites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Tyranitar hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SCEPTILITE]
+Name = Sceptilite
+NamePlural = Sceptilites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Sceptile hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[BLAZIKENITE]
+Name = Blazikenite
+NamePlural = Blazikenites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Blaziken hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SWAMPERTITE]
+Name = Swampertite
+NamePlural = Swampertites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Swampert hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GARDEVOIRITE]
+Name = Gardevoirite
+NamePlural = Gardevoirites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Gardevoir hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SABLENITE]
+Name = Sablenite
+NamePlural = Sablenites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Sableye hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MAWILITE]
+Name = Mawilite
+NamePlural = Mawilites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Mawile hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[AGGRONITE]
+Name = Aggronite
+NamePlural = Aggronites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Aggron hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MEDICHAMITE]
+Name = Medichamite
+NamePlural = Medichamites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Medicham hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MANECTITE]
+Name = Manectite
+NamePlural = Manectites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Manectric hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SHARPEDONITE]
+Name = Sharpedonite
+NamePlural = Sharpedonites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Sharpedo hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[CAMERUPTITE]
+Name = Cameruptite
+NamePlural = Cameruptites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Camerupt hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[ALTARIANITE]
+Name = Altarianite
+NamePlural = Altarianites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Altaria hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[BANETTITE]
+Name = Banettite
+NamePlural = Banettites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Banette hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[ABSOLITE]
+Name = Absolite
+NamePlural = Absolites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Absol hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GLALITITE]
+Name = Glalitite
+NamePlural = Glalitites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Glalie hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SALAMENCITE]
+Name = Salamencite
+NamePlural = Salamencites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Salamence hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[METAGROSSITE]
+Name = Metagrossite
+NamePlural = Metagrossites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Metagross hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[LATIASITE]
+Name = Latiasite
+NamePlural = Latiasites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Latias hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[LATIOSITE]
+Name = Latiosite
+NamePlural = Latiosites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Latios hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[LOPUNNITE]
+Name = Lopunnite
+NamePlural = Lopunnites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Lopunny hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GARCHOMPITE]
+Name = Garchompite
+NamePlural = Garchompites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Garchomp hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[LUCARIONITE]
+Name = Lucarionite
+NamePlural = Lucarionites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Lucario hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[ABOMASITE]
+Name = Abomasite
+NamePlural = Abomasites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Abomasnow hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GALLADITE]
+Name = Galladite
+NamePlural = Galladites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Gallade hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[AUDINITE]
+Name = Audinite
+NamePlural = Audinites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Audino hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[DIANCITE]
+Name = Diancite
+NamePlural = Diancites
+Pocket = 13
+Price = 0
+Flags = MegaStone
+Description = One of a variety of mysterious Mega Stones. Have Diancie hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[TOXICORB]
+Name = MISSINGNO Orb
+NamePlural = MISSINGNO Orbs
+Pocket = 1
+Price = 0
+Description = An item that shouldn't exist.
+#-------------------------------
+[MISTYSEED]
+Name = MISSINGNO Orb
+NamePlural = MISSINGNO Orbs
+Pocket = 1
+Price = 0
+Description = An item that shouldn't exist.
+#-------------------------------
+[ABILITYTRANSFORMER]
+Name = MISSINGNO Orb
+NamePlural = MISSINGNO Orbs
+Pocket = 1
+Price = 0
+Description = An item that shouldn't exist.
+#-------------------------------
+[PPUP]
+Name = PP Up
+NamePlural = PP Ups
+Pocket = 2
+Price = 10000
+FieldUse = OnPokemon
+Description = It slightly raises the maximum PP of a selected move that has been learned by the target Pokémon.
+#-------------------------------
+[PPMAX]
+Name = PP Max
+NamePlural = PP Maxes
+Pocket = 2
+Price = 10000
+FieldUse = OnPokemon
+Description = It maximally raises the top PP of a selected move that has been learned by the target Pokémon.
+#-------------------------------
+[HPUP]
+Name = HP Up
+NamePlural = HP Ups
+Pocket = 2
+Price = 10000
+FieldUse = OnPokemon
+Description = A nutritious drink for Pokémon. It raises the base HP of a single Pokémon.
+#-------------------------------
+[PROTEIN]
+Name = Protein
+NamePlural = Proteins
+Pocket = 2
+Price = 10000
+FieldUse = OnPokemon
+Description = A nutritious drink for Pokémon. It raises the base Attack stat of a single Pokémon.
+#-------------------------------
+[IRON]
+Name = Iron
+NamePlural = Irons
+Pocket = 2
+Price = 10000
+FieldUse = OnPokemon
+Description = A nutritious drink for Pokémon. It raises the base Defense stat of a single Pokémon.
+#-------------------------------
+[CALCIUM]
+Name = Calcium
+NamePlural = Calciums
+Pocket = 2
+Price = 10000
+FieldUse = OnPokemon
+Description = A nutritious drink for Pokémon. It raises the base Sp. Atk (Special Attack) stat of a single Pokémon.
+#-------------------------------
+[ZINC]
+Name = Zinc
+NamePlural = Zincs
+Pocket = 2
+Price = 10000
+FieldUse = OnPokemon
+Description = A nutritious drink for Pokémon. It raises the base Sp. Def (Special Defense) stat of a single Pokémon.
+#-------------------------------
+[CARBOS]
+Name = Carbos
+NamePlural = Carbos
+Pocket = 2
+Price = 10000
+FieldUse = OnPokemon
+Description = A nutritious drink for Pokémon. It raises the base Speed stat of a single Pokémon.
+#-------------------------------
+[HEALTHWING]
+Name = Health Wing
+NamePlural = Health Wings
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Description = An item for use on a Pokémon. It slightly increases the base HP of a single Pokémon.
+#-------------------------------
+[MUSCLEWING]
+Name = Muscle Wing
+NamePlural = Muscle Wings
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Description = An item for use on a Pokémon. It slightly increases the base Attack stat of a single Pokémon.
+#-------------------------------
+[RESISTWING]
+Name = Resist Wing
+NamePlural = Resist Wings
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Description = An item for use on a Pokémon. It slightly increases the base Defense stat of a single Pokémon.
+#-------------------------------
+[GENIUSWING]
+Name = Genius Wing
+NamePlural = Genius Wings
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Description = An item for use on a Pokémon. It slightly increases the base Sp. Atk stat of a single Pokémon.
+#-------------------------------
+[CLEVERWING]
+Name = Clever Wing
+NamePlural = Clever Wings
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Description = An item for use on a Pokémon. It slightly increases the base Sp. Def stat of a single Pokémon.
+#-------------------------------
+[SWIFTWING]
+Name = Swift Wing
+NamePlural = Swift Wings
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Description = An item for use on a Pokémon. It slightly increases the base Speed stat of a single Pokémon.
+#-------------------------------
+[NORMALMEMORY]
+Name = Normal Memory
+NamePlural = Normal Memories
+Pocket = 5
+Price = 1000
+Description = A memory disc containing Normal-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[FIREMEMORY]
+Name = Fire Memory
+NamePlural = Fire Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Fire-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[WATERMEMORY]
+Name = Water Memory
+NamePlural = Water Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Water-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[ELECTRICMEMORY]
+Name = Electric Memory
+NamePlural = Electric Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Electric-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[GRASSMEMORY]
+Name = Grass Memory
+NamePlural = Grass Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Grass-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[ICEMEMORY]
+Name = Ice Memory
+NamePlural = Ice Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Ice-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[FIGHTINGMEMORY]
+Name = Fighting Memory
+NamePlural = Fighting Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Fighting-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[POISONMEMORY]
+Name = Poison Memory
+NamePlural = Poison Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Poison-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[GROUNDMEMORY]
+Name = Ground Memory
+NamePlural = Ground Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Ground-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[FLYINGMEMORY]
+Name = Flying Memory
+NamePlural = Flying Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Flying-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[PSYCHICMEMORY]
+Name = Psychic Memory
+NamePlural = Psychic Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Psychic-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[BUGMEMORY]
+Name = Bug Memory
+NamePlural = Bug Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Bug-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[ROCKMEMORY]
+Name = Rock Memory
+NamePlural = Rock Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Rock-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[GHOSTMEMORY]
+Name = Ghost Memory
+NamePlural = Ghost Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Ghost-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[DRAGONMEMORY]
+Name = Dragon Memory
+NamePlural = Dragon Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Dragon-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[DARKMEMORY]
+Name = Dark Memory
+NamePlural = Dark Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Dark-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[STEELMEMORY]
+Name = Steel Memory
+NamePlural = Steel Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Steel-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[FAIRYMEMORY]
+Name = Fairy Memory
+NamePlural = Fairy Memories
+Pocket = 13
+Price = 1000
+Description = A memory disc containing Fairy-type data. It changes the holder's type if held by a certain Pokémon.
+#-------------------------------
+[FLAMEPLATE]
+Name = Flame Plate
+NamePlural = Flame Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Fire-type moves.
+#-------------------------------
+[SPLASHPLATE]
+Name = Splash Plate
+NamePlural = Splash Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Water-type moves.
+#-------------------------------
+[ZAPPLATE]
+Name = Zap Plate
+NamePlural = Zap Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Electric-type moves.
+#-------------------------------
+[MEADOWPLATE]
+Name = Meadow Plate
+NamePlural = Meadow Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Grass-type moves.
+#-------------------------------
+[ICICLEPLATE]
+Name = Icicle Plate
+NamePlural = Icicle Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Ice-type moves.
+#-------------------------------
+[FISTPLATE]
+Name = Fist Plate
+NamePlural = Fist Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Fighting-type moves.
+#-------------------------------
+[TOXICPLATE]
+Name = Toxic Plate
+NamePlural = Toxic Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Poison-type moves.
+#-------------------------------
+[EARTHPLATE]
+Name = Earth Plate
+NamePlural = Earth Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Ground-type moves.
+#-------------------------------
+[SKYPLATE]
+Name = Sky Plate
+NamePlural = Sky Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Flying-type moves.
+#-------------------------------
+[MINDPLATE]
+Name = Mind Plate
+NamePlural = Mind Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Psychic-type moves.
+#-------------------------------
+[INSECTPLATE]
+Name = Insect Plate
+NamePlural = Insect Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Bug-type moves.
+#-------------------------------
+[STONEPLATE]
+Name = Stone Plate
+NamePlural = Stone Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Rock-type moves.
+#-------------------------------
+[SPOOKYPLATE]
+Name = Spooky Plate
+NamePlural = Spooky Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Ghost-type moves.
+#-------------------------------
+[DRACOPLATE]
+Name = Draco Plate
+NamePlural = Draco Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Dragon-type moves.
+#-------------------------------
+[DREADPLATE]
+Name = Dread Plate
+NamePlural = Dread Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Dark-type moves.
+#-------------------------------
+[IRONPLATE]
+Name = Iron Plate
+NamePlural = Iron Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the holder's Steel-type moves.
+#-------------------------------
+[PIXIEPLATE]
+Name = Pixie Plate
+NamePlural = Pixie Plates
+Pocket = 13
+Price = 1000
+Description = A stone tablet that boosts the power of Fairy-type moves.
+#-------------------------------
+[FISHINGROD]
+Name = Fishing Rod
+NamePlural = Fishing Rods
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = An old, well worn fishing rod. Use it by any body of water to fish for wild aquatic Pokémon.
+#-------------------------------
+[GOODROD]
+Name = Good Rod
+NamePlural = Good Rods
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A new, good-quality fishing rod. Use it by any body of water to fish for wild aquatic Pokémon.
+#-------------------------------
+[SUPERROD]
+Name = Super Rod
+NamePlural = Super Rods
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = An awesome, high-tech fishing rod. Use it by any body of water to fish for wild aquatic Pokémon.
+#-------------------------------
+[QUICKCLAW]
+Name = Quick Claw
+NamePlural = Quick Claws
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. A light, sharp claw that lets the bearer move first occasionally.
+#-------------------------------
+[FOCUSBAND]
+Name = Focus Band
+NamePlural = Focus Bands
+Pocket = 12
+Price = 4000
+Flags = Clothing
+Description = An item to be held by a Pokémon. The holder may endure a potential KO attack, leaving it with just 1 HP.
+#-------------------------------
+[LIGHTBALL]
+Name = Light Ball
+NamePlural = Light Balls
+Pocket = 13
+Price = 1000
+Description = An item to be held by Pikachu. It is a puzzling orb that raises the Attack and Sp. Atk stat.
+#-------------------------------
+[LUCKYPUNCH]
+Name = Lucky Punch
+NamePlural = Lucky Punches
+Pocket = 13
+Price = 1000
+Description = An item to be held by Chansey. It is a pair of gloves that boosts Chansey's critical-hit ratio.
+#-------------------------------
+[METALPOWDER]
+Name = Metal Powder
+NamePlural = Metal Powders
+Pocket = 13
+Price = 1000
+Description = An item to be held by Ditto. Extremely fine yet hard, this odd powder boosts the Defense stat.
+#-------------------------------
+[QUICKPOWDER]
+Name = Quick Powder
+NamePlural = Quick Powders
+Pocket = 13
+Price = 1000
+Description = An item to be held by Ditto. Extremely fine yet hard, this odd powder boosts the Speed stat.
+#-------------------------------
+[THICKCLUB]
+Name = Thick Club
+NamePlural = Thick Clubs
+Pocket = 13
+Price = 1000
+Description = An item to be held by Cubone or Marowak. It is a hard bone of some sort that boosts the Attack stat.
+#-------------------------------
+[DEEPSEATOOTH]
+Name = Deep Sea Tooth
+NamePlural = Deep Sea Teeth
+Pocket = 13
+Price = 2000
+Description = An item to be held by Clamperl. A fang that gleams a sharp silver, it raises the Sp. Atk stat.
+#-------------------------------
+[DEEPSEASCALE]
+Name = Deep Sea Scale
+NamePlural = Deep Sea Scales
+Pocket = 13
+Price = 2000
+Description = An item to be held by Clamperl. A scale that shines a faint pink, it raises the Sp. Def stat.
+#-------------------------------
+[LEEK]
+Name = Leek
+NamePlural = Leeks
+Pocket = 13
+Price = 1000
+Description = An item to be held by Farfetch'd. It is a very long and stiff stalk of leek that boosts the critical-hit ratio.
+#-------------------------------
+[PRISMSCALE]
+Name = Prism Scale
+NamePlural = Prism Scales
+Pocket = 13
+Price = 2000
+Description = A mysterious scale that evolves certain Pokémon. It shines in rainbow colors.
+#-------------------------------
+[OVALSTONE]
+Name = Oval Stone
+NamePlural = Oval Stones
+Pocket = 13
+Price = 2000
+Description = A peculiar stone that makes certain species of Pokémon evolve. It is shaped like an egg.
+#-------------------------------
+[REDSCARF]
+Name = Red Scarf
+NamePlural = Red Scarves
+Pocket = 12
+Price = 100
+Flags = Clothing
+Description = An item to be held by a Pokémon. It boosts the Cool aspect of the holder in a Contest.
+#-------------------------------
+[BLUESCARF]
+Name = Blue Scarf
+NamePlural = Blue Scarves
+Pocket = 12
+Price = 100
+Flags = Clothing
+Description = An item to be held by a Pokémon. It boosts the Beauty aspect of the holder in a Contest.
+#-------------------------------
+[PINKSCARF]
+Name = Pink Scarf
+NamePlural = Pink Scarves
+Pocket = 12
+Price = 100
+Flags = Clothing
+Description = An item to be held by a Pokémon. It boosts the Cute aspect of the holder in a Contest.
+#-------------------------------
+[GREENSCARF]
+Name = Green Scarf
+NamePlural = Green Scarves
+Pocket = 12
+Price = 100
+Flags = Clothing
+Description = An item to be held by a Pokémon. It boosts the Smart aspect of the holder in a Contest.
+#-------------------------------
+[YELLOWSCARF]
+Name = Yellow Scarf
+NamePlural = Yellow Scarves
+Pocket = 12
+Price = 100
+Flags = Clothing
+Description = An item to be held by a Pokémon. It boosts the Tough aspect of the holder in a Contest.
+#-------------------------------
+[AWAKENING]
+Name = Awakening
+NamePlural = Awakenings
+Pocket = 2
+Price = 100
+FieldUse = OnPokemon
+Description = A spray-type medicine. It awakens a Pokémon from the clutches of sleep.
+#-------------------------------
+[ANTIDOTE]
+Name = Antidote
+NamePlural = Antidotes
+Pocket = 2
+Price = 200
+FieldUse = OnPokemon
+Description = A spray-type medicine. It lifts the effect of poison from one Pokémon.
+#-------------------------------
+[BURNHEAL]
+Name = Burn Heal
+NamePlural = Burn Heals
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Description = A spray-type medicine. It heals a single Pokémon that is suffering from a burn.
+#-------------------------------
+[PARALYZEHEAL]
+Name = Paralyze Heal
+NamePlural = Paralyze Heals
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Description = A spray-type medicine. It eliminates paralysis from a single Pokémon.
+#-------------------------------
+[ICEHEAL]
+Name = Ice Heal
+NamePlural = Ice Heals
+Pocket = 2
+Price = 100
+FieldUse = OnPokemon
+Description = A spray-type medicine. It defrosts a Pokémon that has been frozen solid.
+#-------------------------------
+[SUPERREPEL]
+Name = Super Repel
+NamePlural = Super Repels
+Pocket = 1
+Price = 700
+FieldUse = Direct
+Description = An item that prevents wild Pokémon from appearing for 200 steps after its use.
+#-------------------------------
+[MAXREPEL]
+Name = Max Repel
+NamePlural = Max Repels
+Pocket = 1
+Price = 900
+FieldUse = Direct
+Description = An item that prevents wild Pokémon from appearing for 250 steps after its use.
+#-------------------------------
+[BLACKFLUTE]
+Name = Black Flute
+NamePlural = Black Flutes
+Pocket = 1
+Price = 400
+FieldUse = Direct
+Description = A black flute made from blown glass. Its melody makes wild Pokémon less likely to appear.
+#-------------------------------
+[WHITEFLUTE]
+Name = White Flute
+NamePlural = White Flutes
+Pocket = 1
+Price = 500
+FieldUse = Direct
+Description = A white flute made from blown glass. Its melody makes wild Pokémon more likely to appear.
+#-------------------------------
+[ESCAPEROPE]
+Name = Escape Rope
+NamePlural = Escape Ropes
+Pocket = 1
+Price = 1000
+FieldUse = Direct
+Description = A long, durable rope. Use it to escape instantly from a cave or a dungeon.
+#-------------------------------
+[REDSHARD]
+Name = Red Shard
+NamePlural = Red Shards
+Pocket = 1
+Price = 1000
+Description = A small red shard. It appears to be from some sort of implement made long ago.
+#-------------------------------
+[YELLOWSHARD]
+Name = Yellow Shard
+NamePlural = Yellow Shards
+Pocket = 1
+Price = 1000
+Description = A small yellow shard. It appears to be from some sort of implement made long ago.
+#-------------------------------
+[BLUESHARD]
+Name = Blue Shard
+NamePlural = Blue Shards
+Pocket = 1
+Price = 1000
+Description = A small blue shard. It appears to be from some sort of implement made long ago.
+#-------------------------------
+[GREENSHARD]
+Name = Green Shard
+NamePlural = Green Shards
+Pocket = 1
+Price = 1000
+Description = A small green shard. It appears to be from some sort of implement made long ago.
+#-------------------------------
+[REDAPRICORN]
+Name = Red Apricorn
+NamePlural = Red Apricorns
+Pocket = 1
+Price = 20
+Flags = Apricorn
+Description = A red Apricorn. It assails your nostrils.
+#-------------------------------
+[YELLOWAPRICORN]
+Name = Yellow Apricorn
+NamePlural = Yellow Apricorns
+Pocket = 1
+Price = 20
+Flags = Apricorn
+Description = A yellow Apricorn. It has an invigorating scent.
+#-------------------------------
+[BLUEAPRICORN]
+Name = Blue Apricorn
+NamePlural = Blue Apricorns
+Pocket = 1
+Price = 20
+Flags = Apricorn
+Description = A blue Apricorn. It smells a bit like grass.
+#-------------------------------
+[GREENAPRICORN]
+Name = Green Apricorn
+NamePlural = Green Apricorns
+Pocket = 1
+Price = 20
+Flags = Apricorn
+Description = A green Apricorn. It has a mysterious, aromatic scent.
+#-------------------------------
+[PINKAPRICORN]
+Name = Pink Apricorn
+NamePlural = Pink Apricorns
+Pocket = 1
+Price = 20
+Flags = Apricorn
+Description = A pink Apricorn. It has a nice, sweet scent.
+#-------------------------------
+[WHITEAPRICORN]
+Name = White Apricorn
+NamePlural = White Apricorns
+Pocket = 1
+Price = 20
+Flags = Apricorn
+Description = A white Apricorn. It doesn't smell like anything.
+#-------------------------------
+[BLACKAPRICORN]
+Name = Black Apricorn
+NamePlural = Black Apricorns
+Pocket = 1
+Price = 20
+Flags = Apricorn
+Description = A black Apricorn. It has an indescribable scent.
+#-------------------------------
+[HEARTSCALE]
+Name = Heart Scale
+NamePlural = Heart Scales
+Pocket = 15
+Price = 100
+Description = A pretty, heart-shaped scale that is extremely rare. It glows faintly in the colors of the rainbow.
+#-------------------------------
+[GROWTHMULCH]
+Name = Growth Mulch
+NamePlural = Growth Mulch
+Pocket = 1
+Price = 200
+Flags = Mulch
+Description = A fertilizer to be spread on soft soil in regions where Berries are grown. A maniac will buy it for a high price.
+#-------------------------------
+[DAMPMULCH]
+Name = Damp Mulch
+NamePlural = Damp Mulch
+Pocket = 1
+Price = 200
+Flags = Mulch
+Description = A fertilizer to be spread on soft soil in regions where Berries are grown. A maniac will buy it for a high price.
+#-------------------------------
+[STABLEMULCH]
+Name = Stable Mulch
+NamePlural = Stable Mulch
+Pocket = 1
+Price = 200
+Flags = Mulch
+Description = A fertilizer to be spread on soft soil in regions where Berries are grown. A maniac will buy it for a high price.
+#-------------------------------
+[GOOEYMULCH]
+Name = Gooey Mulch
+NamePlural = Gooey Mulch
+Pocket = 1
+Price = 200
+Flags = Mulch
+Description = A fertilizer to be spread on soft soil in regions where Berries are grown. A maniac will buy it for a high price.
+#-------------------------------
+[SHOALSALT]
+Name = Shoal Salt
+NamePlural = Shoal Salts
+Pocket = 1
+Price = 20
+Description = Pure salt that can be discovered deep inside the Shoal Cave. A maniac will buy it for a high price.
+#-------------------------------
+[SHOALSHELL]
+Name = Shoal Shell
+NamePlural = Shoal Shells
+Pocket = 1
+Price = 20
+Description = A pretty seashell that can be found deep inside the Shoal Cave. A maniac will buy it for a high price.
+#-------------------------------
+[ODDKEYSTONE]
+Name = Odd Keystone
+NamePlural = Odd Keystones
+Pocket = 1
+Price = 2100
+Description = A vital item that is needed to keep a stone tower from collapsing. Voices can be heard from it occasionally.
+#-------------------------------
+[DESTINYKNOT]
+Name = Destiny Knot
+NamePlural = Destiny Knots
+Pocket = 13
+Price = 4000
+Description = A long, thin, bright-red string to be held by a Pokémon. If the holder becomes infatuated, so does the foe.
+#-------------------------------
+[EXPSHARE]
+Name = Exp. Share
+NamePlural = Exp. Shares
+Pocket = 13
+Price = 3000
+Description = An item to be held by a Pokémon. The holder gets a share of a battle's Exp. Points without battling.
+#-------------------------------
+[RAZORCLAW]
+Name = Razor Claw
+NamePlural = Razor Claws
+Pocket = 13
+Price = 5000
+Description = An item to be held by a Pokémon. It is a sharply hooked claw that ups the holder's critical-hit ratio.
+#-------------------------------
+[RINGTARGET]
+Name = Ring Target
+NamePlural = Ring Targets
+Pocket = 13
+Price = 4000
+Description = Moves that would otherwise have no effect will land on the Pokémon that holds it.
+#-------------------------------
+[DRAGONSCALE]
+Name = Dragon Scale
+NamePlural = Dragon Scales
+Pocket = 13
+Price = 2000
+Description = A thick and tough scale. Dragon-type Pokémon may be holding this item when caught.
+#-------------------------------
+[UPGRADE]
+Name = Upgrade
+NamePlural = Upgrades
+Pocket = 13
+Price = 2000
+Description = A transparent device filled with all sorts of data. It was produced by Silph Co.
+#-------------------------------
+[DUBIOUSDISC]
+Name = Dubious Disc
+NamePlural = Dubious Discs
+Pocket = 13
+Price = 2000
+Description = A transparent device overflowing with dubious data.  Its producer is unknown.
+#-------------------------------
+[PROTECTOR]
+Name = Protector
+NamePlural = Protectors
+Pocket = 13
+Price = 2000
+Description = A protective item of some sort. It is extremely stiff and heavy. It is loved by a certain Pokémon.
+#-------------------------------
+[ELECTIRIZER]
+Name = Electirizer
+NamePlural = Electirizers
+Pocket = 13
+Price = 2000
+Description = A box packed with a tremendous amount of electric energy. It is loved by a certain Pokémon.
+#-------------------------------
+[MAGMARIZER]
+Name = Magmarizer
+NamePlural = Magmarizers
+Pocket = 13
+Price = 2000
+Description = A box packed with a tremendous amount of magma energy. It is loved by a certain Pokémon.
+#-------------------------------
+[WHIPPEDDREAM]
+Name = Whipped Dream
+NamePlural = Whipped Dreams
+Pocket = 1
+Price = 2000
+Description = A soft and sweet treat made of fluffy, puffy and whirled cream. It's loved by a certain Pokémon.
+#-------------------------------
+[SACHET]
+Name = Sachet
+NamePlural = Sachets
+Pocket = 1
+Price = 2000
+Flags = Clothing
+Description = A sachet filled with slightly overwhelming fragrant perfumes. Yet it's loved by a certain Pokémon.
+#-------------------------------
+[CRACKEDPOT]
+Name = Cracked Pot
+NamePlural = Cracked Pot
+Pocket = 1
+Price = 1600
+FieldUse = OnPokemon
+Flags = EvolutionStone
+Description = A peculiar teapot that can make a certain species of Pokémon evolve. It may be cracked, but tea poured from it is delicious.
+#-------------------------------
+[CHIPPEDPOT]
+Name = Chipped Pot
+NamePlural = Chipped Pots
+Pocket = 1
+Price = 1600
+FieldUse = OnPokemon
+Flags = EvolutionStone
+Description = A peculiar teapot that can make a certain species of Pokémon evolve. It's chipped, but tea poured from it is delicious.
+#-------------------------------
+[STRAWBERRYSWEET]
+Name = Strawberry Sweet
+NamePlural = Strawberry Sweets
+Pocket = 1
+Price = 500
+Consumable = true
+Flags = KeyItem
+Description = A strawberry-shaped sweet. When a Milcery holds this, it will spin around happily.
+#-------------------------------
+[LOVESWEET]
+Name = Love Sweet
+NamePlural = Love Sweets
+Pocket = 1
+Price = 500
+Consumable = true
+Flags = KeyItem
+Description = A heart-shaped sweet. When a Milcery holds this, it spins around happily.
+#-------------------------------
+[BERRYSWEET]
+Name = Berry Sweet
+NamePlural = Berry Sweets
+Pocket = 1
+Price = 500
+Consumable = true
+Flags = KeyItem
+Description = A berry-shaped sweet. When a Milcery holds this, it spins around happily.
+#-------------------------------
+[CLOVERSWEET]
+Name = Clover Sweet
+NamePlural = Clover Sweets
+Pocket = 1
+Price = 500
+Consumable = true
+Flags = KeyItem
+Description = A clover-shaped sweet. When a Milcery holds this, it spins around happily.
+#-------------------------------
+[FLOWERSWEET]
+Name = Flower Sweet
+NamePlural = Flower Sweets
+Pocket = 1
+Price = 500
+Consumable = true
+Flags = KeyItem
+Description = A flower-shaped sweet. When a Milcery holds this, it spins around happily.
+#-------------------------------
+[STARSWEET]
+Name = Star Sweet
+NamePlural = Star Sweets
+Pocket = 1
+Price = 500
+Consumable = true
+Flags = KeyItem
+Description = A star-shaped sweet. When a Milcery holds this, it spins around happily.
+#-------------------------------
+[RIBBONSWEET]
+Name = Ribbon Sweet
+NamePlural = Ribbon Sweets
+Pocket = 1
+Price = 500
+Consumable = true
+Flags = KeyItem
+Description = A ribbon-shaped sweet. When a Milcery holds this, it spins around happily.
+#-------------------------------
+[GALARICACUFF]
+Name = Galarica Cuff
+NamePlural = Galarica Cuffs
+Pocket = 1
+Price = 3000
+FieldUse = OnPokemon
+Flags = EvolutionStone,Clothing
+Description = A cuff made from woven-together Galarica Twigs. Giving it to Galarian Slowpoke makes the Pokémon very happy.
+#-------------------------------
+[ROTOMCATALOG]
+Name = Rotom Catalogue
+NamePlural = Rotom Catalogues
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = A catalog of devices that Rotom like and can hop in and out of to change their form.
+#-------------------------------
+[ETHER]
+Name = Ether
+NamePlural = Ethers
+Pocket = 2
+Price = 1200
+FieldUse = OnPokemon
+Description = It restores the PP of a Pokémon's selected move by a maximum of 10 points.
+#-------------------------------
+[MAXETHER]
+Name = Max Ether
+NamePlural = Max Ethers
+Pocket = 2
+Price = 2000
+FieldUse = OnPokemon
+Description = It fully restores the PP of a single selected move that has been learned by the target Pokémon.
+#-------------------------------
+[ELIXIR]
+Name = Elixir
+NamePlural = Elixirs
+Pocket = 2
+Price = 3000
+FieldUse = OnPokemon
+Description = It restores the PP of all the moves learned by the targeted Pokémon by 10 points each.
+#-------------------------------
+[MAXELIXIR]
+Name = Max Elixir
+NamePlural = Max Elixirs
+Pocket = 2
+Price = 4500
+FieldUse = OnPokemon
+Description = It fully restores the PP of all the moves learned by the targeted Pokémon.
+#-------------------------------
+[NETBALL]
+Name = Net Ball
+NamePlural = Net Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall
+Description = A somewhat different Poké Ball that works at 3.5x strength on Water- and Bug-type Pokémon.
+#-------------------------------
+[DIVEBALL]
+Name = Dive Ball
+NamePlural = Dive Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall
+Description = A somewhat different Poké Ball that works at a 3.5x strength on Pokémon that live underwater.
+#-------------------------------
+[DUSKBALL]
+Name = Dusk Ball
+NamePlural = Dusk Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall
+Description = A somewhat different Poké Ball which has 3x strength at night or in dark places like caves.
+#-------------------------------
+[LEVELBALL]
+Name = Level Ball
+NamePlural = Level Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall
+Description = A Poké Ball with much higher strength the higher your Pokémon's level is above the target.
+#-------------------------------
+[LUREBALL]
+Name = Lure Ball
+NamePlural = Lure Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall
+Description = A Poké Ball with 5x strength against Pokémon encountered through fishing.
+#-------------------------------
+[LOVEBALL]
+Name = Love Ball
+NamePlural = Love Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall
+Description = A Poké Ball with 8x strength against Pokémon that are the opposite gender, but same species, as yours.
+#-------------------------------
+[MOONBALL]
+Name = Moon Ball
+NamePlural = Moon Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall
+Description = A Poké Ball with 4x strength against Pokémon evolve with or from using a Moon Stone.
+#-------------------------------
+[FIGYBERRY]
+Name = Figy Berry
+NamePlural = Figy Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = If held by a Pokémon, it restores the user's HP in a pinch, but will cause confusion if it hates the taste.
+#-------------------------------
+[WIKIBERRY]
+Name = Wiki Berry
+NamePlural = Wiki Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = If held by a Pokémon, it restores the user's HP in a pinch, but will cause confusion if it hates the taste.
+#-------------------------------
+[MAGOBERRY]
+Name = Mago Berry
+NamePlural = Mago Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = If held by a Pokémon, it restores the user's HP in a pinch, but will cause confusion if it hates the taste.
+#-------------------------------
+[AGUAVBERRY]
+Name = Aguav Berry
+NamePlural = Aguav Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = If held by a Pokémon, it restores the user's HP in a pinch, but will cause confusion if it hates the taste.
+#-------------------------------
+[IAPAPABERRY]
+Name = Iapapa Berry
+NamePlural = Iapapa Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = If held by a Pokémon, it restores the user's HP in a pinch, but will cause confusion if it hates the taste.
+#-------------------------------
+[RAZZBERRY]
+Name = Razz Berry
+NamePlural = Razz Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[BLUKBERRY]
+Name = Bluk Berry
+NamePlural = Bluk Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[NANABBERRY]
+Name = Nanab Berry
+NamePlural = Nanab Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[WEPEARBERRY]
+Name = Wepear Berry
+NamePlural = Wepear Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[PINAPBERRY]
+Name = Pinap Berry
+NamePlural = Pinap Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[POMEGBERRY]
+Name = Pomeg Berry
+NamePlural = Pomeg Berries
+Pocket = 9
+Price = 0
+FieldUse = OnPokemon
+Flags = Berry
+Description = Using it on a Pokémon makes it more friendly, but it also lowers its base HP.
+#-------------------------------
+[KELPSYBERRY]
+Name = Kelpsy Berry
+NamePlural = Kelpsy Berries
+Pocket = 9
+Price = 0
+FieldUse = OnPokemon
+Flags = Berry
+Description = Using it on a Pokémon makes it more friendly, but it also lowers its base Attack stat.
+#-------------------------------
+[QUALOTBERRY]
+Name = Qualot Berry
+NamePlural = Qualot Berries
+Pocket = 9
+Price = 0
+FieldUse = OnPokemon
+Flags = Berry
+Description = Using it on a Pokémon makes it more friendly, but it also lowers its base Defense stat.
+#-------------------------------
+[HONDEWBERRY]
+Name = Hondew Berry
+NamePlural = Hondew Berries
+Pocket = 9
+Price = 0
+FieldUse = OnPokemon
+Flags = Berry
+Description = Using it on a Pokémon makes it more friendly, but it also lowers its base Sp. Atk stat.
+#-------------------------------
+[GREPABERRY]
+Name = Grepa Berry
+NamePlural = Grepa Berries
+Pocket = 9
+Price = 0
+FieldUse = OnPokemon
+Flags = Berry
+Description = Using it on a Pokémon makes it more friendly, but it also lowers its base Sp. Def stat.
+#-------------------------------
+[TAMATOBERRY]
+Name = Tamato Berry
+NamePlural = Tamato Berries
+Pocket = 9
+Price = 0
+FieldUse = OnPokemon
+Flags = Berry
+Description = Using it on a Pokémon makes it more friendly, but it also lowers its base Speed stat.
+#-------------------------------
+[CORNNBERRY]
+Name = Cornn Berry
+NamePlural = Cornn Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[MAGOSTBERRY]
+Name = Magost Berry
+NamePlural = Magost Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[RABUTABERRY]
+Name = Rabuta Berry
+NamePlural = Rabuta Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[NOMELBERRY]
+Name = Nomel Berry
+NamePlural = Nomel Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[PAMTREBERRY]
+Name = Pamtre Berry
+NamePlural = Pamtre Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[WATMELBERRY]
+Name = Watmel Berry
+NamePlural = Watmel Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[DURINBERRY]
+Name = Durin Berry
+NamePlural = Durin Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
+#-------------------------------
+[ITEMFINDER]
+Name = Itemfinder
+NamePlural = Itemfinders
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A device used for finding items. If there is a hidden item nearby when it is used, it emits a signal.
+#-------------------------------
+[DOWSINGMACHINE]
+Name = Dowsing Machine
+NamePlural = Dowsing Machines
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = It checks for unseen items in the area and makes noise and lights when it finds something.
+#-------------------------------
+[POKERADAR]
+Name = Poké Radar
+NamePlural = Poké Radars
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A tool that can search out Pokémon that are hiding in grass. Its battery is recharged as you walk.
+#-------------------------------
+[POKEFLUTE]
+Name = Poké Flute
+NamePlural = Poké Flutes
+Pocket = 8
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem
+Description = A flute that is said to instantly awaken any Pokémon. It has a lovely tone.
+#-------------------------------
+[COINCASE]
+Name = Coin Case
+NamePlural = Coin Cases
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A case for holding coins obtained at the Game Corner. It holds up to 50,000 coins.
+#-------------------------------
+[SOOTSACK]
+Name = Soot Sack
+NamePlural = Soot Sacks
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A sack used to gather and hold volcanic ash.
+#-------------------------------
+[SILPHSCOPE]
+Name = Silph Scope
+NamePlural = Silph Scopes
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A scope that makes unseeable Pokémon visible. It is made by Silph Co.
+#-------------------------------
+[DEVONSCOPE]
+Name = Devon Scope
+NamePlural = Devon Scopes
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A device by Devon that signals any unseeable Pokémon.
+#-------------------------------
+[SQUIRTBOTTLE]
+Name = Squirt Bottle
+NamePlural = Squirt Bottles
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A watering can shaped like a Squirtle. It helps promote healthy growth of Berries planted in soft soil.
+#-------------------------------
+[SPRAYDUCK]
+Name = Sprayduck
+NamePlural = Sprayducks
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A watering can shaped like a Psyduck. It helps promote healthy growth of Berries planted in soft soil.
+#-------------------------------
+[WAILMERPAIL]
+Name = Wailmer Pail
+NamePlural = Wailmer Pails
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = A nifty watering pail. Use it to promote strong growth in Berries planted in soft soil.
+#-------------------------------
+[OVALCHARM]
+Name = Oval Charm
+NamePlural = Oval Charms
+Pocket = 8
+Price = 0
+Flags = KeyItem
+Description = An oval charm said to increase the chance of Eggs being found at the Day Care.
+#-------------------------------
+[SAFETYGOGGLES]
+Name = Safety Goggles
+NamePlural = Safety Goggles
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. They protect the holder from weather-related damage and powder.
+#-------------------------------
+[PROTECTIVEPADS]
+Name = Protective Pads
+NamePlural = Protective Pads
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. They protect the holder from effects caused by making contact.
+#-------------------------------
+[BUSTEDRADIO]
+Name = Busted Radio
+NamePlural = Busted Radios
+Pocket = 13
+Price = 4000
+Description = Damages attackers for 1/6th of their HP when they hit the holder with special attacks.
+#-------------------------------
+[GUARDLOCK]
+Name = Guard Lock
+NamePlural = Guard Locks
+Pocket = 13
+Price = 4000
+Description = A held item. In battles, it sets the holder's base Defense stat to 95.
+#-------------------------------
+[WILLLOCK]
+Name = Will Lock
+NamePlural = Will Locks
+Pocket = 13
+Price = 4000
+Description = A held item. In battles, it sets the holder's base Sp. Def stat to 95.
+#-------------------------------
+[LONELYMINT]
+Name = Lonely Mint
+NamePlural = Lonely Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Attack will grow more easily, but its Defense will grow more slowly.
+#-------------------------------
+[ADAMANTMINT]
+Name = Adamant Mint
+NamePlural = Adamant Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Attack will grow more easily, but its Sp. Atk will grow more slowly.
+#-------------------------------
+[NAUGHTYMINT]
+Name = Naughty Mint
+NamePlural = Naughty Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Attack will grow more easily, but its Sp. Def will grow more slowly.
+#-------------------------------
+[BRAVEMINT]
+Name = Brave Mint
+NamePlural = Brave Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Attack will grow more easily, but its Speed will grow more slowly.
+#-------------------------------
+[BOLDMINT]
+Name = Bold Mint
+NamePlural = Bold Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Defense will grow more easily, but its Attack will grow more slowly.
+#-------------------------------
+[IMPISHMINT]
+Name = Impish Mint
+NamePlural = Impish Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Defense will grow more easily, but its Sp. Atk will grow more slowly.
+#-------------------------------
+[LAXMINT]
+Name = Lax Mint
+NamePlural = Lax Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Defense will grow more easily, but its Sp. Def will grow more slowly.
+#-------------------------------
+[RELAXEDMINT]
+Name = Relaxed Mint
+NamePlural = Relaxed Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Defense will grow more easily, but its Speed will grow more slowly.
+#-------------------------------
+[MODESTMINT]
+Name = Modest Mint
+NamePlural = Modest Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Sp. Atk will grow more easily, but its Attack will grow more slowly.
+#-------------------------------
+[MILDMINT]
+Name = Mild Mint
+NamePlural = Mild Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Sp. Atk will grow more easily, but its Defense will grow more slowly.
+#-------------------------------
+[RASHMINT]
+Name = Rash Mint
+NamePlural = Rash Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Sp. Atk will grow more easily, but its Sp. Def will grow more slowly.
+#-------------------------------
+[QUIETMINT]
+Name = Quiet Mint
+NamePlural = Quiet Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Sp. Atk will grow more easily, but its Speed will grow more slowly.
+#-------------------------------
+[CALMMINT]
+Name = Calm Mint
+NamePlural = Calm Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Sp. Def will grow more easily, but its Attack will grow more slowly.
+#-------------------------------
+[GENTLEMINT]
+Name = Gentle Mint
+NamePlural = Gentle Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Sp. Def will grow more easily, but its Defense will grow more slowly.
+#-------------------------------
+[CAREFULMINT]
+Name = Careful Mint
+NamePlural = Careful Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Sp. Def will grow more easily, but its Sp. Atk will grow more slowly.
+#-------------------------------
+[SASSYMINT]
+Name = Sassy Mint
+NamePlural = Sassy Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Sp. Def will grow more easily, but its Speed will grow more slowly.
+#-------------------------------
+[TIMIDMINT]
+Name = Timid Mint
+NamePlural = Timid Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Speed will grow more easily, but its Attack will grow more slowly.
+#-------------------------------
+[HASTYMINT]
+Name = Hasty Mint
+NamePlural = Hasty Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Speed will grow more easily, but its Defense will grow more slowly.
+#-------------------------------
+[JOLLYMINT]
+Name = Jolly Mint
+NamePlural = Jolly Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Speed will grow more easily, but its Sp. Atk will grow more slowly.
+#-------------------------------
+[NAIVEMINT]
+Name = Naive Mint
+NamePlural = Naive Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, its Speed will grow more easily, but its Sp. Def will grow more slowly.
+#-------------------------------
+[SERIOUSMINT]
+Name = Serious Mint
+NamePlural = Serious Mints
+Pocket = 1
+Price = 20
+FieldUse = OnPokemon
+Description = When a Pokémon smells this mint, all of its stats will grow at an equal rate.
+#-------------------------------
+[ABILITYPATCH]
+Name = Ability Patch
+NamePlural = Ability Patches
+Pocket = 2
+Price = 20000
+FieldUse = OnPokemon
+Description = A patch that allows a Pokémon with a regular Ability to have a rare Ability.
+#-------------------------------
+[TM200]
+Name = TM200
+NamePlural = TM200s
+Pocket = 5
+Price = 6000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CUT
+Description = The target is cut with a scythe or claw. It can also be used to cut down thin trees.
+#-------------------------------
+[TM201]
+Name = TM201
+NamePlural = TM201s
+Pocket = 5
+Price = 6000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLY
+Description = The user soars, then strikes on the second turn. It can also be used to fly to any familiar town.
+#-------------------------------
+[TM202]
+Name = TM202
+NamePlural = TM202s
+Pocket = 5
+Price = 6000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SURF
+Description = It swamps the area around the user with a giant wave. It can also be used for crossing water.
+#-------------------------------
+[TM203]
+Name = TM203
+NamePlural = TM203s
+Pocket = 5
+Price = 6000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = STRENGTH
+Description = The target is slugged with a punch thrown at maximum power. This move can also be used to move boulders.
+#-------------------------------
+[TM204]
+Name = TM204
+NamePlural = TM204s
+Pocket = 5
+Price = 6000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WATERFALL
+Description = The user charges the target at an awesome speed. It can also be used to climb a waterfall.
+#-------------------------------
+[BRIGHTPOWDER]
+Name = Bright Powder
+NamePlural = Bright Powders
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It casts a tricky glare that lowers the opponent's accuracy.
+#-------------------------------
+[ORANBERRY]
+Name = Oran Berry
+NamePlural = Oran Berries
+Pocket = 9
+Price = 0
+Flags = Berry
+Description = It may be held by a Pokémon to heal the user by 33% in a pinch (below 25% HP).
+#-------------------------------
+[ZOOMLENS]
+Name = Zoom Lens
+NamePlural = Zoom Lenses
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. If the holder moves after its target, its accuracy will be doubled.
+#-------------------------------
+[ENERGYPOWDER]
+Name = Energy Powder
+NamePlural = Energy Powders
+Pocket = 2
+Price = 500
+FieldUse = OnPokemon
+Description = A very bitter medicine powder. It restores the HP of one Pokémon by 50 points.
+#-------------------------------
+[ENERGYROOT]
+Name = Energy Root
+NamePlural = Energy Roots
+Pocket = 2
+Price = 1200
+FieldUse = OnPokemon
+Description = A very bitter root. It restores the HP of one Pokémon by 200 points.
+#-------------------------------
+[HEALPOWDER]
+Name = Heal Powder
+NamePlural = Heal Powders
+Pocket = 2
+Price = 300
+FieldUse = OnPokemon
+Description = A very bitter medicine powder. It heals all the status problems of a single Pokémon.
+#-------------------------------
+[REVIVALHERB]
+Name = Revival Herb
+NamePlural = Revival Herbs
+Pocket = 2
+Price = 2800
+FieldUse = OnPokemon
+Description = A very bitter medicinal herb. It revives a fainted Pokémon, fully restoring its HP.
+#-------------------------------
+[CRYSTALVEILNORMAL]
+Name = Crystal Veil Normal
+NamePlural = Crystal Veils Normal
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Normal-type.
+#-------------------------------
+[CRYSTALVEILFIRE]
+Name = Crystal Veil Fire
+NamePlural = Crystal Veils Fire
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Fire-type.
+#-------------------------------
+[CRYSTALVEILWATER]
+Name = Crystal Veil Water
+NamePlural = Crystal Veils Water
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Water-type.
+#-------------------------------
+[CRYSTALVEILELECTRIC]
+Name = Crystal Veil Electric
+NamePlural = Crystal Veils Electric
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Electric-type.
+#-------------------------------
+[CRYSTALVEILGRASS]
+Name = Crystal Veil Grass
+NamePlural = Crystal Veils Grass
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Grass-type.
+#-------------------------------
+[CRYSTALVEILICE]
+Name = Crystal Veil Ice
+NamePlural = Crystal Veils Ice
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Ice-type.
+#-------------------------------
+[CRYSTALVEILFIGHTING]
+Name = Crystal Veil Fighting
+NamePlural = Crystal Veils Fighting
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Fighting-type.
+#-------------------------------
+[CRYSTALVEILPOISON]
+Name = Crystal Veil Poison
+NamePlural = Crystal Veils Poison
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Poison-type.
+#-------------------------------
+[CRYSTALVEILGROUND]
+Name = Crystal Veil Ground
+NamePlural = Crystal Veils Ground
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Ground-type.
+#-------------------------------
+[CRYSTALVEILFLYING]
+Name = Crystal Veil Flying
+NamePlural = Crystal Veils Flying
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Flying-type.
+#-------------------------------
+[CRYSTALVEILPSYCHIC]
+Name = Crystal Veil Psychic
+NamePlural = Crystal Veils Psychic
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Psychic-type.
+#-------------------------------
+[CRYSTALVEILBUG]
+Name = Crystal Veil Bug
+NamePlural = Crystal Veils Bug
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Bug-type.
+#-------------------------------
+[CRYSTALVEILROCK]
+Name = Crystal Veil Rock
+NamePlural = Crystal Veils Rock
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Rock-type.
+#-------------------------------
+[CRYSTALVEILGHOST]
+Name = Crystal Veil Ghost
+NamePlural = Crystal Veils Ghost
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Ghost-type.
+#-------------------------------
+[CRYSTALVEILDRAGON]
+Name = Crystal Veil Dragon
+NamePlural = Crystal Veils Dragon
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Dragon-type.
+#-------------------------------
+[CRYSTALVEILDARK]
+Name = Crystal Veil Dark
+NamePlural = Crystal Veils Dark
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Dark-type.
+#-------------------------------
+[CRYSTALVEILSTEEL]
+Name = Crystal Veil Steel
+NamePlural = Crystal Veils Steel
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Steel-type.
+#-------------------------------
+[CRYSTALVEILFAIRY]
+Name = Crystal Veil Fairy
+NamePlural = Crystal Veils Fairy
+Pocket = 13
+Price = 1000
+Description = A held item. During battle, the holder is Fairy-type.
+#-------------------------------
+[SOULDEW]
+Name = Soul Dew
+NamePlural = Soul Dews
+Pocket = 13
+Price = 0
+Description = A wondrous orb to be held by either Latios or Latias. It raises the power of Psychic- and Dragon-type moves.
+#-------------------------------
+[REAPERCLOTH]
+Name = Reaper Cloth
+NamePlural = Reaper Cloths
+Pocket = 13
+Price = 2000
+Description = A cloth imbued with horrifyingly strong spiritual energy. It is loved by a certain Pokémon.
+#-------------------------------
+[BLUNDERPOLICY]
+Name = Blunder Policy
+NamePlural = Blunder Policy
+Pocket = 13
+Price = 4000
+Description = Raises Speed sharply when a Pokémon misses with a move because of accuracy.
+#-------------------------------
+[REVIVE]
+Name = Revive
+NamePlural = Revives
+Pocket = 2
+Price = 500
+FieldUse = OnPokemon
+Description = A medicine that revives a fainted Pokémon. It restores half the Pokémon's maximum HP.
+#-------------------------------
+[MAXREVIVE]
+Name = Max Revive
+NamePlural = Max Revives
+Pocket = 2
+Price = 1000
+FieldUse = OnPokemon
+Description = A medicine that revives a fainted Pokémon. It fully restores the Pokémon's HP.
+#-------------------------------
+[RAINBOWFEATHER]
+Name = Rainbow Feather
+NamePlural = Rainbow Feathers
+Pocket = 8
+Price = 0
+Consumable = true
+Flags = KeyItem
+Description = A strange feather that gleams in rainbow colors.
+#-------------------------------
+[MEGAUPGRADER]
+Name = Mega Upgrader
+NamePlural = Mega Upgraders
+Pocket = 1
+Price = 0
+FieldUse = OnPokemon
+Flags = EvolutionStone
+Description = A peculiar stone that makes certain species of Pokémon evolve.
+#-------------------------------
+[ROOMSERVICE]
+Name = Room Service
+NamePlural = Room Services
+Pocket = 13
+Price = 4000
+Description = An item to be held by a Pokémon. It casts a tricky glare that lowers the opponent's accuracy.
+#-------------------------------
+[AMWIBERRY]
+Name = Amwi Berry
+NamePlural = Amwi Berries
+Pocket = 9
+Price = 0
+Flags = Berry,Pinch
+Description = It may be held by a Pokémon to heal the user by 33% in a pinch (below 25% HP).
+#-------------------------------
+[TM00]
+Name = TM00
+NamePlural = TM00s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RANSACK
+#-------------------------------
+[TM01]
+Name = TM01
+NamePlural = TM01s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = COVET
+#-------------------------------
+[TM02]
+Name = TM02
+NamePlural = TM02s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PAYDAY
+#-------------------------------
+[TM03]
+Name = TM03
+NamePlural = TM03s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CHAOSWHEEL
+#-------------------------------
+[TM04]
+Name = TM04
+NamePlural = TM04s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FRENZYPLANT
+#-------------------------------
+[TM05]
+Name = TM05
+NamePlural = TM05s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BLASTBURN
+#-------------------------------
+[TM06]
+Name = TM06
+NamePlural = TM06s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HYDROCANNON
+#-------------------------------
+[TM07]
+Name = TM07
+NamePlural = TM07s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CRUELTY
+#-------------------------------
+[TM08]
+Name = TM08
+NamePlural = TM08s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HYPERBEAM
+#-------------------------------
+[TM09]
+Name = TM09
+NamePlural = TM09s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = GIGAIMPACT
+#-------------------------------
+[TM10]
+Name = TM10
+NamePlural = TM10s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = GREYMIST
+#-------------------------------
+[TM11]
+Name = TM11
+NamePlural = TM11s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ROCKWRECKER
+#-------------------------------
+[TM12]
+Name = TM12
+NamePlural = TM12s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FOLLOWME
+#-------------------------------
+[TM13]
+Name = TM13
+NamePlural = TM13s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = METEORASSAULT
+#-------------------------------
+[TM14]
+Name = TM14
+NamePlural = TM14s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = NUMB
+#-------------------------------
+[TM15]
+Name = TM15
+NamePlural = TM15s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DIG
+#-------------------------------
+[TM16]
+Name = TM16
+NamePlural = TM16s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SCREECH
+#-------------------------------
+[TM17]
+Name = TM17
+NamePlural = TM17s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LIGHTSCREEN
+#-------------------------------
+[TM18]
+Name = TM18
+NamePlural = TM18s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = REFLECT
+#-------------------------------
+[TM19]
+Name = TM19
+NamePlural = TM19s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SAFEGUARD
+#-------------------------------
+[TM20]
+Name = TM20
+NamePlural = TM20s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SELFDESTRUCT
+#-------------------------------
+[TM21]
+Name = TM21
+NamePlural = TM21s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = REST
+#-------------------------------
+[TM22]
+Name = TM22
+NamePlural = TM22s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = EXPLOSION
+#-------------------------------
+[TM23]
+Name = TM23
+NamePlural = TM23s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MEMENTO
+#-------------------------------
+[TM24]
+Name = TM24
+NamePlural = TM24s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SNORE
+#-------------------------------
+[TM25]
+Name = TM25
+NamePlural = TM25s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PROTECT
+#-------------------------------
+[TM26]
+Name = TM26
+NamePlural = TM26s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SCARYFACE
+#-------------------------------
+[TM27]
+Name = TM27
+NamePlural = TM27s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RAPIDSPIN
+#-------------------------------
+[TM28]
+Name = TM28
+NamePlural = TM28s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ENERGYBALL
+#-------------------------------
+[TM29]
+Name = TM29
+NamePlural = TM29s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SMACKDOWN
+#-------------------------------
+[TM30]
+Name = TM30
+NamePlural = TM30s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = STEELWING
+#-------------------------------
+[TM31]
+Name = TM31
+NamePlural = TM31s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ATTRACT
+#-------------------------------
+[TM32]
+Name = TM32
+NamePlural = TM32s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SANDSTORM
+#-------------------------------
+[TM33]
+Name = TM33
+NamePlural = TM33s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RAINSTORM
+#-------------------------------
+[TM34]
+Name = TM34
+NamePlural = TM34s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SUNSHINE
+#-------------------------------
+[TM35]
+Name = TM35
+NamePlural = TM35s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HAIL
+#-------------------------------
+[TM36]
+Name = TM36
+NamePlural = TM36s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WHIRLPOOL
+#-------------------------------
+[TM37]
+Name = TM37
+NamePlural = TM37s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BEATUP
+#-------------------------------
+[TM38]
+Name = TM38
+NamePlural = TM38s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WILLOWISP
+#-------------------------------
+[TM39]
+Name = TM39
+NamePlural = TM39s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FACADE
+#-------------------------------
+[TM40]
+Name = TM40
+NamePlural = TM40s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SWIFT
+#-------------------------------
+[TM41]
+Name = TM41
+NamePlural = TM41s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HELPINGHAND
+#-------------------------------
+[TM42]
+Name = TM42
+NamePlural = TM42s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = REVENGE
+#-------------------------------
+[TM43]
+Name = TM43
+NamePlural = TM43s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BRICKBREAK
+#-------------------------------
+[TM44]
+Name = TM44
+NamePlural = TM44s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = IMPRISON
+#-------------------------------
+[TM45]
+Name = TM45
+NamePlural = TM45s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DIVE
+#-------------------------------
+[TM46]
+Name = TM46
+NamePlural = TM46s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WEATHERBURST
+#-------------------------------
+[TM47]
+Name = TM47
+NamePlural = TM47s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FAKETEARS
+#-------------------------------
+[TM48]
+Name = TM48
+NamePlural = TM48s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = STRAFE
+#-------------------------------
+[TM49]
+Name = TM49
+NamePlural = TM49s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MEGAPUNCH
+#-------------------------------
+[TM50]
+Name = TM50
+NamePlural = TM50s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BULLETSEED
+#-------------------------------
+[TM51]
+Name = TM51
+NamePlural = TM51s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = GLACIALRAM
+#-------------------------------
+[TM52]
+Name = TM52
+NamePlural = TM52s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BOUNCE
+#-------------------------------
+[TM53]
+Name = TM53
+NamePlural = TM53s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MUDSHOT
+#-------------------------------
+[TM54]
+Name = TM54
+NamePlural = TM54s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WAILINGBLOW
+#-------------------------------
+[TM55]
+Name = TM55
+NamePlural = TM55s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BRINE
+#-------------------------------
+[TM56]
+Name = TM56
+NamePlural = TM56s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = UTURN
+#-------------------------------
+[TM57]
+Name = TM57
+NamePlural = TM57s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PAYBACK
+#-------------------------------
+[TM58]
+Name = TM58
+NamePlural = TM58s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ASSURANCE
+#-------------------------------
+[TM59]
+Name = TM59
+NamePlural = TM59s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLING
+#-------------------------------
+[TM60]
+Name = TM60
+NamePlural = TM60s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = POWERSWAP
+#-------------------------------
+[TM61]
+Name = TM61
+NamePlural = TM61s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = GUARDSWAP
+#-------------------------------
+[TM62]
+Name = TM62
+NamePlural = TM62s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HEARTSWAP
+#-------------------------------
+[TM63]
+Name = TM63
+NamePlural = TM63s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DRAINPUNCH
+#-------------------------------
+[TM64]
+Name = TM64
+NamePlural = TM64s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = AVALANCHE
+#-------------------------------
+[TM65]
+Name = TM65
+NamePlural = TM65s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SHADOWCLAW
+#-------------------------------
+[TM66]
+Name = TM66
+NamePlural = TM66s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = THUNDERFANG
+#-------------------------------
+[TM67]
+Name = TM67
+NamePlural = TM67s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ICEFANG
+#-------------------------------
+[TM68]
+Name = TM68
+NamePlural = TM68s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FIREFANG
+#-------------------------------
+[TM69]
+Name = TM69
+NamePlural = TM69s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HONECLAWS
+#-------------------------------
+[TM70]
+Name = TM70
+NamePlural = TM70s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = POLARIZEDROOM
+#-------------------------------
+[TM71]
+Name = TM71
+NamePlural = TM71s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WONDERROOM
+#-------------------------------
+[TM72]
+Name = TM72
+NamePlural = TM72s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PUZZLEROOM
+#-------------------------------
+[TM73]
+Name = TM73
+NamePlural = TM73s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CROSSPOISON
+#-------------------------------
+[TM74]
+Name = TM74
+NamePlural = TM74s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = VENOSHOCK
+#-------------------------------
+[TM75]
+Name = TM75
+NamePlural = TM75s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LOWSWEEP
+#-------------------------------
+[TM76]
+Name = TM76
+NamePlural = TM76s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ROUND
+#-------------------------------
+[TM77]
+Name = TM77
+NamePlural = TM77s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HEX
+#-------------------------------
+[TM78]
+Name = TM78
+NamePlural = TM78s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ACROBATICS
+#-------------------------------
+[TM79]
+Name = TM79
+NamePlural = TM79s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RETALIATE
+#-------------------------------
+[TM80]
+Name = TM80
+NamePlural = TM80s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = VOLTSWITCH
+#-------------------------------
+[TM81]
+Name = TM81
+NamePlural = TM81s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BULLDOZE
+#-------------------------------
+[TM82]
+Name = TM82
+NamePlural = TM82s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ELECTROWEB
+#-------------------------------
+[TM83]
+Name = TM83
+NamePlural = TM83s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RAZORSHELL
+#-------------------------------
+[TM84]
+Name = TM84
+NamePlural = TM84s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DEEPBREATHING
+#-------------------------------
+[TM85]
+Name = TM85
+NamePlural = TM85s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FINALGAMBIT
+#-------------------------------
+[TM86]
+Name = TM86
+NamePlural = TM86s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PHANTOMFORCE
+#-------------------------------
+[TM87]
+Name = TM87
+NamePlural = TM87s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TRICKYTOXINS
+#-------------------------------
+[TM88]
+Name = TM88
+NamePlural = TM88s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = VOLTSWITCH
+#-------------------------------
+[TM89]
+Name = TM89
+NamePlural = TM89s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = UTURN
+#-------------------------------
+[TM90]
+Name = TM90
+NamePlural = TM90s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLIPTURN
+#-------------------------------
+[TM91]
+Name = TM91
+NamePlural = TM91s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PARTINGSHOT
+#-------------------------------
+[TM92]
+Name = TM92
+NamePlural = TM92s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MEMENTO
+#-------------------------------
+[TM93]
+Name = TM93
+NamePlural = TM93s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = EERIEIMPULSE
+#-------------------------------
+[TM94]
+Name = TM94
+NamePlural = TM94s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CHARM
+#-------------------------------
+[TM95]
+Name = TM95
+NamePlural = TM95s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = COLDFRONT
+#-------------------------------
+[TM96]
+Name = TM96
+NamePlural = TM96s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BUBBLEBLASTER
+#-------------------------------
+[TM97]
+Name = TM97
+NamePlural = TM97s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BRUTALSWING
+#-------------------------------
+[TM98]
+Name = TM98
+NamePlural = TM98s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = STOMPINGTANTRUM
+#-------------------------------
+[TM99]
+Name = TM99
+NamePlural = TM99s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BREAKINGSWIPE
+#-------------------------------
+[TM100]
+Name = TM100
+NamePlural = TM100s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLOWSTATE
+#-------------------------------
+[TM101]
+Name = TM101
+NamePlural = TM101s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BODYSLAM
+#-------------------------------
+[TM102]
+Name = TM102
+NamePlural = TM102s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLAMETHROWER
+#-------------------------------
+[TM103]
+Name = TM103
+NamePlural = TM103s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TAILWIND
+#-------------------------------
+[TM104]
+Name = TM104
+NamePlural = TM104s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SURF
+#-------------------------------
+[TM105]
+Name = TM105
+NamePlural = TM105s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ICEBEAM
+#-------------------------------
+[TM106]
+Name = TM106
+NamePlural = TM106s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HONESIGHT
+#-------------------------------
+[TM107]
+Name = TM107
+NamePlural = TM107s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LOWKICK
+#-------------------------------
+[TM108]
+Name = TM108
+NamePlural = TM108s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = THUNDERBOLT
+#-------------------------------
+[TM109]
+Name = TM109
+NamePlural = TM109s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = THUNDER
+#-------------------------------
+[TM110]
+Name = TM110
+NamePlural = TM110s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = EARTHQUAKE
+#-------------------------------
+[TM111]
+Name = TM111
+NamePlural = TM111s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PSYCHIC
+#-------------------------------
+[TM112]
+Name = TM112
+NamePlural = TM112s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = AGILITY
+#-------------------------------
+[TM113]
+Name = TM113
+NamePlural = TM113s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FOCUSENERGY
+#-------------------------------
+[TM114]
+Name = TM114
+NamePlural = TM114s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = AIMTRUE
+#-------------------------------
+[TM115]
+Name = TM115
+NamePlural = TM115s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FIREBLAST
+#-------------------------------
+[TM116]
+Name = TM116
+NamePlural = TM116s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WATERFALL
+#-------------------------------
+[TM117]
+Name = TM117
+NamePlural = TM117s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = AMNESIA
+#-------------------------------
+[TM118]
+Name = TM118
+NamePlural = TM118s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LEECHLIFE
+#-------------------------------
+[TM119]
+Name = TM119
+NamePlural = TM119s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TRIATTACK
+#-------------------------------
+[TM120]
+Name = TM120
+NamePlural = TM120s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SUBSTITUTE
+#-------------------------------
+[TM121]
+Name = TM121
+NamePlural = TM121s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = REVERSAL
+#-------------------------------
+[TM122]
+Name = TM122
+NamePlural = TM122s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SLUDGEBOMB
+#-------------------------------
+[TM123]
+Name = TM123
+NamePlural = TM123s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SPIKES
+#-------------------------------
+[TM124]
+Name = TM124
+NamePlural = TM124s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = OUTRAGE
+#-------------------------------
+[TM125]
+Name = TM125
+NamePlural = TM125s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PSYSHOCK
+#-------------------------------
+[TM126]
+Name = TM126
+NamePlural = TM126s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ENDURE
+#-------------------------------
+[TM127]
+Name = TM127
+NamePlural = TM127s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SLEEPTALK
+#-------------------------------
+[TM128]
+Name = TM128
+NamePlural = TM128s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MEGAHORN
+#-------------------------------
+[TM129]
+Name = TM129
+NamePlural = TM129s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BATONPASS
+#-------------------------------
+[TM130]
+Name = TM130
+NamePlural = TM130s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ENCORE
+#-------------------------------
+[TM131]
+Name = TM131
+NamePlural = TM131s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = IRONTAIL
+#-------------------------------
+[TM132]
+Name = TM132
+NamePlural = TM132s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CRUNCH
+#-------------------------------
+[TM133]
+Name = TM133
+NamePlural = TM133s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SHADOWBALL
+#-------------------------------
+[TM134]
+Name = TM134
+NamePlural = TM134s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FROSTSPIKES
+#-------------------------------
+[TM135]
+Name = TM135
+NamePlural = TM135s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = UPROAR
+#-------------------------------
+[TM136]
+Name = TM136
+NamePlural = TM136s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BAR
+#-------------------------------
+[TM137]
+Name = TM137
+NamePlural = TM137s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TAUNT
+#-------------------------------
+[TM138]
+Name = TM138
+NamePlural = TM138s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TRICK
+#-------------------------------
+[TM139]
+Name = TM139
+NamePlural = TM139s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SUPERPOWER
+#-------------------------------
+[TM140]
+Name = TM140
+NamePlural = TM140s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SKILLSWAP
+#-------------------------------
+[TM141]
+Name = TM141
+NamePlural = TM141s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = INFERNOIMPACT
+#-------------------------------
+[TM142]
+Name = TM142
+NamePlural = TM142s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HYPERVOICE
+#-------------------------------
+[TM143]
+Name = TM143
+NamePlural = TM143s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = OVERHEAT
+#-------------------------------
+[TM144]
+Name = TM144
+NamePlural = TM144s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = COSMICPOWER
+#-------------------------------
+[TM145]
+Name = TM145
+NamePlural = TM145s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ODDROOM
+#-------------------------------
+[TM146]
+Name = TM146
+NamePlural = TM146s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = IRONDEFENSE
+#-------------------------------
+[TM147]
+Name = TM147
+NamePlural = TM147s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = REND
+#-------------------------------
+[TM148]
+Name = TM148
+NamePlural = TM148s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BULKUP
+#-------------------------------
+[TM149]
+Name = TM149
+NamePlural = TM149s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CALMMIND
+#-------------------------------
+[TM150]
+Name = TM150
+NamePlural = TM150s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LEAFBLADE
+#-------------------------------
+[TM151]
+Name = TM151
+NamePlural = TM151s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLAMESPIKES
+#-------------------------------
+[TM152]
+Name = TM152
+NamePlural = TM152s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = GYROBALL
+#-------------------------------
+[TM153]
+Name = TM153
+NamePlural = TM153s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CLOSECOMBAT
+#-------------------------------
+[TM154]
+Name = TM154
+NamePlural = TM154s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = POISONSPIKES
+#-------------------------------
+[TM155]
+Name = TM155
+NamePlural = TM155s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLAREBLITZ
+#-------------------------------
+[TM156]
+Name = TM156
+NamePlural = TM156s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = AURASPHERE
+#-------------------------------
+[TM157]
+Name = TM157
+NamePlural = TM157s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = POISONJAB
+#-------------------------------
+[TM158]
+Name = TM158
+NamePlural = TM158s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DARKALLURE
+#-------------------------------
+[TM159]
+Name = TM159
+NamePlural = TM159s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = NULLPULSE
+#-------------------------------
+[TM160]
+Name = TM160
+NamePlural = TM160s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = XSCISSOR
+#-------------------------------
+[TM161]
+Name = TM161
+NamePlural = TM161s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BUGBUZZ
+#-------------------------------
+[TM162]
+Name = TM162
+NamePlural = TM162s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DRAGONPULSE
+#-------------------------------
+[TM163]
+Name = TM163
+NamePlural = TM163s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = POWERGEM
+#-------------------------------
+[TM164]
+Name = TM164
+NamePlural = TM164s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FOCUSBLAST
+#-------------------------------
+[TM165]
+Name = TM165
+NamePlural = TM165s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ENERGYBALL
+#-------------------------------
+[TM166]
+Name = TM166
+NamePlural = TM166s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BRAVEBIRD
+#-------------------------------
+[TM167]
+Name = TM167
+NamePlural = TM167s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = EARTHPOWER
+#-------------------------------
+[TM168]
+Name = TM168
+NamePlural = TM168s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = VANGUARD
+#-------------------------------
+[TM169]
+Name = TM169
+NamePlural = TM169s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SEERSTRIKE
+#-------------------------------
+[TM170]
+Name = TM170
+NamePlural = TM170s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLASHCANNON
+#-------------------------------
+[TM171]
+Name = TM171
+NamePlural = TM171s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LEAFSTORM
+#-------------------------------
+[TM172]
+Name = TM172
+NamePlural = TM172s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = POWERWHIP
+#-------------------------------
+[TM173]
+Name = TM173
+NamePlural = TM173s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = GUNKSHOT
+#-------------------------------
+[TM174]
+Name = TM174
+NamePlural = TM174s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BULLETTRAIN
+#-------------------------------
+[TM175]
+Name = TM175
+NamePlural = TM175s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ADAMANTINEPRESS
+#-------------------------------
+[TM176]
+Name = TM176
+NamePlural = TM176s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = STEALTHROCK
+#-------------------------------
+[TM177]
+Name = TM177
+NamePlural = TM177s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = GRASSKNOT
+#-------------------------------
+[TM178]
+Name = TM178
+NamePlural = TM178s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MIASMA
+#-------------------------------
+[TM179]
+Name = TM179
+NamePlural = TM179s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HEAVYSLAM
+#-------------------------------
+[TM180]
+Name = TM180
+NamePlural = TM180s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ELECTROBALL
+#-------------------------------
+[TM181]
+Name = TM181
+NamePlural = TM181s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FOULPLAY
+#-------------------------------
+[TM182]
+Name = TM182
+NamePlural = TM182s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = STOREDPOWER
+#-------------------------------
+[TM183]
+Name = TM183
+NamePlural = TM183s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ALLYSWITCH
+#-------------------------------
+[TM184]
+Name = TM184
+NamePlural = TM184s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SCALD
+#-------------------------------
+[TM185]
+Name = TM185
+NamePlural = TM185s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WORKUP
+#-------------------------------
+[TM186]
+Name = TM186
+NamePlural = TM186s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ELECTROSLASH
+#-------------------------------
+[TM187]
+Name = TM187
+NamePlural = TM187s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TRAMPLE
+#-------------------------------
+[TM188]
+Name = TM188
+NamePlural = TM188s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HEATCRASH
+#-------------------------------
+[TM189]
+Name = TM189
+NamePlural = TM189s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = STORMDRIVE
+#-------------------------------
+[TM190]
+Name = TM190
+NamePlural = TM190s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PLAYROUGH
+#-------------------------------
+[TM191]
+Name = TM191
+NamePlural = TM191s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = VENOMDRENCH
+#-------------------------------
+[TM192]
+Name = TM192
+NamePlural = TM192s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MOONBLAST
+#-------------------------------
+[TM193]
+Name = TM193
+NamePlural = TM193s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WARDPRESS
+#-------------------------------
+[TM194]
+Name = TM194
+NamePlural = TM194s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SCORCHINGSANDS
+#-------------------------------
+[TM195]
+Name = TM195
+NamePlural = TM195s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = THROATCHOP
+#-------------------------------
+[TM196]
+Name = TM196
+NamePlural = TM196s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MOONGLOW
+#-------------------------------
+[TM197]
+Name = TM197
+NamePlural = TM197s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ECLIPSE
+#-------------------------------
+[TM198]
+Name = TM198
+NamePlural = TM198s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LIQUIDATION
+#-------------------------------
+[TM199]
+Name = TM199
+NamePlural = TM199s
+Pocket = 5
+Price = 5000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BODYPRESS
+#-------------------------------
+[LIGHTHOUSEKEYCARD]
+Name = Lighthouse Keycard
+NamePlural = Lighthouse Keycards
+Pocket = 6
+Price = 0
+Flags = KeyItem
+Description = A colorful keycard. It grants access to elevator at the Sweetrock Harbor Lighthouse.
+#-------------------------------
+[STATUSHEAL]
+Name = Status Heal
+NamePlural = Status Heals
+Pocket = 2
+Price = 400
+FieldUse = OnPokemon
+Description = A spray-type medicine. It heals all the status problems of a single Pokémon.
+#-------------------------------
+[TMSAFEGUARD]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SAFEGUARD
+#-------------------------------
+[AURORATICKET]
+Name = Aurora Ticket
+NamePlural = Aurora Tickets
+Pocket = 6
+Price = 0
+Flags = KeyItem
+Description = A ticket required to board the ship to Doxy Island. It glows beautifully.
+#-------------------------------
+[OLDSEAMAP]
+Name = Old Sea Map
+NamePlural = Old Sea Maps
+Pocket = 6
+Price = 0
+Flags = KeyItem
+Description = A faded sea chart that shows the way to a certain island.
+#-------------------------------
+[TMRANSACK]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RANSACK
+#-------------------------------
+[TMTRICKYTOXINS]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TRICKYTOXINS
+#-------------------------------
+[TMALLYSWITCH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ALLYSWITCH
+#-------------------------------
+[TMBATONPASS]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BATONPASS
+#-------------------------------
+[PEARLOFFATE]
+Name = Pearl of Fate
+NamePlural = Pearls of Fate
+Pocket = 13
+Price = 0
+Flags = Leftovers
+Description = User heals 1/16th HP every turn. Will sacrifice itself to cure the user of status.
+#-------------------------------
+[MEGARING]
+Name = Mega Ring
+NamePlural = Mega Rings
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = This ring contains an untold power that somehow enables Pokémon carrying Mega Stones to Mega Evolve.
+#-------------------------------
+[DEADSKYSLIVER]
+Name = Dead Sky Sliver
+NamePlural = Dead Sky Slivers
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A dark sliver of something that hurts to look at. It bears an inscription.
+#-------------------------------
+[TIMELOSTALABASTER]
+Name = Timelost Alabaster
+NamePlural = Timelost Alabasters
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = Inscribed, delicate pale stone. It’s always been here, but it hasn’t always always been here.
+#-------------------------------
+[WRETCHEDWHITEWING]
+Name = Wretched Whitewing
+NamePlural = Wretched Whitewings
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A radiant wing. It radiates misery, but you feel peaceful holding it. Returning home, returning home...
+#-------------------------------
+[TMAURASPHERE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = AURASPHERE
+#-------------------------------
+[TMCLOUDBREAK]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CLOUDBREAK
+#-------------------------------
+[TMDISSIPATION]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DISSIPATION
+#-------------------------------
+[TMSCREECH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SCREECH
+#-------------------------------
+[TMCOSMICPOWER]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = COSMICPOWER
+#-------------------------------
+[TMBULLETTRAIN]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BULLETTRAIN
+#-------------------------------
+[TMSEERSTRIKE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SEERSTRIKE
+#-------------------------------
+[TMTRICK]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TRICK

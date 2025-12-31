@@ -1,0 +1,1261 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[TMPROTECT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PROTECT
+#-------------------------------
+[TMENDURE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ENDURE
+#-------------------------------
+[TMSUBSTITUTE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SUBSTITUTE
+#-------------------------------
+[TMPOISONGAS]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = POISONGAS
+#-------------------------------
+[TMIGNITE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = IGNITE
+#-------------------------------
+[TMCHILL]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CHILL
+#-------------------------------
+[TMNUMB]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = NUMB
+#-------------------------------
+[TMWATERLOG]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WATERLOG
+#-------------------------------
+[TMCONFUSERAY]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CONFUSERAY
+#-------------------------------
+[TMLEECHSEED]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LEECHSEED
+#-------------------------------
+[TMENCORE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ENCORE
+#-------------------------------
+[TMTAUNT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TAUNT
+#-------------------------------
+[TMBAR]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BAR
+#-------------------------------
+[TMSCARYFACE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SCARYFACE
+#-------------------------------
+[TMBARETEETH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BARETEETH
+#-------------------------------
+[TMFAKETEARS]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FAKETEARS
+#-------------------------------
+[TMCHARM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CHARM
+#-------------------------------
+[TMEERIEIMPULSE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = EERIEIMPULSE
+#-------------------------------
+[TMPARTINGSHOT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PARTINGSHOT
+#-------------------------------
+[TMAGILITY]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = AGILITY
+#-------------------------------
+[TMIRONDEFENSE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = IRONDEFENSE
+#-------------------------------
+[TMAMNESIA]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = AMNESIA
+#-------------------------------
+[TMWORKUP]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WORKUP
+#-------------------------------
+[TMBULKUP]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BULKUP
+#-------------------------------
+[TMCALMMIND]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CALMMIND
+#-------------------------------
+[TMFLOWSTATE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLOWSTATE
+#-------------------------------
+[TMVANGUARD]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = VANGUARD
+#-------------------------------
+[TMSHIVERDANCE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SHIVERDANCE
+#-------------------------------
+[TMQUIVERDANCE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = QUIVERDANCE
+#-------------------------------
+[TMAIMTRUE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = AIMTRUE
+#-------------------------------
+[TMHONECLAWS]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HONECLAWS
+#-------------------------------
+[TMHONESIGHT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HONESIGHT
+#-------------------------------
+[TMFOCUSENERGY]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FOCUSENERGY
+#-------------------------------
+[TMHEARTSWAP]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HEARTSWAP
+#-------------------------------
+[TMSWITCHEROO]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SWITCHEROO
+#-------------------------------
+[TMREST]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = REST
+#-------------------------------
+[TMSLEEPTALK]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SLEEPTALK
+#-------------------------------
+[TMSTEALTHROCK]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = STEALTHROCK
+#-------------------------------
+[TMSPIKES]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SPIKES
+#-------------------------------
+[TMPOISONSPIKES]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = POISONSPIKES
+#-------------------------------
+[TMFLAMESPIKES]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLAMESPIKES
+#-------------------------------
+[TMFROSTSPIKES]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FROSTSPIKES
+#-------------------------------
+[TMDEFOG]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DEFOG
+#-------------------------------
+[TMREFLECT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = REFLECT
+#-------------------------------
+[TMLIGHTSCREEN]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LIGHTSCREEN
+#-------------------------------
+[TMGREYMIST]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = GREYMIST
+#-------------------------------
+[TMPUZZLEROOM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PUZZLEROOM
+#-------------------------------
+[TMODDROOM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ODDROOM
+#-------------------------------
+[TMPOLARIZEDROOM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = POLARIZEDROOM
+#-------------------------------
+[TMTAILWIND]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TAILWIND
+#-------------------------------
+[TMSUNSHINE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SUNSHINE
+#-------------------------------
+[TMRAINSTORM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RAINSTORM
+#-------------------------------
+[TMSANDSTORM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SANDSTORM
+#-------------------------------
+[TMHAIL]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HAIL
+#-------------------------------
+[TMMOONGLOW]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MOONGLOW
+#-------------------------------
+[TMECLIPSE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ECLIPSE
+#-------------------------------
+[TMFOLLOWME]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FOLLOWME
+#-------------------------------
+[TMMEMENTO]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MEMENTO
+#-------------------------------
+[TMSELFDESTRUCT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SELFDESTRUCT
+#-------------------------------
+[TMEXPLOSION]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = EXPLOSION
+#-------------------------------
+[TMFINALGAMBIT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FINALGAMBIT
+#-------------------------------
+[TMWEATHERBURST]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WEATHERBURST
+#-------------------------------
+[TMCOVET]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = COVET
+#-------------------------------
+[TMRISINGPOWER]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RISINGPOWER
+#-------------------------------
+[TMTRIATTACK]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TRIATTACK
+#-------------------------------
+[TMCHAOSWHEEL]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CHAOSWHEEL
+#-------------------------------
+[TMSNORE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SNORE
+#-------------------------------
+[TMRAPIDSPIN]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RAPIDSPIN
+#-------------------------------
+[TMNULLPULSE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = NULLPULSE
+#-------------------------------
+[TMBODYSLAM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BODYSLAM
+#-------------------------------
+[TMLAUNDER]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LAUNDER
+#-------------------------------
+[TMMEGAPUNCH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MEGAPUNCH
+#-------------------------------
+[TMHYPERVOICE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HYPERVOICE
+#-------------------------------
+[TMINFERNOIMPACT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = INFERNOIMPACT
+#-------------------------------
+[TMFLAMETHROWER]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLAMETHROWER
+#-------------------------------
+[TMLIQUIDATION]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LIQUIDATION
+#-------------------------------
+[TMBUBBLEBLASTER]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BUBBLEBLASTER
+#-------------------------------
+[TMLEAFBLADE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LEAFBLADE
+#-------------------------------
+[TMENERGYBALL]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ENERGYBALL
+#-------------------------------
+[TMELECTROSLASH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ELECTROSLASH
+#-------------------------------
+[TMTHUNDERBOLT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = THUNDERBOLT
+#-------------------------------
+[TMGLACIALRAM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = GLACIALRAM
+#-------------------------------
+[TMICEBEAM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ICEBEAM
+#-------------------------------
+[TMCROSSCHOP]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CROSSCHOP
+#-------------------------------
+[TMADRENALASH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ADRENALASH
+#-------------------------------
+[TMPOISONJAB]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = POISONJAB
+#-------------------------------
+[TMMIASMA]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MIASMA
+#-------------------------------
+[TMTRAMPLE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TRAMPLE
+#-------------------------------
+[TMEARTHPOWER]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = EARTHPOWER
+#-------------------------------
+[TMSTRAFE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = STRAFE
+#-------------------------------
+[TMCOLDFRONT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = COLDFRONT
+#-------------------------------
+[TMPSYCHOSCISSION]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PSYCHOSCISSION
+#-------------------------------
+[TMPSYCHIC]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PSYCHIC
+#-------------------------------
+[TMXSCISSOR]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = XSCISSOR
+#-------------------------------
+[TMBUGBUZZ]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BUGBUZZ
+#-------------------------------
+[TMADAMANTINEPRESS]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ADAMANTINEPRESS
+#-------------------------------
+[TMPOWERGEM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = POWERGEM
+#-------------------------------
+[TMWAILINGBLOW]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WAILINGBLOW
+#-------------------------------
+[TMSHADOWBALL]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SHADOWBALL
+#-------------------------------
+[TMREND]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = REND
+#-------------------------------
+[TMDRAGONPULSE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DRAGONPULSE
+#-------------------------------
+[TMCRUNCH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CRUNCH
+#-------------------------------
+[TMDARKALLURE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DARKALLURE
+#-------------------------------
+[TMMETEORMASH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = METEORMASH
+#-------------------------------
+[TMFLASHCANNON]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLASHCANNON
+#-------------------------------
+[TMPLAYROUGH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PLAYROUGH
+#-------------------------------
+[TMMOONBLAST]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MOONBLAST
+#-------------------------------
+[TMSTAMPDOWN]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = STAMPDOWN
+#-------------------------------
+[TMCLEARSMOG]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CLEARSMOG
+#-------------------------------
+[TMBRICKBREAK]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BRICKBREAK
+#-------------------------------
+[TMSEISMICWAVE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SEISMICWAVE
+#-------------------------------
+[TMRAZINGVINES]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RAZINGVINES
+#-------------------------------
+[TMSKYFALL]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SKYFALL
+#-------------------------------
+[TMCRUELTY]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CRUELTY
+#-------------------------------
+[TMHEX]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HEX
+#-------------------------------
+[TMBODYPRESS]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BODYPRESS
+#-------------------------------
+[TMWARDPRESS]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WARDPRESS
+#-------------------------------
+[TMFOULPLAY]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FOULPLAY
+#-------------------------------
+[TMSHORTCIRCUIT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SHORTCIRCUIT
+#-------------------------------
+[TMRETREAT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RETREAT
+#-------------------------------
+[TMVOLTSWITCH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = VOLTSWITCH
+#-------------------------------
+[TMUTURN]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = UTURN
+#-------------------------------
+[TMFLIPTURN]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLIPTURN
+#-------------------------------
+[TMPSYCHESWITCH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PSYCHESWITCH
+#-------------------------------
+[TMHYPERBEAM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HYPERBEAM
+#-------------------------------
+[TMGIGAIMPACT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = GIGAIMPACT
+#-------------------------------
+[TMFRENZYPLANT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FRENZYPLANT
+#-------------------------------
+[TMBLASTBURN]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BLASTBURN
+#-------------------------------
+[TMHYDROCANNON]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HYDROCANNON
+#-------------------------------
+[TMROCKWRECKER]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ROCKWRECKER
+#-------------------------------
+[TMMETEORASSAULT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = METEORASSAULT
+#-------------------------------
+[TMNATURALPROTECTION]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = NATURALPROTECTION
+#-------------------------------
+[TMRAILCANNON]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RAILCANNON
+#-------------------------------
+[TMRECOVER]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RECOVER
+#-------------------------------
+[TMSLACKOFF]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SLACKOFF
+#-------------------------------
+[TMROOST]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ROOST
+#-------------------------------
+[TMTAKESHELTER]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TAKESHELTER
+#-------------------------------
+[TMSYNTHESIS]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SYNTHESIS
+#-------------------------------
+[TMSHOREUP]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SHOREUP
+#-------------------------------
+[TMSWEETSELENE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SWEETSELENE

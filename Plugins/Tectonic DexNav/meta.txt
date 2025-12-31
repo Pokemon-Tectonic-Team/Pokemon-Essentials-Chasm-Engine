@@ -1,0 +1,2 @@
+Name 		= Tectonic DexNav
+Credits 	= Zinnia,Phantombass,Suzerain,Nuri Yuri,SimpleEncounterUI Team

@@ -1,0 +1,30 @@
+Run the game in Debug mode each time you want the game to compile any changes you make to the Plugins here.
+Run the "Debug Game.bat" for basic Debug, or "Debug Game with Compile.bat" if you also want to compile changes to PBS files.
+If doing this still doesn't seem to be doing anything, try deleting PluginScripts.rxdata in the Data folder.
+
+When making a new mod, start from the MOD TEMPLATE folder.
+
+If making PBS changes, consider using the PBS Extensions feature!
+If you place a PBS file (e.g. “pokemon.txt”) inside a plugin, it will be hot loaded at runtime. This only works for defining new content, and will not work for trying to edit existing content.
+This currently supports:
+pokemon.txt
+pokemon_metrics.txt
+pokemonforms.txt
+avatars.txt
+abilities.txt
+moves.txt
+items.txt
+regionaldexes.txt
+trainers.txt
+trainertypes.txt
+tribes.txt
+likes.txt
+dislikes.txt
+metadata.txt
+encounters.txt
+
+Examples of using each can be found in the MOD TEMPLATE folder.
+
+Pokemon and moves with the Debug flag, or Tribes, Likes, Dislikes, and Traits that begin with "DEBUG_", won't appear outside of Debug mode. This is so that these examples don't interfere with normal gameplay. However, for your mod, you probably do want changes to appear in normal gameplay, so don't copy that behaviour from the examples into your mod.
+
+If including new maps with your mod, include the map name in the ImportName field in metadata.txt, so that it can be included when Debug Mode imports it into MapInfos.rxdata.

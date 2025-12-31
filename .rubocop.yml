@@ -1,0 +1,36 @@
+inherit_from:
+- https://relaxed.ruby.style/rubocop.yml
+
+Style/Encoding:
+    Enabled: true
+
+Layout/LineLength:
+    Max: 200
+  
+AllCops:
+    TargetRubyVersion: 3.0
+    NewCops: enable
+  
+Layout/IndentationStyle:
+    EnforcedStyle: tabs
+
+Layout/IndentationWidth:
+    Enabled: false
+  
+Naming/VariableName:
+    EnforcedStyle: snake_case
+
+Naming/FileName:
+    Enabled: false
+    
+Style/FrozenStringLiteralComment:
+    EnforcedStyle: never
+
+Style/StringLiterals:
+    EnforcedStyle: double_quotes
+    
+Style/GlobalVars:
+    Enabled: false
+
+Layout/ArgumentAlignment:  
+    Enabled: false

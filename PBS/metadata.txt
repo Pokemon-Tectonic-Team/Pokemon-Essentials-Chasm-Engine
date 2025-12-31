@@ -1,0 +1,14 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[000]
+Home = 32,9,7,2
+WildBattleBGM = Battle wild.ogg
+TrainerBattleBGM = DPPTTrainer.ogg
+AvatarBattleBGM = Battle avatar.ogg
+LegendaryAvatarBattleBGM = Battle avatar legendary.ogg
+WildVictoryME = VICTORYWILDPOKEMONHGSS.ogg
+TrainerVictoryME = VICTORYTRAINERDPPT.ogg
+BicycleBGM = BICYCLE2.ogg
+PlayerA = POKEMONTRAINER_Masculine,masc_walk,masc_bike,masc_surf,masc_run,masc_surf,masc_fish_offset,masc_fish_offset
+PlayerB = POKEMONTRAINER_Feminine,fem_walk,fem_bike,fem_surf,fem_run,fem_surf,fem_fish_offset,fem_fish_offset
+PlayerC = POKEMONTRAINER_Androgynous,andro_walk,andro_bike,andro_surf,andro_run,andro_surf,andro_fish_offset,andro_fish_offset
