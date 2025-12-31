@@ -4,6 +4,4 @@ This engine is based on Pokemon Essentials v19.1, but includes a significant amo
 
 When making your own game forked off this engine, be sure to replace all instances of "Your Game Name Here" with the name of your game, including in the RPG Maker settings.
 
-This is another sample message to force a conflict for testing purposes.
-
 TO BE WRITTEN
