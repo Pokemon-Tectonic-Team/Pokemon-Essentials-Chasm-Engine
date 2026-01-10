@@ -5,6 +5,7 @@ module GameData
       attr_reader :real_name
       attr_reader :base_money
       attr_reader :battle_BGM
+      attr_reader :cursed_battle_BGM
       attr_reader :victory_ME
       attr_reader :intro_ME
       attr_reader :gender
@@ -28,6 +29,7 @@ module GameData
       "Policies"   => [:policies,    "*s"],
       "IntroBGM"   => [:intro_ME,   "s"],
       "BattleBGM"  => [:battle_BGM,  "s"],
+      "CursedBGM"  => [:cursed_battle_BGM,  "s"],
       "VictoryBGM" => [:victory_ME, "s"],
       "CableClub" => [:cable_club, "b"]
     }
@@ -106,6 +108,7 @@ module GameData
         @real_name   = hash[:name]        || "Unnamed"
         @base_money  = hash[:base_money]  || 30
         @battle_BGM  = hash[:battle_BGM]
+        @cursed_battle_BGM  = hash[:cursed_battle_BGM]
         @victory_ME  = hash[:victory_ME]
         @victory_ME  = hash[:victory_ME]
         @intro_ME    = hash[:intro_ME]
@@ -202,6 +205,7 @@ module Compiler
             f.write(sprintf("Policies = %s\r\n", t.policies.join(","))) if t.policies.length > 0
             f.write(sprintf("IntroBGM = %s\r\n", t.intro_ME)) if !nil_or_empty?(t.intro_ME)
             f.write(sprintf("BattleBGM = %s\r\n", t.battle_BGM)) if !nil_or_empty?(t.battle_BGM)
+            f.write(sprintf("CursedBGM = %s\r\n", t.cursed_battle_BGM)) if !nil_or_empty?(t.cursed_battle_BGM)
             f.write(sprintf("VictoryME = %s\r\n", t.victory_ME)) if !nil_or_empty?(t.victory_ME)
             f.write(sprintf("CableClub = true\r\n")) if t.cable_club
           end
