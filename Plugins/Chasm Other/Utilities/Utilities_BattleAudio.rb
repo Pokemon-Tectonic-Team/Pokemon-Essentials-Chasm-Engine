@@ -136,3 +136,8 @@ def pbGetTrainerVictoryME(trainer) # can be a Player, NPCTrainer or an array of 
     ret.name = "../../Audio/ME/" + ret.name
     return ret
 end
+
+# Set next battle BGM through script instead of RPG Maker event
+def pbSetNextBattleBGM(bgm)
+    $PokemonGlobal.nextBattleBGM = bgm
+end
