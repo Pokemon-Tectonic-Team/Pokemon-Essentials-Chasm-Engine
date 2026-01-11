@@ -1592,7 +1592,7 @@ class Pokemon
             return @personalID ^ @owner.id
         else
             stringForHashing = @owner.name + name
-            stringForHashing += @personalID if @aestheticsRandomness
+            stringForHashing += @personalID.to_s if @aestheticsRandomness
             return hash32Bit(stringForHashing)
         end
     end
