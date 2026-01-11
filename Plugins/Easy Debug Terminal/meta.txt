@@ -1,3 +1,4 @@
 Name      = Easy Debug Terminal
 Version   = 1.0
 Credits   = ENLS
+Requires  = Chasm Graphics and UI
