@@ -1,3 +1,3 @@
 Name         = Chasm MoveDex
 Credits      = Essentials v19 Team,Zinnia
-Requires	 = Chasm Graphics
+Requires	 = Chasm Graphics and UI

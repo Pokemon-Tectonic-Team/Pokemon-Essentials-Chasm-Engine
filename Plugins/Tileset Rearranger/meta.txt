@@ -1,7 +1,7 @@
 ﻿Name       = Tileset Rearranger
 Version    = 1.2
 Credits    = Maruno
-Requires   = Chasm Graphics
+Requires   = Chasm Graphics and UI
 Link       = https://reliccastle.com/resources/794/
 #====================================================================
 # Tileset Rearranger

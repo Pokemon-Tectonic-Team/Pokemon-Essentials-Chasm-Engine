@@ -1,4 +1,4 @@
-Name         = Chasm Graphics
+Name         = Chasm Graphics and UI
 Credits      = Essentials v19 Team,Zinnia,Brickbat,MrPanda1,LunaFlare
 Requires	 = Chasm Game Data
 Requires	 = Chasm Game Processing
