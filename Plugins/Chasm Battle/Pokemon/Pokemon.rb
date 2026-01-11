@@ -1498,10 +1498,11 @@ class Pokemon
     # @param owner [Owner, Player, NPCTrainer] Pokémon owner (the player by default)
     # @param withMoves [TrueClass, FalseClass] whether the Pokémon should have moves
     # @param rechech_form [TrueClass, FalseClass] whether to auto-check the form
-    def initialize(species, level, owner = $Trainer, withMoves = true, recheck_form = true)
+    def initialize(species, level, owner = $Trainer, withMoves = true, recheck_form = true, aestheticsRandomness: false)
         species_data = GameData::Species.get(species)
         @species          = species_data.species
         @form             = species_data.form
+        @aestheticsRandomness = aestheticsRandomness
         @forced_form      = nil
         @time_form_set    = nil
         self.level        = level
@@ -1590,7 +1591,9 @@ class Pokemon
         if ownedByPlayer?
             return @personalID ^ @owner.id
         else
-            return hash32Bit(@owner.name + name)
+            stringForHashing = @owner.name + name
+            stringForHashing += @personalID if @aestheticsRandomness
+            return hash32Bit(stringForHashing)
         end
     end
 

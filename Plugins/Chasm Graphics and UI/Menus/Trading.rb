@@ -249,7 +249,7 @@ class PokemonTrade_Scene
     else
       species_data = GameData::Species.try_get(newpoke)
       raise _INTL("Species does not exist ({1}).", newpoke) if !species_data
-      receivingPokemon = Pokemon.new(species_data.id, level, opponent)
+      receivingPokemon = Pokemon.new(species_data.id, level, opponent, aestheticsRandomness: true)
       receivingPokemon.reset_moves
     end
     receivingPokemon.name          = nickname
