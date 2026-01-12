@@ -307,15 +307,98 @@ class PokeBattle_Battle
     def aiSeesMove(battler, moveID)
         return unless battler.pbOwnedByPlayer?
         return if battler.boss?
+        # TODO: Don't learn move if
+            # - the move was invoked (not actually on learnset)
+            # - the pokemon is an illusion (using a different pokemon's moveset)
+            # - this is different to the AI *knowing* it's an illusion
+
         moveID = moveID.id if moveID.is_a?(PokeBattle_Move)
-        array = @knownMoves[battler.pokemon.personalID]
-        array = [] if array.nil?
-        array.push(moveID) unless array.include?(moveID)
+
+        pokemon = battler.pokemon
+        personalID = pokemon.personalID
+
+        # Initialize if needed
+        initializeKnownMoves(pokemon) unless @definiteMoveKnowledge.include?(personalID)
+
+        # Add to definite knowledge if not already known
+        definiteKnowledge = @definiteMoveKnowledge[personalID]
+        unless definiteKnowledge.include?(moveID)
+            definiteKnowledge.push(moveID)
+            echoln("[AI LEARNING] The AI now definitely knows #{battler.pbThis(true)}'s move #{getMoveName(moveID)}")
+
+            # Rebuild the current best guess
+            rebuildCurrentBestGuess(pokemon)
+        end
+    end
+
+    # Rebuild the current best guess by smartly replacing initial guess with definite knowledge
+    def rebuildCurrentBestGuess(pokemon)
+        personalID = pokemon.personalID
+        initialGuess = @initialMoveGuess[personalID] || []
+        definiteKnowledge = @definiteMoveKnowledge[personalID] || []
+
+        # Start with a copy of the initial guess
+        currentBestGuess = initialGuess.clone
+
+        insertedMoveIndices = []
+
+        # For each definitely known move, try to place it intelligently
+        definiteKnowledge.each do |knownMoveID|
+            next if currentBestGuess.include?(knownMoveID) # Already in the guess
+
+            knownMoveData = GameData::Move.get(knownMoveID)
+            knownIsStatus = knownMoveData.category == 2
+            knownType = knownMoveData.type
+
+            # Try to find a guessed move with the same type to replace
+            replacement_index = nil
+            currentBestGuess.each_with_index do |guessedMoveID, index|
+                next if definiteKnowledge.include?(guessedMoveID) # Don't replace known moves
+
+                guessedMoveData = GameData::Move.get(guessedMoveID)
+                guessedIsStatus = guessedMoveData.category == 2
+                guessedType = guessedMoveData.type
+
+                # Prefer replacing same-type moves (status for status, or same type for damaging)
+                if knownIsStatus && guessedIsStatus
+                    replacement_index = index
+                    break
+                elsif !knownIsStatus && !guessedIsStatus && knownType == guessedType
+                    replacement_index = index
+                    break
+                end
+            end
+
+            # If no same-type replacement found, replace from the back (lowest priority)
+            unless replacement_index
+                (currentBestGuess.length - 1).downto(0) do |index|
+                    unless definiteKnowledge.include?(currentBestGuess[index]) or insertedMoveIndices.include?(index)
+                        insertedMoveIndices.push(index)
+                        replacement_index = index
+                        break
+                    end
+                end
+            end
+
+            # Replace the slot if we found one
+            if replacement_index
+                currentBestGuess[replacement_index] = knownMoveID
+            elsif currentBestGuess.length < 4
+                # If no replacement needed and we have room, just add it
+                currentBestGuess.push(knownMoveID)
+            end
+        end
+
+        @currentBestMoveGuess[personalID] = currentBestGuess
+
+        unless is_online?
+            echoln("Pokemon #{pokemon.name}'s current best guess: #{currentBestGuess.map { |id| getMoveName(id) }.join(', ')}")
+        end
     end
 
     def aiKnownMoves(pokemon)
-        initializeKnownMoves(pokemon) unless @knownMoves.include?(pokemon.personalID)
-        return @knownMoves[pokemon.personalID]
+        initializeKnownMoves(pokemon) unless @currentBestMoveGuess.include?(pokemon.personalID)
+        return @currentBestMoveGuess[pokemon.personalID]
     end
 
     def actionTargets?(user,action,battler)
