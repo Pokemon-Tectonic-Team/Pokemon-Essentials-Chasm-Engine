@@ -307,10 +307,7 @@ class PokeBattle_Battle
     def aiSeesMove(battler, moveID)
         return unless battler.pbOwnedByPlayer?
         return if battler.boss?
-        # TODO: Don't learn move if
-            # - the move was invoked (not actually on learnset)
-            # - the pokemon is an illusion (using a different pokemon's moveset)
-            # - this is different to the AI *knowing* it's an illusion
+        # TODO: Don't learn move if the move was invoked (not actually on learnset)
 
         moveID = moveID.id if moveID.is_a?(PokeBattle_Move)
 
