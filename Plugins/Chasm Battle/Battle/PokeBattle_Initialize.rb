@@ -247,7 +247,7 @@ class PokeBattle_Battle
     end
 
     # Build the initial move guess array: Signature > Strongest STABs > Remaining highest-level moves
-    def buildInitialMoveGuess(pokemon)
+    def buildInitialMoveGuess(pokemon, use_other_moves = false)
         moveset = pokemon.getMoveList # intentionally gets only level moves
         signature_moves = []
         stab_moves_by_type = {} # Track one STAB move per type
@@ -283,9 +283,12 @@ class PokeBattle_Battle
         end
 
         # Priority 3: Highest-level other moves (take from the end)
-        remaining_slots = 4 - guess.length
-        if remaining_slots > 0
-            guess.concat(other_moves.last(remaining_slots))
+        # Optional, may be reasonable to leave blank instead of making random guesses
+        if use_other_moves
+            remaining_slots = 4 - guess.length
+            if remaining_slots > 0
+                guess.concat(other_moves.last(remaining_slots))
+            end
         end
 
         # Ensure we have no more than 4 moves (theoretically possible if many signature moves)
