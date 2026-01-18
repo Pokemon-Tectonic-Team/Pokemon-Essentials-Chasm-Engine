@@ -1,0 +1,5 @@
+Name         = Tectonic Content Scripts
+Credits      = Zinnia
+Requires	 = Chasm Battle
+Requires 	 = Chasm Other
+Requires	 = Chasm Debug

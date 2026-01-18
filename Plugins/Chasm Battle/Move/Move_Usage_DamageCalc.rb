@@ -7,12 +7,7 @@ class PokeBattle_Move
     def pbCalcDamage(user,target,numTargets=1)
         return if statusMove?
 
-        if target.damageState.disguise
-            target.damageState.calcDamage = 1
-            return
-        end
-
-        if target.damageState.thiefsDiversion
+        if damageNegated?(user, target)
             target.damageState.calcDamage = 0
             return
         end

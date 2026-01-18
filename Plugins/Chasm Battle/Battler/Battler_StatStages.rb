@@ -515,6 +515,10 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("{1} is protected by its substitute!", pbThis)) if showMessages
             return true
         end
+        if effectActive?(:EmpoweredFlowState)
+            @battle.pbDisplay(_INTL("{1} is in a state of total focus!", pbThis)) if showMessages
+            return true
+        end
         if hasActiveAbility?(:INNERFOCUS)
             if showMessages
                 showMyAbilitySplash(:INNERFOCUS, true)

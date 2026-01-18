@@ -2603,6 +2603,14 @@ Price = 0
 Flags = KeyItem
 Description = A surf board, allowing you to surf on water.
 #-------------------------------
+[CHASMIDCARD]
+Name = Chasm ID Card
+NamePlural = Chasm ID Cards
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = An ID card which unlocks Team Chasm gates and doors, giving access to dangers and rewards.
+#-------------------------------
 [CLIMBINGGEAR]
 Name = Climbing Gear
 NamePlural = Climbing Gears
@@ -2610,6 +2618,14 @@ Pocket = 7
 Price = 0
 Flags = KeyItem
 Description = A set of climbing gear, allowing you to climb on white rocks.
+#-------------------------------
+[FLORASCEPTRE]
+Name = Flora Sceptre
+NamePlural = Flora Sceptres
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = An ancient kingly rod. You can use it to make certain plants grow.
 #-------------------------------
 [ABRAPORTER]
 Name = Abraporter
@@ -2645,6 +2661,23 @@ Price = 0
 FieldUse = OnPokemon
 Flags = KeyItem
 Description = Use on a Pokémon to switch it into another one of its forms.
+#-------------------------------
+[SPANNINGBAND]
+Name = Spanning Bands
+NamePlural = Spanning Bands
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = An ancient pair of interlocking ceramic rings. Unlocks the ability to teleport between Avatar Totems.
+#-------------------------------
+[POCKETTOTEM]
+Name = Pocket Totem
+NamePlural = Pocket Totems
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A miniature Avatar Totem. Use it to teleport to any unlocked Avatar Totems throughout Makya.
 #-------------------------------
 [BOXLINK]
 Name = Box Link
@@ -2726,6 +2759,14 @@ FieldUse = Direct
 Flags = KeyItem
 Description = An ancient horn. Sound it to start a 3v3 wild battle. Foes will be higher level and likely to have rare moves.
 #-------------------------------
+[HOUSEDEED1]
+Name = House Deed
+NamePlural = House Deeds
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = Proof of ownership for the house you bought in Prizca East.
+#-------------------------------
 [GLEAMPOWDER]
 Name = Gleam Powder
 NamePlural = Gleam Powder
@@ -2778,6 +2819,14 @@ Consumable = true
 Flags = KeyItem
 Description = A detailed report on how to improve as a trainer. If you decide to read it, your level cap will be raised by 5.
 #-------------------------------
+[MILKBONETREAT]
+Name = Milk Bone Treat
+NamePlural = Milk Bone Treats
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = It would be a delicious treat if you were a Pokémon.
+#-------------------------------
 [OMNIDRIVE]
 Name = OmniDrive
 NamePlural = OmniDrives
@@ -2795,3 +2844,304 @@ Price = 50000
 FieldUse = OnPokemon
 Flags = EvolutionItem
 Description = A vial of shimmering ocean water. It makes a certain Pokémon evolve.
+#-------------------------------
+[CUPOFCOFFEE]
+Name = Cup of Coffee
+NamePlural = Cups of Coffee
+Pocket = 6
+Price = 0
+Consumable = true
+Flags = KeyItem,SkipPocketMessage
+Description = It's a cup filled with warm coffee. You probably shouldn't be keeping this in your backpack.
+#-------------------------------
+[LUXTECHSHIPMENT]
+Name = LuxTech Shipment
+NamePlural = LuxTech Shipments
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = A package containing an important shipment destined for LuxTech.
+#-------------------------------
+[WEIRDPACKAGE]
+Name = Weird Package
+NamePlural = Weird Packages
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = A suspicious package. Probably best not to look inside.
+#-------------------------------
+[AEGISIDCARD]
+Name = Aegis ID Card
+NamePlural = Aegis ID Cards
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = A forged ID card. It will let you pretend you work at Aegis Insurance.
+#-------------------------------
+[INCRIMINATINGEVIDENCE]
+Name = Incriminating Evidence
+NamePlural = Incriminating Evidence
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = A device containing evidence against Aegis Insurance.
+#-------------------------------
+[DIGITSLIP]
+Name = Digit Slip
+NamePlural = Digit Slips
+Pocket = 6
+Price = 0
+Consumable = true
+Flags = KeyItem,SkipPocketMessage
+Description = A slip of paper with one digit of the code for the lock to Rafael's gym door.
+#-------------------------------
+[SIGILLEFTHALF]
+Name = Sigil Left Half
+NamePlural = Sigils Left Half
+Pocket = 8
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = The left half of the sigil of an ancient order of knights.
+#-------------------------------
+[SIGILRIGHTHALF]
+Name = Sigil Right Half
+NamePlural = Sigils Right Half
+Pocket = 8
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = The right half of the sigil of an ancient order of knights.
+#-------------------------------
+[CARNATIONSIGIL]
+Name = Carnation Sigil
+NamePlural = Carnation Sigil
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = An ancient sigil of the Carnation Knights. You feel it pulling you towards another place.
+#-------------------------------
+[CONDENSEDLIGHT]
+Name = Condensed Light
+NamePlural = Condensed Light
+Pocket = 6
+Price = 0
+Consumable = true
+Flags = KeyItem,SkipPocketMessage
+Description = A strange ball of light. You should gather these for a friend.
+#-------------------------------
+[CHAMBER1KEY]
+Name = Chamber 1 Key
+NamePlural = Chamber 1 Keys
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = The key to the first chamber containing a powerful avatar.
+#-------------------------------
+[CHAMBER2KEY]
+Name = Chamber 2 Key
+NamePlural = Chamber 2 Keys
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = The key to the second chamber containing a powerful avatar.
+#-------------------------------
+[CHAMBER3KEY]
+Name = Chamber 3 Key
+NamePlural = Chamber 3 Keys
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = The key to the third chamber containing a powerful avatar.
+#-------------------------------
+[CHAMBER4KEY]
+Name = Chamber 4 Key
+NamePlural = Chamber 4 Keys
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = The key to the fourth chamber containing a powerful avatar.
+#-------------------------------
+[CHAMBER5KEY]
+Name = Chamber 5 Key
+NamePlural = Chamber 5 Keys
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = The key to the fifth chamber containing a powerful avatar.
+#-------------------------------
+[CHAMBER6KEY]
+Name = Chamber 6 Key
+NamePlural = Chamber 6 Keys
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = The key to the sixth chamber containing a powerful avatar.
+#-------------------------------
+[CHAMBER7KEY]
+Name = Chamber 7 Key
+NamePlural = Chamber 7 Keys
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = The key to the seventh chamber containing a powerful avatar.
+#-------------------------------
+[CHAMBER8KEY]
+Name = Chamber 8 Key
+NamePlural = Chamber 8 Keys
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = The key to the eighth chamber containing a powerful avatar.
+#-------------------------------
+[UBCONTAINMENTKEY]
+Name = UB Containment Key
+NamePlural = UB Containment Keys
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = A key which unlocks the Ultra Beast Containment Room at Novo College.
+#-------------------------------
+[FACTORYPASS]
+Name = Factory Pass
+NamePlural = Factory Passes
+Pocket = 6
+Price = 0
+FieldUse = OnPokemon
+Flags = KeyItem,SkipPocketMessage
+Description = A pass that grants you access through the locked door in Victoire's factory.
+#-------------------------------
+[RUINEDTOWERKEY]
+Name = Ruined Tower Key
+NamePlural = Ruined Tower Keys
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = A key which unlocks the ruined tower on the Sandstone Estuary coastline.
+#-------------------------------
+[LATENTSEED]
+Name = Latent Seed
+NamePlural = Latent Seeds
+Pocket = 6
+Price = 0
+Consumable = true
+Flags = KeyItem
+Description = A simple tree seed. It hums with the potential for great change.
+#-------------------------------
+[ALLOYEDLUMP]
+Name = Alloyed Lump
+NamePlural = Alloyed Lumps
+Pocket = 1
+Price = 0
+FieldUse = Direct
+Consumable = true
+Flags = KeyItem
+Description = Misshapen, unusual metal. Useless without a way to sharpen it.
+#-------------------------------
+[ALLOYEDBLADE]
+Name = Alloyed Blade
+NamePlural = Alloyed Blades
+Pocket = 1
+Price = 0
+FieldUse = Direct
+Consumable = true
+Flags = KeyItem
+Description = A fragile blade of unusual metal. Sharp enough to cut alloyed overgrowth.
+#-------------------------------
+[ALLOYEDWIRE]
+Name = Alloyed Wire
+NamePlural = Alloyed Wires
+Pocket = 1
+Price = 0
+FieldUse = Direct
+Consumable = true
+Flags = KeyItem
+Description = A thin, nearly invisible strand of unusual metal.
+#-------------------------------
+[SPACETIMESHARD]
+Name = Space-time Shard
+NamePlural = Space-time Shards
+Pocket = 6
+Price = 0
+FieldUse = Direct
+Consumable = true
+Flags = KeyItem
+Description = A sliver of the fragment of the universe. Highly unstable.
+#-------------------------------
+[OLDUSBDRIVE]
+Name = Old USB Drive
+NamePlural = Old USB Drive
+Pocket = 6
+Price = 0
+FieldUse = Direct
+Consumable = true
+Flags = KeyItem
+Description = A USB containing data from a Team Chasm's early days.
+#-------------------------------
+[GILDEDAPRICORN]
+Name = Gilded Apricorn
+NamePlural = Gilded Apricorns
+Pocket = 6
+Price = 0
+Flags = KeyItem
+Description = A gleaming golden fruit. Someone skilled may be able to craft it into a unique Poké Ball.
+#-------------------------------
+[RAGGEDJOURNAL]
+Name = Ragged Journal
+NamePlural = Ragged Journal
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A damaged traveler's journal. If you find its scattered pages, you can put them back in place.
+#-------------------------------
+[VIPCARD]
+Name = VIP Card
+NamePlural = VIP Cards
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = A glamorous steel card. While holding it, all vendors cost 10% less and Pokécenter Marts have extra items.
+#-------------------------------
+[OMINOUSEGG]
+Name = Ominous Egg
+NamePlural = Ominous Eggs
+Pocket = 7
+Price = 0
+FieldUse = Direct
+Flags = KeyItem,SkipPocketMessage
+Description = A vessel for negative emotions. Perfectly defeat enough trainers to earn its rewards.
+#-------------------------------
+[SMARTPHONE]
+Name = Smart Phone
+NamePlural = Smart Phones
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A smart phone. Use it to take selfies.
+#-------------------------------
+[VSRECORDER]
+Name = VS Recorder
+NamePlural = VS Recorders
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A hi-tech battle recording device. Use it to manage and replay past battles.
+#-------------------------------
+[PRIMALBEAD]
+Name = Primal Bead
+NamePlural = Primal Bead
+Pocket = 1
+Price = 0
+Consumable = true
+Flags = KeyItem
+Description = A drop of ancient clay. Use it to summon a Pokemon from a resonating totem.
+#-------------------------------
+[PRIMALCLAY]
+Name = Primal Clay
+NamePlural = Primal Clay
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = A lump of ancient clay. Allows you to summon any number of Pokemon from resonating totems.

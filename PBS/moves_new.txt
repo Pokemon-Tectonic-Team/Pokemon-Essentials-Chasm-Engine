@@ -4286,7 +4286,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = WaterlogTargetLowerTargetDef2
-Flags = CanProtect,Biting
+Flags = CanProtect,Biting,FakeRandomEffect
 EffectChance = 100
 Description = The user bites with watery fangs. It has a 20% chance to waterlog and a 20% chance to lower Defense by two steps.
 Animation = FISHIOUSREND
@@ -4505,7 +4505,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = WaterlogTargetLowerTargetDef2
-Flags = CanProtect,Biting
+Flags = CanProtect,Biting,FakeRandomEffect
 EffectChance = 100
 Description = The user bites with watery fangs. It has a 20% chance to waterlog and a 20% chance to lower Defense by two steps.
 Animation = FISHIOUSREND
@@ -8274,7 +8274,7 @@ TotalPP = 15
 Target = NearOther
 FunctionCode = RaiseUserAccIfMisses
 Flags = CanProtect
-Description = The user makes an risky, difficult attack. If it misses, the user's Accuracy is raised.
+Description = The user makes a risky, difficult attack. If it misses, the user's Accuracy is raised.
 #-------------------------------
 [HIDDENSTRIKE]
 Name = Hidden Strike

@@ -401,6 +401,15 @@ BattleHandlers::AbilityOnSwitchIn.add(:SHARPSHOOTER,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:GOSSAMERGALE,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} is carried by a swift breeze!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
 BattleHandlers::AbilityOnSwitchIn.add(:FEROCIOUS,
   proc { |ability, battler, battle, aiCheck|
       next 0 if aiCheck
@@ -1389,6 +1398,8 @@ BattleHandlers::AbilityOnSwitchIn.add(:INKSPRAY,
     battle.pbShowAbilitySplash(battler, ability) unless aiCheck
     score = 0
     battler.eachOpposing do |b|
+      next if b.semiInvulnerable?
+      next if b.substituted?
       next if b.effectActive?(:Blindness)
       if aiCheck
         score += getBlindnessEffectScore(battler,b)

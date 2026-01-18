@@ -1,6 +1,6 @@
 module Settings
     # The version of your game. It has to adhere to the MAJOR.MINOR.PATCH format.
-    GAME_VERSION = "0.0.1"
+    GAME_VERSION = "3.4.0"
     DEV_VERSION  = true
 
     # Whether or not to display if the game is up to date with the server version
@@ -217,7 +217,19 @@ module Settings
     #   * Name of the graphic, found in the Graphics/Pictures folder.
     #   * The graphic will always (true) or never (false) be shown on a wall map.
     def self.getRegionMapExtras
-        return []
+        return [
+            [0, UNDERGROUND_RIVER_VISITED_SWITCH, 0, 0, "Underground River", false],
+            [0, VOLCANIC_SHORE_VISITED_SWITCH, 0, 0, "Volcanic Shore", false],
+            [0, TEMPEST_REALM_VISITED_SWITCH, 0, 0, "Tempest Realm", false],
+            [0, GUARDIAN_ISLAND_VISITED_SWITCH, 0, 0, "Guardian Island", false],
+            [0, EVENTIDE_ISLE_VISITED_SWITCH, 0, 0, "Eventide Isle", false],
+            [0, ISLE_OF_DRAGONS_VISITED_SWITCH, 0, 0, "Isle of Dragons", false],
+            [0, TRI_ISLAND_VISITED_SWITCH, 0, 0, "Tri Island", false],
+            [0, BATTLE_MONUMENT_VISITED_SWITCH, 0, 0, "Battle Monument", false],
+            [0, SPIRIT_ATOLL_VISITED_SWITCH, 0, 0, "Spirit Atoll", false],
+            [0, BARREN_ISLAND_VISITED_SWITCH, 0, 0, "Barren Island", false],
+            [0, WINDBORN_ISLAND_VISITED_SWITCH, 0, 0, "Windborn Island", false],
+        ]
     end
   
     #=============================================================================
@@ -299,6 +311,9 @@ module Settings
     # from.
     LANGUAGES = [
       ["English", "english.dat"],
+      ["Español", "spanish.dat"],
+      ["Simplified Chinese", "chinese_simplified.dat"],
+      ["Traditional Chinese", "chinese_traditional.dat"],
     ]
   
     #=============================================================================

@@ -6,8 +6,8 @@ param(
     [switch]$Live
 )
 
-$SERVER_IP = "YOUR_IP_HERE"
-$SERVER_USER = "YOUR_USER_HERE"
+$SERVER_IP = "40.76.250.38"
+$SERVER_USER = "tectonic-admin"
 $SSH_KEY = if ($env:SSH_PRIVATE_KEY) {
     # Create a temporary file for the SSH key
     $tempKeyPath = [System.IO.Path]::GetTempFileName()

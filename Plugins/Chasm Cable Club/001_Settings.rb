@@ -1,5 +1,5 @@
 module CableClub
-  PUBLIC_HOST = "YOUR_IP_HERE"
+  PUBLIC_HOST = "40.76.250.38"
   LOCAL_HOST = "127.0.0.1"
 
   DEV_PORT = 9998

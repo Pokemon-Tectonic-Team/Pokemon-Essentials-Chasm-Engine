@@ -775,6 +775,10 @@ Description = Prevents it from becoming infatuated.
 Name = Odd Aura
 Description = Upon entry, creates an Odd Room for five turns, swapping offensive and defensive stats.
 #-------------------------------
+[ONTHEWIND]
+Name = On the Wind
+Description = Sets a Tailwind for four turns upon entry, increasing Speed.
+#-------------------------------
 [OVERACTING]
 Name = Over Acting
 Description = At the first chance, copies an opponent's species' legal Abilities.

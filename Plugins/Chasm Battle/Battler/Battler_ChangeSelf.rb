@@ -5,6 +5,7 @@ class PokeBattle_Battler
     # Change HP
     #=============================================================================
     def pbReduceHP(amt, anim = true, registerDamage = true, anyAnim = true)
+        return if amt <= 0
         amt = amt.round
         amt = 1 if amt < 1
         amt = @hp if amt > @hp
