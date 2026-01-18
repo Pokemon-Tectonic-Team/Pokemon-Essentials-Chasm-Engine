@@ -218,7 +218,7 @@ end
 # User transforms into Gulping or Gorging form (Gulp Missile)
 #===============================================================================
 
-class PokeBattle_Move_GulpMissile < PokeBattle_Move
+class PokeBattle_Move_GulpingDive < PokeBattle_Move
     def pbDisplayChargeMessage(user)
         user.applyEffect(:Gulping)
     end

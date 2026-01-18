@@ -19,7 +19,7 @@ BattleHandlers::EORHealingAbility.add(:SHEDSKIN,
     }
 )
 
-BattleHandlers::EORHealingAbility.add(:REJUVENATION,
+BattleHandlers::EORHealingAbility.add(:REJUVENATE,
     proc { |ability, battler, battle|
         hasAnyRelevantEffect = false
         b.eachEffect(true) do |effect, _value, data|
