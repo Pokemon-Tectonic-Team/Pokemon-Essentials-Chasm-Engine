@@ -18,3 +18,10 @@ BattleHandlers::UserAbilityOnSemiInvulnerable.add(:SHOWOFF,
       next score
   }
 )
+
+BattleHandlers::UserAbilityStartOfMove.add(:LEAPFROMBELOW,
+  proc { |ability, user, targets, move, battle|
+    return 0 if aiCheck
+    user.applyEffect(:ExtraHidingTurn, 2)
+  }
+)

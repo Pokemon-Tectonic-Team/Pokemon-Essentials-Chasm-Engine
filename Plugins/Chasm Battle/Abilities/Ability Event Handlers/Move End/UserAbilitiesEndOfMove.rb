@@ -747,7 +747,7 @@ BattleHandlers:UserAbilityEndOfMove.add(:KARMICBALANCE,
         if user.effectActive?(:ChoseAttack)
           user.pbLowerMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
           user.pbRaiseMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
-        else
+        elsif user.effectActive?(:ChoseStatus)
           user.pbLowerMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
           user.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
         end

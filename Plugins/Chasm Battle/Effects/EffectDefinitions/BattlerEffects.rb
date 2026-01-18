@@ -57,6 +57,19 @@ GameData::BattleEffect.register_effect(:Battler, {
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
+    :id => :Gulping,
+    :real_name => "Gulping",
+    apply_proc => proc do |battle, battler, _value|
+        if user.canGulpMissile?
+            user.form = 2
+            user.form = 1 if user.hp > (user.totalhp / 2)
+            @battle.scene.pbChangePokemon(user, user.pokemon)
+        end
+        battle.pbDisplay(_INTL("{1} fills its beak!", battler.pbThis))
+    end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
     :id => :Bide,
     :real_name => "Bide Turns",
     :type => :Integer,
@@ -2181,6 +2194,16 @@ GameData::BattleEffect.register_effect(:Battler, {
     :apply_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} is exhausted. They must Rest next turn.", battler.pbThis))
         battler.currentMove = :REST 
+    end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ExtraHidingTurn,
+    :real_name => "Extra Hiding Turn",
+    :type = :Integer,
+    :ticks_down_eor => true,
+    :expire_proc => proc do |battle, battler|
+        battler.disableEffect(:ExtraHidingTurn),
     end,
 })
 

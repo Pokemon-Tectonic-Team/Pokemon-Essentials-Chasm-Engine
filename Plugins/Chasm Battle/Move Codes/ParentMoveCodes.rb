@@ -545,6 +545,10 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
                 @powerHerb = false
                 @chargingTurn = true
                 @damagingTurn = true
+            elsif user.effectActive(:ExtraHidingTurn)
+                @powerHerb = false
+                @chargingTurn = true
+                @damagingTurn = false
             else
                 @powerHerb = user.hasActiveItem?(:POWERHERB)
                 @chargingTurn = true

@@ -947,37 +947,6 @@ BattleHandlers::TargetAbilityOnHit.add(:THUNDERSTRUCK,
         end
     }
 )
-
-BattleHandlers::TargetAbilityOnHit.add(:GULPMISSILE,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next if target.form == 0
-        next unless target.species == :CRAMORANT
-        gulpform = target.form
-        if aiCheck
-            score = 0
-            score -= 20 if user.takesIndirectDamage?
-            if gulpform == 1
-                score -= getMultiStatDownEffectScore(DEFENDING_STATS_1, target, user)
-            elsif gulpform == 2
-                score -= getNumbEffectScore(target, user)
-            end
-            next score
-        else
-            battle.pbShowAbilitySplash(target, ability)
-            target.form = 0
-            battle.scene.pbChangePokemon(target, target.pokemon)
-            battle.scene.pbDamageAnimation(user)
-            user.applyFractionalDamage(1.0 / 4.0) if user.takesIndirectDamage?(true)
-            if gulpform == 1
-                user.pbLowerMultipleStatSteps(DEFENDING_STATS_1, target, ability: ability)
-            elsif gulpform == 2
-                msg = nil
-                user.applyNumb(target, msg)
-            end
-            battle.pbHideAbilitySplash(target)
-        end
-    }
-)
   
 BattleHandlers::TargetAbilityOnHit.add(:ILLUSION,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|

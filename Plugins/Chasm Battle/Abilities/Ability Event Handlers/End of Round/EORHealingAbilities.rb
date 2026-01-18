@@ -25,6 +25,7 @@ BattleHandlers::EORHealingAbility.add(:REJUVENATION,
         b.eachEffect(true) do |effect, _value, data|
             next unless data.avatars_purge || data.is_mental?
             b.disableEffect(effect)
+            hasAnyRelevantEffect = true
         end
         next unless hasAnyRelevantEffect
         battle.pbShowAbilitySplash(battler, ability)
