@@ -69,8 +69,8 @@ class PokeBattle_Battler
             #Gulp Missile
             if target.effectActive?(:GulpMissile, true)
                 PBDebug.log("[Lingering efect] #{target.pbThis}'s Gulp Missile")
-                next if target.form == 0
-                next unless target.species == :CRAMORANT
+                #next if target.form == 0
+                #next unless target.species == :CRAMORANT
                 gulpform = target.form
                 target.form = 0
                 battle.scene.pbChangePokemon(target, target.pokemon)

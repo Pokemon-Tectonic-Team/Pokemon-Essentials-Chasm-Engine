@@ -741,7 +741,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:HEROSJOURNEY,
   }
 )
 
-BattleHandlers:UserAbilityEndOfMove.add(:KARMICBALANCE,
+BattleHandlers::UserAbilityEndOfMove.add(:KARMICBALANCE,
   proc { |ability, user, targets, move, battle, _switchedBattlers|
         next if battle.pbAllFainted?(user.idxOpposingSide)
         if user.effectActive?(:ChoseAttack)

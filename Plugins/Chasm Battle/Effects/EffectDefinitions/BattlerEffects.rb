@@ -59,7 +59,7 @@ GameData::BattleEffect.register_effect(:Battler, {
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :Gulping,
     :real_name => "Gulping",
-    apply_proc => proc do |battle, battler, _value|
+    :apply_proc => proc do |battle, battler, _value|
         if user.canGulpMissile?
             user.form = 2
             user.form = 1 if user.hp > (user.totalhp / 2)
@@ -2200,10 +2200,10 @@ GameData::BattleEffect.register_effect(:Battler, {
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :ExtraHidingTurn,
     :real_name => "Extra Hiding Turn",
-    :type = :Integer,
+    :type => :Integer,
     :ticks_down_eor => true,
     :expire_proc => proc do |battle, battler|
-        battler.disableEffect(:ExtraHidingTurn),
+        battler.disableEffect(:ExtraHidingTurn)
     end,
 })
 
