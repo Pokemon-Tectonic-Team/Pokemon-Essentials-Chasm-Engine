@@ -383,7 +383,7 @@ class PokEstate
 		
 		actualEvent.pages[0] = firstPage
 		
-		event.floats = floatingPokemon?(pokemon)
+		event.floats = pokemon.canFloat?
 		
 		event.refresh()
 	end
@@ -574,7 +574,7 @@ class PokEstate
 		speciesData = GameData::Species.get(pokemon.species)
 		page.direction_fix = false
 		page.move_type = 1 # Random
-		page.step_anime = stepAnimation || floatingPokemon?(pokemon)
+		page.step_anime = stepAnimation || pokemon.canFloat?
 		page.move_frequency = [[speciesData.base_stats[:SPEED] / 25,0].max,5].min
 	end
 	
