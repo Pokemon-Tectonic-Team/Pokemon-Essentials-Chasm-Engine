@@ -6361,6 +6361,7 @@ Pokedex = Fishers detest this troublesome Pokémon because it sprays poison from
 Generation = 8
 WildItemUncommon = POISONBARB
 Evolutions = OVERQWIL,Level,38
+Flags = FollowSurf
 #-------------------------------
 [OVERQWIL]
 Name = Overqwil
