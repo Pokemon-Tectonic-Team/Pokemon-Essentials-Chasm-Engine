@@ -6380,6 +6380,7 @@ Weight = 60.5
 Kind = Pin Cluster
 Pokedex = Its lancelike spikes and savage temperament have earned it the nickname "sea fiend." It slurps up poison to nourish itself.
 Generation = 8
+Flags = FollowSurf
 #-------------------------------
 [SHUCKLE]
 Name = Shuckle
