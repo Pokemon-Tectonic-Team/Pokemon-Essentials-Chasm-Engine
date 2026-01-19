@@ -645,6 +645,23 @@ module GameData
             return false
         end
 
+        def canSwim?
+            return false if @flags.include?("NoFollowSurf")
+	        return true if hasType?(:WATER)
+	        return false
+        end
+
+        def canFloat?
+            if hasType?(:FLYING)
+		        exception = @flags.include?("NoFollowSurf")
+		        return !exception
+	        end
+            return true if @abilities.include?(:LEVITATE)
+	        return true if @abilities.include?(:DESERTSPIRIT)
+            return true if @flags.include?("FollowSurf")
+	        return false
+        end
+
         def self.load
             super
             const_set(:FORM_SPECIFIC_MOVES, load_data("Data/#{self::FORM_SPECIFIC_MOVES_DATA_FILENAME}"))
