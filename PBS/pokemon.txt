@@ -4956,7 +4956,7 @@ Weight = 52.6
 Kind = Strong Legs
 Pokedex = One kick from its powerful legs will pulverize a dump truck. Supposedly, this Pokémon runs through the mountains at over 180 mph.
 Generation = 8
-Flags = Legendary
+Flags = Legendary,NoFollowSurf
 #-------------------------------
 [GMOLTRES]
 Name = G. Moltres

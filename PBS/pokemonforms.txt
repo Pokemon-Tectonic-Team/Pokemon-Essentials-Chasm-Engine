@@ -189,6 +189,7 @@ Type2 = FLYING
 Abilities = VOIDWARRANTY,HAUNTED
 FormMove = AIRSLASH
 Pokedex = In this form, Rotom applies its new power over wind to its love of pranks. It will happily blow away any important documents it can find.
+Flags = NoFollowSurf
 #-------------------------------
 [ROTOM,5]
 FormName = Mow
@@ -235,6 +236,7 @@ Abilities = AERODYNAMIC,FLOWERVEIL
 Moves = 1,GROWTH,5,GUST,10,MAGICALLEAF,15,LEECHSEED,20,QUICKATTACK,25,NATURALGIFT,30,BLUSTER,35,ROOST,40,ENERGYBALL,45,SWEETKISS,50,AIRSLASH,55,LEAFSTORM,60,SEEDFLARE
 Height = 0.4
 Weight = 5.2
+Flags = NoFollowSurf
 #-------------------------------
 [ARCEUS,1]
 FormName = Fighting Type
@@ -243,6 +245,7 @@ Type1 = FIGHTING
 [ARCEUS,2]
 FormName = Flying Type
 Type1 = FLYING
+Flags = NoFollowSurf
 #-------------------------------
 [ARCEUS,3]
 FormName = Poison Type
@@ -377,6 +380,7 @@ BaseStats = 90,145,90,90,105,80
 # Total = 600
 Abilities = INTIMIDATE,RENDINGFANGCHARM
 Height = 1.3
+Flags = NoFollowSurf
 #-------------------------------
 [KYUREM,1]
 FormName = White
@@ -680,6 +684,7 @@ Type1 = FIGHTING
 [SILVALLY,2]
 FormName = Type: Flying
 Type1 = FLYING
+Flags = NoFollowSurf
 #-------------------------------
 [SILVALLY,3]
 FormName = Type: Poison
