@@ -120,6 +120,7 @@ Weight = 90.5
 Kind = Flame
 Pokedex = If Charizard becomes furious, the flame at the tip of its tail flares up in a whitish-blue color.
 Generation = 1
+Flags = NoFollowSurf
 #-------------------------------
 [SQUIRTLE]
 Name = Squirtle
@@ -324,6 +325,7 @@ Weight = 29.5
 Kind = Poison Bee
 Pokedex = It prefers hit-and-run attacks using its powerful poison stingers, trying to evade blows to its fragile body.
 Generation = 1
+Flags = FollowSurf
 WildItemUncommon = POISONBARB
 Evolutions = WORNET,Level,42
 #-------------------------------
@@ -363,6 +365,7 @@ Weight = 1.8
 Kind = Tiny Bird
 Pokedex = It has an extremely sharp sense of direction. It can unerringly return home to its nest, however far it may be removed from its familiar surroundings.
 Generation = 1
+Flags = NoFollowSurf
 Evolutions = PIDGEOTTO,Level,18
 #-------------------------------
 [PIDGEOTTO]
@@ -495,6 +498,7 @@ Weight = 2.0
 Kind = Tiny Bird
 Pokedex = Farmers whose fields are troubled by bug Pokémon appreciate Spearow for its vigorous appetite and look after it.
 Generation = 1
+Flags = NoFollowSurf
 WildItemUncommon = SHARPBEAK
 Evolutions = FEAROW,Level,32
 #-------------------------------
@@ -1332,6 +1336,7 @@ Weight = 12.5
 Kind = Poison Moth
 Pokedex = The powdery scales on its wings are hard to remove from skin. They also contain poison that leaks out on contact.
 Generation = 1
+Flags = FollowSurf
 WildItemUncommon = SHEDSHELL
 #-------------------------------
 [DIGLETT]
@@ -1841,6 +1846,7 @@ Weight = 19.5
 Kind = Psi
 Pokedex = It can read others' minds and will teleport away when danger approaches. You must clear your mind if you want to catch it.
 Generation = 1
+Flags = FollowSurf
 WildItemUncommon = TWISTEDSPOON
 Evolutions = KADABRA,Level,20
 #-------------------------------
@@ -2061,6 +2067,7 @@ Weight = 20.0
 Kind = Rock
 Pokedex = The longer it lives, the more its edges are chipped and worn away. However, this Pokémon's heart will remain hard, craggy, and rough always.
 Generation = 1
+Flags = FollowSurf
 WildItemUncommon = EVERSTONE
 Evolutions = GRAVELER,Level,20
 #-------------------------------
@@ -2394,6 +2401,7 @@ Weight = 6.0
 Kind = Magnet
 Pokedex = It's frequently the cause of power outages, which is why some power plants send out electrical signals that it can't stand.
 Generation = 1
+Flags = FollowSurf
 WildItemUncommon = MAGNET
 Evolutions = MAGNETON,Level,25
 #-------------------------------
@@ -2435,6 +2443,7 @@ Weight = 180.0
 Kind = Magnet Area
 Pokedex = It evolved from exposure to a special magnetic field. Three units generate magnetism.
 Generation = 4
+Flags = FollowSurf
 WildItemUncommon = MAGNET
 #-------------------------------
 [FARFETCHD]
@@ -2457,6 +2466,7 @@ Weight = 15.0
 Kind = Wild Duck
 Pokedex = The stalk this Pokémon carries in its wings serves as a sword to cut down opponents. In a dire situation, the stalk can also serve as food.
 Generation = 1
+Flags = NoFollowSurf
 WildItemUncommon = LUCKHERB
 #-------------------------------
 [GFARFETCHD]
@@ -2519,6 +2529,7 @@ Weight = 39.2
 Kind = Twin Bird
 Pokedex = By alternately raising and lowering its two heads, it balances itself to be more stable while running.
 Generation = 1
+Flags = NoFollowSurf
 WildItemUncommon = SHARPBEAK
 Evolutions = DODRIO,Level,31
 #-------------------------------
@@ -2539,6 +2550,7 @@ Weight = 85.2
 Kind = Triple Bird
 Pokedex = It collects data and plans three times as wisely, but it may think too much and fall into a state of immobility.
 Generation = 1
+Flags = NoFollowSurf
 WildItemUncommon = SHARPBEAK
 #-------------------------------
 [SEEL]
@@ -2723,6 +2735,7 @@ Weight = 0.1
 Kind = Gas
 Pokedex = When exposed to a strong wind, a Gastly's gaseous body quickly dwindles away. They cluster under the eaves of houses to escape the ravages of wind.
 Generation = 1
+Flags = FollowSurf
 Evolutions = HAUNTER,Level,25
 #-------------------------------
 [HAUNTER]
@@ -2742,6 +2755,7 @@ Weight = 0.1
 Kind = Gas
 Pokedex = On moonless nights, Haunter searches for someone to curse, so it's best not to go out walking around.
 Generation = 1
+Flags = FollowSurf
 Evolutions = GENGAR,Level,36
 #-------------------------------
 [GENGAR]
@@ -2882,6 +2896,7 @@ Weight = 6.5
 Kind = River Crab
 Pokedex = If it senses danger approaching, it cloaks itself with bubbles from its mouth so it will look bigger.
 Generation = 1
+Flags = NoFollowSurf
 Evolutions = KINGLER,Level,16
 #-------------------------------
 [KINGLER]
@@ -2900,6 +2915,7 @@ Weight = 60.0
 Kind = Pincer
 Pokedex = Kingler has an enormous, oversized claw, which it waves in the air to communicate with others. However, because the claw is so heavy, it quickly tires.
 Generation = 1
+Flags = NoFollowSurf
 Evolutions = KLAWSAR,Level,36
 #-------------------------------
 [KLAWSAR]
@@ -2918,6 +2934,7 @@ Height = 2.6
 Weight = 180.0
 Kind = Mega Claw
 Pokedex = Its claw has become so large that if it finds itself unable to clamp its opponent, it will just smack them with the blunt side.
+Flags = NoFollowSurf
 #-------------------------------
 [VOLTORB]
 Name = Voltorb
@@ -3266,6 +3283,7 @@ Weight = 1.0
 Kind = Poison Gas
 Pokedex = Getting up close to a Koffing will give you a chance to observe, through its thin skin, the toxic gasses swirling inside. It blows up at the slightest stimulation.
 Generation = 1
+Flags = FollowSurf
 Evolutions = WEEZING,Level,35,GWEEZING,Item,GALARICAWREATH
 #-------------------------------
 [WEEZING]
@@ -3287,6 +3305,7 @@ Weight = 9.5
 Kind = Poison Gas
 Pokedex = Top-grade perfume is made using its internal poison gasses by diluting them to the highest level.
 Generation = 1
+Flags = FollowSurf
 #-------------------------------
 [GWEEZING]
 Name = G. Weezing
@@ -3664,6 +3683,7 @@ Weight = 15.0
 Kind = Fortune
 Pokedex = They obsessively count the pebbles in their rivers, becoming irate if the result is an unlucky number.
 Evolutions = MSEAKING,Level,33
+Flags = FollowSurf
 #-------------------------------
 [MSEAKING]
 Name = M. Seaking
@@ -3682,6 +3702,7 @@ Height = 1.3
 Weight = 39.0
 Kind = Auspicious
 Pokedex = Fearsome Pokémon lining a river in a grand procession is a sign of a Makyan Seaking. They offer endless blessings in exchange for servitude.
+Flags = FollowSurf
 #-------------------------------
 [STARYU]
 Name = Staryu
@@ -3829,6 +3850,7 @@ Weight = 56.0
 Kind = Mantis
 Pokedex = While young, they live together deep in the mountains, training themselves in how to fight with their scythes and move at high speeds.
 Generation = 1
+Flags = NoFollowSurf
 Evolutions = KLEAVOR,Originize,41,SCIZOR,Level,29
 #-------------------------------
 [SCIZOR]
@@ -4496,6 +4518,7 @@ Weight = 36.5
 Kind = Virtual
 Pokedex = This Pokémon was created using the cutting-edge science of 20 years ago, so many parts of it have since become obsolete.
 Generation = 1
+Flags = FollowSurf
 Evolutions = PORYGON2,Level,24
 #-------------------------------
 [PORYGON2]
@@ -4515,6 +4538,7 @@ Weight = 32.5
 Kind = Virtual
 Pokedex = With planetary development software installed, it became capable of working in space.
 Generation = 2
+Flags = FollowSurf
 Evolutions = PORYGONZ,Item,DUSKSTONE,PORYGONMAV,Item,FIRESTONE
 #-------------------------------
 [PORYGONZ]
@@ -4537,6 +4561,7 @@ Weight = 34.0
 Kind = Virtual
 Pokedex = Its programming was modified to enable it to travel through alien dimensions. Seems there might have been an error...
 Generation = 4
+Flags = FollowSurf
 #-------------------------------
 [PORYGONMAV]
 Name = Porygon-MAV
@@ -4976,7 +5001,7 @@ Weight = 122.0
 Kind = Genetic
 Pokedex = Created from the DNA of Mew, this Pokémon is a dangerous combination of overwhelming power and a savage heart.
 Generation = 1
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [MEW]
 Name = Mew
@@ -4997,7 +5022,7 @@ Weight = 4.0
 Kind = New Species
 Pokedex = It's very intelligent and can use an incredible variety of moves. Many believe that all other Pokémon are descendants of this one.
 Generation = 1
-Flags = Legendary,TutorAny
+Flags = Legendary,TutorAny,FollowSurf
 #-------------------------------
 [CHIKORITA]
 Name = Chikorita
@@ -5544,6 +5569,7 @@ Weight = 2.0
 Kind = Tiny Bird
 Pokedex = It usually forages for food on the ground but may, on rare occasions, hop onto branches to peck at shoots.
 Generation = 2
+Flags = NoFollowSurf
 WildItemUncommon = INTELLECTHERB
 Evolutions = XATU,Level,33
 #-------------------------------
@@ -5565,6 +5591,7 @@ Weight = 15.0
 Kind = Mystic
 Pokedex = They say that it stays still and quiet because it is seeing both the past and future at the same time.
 Generation = 2
+Flags = NoFollowSurf
 WildItemUncommon = INTELLECTHERB
 #-------------------------------
 [MAREEP]
@@ -5950,6 +5977,7 @@ Weight = 2.1
 Kind = Darkness
 Pokedex = Feared and loathed by many, it is believed to bring misfortune to all those who see it at night.
 Generation = 2
+Flags = NoFollowSurf
 Evolutions = HONCHKROW,Level,36
 #-------------------------------
 [HONCHKROW]
@@ -5970,6 +5998,7 @@ Weight = 27.3
 Kind = Big Boss
 Pokedex = Becoming active at night, it is known to swarm with numerous Murkrow in tow.
 Generation = 4
+Flags = NoFollowSurf
 #-------------------------------
 [MISDREAVUS]
 Name = Misdreavus
@@ -5991,6 +6020,7 @@ Weight = 1.0
 Kind = Screech
 Pokedex = It likes playing mischievous tricks, such as screaming and wailing to startle people at night.
 Generation = 2
+Flags = FollowSurf
 Evolutions = MISMAGIUS,Item,ICESTONE
 #-------------------------------
 [MISMAGIUS]
@@ -6011,6 +6041,7 @@ Weight = 4.4
 Kind = Magical
 Pokedex = Its cries sound like incantations to torment the foe. It appears where you least expect it.
 Generation = 4
+Flags = FollowSurf
 #-------------------------------
 [UNOWN]
 Name = Unown
@@ -6032,6 +6063,7 @@ Kind = Symbol
 Pokedex = Shaped like ancient writing, it is a huge mystery whether language or Unown came first.
 FormName = A
 Generation = 2
+Flags = FollowSurf
 #-------------------------------
 [WYNAUT]
 Name = Wynaut
@@ -6821,6 +6853,7 @@ Weight = 16.0
 Kind = Delivery
 Pokedex = It carries food all day long. When someone is lost in the mountains, it shares that food.
 Generation = 2
+Flags = NoFollowSurf
 #-------------------------------
 [SKARMORY]
 Name = Skarmory
@@ -7193,7 +7226,7 @@ Weight = 5.0
 Kind = Time Travel
 Pokedex = This Pokémon traveled through time to come from the future. It bolsters grass and trees with its own strength, and it can heal wounds, too.
 Generation = 2
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [TREECKO]
 Name = Treecko
@@ -7608,6 +7641,7 @@ Weight = 31.6
 Kind = Poison Moth
 Pokedex = It violently flutters its wings to scatter toxic dust when attacked. It becomes active after sunset.
 Generation = 3
+Flags = FollowSurf
 WildItemUncommon = SHEDSHELL
 #-------------------------------
 [MWURMPLE]
@@ -7667,6 +7701,7 @@ Weight = 28.4
 Kind = Frost Gossamer
 Pokedex = It is less hostile than the Hoennian form, but vicious towards former predators. Its mouthparts inject a fluid similar to liquid nitrogen.
 WildItemUncommon = ASPEARBERRY
+Flags = FollowSurf
 #-------------------------------
 [MCASCOON]
 Name = M. Cascoon
@@ -7705,6 +7740,7 @@ Weight = 31.6
 Kind = Rocket Moth
 Pokedex = Its abdomen is actually a sophisticated torch drive. Their migrations can be tracked by following broken trees left by supersonic flybys.
 WildItemUncommon = RAWSTBERRY
+Flags = FollowSurf
 #-------------------------------
 [LOTAD]
 Name = Lotad
@@ -7851,6 +7887,7 @@ Weight = 2.3
 Kind = TinySwallow
 Pokedex = This Pokémon is very gutsy and will fight powerful opponents without backing down. On the other hand, when it is hungry it will weaken and cry loudly.
 Generation = 3
+Flags = NoFollowSurf
 WildItemUncommon = AGILITYHERB
 Evolutions = SWELLOW,Level,32
 #-------------------------------
@@ -8202,6 +8239,7 @@ Weight = 1.2
 Kind = Shed
 Pokedex = A most peculiar Pokémon that somehow appears in a Poké Ball when a Nincada evolves.
 Generation = 3
+Flags = FollowSurf
 #-------------------------------
 [WHISMUR]
 Name = Whismur
@@ -8338,6 +8376,7 @@ Weight = 340.0
 Kind = Compass
 Pokedex = It freely controls three small units called Mini-Noses using magnetic force.
 Generation = 4
+Flags = FollowSurf
 WildItemUncommon = MAGNET
 #-------------------------------
 [SKITTY]
@@ -8544,6 +8583,7 @@ Weight = 11.2
 Kind = Meditate
 Pokedex = It eats just one berry a day. By enduring hunger, its spirit is tempered and made sharper.
 Generation = 3
+Flags = FollowSurf
 Evolutions = MEDICHAM,Level,23
 #-------------------------------
 [MEDICHAM]
@@ -8694,6 +8734,7 @@ Weight = 17.7
 Kind = Firefly
 Pokedex = It lives around clean ponds. At night, its rear lights up. It converses with others by flashing its light.
 Generation = 3
+Flags = FollowSurf
 #-------------------------------
 [ILLUMISE]
 Name = Illumise
@@ -8714,6 +8755,7 @@ Weight = 17.7
 Kind = Firefly
 Pokedex = With its sweet aroma, it guides Volbeat to draw signs with light in the night sky.
 Generation = 3
+Flags = FollowSurf
 #-------------------------------
 [BUDEW]
 Name = Budew
@@ -9096,6 +9138,7 @@ Weight = 15.3
 Kind = Vibration
 Pokedex = It generates ultrasonic waves by violently flapping its wings. After making its prey faint, it melts the prey with acid.
 Generation = 3
+Flags = NoFollowSurf
 Evolutions = FLYGON,Level,45
 #-------------------------------
 [FLYGON]
@@ -9116,6 +9159,7 @@ Weight = 82.0
 Kind = Mystic
 Pokedex = Known as "The Desert Spirit," this Pokémon hides in the sandstorms it causes by beating its wings.
 Generation = 3
+Flags = FollowSurf
 #-------------------------------
 [CACNEA]
 Name = Cacnea
@@ -9317,6 +9361,7 @@ Weight = 168.0
 Kind = Meteorite
 Pokedex = It was discovered at the site of a meteor strike 40 years ago. Its stare can lull its foes to sleep.
 Generation = 3
+Flags = FollowSurf
 WildItemCommon = STARDUST
 #-------------------------------
 [SOLROCK]
@@ -9340,6 +9385,7 @@ Weight = 154.0
 Kind = Meteorite
 Pokedex = It absorbs solar energy during the day. Always expressionless, it can sense what its foe is thinking.
 Generation = 3
+Flags = FollowSurf
 WildItemCommon = STARDUST
 #-------------------------------
 [BARBOACH]
@@ -9445,6 +9491,7 @@ Weight = 21.5
 Kind = Clay Doll
 Pokedex = It moves by spinning on its foot. It is a rare Pokémon that was discovered in ancient ruins.
 Generation = 3
+Flags = FollowSurf
 WildItemUncommon = LIGHTCLAY
 Evolutions = CLAYDOL,Level,33
 #-------------------------------
@@ -9467,6 +9514,7 @@ Weight = 108.0
 Kind = Clay Doll
 Pokedex = It is said that it originates from clay dolls made by an ancient civilization.
 Generation = 3
+Flags = FollowSurf
 WildItemUncommon = LIGHTCLAY
 #-------------------------------
 [LILEEP]
@@ -9653,6 +9701,7 @@ Kind = Weather
 Pokedex = It has the ability to change its form into the sun, the rain, or a snow cloud, depending on the weather.
 FormName = Normal
 Generation = 3
+Flags = FollowSurf
 WildItemCommon = UTILITYUMBRELLA
 #-------------------------------
 [KECLEON]
@@ -9694,6 +9743,7 @@ Weight = 2.3
 Kind = Puppet
 Pokedex = It loves vengeful emotions and hangs in rows under the eaves of houses where vengeful people live.
 Generation = 3
+Flags = FollowSurf
 WildItemUncommon = SPELLTAG
 Evolutions = BANETTE,Level,22
 #-------------------------------
@@ -9756,6 +9806,7 @@ Weight = 15.0
 Kind = Requiem
 Pokedex = If it finds bad children who won't listen to their parents, it will spirit them away--or so it's said.
 Generation = 3
+Flags = FollowSurf
 WildItemUncommon = SPELLTAG
 Evolutions = DUSCLOPS,Level,23
 #-------------------------------
@@ -9795,6 +9846,7 @@ Weight = 106.6
 Kind = Gripper
 Pokedex = It comes to those whose lives have come to an end and escorts their souls to the afterlife.
 Generation = 4
+Flags = FollowSurf
 WildItemUncommon = SPELLTAG
 #-------------------------------
 [TROPIUS]
@@ -9816,6 +9868,7 @@ Weight = 100.0
 Kind = Fruit
 Pokedex = The bunch of fruit around its neck ripens twice a year and is delicious. It's a highly favored tropical snack.
 Generation = 3
+Flags = NoFollowSurf
 #-------------------------------
 [CHINGLING]
 Name = Chingling
@@ -9836,6 +9889,7 @@ Weight = 0.6
 Kind = Bell
 Pokedex = There is an orb inside its mouth. When it hops, the orb bounces all over and makes a ringing sound.
 Generation = 4
+Flags = NoFollowSurf
 WildItemUncommon = CLEANSETAG
 Evolutions = CHIMECHO,Level,28
 #-------------------------------
@@ -9856,6 +9910,7 @@ Weight = 1.0
 Kind = Wind Chime
 Pokedex = Emitting ultrasonic cries, it floats on winds to travel great distances.
 Generation = 3
+Flags = FollowSurf
 WildItemUncommon = CLEANSETAG
 #-------------------------------
 [ABSOL]
@@ -9939,6 +9994,7 @@ Weight = 256.5
 Kind = Face
 Pokedex = It can instantly freeze moisture in the atmosphere. It uses this power to freeze its foes.
 Generation = 3
+Flags = FollowSurf
 Evolutions = GRIMICE,Level,44
 #-------------------------------
 [GRIMICE]
@@ -9979,6 +10035,7 @@ Weight = 26.6
 Kind = Snow Land
 Pokedex = Legends in snowy regions say that a woman who was lost on an icy mountain was reborn as Froslass.
 Generation = 4
+Flags = FollowSurf
 #-------------------------------
 [SPHEAL]
 Name = Spheal
@@ -10240,6 +10297,7 @@ Weight = 95.2
 Kind = Iron Ball
 Pokedex = From its rear, Beldum emits a magnetic force that rapidly pulls opponents in. They get skewered on Beldum's sharp claws.
 Generation = 3
+Flags = FollowSurf
 WildItemUncommon = MAGNET
 Evolutions = METANG,Level,21
 #-------------------------------
@@ -10261,6 +10319,7 @@ Weight = 202.5
 Kind = Iron Claw
 Pokedex = Using magnetic forces to stay aloft, this Pokémon flies at high speeds, weaving through harsh mountain terrain in pursuit of prey.
 Generation = 3
+Flags = FollowSurf
 WildItemUncommon = MAGNET
 Evolutions = METAGROSS,Level,45
 #-------------------------------
@@ -10371,7 +10430,7 @@ Weight = 145.0
 Kind = Electric Age
 Pokedex = The fifth of the titans, built to commemorate an era of electricity. It is as inscrutable as a cutting-edge supercomputer.
 Generation = 8
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [REGIDRAGO]
 Name = Regidrago
@@ -10393,7 +10452,7 @@ Weight = 200.0
 Kind = Prehistoric Age
 Pokedex = The first of the titans, built to commemorate an era when dragons ruled. It is as terrifying as an apex predator.
 Generation = 8
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [REGIGIGAS]
 Name = Regigigas
@@ -10439,7 +10498,7 @@ Weight = 40.0
 Kind = Eon
 Pokedex = Latias is highly sensitive to the emotions of people. If it senses any hostility, this Pokémon ruffles the feathers all over its body and cries shrilly to intimidate them.
 Generation = 3
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [LATIOS]
 Name = Latios
@@ -10462,7 +10521,7 @@ Weight = 60.0
 Kind = Eon
 Pokedex = Latios has the ability to make others see an image of what it has seen or imagines in its head. This Pokémon is intelligent and understands human speech.
 Generation = 3
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [KYOGRE]
 Name = Kyogre
@@ -10555,7 +10614,7 @@ Weight = 1.1
 Kind = Wish
 Pokedex = It is said to have the ability to grant any wish for just one week every thousand years.
 Generation = 3
-Flags = Legendary
+Flags = Legendary,FollowSurf
 WildItemCommon = STARPIECE
 WildItemUncommon = STARPIECE
 WildItemRare = STARPIECE
@@ -10773,6 +10832,7 @@ Weight = 2.0
 Kind = Starling
 Pokedex = They flock around mountains and fields, chasing after bug Pokémon. Their singing is noisy and annoying.
 Generation = 4
+Flags = NoFollowSurf
 Evolutions = STARAVIA,Level,24
 #-------------------------------
 [STARAVIA]
@@ -11538,6 +11598,7 @@ Weight = 60.5
 Kind = Bronze
 Pokedex = Implements shaped like it were discovered in ancient tombs. It is unknown if they are related.
 Generation = 4
+Flags = FollowSurf
 WildItemUncommon = TWISTEDSPOON
 Evolutions = BRONZONG,Level,33
 #-------------------------------
@@ -11560,6 +11621,7 @@ Weight = 187.0
 Kind = Bronze Bell
 Pokedex = Ancient people believed that petitioning Bronzong for rain was the way to make crops grow.
 Generation = 4
+Flags = FollowSurf
 WildItemUncommon = TWISTEDSPOON
 #-------------------------------
 [CHATOT]
@@ -11582,6 +11644,7 @@ Weight = 1.9
 Kind = Music Note
 Pokedex = It can learn and speak human words. If they gather, they all learn the same saying.
 Generation = 4
+Flags = NoFollowSurf
 WildItemUncommon = METRONOME
 #-------------------------------
 [SPIRITOMB]
@@ -11603,6 +11666,7 @@ Weight = 108.0
 Kind = Forbidden
 Pokedex = All Spiritomb's mischief and misdeeds compelled a traveler to use a mysterious spell to bind Spiritomb to an odd keystone.
 Generation = 4
+Flags = FollowSurf
 #-------------------------------
 [GIBLE]
 Name = Gible
@@ -11865,6 +11929,7 @@ Weight = 27.0
 Kind = Bug Catcher
 Pokedex = It binds itself to trees in marshes. It attracts prey with its sweet-smelling drool and gulps them down.
 Generation = 4
+Flags = FollowSurf
 #-------------------------------
 [MCARNIVINE]
 Name = M. Carnivine
@@ -12006,6 +12071,7 @@ Kind = Plasma
 Pokedex = Its body is composed of plasma. It is known to infiltrate electronic devices and wreak havoc.
 FormName = Rotom
 Generation = 4
+Flags = FollowSurf
 Formalizer = 0,1,2,3,4,5
 #-------------------------------
 [UXIE]
@@ -12029,7 +12095,7 @@ Weight = 0.3
 Kind = Knowledge
 Pokedex = Known as "The Being of Knowledge." It is said that it can wipe out the memory of those who see its eyes.
 Generation = 4
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [MESPRIT]
 Name = Mesprit
@@ -12052,7 +12118,7 @@ Weight = 0.3
 Kind = Emotion
 Pokedex = Known as "The Being of Emotion." It taught humans the nobility of sorrow, pain, and joy.
 Generation = 4
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [AZELF]
 Name = Azelf
@@ -12075,7 +12141,7 @@ Weight = 0.3
 Kind = Willpower
 Pokedex = Known as "The Being of Willpower." It sleeps at the bottom of a lake to keep the world in balance.
 Generation = 4
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [DIALGA]
 Name = Dialga
@@ -12167,7 +12233,7 @@ Kind = Renegade
 Pokedex = This Pokémon is said to live in a world on the reverse side of ours, where common knowledge is distorted and strange.
 FormName = Altered
 Generation = 4
-Flags = Legendary
+Flags = Legendary,FollowSurf
 StickyItems = GRISEOUSORB
 #-------------------------------
 [CRESSELIA]
@@ -12190,7 +12256,7 @@ Weight = 85.6
 Kind = Lunar
 Pokedex = Those who sleep holding Cresselia's feather are assured of joyful dreams. It is said to represent the crescent moon.
 Generation = 4
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [PHIONE]
 Name = Phione
@@ -12253,7 +12319,7 @@ Weight = 50.5
 Kind = Pitch-Black
 Pokedex = It can lull people to sleep and make them dream. It is active during nights of the new moon.
 Generation = 4
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [SHAYMIN]
 Name = Shaymin
@@ -12762,6 +12828,7 @@ Weight = 23.3
 Kind = Dream Eater
 Pokedex = It eats the dreams of people and Pokémon. When it eats a pleasant dream, it expels pink-colored mist.
 Generation = 5
+Flags = FollowSurf
 Evolutions = MUSHARNA,Item,MOONSTONE
 #-------------------------------
 [MUSHARNA]
@@ -12782,6 +12849,7 @@ Weight = 60.5
 Kind = Drowsing
 Pokedex = The dream mist coming from its forehead changes into many different colors depending on the dream that was eaten.
 Generation = 5
+Flags = FollowSurf
 #-------------------------------
 [MMUNNA]
 Name = M. Munna
@@ -12803,6 +12871,7 @@ Weight = 23.3
 Kind = Dragon Egg
 Pokedex = When a Munna egg is placed in the care of a brooding dragon, it hatches into this form. It will repeatedly headbutt Togepi if placed near one.
 Evolutions = MMUSHARNA,Level,37
+Flags = FollowSurf
 #-------------------------------
 [MMUSHARNA]
 Name = M. Musharna
@@ -12820,6 +12889,7 @@ Height = 1.1
 Weight = 60.5
 Kind = Hoarding
 Pokedex = Excess psychic energy is vented as smoke from the hole where its gem once was. Its heart functions as a second brain that lets it communicate telepathically.
+Flags = FollowSurf
 #-------------------------------
 [PIDOVE]
 Name = Pidove
@@ -13921,6 +13991,7 @@ Weight = 1.5
 Kind = Spirit
 Pokedex = Each of them carries a mask that used to be its face when it was human. Sometimes they look at it and cry.
 Generation = 5
+Flags = FollowSurf
 WildItemUncommon = SPELLTAG
 Evolutions = COFAGRIGUS,Level,34
 #-------------------------------
@@ -13941,6 +14012,7 @@ Weight = 76.5
 Kind = Coffin
 Pokedex = Grave robbers who mistake them for real coffins and get too close end up trapped inside their bodies.
 Generation = 5
+Flags = FollowSurf
 WildItemUncommon = SPELLTAG
 #-------------------------------
 [GYAMASK]
@@ -14043,6 +14115,7 @@ Weight = 9.5
 Kind = First Bird
 Pokedex = This Pokémon was successfully restored from a fossil. As research suggested, Archen is unable to fly. But it's very good at jumping.
 Generation = 5
+Flags = NoFollowSurf
 Evolutions = ARCHEOPS,Level,37
 #-------------------------------
 [ARCHEOPS]
@@ -14326,6 +14399,7 @@ Weight = 1.0
 Kind = Cell
 Pokedex = They drive away attackers by unleashing psychic power. They can use telepathy to talk with others.
 Generation = 5
+Flags = FollowSurf
 WildItemCommon = RAREBONE
 Evolutions = DUOSION,Level,24
 #-------------------------------
@@ -14346,6 +14420,7 @@ Weight = 8.0
 Kind = Mitosis
 Pokedex = When their two divided brains think the same thoughts, their psychic power is maximized.
 Generation = 5
+Flags = FollowSurf
 Evolutions = REUNICLUS,Level,40
 #-------------------------------
 [REUNICLUS]
@@ -14367,6 +14442,7 @@ Weight = 20.1
 Kind = Multiplying
 Pokedex = When Reuniclus shake hands, a network forms between their brains, increasing their psychic power.
 Generation = 5
+Flags = FollowSurf
 #-------------------------------
 [DUCKLETT]
 Name = Ducklett
@@ -14387,6 +14463,7 @@ Weight = 5.5
 Kind = Water Bird
 Pokedex = They are better at swimming than flying, and they happily eat their favorite food, peat moss, as they dive underwater.
 Generation = 5
+Flags = NoFollowSurf
 WildItemUncommon = FAIRYFEATHER
 Evolutions = SWANNA,Level,38
 #-------------------------------
@@ -14428,6 +14505,7 @@ Weight = 5.7
 Kind = Fresh Snow
 Pokedex = This Pokémon formed from icicles bathed in energy from the morning sun. It sleeps buried in snow.
 Generation = 5
+Flags = FollowSurf
 WildItemUncommon = NEVERMELTICE
 Evolutions = VANILLISH,Level,20
 #-------------------------------
@@ -14448,6 +14526,7 @@ Weight = 41.0
 Kind = Icy Snow
 Pokedex = Snowy mountains are this Pokémon's habitat. During an ancient ice age, they moved to southern areas.
 Generation = 5
+Flags = FollowSurf
 WildItemUncommon = NEVERMELTICE
 Evolutions = VANILLUXE,Level,38
 #-------------------------------
@@ -14469,6 +14548,7 @@ Weight = 57.5
 Kind = Snowstorm
 Pokedex = Swallowing large amounts of water, they make snow clouds inside their bodies and, when angry, cause violent blizzards.
 Generation = 5
+Flags = FollowSurf
 WildItemCommon = NEVERMELTICE
 #-------------------------------
 [DEERLING]
@@ -14533,6 +14613,7 @@ Weight = 5.0
 Kind = Sky Squirrel
 Pokedex = The energy made in its cheeks' electric pouches is stored inside its membrane and released while it is gliding.
 Generation = 5
+Flags = NoFollowSurf
 #-------------------------------
 [KARRABLAST]
 Name = Karrablast
@@ -14881,6 +14962,7 @@ Weight = 22.0
 Kind = EleFish
 Pokedex = These Pokémon have a big appetite. When they spot their prey, they attack it and paralyze it with electricity.
 Generation = 5
+Flags = NoFollowSurf
 Evolutions = EELEKTROSS,Item,THUNDERSTONE
 #-------------------------------
 [EELEKTROSS]
@@ -14900,6 +14982,7 @@ Weight = 80.5
 Kind = EleFish
 Pokedex = They crawl out of the ocean using their arms. They will attack prey on shore and immediately drag it into the ocean.
 Generation = 5
+Flags = NoFollowSurf
 #-------------------------------
 [ELGYEM]
 Name = Elgyem
@@ -14921,6 +15004,7 @@ Weight = 9.0
 Kind = Cerebral
 Pokedex = Rumors of its origin are linked to a UFO crash site in the desert 50 years ago.
 Generation = 5
+Flags = FollowSurf
 WildItemUncommon = TWISTEDSPOON
 Evolutions = BEHEEYEM,Level,34
 #-------------------------------
@@ -14942,6 +15026,7 @@ Weight = 34.5
 Kind = Cerebral
 Pokedex = It uses psychic power to control an opponent's brain and tamper with its memories.
 Generation = 5
+Flags = FollowSurf
 WildItemUncommon = TWISTEDSPOON
 #-------------------------------
 [LITWICK]
@@ -14983,6 +15068,7 @@ Weight = 13.0
 Kind = Lamp
 Pokedex = It arrives near the moment of death and steals spirit from the body.
 Generation = 5
+Flags = FollowSurf
 Evolutions = CHANDELURE,Level,39
 #-------------------------------
 [CHANDELURE]
@@ -15003,6 +15089,7 @@ Weight = 34.3
 Kind = Luring
 Pokedex = The spirits burned up in its ominous flame lose their way and wander this world forever.
 Generation = 5
+Flags = FollowSurf
 #-------------------------------
 [AXEW]
 Name = Axew
@@ -15141,6 +15228,7 @@ Weight = 148.0
 Kind = Crystallizing
 Pokedex = With its icy chains, Cryogonal freezes those it encounters. It then takes its victims away to somewhere unknown.
 Generation = 5
+Flags = FollowSurf
 WildItemUncommon = NEVERMELTICE
 #-------------------------------
 [SHELMET]
@@ -15430,6 +15518,7 @@ Weight = 10.5
 Kind = Eaglet
 Pokedex = They will challenge anything, even strong opponents, without fear. Their frequent fights help them become stronger.
 Generation = 5
+Flags = NoFollowSurf
 WildItemUncommon = SHARPBEAK
 Evolutions = HBRAVIARY,Originize,31,BRAVIARY,Level,31
 #-------------------------------
@@ -15497,6 +15586,7 @@ Weight = 9.0
 Kind = Diapered
 Pokedex = Their wings are too tiny to allow them to fly. They guard their posteriors with bones that were gathered by Mandibuzz.
 Generation = 5
+Flags = NoFollowSurf
 WildItemUncommon = BLACKHERB
 Evolutions = MANDIBUZZ,Level,31
 #-------------------------------
@@ -15540,6 +15630,7 @@ Kind = Tiny House
 Pokedex = It stomps on smaller opponents with its powerful legs, sometimes toppling in the process. If its house is broken, terrible wailing emits until it is repaired.
 WildItemUncommon = SPELLTAG
 Evolutions = MMANDIBUZZ,Item,DUSKSTONE
+Flags = NoFollowSurf
 #-------------------------------
 [MMANDIBUZZ]
 Name = M. Mandibuzz
@@ -15559,6 +15650,7 @@ Weight = 39.5
 Kind = Witchcraft
 Pokedex = It steeps the remains of prey within the jar it protects, stirring the concoction with its claws. Folklore says its soul is kept within the diseased mass.
 WildItemUncommon = SPELLTAG
+Flags = NoFollowSurf
 #-------------------------------
 [HEATMOR]
 Name = Heatmor
@@ -15661,6 +15753,7 @@ Weight = 160.0
 Kind = Brutal
 Pokedex = It responds to movement by attacking. This scary, three-headed Pokémon devours everything in its path!
 Generation = 5
+Flags = FollowSurf
 #-------------------------------
 [LARVESTA]
 Name = Larvesta
@@ -15701,6 +15794,7 @@ Weight = 46.0
 Kind = Sun
 Pokedex = When volcanic ash darkened the atmosphere, it is said that Volcarona's fire provided a replacement for the sun.
 Generation = 5
+Flags = FollowSurf
 WildItemCommon = SILVERPOWDER
 WildItemUncommon = SILVERPOWDER
 WildItemRare = SILVERPOWDER
@@ -15914,7 +16008,7 @@ Weight = 330.0
 Kind = Vast White
 Pokedex = When Reshiram's tail flares, the heat energy moves the atmosphere and changes the world's weather.
 Generation = 5
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [ZEKROM]
 Name = Zekrom
@@ -15937,7 +16031,7 @@ Weight = 345.0
 Kind = Deep Black
 Pokedex = Concealing itself in lightning clouds, it flies throughout the Unova region. It creates electricity in its tail.
 Generation = 5
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [KYUREM]
 Name = Kyurem
@@ -16270,6 +16364,7 @@ Weight = 1.7
 Kind = Tiny Robin
 Pokedex = Despite the beauty of its lilting voice, it's merciless to intruders that enter its territory.
 Generation = 6
+Flags = NoFollowSurf
 WildItemUncommon = SHARPBEAK
 Evolutions = FLETCHINDER,Level,17
 #-------------------------------
@@ -16695,6 +16790,7 @@ Weight = 0.5
 Kind = Perfume
 Pokedex = In the past, rather than using perfume, royal ladies carried a Spritzee that would waft a fragrance they liked.
 Generation = 6
+Flags = FollowSurf
 WildItemUncommon = FAIRYFEATHER
 Evolutions = AROMATISSE,Level,34,MAROMATISSE,Item,LEAFSTONE
 #-------------------------------
@@ -16901,6 +16997,7 @@ Weight = 81.5
 Kind = Mock Kelp
 Pokedex = Tales are told of ships that wander into seas where Dragalge live, never to return.
 Generation = 6
+Flags = FollowSurf
 #-------------------------------
 [MSKRELP]
 Name = M. Skrelp
@@ -17117,6 +17214,7 @@ Weight = 21.5
 Kind = Wrestling
 Pokedex = With its wings, it controls its position in the air. It likes to attack from above, a maneuver that is difficult to defend against.
 Generation = 6
+Flags = NoFollowSurf
 WildItemUncommon = EXPERTBELT
 #-------------------------------
 [DEDENNE]
@@ -17159,6 +17257,7 @@ Weight = 5.7
 Kind = Jewel
 Pokedex = It's said that somewhere in the world, there's a mineral vein housing a large pack of slumbering Carbink. It's also said that this pack has a queen.
 Generation = 6
+Flags = FollowSurf
 Evolutions = DIANCIE,Item,DIAMONDTIARA
 #-------------------------------
 [DIANCIE]
@@ -17180,7 +17279,7 @@ Weight = 8.8
 Kind = Jewel
 Pokedex = It can instantly create many diamonds by compressing the carbon in the air between its hands.
 Generation = 6
-Flags = Legendary
+Flags = Legendary,FollowSurf
 StickyItems = CRYSTALCALIBURN
 #-------------------------------
 [GOOMY]
@@ -17307,6 +17406,7 @@ Weight = 3.0
 Kind = Key Ring
 Pokedex = It never lets go of a key that it likes, so people give it the keys to vaults and safes as a way to prevent crime.
 Generation = 6
+Flags = FollowSurf
 #-------------------------------
 [PHANTUMP]
 Name = Phantump
@@ -17328,6 +17428,7 @@ Weight = 7.0
 Kind = Stump
 Pokedex = According to old tales, these Pokémon are stumps possessed by the spirits of children who died while lost in the forest.
 Generation = 6
+Flags = FollowSurf
 Evolutions = TREVENANT,Level,33
 #-------------------------------
 [TREVENANT]
@@ -17591,7 +17692,7 @@ Kind = Mischief
 Pokedex = It gathers things it likes and passes them through its loop to teleport them to a secret place.
 FormName = Hoopa Confined
 Generation = 6
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [VOLCANION]
 Name = Volcanion
@@ -17636,6 +17737,7 @@ Weight = 1.5
 Kind = Grass Quill
 Pokedex = It sends its feathers, which are as sharp as blades, flying in attack. Its legs are strong, so its kicks are also formidable.
 Generation = 7
+Flags = NoFollowSurf
 Evolutions = DARTRIX,Level,16
 #-------------------------------
 [DARTRIX]
@@ -17655,6 +17757,7 @@ Weight = 16.0
 Kind = Blade Quill
 Pokedex = This narcissistic Pokémon is a clean freak. If you don't groom it diligently, it will stop listening to you.
 Generation = 7
+Flags = NoFollowSurf
 Evolutions = HDECIDUEYE,Originize,36,DECIDUEYE,Level,36
 #-------------------------------
 [DECIDUEYE]
@@ -17836,6 +17939,7 @@ Weight = 1.2
 Kind = Woodpecker
 Pokedex = It pecks at trees with its hard beak. You can get some idea of its mood or condition from the rhythm of its pecking.
 Generation = 7
+Flags = NoFollowSurf
 WildItemUncommon = RAWSTBERRY
 Evolutions = TRUMBEAK,Level,21
 #-------------------------------
@@ -17973,6 +18077,7 @@ Weight = 45.0
 Kind = Stag Beetle
 Pokedex = It has an organ that generates electricity in its abdomen. It concentrates energy in its jaws and fires off jolts of electricity.
 Generation = 7
+Flags = FollowSurf
 #-------------------------------
 [CRABRAWLER]
 Name = Crabrawler
@@ -18035,6 +18140,7 @@ Kind = Dancing
 Pokedex = It wins the hearts of its enemies with its passionate dancing and then uses the opening it creates to burn them up with blazing flames.
 FormName = Baile Style
 Generation = 7
+Flags = NoFollowSurf
 Formalizer = 0,1,2,3
 WildItemUncommon = HONEY
 #-------------------------------
@@ -18058,6 +18164,7 @@ Weight = 0.2
 Kind = Bee Fly
 Pokedex = Cutiefly is able to detect the aura of living things, which it uses to find flowers. Cutiefly tend to gather around beings feeling strong emotions.
 Generation = 7
+Flags = FollowSurf
 WildItemUncommon = HONEY
 Evolutions = RIBOMBEE,Item,ALOLANWREATH
 #-------------------------------
@@ -18079,6 +18186,7 @@ Weight = 0.5
 Kind = Bee Fly
 Pokedex = Ribombee hates rain as it turns its hair dirty and its pollen damp. When storms are on the horizon, Ribombee hides in tree hollows waiting for it to pass.
 Generation = 7
+Flags = FollowSurf
 WildItemUncommon = HONEY
 #-------------------------------
 [ROCKRUFF]
@@ -18548,6 +18656,7 @@ Weight = 0.3
 Kind = Posy Picker
 Pokedex = It stretches sticky vines out from its head and picks flowers to adorn itself with. When it doesn't have any flowers, it feels uneasy.
 Generation = 7
+Flags = FollowSurf
 WildItemUncommon = FAIRYFEATHER
 #-------------------------------
 [ORANGURU]
@@ -18912,6 +19021,7 @@ Weight = 210.0
 Kind = Sea Creeper
 Pokedex = It wraps its prey in green seaweed and sucks away their vitality. It only likes to go after big prey like Wailord.
 Generation = 7
+Flags = FollowSurf
 #-------------------------------
 [JANGMOO]
 Name = Jangmo-o
@@ -18997,7 +19107,7 @@ Weight = 20.5
 Kind = Land Spirit
 Pokedex = Although it's called a guardian deity, if a person or Pokémon puts it in a bad mood, it will become a malevolent deity and attack.
 Generation = 7
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [TAPULELE]
 Name = Tapu Lele
@@ -19019,7 +19129,7 @@ Weight = 18.6
 Kind = Land Spirit
 Pokedex = It heals the wounds of people and Pokémon by sprinkling them with its sparkling scales. This guardian deity is worshiped on Akala.
 Generation = 7
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [TAPUBULU]
 Name = Tapu Bulu
@@ -19041,7 +19151,7 @@ Weight = 45.5
 Kind = Land Spirit
 Pokedex = Although it's called a guardian deity, it's violent enough to crush anyone it sees as an enemy.
 Generation = 7
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [TAPUFINI]
 Name = Tapu Fini
@@ -19085,7 +19195,7 @@ Weight = 0.1
 Kind = Nebula
 Pokedex = Even though its helpless, gaseous body can be blown away by the slightest breeze, it doesn't seem to care.
 Generation = 7
-Flags = Legendary
+Flags = Legendary,FollowSurf
 Evolutions = COSMOEM,Level,25
 #-------------------------------
 [COSMOEM]
@@ -19106,7 +19216,7 @@ Weight = 999.9
 Kind = Protostar
 Pokedex = The king who ruled Alola in times of antiquity called it the "cocoon of the stars" and built an altar to worship it.
 Generation = 7
-Flags = Legendary
+Flags = Legendary,FollowSurf
 Evolutions = SOLGALEO,Item,DAWNSTONE,LUNALA,Item,DUSKSTONE
 #-------------------------------
 [SOLGALEO]
@@ -19151,7 +19261,7 @@ Weight = 120.0
 Kind = Moone
 Pokedex = Records of it exist in writings from long, long ago, where it was known by the name "the beast that calls the moon."
 Generation = 7
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [NECROZMA]
 Name = Necrozma
@@ -19174,7 +19284,7 @@ Weight = 230.0
 Kind = Prism
 Pokedex = It looks somehow pained as it rages around in search of light, which serves as its energy. It's apparently from another world.
 Generation = 7
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [NIHILEGO]
 Name = Nihilego
@@ -19197,7 +19307,7 @@ Weight = 55.5
 Kind = Parasite
 Pokedex = A life-form from another world, it was dubbed a UB and is thought to produce a strong neurotoxin.
 Generation = 7
-Flags = Legendary,UltraBeast
+Flags = Legendary,UltraBeast,FollowSurf
 #-------------------------------
 [BUZZWOLE]
 Name = Buzzwole
@@ -19311,7 +19421,7 @@ Weight = 0.1
 Kind = Drawn Sword
 Pokedex = This Ultra Beast's body, which is as thin as paper, is like a sharpened sword.
 Generation = 7
-Flags = Legendary,UltraBeast
+Flags = Legendary,UltraBeast,FollowSurf
 #-------------------------------
 [GUZZLORD]
 Name = Guzzlord
@@ -19357,7 +19467,7 @@ Weight = 1.8
 Kind = Poison Pin
 Pokedex = This Ultra Beast is well enough liked to be chosen as a first partner in its own world.
 Generation = 7
-Flags = Legendary,UltraBeast
+Flags = Legendary,UltraBeast,FollowSurf
 Evolutions = NAGANADEL,Level,40
 #-------------------------------
 [NAGANADEL]
@@ -19380,7 +19490,7 @@ Weight = 150.0
 Kind = Poison Pin
 Pokedex = It stores hundreds of liters of poisonous liquid inside its body. It is one of the organisms known as UBs.
 Generation = 7
-Flags = Legendary,UltraBeast
+Flags = Legendary,UltraBeast,FollowSurf
 #-------------------------------
 [STAKATAKA]
 Name = Stakataka
@@ -19449,7 +19559,7 @@ Weight = 80.5
 Kind = Artificial
 Pokedex = It synchronizes its consciousness with others to understand their feelings. This faculty makes it useful for taking care of people.
 Generation = 7
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [MARSHADOW]
 Name = Marshadow
@@ -19771,6 +19881,7 @@ Weight = 1.8
 Kind = Tiny Bird
 Pokedex = Jumping nimbly about, this small-bodied Pokémon takes advantage of even the slightest opportunity to disorient larger opponents.
 Generation = 8
+Flags = NoFollowSurf
 Evolutions = CORVISQUIRE,Level,23
 #-------------------------------
 [CORVISQUIRE]
@@ -19870,6 +19981,7 @@ Weight = 40.8
 Kind = Seven Spot
 Pokedex = It emits psychic energy to observe and study what's around it, and what's around it can include things over six miles away.
 Generation = 8
+Flags = FollowSurf
 #-------------------------------
 [NICKIT]
 Name = Nickit
@@ -20194,6 +20306,7 @@ Weight = 1.5
 Kind = Apple Wing
 Pokedex = It flies on wings of apple skin and spits a powerful acid. It can also change its shape into that of an apple.
 Generation = 8
+Flags = FollowSurf
 #-------------------------------
 [APPLETUN]
 Name = Appletun
@@ -20553,6 +20666,7 @@ Weight = 0.2
 Kind = Black Tea
 Pokedex = The teacup in which this Pokémon makes its home is a famous piece of antique tableware. Many forgeries are in circulation.
 Generation = 8
+Flags = FollowSurf
 Evolutions = POLTEAGEIST,Level,30
 #-------------------------------
 [POLTEAGEIST]
@@ -20573,6 +20687,7 @@ Weight = 0.4
 Kind = Black Tea
 Pokedex = Leaving leftover black tea unattended is asking for this Pokémon to come along and pour itself into it, turning the tea into a new Polteageist.
 Generation = 8
+Flags = FollowSurf
 #-------------------------------
 [MSINISTEA]
 Name = M. Sinistea
@@ -20879,6 +20994,7 @@ Weight = 42.0
 Kind = Frost Moth
 Pokedex = It shows no mercy to any who desecrate fields and mountains. It will fly around on its icy wings, causing a blizzard to chase offenders away.
 Generation = 8
+Flags = FollowSurf
 #-------------------------------
 [STONJOURNER]
 Name = Stonjourner
@@ -21195,6 +21311,7 @@ Weight = 2.0
 Kind = Lingering
 Pokedex = If this weak Pokémon is by itself, a mere child could defeat it. But if Dreepy has friends to help it train, it can evolve and become much stronger.
 Generation = 8
+Flags = FollowSurf
 Evolutions = DRAKLOAK,Level,25
 #-------------------------------
 [DRAKLOAK]
@@ -21215,6 +21332,7 @@ Weight = 11.0
 Kind = Caretaker
 Pokedex = Without a Dreepy to place on its head and care for, it gets so uneasy it'll try to substitute any Pokémon it finds for the missing Dreepy.
 Generation = 8
+Flags = FollowSurf
 Evolutions = DRAGAPULT,Level,45
 #-------------------------------
 [DRAGAPULT]
@@ -21235,6 +21353,7 @@ Weight = 50.0
 Kind = Stealth
 Pokedex = Apparently the Dreepy inside Dragapult's horns eagerly look forward to being launched out at Mach speeds.
 Generation = 8
+Flags = FollowSurf
 #-------------------------------
 [ZACIAN]
 Name = Zacian
@@ -21303,7 +21422,7 @@ Weight = 950.0
 Kind = Gigantic
 Pokedex = It was inside a meteorite that fell 20,000 years ago. There seems to be a connection between this Pokémon and the Dynamax phenomenon.
 Generation = 8
-Flags = Legendary
+Flags = Legendary,FollowSurf
 #-------------------------------
 [KUBFU]
 Name = Kubfu
@@ -21439,4 +21558,4 @@ Weight = 7.7
 Kind = King
 Pokedex = Calyrex is a merciful Pokémon, capable of providing healing and blessings. It has the power to cause hearts to mend and plants to spring forth.
 Generation = 8
-Flags = Legendary
+Flags = Legendary,FollowSurf

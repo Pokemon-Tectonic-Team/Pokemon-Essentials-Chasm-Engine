@@ -19,7 +19,7 @@ Events.FollowerRefresh += proc{|pokemon|
 
 def swimmingSpecies?(species,form=0)
 	species_data = GameData::Species.get_species_form(species,form)
-  return false if FollowerSettings::SURFING_FOLLOWERS_EXCEPTIONS.any?{|s| s == species || s.to_s == "#{species}_#{form}" }
+  return false if species_data.flags.include?("NoFollowSurf")
 	return true if species_data.type1 == :WATER || species_data.type2 == :WATER
 	return false
 end
@@ -34,12 +34,12 @@ end
 def floatingSpecies?(species,form=0)
 	species_data = GameData::Species.get_species_form(species,form)
 	if species_data.type1 == :FLYING || species_data.type2 == :FLYING
-		exception = FollowerSettings::SURFING_FOLLOWERS_EXCEPTIONS.any?{|s| s == species || s.to_s == "#{species}_#{form}" }
+		exception = species_data.flags.include?("NoFollowSurf")
 		return !exception
 	end
   return true if species_data.abilities.include?(:LEVITATE)
 	return true if species_data.abilities.include?(:DESERTSPIRIT)
-  return true if FollowerSettings::SURFING_FOLLOWERS.any?{|s| s == species || s.to_s == "#{species}_#{form}" }
+  return true if species_data.flags.include?("FollowSurf")
 	return false
 end
 
