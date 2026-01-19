@@ -646,19 +646,20 @@ module GameData
         end
 
         def canSwim?
-            return false if @flags.include?("NoFollowSurf")
+            return false if @flags.include?("Grounded")
+            return true if @flags.include?("Swimming")
 	        return true if hasType?(:WATER)
 	        return false
         end
 
         def canFloat?
             if hasType?(:FLYING)
-		        exception = @flags.include?("NoFollowSurf")
+		        exception = @flags.include?("Grounded")
 		        return !exception
 	        end
             return true if @abilities.include?(:LEVITATE)
 	        return true if @abilities.include?(:DESERTSPIRIT)
-            return true if @flags.include?("FollowSurf")
+            return true if @flags.include?("Floating")
 	        return false
         end
 
