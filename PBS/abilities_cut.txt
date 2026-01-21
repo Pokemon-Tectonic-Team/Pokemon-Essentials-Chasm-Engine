@@ -812,6 +812,10 @@ Name = Pearl Seeker
 Description = Upon entry during eclipse, if it has no item, finds and equips the Pearl of Fate.
 Flags = EclipseSynergy
 #-------------------------------
+[PERSISTENTGROWTH]
+Name = Persistent Growth
+Description = At the end of each of its turns, Speed is lowered but every other stat is raised.
+#-------------------------------
 [PICKPOCKET]
 Name = Pickpocket
 Description = Steals an item when hit by another Pokémon.

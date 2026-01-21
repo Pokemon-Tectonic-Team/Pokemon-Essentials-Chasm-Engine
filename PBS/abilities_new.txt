@@ -1239,6 +1239,10 @@ Description = Multi-hit moves can hit up to twice as many times.
 Name = Long Receiver
 Description = Copies the Ability of this Pokémon it switches in to replace.
 #-------------------------------
+[LONGTERMVIEW]
+Name = Long-term View
+Description = Effects placed by this Pokemon last 50% longer.
+#-------------------------------
 [LOUD]
 Name = Loud
 Description = Boosts power of sound-based moves by 30%.
@@ -1524,10 +1528,6 @@ Description = This Pokémon's hits deal half damage unless they are critical.
 [PERFECTLUCK]
 Name = Perfect Luck
 Description = Maximizes the frequency of multi-hit moves. Always deals critical hits.
-#-------------------------------
-[PERSISTENTGROWTH]
-Name = Persistent Growth
-Description = At the end of each of its turns, Speed is lowered but every other stat is raised.
 #-------------------------------
 [PESTILENT]
 Name = Pestilent
