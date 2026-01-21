@@ -15,7 +15,7 @@ end
 
 def applyEffectDurationModifiers(value, user)
     return (value.to_f * 1.5).floor if user.hasTribeBonus?(:SERENE)
-    return (value.to f * 1.5).floor if user.hasAbility(:LONGTERMVIEW)
+    return (value.to f * 1.5).floor if user.hasAbility?(:LONGTERMVIEW)
     return value
 end
 
@@ -107,6 +107,7 @@ end
 def entryTrappingAbility(ability, battler, battle, trappingMove, trappingDuration: 2, aiCheck: false, &block)
     trappingDuration *= 2 if battler.shouldItemApply?(:GRIPCLAW,aiCheck )
     trappingDuration = (trappingDuration.to_f * 1.5).floor if battler.hasTribeBonus?(:SERENE)
+    trappingDuration = (trappingDuration.to_f * 1.5).floor if battler.hasAbility?(:LONGTERMVIEW)
 
     score = 0
     battle.pbShowAbilitySplash(battler, ability) unless aiCheck
