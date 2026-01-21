@@ -1314,6 +1314,12 @@ FrontSprite = -11,26
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
+[CURESOLA]
+BackSprite = 0,10
+FrontSprite = 1,12
+ShadowX = 0
+ShadowSize = 2
+#-------------------------------
 [CURSOLA]
 BackSprite = 0,5
 FrontSprite = 0,9
