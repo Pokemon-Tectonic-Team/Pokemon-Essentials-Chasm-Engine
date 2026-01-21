@@ -1693,7 +1693,7 @@ Description = On the first turn, its attacks poison the target.
 #-------------------------------
 [RAPIDREFRESH]
 Name = Rapid Refresh
-Description = Restores 50% of max HP and heals all non-volatile status conditions when switched out.
+Description = Heals 1/8th HP every turn if hit by an attack.
 #-------------------------------
 [RATTLEEM]
 Name = Rattle 'Em

@@ -93,6 +93,12 @@ BattleHandlers::EORHealingAbility.add(:LIVINGARMOR,
   }
 )
 
+BattleHandlers::EORHealingAbility.add(:RAPIDREFRESH,
+  proc { |ability, battler, battle|
+      battler.applyFractionalHealing(1.0 / 8.0, ability: ability) unless battler.lastAttacker.empty?
+  }
+)
+
 BattleHandlers::EORHealingAbility.add(:PRIMEVALREGENERATOR,
   proc { |ability, battler, _battle|
       battler.applyFractionalHealing(1.0 / 4.0, ability: ability)
