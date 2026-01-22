@@ -1933,6 +1933,10 @@ Description = Doubles the critical hit chance of random crit moves. This Pokémo
 Name = Shellcracker
 Description = Its physical attacks reduce the target's Defense.
 #-------------------------------
+[SHIELDSMITHING]
+Name = Shield-Smithing
+Description = Immune to Steel-type moves, and boosts Defense and Sp. Def when hit by one.
+#-------------------------------
 [SHIFTINGFIST]
 Name = Shifting Fist
 Description = Punching moves change this Pokémon's secondary type and their power is boosted by 30%.
@@ -2227,6 +2231,10 @@ Description = This Pokémon's Speed is doubled while using kicking moves.
 [SWORDPLAY]
 Name = Swordplay
 Description = Boosts the power of blade moves by 30%.
+#-------------------------------
+[SWORDSMITHING]
+Name = Sword-Smithing
+Description = Immune to Steel-type moves, and boosts Attack and Sp. Atk when hit by one.
 #-------------------------------
 [TAIGATREKKER]
 Name = Taiga Trekker
