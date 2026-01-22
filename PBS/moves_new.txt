@@ -487,6 +487,7 @@ Target = AllNearFoes
 FunctionCode = Basic
 Flags = CanProtect,Sound,Dance
 Description = The user performs a long-forgotten song and dance. This is both a Sound and Dance move.
+Animation = RELICSONG
 #-------------------------------
 [RETREAT]
 Name = Retreat
