@@ -940,11 +940,12 @@ Height = 5.0
 Weight = 999.7
 #-------------------------------
 [RAYQUAZA,1]
-FormName = Delta
+FormName = Meteoric
 MegaMove = DRAGONASCENT
 MegaMessage = 1
-BaseStats = 105,150,90,95,150,90
-# Total = 680
+BaseStats = 95,180,95,115,180,95
+# Total = 760
+Abilities = JUGGERNAUT
 Height = 10.8
 Weight = 392.0
 #-------------------------------

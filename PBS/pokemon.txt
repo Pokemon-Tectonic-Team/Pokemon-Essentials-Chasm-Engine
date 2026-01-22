@@ -10572,8 +10572,8 @@ Name = Rayquaza
 Type1 = DRAGON
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 95,130,85,95,130,85
-# Total = 620
+BaseStats = 95,150,85,95,150,85
+# Total = 660
 GenderRate = Genderless
 BaseEXP = 306
 Rareness = 5
