@@ -338,6 +338,24 @@ BattleHandlers::AbilityOnSwitchIn.add(:TRIAGE,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:LEADDANCER,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} takes center stage!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:LEADSINGER,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} steals the show!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
 BattleHandlers::AbilityOnSwitchIn.add(:SWIFTSTOMPS,
   proc { |ability, battler, battle, aiCheck|
       next 0 if aiCheck

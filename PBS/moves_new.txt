@@ -8327,3 +8327,15 @@ FunctionCode = Rampage
 Flags = CanProtect
 Description = The user attacks with simple determination and rampages for two turns.
 Animation = THRASH
+#-------------------------------
+[RELICRECITAL]
+Name = Relic Recital
+Type = NORMAL
+Category = Adaptive
+Power = 110
+Accuracy = 100
+TotalPP = 15
+Target = AllNearFoes
+FunctionCode = Basic
+Flags = CanProtect,Sound,Dance
+Description = The user performs a long-forgotten song and dance. This is both a Sound and Dance move.

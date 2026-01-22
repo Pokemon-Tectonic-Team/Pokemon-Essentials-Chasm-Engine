@@ -4215,3 +4215,15 @@ FunctionCode = Invalid
 Flags = CanProtect,Sound
 Description = The target is put to sleep, and the user's Attack is raised. Fails unless the target is at or below half health.
 Animation = SING
+#-------------------------------
+[RELICSONG]
+Name = Relic Song
+Type = NORMAL
+Category = Adaptive
+Power = 75
+Accuracy = 100
+TotalPP = 10
+Target = AllNearFoes
+FunctionCode = ChangeUserMeloettaForm
+Flags = CanProtect,Sound
+Description = An ancient song appeals to the hearts of those listening. Switches Meloetta's form.

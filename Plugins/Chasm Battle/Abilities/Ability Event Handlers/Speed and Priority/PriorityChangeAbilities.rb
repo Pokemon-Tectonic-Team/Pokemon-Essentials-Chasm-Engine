@@ -48,3 +48,9 @@ BattleHandlers::PriorityChangeAbility.add(:EGOIST,
       next 1 if move.type == :FIGHTING
   }
 )
+
+BattleHandlers::PriorityChangeAbility.add(:LEADDANCER,
+  proc { |ability, _battler, move, _pri, _targets = nil, _aiCheck = false|
+      next 1 if move.danceMove?
+  }
+)

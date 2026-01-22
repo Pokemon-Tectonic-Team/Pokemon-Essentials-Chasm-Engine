@@ -427,8 +427,9 @@ Pokedex = The power that lay hidden in its body now covers its horn, turning it 
 FormName = Pirouette
 Type1 = NORMAL
 Type2 = FIGHTING
-BaseStats = 100,130,90,130,75,75
-# Total = 600
+BaseStats = 100,130,120,115,75,80
+# Total = 620
+Abilities = SERENEGRACE,LEADDANCER
 #-------------------------------
 [GENESECT,1]
 FormName = Shock Drive

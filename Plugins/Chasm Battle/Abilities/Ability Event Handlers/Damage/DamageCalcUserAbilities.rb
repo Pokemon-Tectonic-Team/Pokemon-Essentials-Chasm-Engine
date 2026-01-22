@@ -208,6 +208,8 @@ BattleHandlers::DamageCalcUserAbility.add(:LOUD,
 
 BattleHandlers::DamageCalcUserAbility.copy(:LOUD, :TUNEDOUT)
 
+BattleHandlers::DamageCalcUserAbility.copy(:LOUD, :LEADSINGER)
+
 BattleHandlers::DamageCalcUserAbility.add(:EARSPLITTING,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.soundMove?
