@@ -762,6 +762,10 @@ Description = Doubles this Pokémon's Speed in Rooms.
 Name = Forewarning
 Description = Foretelling moves also hit for half power on the turn they are used.
 #-------------------------------
+[FORTIFIED]
+Name = Fortified
+Description = Take 30% less damage from attacks on turns when it hasn't moved yet.
+#-------------------------------
 [FREERIDE]
 Name = Free Ride
 Description = Raises other allies' Speed by two steps upon entry.
