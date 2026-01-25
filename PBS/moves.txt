@@ -196,6 +196,7 @@ TotalPP = 10
 Target = User
 Priority = 4
 FunctionCode = UserEnduresFaintingThisTurn
+Flags = Staple
 Description = The user endures any attack with at least 1 HP. It always fails if it is used in succession.
 #-------------------------------
 [ENTRAINMENT]
@@ -481,7 +482,7 @@ TotalPP = 15
 Target = NearFoe
 FunctionCode = UseMoveTargetIsAboutToUse
 Flags = CanProtect,Uninvocable
-Description = The user tries to cut ahead of the foe to steal and use the foe's intended move with greater power.
+Description = If the user acts before the target, it copies the target’s attacking move and uses it against them with 50% increased power.
 #-------------------------------
 [MEGAPUNCH]
 Name = Mega Punch
@@ -851,9 +852,9 @@ Category = Status
 Accuracy = 0
 TotalPP = 15
 Target = User
-FunctionCode = UserAddStockpileRaiseDefSpDef2
+FunctionCode = UserAddStockpile
 Flags = CanSnatch
-Description = The user stockpiles power and raises its Defense and Sp. Def by two steps. The move can be stacked twice.
+Description = The user stockpiles power, reducing move damage taken by 30%. This can be stacked twice.
 #-------------------------------
 [STRUGGLE]
 Name = Struggle
@@ -3405,7 +3406,7 @@ Description = The user strikes the target with a flaming lash. This also lowers 
 Name = Fire Pledge
 Type = FIRE
 Category = Special
-Power = 80
+Power = 95
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
@@ -3953,7 +3954,7 @@ Description = The target is blasted with a forceful shot of water. Can random cr
 Name = Water Pledge
 Type = WATER
 Category = Special
-Power = 80
+Power = 95
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
@@ -4126,7 +4127,7 @@ Description = The user snares the target with grass and trips it. The heavier th
 Name = Grass Pledge
 Type = GRASS
 Category = Special
-Power = 80
+Power = 95
 Accuracy = 100
 TotalPP = 10
 Target = NearOther

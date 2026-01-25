@@ -126,7 +126,7 @@ Description = Healing on this Pokémon is reversed.
 #-------------------------------
 [BACKWASH]
 Name = Backwash
-Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from a foe, they become waterlogged.
+Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from the same attacker, they become waterlogged.
 #-------------------------------
 [BADINFLUENCE]
 Name = Bad Influence
@@ -140,6 +140,11 @@ Description = When free from non-volatile status conditions, non-damaging moves 
 Name = Bad Omen
 Description = Foretelling moves hit two turns quicker and deal 30% more damage.
 #-------------------------------
+[BAITFISH]
+Name = Bait Fish
+Description = Draws in moves from foes.
+Flags = Immutable
+#-------------------------------
 [BALLLIGHTNING]
 Name = Ball Lightning
 Description = Deals more damage to targets the faster it is than them. Up to a 50% bonus at double Speed.
@@ -151,10 +156,6 @@ Description = Your Poké Balls are 50% more effective.
 [BARRIERMAKER]
 Name = Barrier Maker
 Description = Sets a Reflect for four turns upon entry.
-#-------------------------------
-[BATTLEHARDENED]
-Name = Battle-Hardened
-Description = Raises Defense and Sp. Def by three steps when its HP is lowered below half.
 #-------------------------------
 [BEAMING]
 Name = Beaming
@@ -287,7 +288,7 @@ Description = Immune to Fighting-type moves, and raises Attack and Sp. Atk if hi
 #-------------------------------
 [CHILLEDBODY]
 Name = Chilled Body
-Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from a foe, they become frostbitten.
+Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from the same attacker, they become frostbitten.
 #-------------------------------
 [CHILLOUT]
 Name = Chill Out
@@ -462,7 +463,7 @@ Description = At the end of each turn, its Sp. Atk is lowered. Then, you choose 
 #-------------------------------
 [DISASTERRESPONSE]
 Name = Disaster Response
-Description = This Pokemon gains an extra turn whenever it gains a non-volatile status condition or becomes trapped.
+Description = This Pokémon gains an extra turn whenever it gains a non-volatile status condition or becomes trapped.
 #-------------------------------
 [DISCOMBOBULATOR]
 Name = Discombobulator
@@ -681,7 +682,7 @@ Description = This Pokémon is also Fire-type.
 #-------------------------------
 [FIERYSPIRIT]
 Name = Fiery Spirit
-Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from a foe, they become burned.
+Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from the same attacker, they become burned.
 #-------------------------------
 [FIGHTINGVIGOR]
 Name = Fighting Vigor
@@ -756,6 +757,10 @@ Description = Doubles this Pokémon's Speed in Rooms.
 [FOREWARNING]
 Name = Forewarning
 Description = Foretelling moves also hit for half power on the turn they are used.
+#-------------------------------
+[FORTIFIED]
+Name = Fortified
+Description = Take 30% less damage from attacks on turns when it hasn't moved yet.
 #-------------------------------
 [FREERIDE]
 Name = Free Ride
@@ -840,11 +845,15 @@ Description = Immune to Fire-type moves and raises Defense and Sp. Def if hit by
 #-------------------------------
 [GNAWING]
 Name = Gnawing
-Description = Random added effects of bite attacks are +50% more likely likely to occur.
+Description = Random added effects of bite attacks are +50% more likely to occur.
 #-------------------------------
 [GORGING]
 Name = Gorging
 Description = Draining moves deal 30% more damage. Can overheal when draining.
+#-------------------------------
+[GOSSAMERGALE]
+Name = Gossamer Gale
+Description = This Pokémon's Speed is doubled while using wind-based moves.
 #-------------------------------
 [GOURMAND]
 Name = Gourmand
@@ -887,14 +896,14 @@ Flags = HailSynergy
 Name = Hand Off
 Description = Trapping and binding effects against an enemy are passed over to an ally that swaps in for this Pokémon.
 #-------------------------------
+[HAPHAZARD]
+Name = Haphazard
+Description = This Pokémon deals 30% more damage with "two to five" multi-hit moves and moves with less than 100% accuracy.
+#-------------------------------
 [HARBINGER]
 Name = Harbinger
 Description = Summons eclipse for four turns upon entry.
 Flags = EclipseSynergy
-#-------------------------------
-[HARDAS]
-Name = Hard As
-Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
 #-------------------------------
 [HARDFALL]
 Name = Hard Fall
@@ -1153,7 +1162,7 @@ Description = If an attack lowers this Pokémon's HP below half, the attacker be
 #-------------------------------
 [KELPLINK]
 Name = Kelp Link
-Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from a foe, they become leeched.
+Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from the same attacker, they become leeched.
 #-------------------------------
 [KICKBACK]
 Name = Kickback
@@ -1444,10 +1453,6 @@ Description = Upon entry, creates an Odd Room for four turns, swapping offensive
 Name = Offensive
 Description = On the first turn, its attacks cause the target to flinch.
 #-------------------------------
-[ONTHEWIND]
-Name = On the Wind
-Description = Sets a Tailwind for four turns upon entry, increasing Speed.
-#-------------------------------
 [OPTIMIZEDALLOY]
 Name = Optimized Alloy
 Description = Prevents stat steps from being lowered (except when self-inflicted). This Pokémon's weight is doubled.
@@ -1530,7 +1535,7 @@ Description = While this Pokémon is below half health, its attacks leech those 
 #-------------------------------
 [PETRIFYING]
 Name = Petrifying
-Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from a foe, they become numbed.
+Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from the same attacker, they become numbed.
 #-------------------------------
 [PETTY]
 Name = Petty
@@ -1547,6 +1552,10 @@ Description = This Pokémon's moves deal 50% more damage if they're a different 
 [PIERCINGPOISON]
 Name = Piercing Poison
 Description = Poison-type foes can be poisoned. Poison applied to foes starts already worsened.
+#-------------------------------
+[PILEON]
+Name = Pile On
+Description = Every three turns, this Pokémon gains a stockpile.
 #-------------------------------
 [PINDOWN]
 Name = Pin Down
@@ -1584,7 +1593,7 @@ Description = Immune to Poison-type moves and restores 25% of max HP if hit by o
 #-------------------------------
 [POISONPUNISH]
 Name = Poison Punish
-Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from a foe, they become poisoned.
+Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from the same attacker, they become poisoned.
 #-------------------------------
 [POLARIZING]
 Name = Polarizing
@@ -1621,7 +1630,7 @@ Description = Deals 25% more damage per stockpile.
 #-------------------------------
 [PUNISHER]
 Name = Punisher
-Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from a foe, they become leeched.
+Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from the same attacker, they become leeched.
 #-------------------------------
 [PUREENERGY]
 Name = Pure Energy
@@ -2019,7 +2028,7 @@ Flags = MoonglowSynergy
 #-------------------------------
 [SOPPING]
 Name = Sopping
-Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from a foe, they become waterlogged.
+Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from the same attacker, they become waterlogged.
 #-------------------------------
 [SPACEINTERLOPER]
 Name = Space Interloper
@@ -2152,7 +2161,7 @@ Description = Powers up Ice-type moves by 50%.
 #-------------------------------
 [SUDDENCHILL]
 Name = Sudden Chill
-Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from a foe, they become frostbitten.
+Description = Boosts Sp. Def by 20%. When this Pokémon takes its second special hit from the same attacker, they become frostbitten.
 #-------------------------------
 [SUDDENTURN]
 Name = Sudden Turn
@@ -2206,6 +2215,10 @@ Description = When an ally switches in, this Pokémon's Speed is increased.
 [SWIFTSTOMPS]
 Name = Swift Stomps
 Description = This Pokémon's Speed is doubled while using kicking moves.
+#-------------------------------
+[SWORDBREAKER]
+Name = Sword Breaker
+Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
 #-------------------------------
 [SWORDPLAY]
 Name = Swordplay

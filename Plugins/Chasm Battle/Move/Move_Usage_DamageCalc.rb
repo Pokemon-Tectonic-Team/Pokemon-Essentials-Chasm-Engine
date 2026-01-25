@@ -7,12 +7,7 @@ class PokeBattle_Move
     def pbCalcDamage(user,target,numTargets=1)
         return if statusMove?
 
-        if target.damageState.disguise
-            target.damageState.calcDamage = 1
-            return
-        end
-
-        if target.damageState.thiefsDiversion
+        if damageNegated?(user, target)
             target.damageState.calcDamage = 0
             return
         end
@@ -561,6 +556,11 @@ class PokeBattle_Move
 
         # Final turn of Summer Festivals
         multipliers[:final_damage_multiplier] *= 1.5 if user.pbOwnSide.effectActive?(:SummerFestivalsEnd)
+
+        # Stockpile
+        target.countEffect(:Stockpile).times do |i|
+            multipliers[:final_damage_multiplier] *= 0.7
+        end
 
         # Battler properites
         multipliers[:base_damage_multiplier] *= user.dmgMult

@@ -6,8 +6,8 @@ param(
     [switch]$Live
 )
 
-$SERVER_IP = "34.61.122.15"
-$SERVER_USER = "deewhydeeecks"
+$SERVER_IP = "YOUR_IP_HERE"
+$SERVER_USER = "YOUR_USER_HERE"
 $SSH_KEY = if ($env:SSH_PRIVATE_KEY) {
     # Create a temporary file for the SSH key
     $tempKeyPath = [System.IO.Path]::GetTempFileName()
@@ -19,7 +19,7 @@ $SSH_KEY = if ($env:SSH_PRIVATE_KEY) {
     "$env:USERPROFILE\.ssh\cable_club_key"
 }
 $ENV_SUFFIX = if ($Live) { "live" } else { "dev" }
-$REMOTE_HOME = "/home/deewhydeeecks/$ENV_SUFFIX"
+$REMOTE_HOME = "/home/$SERVER_USER/$ENV_SUFFIX"
 $SERVICE_NAME = "cableclub-$ENV_SUFFIX"
 
 # List of specific PBS files to copy
@@ -34,7 +34,7 @@ $PBS_FILES = @(
 )
 
 function Send-Files {
-    Write-Host "Uploading Tectonic Cable Club server files..." -ForegroundColor Green
+    Write-Host "Uploading Cable Club server files..." -ForegroundColor Green
     
     $sshOpts = "-o StrictHostKeyChecking=accept-new"
 
@@ -80,7 +80,7 @@ function Send-Files {
 }
 
 function Restart-Server {
-    Write-Host "Restarting Tectonic Cable Club server..." -ForegroundColor Green
+    Write-Host "Restarting Cable Club server..." -ForegroundColor Green
     & ssh $sshOpts -i $SSH_KEY "${SERVER_USER}@${SERVER_IP}" "sudo systemctl restart $SERVICE_NAME"
     if ($LASTEXITCODE -ne 0) {
         Write-Host "Restart failed!" -ForegroundColor Red
@@ -90,7 +90,7 @@ function Restart-Server {
 }
 
 function Get-ServerStatus {
-    Write-Host "Checking Tectonic Cable Club server status..." -ForegroundColor Yellow
+    Write-Host "Checking Cable Club server status..." -ForegroundColor Yellow
     $status = & ssh $sshOpts -i $SSH_KEY "${SERVER_USER}@${SERVER_IP}" "sudo systemctl is-active $SERVICE_NAME"
     
     if ($status -eq "active") {

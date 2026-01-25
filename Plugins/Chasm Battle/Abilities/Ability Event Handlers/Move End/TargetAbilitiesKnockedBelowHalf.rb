@@ -56,7 +56,7 @@ BattleHandlers::TargetAbilityKnockedBelowHalf.add(:MALICE,
     }
 )
 
-BattleHandlers::TargetAbilityKnockedBelowHalf.add(:HARDAS,
+BattleHandlers::TargetAbilityKnockedBelowHalf.add(:SWORDBREAKER,
     proc { |ability, target, user, move, _switched, battle|
         next if battle.foretoldMove
         next if user.effectActive?(:Fracture)

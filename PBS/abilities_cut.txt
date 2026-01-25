@@ -98,6 +98,10 @@ Name = Battle Armor
 Description = The Pokémon is protected against critical hits.
 Flags = CritImmunity
 #-------------------------------
+[BATTLEHARDENED]
+Name = Battle-Hardened
+Description = Raises Defense and Sp. Def by three steps when its HP is lowered below half.
+#-------------------------------
 [BEASTBOOST]
 Name = Beast Boost
 Description = Boosts its best stat each time it deals a KO.
@@ -385,10 +389,6 @@ Description = Raises Attack and Sp. Atk by two steps when hit by a not-very-effe
 Name = Forewarn
 Description = Determines what moves a foe has.
 #-------------------------------
-[FORTIFIED]
-Name = Fortified
-Description = Take 30% less damage from attacks on turns when it hasn't moved yet.
-#-------------------------------
 [FORTUNE]
 Name = Fortune
 Description = Doubles the money gained from battles in which it participates.
@@ -470,6 +470,10 @@ Description = Boosts Attack by 33% if has a status condition. Ignores burn physi
 [GYRESPINNER]
 Name = Gyre Spinner
 Description = Upon entry, traps each opponent in a whirlpool for two turns.
+#-------------------------------
+[HARDAS]
+Name = Hard As
+Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
 #-------------------------------
 [HARDWORKER]
 Name = Hard Worker
@@ -774,6 +778,10 @@ Description = Prevents it from becoming infatuated.
 [ODDAURA]
 Name = Odd Aura
 Description = Upon entry, creates an Odd Room for five turns, swapping offensive and defensive stats.
+#-------------------------------
+[ONTHEWIND]
+Name = On the Wind
+Description = Sets a Tailwind for four turns upon entry, increasing Speed.
 #-------------------------------
 [OVERACTING]
 Name = Over Acting

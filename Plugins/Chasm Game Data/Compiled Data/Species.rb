@@ -487,8 +487,11 @@ module GameData
             inherited_moves.each do |moveID|
                 nonInheritedTutorMoves.delete(moveID)
             end
-            GameData::Move.staple_moves do |moveID|
-                nonInheritedTutorMoves.delete(moveID)
+            # only remove staple moves as inherited if that's actually why we have the moves
+            unless @flags&.include?("NoStaples")
+                GameData::Move.staple_moves do |moveID|
+                    nonInheritedTutorMoves.delete(moveID)
+                end
             end
             return nonInheritedTutorMoves
         end
@@ -498,8 +501,10 @@ module GameData
             inherited_moves.each do |moveID|
                 nonInheritedLineMoves.delete(moveID)
             end
-            GameData::Move.staple_moves.each do |moveID|
-                nonInheritedLineMoves.delete(moveID)
+            unless @flags&.include?("NoStaples")
+                GameData::Move.staple_moves.each do |moveID|
+                    nonInheritedLineMoves.delete(moveID)
+                end
             end
             return nonInheritedLineMoves
         end
@@ -643,6 +648,24 @@ module GameData
             return true if @type1 == type
             return true if @type2 == type
             return false
+        end
+
+        def canSwim?
+            return false if @flags.include?("Grounded")
+            return true if @flags.include?("Swimming")
+	        return true if hasType?(:WATER)
+	        return false
+        end
+
+        def canFloat?
+            if hasType?(:FLYING)
+		        exception = @flags.include?("Grounded")
+		        return !exception
+	        end
+            return true if @abilities.include?(:LEVITATE)
+	        return true if @abilities.include?(:DESERTSPIRIT)
+            return true if @flags.include?("Floating")
+	        return false
         end
 
         def self.load

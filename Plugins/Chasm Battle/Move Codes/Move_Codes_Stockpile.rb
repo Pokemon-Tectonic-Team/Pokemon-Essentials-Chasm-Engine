@@ -2,30 +2,29 @@
 # Increases the user's Defense and Special Defense by 2 steps each. Ups the
 # user's stockpile by 1 (max. 2). (Stockpile)
 #===============================================================================
-class PokeBattle_Move_UserAddStockpileRaiseDefSpDef2 < PokeBattle_MultiStatUpMove
-    def initialize(battle, move)
-        super
-        @statUp = DEFENDING_STATS_2
-    end
-
+class PokeBattle_Move_UserAddStockpile < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
         if user.effectAtMax?(:Stockpile)
             @battle.pbDisplay(_INTL("{1} can't stockpile any more!", user.pbThis)) if show_message
             return true
         end
-        return super
+        return false
     end
 
     def pbEffectGeneral(user)
         user.incrementEffect(:Stockpile)
-        super
     end
 
     def getEffectScore(user, target)
-        score = super
-        score += 20 if user.pbHasMoveFunction?("PowerDependsOnUserStockpile") # Spit Up
-        score += 20 if user.pbHasMoveFunction?("HealUserDependingOnUserStockpile") # Swallow
+        score = 50
+        score += 100 if user.pbHasMoveFunction?("PowerDependsOnUserStockpile") || user.pbHasMoveFunction?("HealUserDependingOnUserStockpile")
+        score /= 2 unless user.aboveHalfHealth?
         return score
+    end
+
+    def getDetailsForMoveDex(detailsList = [])
+        detailsList << _INTL("The damage reduction effect stacks multiplicatively.")
+        detailsList << _INTL("At two stacks, the reduction is 51%.")
     end
 end
 

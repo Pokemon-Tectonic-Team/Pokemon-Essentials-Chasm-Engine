@@ -80,7 +80,7 @@ Description = Repeats another Pokémon's dance move immediately.
 #-------------------------------
 [DARKAURA]
 Name = Dark Aura
-Description = Powers up each Pokémon's Dark-type moves.
+Description = Powers up each Pokémon's Dark-type moves by 33%.
 #-------------------------------
 [DAUNTLESSSHIELD]
 Name = Dauntless Shield
@@ -105,7 +105,7 @@ Flags = SunshineSynergy
 #-------------------------------
 [DISGUISE]
 Name = Disguise
-Description = Its shroud protects it from an attack just once.
+Description = Its shroud protects it from an attack once.
 Flags = Immutable
 #-------------------------------
 [DOWNLOAD]
@@ -137,7 +137,7 @@ Description = Switches out if its HP is lowered below half.
 #-------------------------------
 [FAIRYAURA]
 Name = Fairy Aura
-Description = Powers up each Pokémon's Fairy-type moves.
+Description = Powers up each Pokémon's Fairy-type moves by 33%.
 #-------------------------------
 [FILTER]
 Name = Filter
@@ -145,7 +145,7 @@ Description = Reduces damage from super-effective attacks by 25%.
 #-------------------------------
 [FLAMEBODY]
 Name = Flame Body
-Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from a foe, they become burned.
+Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from the same attacker, they become burned.
 #-------------------------------
 [FLOWERGIFT]
 Name = Flower Gift
@@ -347,7 +347,7 @@ Flags = SetupCounterAI
 #-------------------------------
 [POISONPOINT]
 Name = Poison Point
-Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from a foe, they become poisoned.
+Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from the same attacker, they become poisoned.
 #-------------------------------
 [POISONTOUCH]
 Name = Poison Touch
@@ -512,7 +512,7 @@ Flags = Immutable
 #-------------------------------
 [STATIC]
 Name = Static
-Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from a foe, they become numbed.
+Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from the same attacker, they become numbed.
 #-------------------------------
 [STEELWORKER]
 Name = Steelworker

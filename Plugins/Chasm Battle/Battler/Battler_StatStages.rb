@@ -383,7 +383,10 @@ class PokeBattle_Battler
             return pbRaiseStatStep(stat, increment, user, showAnim, true)
         end
         # Total Focus
-        return false if effectActive?(:EmpoweredFlowState)
+        if effectActive?(:EmpoweredFlowState)
+            @battle.pbDisplay(_INTL("{1} is in a state of total focus!", pbThis)) 
+            return false
+        end
         # Stubborn
         if hasActiveAbility?(:STUBBORN) && !ignoreStubborn && !@battle.moldBreaker && increment > 1
             showMyAbilitySplash(:STUBBORN)
@@ -464,7 +467,10 @@ class PokeBattle_Battler
             return pbRaiseStatStepByCause(stat, increment, user, cause, showAnim: showAnim, ignoreContrary: true)
         end
         # Total Focus
-        return false if effectActive?(:EmpoweredFlowState)
+        if effectActive?(:EmpoweredFlowState)
+            @battle.pbDisplay(_INTL("{1} is in a state of total focus!", pbThis)) 
+            return false
+        end
         # Stubborn
         if hasActiveAbility?(:STUBBORN) && !@battle.moldBreaker && increment > 1
             showMyAbilitySplash(:STUBBORN)
@@ -513,6 +519,10 @@ class PokeBattle_Battler
         # NOTE: Substitute intentially blocks Intimidate even if self has Contrary or INVERSION
         if substituted?
             @battle.pbDisplay(_INTL("{1} is protected by its substitute!", pbThis)) if showMessages
+            return true
+        end
+        if effectActive?(:EmpoweredFlowState)
+            @battle.pbDisplay(_INTL("{1} is in a state of total focus!", pbThis)) if showMessages
             return true
         end
         if hasActiveAbility?(:INNERFOCUS)
@@ -699,6 +709,10 @@ class PokeBattle_Battler
                     }
                     return pbRaiseMultipleStatSteps(statArray, user, move: move, showFailMsg: showFailMsg, showAnim: showAnim, ability: ability, item: item, ignoreContrary: true)
                 end
+            end
+            if effectActive?(:EmpoweredFlowState)
+                @battle.pbDisplay(_INTL("{1} is in a state of total focus!", pbThis)) 
+            return false
             end
         end
         

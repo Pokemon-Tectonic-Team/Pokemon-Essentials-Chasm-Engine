@@ -984,3 +984,12 @@ BattleHandlers::DamageCalcUserAbility.add(:JUGGERNAUT,
     user.aiLearnsAbility(ability) unless aiCheck
   }
 )
+
+BattleHandlers::DamageCalcUserAbility.add(:HAPHAZARD,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if move.accuracy < 100 || move.multiHitMove?
+      mults[:base_damage_multiplier] *= 1.3
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)

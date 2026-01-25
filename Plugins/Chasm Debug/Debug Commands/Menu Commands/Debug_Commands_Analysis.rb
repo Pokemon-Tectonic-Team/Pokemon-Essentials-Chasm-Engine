@@ -396,13 +396,20 @@ end
     "name"        => _INTL("Count ability use"),
     "description" => _INTL("Count the number of uses of each ability by fully evolved base forms."),
     "effect"      => proc { |sprites, viewport|
-        echoln("AbilityName,Non-legend Count,Legend Count")
+        echoln("AbilityName,Total Count,Non-legend Count,Legend Count,Species List")
         abilityCounts = getAbilityCounts()
-        abilityCounts.each do |ability,count|
-          echoln("#{ability},#{count[0]},#{count[1]}")
-      end
+        abilityCounts.each do |ability,counts|
+            nonLegendCount = counts[0].length
+            legendCount = counts[1].length
+            fullList = counts[0].concat(counts[1])
+            nameArray = []
+            fullList.each do |speciesID|
+                nameArray.push(GameData::Species.get(speciesID).name)             
+            end
+            echoln("#{ability},#{nonLegendCount+legendCount},#{nonLegendCount},#{legendCount},#{nameArray.join(";")}")
+        end
   
-      pbMessage(_INTL("Printed out ability counts to the console."))
+        pbMessage(_INTL("Printed out ability counts to the console."))
     }
   })
   

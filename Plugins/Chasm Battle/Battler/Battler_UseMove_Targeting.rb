@@ -172,9 +172,9 @@ move, false, true)
         if move.damagingMove? && move.baseDamage >= 100
             targets = pbChangeTargetByAbility(:WHITEKNIGHT, move, user, targets, priority, nearOnly)
         end
-        # Tantalizing
-        if move.damagingMove? && user.belowHalfHealth?
-            targets = pbChangeTargetByAbility(:TANTALIZING, move, user, targets, priority, nearOnly)
+        # Bait Fish
+        if move.damagingMove?
+            targets = pbChangeTargetByAbility(:BAITFISH, move, user, targets, priority, nearOnly)
         end
         return targets
     end

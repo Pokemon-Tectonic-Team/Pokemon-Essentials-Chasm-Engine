@@ -262,7 +262,7 @@ class PokeBattle_Move_RaiseUserAtkSpAtk2AndSpeed2InMoonglow < PokeBattle_MultiSt
 
     def pbOnStartUse(_user, _targets)
         if @battle.moonGlowing?
-            @statUp = [:ATTACK, 1, :SPECIAL_ATTACK, 2, :SPEED, 2]
+            @statUp = [:ATTACK, 2, :SPECIAL_ATTACK, 2, :SPEED, 2]
         else
             @statUp = ATTACKING_STATS_2
         end

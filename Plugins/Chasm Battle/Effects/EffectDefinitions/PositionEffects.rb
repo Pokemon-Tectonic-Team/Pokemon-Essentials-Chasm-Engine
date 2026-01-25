@@ -127,6 +127,7 @@ GameData::BattleEffect.register_effect(:Position, {
         refugeMaker = battle.pbThisEx(battler.index, position.effects[:Refuge])
         battle.pbDisplay(_INTL("{1}'s refuge comforts {2}!", refugeMaker, battler.pbThis(true)))
         battler.pbCureStatus(false)
+        battler.applyEffect(:RefugeDamageReduction)
         position.disableEffect(:Refuge)
     end,
 })

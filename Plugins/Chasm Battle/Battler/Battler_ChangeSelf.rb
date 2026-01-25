@@ -5,6 +5,7 @@ class PokeBattle_Battler
     # Change HP
     #=============================================================================
     def pbReduceHP(amt, anim = true, registerDamage = true, anyAnim = true)
+        return if amt <= 0
         amt = amt.round
         amt = 1 if amt < 1
         amt = @hp if amt > @hp
@@ -521,8 +522,8 @@ class PokeBattle_Battler
                 case @battle.pbWeather
                 when :Sunshine, :HarshSun   then newForm = 1
                 when :Rainstorm, :HeavyRain then newForm = 2
-                when :Hail             then newForm = 3
-                when :Sandstorm        then newForm = 4
+                when :Hail, :IceAge         then newForm = 3
+                when :Sandstorm, :StarStorm then newForm = 4
                 when :Moonglow, :BloodMoon  then newForm = 5
                 when :Eclipse, :RingEclipse then newForm = 6    
                 end

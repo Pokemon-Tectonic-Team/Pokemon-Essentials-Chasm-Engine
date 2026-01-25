@@ -211,6 +211,7 @@ target.pbThis(true)))
     #=============================================================================
     def pbImmunityByAbility(user, target, showMessages = true, aiCheck = false)
         return false if @battle.moldBreaker
+        return false if target.semiInvulnerable?
         target.eachAbilityShouldApply(aiCheck) do |ability|
             return true if BattleHandlers.triggerMoveImmunityTargetAbility(ability, user, target, self, @calcType, @battle, showMessages, aiCheck)
         end
@@ -325,6 +326,7 @@ target.pbThis(true)))
 
         if damageNegated?(user, target)
             target.damageState.displayedDamage = 0
+            target.damageState.hpLost = 0
             return
         end
 
@@ -460,10 +462,8 @@ target.pbThis(true)))
     #=============================================================================
     # Messages upon being hit
     #=============================================================================
-    def pbEffectivenessMessage(_user, target, numTargets = 1)
-        return if target.damageState.disguise
-        return if target.damageState.thiefsDiversion
-        return if target.effectActive?(:LastGasp)
+    def pbEffectivenessMessage(user, target, numTargets = 1)
+        return if damageNegated?(user, target)
         return if defined?($Options.effectiveness_messages) && $Options.effectiveness_messages == 1
         if Effectiveness.hyper_effective?(target.damageState.typeMod)
             if numTargets > 1
@@ -502,8 +502,7 @@ target.pbThis(true)))
     end
 
     def pbHitEffectivenessMessages(user, target, numTargets = 1)
-        return if target.damageState.disguise
-        return if target.damageState.thiefsDiversion
+        return if damageNegated?(user, target)
         if target.damageState.substitute
             @battle.pbDisplay(_INTL("The substitute took damage for {1}!", target.pbThis(true)))
         end
@@ -567,6 +566,8 @@ target.pbThis(true)))
             @battle.pbDisplay(_INTL("{1} blocked the hit with its item!", target.pbThis))
             target.removeNonInitialItems
             @battle.pbHideAbilitySplash(target)
+        elsif target.effectActive?(:LastGasp)
+            @battle.pbDisplay(_INTL("{1} is invulnerable to all damage!", target.pbThis))
         end        
     end
 

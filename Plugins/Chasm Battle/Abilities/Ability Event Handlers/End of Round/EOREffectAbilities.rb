@@ -225,3 +225,18 @@ BattleHandlers::EOREffectAbility.add(:OSCILLATION,
   battler.hideMyAbilitySplash
   }
 )
+
+BattleHandlers::EOREffectAbility.add(:PILEON,
+  proc { |ability, battler, battle|
+    if battler.turnCount != 0 && battler.turnCount % 3 == 0
+      battler.showMyAbilitySplash(ability)
+      if battler.effectAtMax?(:Stockpile)
+        battle.pbDisplay(_INTL("{1} would have gathered power, but it can't stockpile any more!", battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1} gathered up more power!", battler.pbThis))
+        battler.incrementEffect(:Stockpile)
+      end
+      battler.hideMyAbilitySplash
+    end
+  }
+)

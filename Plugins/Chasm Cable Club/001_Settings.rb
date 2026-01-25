@@ -1,6 +1,5 @@
 module CableClub
-  # Do not change
-  PUBLIC_HOST = "34.61.122.15"
+  PUBLIC_HOST = "YOUR_IP_HERE"
   LOCAL_HOST = "127.0.0.1"
 
   DEV_PORT = 9998
@@ -35,7 +34,7 @@ module CableClub
     _INTL("Well that's a downer..."),
     _INTL("You truly are a strong opponent."),
     _INTL("Seems like my Pokémon weren't enough to defeat you."),
-    _INTL("A loss... I've still got to get used to do that."),
+    _INTL("A loss... I've still got to get used to that."),
     _INTL("Well played..." )
   ]
   
