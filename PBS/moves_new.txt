@@ -7763,6 +7763,18 @@ Flags = CanProtect
 Description = The target is hit with a generous donation. Consumes up to 1000 scattered coins. Base power is boosted by 10 for every 100 consumed.
 Animation = PAYDAY
 #-------------------------------
+[CORALOVERGROWTH]
+Name = Coral Overgrowth
+Type = FAIRY
+Category = Status
+Accuracy = 0
+TotalPP = 15
+Target = FoeSide
+FunctionCode = CoralOvergrowth
+Flags = CanMagicCoat
+Description = Fragile, rejuvenating coral coalesces on the foe's side. For the next 4 turns, attacks against foes heal the user for 33% of the damage dealt (this can overheal).
+Animation = STEALTHROCK
+#-------------------------------
 [CRUELKISS]
 Name = Cruel Kiss
 Type = FAIRY

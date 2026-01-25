@@ -974,3 +974,20 @@ GameData::BattleEffect.register_effect(:Side, {
     :type => :Integer,
     :ticks_down_eor => true
 })
+
+GameData::BattleEffect.register_effect(:Side, {
+    :id => :CoralOvergrowth,
+    :real_name => "Coral Overgrowth",
+    :type => :Integer,
+    :ticks_down_eor => true,
+    :apply_proc => proc do |battle, _side, teamName, value|
+        battle.pbDisplay(_INTL("A coral overgrowth coalesced around {1}!", teamName.downcase))
+        battle.pbDisplay(_INTL("It will last for {1} more turns!", value - 1))
+    end,
+    :disable_proc => proc do |battle, _side, teamName|
+        battle.pbDisplay(_INTL("The coral overgrowth around {1} shattered!", teamName.downcase))
+    end,
+    :expire_proc => proc do |battle, _side, teamName|
+        battle.pbDisplay(_INTL("The coral overgrowth around {1} withered!", teamName.downcase))
+    end,
+})
