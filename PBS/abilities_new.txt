@@ -157,10 +157,6 @@ Description = Your Poké Balls are 50% more effective.
 Name = Barrier Maker
 Description = Sets a Reflect for four turns upon entry.
 #-------------------------------
-[BATTLEHARDENED]
-Name = Battle-Hardened
-Description = Raises Defense and Sp. Def by three steps when its HP is lowered below half.
-#-------------------------------
 [BEAMING]
 Name = Beaming
 Description = Boosts power of light-based moves by 30%.

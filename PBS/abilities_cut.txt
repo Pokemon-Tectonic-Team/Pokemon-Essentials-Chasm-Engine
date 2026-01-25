@@ -98,6 +98,10 @@ Name = Battle Armor
 Description = The Pokémon is protected against critical hits.
 Flags = CritImmunity
 #-------------------------------
+[BATTLEHARDENED]
+Name = Battle-Hardened
+Description = Raises Defense and Sp. Def by three steps when its HP is lowered below half.
+#-------------------------------
 [BEASTBOOST]
 Name = Beast Boost
 Description = Boosts its best stat each time it deals a KO.
