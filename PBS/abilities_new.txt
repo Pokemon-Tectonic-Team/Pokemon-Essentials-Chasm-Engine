@@ -900,14 +900,14 @@ Flags = HailSynergy
 Name = Hand Off
 Description = Trapping and binding effects against an enemy are passed over to an ally that swaps in for this Pokémon.
 #-------------------------------
+[HAPHAZARD]
+Name = Haphazard
+Description = This Pokémon deals 30% more damage with "two to five" multi-hit moves and moves with less than 100% accuracy.
+#-------------------------------
 [HARBINGER]
 Name = Harbinger
 Description = Summons eclipse for four turns upon entry.
 Flags = EclipseSynergy
-#-------------------------------
-[HARDAS]
-Name = Hard As
-Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
 #-------------------------------
 [HARDFALL]
 Name = Hard Fall
@@ -2219,6 +2219,10 @@ Description = When an ally switches in, this Pokémon's Speed is increased.
 [SWIFTSTOMPS]
 Name = Swift Stomps
 Description = This Pokémon's Speed is doubled while using kicking moves.
+#-------------------------------
+[SWORDBREAKER]
+Name = Sword Breaker
+Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
 #-------------------------------
 [SWORDPLAY]
 Name = Swordplay
