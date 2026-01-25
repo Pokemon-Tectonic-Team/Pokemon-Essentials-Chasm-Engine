@@ -185,7 +185,6 @@ class PokeBattle_Battle
                         targets = b.pbFindTargets(target_index, move, b)
                         pri = getMovePriority(move, b, targets)
                         bArray[3] = pri
-                        @choices[b.index][4] = pri
                     end
                     # Calculate sub-priority (first/last within priority bracket)
                     # NOTE: Going fast beats going slow. A Pokémon with Stall and Quick
