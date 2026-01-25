@@ -123,3 +123,10 @@ BattleHandlers::SpecialAttackCalcUserAbility.add(:CASTELLAN,
       next spAtkMult
   }
 )
+
+BattleHandlers::SpecialAttackCalcUserAbility.add(:FUELHUNGRY,
+  proc { |ability, _user, _battle, spAtkMult|
+      spAtkMult *= 1.5
+      next spAtkMult
+  }
+)

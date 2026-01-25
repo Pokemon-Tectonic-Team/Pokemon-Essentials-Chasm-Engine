@@ -20202,8 +20202,8 @@ Name = Rolycoly
 Type1 = ROCK
 Type2 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,70,65,40,70,65
-# Total = 370
+BaseStats = 60,65,65,40,65,65
+# Total = 360
 BaseEXP = 48
 Rareness = 195
 Happiness = 50
@@ -20225,8 +20225,8 @@ Name = Carkol
 Type1 = ROCK
 Type2 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 80,70,80,50,70,80
-# Total = 430
+BaseStats = 80,75,80,50,75,80
+# Total = 440
 BaseEXP = 144
 Rareness = 95
 Happiness = 50
@@ -20245,8 +20245,8 @@ Name = Coalossal
 Type1 = ROCK
 Type2 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 110,90,100,40,90,100
-# Total = 530
+BaseStats = 110,90,100,70,90,100
+# Total = 560
 BaseEXP = 255
 Rareness = 35
 Happiness = 50

@@ -799,7 +799,7 @@ Description = Upon entry, lowers the foe's Speed stat by two steps.
 #-------------------------------
 [FUELHUNGRY]
 Name = Fuel Hungry
-Description = Boosts Attack by 30%, but lowers Attack after using a physical move.
+Description = Boosts move damage by 50%, but lowers the attacking stat that was used by two steps.
 #-------------------------------
 [FULLBLUBBER]
 Name = Full Blubber
