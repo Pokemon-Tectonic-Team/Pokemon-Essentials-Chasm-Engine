@@ -7772,7 +7772,7 @@ TotalPP = 15
 Target = FoeSide
 FunctionCode = CoralOvergrowth
 Flags = CanMagicCoat
-Description = Healing coral coalesces on the foe's side. For the next 4 turns, attacks on foes heal the user for 33% of the damage dealt. This can overheal.
+Description = Healing coral forms on the foe's side. For the next four turns, attacks on foes heal the user for 33% of the damage dealt. This can overheal.
 Animation = STEALTHROCK
 #-------------------------------
 [CRUELKISS]
