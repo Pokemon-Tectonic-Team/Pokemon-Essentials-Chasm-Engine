@@ -6686,7 +6686,7 @@ Moves = 0,CORALOVERGROWTH
 StepsToHatch = 5396
 Height = 0.8
 Weight = 6.0
-Kind = Coral
+Kind = Coral Reef
 Pokedex = It will regrow any branches that break off its head. People keep particularly beautiful Curesola branches as charms to promote safe childbirth.
 #-------------------------------
 [GCORSOLA]
