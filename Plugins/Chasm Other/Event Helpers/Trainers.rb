@@ -388,7 +388,7 @@ def followerEventGraphicSwap(reset = false)
 			event.event.pages[pageIndex] = newPage
 		end
 		
-		event.floats = floatingPokemon?(pokemon)
+		event.floats = pokemon.canFloat?
 		
 		event.refresh
     end

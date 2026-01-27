@@ -1,6 +1,18 @@
 def useChromaClarion
+    encounter_type = $PokemonEncounters.encounter_type
     unless $PokemonEncounters.encounter_type
         pbMessage(_INTL("The Chroma Clarion cannot be used here!"))
+        return 0
+    end
+
+    begin
+        test_species, test_level = $PokemonEncounters.choose_wild_pokemon(encounter_type)
+        if !test_species
+            pbMessage(_INTL("There are no Pokémon responding to the Chroma Clarion here..."))
+            return 0
+        end
+    rescue
+        pbMessage(_INTL("There are no Pokémon responding to the Chroma Clarion here..."))
         return 0
     end
 
@@ -8,8 +20,6 @@ def useChromaClarion
         pbMessage(_INTL("You must have at least 3 able Pokémon to use the Chroma Clarion!"))
         return 0
     end
-
-    encounter_type = $PokemonEncounters.encounter_type
     
     encounters = []
     3.times do |i|

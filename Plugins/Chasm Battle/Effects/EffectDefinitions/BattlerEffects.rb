@@ -1344,38 +1344,9 @@ GameData::BattleEffect.register_effect(:Battler, {
     :maximum => 2,
     :increment_proc => proc do |battle, battler, value, _increment|
         battle.pbDisplay(_INTL("{1} stockpiled {2}!", battler.pbThis, value))
-        battler.incrementEffect(:StockpileDef)
-        battler.incrementEffect(:StockpileSpDef)
     end,
-    :disable_proc => proc do |_battle, battler|
-        statArray = []
-        if battler.effectActive?(:StockpileDef)
-            statArray.push(:DEFENSE)
-            statArray.push(battler.countEffect(:StockpileDef) * 2)
-        end
-        if battler.effectActive?(:StockpileSpDef)
-            statArray.push(:SPECIAL_DEFENSE)
-            statArray.push(battler.countEffect(:StockpileSpDef) * 2)
-        end
-
-        battler.pbLowerMultipleStatSteps(statArray, battler)
-    end,
-    :sub_effects => %i[StockpileDef StockpileSpDef],
 })
 
-GameData::BattleEffect.register_effect(:Battler, {
-    :id => :StockpileDef,
-    :real_name => "Stockpile Def",
-    :type => :Integer,
-    :info_displayed => false,
-})
-
-GameData::BattleEffect.register_effect(:Battler, {
-    :id => :StockpileSpDef,
-    :real_name => "Stockpile Sp Def",
-    :type => :Integer,
-    :info_displayed => false,
-})
 
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :Substitute,
@@ -1754,6 +1725,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :Octolock,
     :real_name => "Octolocked",
     :trapping => true,
+    :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} is trapped by the tentacle hold!", battler.pbThis))
     end,

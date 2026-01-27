@@ -673,7 +673,7 @@ Target = User
 FunctionCode = EmpoweredFlowState
 Flags = Empowered
 EffectChance = 100
-Description = The user TODO, boosts its Atk. and Sp. Def, and becomes a Water-type.
+Description = The user enters a state of Total Focus, prevents stat steps from being lowered, raises Attack. and Sp. Def, and becomes Water-type.
 Animation = FLOWSTATE
 #-------------------------------
 [PRIMEVALRAINSTORM]

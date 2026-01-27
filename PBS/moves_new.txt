@@ -476,6 +476,19 @@ Flags = CanProtect,CanMagicCoat
 Description = The user adorns itself or the target with precious stones, changing it to your choice of Fairy, Dragon, or Steel-type.
 Animation = LUCKYCHANT
 #-------------------------------
+[RELICRECITAL]
+Name = Relic Recital
+Type = NORMAL
+Category = Adaptive
+Power = 110
+Accuracy = 100
+TotalPP = 15
+Target = AllNearFoes
+FunctionCode = Basic
+Flags = CanProtect,Sound,Dance
+Description = The user performs a long-forgotten song and dance. This is both a Sound and Dance move.
+Animation = RELICSONG
+#-------------------------------
 [RETREAT]
 Name = Retreat
 Type = NORMAL
@@ -4299,7 +4312,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = WaterlogTargetLowerTargetDef2
-Flags = CanProtect,Biting
+Flags = CanProtect,Biting,FakeRandomEffect
 EffectChance = 100
 Description = The user bites with watery fangs. It has a 20% chance to waterlog and a 20% chance to lower Defense by two steps.
 Animation = FISHIOUSREND
@@ -4507,7 +4520,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = WaterlogTargetLowerTargetDef2
-Flags = CanProtect,Biting
+Flags = CanProtect,Biting,FakeRandomEffect
 EffectChance = 100
 Description = The user bites with watery fangs. It has a 20% chance to waterlog and a 20% chance to lower Defense by two steps.
 Animation = FISHIOUSREND
@@ -5634,7 +5647,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = NearOther
-Priority = 4
+Priority = 1
 FunctionCode = Trap3TurnsAndDisableLastMove3
 Description = Puts the target into a quarantine, trapping and disabling the move it last used for three turns.
 Animation = BAR
@@ -8276,7 +8289,7 @@ TotalPP = 15
 Target = NearOther
 FunctionCode = RaiseUserAccIfMisses
 Flags = CanProtect
-Description = The user makes an risky, difficult attack. If it misses, the user's Accuracy is raised.
+Description = The user makes a risky, difficult attack. If it misses, the user's Accuracy is raised.
 #-------------------------------
 [HIDDENSTRIKE]
 Name = Hidden Strike

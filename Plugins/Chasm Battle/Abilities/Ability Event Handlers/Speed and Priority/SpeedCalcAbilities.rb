@@ -182,7 +182,7 @@ BattleHandlers::SpeedCalcAbility.add(:SILVERLINING,
 
 BattleHandlers::SpeedCalcAbility.add(:DYNAMICENTRANCE,
   proc { |ability, battler, mult|
-      next mult * 2.0 if battler.turnCount == 0
+      next mult * 2.0 if battler.firstTurn?
       next mult
   }
 )

@@ -140,12 +140,14 @@ module GameData
             hasStatusMove = false
             partyEntry[:moves]&.each do |moveID|
                 moveData = GameData::Move.get(moveID)
-                unless moveData.learnable?
-                  Compiler.logLegalityError _INTL("Illegal move #{moveID} learnable by a party member of trainer #{trainerName}!")
-                end
+                unless @policies.include?(:ALLOW_ILLEGAL_MOVES)
+                  unless moveData.learnable?
+                    Compiler.logLegalityError _INTL("Illegal move #{moveID} learnable by a party member of trainer #{trainerName}!")
+                  end
 
-                unless speciesData.learnable_moves.include?(moveID)
-                  Compiler.logLegalityError _INTL("Trainer #{trainerName}'s #{speciesData.species} can't learn the move #{moveID} assigned to it!")
+                  unless speciesData.learnable_moves.include?(moveID)
+                    Compiler.logLegalityError _INTL("Trainer #{trainerName}'s #{speciesData.species} can't learn the move #{moveID} assigned to it!")
+                  end
                 end
 
                 hasStatusMove = true if moveData.status?

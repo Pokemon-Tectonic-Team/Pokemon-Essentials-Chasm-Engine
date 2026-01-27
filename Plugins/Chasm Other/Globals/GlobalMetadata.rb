@@ -100,8 +100,6 @@ class PokemonGlobalMetadata
     attr_accessor :shouldProcWhitebloomCall
     attr_accessor :shouldProcEstateCall
     attr_accessor :shouldProcJovanCall
-    # Tournament
-    attr_accessor :tournament
     # Dragon flames
     attr_writer :dragonFlamesCount
     # Circuit puzzles
@@ -195,8 +193,6 @@ class PokemonGlobalMetadata
 
         # Achievements
         @capture_counts_per_ball = {}
-
-        @tournament = RandomTournament.new
 
         # Regi dungeon puzzles
         @dragonFlamesCount = 0

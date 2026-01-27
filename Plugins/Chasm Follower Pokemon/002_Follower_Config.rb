@@ -8,40 +8,14 @@ Events.FollowerRefresh += proc{|pokemon|
   # Pokeride Compatibility
   next false if $PokemonGlobal.mount if defined?($PokemonGlobal.mount)
   if $PokemonGlobal.surfing
-    next true if swimmingSpecies?(pokemon.species,pokemon.form)
-    next true if floatingPokemon?(pokemon)
+    next true if pokemon.species_data.canSwim?
+    next true if pokemon.canFloat?
     next false
   elsif $PokemonGlobal.diving
     next true if pokemon.hasType?(:WATER)
     next false
   end
 }
-
-def swimmingSpecies?(species,form=0)
-	species_data = GameData::Species.get_species_form(species,form)
-  return false if FollowerSettings::SURFING_FOLLOWERS_EXCEPTIONS.any?{|s| s == species || s.to_s == "#{species}_#{form}" }
-	return true if species_data.type1 == :WATER || species_data.type2 == :WATER
-	return false
-end
-
-def floatingPokemon?(pokemon)
-  GameData::Item.getByFlag("Levitation").each do |levitationItem|
-    return true if pokemon.hasItem?(levitationItem)
-  end
-  return floatingSpecies?(pokemon.species,pokemon.form)
-end
-
-def floatingSpecies?(species,form=0)
-	species_data = GameData::Species.get_species_form(species,form)
-	if species_data.type1 == :FLYING || species_data.type2 == :FLYING
-		exception = FollowerSettings::SURFING_FOLLOWERS_EXCEPTIONS.any?{|s| s == species || s.to_s == "#{species}_#{form}" }
-		return !exception
-	end
-  return true if species_data.abilities.include?(:LEVITATE)
-	return true if species_data.abilities.include?(:DESERTSPIRIT)
-  return true if FollowerSettings::SURFING_FOLLOWERS.any?{|s| s == species || s.to_s == "#{species}_#{form}" }
-	return false
-end
 
 #-------------------------------------------------------------------------------
 # These are used to define what the Follower will say when spoken to

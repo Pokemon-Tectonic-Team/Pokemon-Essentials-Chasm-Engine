@@ -621,6 +621,18 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = The user skillfully blasts the target, then steals their item. Items stolen from wild Pokémon are stored.
 #-------------------------------
+[RELICSONG]
+Name = Relic Song
+Type = NORMAL
+Category = Adaptive
+Power = 75
+Accuracy = 100
+TotalPP = 10
+Target = AllNearFoes
+FunctionCode = Invalid
+Flags = CanProtect,Sound
+Description = An ancient song appeals to the hearts of those listening. Switches Meloetta's form.
+#-------------------------------
 [RETURN]
 Name = Return
 Type = NORMAL

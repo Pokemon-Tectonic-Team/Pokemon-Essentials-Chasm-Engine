@@ -614,7 +614,7 @@ class DependentEvents
                     "Graphics/Characters/", "")
                 events[k][6] = fname
                 @realEvents[k].character_name = fname
-                @realEvents[k].floats = floatingPokemon?(params[5])
+                @realEvents[k].floats = params[5].canFloat?
             end
             return
         end

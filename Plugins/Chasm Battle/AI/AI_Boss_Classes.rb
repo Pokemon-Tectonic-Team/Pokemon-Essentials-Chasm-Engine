@@ -672,7 +672,8 @@ class PokeBattle_AI_RUBARIOR < PokeBattle_AI_Boss
                 next target.hasRaisedStatSteps?
             },
             :warning => proc { |_move, user, targets, _battle|
-                _INTL("{1} is jealous of {2}'s good fortune!",user.pbThis, targets[0])
+                target = targets[0]
+                _INTL("{1} is jealous of {2}'s good fortune!",user.pbThis,target.pbThis(true))
             },
         })
     end

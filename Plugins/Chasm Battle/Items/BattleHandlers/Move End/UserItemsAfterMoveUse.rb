@@ -88,6 +88,7 @@ BattleHandlers::UserItemAfterMoveUse.add(:WHITENINGPASTE,
         next unless move.bitingMove?
         next if numHits == 0
         user.pbHeldItemTriggered(item)
+        battle.pbDisplay(_INTL("{1}'s {2} reflected a blinding glare!", user.pbThis, getItemName(item)))
         user.eachOpposing do |b|
             b.applyEffect(:Blindness)
         end
@@ -99,6 +100,7 @@ BattleHandlers::UserItemAfterMoveUse.add(:FLASHBULB,
         next unless move.lightMove?
         next if numHits == 0
         user.pbHeldItemTriggered(item)
+        battle.pbDisplay(_INTL("{1}'s {2} burst in a blinding flash!", user.pbThis, getItemName(item)))
         user.eachOpposing do |b|
             b.applyEffect(:Blindness)
         end
