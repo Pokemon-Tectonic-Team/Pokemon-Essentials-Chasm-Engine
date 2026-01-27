@@ -284,8 +284,9 @@ class Pokemon
     end
 
     # @return [Boolean] whether the Pokémon is not fainted and not an egg
-    def able?(ignorePacifist = false)
+    def able?(ignorePacifist = false, additionalParameters = [])
         return false if hasAbility?(:PACIFIST) && !ignorePacifist
+        return false if hasAbility?(:EXOSPHERICDESCENT) && !additionalParameters.include?("ExosphericDescent")
         return !egg? && @hp > 0 && !@afraid
     end
 

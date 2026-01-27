@@ -213,6 +213,23 @@ class PokeBattle_Battle
         party.each_with_index { |pkmn, i| yield pkmn, i if pkmn && i >= idxPartyStart && i < idxPartyEnd }
     end
 
+    def isLastMeetingConditionInTeam?(idxPokemon, side, idxTrainer)
+        final_index = -1
+        eachInTeam do |pkmn, i|
+            if (yield pkmn, i)
+                if final_index != -1 # If another mon was already registered as meeting the condition
+                    return false # More than 1 battler is meeting the condition
+                end
+                final_index = i
+            end
+        end
+        return (final_index == idxPokemon)
+    end
+
+    def isLastAboveHalfHealthInTeam?(idxPokemon, side, idxTrainer)
+        return isLastMeetingConditionInTeam?(idxPokemon, side, idxTrainer) { |pkmn, i| pkmn.hp > pkmn.totalhp / 2}
+    end
+
     # Used for Illusion.
     # NOTE: This cares about the temporary rearranged order of the team. That is,
     #       if you do some switching, the last Pokémon in the team could change

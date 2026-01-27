@@ -56,9 +56,16 @@ class PokeBattle_Battler
     end
 
     def fainted?
-        return @hp <= 0 || afraid? || hasAbility?(:PACIFIST) || (hasAbility?(:EXOSPHERICDESCENT) && !isLastWithMoreThanHalfHP?)
+        return @hp <= 0 || refusesToFight?
     end
     alias isFainted? fainted?
+
+    def refusesToFight?
+        return true if afraid?
+        return true if hasAbility(:PACIFIST)
+        return true if hasAbility?(:EXOSPHERICDESCENT) && @battle.isLastAboveHalfHealthInTeam?(@pokemonIndex, partyIndex, @battle.pbGetOwnerIndexFromBattlerIndex(@index))
+        return false
+    end
 
     def afraid?
         return false unless @pokemon

@@ -284,7 +284,7 @@ class PokeBattle_Battler
         end
 
         # Exospheric Descent
-        if hasActiveAbility?(:EXOSPHERICDESCENT)
+        if hasActiveAbility?(:EXOSPHERICDESCENT) && form == 0
             if aiCheck
                 echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Exospheric Descent)")
                 return false

@@ -24,12 +24,16 @@ class PokeBattle_Battle
             end
             return false
         end
-        unless party[idxParty].able?
+        additionalParameters = []
+        additionalParameters.push("ExosphericDescent") if isLastAboveHalfHealthInTeam?(idxParty, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler))
+        unless party[idxParty].able?(false, additionalParameters)
             if partyScene
                 if partyMember.afraid?
                     partyScene.pbDisplay(_INTL("{1} is too afraid to battle!", partyMember.name))
                 elsif partyMember.hasAbility?(:PACIFIST)
                     pbMessage(_INTL("{1} refuses to join the battle. It's a pacifist!", partyMember.name))
+                elsif partyMember.hasAbility?(:EXOSPHERICDESCENT)
+                    pbMessage(_INTL("{1} refuses to join the battle, as it deems its presence not necessary!", partyMember.name))
                 else
                     partyScene.pbDisplay(_INTL("{1} has no energy left to battle!", partyMember.name))
                 end

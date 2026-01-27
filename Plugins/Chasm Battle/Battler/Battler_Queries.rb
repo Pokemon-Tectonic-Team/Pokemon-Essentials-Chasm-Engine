@@ -687,30 +687,6 @@ class PokeBattle_Battler
         return @battle.pbGetOwnerFromBattlerIndex(@index).able_pokemon_count == 1
     end
 
-    def isLastWithMoreThanHalfHP?
-        if @battle.wildBattle? && opposes?
-            allAlliesBelowHalfHP = true
-            eachAlly do |ally|
-                next if ally.belowHalfHealth?
-                allAlliesBelowHalfHP = false
-                break
-            end
-            return !hasAlly? || allAlliesBelowHalfHP
-        end
-        return false if @hp <= 0 # Used instead of fainted? to avoid recursion error
-        ownerParty.each_with_index do |partyMember, i|
-            next unless partyMember
-            battler = @battle.pbFindBattler(i, self)
-            if !battler
-                next if partyMember.hp <= partyMember.totalhp / 2
-            end
-            next if battler == self
-            next if battler.belowHalfHealth?
-            return false
-        end
-        return true
-    end
-
     def protectedAgainst?(user, move)
         holdersToCheck = [self, pbOwnSide]
         holdersToCheck.each do |effectHolder|
