@@ -1,1 +1,34 @@
-﻿# See the documentation on the wiki to learn how to edit this file.
+# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[BATTLEGIRL,Tester]
+Pokemon = SLAKING,70
+    Moves = TACKLE
+    AbilityIndex = 0 # Truant
+Pokemon = SLAKING,70
+    Moves = TACKLE
+    AbilityIndex = 0 # Truant
+Pokemon = SLAKING,70
+    Moves = TACKLE
+    AbilityIndex = 0 # Truant
+Pokemon = SLAKING,70
+    Moves = TACKLE
+    AbilityIndex = 0 # Truant
+Pokemon = SLAKING,70
+    Moves = TACKLE
+    AbilityIndex = 0 # Truant
+Pokemon = SLAKING,70
+    Moves = TACKLE
+    AbilityIndex = 0 # Truant
+#-------------------------------
+[YOUNGSTER,Joey]
+Pokemon = LILLIGANT,50
+    AbilityIndex = 1 # Herbalist
+    Item = PARADOXHERB,MIRRORHERB
+#-------------------------------
+[ROLLERSKATER_M,Lane Tester]
+Pokemon = MACHOP,10
+    AbilityIndex = 1 # No Guard
+Pokemon = PIKACHU,10
+    AbilityIndex = 1 # Break Through
+Pokemon = SEEDOT,10
+    AbilityIndex = 0 # Air Lock

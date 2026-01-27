@@ -519,7 +519,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:OVERTHINKING,
 BattleHandlers::UserAbilityEndOfMove.add(:FUELHUNGRY,
   proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if battle.foretoldMove
-      next unless move.physicalMove?
+      next unless move.damagingMove?
       hitAnything = false
       targets.each do |b|
         next if b.damageState.unaffected
@@ -527,7 +527,11 @@ BattleHandlers::UserAbilityEndOfMove.add(:FUELHUNGRY,
         break
       end
       next unless hitAnything
-      user.tryLowerStat(:ATTACK, user, ability: ability)
+      if move.physicalMove?
+        user.tryLowerStat(:ATTACK, user, increment: 2, ability: ability)
+      elsif move.specialMove?
+        user.tryLowerStat(:SPECIAL_ATTACK, user, increment: 2, ability: ability)
+      end
   }
 )
 

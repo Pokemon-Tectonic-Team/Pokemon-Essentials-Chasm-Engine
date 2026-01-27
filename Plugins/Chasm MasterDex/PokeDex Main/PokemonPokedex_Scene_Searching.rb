@@ -274,9 +274,9 @@ class PokemonPokedex_Scene
     end
 
     def searchByEvolutionMethod
-        selections = [_INTL("Can Evolve by Method"), _INTL("Evolved From Method"), _INTL("No Evolutions"), _INTL("No Prevolutions"),  _INTL("Has Prevo and Evo"), _INTL("Split Evo"), _INTL("Cancel")]
+        selections = [_INTL("Can Evolve by Method"), _INTL("Evolved From Method"), _INTL("No Evolutions"), _INTL("No Prevolutions"),  _INTL("Has Prevo and Evo"), _INTL("Split Evo"), _INTL("Nth Stage of Line"), _INTL("Cancel")]
         relationSelection = pbMessage(_INTL("Which search?"), selections, selections.length)
-        return if relationSelection == 6
+        return if relationSelection == 7
 
         if [0,1].include?(relationSelection)
             evoMethodTextInput = pbEnterText(_INTL("Search method..."), 0, 12)
@@ -298,6 +298,26 @@ class PokemonPokedex_Scene
                     end
                     value = anyContain ^ reversed # Boolean XOR
                     next value
+                end
+                return dexlist
+            end
+        elsif relationSelection == 6
+            stageNumberTextInput = pbEnterText(_INTL("Stage number..."), 0, 2)
+            if stageNumberTextInput && stageNumberTextInput != ""
+                reversed = stageNumberTextInput[0] == "-"
+                stageNumberTextInput = stageNumberTextInput[1..-1] if reversed
+
+                stageNumberIntAttempt = stageNumberTextInput.to_i
+                if stageNumberIntAttempt <= 0
+                    pbMessage(_INTL("Invalid stage input."))
+                    return nil  
+                end
+
+                dexlist = searchStartingList
+                dexlist = dexlist.find_all do |dex_item|
+                    next false if autoDisqualifyFromSearch(dex_item[:species])
+                    prevosList = getPrevosInLineAsList(dex_item[:data])
+                    next (prevosList.length == stageNumberIntAttempt - 1) ^ reversed
                 end
                 return dexlist
             end
