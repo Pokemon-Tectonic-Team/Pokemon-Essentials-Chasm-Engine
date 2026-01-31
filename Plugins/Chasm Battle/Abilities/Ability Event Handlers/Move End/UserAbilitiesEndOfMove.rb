@@ -816,3 +816,90 @@ BattleHandlers::UserAbilityEndOfMove.add(:PRIMEVALMEGALAUNCHER,
     end
   }
 )
+
+#########################################
+# Swords of Justice Abilities
+#########################################
+
+BattleHandlers::UserAbilityEndOfMove.add(:SPRIGHORNSTYLE,
+  proc { |ability, user, targets, move, battle|
+    next if user.fainted?
+    next if move.statusMove?
+    showAbilitySplash = false
+    if (targets.any? {|target| target.effectActive?(:SprigHorn)})
+      battle.pbShowAbilitySplash(user, ability)
+      showAbilitySplash = true
+    end
+    targets.each do |target|
+      if target.effectActive?(:SprigHorn)
+        if !target.effectActive?(:Binding)
+          trappingDuration = 3
+          trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
+          battle.pbDisplay(_INTL("{1} is caught in vines!", target.pbThis))
+          target.applyEffect(:Binding, applyEffectDurationModifiers(trappingDuration, user))
+          target.applyEffect(:TrappingAbility, :SPRIGHORNSTYLE)
+          target.pointAt(:TrappingUser, user)
+        end
+        user.pbRecoverHP(user.totalhp / 3.0, canOverheal: true)
+        battle.pbHideAbilitySplash(user)
+      else
+        target.applyEffect(:SprigHorn)
+      end
+    end
+    if showAbilitySplash
+      battle.pbHideAbilitySplash(user)
+    end
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:SCYTHEHORNSTYLE,
+  proc { |ability, user, targets, move, battle|
+    next if user.fainted?
+    next if move.statusMove?
+    showAbilitySplash = false
+    if (targets.any? {|target| target.effectActive?(:ScytheHorn)})
+      battle.pbShowAbilitySplash(user, ability)
+      showAbilitySplash = true
+    end
+    targets.each do |target|
+      if target.effectActive?(:ScytheHorn)
+        target.applyEffect(:Fracture, applyEffectDurationModifiers(DEFAULT_FRACTURE_DURATION, user))
+        if !user.pbOpposingSide.effectActive?(:StealthRock)
+            battle.pbAnimation(:STEALTHROCK, user, nil)
+            user.pbOpposingSide.applyEffect(:StealthRock)
+        end
+      else
+        target.applyEffect(:ScytheHorn)
+      end
+    end
+    if showAbilitySplash
+      battle.pbHideAbilitySplash(user)
+    end
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:SWORDHORNSTYLE,
+  proc { |ability, user, targets, move, battle|
+    next if user.fainted?
+    next if move.statusMove?
+    showAbilitySplash = false
+    if (targets.any? {|target| target.effectActive?(:SwordHorn)})
+      battle.pbShowAbilitySplash(user, ability)
+      showAbilitySplash = true
+    end
+    targets.each do |target|
+      if target.effectActive?(:SwordHorn)
+        target.pbInflictStatus(:NUMB, 0, nil, user) if target.pbCanInflictStatus?(:NUMB, user, true)
+        unless target.pbOwnSide.effectActive?(:Sanctuary)
+            battle.pbAnimation(:SANCTUARY, target, nil)
+            target.pbOwnSide.applyEffect(:Sanctuary, user.getScreenDuration(3))
+        end
+      else
+        target.applyEffect(:SwordHorn)
+      end
+    end
+    if showAbilitySplash
+      battle.pbHideAbilitySplash(user)
+    end
+  }
+)

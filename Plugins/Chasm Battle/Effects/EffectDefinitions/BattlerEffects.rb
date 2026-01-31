@@ -2642,3 +2642,21 @@ GameData::BattleEffect.register_effect(:Battler, {
     :info_displayed => false,
     :sub_effects => [:IncomingDamageTurns]
 })
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :SprigHorn,
+    :real_name => "Sprig Horn First Hit",
+    :info_displayed => false
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ScytheHorn,
+    :real_name => "Scythe Horn First Hit",
+    :info_displayed => false
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :SwordHorn,
+    :real_name => "Sword Horn First Hit",
+    :info_displayed => false
+})

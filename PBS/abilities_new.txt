@@ -1893,6 +1893,10 @@ Name = Scoured Silhouette
 Description = Upon entry during sandstorm, lowers foe's Attack and Sp. Atk by two steps.
 Flags = SandstormSynergy
 #-------------------------------
+[SCYTHEHORNSTYLE]
+Name = Scythe-Horn Style
+Description = After attacking the same foe twice, they become fractured, and a trap of levitating stones is set on their side.
+#-------------------------------
 [SEALINGBODY]
 Name = Sealing Body
 Description = Moves used on this Pokémon are disabled for two turns.
@@ -2075,6 +2079,10 @@ Description = Speed is raised each turn. Speed is reset when hit, but the attack
 Name = Spiny Ruse
 Description = Foes that attack this Pokémon while it is hidden take 25% HP damage.
 #-------------------------------
+[SPRIGHORNSTYLE]
+Name = Sprig-Horn Style
+Description = After attacking the same foe twice, they become trapped for three turns, and this Pokémon heals 33% HP. This can overheal.
+#-------------------------------
 [STABILITY]
 Name = Stability
 Description = Can't be afflicted with any non-volatile status condition.
@@ -2236,6 +2244,10 @@ Description = This Pokémon's Speed is doubled while using kicking moves.
 [SWORDBREAKER]
 Name = Sword Breaker
 Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
+#-------------------------------
+[SWORDHORNSTYLE]
+Name = Sword-Horn Style
+Description = After attacking the same foe twice, they become numbed, and a Sanctuary is set on this Pokémon's side for 3 turns.
 #-------------------------------
 [SWORDPLAY]
 Name = Swordplay
