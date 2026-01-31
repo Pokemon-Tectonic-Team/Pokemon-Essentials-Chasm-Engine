@@ -63,7 +63,7 @@ class PokeBattle_Battler
     def refusesToFight?
         return true if afraid?
         return true if hasAbility?(:PACIFIST)
-        return true if hasAbility?(:EXOSPHERICDESCENT) && @battle.isLastAboveHalfHealthInTeam?(@pokemonIndex, partyIndex, @battle.pbGetOwnerIndexFromBattlerIndex(@index))
+        return true if hasAbility?(:EXOSPHERICDESCENT) && !@battle.isLastAboveHalfHealthInTeam?(@pokemonIndex, partyIndex, @battle.pbGetOwnerIndexFromBattlerIndex(@index))
         return false
     end
 

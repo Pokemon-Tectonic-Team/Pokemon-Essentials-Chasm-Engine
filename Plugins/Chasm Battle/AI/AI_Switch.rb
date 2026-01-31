@@ -308,7 +308,7 @@ class PokeBattle_AI
 
         @battle.pbParty(idxBattler).each_with_index do |pkmn, partyIndex|
             next unless pkmn
-            next unless pkmn.able?
+            next unless pkmn.able?(false, @battle.getAbleParameters(partyIndex, idxBattler % 2, @battle.pbGetOwnerIndexFromBattlerIndex(idxBattler)))
             next if battlerSlot.pokemonIndex == partyIndex
             next unless @battle.pbCanSwitch?(idxBattler, partyIndex)
             switchScore = getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, safeSwitch,urgency)

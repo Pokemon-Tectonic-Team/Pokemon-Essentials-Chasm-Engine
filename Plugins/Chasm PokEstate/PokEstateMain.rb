@@ -581,7 +581,7 @@ class PokEstate
 	def setDownIntoEstate(pokemon)
 		return unless isInEstate?()
 		
-		if $Trainer.able_pokemon_count == 1 && pokemon.able?
+		if $Trainer.able_pokemon_count == 1 && pokemon.able?(false, ALL_ABLE_PARAMETERS)
 			pbMessage(_INTL("Can't set down your last able Pokemon!"))
 			return false
 		end

@@ -44,8 +44,8 @@ def drawSpot(bitmap,spotpattern,x,y,red,green,blue)
     spot = spotpattern[yy]
     for xx in 0...width
       if spot[xx]==1
-        xOrg = (x+xx)<<1
-        yOrg = (y+yy)<<1
+        xOrg = (x+xx) << 1
+        yOrg = (y+yy) << 1
         color = bitmap.get_pixel(xOrg,yOrg)
         r = color.red+red
         g = color.green+green
@@ -172,11 +172,10 @@ MultipleForms.register(:KYOGRE,{
   }
 })
 
-MultipleForms.register(:RAYQUAZA,{
-  "getPrimalForm" => proc { |pkmn|
-    next 1 if pkmn.hasMove?(:DRAGONASCENT)
-    next
-  }
+MultipleForms.register(:RAYQUAZA, {
+  "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, endBattle|
+      next 0 if pkmn.form == 1 && (pkmn.fainted? || endBattle)
+  },
 })
 
 MultipleForms.register(:CHERRIM,{

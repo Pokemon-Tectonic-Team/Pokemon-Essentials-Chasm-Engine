@@ -905,7 +905,7 @@ class PokeBattle_Move_UserLosesQuarterHPPartyMembersHealQuarterHP < PokeBattle_M
     end
 
     def validPokemon(pkmn)
-        return pkmn&.able? && pkmn.hp < pkmn.totalhp
+        return pkmn&.able?(true, ALL_ABLE_PARAMETERS) && pkmn.hp < pkmn.totalhp
     end
 
     def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)

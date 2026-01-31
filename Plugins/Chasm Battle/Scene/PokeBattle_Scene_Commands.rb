@@ -228,7 +228,7 @@ class PokeBattle_Scene
         cmdSummary = -1
         cmdPokedex = -1
         commands = []
-        commands[cmdSwitch  = commands.length] = _INTL("Switch In") if modParty[idxParty].able?(true)
+        commands[cmdSwitch  = commands.length] = _INTL("Switch In") if modParty[idxParty].able?(true, ALL_ABLE_PARAMETERS)
         commands[cmdSummary = commands.length] = _INTL("Summary")
         commands[cmdPokedex = commands.length] = _INTL("MasterDex") if !modParty[idxParty].egg? && $Trainer.has_pokedex
         commands[commands.length]              = _INTL("Cancel")

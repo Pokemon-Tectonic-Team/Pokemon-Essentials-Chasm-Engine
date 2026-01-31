@@ -79,7 +79,7 @@ class Trainer
     end
   
     def able_party
-      return @party.find_all { |p| p && !p.egg? && p.able? }
+      return @party.find_all { |p| p && !p.egg? && p.able?(false, []) }
     end
   
     def party_count
@@ -94,7 +94,7 @@ class Trainer
   
     def able_pokemon_count
       ret = 0
-      @party.each { |p| ret += 1 if p && p.able? }
+      @party.each { |p| ret += 1 if p && p.able?(false, []) }
       return ret
     end
   
@@ -137,7 +137,7 @@ class Trainer
       return false if index < 0 || index >= party_count
       have_able = false
       @party.each_with_index do |pkmn, i|
-        have_able = true if i != index && pkmn.able?
+        have_able = true if i != index && pkmn.able?(false, [])
         break if have_able
       end
       return false if !have_able
@@ -158,7 +158,7 @@ class Trainer
     # Checks whether the trainer would still have an unfainted Pokémon if the
     # Pokémon given by _index_ were removed from the party.
     def has_other_able_pokemon?(index)
-      @party.each_with_index { |pkmn, i| return true if i != index && pkmn.able? }
+      @party.each_with_index { |pkmn, i| return true if i != index && pkmn.able?(false, [])}
       return false
     end
   

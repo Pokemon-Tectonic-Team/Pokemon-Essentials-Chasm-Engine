@@ -80,7 +80,7 @@ def pbPokeCenterPC
                 elsif command==2   # Deposit
                     count=0
                     for p in $PokemonStorage.party
-                        count += 1 if p && p.able?
+                        count += 1 if p && p.able?(false, [])
                     end
                     if count<=1
                         pbMessage(_INTL("Can't deposit the last Pokémon!"))

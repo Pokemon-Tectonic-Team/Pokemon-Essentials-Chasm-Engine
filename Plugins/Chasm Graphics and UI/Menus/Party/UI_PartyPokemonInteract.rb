@@ -87,7 +87,7 @@ class TilingCardsPokemonMenu_Scene < TilingCardsMenu_Scene
                   :SEND_PC => {
                       :label => _INTL("Send to PC"),
                       :active_proc => proc do
-                          @party.length > 1 && ($Trainer.able_pokemon_count > 1 || !@pkmn.able?)
+                          @party.length > 1 && ($Trainer.able_pokemon_count > 1 || !@pkmn.able?(false, []))
                       end,
                       :press_proc => proc do |_scene|
                           if pbConfirm(_INTL("Are you sure you'd like to send back {1}?", @pkmn.name))

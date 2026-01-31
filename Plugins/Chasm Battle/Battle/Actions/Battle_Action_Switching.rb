@@ -24,9 +24,7 @@ class PokeBattle_Battle
             end
             return false
         end
-        additionalParameters = []
-        additionalParameters.push("ExosphericDescent") if isLastAboveHalfHealthInTeam?(idxParty, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler))
-        unless party[idxParty].able?(false, additionalParameters)
+        unless party[idxParty].able?(false, getAbleParameters(idxParty, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler)))
             if partyScene
                 if partyMember.afraid?
                     partyScene.pbDisplay(_INTL("{1} is too afraid to battle!", partyMember.name))

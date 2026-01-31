@@ -224,7 +224,7 @@ class PokeBattle_Move_EmpoweredCruelty < PokeBattle_Move_DoubleDamageTargetStatu
 end
 
 #===============================================================================
-# Move deals double damage but heals the status condition every active Pokémon
+# Move deals double damage but heals the status condition of every active Pokémon
 # if the target has a status condition (Impurity Blaze)
 #===============================================================================
 class PokeBattle_Move_ImpurityBlaze < PokeBattle_Move
@@ -244,7 +244,7 @@ class PokeBattle_Move_ImpurityBlaze < PokeBattle_Move
         score = 0
         @battle.eachBattler do |b|
             pkmn = b.pokemon
-            next if !pkmn || !pkmn.able? || pkmn.status == :NONE
+            next if !pkmn || !pkmn.able?(false, []) || pkmn.status == :NONE
             score += b.opposes? ? 30 : -30
         end
         return score

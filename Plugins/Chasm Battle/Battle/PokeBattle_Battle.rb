@@ -132,7 +132,7 @@ class PokeBattle_Battle
     def pbAbleCount(idxBattler = 0)
         party = pbParty(idxBattler)
         count = 0
-        party.each { |pkmn| count += 1 if pkmn && pkmn.able? }
+        party.each_with_index { |pkmn, i| count += 1 if pkmn && pkmn.able?(false, getAbleParameters(i, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler))) }
         return count
     end
 
@@ -142,7 +142,7 @@ class PokeBattle_Battle
         eachSameSideBattler(idxBattler) { |b| inBattleIndices.push(b.pokemonIndex) }
         count = 0
         party.each_with_index do |pkmn, idxParty|
-            next if !pkmn || !pkmn.able?
+            next if !pkmn || !pkmn.able?(false, getAbleParameters(idxParty, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler)))
             next if inBattleIndices.include?(idxParty)
             count += 1
         end
@@ -166,7 +166,7 @@ class PokeBattle_Battle
                 idxTeam += 1
                 nextStart = (idxTeam < partyStarts.length - 1) ? partyStarts[idxTeam + 1] : party.length
             end
-            next if !pkmn || !pkmn.able?
+            next if !pkmn || !pkmn.able?(false, getAbleParameters(i, side, pbGetOwnerIndexFromBattlerIndex(side)))
             ret[idxTeam] = 0 unless ret[idxTeam]
             ret[idxTeam] += 1
         end
@@ -215,7 +215,7 @@ class PokeBattle_Battle
 
     def isLastMeetingConditionInTeam?(idxPokemon, side, idxTrainer)
         final_index = -1
-        eachInTeam do |pkmn, i|
+        eachInTeam(side, idxTrainer) do |pkmn, i|
             if (yield pkmn, i)
                 if final_index != -1 # If another mon was already registered as meeting the condition
                     return false # More than 1 battler is meeting the condition
@@ -230,6 +230,12 @@ class PokeBattle_Battle
         return isLastMeetingConditionInTeam?(idxPokemon, side, idxTrainer) { |pkmn, i| pkmn.hp > pkmn.totalhp / 2}
     end
 
+    def getAbleParameters(idxPokemon, side, idxTrainer)
+        ret = []
+        ret.push("ExosphericDescent") if isLastAboveHalfHealthInTeam?(idxPokemon, side, idxTrainer)
+        return ret
+    end
+
     # Used for Illusion.
     # NOTE: This cares about the temporary rearranged order of the team. That is,
     #       if you do some switching, the last Pokémon in the team could change
@@ -241,7 +247,7 @@ class PokeBattle_Battle
         ret = -1
         party.each_with_index do |pkmn, i|
             next if i < idxPartyStart || i >= idxPartyEnd # Check the team only
-            next if !pkmn || !pkmn.able? # Can't copy a non-fainted Pokémon or egg
+            next if !pkmn || !pkmn.able?(false, getAbleParameters(i, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler))) # Can't copy a non-fainted Pokémon or egg
             ret = i if ret < 0 || partyOrders[i] > partyOrders[ret]
         end
         return ret
