@@ -1043,6 +1043,64 @@ def pbMessageFreeText(message, currenttext, passwordbox, maxlength, width = 240,
     return retval
 end
 
+# Displays text options in the message box, allowing the player to scroll through them
+# with left/right arrows and select with A. Returns the selected index or -1 if cancelled.
+def pbScrollableTextSelection(options, initial_index = 0)
+  msgwindow = pbCreateMessageWindow
+  index = initial_index.clamp(0, options.length - 1)
+  ret = -1
+
+  # Create a separate window for the navigation indicator
+  navwindow = Window_AdvancedTextPokemon.new("")
+  navwindow.viewport = msgwindow.viewport
+  navwindow.z = msgwindow.z
+  navwindow.letterbyletter = false
+  navwindow.baseColor = MessageConfig.pbDefaultTextMainColor
+  navwindow.shadowColor = MessageConfig.pbDefaultTextShadowColor
+  # Calculate padding width based on total options
+  total_digits = options.length.to_s.length
+  # Size the window to fit the text
+  nav_text = _INTL("{1}/{2}", options.length, options.length)
+  navwindow.resizeToFit(nav_text, Graphics.width)
+  # Position above the message window, on the right side
+  navwindow.x = Graphics.width - navwindow.width
+  navwindow.y = msgwindow.y - navwindow.height
+
+  loop do
+    msgwindow.letterbyletter = false
+    msgwindow.text = options[index]
+
+    padded_index = sprintf("%0#{total_digits}d", index + 1)
+    navwindow.text = _INTL("{1}/{2}", padded_index, options.length)
+
+    Graphics.update
+    Input.update
+    msgwindow.update
+    navwindow.update
+    pbUpdateSceneMap
+
+    if Input.trigger?(Input::LEFT) || Input.trigger?(Input::UP)
+      pbPlayCursorSE
+      index = (index - 1) % options.length
+    elsif Input.trigger?(Input::RIGHT) || Input.trigger?(Input::DOWN)
+      pbPlayCursorSE
+      index = (index + 1) % options.length
+    elsif Input.trigger?(Input::USE)
+      pbPlayDecisionSE
+      ret = index
+      break
+    elsif Input.trigger?(Input::BACK)
+      pbPlayCancelSE
+      ret = -1
+      break
+    end
+  end
+
+  navwindow.dispose
+  pbDisposeMessageWindow(msgwindow)
+  return ret
+end
+
 def break_string(str, character_count)
     arr = []
     pos = 0     

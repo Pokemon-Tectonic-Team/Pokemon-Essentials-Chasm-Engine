@@ -347,6 +347,14 @@ class PokemonPokedex_Scene
     end
 
     def searchByAvailableLevel
+        commands = ["Minimum Level", "Normal Availability", "Cancel"]
+        command = pbMessage(_INTL("What threshold for availability?"), commands, commands.length)
+        return if command == commands.length - 1
+        normal = command == 1
+        return searchByAvailableLevelBase(normal)
+    end
+
+    def searchByAvailableLevelBase(normal = false)
         levelTextInput = pbEnterText(_INTL("Search available by level..."), 0, 3)
         if levelTextInput && levelTextInput != ""
             reversed = levelTextInput[0] == "-"
@@ -360,7 +368,7 @@ class PokemonPokedex_Scene
             dexlist = searchStartingList
             dexlist = dexlist.find_all do |dex_item|
                 next false if autoDisqualifyFromSearch(dex_item[:species])
-                available = dex_item[:data].available_by?(levelCheck)
+                available = dex_item[:data].available_by?(levelCheck, normal)
                 next available ^ reversed # Boolean XOR
             end
             return dexlist
@@ -742,7 +750,11 @@ class PokemonPokedex_Scene
             enc_data.types.each do |_key, slots|
                 next unless slots
                 slots.each do |slot|
-                    speciesPresent.push(slot[1])
+                    species = slot[1]
+                    # get base species because forms aren't in dexlist
+                    species_data = GameData::Species.get(species)
+                    base_species = species_data.species
+                    speciesPresent.push(base_species)
                 end
             end
         end

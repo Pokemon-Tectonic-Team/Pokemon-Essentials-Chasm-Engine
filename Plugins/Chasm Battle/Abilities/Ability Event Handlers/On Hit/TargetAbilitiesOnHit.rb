@@ -66,6 +66,7 @@ BattleHandlers::TargetAbilityOnHit.add(:GRAVITYWELL,
 
 BattleHandlers::TargetAbilityOnHit.add(:GOOEY,
   proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
+        next if user.dummy
         next unless move.physicalMove?
         if aiCheck
             ret = 0
@@ -80,6 +81,7 @@ BattleHandlers::TargetAbilityOnHit.add(:GOOEY,
 
 BattleHandlers::TargetAbilityOnHit.add(:SICKENING,
   proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
+        next if user.dummy
         next unless move.specialMove?
         if aiCheck
             ret = 0

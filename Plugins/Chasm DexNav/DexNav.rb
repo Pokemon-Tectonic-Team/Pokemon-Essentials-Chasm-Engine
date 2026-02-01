@@ -294,6 +294,7 @@ class NewDexNav
 
 		encounterGroupLabels = []
 		ownedIconImagePositions = []
+		starredIconImagePositions = []
 		encounterGroupCheckboxesImagePositions = []
 		horizontalLineImagePositions = []
 
@@ -331,6 +332,12 @@ class NewDexNav
 					ownedIconY = DEXNAV_LIST_START_Y + lineHeight - 32
 					ownedIconImagePositions.push(["Graphics/Pictures/Battle/icon_own",ownedIconX,ownedIconY])
 				end
+
+				if $PokemonGlobal.speciesStarred?(sprite.species)
+					starIconX = sprite.x + 40
+					starIconY = DEXNAV_LIST_START_Y + lineHeight - 32
+					starredIconImagePositions.push(["Graphics/Pictures/Pokedex/star",starIconX,starIconY])
+				end
 			end
 
 			lineHeight += DEXNAV_LINE_HEIGHT + 8
@@ -346,6 +353,7 @@ class NewDexNav
 		imagePos = []
 		adjustGraphicalArrayForVisualOffset(encounterGroupCheckboxesImagePositions, imagePos)
 		adjustGraphicalArrayForVisualOffset(ownedIconImagePositions, imagePos)
+		adjustGraphicalArrayForVisualOffset(starredIconImagePositions, imagePos)
 		adjustGraphicalArrayForVisualOffset(horizontalLineImagePositions, imagePos)
 
 		# Adjust the pokemon sprites

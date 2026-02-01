@@ -25,6 +25,7 @@ BattleHandlers::UserAbilityOnHit.add(:DARKSCALECLOUD,
 
 BattleHandlers::UserAbilityOnHit.add(:RAPIDONSET,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    next if user.fainted?
     next unless user.firstTurn?
     randomStatusProcUserAbility(ability, :POISON, 100, user, target, move, battle, aiCheck, aiNumHits)
   }
@@ -49,6 +50,7 @@ BattleHandlers::UserAbilityOnHit.add(:BURNOUT,
 
 BattleHandlers::UserAbilityOnHit.add(:DAWNFALL,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    next if user.fainted?
     next unless user.firstTurn?
     randomStatusProcUserAbility(ability, :BURN, 100, user, target, move, battle, aiCheck, aiNumHits)
   }
@@ -80,6 +82,7 @@ BattleHandlers::UserAbilityOnHit.add(:CHILLOUT,
 
 BattleHandlers::UserAbilityOnHit.add(:FLASHFREEZE,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    next if user.fainted?
     next unless user.firstTurn?
     randomStatusProcUserAbility(ability, :FROSTBITE, 100, user, target, move, battle, aiCheck, aiNumHits)
   }
@@ -111,6 +114,7 @@ BattleHandlers::UserAbilityOnHit.add(:NERVENUMBER,
 
 BattleHandlers::UserAbilityOnHit.add(:DISCONNECTION,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    next if user.fainted?
     next unless user.firstTurn?
     randomStatusProcUserAbility(ability, :NUMB, 100, user, target, move, battle, aiCheck, aiNumHits)
   }
@@ -176,6 +180,7 @@ BattleHandlers::UserAbilityOnHit.add(:SEEDSOWING,
 
 BattleHandlers::UserAbilityOnHit.add(:SIPHONSNIPER,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    next if user.fainted?
     next unless user.firstTurn?
     randomStatusProcUserAbility(ability, :LEECHED, 100, user, target, move, battle, aiCheck, aiNumHits)
   }
@@ -209,6 +214,7 @@ BattleHandlers::UserAbilityOnHit.add(:MENTALDAMAGE,
 
 BattleHandlers::UserAbilityOnHit.add(:CANIDCRUSHER,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    next if user.fainted?
     next unless user.firstTurn?
     next getFractureEffectScore(user, target) if aiCheck
     next if target.damageState.fainted
@@ -220,6 +226,7 @@ BattleHandlers::UserAbilityOnHit.add(:CANIDCRUSHER,
 
 BattleHandlers::UserAbilityOnHit.add(:INFAMOUS,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    next if user.fainted?
     next unless user.firstTurn?
     next getJinxEffectScore(user, target) if aiCheck
     next if target.damageState.fainted
