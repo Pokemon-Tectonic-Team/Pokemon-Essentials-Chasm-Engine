@@ -242,7 +242,7 @@ TotalPP = 5
 Target = User
 FunctionCode = RaiseUserAndAlliesSpe1Acc4
 Flags = CanSnatch
-Description = The user performs a spirited dance with its ally, raising Speed by 1 step and Accuracy by 4 steps for its ally and itself.
+Description = The user performs a spirited dance, raising Speed by 1 step and Accuracy by 4 steps for its allies and itself.
 Animation = TEETERDANCE
 #-------------------------------
 [FIREFOREFFECT]
