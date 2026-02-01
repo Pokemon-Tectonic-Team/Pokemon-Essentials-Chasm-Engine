@@ -6323,7 +6323,7 @@ TotalPP = 5
 Target = NearOther
 FunctionCode = CureDizzyAndUnlockBothAbilities
 Flags = CanProtect,CanMagicCoat
-Description = The user connects to the target's brainwaves to stabilize their mind, curing dizziness, and letting them use both their legal abilities.
+Description = The user connects to the target's brainwaves to stabilize its mind, curing its dizziness, and letting it use the legal ability it does not currently have.
 Animation = CALMMIND
 #-------------------------------
 [TOTALCONTROL]
