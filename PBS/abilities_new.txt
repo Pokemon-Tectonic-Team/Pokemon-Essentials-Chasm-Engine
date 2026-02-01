@@ -1884,6 +1884,11 @@ Name = Scathing Syzygy
 Description = Boosts all of this Pokémon's move damage by 25% during eclipse.
 Flags = EclipseSynergy
 #-------------------------------
+[SCENECHANGE]
+Name = Scene Change
+Description = When using a physical move, switch to Pirouette Forme. When using a special move, switch to Aria Forme.
+Flags = Uncopyable
+#-------------------------------
 [SCHADENFREUDE]
 Name = Schadenfreude
 Description = Restores 1/4th health after any foe faints.

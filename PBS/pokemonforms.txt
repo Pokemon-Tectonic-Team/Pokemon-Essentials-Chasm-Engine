@@ -429,7 +429,7 @@ Type1 = NORMAL
 Type2 = FIGHTING
 BaseStats = 100,130,120,115,75,80
 # Total = 620
-Abilities = SERENEGRACE,LEADDANCER
+Abilities = LEADDANCER,SCENECHANGE
 #-------------------------------
 [GENESECT,1]
 FormName = Shock Drive

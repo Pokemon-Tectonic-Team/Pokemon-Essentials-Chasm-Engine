@@ -347,6 +347,11 @@ BattleHandlers::UserAbilityEndOfMove.add(:LEADSINGER,
       next unless move.soundMove?
       next if user.effectActive?(:FollowMe)
       battle.pbShowAbilitySplash(user, ability)
+      maxFollowMe = 0
+      user.eachAlly do |b|
+          next if b.effects[:FollowMe] <= maxFollowMe
+          maxFollowMe = b.effects[:FollowMe]
+      end
       user.applyEffect(:FollowMe, maxFollowMe + 1)
       battle.pbHideAbilitySplash(user)
   }
