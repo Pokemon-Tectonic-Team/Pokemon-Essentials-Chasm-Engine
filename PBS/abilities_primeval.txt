@@ -10,16 +10,16 @@ Description = This Pokémon's moves deal 20% more damage, ignore immunities due 
 #-------------------------------
 [PRIMEVALDISGUISE]
 Name = Primeval Disguise
-Description = The Pokemon starts as a very convincing Pikachu!
+Description = The Pokémon starts as a very convincing Pikachu!
 Flags = Uncopyable,Immutable
 #-------------------------------
 [PRIMEVALFLOURISHING]
 Name = Primeval Flourishing
-Description = Everytime the Pokemon grows, it raises all of its stats by 1 step. If it is damaged 3 times in one turn, reverts back to the smallest form and loses stats.
+Description = Everytime the Pokémon grows, it raises all of its stats by 1 step. If it is damaged 3 times in one turn, reverts back to the smallest form and loses stats.
 #-------------------------------
 [PRIMEVALHARDAS]
 Name = Primeval Hard As
-Description = If the Pokemon takes over 120 damage from an attack, the attacker becomes fractured.
+Description = If the Pokémon takes over 120 damage from an attack, the attacker becomes fractured.
 #-------------------------------
 [PRIMEVALIMPOSTER]
 Name = Primeval Imposter
