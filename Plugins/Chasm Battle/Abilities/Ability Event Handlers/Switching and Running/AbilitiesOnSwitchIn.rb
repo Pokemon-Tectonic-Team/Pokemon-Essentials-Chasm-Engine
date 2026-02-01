@@ -1482,3 +1482,14 @@ BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSHIELD,
     battle.pbHideAbilitySplash(battler)
   }
 )
+
+BattleHandlers::AbilityOnSwitchIn.add(:TECTONICCONVERGENCE,
+  proc { |ability, battler, battle, aiCheck|
+    next -100 unless battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+    next 0 unless battler.form == 0
+    next 100 if aiCheck
+    battle.pbShowAbilitySplash(battler, ability)
+    battle.pbDisplay(_INTL("Eons course through {1}'s being!", battler.pbThis(true)))
+    battle.pbHideAbilitySplash(battler)
+  }
+)

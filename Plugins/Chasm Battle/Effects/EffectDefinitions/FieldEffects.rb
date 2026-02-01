@@ -370,3 +370,10 @@ GameData::BattleEffect.register_effect(:Field, {
         battle.pbDisplay(_INTL("The Rusted Sword clatters on the ground!"))
     end
 })
+
+GameData::BattleEffect.register_effect(:Field, {
+    :id => :PokemonEntered,
+    :real_name => "Pokémon Entered",
+    :info_displayed => false,
+    :type => :Array,
+})

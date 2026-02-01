@@ -238,6 +238,12 @@ class PokeBattle_Scene
             pbMessage(_INTL("{1} refuses to join the battle. It's a pacifist!", modParty[idxParty].name))
           elsif modParty[idxParty].hasAbility?(:EXOSPHERICDESCENT) && !@battle.isLastAboveHalfHealthInTeam?(idxParty, idxBattler % 2, @battle.pbGetOwnerIndexFromBattlerIndex(idxBattler))
             pbMessage(_INTL("{1} refuses to join the battle, as it deems its presence not required!", modParty[idxParty].name))
+          elsif modParty[idxParty].hasAbility?(:SLUMBERINGSWORD) && !@battle.field.effectActive?(:SlumberingSwordReady)
+            pbMessage(_INTL("{1} is in a deep slumber, and cannot join the battle!", modParty[idxParty].name))
+          elsif modParty[idxParty].hasAbility?(:SLUMBERINGSHIELD) && !@battle.field.effectActive?(:SlumberingShieldReady)
+            pbMessage(_INTL("{1} is in a deep slumber, and cannot join the battle!", modParty[idxParty].name))
+          elsif modParty[idxParty].hasAbility?(:TECTONICCONVERGENCE) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+            pbMessage(_INTL("{1} refuses join the battle! It waits for its kin!", modParty[idxParty].name))
           else
             idxPartyRet = -1
             partyPos.each_with_index do |pos,i|

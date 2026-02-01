@@ -2281,6 +2281,10 @@ Flags = HailSynergy
 Name = Tangling Vines
 Description = When hit, the attacker's Speed is reduced, and this Pokémon's next attack against them is boosted by 30%.
 #-------------------------------
+[TECTONICCONVERGENCE]
+Name = Tectonic Convergence
+Description = This Pokémon cannot enter the battle before Regidrago, Regice, Regirock, Registeel and Regieleki have entered it.
+#-------------------------------
 [TEMPORALDISTORTION]
 Name = Temporal Distortion
 Description = Every three turns it gets to move twice.

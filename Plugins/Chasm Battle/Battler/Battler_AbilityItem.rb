@@ -30,6 +30,11 @@ class PokeBattle_Battler
                 end
             end
         end
+        if @battle.field.effectActive?(:PokemonEntered)
+            @battle.field.effects[:PokemonEntered].push(@species) unless @battle.field.effects[:PokemonEntered].include?(@species)
+        else
+            @battle.field.applyEffect(:PokemonEntered,[@species])
+        end
         # Berry check, status-curing ability check
         pbHeldItemTriggerCheck if switchIn
         pbAbilityStatusCureCheck

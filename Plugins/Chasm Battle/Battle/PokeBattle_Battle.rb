@@ -235,6 +235,7 @@ class PokeBattle_Battle
         ret.push("ExosphericDescent") if isLastAboveHalfHealthInTeam?(idxPokemon, side, idxTrainer)
         ret.push("SlumberingSword") if @field.effectActive?(:SlumberingSwordReady)
         ret.push("SlumberingShield") if @field.effectActive?(:SlumberingShieldReady)
+        ret.push("TectonicConvergence") if haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
         return ret
     end
 
@@ -500,5 +501,18 @@ class PokeBattle_Battle
             end
         end
         return moveUser
+    end
+
+    def haveSpeciesEnteredBattle?(species)
+        pokemonEntered = @field.effects[:PokemonEntered]
+        return false if pokemonEntered.nil?
+        unless species.is_a?(Array)
+            return pokemonEntered.include?(species)
+        end
+        species.each do |specy|
+            next if pokemonEntered.include?(specy)
+            return false
+        end
+        return true
     end
 end
