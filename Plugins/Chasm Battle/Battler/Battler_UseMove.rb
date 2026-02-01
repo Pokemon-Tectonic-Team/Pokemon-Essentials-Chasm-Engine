@@ -384,17 +384,6 @@ class PokeBattle_Battler
             BattleHandlers.triggerUserAbilityStartOfMove(ability, user, targets, move, @battle)
         end
 
-        foretoldAmount = 0
-        user.eachActiveAbility do |ability|
-            foretoldAmount += BattleHandlers.triggerMoveMakeForetoldAbility(ability, user, self, @battle)
-        end
-        if foretoldAmount > 0
-            target.position.applyEffect(:ForetoldMoveCounter, foretoldAmount)
-            target.position.applyEffect(:ForetoldMove, @id)
-            target.position.pointAt(:ForetoldMoveUserIndex, user)
-            target.position.applyEffect(:ForetoldMoveUserPartyIndex, user.pokemonIndex)
-        end
-
         #---------------------------------------------------------------------------
         magicCoater  = -1
         magicBouncer = -1

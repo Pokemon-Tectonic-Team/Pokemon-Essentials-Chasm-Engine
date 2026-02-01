@@ -34,7 +34,7 @@ class PokeBattle_Battle
                     pbMessage(_INTL("{1} refuses to join the battle, as it deems its presence not necessary!", partyMember.name))
                 elsif partyMember.hasAbility?(:SLUMBERINGSHIELD) || partyMember.hasAbility?(:SLUMBERINGSWORD)
                     pbMessage(_INTL("{1} is in a deep slumber, and cannot join the battle!", partyMember.name))
-                elsif partyMember.hasAbility?(:TECTONICCONVERGENCE)
+                elsif partyMember.hasAbility?(:PRIMORDIALSEAL)
                     pbMessage(_INTL("{1} refuses join the battle! It waits for its kin!", partyMember.name))
                 else
                     partyScene.pbDisplay(_INTL("{1} has no energy left to battle!", partyMember.name))

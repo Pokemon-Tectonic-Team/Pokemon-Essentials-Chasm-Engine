@@ -242,7 +242,7 @@ class PokeBattle_Scene
             pbMessage(_INTL("{1} is in a deep slumber, and cannot join the battle!", modParty[idxParty].name))
           elsif modParty[idxParty].hasAbility?(:SLUMBERINGSHIELD) && !@battle.field.effectActive?(:SlumberingShieldReady)
             pbMessage(_INTL("{1} is in a deep slumber, and cannot join the battle!", modParty[idxParty].name))
-          elsif modParty[idxParty].hasAbility?(:TECTONICCONVERGENCE) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+          elsif modParty[idxParty].hasAbility?(:PRIMORDIALSEAL) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
             pbMessage(_INTL("{1} refuses join the battle! It waits for its kin!", modParty[idxParty].name))
           else
             idxPartyRet = -1

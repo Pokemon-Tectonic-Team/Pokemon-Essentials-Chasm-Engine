@@ -325,13 +325,13 @@ class PokeBattle_Battler
             end
         end
 
-        # Tectonic Convergence
-        if hasActiveAbility?(:TECTONICCONVERGENCE) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+        # Primordial Seal
+        if hasActiveAbility?(:PRIMORDIALSEAL) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
             if aiCheck
-                echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Tectonic Convergence)")
+                echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Primordial Seal)")
                 return false
             else
-                showMyAbilitySplash(:TECTONICCONVERGENCE)
+                showMyAbilitySplash(:PRIMORDIALSEAL)
                 @battle.pbDisplay(_INTL("{1} refuses to battle!", pbThis))
                 onMoveFailed(move)
                 hideMyAbilitySplash

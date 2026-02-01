@@ -55,7 +55,7 @@ class PokeBattle_Battler
         return false if hasAbility?(:EXOSPHERICDESCENT) && !@battle.isLastAboveHalfHealthInTeam?(@pokemonIndex, partyIndex, @battle.pbGetOwnerIndexFromBattlerIndex(@index))
         return false if hasAbility?(:SLUMBERINGSWORD) && !@battle.field.effectActive?(:SlumberingSwordReady)
         return false if hasAbility?(:SLUMBERINGSHIELD) && !@battle.field.effectActive?(:SlumberingShieldReady)
-        return false if hasAbility?(:TECTONICCONVERGENCE) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+        return false if hasAbility?(:PRIMORDIALSEAL) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
         return false if willStayAsleepAI?
         return true
     end

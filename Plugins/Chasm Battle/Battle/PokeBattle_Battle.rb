@@ -235,7 +235,7 @@ class PokeBattle_Battle
         ret.push("ExosphericDescent") if isLastAboveHalfHealthInTeam?(idxPokemon, side, idxTrainer)
         ret.push("SlumberingSword") if @field.effectActive?(:SlumberingSwordReady)
         ret.push("SlumberingShield") if @field.effectActive?(:SlumberingShieldReady)
-        ret.push("TectonicConvergence") if haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+        ret.push("PrimordialSeal") if haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
         return ret
     end
 

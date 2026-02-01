@@ -1646,6 +1646,10 @@ Name = Pressure Valve
 Description = Right before this Pokémon is attacked, the attacker's stat changes are reset.
 Flags = SetupCounterAI
 #-------------------------------
+[PRIMORDIALSEAL]
+Name = Primordial Seal
+Description = This Pokémon cannot enter the battle before Regidrago, Regice, Regirock, Registeel and Regieleki have entered it.
+#-------------------------------
 [PROTECTIVEINSTINCT]
 Name = Protective Instinct
 Description = While this Pokémon has an ally that isn't fully evolved, both Pokémon take 33% less move damage.
@@ -2136,7 +2140,7 @@ Flags = EclipseSynergy
 #-------------------------------
 [STAYOFEXECUTION]
 Name = Stay of Execution
-Description = Blade moves always crit. However, their damage is dealt at the end of each round.
+Description = Blade moves always crit. However, their damage is dealt at the end of the round.
 #-------------------------------
 [STEAMPOWER]
 Name = Steam Power
@@ -2297,10 +2301,6 @@ Flags = HailSynergy
 [TANGLINGVINES]
 Name = Tangling Vines
 Description = When hit, the attacker's Speed is reduced, and this Pokémon's next attack against them is boosted by 30%.
-#-------------------------------
-[TECTONICCONVERGENCE]
-Name = Tectonic Convergence
-Description = This Pokémon cannot enter the battle before Regidrago, Regice, Regirock, Registeel and Regieleki have entered it.
 #-------------------------------
 [TEMPORALDISTORTION]
 Name = Temporal Distortion

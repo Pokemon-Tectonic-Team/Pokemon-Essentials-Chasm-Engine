@@ -1483,7 +1483,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSHIELD,
   }
 )
 
-BattleHandlers::AbilityOnSwitchIn.add(:TECTONICCONVERGENCE,
+BattleHandlers::AbilityOnSwitchIn.add(:PRIMORDIALSEAL,
   proc { |ability, battler, battle, aiCheck|
     next -100 unless battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
     next 0 unless battler.form == 0

@@ -2324,7 +2324,7 @@ GameData::BattleEffect.register_effect(:Battler, {
         end
         if damageToApply > 0
             battle.pbShowAbilitySplash(battler, :DELAYEDREACTION)
-            battle.pbDisplay(_INTL("{1} realized it had been attacked!", battler.pbThis(true)))
+            battle.pbDisplay(_INTL("{1} realized it had been attacked!", battler.pbThis))
             oldHP = battler.hp
             battler.damageState.displayedDamage = damageToApply
             damageToApply = battler.hp if damageToApply > battler.hp
@@ -2332,6 +2332,30 @@ GameData::BattleEffect.register_effect(:Battler, {
             battle.scene.pbHitAndHPLossAnimation([[battler, oldHP, 1]], true)
             battler.cleanupPreMoveDamage(battler, oldHP)
             battle.pbHideAbilitySplash(battler)
+        end
+    end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :DelayedDamage,
+    :real_name => "Delayed Damage",
+    :type => :Array,
+    :eor_proc => proc do |battle, battler, value|
+        damageToApply = 0
+        value.each do |delayedReactionEntry|
+            delayedReactionEntry[0] -= 1
+            if delayedReactionEntry[0] == 0
+                damageToApply += delayedReactionEntry[1]
+            end
+        end
+        if damageToApply > 0
+            battle.pbDisplay(_INTL("{1} received the incoming damage!", battler.pbThis))
+            oldHP = battler.hp
+            battler.damageState.displayedDamage = damageToApply
+            damageToApply = battler.hp if damageToApply > battler.hp
+            battler.pbReduceHP(damageToApply, false, false, false)
+            battle.scene.pbHitAndHPLossAnimation([[battler, oldHP, 1]], true)
+            battler.cleanupPreMoveDamage(battler, oldHP)
         end
     end,
 })

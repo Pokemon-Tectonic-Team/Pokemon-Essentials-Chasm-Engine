@@ -66,7 +66,7 @@ class PokeBattle_Battler
         return true if hasAbility?(:EXOSPHERICDESCENT) && !@battle.isLastAboveHalfHealthInTeam?(@pokemonIndex, partyIndex, @battle.pbGetOwnerIndexFromBattlerIndex(@index))
         return true if hasAbility?(:SLUMBERINGSWORD) && !@battle.field.effectActive?(:SlumberingSwordReady)
         return true if hasAbility?(:SLUMBERINGSHIELD) && !@battle.field.effectActive?(:SlumberingShieldReady)
-        return true if hasAbility?(:TECTONICCONVERGENCE) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+        return true if hasAbility?(:PRIMORDIALSEAL) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
         return false
     end
 

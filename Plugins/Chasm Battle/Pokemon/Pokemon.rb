@@ -1,5 +1,5 @@
 MAX_HAPPINESS = 255
-ALL_ABLE_PARAMETERS = ["ExosphericDescent", "SlumberingShield", "SlumberingSword", "TectonicConvergence"]
+ALL_ABLE_PARAMETERS = ["ExosphericDescent", "SlumberingShield", "SlumberingSword", "PrimordialSeal"]
 
 #===============================================================================
 # Instances of this class are individual Pokémon.
@@ -290,7 +290,7 @@ class Pokemon
         return false if hasAbility?(:EXOSPHERICDESCENT) && !additionalParameters.include?("ExosphericDescent")
         return false if hasAbility?(:SLUMBERINGSHIELD) && !additionalParameters.include?("SlumberingShield")
         return false if hasAbility?(:SLUMBERINGSWORD) && !additionalParameters.include?("SlumberingSword")
-        return false if hasAbility?(:TECTONICCONVERGENCE) && !additionalParameters.include?("TectonicConvergence")
+        return false if hasAbility?(:PRIMORDIALSEAL) && !additionalParameters.include?("PrimordialSeal")
         return !egg? && @hp > 0 && !@afraid
     end
 

@@ -59,3 +59,12 @@ BattleHandlers::UserAbilityStartOfMove.add(:RAINBOWTRAIL,
     user.hideMyAbilitySplash
   }
 )
+
+BattleHandlers::UserAbilityStartOfMove.add(:STAYOFEXECUTION,
+  proc { |ability, user, targets, move, battle|
+    next unless move.bladeMove?
+    user.showMyAbilitySplash(ability)
+    battle.pbDisplay(_INTL("{1} foresees an imminent demise!", user.pbThis))
+    user.hideMyAbilitySplash
+  }
+)
