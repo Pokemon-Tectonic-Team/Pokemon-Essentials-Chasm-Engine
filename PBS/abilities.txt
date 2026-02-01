@@ -82,10 +82,6 @@ Description = Repeats another Pokémon's dance move immediately.
 Name = Dark Aura
 Description = Powers up each Pokémon's Dark-type moves by 33%.
 #-------------------------------
-[DAUNTLESSSHIELD]
-Name = Dauntless Shield
-Description = Raises Defense upon entry.
-#-------------------------------
 [DEFEATIST]
 Name = Defeatist
 Description = Halves move damage when HP becomes half or less.
@@ -247,10 +243,6 @@ Flags = FlinchImmunity
 [INTIMIDATE]
 Name = Intimidate
 Description = Upon entry, lowers the foe's Attack stat by two steps.
-#-------------------------------
-[INTREPIDSWORD]
-Name = Intrepid Sword
-Description = Raises Attack upon entry.
 #-------------------------------
 [IRONBARBS]
 Name = Iron Barbs
