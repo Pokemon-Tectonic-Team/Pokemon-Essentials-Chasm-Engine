@@ -28,7 +28,7 @@ Flags = Uncopyable
 #-------------------------------
 [PRIMEVALMEGALAUNCHER]
 Name = Primeval Mega Launcher
-Description = The target of a pulse attack takes 10% of the original attack's damage on the next turn.
+Description = Boosts the power of pulse moves by 50%. The target of a pulse attack takes 10% of the original attack's damage on the next turn.
 #-------------------------------
 [PRIMEVALREGENERATOR]
 Name = Primeval Regenerator
