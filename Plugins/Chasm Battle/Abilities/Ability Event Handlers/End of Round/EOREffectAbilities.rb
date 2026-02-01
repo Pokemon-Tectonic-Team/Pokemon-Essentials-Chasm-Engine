@@ -179,6 +179,29 @@ BattleHandlers::EOREffectAbility.add(:NOXIOUS,
   }
 )
 
+PERSONAL_DEMESNE_DAMAGE_FRACTION = 1.0/10.0
+
+BattleHandlers::EOREffectAbility.add(:PERSONALDEMESNE,
+  proc { |ability, battler, battle|
+    next unless battle.roomActive?
+    anyPresent = false
+    battler.eachOpposing do |b|
+      anyPresent = true
+      break
+    end
+    next unless anyPresent
+    battler.showMyAbilitySplash(ability)
+    battler.eachOpposing do |b|
+      if b.takesIndirectDamage?(true)
+        battle.pbDisplay(_INTL("{1} is hurt by the foreboding presence!", b.pbThis))
+        b.applyFractionalDamage(PERSONAL_DEMESNE_DAMAGE_FRACTION, false)
+      end
+    end
+    battler.hideMyAbilitySplash
+  }
+)
+
+
 BattleHandlers::EOREffectAbility.add(:FIREFESTIVAL,
   proc { |ability, battler, battle|
     battler.showMyAbilitySplash(ability)

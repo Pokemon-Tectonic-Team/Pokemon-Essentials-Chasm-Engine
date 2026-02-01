@@ -1091,6 +1091,13 @@ GameData::BattleEffect.register_effect(:Battler, {
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
+    :id => :Diffraction,
+    :real_name => "Diffraction",
+    :type => :Integer,
+    :resets_on_move_start => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
     :id => :PerishSong,
     :real_name => "Perish Song Turns",
     :type => :Integer,
@@ -2659,4 +2666,17 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :SwordHorn,
     :real_name => "Sword Horn First Hit",
     :info_displayed => false
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :SynapticUnlock,
+    :real_name => "Unlocked Synaptically",
+    :info_displayed => false,
+    :apply_proc => proc do |battle, battler, _value|
+        battler.eachLegalAbility do |legalAbility|
+            next if battler.ability_ids.include?(legalAbility)
+            next if GameData::Ability.get(legalAbility).is_immutable_ability?
+            battler.addAbility(legalAbility, true)
+        end
+    end,
 })

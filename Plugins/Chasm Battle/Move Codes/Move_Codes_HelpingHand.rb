@@ -59,3 +59,31 @@ class PokeBattle_Move_PowerUpAndIncreaseAccOfAllyMove < PokeBattle_HelpingMove
         score = super
     end
 end
+
+#===============================================================================
+# Target is cured of dizziness and gains its other legal ability if it can. (Synaptic Unlock)
+#===============================================================================
+class PokeBattle_Move_CureDizzyAndUnlockBothAbilities < PokeBattle_HelpingMove
+    def initialize(battle, move)
+        super
+        @helpingEffect = :SynapticUnlock
+    end
+
+    def pbFailsAgainstTarget?(_user, target, show_message)
+        if target.fainted?
+            @battle.pbDisplay(_INTL("But it failed, since the receiver of the help is gone!")) if show_message
+            return true
+        end
+        if target.effectActive?(@helpingEffect) && !target.dizzy?
+            @battle.pbDisplay(_INTL("But it failed, since {1}'s mind is already stimulated!", target.pbThis(true))) if show_message
+            return true
+        end
+        return false
+    end
+
+    def pbEffectAgainstTarget(user, target)
+        @battle.pbDisplay(_INTL("{1} unlocks the mind of {2}!", user.pbThis, target.pbThis(true)))
+        target.applyEffect(@helpingEffect)
+        target.pbCureStatus(true, :DIZZY) if target.dizzy?
+    end
+end

@@ -330,7 +330,7 @@ class PokeBattle_Move
         return true if user.effectActive?(:LuckyCheer)
         return true if pbCriticalOverride(user, target) > 0
         user.eachActiveAbility do |ability|
-            return true if BattleHandlers.triggerGuaranteedCriticalUserAbility(ability, user, target, @battle)
+            return true if BattleHandlers.triggerGuaranteedCriticalUserAbility(ability, user, target, @battle, self)
         end
         return false
     end

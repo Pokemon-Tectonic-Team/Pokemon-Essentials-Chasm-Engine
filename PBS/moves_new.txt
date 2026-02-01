@@ -233,6 +233,18 @@ Flags = CanProtect
 Description = The user draws power to attack by using a held Berry. The Berry used determines its type.
 Animation = NATURALGIFT
 #-------------------------------
+[FANDANGO]
+Name = Fandango
+Type = NORMAL
+Category = Status
+Accuracy = 100
+TotalPP = 5
+Target = User
+FunctionCode = RaiseUserAndAlliesSpe1Acc4
+Flags = CanSnatch
+Description = The user performs a spirited dance with its ally, raising Speed by 1 step and Accuracy by 4 steps for its ally and itself.
+Animation = TEETERDANCE
+#-------------------------------
 [FIREFOREFFECT]
 Name = Fire For Effect
 Type = NORMAL
@@ -6301,6 +6313,18 @@ FunctionCode = LowerTargetSpAtk5
 Flags = CanProtect,CanMagicCoat,Dance
 Description = The user dazzles the target with celestial visions that lowers its Sp. Atk stat by five steps.
 Animation = COSMICPOWER
+#-------------------------------
+[SYNAPTICUNLOCK]
+Name = Synaptic Unlock
+Type = PSYCHIC
+Category = Status
+Accuracy = 100
+TotalPP = 5
+Target = NearOther
+FunctionCode = CureDizzyAndUnlockBothAbilities
+Flags = CanProtect,CanMagicCoat
+Description = The user connects to the target's brainwaves to stabilize their mind, curing dizziness, and letting them use both their legal abilities.
+Animation = CALMMIND
 #-------------------------------
 [TOTALCONTROL]
 Name = Total Control

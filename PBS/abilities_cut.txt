@@ -537,6 +537,11 @@ Description = Prevents other Pokémon from lowering its Attack or Sp. Atk stat.
 Name = Iaijutsu
 Description = Doubles the power of blade moves on the first turn.
 #-------------------------------
+[ICEBODY]
+Name = Ice Body
+Description = Heals 1/8th of its max HP each turn in a hail.
+Flags = HailSynergy
+#-------------------------------
 [ICEFACE]
 Name = Ice Face
 Description = Prevents a physical attack. Restored if its hailing when it enters, or when hail begins.

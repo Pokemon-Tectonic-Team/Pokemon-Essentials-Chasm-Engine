@@ -453,6 +453,10 @@ Flags = SandstormSynergy
 Name = Deterrent
 Description = Enemies which swap in take damage equal to 1/8th their HP.
 #-------------------------------
+[DIFFRACTION]
+Name = Diffraction
+Description = Light moves hit a second time for 33% damage if an active protective screen is present on this Pokémon's side.
+#-------------------------------
 [DIRECTCURRENT]
 Name = Direct Current
 Description = At the end of each turn, its Sp. Atk is lowered. Then, you choose to raise its Speed or heal it for 1/5th HP.
@@ -1389,6 +1393,11 @@ Name = Moon Prism Power
 Description = When the Full Moon rises, heals for 50% of its total HP. This can overheal.
 Flags = MoonglowSynergy
 #-------------------------------
+[MOUNTINGCHILL]
+Name = Mounting Chill
+Description = Heals 1/8th of its max HP each turn in a hail.
+Flags = HailSynergy
+#-------------------------------
 [MULTIHEADED]
 Name = Multiheaded
 Description = While this Pokémon is below half health, takes 33% less damage from attacks.
@@ -1541,6 +1550,10 @@ Description = This Pokémon's hits deal half damage unless they are critical.
 [PERFECTLUCK]
 Name = Perfect Luck
 Description = Maximizes the frequency of multi-hit moves. Always deals critical hits.
+#-------------------------------
+[PERSONALDEMESNE]
+Name = Personal Demesne
+Description = At the end of each turn, all enemy Pokémon lose 1/10th HP if a room is active on the field.
 #-------------------------------
 [PESTILENT]
 Name = Pestilent
@@ -2120,6 +2133,10 @@ Description = Sets a Light Screen for four turns upon entry.
 Name = Stars Align
 Description = During eclipse, its moves can't miss and always activate their random effects.
 Flags = EclipseSynergy
+#-------------------------------
+[STAYOFEXECUTION]
+Name = Stay of Execution
+Description = Blade moves always crit. However, their damage is dealt at the end of each round.
 #-------------------------------
 [STEAMPOWER]
 Name = Steam Power

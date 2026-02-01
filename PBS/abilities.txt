@@ -221,11 +221,6 @@ Name = Hydration
 Description = Heals non-volatile status conditions each turn if in rainstorm.
 Flags = RainstormSynergy
 #-------------------------------
-[ICEBODY]
-Name = Ice Body
-Description = Heals 1/8th of its max HP each turn in a hail.
-Flags = HailSynergy
-#-------------------------------
 [ICESCALES]
 Name = Ice Scales
 Description = Doubles this Pokémon's Sp. Def.

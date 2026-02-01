@@ -52,7 +52,9 @@ module BattleHandlers
     PriorityBracketUseAbility           = AbilityHandlerHash.new   # None!
     PriorityBracketUseItem              = ItemHandlerHash.new
     # Targeting style changes
-    MoveMakeHitAllNearFoesAbility    = AbilityHandlerHash.new
+    MoveMakeHitAllNearFoesAbility       = AbilityHandlerHash.new
+    # Foretold timing changes
+    MoveMakeForetoldAbility             = AbilityHandlerHash.new
     # Move usage failures
     AbilityOnFlinch                     = AbilityHandlerHash.new # Steadfast
     MoveBlockingAbility                 = AbilityHandlerHash.new
@@ -319,6 +321,13 @@ module BattleHandlers
         ret = MoveMakeHitAllNearFoesAbility.trigger(ability, user, move, type, battle)
         return ret || false
     end
+    
+    #=============================================================================
+
+    def self.triggerMoveMakeForetoldAbility(ability, user, move, battle)
+        ret = MoveMakeForetoldAbility.trigger(ability, user, move, battle)
+        return !ret.nil? ? ret : 0
+    end
 
     #=============================================================================
 
@@ -473,8 +482,8 @@ module BattleHandlers
         return !ret.nil? ? ret : c
     end
 
-    def self.triggerGuaranteedCriticalUserAbility(ability, user, target, battle)
-        ret = GuaranteedCriticalUserAbility.trigger(ability, user, target, battle)
+    def self.triggerGuaranteedCriticalUserAbility(ability, user, target, battle, move)
+        ret = GuaranteedCriticalUserAbility.trigger(ability, user, target, battle, move)
         return !ret.nil? ? ret : false
     end
 
