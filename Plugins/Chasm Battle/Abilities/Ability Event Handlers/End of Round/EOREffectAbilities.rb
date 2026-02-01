@@ -279,3 +279,12 @@ BattleHandlers::EOREffectAbility.add(:PILEON,
     end
   }
 )
+
+BattleHandlers::EOREffectAbility.add(:INSCRUTABLEORDERS,
+  proc { |ability, battler, battle|
+    next if battler.effectActive?(:Torment)
+    battle.pbShowAbilitySplash(battler, ability)
+    battler.applyEffect(:Torment)
+    battle.pbHideAbilitySplash(battler)
+  }
+)
