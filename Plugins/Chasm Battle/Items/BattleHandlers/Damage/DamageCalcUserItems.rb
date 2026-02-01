@@ -320,6 +320,13 @@ BattleHandlers::DamageCalcUserItem.add(:LUMBERAXE,
   }
 )
 
+BattleHandlers::DamageCalcUserItem.add(:RUSTEDSWORD,
+  proc { |item, user, target, move, mults, _baseDmg, type, aiCheck|
+    mults[:final_damage_multiplier] *= 1.1
+    user.aiLearnsItem(item) unless aiCheck
+  }
+)
+
 BattleHandlers::DamageCalcUserItem.add(:LIFEORB,
   proc { |item, user, _target, move, mults, _baseDmg, _type, aiCheck|
     unless move.is_a?(PokeBattle_SelfHit)

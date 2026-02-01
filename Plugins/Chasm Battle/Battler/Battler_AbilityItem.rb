@@ -297,6 +297,16 @@ class PokeBattle_Battler
         items.delete_at(itemIndex)
         applyEffect(:ItemLost) if items.length == 0
         refreshDataBox
+
+        if item == :RUSTEDSWORD && !@battle.field.effectActive?(:SlumberingSwordReady) && @battle.anyMonSlumberingSword?
+            @battle.field.applyEffect(:RustedSwordDropped)
+            @battle.field.applyEffect(:SlumberingSwordReady)
+        end
+        
+        if item == :RUSTEDSHIELD && !@battle.field.effectActive?(:SlumberingShieldReady) && @battle.anyMonSlumberingShield?
+            @battle.field.applyEffect(:RustedShieldDropped)
+            @battle.field.applyEffect(:SlumberingShieldReady)
+        end
         
         @battle.updateTribeCounts
     end

@@ -2024,6 +2024,16 @@ Description = Its attacks deal 50% more move damage against sleeping targets.
 Name = Slumbering Drake
 Description = Falls asleep upon entry, but raises all of its stats by two steps.
 #-------------------------------
+[SLUMBERINGSHIELD]
+Name = Slumbering Shield
+Description = Cannot enter battle until a Rusted Shield is dropped on the field or after ten turns. Upon entry, transforms into Crowned form.
+Flags = Immutable
+#-------------------------------
+[SLUMBERINGSWORD]
+Name = Slumbering Sword
+Description = Cannot enter battle until a Rusted Sword is dropped on the field or after ten turns. Upon entry, transforms into Crowned form.
+Flags = Immutable
+#-------------------------------
 [SNOOZEFEST]
 Name = Snoozefest
 Description = Whenever this Pokémon falls asleep, each other battler becomes drowsy.

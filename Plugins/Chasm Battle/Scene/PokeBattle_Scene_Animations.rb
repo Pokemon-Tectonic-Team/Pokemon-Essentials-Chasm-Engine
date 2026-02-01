@@ -209,6 +209,32 @@ class PokeBattle_Scene
       end
       abilitySplashAnim.dispose
     end
+
+    def pbShowPokemonAbilitySplash(pkmn, sideIndex, ability)
+      pbHideAbilitySplash(battler) if @sprites["abilityBar_#{sideIndex}"].visible
+      splashBar = @sprites["abilityBar_#{sideIndex}"]
+      splashBar.speciesIcon.setBitmap(GameData::Species.icon_filename_from_pokemon(pkmn))
+      splashBar.ability = ability
+      abilitySplashAnim = AbilitySplashAppearAnimation.new(@sprites,@viewport,sideIndex)
+      loop do
+        abilitySplashAnim.update
+        pbUpdate
+        break if abilitySplashAnim.animDone?
+      end
+      abilitySplashAnim.dispose
+    end
+
+    def pbHidePokemonAbilitySplash(sideIndex)
+      return if !PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+      return if !@sprites["abilityBar_#{sideIndex}"].visible
+      abilitySplashAnim = AbilitySplashDisappearAnimation.new(@sprites,@viewport,sideIndex)
+      loop do
+        abilitySplashAnim.update
+        pbUpdate
+        break if abilitySplashAnim.animDone?
+      end
+      abilitySplashAnim.dispose
+    end
   
     def pbReplaceAbilitySplash(battler)
       return if !PokeBattle_SceneConstants::USE_ABILITY_SPLASH

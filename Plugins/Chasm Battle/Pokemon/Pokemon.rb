@@ -1,5 +1,5 @@
 MAX_HAPPINESS = 255
-ALL_ABLE_PARAMETERS = ["ExosphericDescent"]
+ALL_ABLE_PARAMETERS = ["ExosphericDescent", "SlumberingShield", "SlumberingSword"]
 
 #===============================================================================
 # Instances of this class are individual Pokémon.
@@ -288,6 +288,8 @@ class Pokemon
     def able?(ignorePacifist = false, additionalParameters = [])
         return false if hasAbility?(:PACIFIST) && !ignorePacifist
         return false if hasAbility?(:EXOSPHERICDESCENT) && !additionalParameters.include?("ExosphericDescent")
+        return false if hasAbility?(:SLUMBERINGSHIELD) && !additionalParameters.include?("SlumberingShield")
+        return false if hasAbility?(:SLUMBERINGSWORD) && !additionalParameters.include?("SlumberingSword")
         return !egg? && @hp > 0 && !@afraid
     end
 

@@ -1458,3 +1458,27 @@ BattleHandlers::AbilityOnSwitchIn.add(:EXOSPHERICDESCENT,
     battle.pbHideAbilitySplash(battler)
   }
 )
+
+BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSWORD,
+  proc { |ability, battler, battle, aiCheck|
+    next -100 unless battle.field.effectActive?(:SlumberingSwordReady)
+    next 0 unless battler.form == 0
+    next 100 if aiCheck
+    battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Sword!", battler.pbThis)) if battle.field.effectActive?(:RustedSwordDropped)
+    battle.pbShowAbilitySplash(battler, ability)
+    battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSHIELD,
+  proc { |ability, battler, battle, aiCheck|
+    next -100 unless battle.field.effectActive?(:SlumberingShieldReady)
+    next 0 unless battler.form == 0
+    next 100 if aiCheck
+    battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Shield!", battler.pbThis)) if battle.field.effectActive?(:RustedShieldDropped)
+    battle.pbShowAbilitySplash(battler, ability)
+    battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)

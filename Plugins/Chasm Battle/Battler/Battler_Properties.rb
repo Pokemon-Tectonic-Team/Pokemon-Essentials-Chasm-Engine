@@ -64,6 +64,8 @@ class PokeBattle_Battler
         return true if afraid?
         return true if hasAbility?(:PACIFIST)
         return true if hasAbility?(:EXOSPHERICDESCENT) && !@battle.isLastAboveHalfHealthInTeam?(@pokemonIndex, partyIndex, @battle.pbGetOwnerIndexFromBattlerIndex(@index))
+        return true if hasAbility?(:SLUMBERINGSWORD) && !@battle.field.effectActive?(:SlumberingSwordReady)
+        return true if hasAbility?(:SLUMBERINGSHIELD) && !@battle.field.effectActive?(:SlumberingShieldReady)
         return false
     end
 
