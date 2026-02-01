@@ -213,7 +213,9 @@ class PokeBattle_Scene
     def pbShowPokemonAbilitySplash(pkmn, sideIndex, ability)
       pbHideAbilitySplash(battler) if @sprites["abilityBar_#{sideIndex}"].visible
       splashBar = @sprites["abilityBar_#{sideIndex}"]
-      splashBar.speciesIcon.setBitmap(GameData::Species.icon_filename_from_pokemon(pkmn))
+      dummyBattler = PokeBattle_Battler.new(@battle, sideIndex)
+      dummyBattler.pbInitDummyPokemon(pkmn, 0, true)
+      splashBar.battler = dummyBattler
       splashBar.ability = ability
       abilitySplashAnim = AbilitySplashAppearAnimation.new(@sprites,@viewport,sideIndex)
       loop do
