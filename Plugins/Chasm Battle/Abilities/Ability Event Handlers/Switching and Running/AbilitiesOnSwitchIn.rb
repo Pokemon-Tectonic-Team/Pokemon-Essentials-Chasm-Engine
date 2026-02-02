@@ -1450,7 +1450,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:INSCRUTABLEORDERS,
 
 BattleHandlers::AbilityOnSwitchIn.add(:EXOSPHERICDESCENT,
   proc { |ability, battler, battle, aiCheck|
-    next -100 unless battle.isLastAboveHalfHealthInTeam?(battler.pokemonIndex, battler.index % 2, battle.pbGetOwnerIndexFromBattlerIndex(battler.index))
     next 0 unless battler.form == 0
     next 100 if aiCheck
     battle.pbShowAbilitySplash(battler, ability)

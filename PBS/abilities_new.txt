@@ -455,7 +455,7 @@ Description = Enemies which swap in take damage equal to 1/8th their HP.
 #-------------------------------
 [DIFFRACTION]
 Name = Diffraction
-Description = Light moves hit a second time for 33% damage if an active protective screen is present on this Pokémon's side.
+Description = Light moves hit a second time for 33% damage if this Pokémon is protected by a screen.
 #-------------------------------
 [DIRECTCURRENT]
 Name = Direct Current
@@ -1112,7 +1112,7 @@ Flags = SunshineSynergy
 #-------------------------------
 [INSCRUTABLEORDERS]
 Name = Inscrutable Orders
-Description = This Pokémon deals 30% more move damage, but is inflicted with Torment upon entry.
+Description = This Pokémon deals 30% more move damage, but is continually tormented.
 #-------------------------------
 [INSECTCOLLECTOR]
 Name = Insect Collector
@@ -1208,7 +1208,7 @@ Description = The user's dance moves have increased priority.
 #-------------------------------
 [LEADSINGER]
 Name = Lead Singer
-Description = Boosts power of sound-based moves by 30%. After using a sound move, all enemy attacks target the user this turn.
+Description = Boosts power of sound-based moves by 30%. After using a sound move, all enemy attacks target this Pokémon this turn.
 #-------------------------------
 [LEAPFROMBELOW]
 Name = Leap from Below
@@ -1553,7 +1553,7 @@ Description = Maximizes the frequency of multi-hit moves. Always deals critical 
 #-------------------------------
 [PERSONALDEMESNE]
 Name = Personal Demesne
-Description = At the end of each turn, all enemy Pokémon lose 1/10th HP if a room is active on the field.
+Description = At the end of each turn, all enemy Pokémon lose 1/10th HP if there is an active room.
 #-------------------------------
 [PESTILENT]
 Name = Pestilent
@@ -1648,7 +1648,7 @@ Flags = SetupCounterAI
 #-------------------------------
 [PRIMORDIALSEAL]
 Name = Primordial Seal
-Description = This Pokémon cannot enter the battle before Regidrago, Regice, Regirock, Registeel and Regieleki have entered it.
+Description = This Pokémon cannot enter the battle before Regidrago, Regice, Regirock, Registeel and Regieleki have.
 #-------------------------------
 [PROTECTIVEINSTINCT]
 Name = Protective Instinct

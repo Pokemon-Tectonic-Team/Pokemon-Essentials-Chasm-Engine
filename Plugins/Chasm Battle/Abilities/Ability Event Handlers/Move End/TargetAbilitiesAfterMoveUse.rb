@@ -79,7 +79,7 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:PLASMAGLOBE,
   }
 )
 
-BattleHandlers::TargetAbilityAfterMoveUse.add(:PRMIVALHARDAS,
+BattleHandlers::TargetAbilityAfterMoveUse.add(:PRMIVALSWORDBREAKER,
   proc { |ability, target, user, move, _switched, battle|
       next unless move.damagingMove?
       next if target.damageState.unaffected

@@ -2692,16 +2692,3 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Sword Horn First Hit",
     :info_displayed => false
 })
-
-GameData::BattleEffect.register_effect(:Battler, {
-    :id => :SynapticUnlock,
-    :real_name => "Unlocked Synaptically",
-    :info_displayed => false,
-    :apply_proc => proc do |battle, battler, _value|
-        battler.eachLegalAbility do |legalAbility|
-            next if battler.ability_ids.include?(legalAbility)
-            next if GameData::Ability.get(legalAbility).is_immutable_ability?
-            battler.addAbility(legalAbility, true)
-        end
-    end,
-})

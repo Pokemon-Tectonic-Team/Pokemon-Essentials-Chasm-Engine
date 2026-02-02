@@ -281,60 +281,13 @@ class PokeBattle_Battler
                 hideMyAbilitySplash
                 return false
             end
-        end
-
-        # Exospheric Descent
-        if hasActiveAbility?(:EXOSPHERICDESCENT) && form == 0
+        elsif refusesToFight?
             if aiCheck
-                echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Exospheric Descent)")
+                echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Refuses to fight)")
                 return false
             else
-                showMyAbilitySplash(:EXOSPHERICDESCENT)
                 @battle.pbDisplay(_INTL("{1} refuses to battle!", pbThis))
                 onMoveFailed(move)
-                hideMyAbilitySplash
-                return false
-            end
-        end
-
-        # Slumbering Sword
-        if hasActiveAbility?(:SLUMBERINGSWORD) && form == 0
-            if aiCheck
-                echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Slumbering Sword)")
-                return false
-            else
-                showMyAbilitySplash(:SLUMBERINGSWORD)
-                @battle.pbDisplay(_INTL("{1} refuses to battle!", pbThis))
-                onMoveFailed(move)
-                hideMyAbilitySplash
-                return false
-            end
-        end
-
-        # Slumbering Shield
-        if hasActiveAbility?(:SLUMBERINGSHIELD) && form == 0
-            if aiCheck
-                echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Slumbering Shield)")
-                return false
-            else
-                showMyAbilitySplash(:SLUMBERINGSHIELD)
-                @battle.pbDisplay(_INTL("{1} refuses to battle!", pbThis))
-                onMoveFailed(move)
-                hideMyAbilitySplash
-                return false
-            end
-        end
-
-        # Primordial Seal
-        if hasActiveAbility?(:PRIMORDIALSEAL) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
-            if aiCheck
-                echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Primordial Seal)")
-                return false
-            else
-                showMyAbilitySplash(:PRIMORDIALSEAL)
-                @battle.pbDisplay(_INTL("{1} refuses to battle!", pbThis))
-                onMoveFailed(move)
-                hideMyAbilitySplash
                 return false
             end
         end

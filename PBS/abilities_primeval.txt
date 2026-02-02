@@ -6,20 +6,20 @@ Description = Lays a hazard of levitating stones around the opponent when its HP
 #-------------------------------
 [PRIMEVALBREAKTHROUGH]
 Name = Primeval Break Through
-Description = This Pokémon's moves deal 20% more damage, ignore immunities due to typing and deal half damage to opponents that protect instead of being blocked.
+Description = This Pokémon's moves deal 20% more damage, ignore immunities due to typing and deal half damage to protected targets.
 #-------------------------------
 [PRIMEVALDISGUISE]
 Name = Primeval Disguise
-Description = The Pokémon starts as a very convincing Pikachu!
+Description = This Pokémon starts as a very convincing Pikachu!
 Flags = Uncopyable,Immutable
 #-------------------------------
 [PRIMEVALFLOURISHING]
 Name = Primeval Flourishing
-Description = Everytime the Pokémon grows, it raises all of its stats by 1 step. If it is damaged 3 times in one turn, reverts back to the smallest form and loses stats.
+Description = At the end of each turn, grows one size larger and all of its stats are raised. If damaged three times in a turn, reverts back.
 #-------------------------------
-[PRIMEVALHARDAS]
-Name = Primeval Hard As
-Description = If the Pokémon takes over 120 damage from an attack, the attacker becomes fractured.
+[PRIMEVALSWORDBREAKER]
+Name = Primeval Sword-Breaker
+Description = If this Pokémon takes over 120 damage from an attack, the attacker becomes fractured.
 #-------------------------------
 [PRIMEVALIMPOSTER]
 Name = Primeval Imposter
@@ -28,7 +28,7 @@ Flags = Uncopyable
 #-------------------------------
 [PRIMEVALMEGALAUNCHER]
 Name = Primeval Mega Launcher
-Description = Boosts the power of pulse moves by 50%. The target of a pulse attack takes 10% of the original attack's damage on the next turn.
+Description = Pulse moves deal 50% more damage, and deal 10% of their damage again on the next turn.
 #-------------------------------
 [PRIMEVALREGENERATOR]
 Name = Primeval Regenerator

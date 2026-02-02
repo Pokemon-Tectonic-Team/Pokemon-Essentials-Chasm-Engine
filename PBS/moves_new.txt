@@ -242,7 +242,7 @@ TotalPP = 5
 Target = User
 FunctionCode = RaiseUserAndAlliesSpe1Acc4
 Flags = CanSnatch
-Description = The user performs a spirited dance, raising Speed by 1 step and Accuracy by 4 steps for its allies and itself.
+Description = The user performs a spirited dance for its allies and itself, raising their Speed and raising their Accuracy by four steps.
 Animation = TEETERDANCE
 #-------------------------------
 [FIREFOREFFECT]
@@ -6323,7 +6323,7 @@ TotalPP = 5
 Target = NearOther
 FunctionCode = CureDizzyAndUnlockBothAbilities
 Flags = CanProtect,CanMagicCoat
-Description = The user connects to the target's brainwaves to stabilize its mind, curing its dizziness, and letting it use the legal ability it does not currently have.
+Description = The user connects to the target's brainwaves to stabilize its mind, curing its dizziness, and granting it the legal ability it does not currently have.
 Animation = CALMMIND
 #-------------------------------
 [TOTALCONTROL]
