@@ -220,6 +220,7 @@ Flags = HazardImmunity
 [BREAKTHROUGH]
 Name = Break Through
 Description = This Pokémon's moves deal 20% more damage and ignore immunities due to typing.
+Flags = BypassTypeImmunity
 #-------------------------------
 [BRILLIANTFLURRY]
 Name = Brilliant Flurry
@@ -594,7 +595,7 @@ Description = Takes half damage from Psychic- and Ghost-type attacks.
 [EXOSPHERICDESCENT]
 Name = Exospheric Descent
 Description = Cannot enter battle unless all party members are below half HP. Upon entry, transforms into Meteoric Form.
-Flags = Immutable
+Flags = Immutable,UnableByDefault
 #-------------------------------
 [EXOTHERMENGINE]
 Name = Exotherm Engine
@@ -1649,6 +1650,7 @@ Flags = SetupCounterAI
 [PRIMORDIALSEAL]
 Name = Primordial Seal
 Description = This Pokémon cannot enter the battle before Regidrago, Regice, Regirock, Registeel and Regieleki have.
+Flags = UnableByDefault
 #-------------------------------
 [PROTECTIVEINSTINCT]
 Name = Protective Instinct
@@ -2049,12 +2051,12 @@ Description = Falls asleep upon entry, but raises all of its stats by two steps.
 [SLUMBERINGSHIELD]
 Name = Slumbering Shield
 Description = Cannot enter battle until a Rusted Shield is dropped on the field or after ten turns. Upon entry, transforms into Crowned form.
-Flags = Immutable
+Flags = Immutable,UnableByDefault
 #-------------------------------
 [SLUMBERINGSWORD]
 Name = Slumbering Sword
 Description = Cannot enter battle until a Rusted Sword is dropped on the field or after ten turns. Upon entry, transforms into Crowned form.
-Flags = Immutable
+Flags = Immutable,UnableByDefault
 #-------------------------------
 [SNOOZEFEST]
 Name = Snoozefest
@@ -2422,7 +2424,7 @@ Description = Before using a status move against a single foe, lowers their Defe
 [UNBOUND]
 Name = Unbound
 Description = Moves ignore Abilities that would affect its moves or activate after hitting the target, and immunities due to typing.
-Flags = MoldBreaking
+Flags = MoldBreaking,BypassTypeImmunity
 #-------------------------------
 [UNBREAKABLE]
 Name = Unbreakable

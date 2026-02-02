@@ -232,10 +232,10 @@ class PokeBattle_Battle
 
     def getAbleParameters(idxPokemon, side, idxTrainer)
         ret = []
-        ret.push("ExosphericDescent") if isLastAboveHalfHealthInTeam?(idxPokemon, side, idxTrainer)
-        ret.push("SlumberingSword") if @field.effectActive?(:SlumberingSwordReady)
-        ret.push("SlumberingShield") if @field.effectActive?(:SlumberingShieldReady)
-        ret.push("PrimordialSeal") if haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+        ret.push(:EXOSPHERICDESCENT) if isLastAboveHalfHealthInTeam?(idxPokemon, side, idxTrainer)
+        ret.push(:SLUMBERINGSWORD) if @field.effectActive?(:SlumberingSwordReady)
+        ret.push(:SLUMBERINGSHIELD) if @field.effectActive?(:SlumberingShieldReady)
+        ret.push(:PRIMORDIALSEAL) if haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
         return ret
     end
 

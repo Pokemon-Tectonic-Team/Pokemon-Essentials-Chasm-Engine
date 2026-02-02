@@ -1,5 +1,3 @@
-FORBIDDEN_LAST_ABILITIES = [:EXOSPHERICDESCENT, :SLUMBERINGSWORD, :SLUMBERINGSHIELD, :PRIMORDIALSEAL]
-
 ItemHandlers::UseOnPokemon.add(:ABILITYCAPSULE,proc { |item,pkmn,scene|
     unless teamEditingAllowed?
         showNoTeamEditingMessage
@@ -22,7 +20,7 @@ ItemHandlers::UseOnPokemon.add(:ABILITYCAPSULE,proc { |item,pkmn,scene|
       pbSceneDefaultDisplay(_INTL("You may not make your last able Pokémon a pacifist."),scene)
       next false
     end
-    if FORBIDDEN_LAST_ABILITIES.include?(newabil.id) && $Trainer.able_pokemon_count <= 1
+    if GameData::Ability.getByFlag("UnableByDefault").include?(newabil.id) && $Trainer.able_pokemon_count <= 1
       pbSceneDefaultDisplay(_INTL("You may not make your last able Pokémon have this ability."),scene)
       next false
     end

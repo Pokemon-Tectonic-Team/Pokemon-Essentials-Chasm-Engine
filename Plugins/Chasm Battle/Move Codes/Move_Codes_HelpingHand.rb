@@ -64,16 +64,16 @@ end
 # Target is cured of dizziness and gains its other legal ability if it can. (Synaptic Unlock)
 #===============================================================================
 class PokeBattle_Move_CureDizzyAndUnlockBothAbilities < PokeBattle_HelpingMove
-    def pbFailsAgainstTarget?(user, target, show_message)
+    def pbFailsAgainstTarget?(_user, target, show_message)
         if target.fainted?
             @battle.pbDisplay(_INTL("But it failed, since the receiver of the help is gone!")) if show_message
             return true
         end
-        mindUnlocked? = true
-        user.eachLegalAbility do |legalAbility|
-            next if user.ability_ids.include?(legalAbility)
+        mindUnlocked = true
+        target.eachLegalAbility do |legalAbility|
+            next if target.ability_ids.include?(legalAbility)
             next if GameData::Ability.get(legalAbility).is_immutable_ability?
-            next if user.hasAbility?(legalAbility)
+            next if target.hasAbility?(legalAbility)
             mindUnlocked = false
             break
         end
@@ -87,10 +87,10 @@ class PokeBattle_Move_CureDizzyAndUnlockBothAbilities < PokeBattle_HelpingMove
     def pbEffectAgainstTarget(user, target)
         @battle.pbDisplay(_INTL("{1} unlocks the mind of {2}!", user.pbThis, target.pbThis(true)))
         target.pbCureStatus(true, :DIZZY) if target.dizzy?
-        user.eachLegalAbility do |legalAbility|
-            next if user.ability_ids.include?(legalAbility)
+        target.eachLegalAbility do |legalAbility|
+            next if target.ability_ids.include?(legalAbility)
             next if GameData::Ability.get(legalAbility).is_immutable_ability?
-            user.addAbility(legalAbility, true)
+            target.addAbility(legalAbility, true)
         end
     end
 end
