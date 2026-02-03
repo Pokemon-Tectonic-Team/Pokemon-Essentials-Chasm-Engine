@@ -1,5 +1,4 @@
 MAX_HAPPINESS = 255
-ALL_ABLE_PARAMETERS = GameData::Ability.getByFlag("UnableByDefault")
 
 #===============================================================================
 # Instances of this class are individual Pokémon.

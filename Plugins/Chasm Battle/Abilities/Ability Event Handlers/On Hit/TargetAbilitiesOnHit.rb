@@ -776,7 +776,7 @@ BattleHandlers::TargetAbilityOnHit.add(:MENDINGFEATHERCHARM,
             party.each_with_index do |partyMember, i|
                 previousHealthValues.push(partyMember.hp)
 			    previousStatusIndices.push(partyMember.getStatusImageIndex)
-                next unless partyMember.able?(false, ALL_ABLE_PARAMETERS)
+                next unless partyMember.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
                 battler = battle.pbFindBattler(i, target)
                 if battler
                     battler.applyFractionalHealing(MENDING_FEATHER_CHARM_HEALING_FRACTION, anim: false, anyAnim: false, showMessage: false)
