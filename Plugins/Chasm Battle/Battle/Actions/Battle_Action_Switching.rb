@@ -24,20 +24,17 @@ class PokeBattle_Battle
             end
             return false
         end
-        unless party[idxParty].able?(false, getAbleParameters(idxParty, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler)))
+        unless party[idxParty].able?(false, getAbleParametersByBattlerIndex(idxParty, idxBattler))
             if partyScene
                 if partyMember.afraid?
                     partyScene.pbDisplay(_INTL("{1} is too afraid to battle!", partyMember.name))
-                elsif partyMember.hasAbility?(:PACIFIST)
-                    pbMessage(_INTL("{1} refuses to join the battle. It's a pacifist!", partyMember.name))
-                elsif partyMember.hasAbility?(:EXOSPHERICDESCENT)
-                    pbMessage(_INTL("{1} refuses to join the battle, as it deems its presence not necessary!", partyMember.name))
-                elsif partyMember.hasAbility?(:SLUMBERINGSHIELD) || partyMember.hasAbility?(:SLUMBERINGSWORD)
-                    pbMessage(_INTL("{1} is in a deep slumber, and cannot join the battle!", partyMember.name))
-                elsif partyMember.hasAbility?(:PRIMORDIALSEAL)
-                    pbMessage(_INTL("{1} refuses join the battle! It waits for its kin!", partyMember.name))
                 else
-                    partyScene.pbDisplay(_INTL("{1} has no energy left to battle!", partyMember.name))
+                    pkmnRefusesToFight = BattleHandlers.triggerForbidsUserSwitchInAbility(
+                        partyMember.ability, self, partyMember, idxBattler % 2, @battle.pbGetOwnerIndexFromBattlerIndex(idxBattler), idxParty
+                    )
+                    unless pkmnRefusesToFight
+                        partyScene.pbDisplay(_INTL("{1} has no energy left to battle!", partyMember.name))
+                    end
                 end
             end
             return false

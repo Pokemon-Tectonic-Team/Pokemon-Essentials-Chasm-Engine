@@ -132,7 +132,7 @@ class PokeBattle_Battle
     def pbAbleCount(idxBattler = 0)
         party = pbParty(idxBattler)
         count = 0
-        party.each_with_index { |pkmn, i| count += 1 if pkmn && pkmn.able?(false, getAbleParameters(i, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler))) }
+        party.each_with_index { |pkmn, i| count += 1 if pkmn && pkmn.able?(false, getAbleParametersByBattlerIndex(i, idxBattler)) }
         return count
     end
 
@@ -142,7 +142,7 @@ class PokeBattle_Battle
         eachSameSideBattler(idxBattler) { |b| inBattleIndices.push(b.pokemonIndex) }
         count = 0
         party.each_with_index do |pkmn, idxParty|
-            next if !pkmn || !pkmn.able?(false, getAbleParameters(idxParty, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler)))
+            next if !pkmn || !pkmn.able?(false, getAbleParametersByBattlerIndex(idxParty, idxBattler))
             next if inBattleIndices.include?(idxParty)
             count += 1
         end
@@ -239,6 +239,11 @@ class PokeBattle_Battle
         return ret
     end
 
+    # Runs the getAbleParameters for the pokemon at idxParty in the context of switching for the battler at idxBattler
+    def getAbleParametersByBattlerIndex(idxParty, idxBattler)
+        return getAbleParameters(idxParty, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler))
+    end
+
     # Used for Illusion.
     # NOTE: This cares about the temporary rearranged order of the team. That is,
     #       if you do some switching, the last Pokémon in the team could change
@@ -250,7 +255,7 @@ class PokeBattle_Battle
         ret = -1
         party.each_with_index do |pkmn, i|
             next if i < idxPartyStart || i >= idxPartyEnd # Check the team only
-            next if !pkmn || !pkmn.able?(false, getAbleParameters(i, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler))) # Can't copy a non-fainted Pokémon or egg
+            next if !pkmn || !pkmn.able?(false, getAbleParametersByBattlerIndex(i, idxBattler)) # Can't copy a non-fainted Pokémon or egg
             ret = i if ret < 0 || partyOrders[i] > partyOrders[ret]
         end
         return ret

@@ -167,6 +167,8 @@ module BattleHandlers
     # Moves missing abilities  
     UserAbilityOnMiss                 = AbilityHandlerHash.new
     TargetAbilityOnMiss               = AbilityHandlerHash.new
+    # Switch-in forbiddance abilities
+    ForbidsUserSwitchInAbility          = AbilityHandlerHash.new
 
     #=============================================================================
 
@@ -783,12 +785,20 @@ module BattleHandlers
     end
 
     #=============================================================================
-
+    
     def self.triggerUserAbilityOnMiss(ability, user, targets, move, battle)
         UserAbilityOnMiss.trigger(ability, user, targets, move, battle)
     end
-
+    
     def self.triggerTargetAbilityOnMiss(ability, user, target, move, battle)
         TargetAbilityOnMiss.trigger(ability, user, target, move, battle)
     end
+    
+    #=============================================================================
+
+    def self.triggerForbidsUserSwitchInAbility(ability, battle, partyMember, side, idxTrainer, idxParty)
+        ret = ForbidsUserSwitchInAbility.trigger(ability, battle, partyMember, side, idxTrainer, idxParty)
+        return !ret.nil? ? ret : false
+    end
+
 end
