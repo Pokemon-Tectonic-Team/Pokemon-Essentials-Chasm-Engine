@@ -54,12 +54,7 @@ class PokeBattle_Move
             end
         end
 
-        foretoldAmount = 0
-        user.eachActiveAbility do |ability|
-            foretoldAmount += BattleHandlers.triggerMoveMakeForetoldAbility(ability, user, self, @battle)
-        end
-
-        if foretoldAmount > 0
+        if user.hasAbility?(:STAYOFEXECUTION)
             delayedDamage = finalCalculatedDamage
             finalCalculatedDamage = 0
             if delayedDamage > 0 && !aiCheck

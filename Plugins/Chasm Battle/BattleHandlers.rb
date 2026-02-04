@@ -53,8 +53,6 @@ module BattleHandlers
     PriorityBracketUseItem              = ItemHandlerHash.new
     # Targeting style changes
     MoveMakeHitAllNearFoesAbility       = AbilityHandlerHash.new
-    # Foretold timing changes
-    MoveMakeForetoldAbility             = AbilityHandlerHash.new
     # Move usage failures
     AbilityOnFlinch                     = AbilityHandlerHash.new # Steadfast
     MoveBlockingAbility                 = AbilityHandlerHash.new
@@ -322,13 +320,6 @@ module BattleHandlers
     def self.triggerMoveMakeHitAllNearFoesAbility(ability, user, move, type, battle)
         ret = MoveMakeHitAllNearFoesAbility.trigger(ability, user, move, type, battle)
         return ret || false
-    end
-    
-    #=============================================================================
-
-    def self.triggerMoveMakeForetoldAbility(ability, user, move, battle)
-        ret = MoveMakeForetoldAbility.trigger(ability, user, move, battle)
-        return !ret.nil? ? ret : 0
     end
 
     #=============================================================================
