@@ -54,7 +54,7 @@ class PokeBattle_Move
             end
         end
 
-        if user.hasAbility?(:STAYOFEXECUTION)
+        if user.hasAbility?(:STAYOFEXECUTION) && bladeMove?
             delayedDamage = finalCalculatedDamage
             finalCalculatedDamage = 0
             if delayedDamage > 0 && !aiCheck
