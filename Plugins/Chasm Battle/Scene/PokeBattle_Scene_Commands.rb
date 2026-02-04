@@ -234,17 +234,10 @@ class PokeBattle_Scene
         commands[commands.length]              = _INTL("Cancel")
         command = scene.pbShowCommands(_INTL("Do what with {1}?",modParty[idxParty].name),commands)
         if cmdSwitch >= 0 && command==cmdSwitch        # Switch In
-          if modParty[idxParty].hasAbility?(:PACIFIST)
-            pbMessage(_INTL("{1} refuses to join the battle. It's a pacifist!", modParty[idxParty].name))
-          elsif modParty[idxParty].hasAbility?(:EXOSPHERICDESCENT) && !@battle.isLastAboveHalfHealthInTeam?(idxParty, idxBattler % 2, @battle.pbGetOwnerIndexFromBattlerIndex(idxBattler))
-            pbMessage(_INTL("{1} refuses to join the battle, as it deems its presence not required!", modParty[idxParty].name))
-          elsif modParty[idxParty].hasAbility?(:SLUMBERINGSWORD) && !@battle.field.effectActive?(:SlumberingSwordReady)
-            pbMessage(_INTL("{1} is in a deep slumber, and cannot join the battle!", modParty[idxParty].name))
-          elsif modParty[idxParty].hasAbility?(:SLUMBERINGSHIELD) && !@battle.field.effectActive?(:SlumberingShieldReady)
-            pbMessage(_INTL("{1} is in a deep slumber, and cannot join the battle!", modParty[idxParty].name))
-          elsif modParty[idxParty].hasAbility?(:PRIMORDIALSEAL) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
-            pbMessage(_INTL("{1} refuses join the battle! It waits for its kin!", modParty[idxParty].name))
-          else
+          cannotJoin = BattleHandlers.triggerForbidsUserSwitchInAbility(
+            modParty[idxParty].ability, @battle, modParty[idxParty], idxBattler % 2, @battle.pbGetOwnerIndexFromBattlerIndex(idxBattler), idxParty, true
+          )
+          if !cannotJoin
             idxPartyRet = -1
             partyPos.each_with_index do |pos,i|
               next if pos!=idxParty+partyStart

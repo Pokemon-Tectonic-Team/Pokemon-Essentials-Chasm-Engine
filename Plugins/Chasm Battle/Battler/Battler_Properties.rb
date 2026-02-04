@@ -62,11 +62,12 @@ class PokeBattle_Battler
 
     def refusesToFight?
         return true if afraid?
-        return true if hasAbility?(:PACIFIST)
-        return true if hasAbility?(:EXOSPHERICDESCENT) && !@battle.isLastAboveHalfHealthInTeam?(@pokemonIndex, partyIndex, @battle.pbGetOwnerIndexFromBattlerIndex(@index))
-        return true if hasAbility?(:SLUMBERINGSWORD) && !@battle.field.effectActive?(:SlumberingSwordReady)
-        return true if hasAbility?(:SLUMBERINGSHIELD) && !@battle.field.effectActive?(:SlumberingShieldReady)
-        return true if hasAbility?(:PRIMORDIALSEAL) && !@battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+        idxTrainer = @battle.pbGetOwnerIndexFromBattlerIndex(index)
+        eachActiveAbility(true, ignoreGas:true) do |ability|
+            return true if BattleHandlers.triggerForbidsUserSwitchInAbility(
+                ability, @battle, self.pokemon, pbOwnSide.index, idxTrainer, pokemonIndex, false
+            )
+        end
         return false
     end
 

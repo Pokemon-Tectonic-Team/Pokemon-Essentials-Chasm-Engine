@@ -29,8 +29,9 @@ class PokeBattle_Battle
                 if partyMember.afraid?
                     partyScene.pbDisplay(_INTL("{1} is too afraid to battle!", partyMember.name))
                 else
+                    echoln(partyMember.ability.id)
                     pkmnRefusesToFight = BattleHandlers.triggerForbidsUserSwitchInAbility(
-                        partyMember.ability, self, partyMember, idxBattler % 2, @battle.pbGetOwnerIndexFromBattlerIndex(idxBattler), idxParty
+                        partyMember.ability, self, partyMember, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler), idxParty, true
                     )
                     unless pkmnRefusesToFight
                         partyScene.pbDisplay(_INTL("{1} has no energy left to battle!", partyMember.name))

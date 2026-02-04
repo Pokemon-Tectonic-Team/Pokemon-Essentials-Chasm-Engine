@@ -787,8 +787,8 @@ module BattleHandlers
     
     #=============================================================================
 
-    def self.triggerForbidsUserSwitchInAbility(ability, battle, partyMember, side, idxTrainer, idxParty)
-        ret = ForbidsUserSwitchInAbility.trigger(ability, battle, partyMember, side, idxTrainer, idxParty)
+    def self.triggerForbidsUserSwitchInAbility(ability, battle, partyMember, side, idxTrainer, idxParty, show_messages)
+        ret = ForbidsUserSwitchInAbility.trigger(ability, battle, partyMember, side, idxTrainer, idxParty, show_messages)
         return !ret.nil? ? ret : false
     end
 
