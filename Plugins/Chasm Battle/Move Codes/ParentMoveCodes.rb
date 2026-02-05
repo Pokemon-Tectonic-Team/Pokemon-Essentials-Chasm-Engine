@@ -540,6 +540,11 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
         @chargingTurn = false # Assume damaging turn by default
         @damagingTurn = true
         # 0 at start of charging turn, move's ID at start of damaging turn
+        if user.hasActiveAbility?(:BIRDBRAINED) && user.effectActive?(:ExtraHidingTurn)
+            @powerHerb = user.hasActiveItem?(:POWERHERB)
+            @chargingTurn = true
+            @damagingTurn = @powerHerb
+        end
         unless user.effectActive?(:TwoTurnAttack)
             if skipChargingTurn?(user)
                 @powerHerb = false

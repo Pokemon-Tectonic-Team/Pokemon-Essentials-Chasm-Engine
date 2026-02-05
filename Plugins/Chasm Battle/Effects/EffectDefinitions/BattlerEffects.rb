@@ -2640,3 +2640,19 @@ def checkHerosJourney(battle, battler)
     battler.pbChangeForm(1, _INTL("{1} transformed!",battler.pbThis))
     battler.hideMyAbilitySplash
 end
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ExtraHidingTurn,
+    :real_name => "Extra Hiding Turn",
+    :type => :Integer,
+    :ticks_down_eor => true,
+    :expire_proc => proc do |battle, battler|
+        battler.disableEffect(:ExtraHidingTurn)
+    end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :Gulping,
+    :real_name => "Gulping",
+    :type => :Boolean,
+})

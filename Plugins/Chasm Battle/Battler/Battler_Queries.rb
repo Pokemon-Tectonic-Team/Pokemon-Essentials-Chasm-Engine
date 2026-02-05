@@ -703,7 +703,7 @@ class PokeBattle_Battler
     end
 
     def canGulpMissile?
-        return @species == :CRAMORANT && hasActiveAbility?(:GULPMISSILE) && @form.zero?
+        return @species == :CRAMORANT && @form.zero?
     end
 
     def bunkeringDown?(checkingForAI = false)

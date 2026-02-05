@@ -4472,6 +4472,17 @@ Flags = CanProtect
 Description = The user propels a geyser of water at the target. This lowers the user's Sp. Atk and Sp. Def by two steps.
 Animation = WATERSPOUT
 #-------------------------------
+[GULPINGDIVE]
+Name = Gulping Dive
+Type = WATER
+Category = Physical
+Power = 90
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = GulpingDive
+Description = The user dives down with its beak wide open. Transforms into Gulping or Gorging form.
+#-------------------------------
 [HARBORBREAKER]
 Name = Harbor Breaker
 Type = WATER

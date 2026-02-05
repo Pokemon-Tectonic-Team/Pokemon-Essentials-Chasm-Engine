@@ -18,3 +18,10 @@ BattleHandlers::UserAbilityOnSemiInvulnerable.add(:SHOWOFF,
       next score
   }
 )
+
+BattleHandlers::UserAbilityOnSemiInvulnerable.add(:BIRDBRAINED,
+  proc { |ability, user, targets, move, battle|
+    next if user.effectActive?(:ExtraHidingTurn)
+    user.applyEffect(:ExtraHidingTurn, 2)
+  }
+)

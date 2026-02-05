@@ -213,3 +213,19 @@ class PokeBattle_Move_EmpoweredWorkUp < PokeBattle_Move
         user.applyEffect(:ExtraTurns, 1)
     end
 end
+
+#===============================================================================
+# User transforms into Gulping or Gorging form (Gulp Missile)
+#===============================================================================
+
+class PokeBattle_Move_GulpingDive < PokeBattle_Move
+    def pbDisplayChargeMessage(user)
+        if user.canGulpMissile?
+            battle.pbDisplay(_INTL("{1} fills its beak!", user.pbThis))
+            user.form = 2
+            user.form = 1 if user.hp > (user.totalhp / 2)
+            @battle.scene.pbChangePokemon(user, user.pokemon)
+        end
+        user.applyEffect(:Gulping)
+    end
+end
