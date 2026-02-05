@@ -866,16 +866,11 @@ class Pokemon
     def removeInvalidItems
         return unless items
         return if legalItems?(items, ownedByPlayer?)
-        if ownedByPlayer?
-            pbMessage(_INTL("{1} is no longer allowed to hold its current items.", name))
-            if boss?
-                removeItems
-            else
-                pbTakeItemsFromPokemon(self)
-            end
-        else
-            echoln(_INTL("#{name} is not allowed to hold its current items."))
+        pbMessage(_INTL("{1} is no longer allowed to hold its current items.", name))
+        if boss?
             removeItems
+        else
+            pbTakeItemsFromPokemon(self)
         end
     end
 

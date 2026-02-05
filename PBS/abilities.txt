@@ -223,17 +223,17 @@ Description = Doubles this Pokémon's Sp. Def.
 #-------------------------------
 [ILLUSION]
 Name = Illusion
-Description = Comes out disguised as this Pokémon in back.
+Description = Comes out disguised as the Pokémon in the party's last spot.
 Flags = Immutable
 #-------------------------------
 [IMPOSTER]
 Name = Imposter
-Description = It transforms itself into this Pokémon it is facing.
+Description = It transforms itself into the Pokémon it is facing.
 Flags = Immutable
 #-------------------------------
 [INNARDSOUT]
 Name = Innards Out
-Description = Damages an attacker that lands the finishing hit.
+Description = When this Pokémon is knocked out by an attack, the attacker takes damage equal to this Pokémon's previous HP.
 #-------------------------------
 [INNERFOCUS]
 Name = Inner Focus

@@ -71,6 +71,10 @@ class PokeBattle_Move
     #=============================================================================
     # About the move
     #=============================================================================
+    def move_data
+      return GameData::Move.get(@id)
+    end
+
     def pbTarget(user)
         targetData = GameData::Target.get(@target)
         # Effects that make things spread

@@ -1079,7 +1079,7 @@ Description = When this Pokémon gains a non-volatile status condition, its Sp. 
 #-------------------------------
 [INCOGNITO]
 Name = Incognito
-Description = Comes out disguised as this Pokémon in back. While disguised, copies its ability.
+Description = Comes out disguised as the Pokémon in the party's last spot. While disguised, copies its ability.
 Flags = Immutable
 #-------------------------------
 [INDESTRUCTIBLE]
@@ -1255,7 +1255,7 @@ Description = Multi-hit moves can hit up to twice as many times.
 #-------------------------------
 [LONGRECEIVER]
 Name = Long Receiver
-Description = Copies the Ability of this Pokémon it switches in to replace.
+Description = Copies the Ability of the Pokémon it switches in to replace.
 #-------------------------------
 [LONGTERMVIEW]
 Name = Long-term View
@@ -1503,7 +1503,7 @@ Description = After knocking out any Pokémon, raises its Sp. Atk and Speed.
 #-------------------------------
 [OVERFLOWINGHEART]
 Name = Overflowing Heart
-Description = Copies the unmodified stats of this Pokémon it switches in to replace.
+Description = Copies the unmodified stats of the Pokémon it switches in to replace.
 #-------------------------------
 [OVERTHINKING]
 Name = Overthinking
@@ -1542,7 +1542,7 @@ Description = Immune to Flying-type moves and deals 50% more damage with them.
 #-------------------------------
 [PERENNIALPAYLOAD]
 Name = Perennial Payload
-Description = After fainting from exploding, revives after five turns.
+Description = After fainting from self-destructing, revives after five turns.
 #-------------------------------
 [PERFECTIONIST]
 Name = Perfectionist
@@ -1923,7 +1923,7 @@ Description = After attacking the same foe twice, they become fractured, and a t
 #-------------------------------
 [SEALINGBODY]
 Name = Sealing Body
-Description = Moves used on this Pokémon are disabled for two turns.
+Description = Moves used against this Pokémon are disabled for two turns.
 #-------------------------------
 [SEARINGWINGS]
 Name = Searing Wings
@@ -2103,7 +2103,7 @@ Description = This Pokémon and its allies' moves are twice as likely to be crit
 #-------------------------------
 [SPINESPLODE]
 Name = Spinesplode
-Description = Leaves two hazard layers of Spikes after it self-destructs.
+Description = Leaves two hazard layers of Spikes after self-destructing.
 #-------------------------------
 [SPINTENSITY]
 Name = Spintensity
@@ -2428,7 +2428,7 @@ Flags = MoldBreaking,BypassTypeImmunity
 #-------------------------------
 [UNBREAKABLE]
 Name = Unbreakable
-Description = Prevents half the self-damage from recoil and Self-Destruct/Explosion.
+Description = Prevents half the self-damage from recoil and self-destructing.
 #-------------------------------
 [UNCANNYLUCK]
 Name = Uncanny Luck

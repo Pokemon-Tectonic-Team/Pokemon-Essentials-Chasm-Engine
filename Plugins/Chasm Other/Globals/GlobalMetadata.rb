@@ -22,6 +22,7 @@ class PokemonGlobalMetadata
     attr_accessor :stored_search
     attr_accessor :dex_forms_shows_shinies
     attr_accessor :dex_tutor_list_sort_mode
+    attr_accessor :dex_area_shows_map
     # Day Care
     attr_accessor :daycare
     attr_accessor :daycareEgg
@@ -184,6 +185,7 @@ class PokemonGlobalMetadata
         # Masterdex
         @stored_search		  = nil
         @dex_forms_shows_shinies = false
+        @dex_area_shows_map = false
         @dex_tutor_list_sort_mode = 0
 
         @omnitutor_active     = false
@@ -217,6 +219,14 @@ class PokemonGlobalMetadata
 		end
 		return pokedexStars[species]
 	end
+
+    def setStarred(species)
+        pokedexStars[species] = true
+    end
+
+    def setUnStarred(species)
+        pokedexStars[species] = false
+    end
 
 	def toggleStarred(species)
 		if !pokedexStars.has_key?(species)

@@ -920,13 +920,51 @@ class PokemonPokedex_Scene
                         pbPlayDecisionSE
                         pbDexEntry(@sprites["pokedex"].index)
                     end
-                elsif Input.trigger?(Input::SPECIAL)
+                elsif Input.release?(Input::SPECIAL)
                     if $PokemonGlobal.toggleStarred(@sprites["pokedex"].species)
                         pbPlayDecisionSE
                     else
                         pbPlayCancelSE
                     end
                     @sprites["pokedex"].refresh
+                elsif Input.time?(Input::SPECIAL) > 200_000 # Hold for about a second...?
+                    starToggleCommands = []
+                    starToggleCommands.push(_INTL("Cancel"))
+                    starToggleCommands.push(_INTL("Star Them"))
+                    starToggleCommands.push(_INTL("Un-star them"))
+                    starToggleCommands.push(_INTL("Invert Stars"))
+                    starToggleCommandChosen = pbMessage(_INTL("Change the starring for all species on this list?"),starToggleCommands)
+                    if starToggleCommandChosen == 1
+                        pbMessage(_INTL("Starring every species on the current MasterDex list."))
+                        changeCount = 0
+                        @dexlist.each do |dexEntry|
+                            species = dexEntry[:species]
+                            next if $PokemonGlobal.speciesStarred?(species)
+                            $PokemonGlobal.setStarred(species)
+                            changeCount += 1
+                        end
+                        pbMessage(_INTL("{1} species became starred.", changeCount))
+                    elsif starToggleCommandChosen == 2
+                        pbMessage(_INTL("Un-Starring every species on the current MasterDex list."))
+                        changeCount = 0
+                        @dexlist.each do |dexEntry|
+                            species = dexEntry[:species]
+                            next unless $PokemonGlobal.speciesStarred?(species)
+                            $PokemonGlobal.setUnStarred(species)
+                            changeCount += 1
+                        end
+                        pbMessage(_INTL("{1} species became un-starred.", changeCount))
+                    elsif starToggleCommandChosen == 3
+                        pbMessage(_INTL("Toggling whether every species on the current MasterDex list is starred or not."))
+                        changeCount = 0
+                        @dexlist.each do |dexEntry|
+                            species = dexEntry[:species]
+                            $PokemonGlobal.toggleStarred(species)
+                            changeCount += 1
+                        end
+                        pbMessage(_INTL("{1} species were starred or unstarred", changeCount))
+                    end
+                    @sprites["pokedex"].refresh unless starToggleCommandChosen == 0
                 elsif Input.pressex?(0x52) # R, for Random
                     @sprites["pokedex"].index = rand(@dexlist.length)
                     @sprites["pokedex"].refresh

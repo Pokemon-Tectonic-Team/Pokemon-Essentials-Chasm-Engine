@@ -372,3 +372,12 @@ BattleHandlers::DamageCalcUserItem.add(:CRYSTALCALIBURN,
     end
   }
 )
+
+BattleHandlers::DamageCalcUserItem.add(:TECHNIQUEBOOSTER,
+  proc { |item, user, target, move, mults, _baseDmg, type, aiCheck|
+    if move.move_data.is_signature?
+      mults[:final_damage_multiplier] *= 1.4
+      user.aiLearnsItem(item) unless aiCheck
+    end
+  }
+)
