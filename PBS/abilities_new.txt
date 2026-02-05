@@ -1650,7 +1650,7 @@ Flags = SetupCounterAI
 [PRIMORDIALSEAL]
 Name = Primordial Seal
 Description = This Pokémon cannot enter the battle before Regidrago, Regice, Regirock, Registeel and Regieleki have.
-Flags = UnableByDefault
+Flags = Immutable,UnableByDefault
 #-------------------------------
 [PROTECTIVEINSTINCT]
 Name = Protective Instinct
