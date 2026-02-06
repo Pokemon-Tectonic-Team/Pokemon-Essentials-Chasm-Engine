@@ -452,6 +452,7 @@ class PokeBattle_Battler
             end
             # Record that Parental Bond applies, to weaken the second attack
             user.applyEffect(:ParentalBond, 3) if move.canParentalBond?(user, targets)
+            user.applyEffect(:Diffraction, 3) if move.canDiffract?(user, targets)
             # Process each hit in turn
             # Skip all hits if the move is being magic coated, magic bounced, or magic shielded
             realNumHits = 0
@@ -759,6 +760,7 @@ class PokeBattle_Battler
         numTargets = 0 # Number of targets that are affected by this hit
         # Count a hit for Parental Bond (if it applies)
         user.tickDownAndProc(:ParentalBond)
+        user.tickDownAndProc(:Diffraction)
         # Accuracy check (accuracy/evasion calc)
         if hitNum == 0 || move.successCheckPerHit?
             targets.each do |b|

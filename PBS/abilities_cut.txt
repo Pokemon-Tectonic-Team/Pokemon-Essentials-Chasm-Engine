@@ -179,6 +179,10 @@ Description = Boosts all of the Pokémon's move damage by 25% during eclipse.
 Name = Cautionary
 Description = Raises Def and Sp. Def by three steps each when its HP is lowered below half.
 #-------------------------------
+[CLAUSTROPHOBIA]
+Name = Claustrophobia
+Description = If there is an active Room, enemies which swap in take Psychic-type damage equal to 1/6th their HP.
+#-------------------------------
 [CLEAVING]
 Name = Cleaving
 Description = Ignores screens, Substitute, and Abilities that would affect its moves.
@@ -242,6 +246,10 @@ Description = Prevents the use of self-destructing moves.
 [DANGERSENSE]
 Name = Danger Sense
 Description = It avoids hazards and can't be knocked out with one hit.
+#-------------------------------
+[DAUNTLESSSHIELD]
+Name = Dauntless Shield
+Description = Raises Defense upon entry.
 #-------------------------------
 [DAWNBURST]
 Name = Dawnfall
@@ -533,6 +541,11 @@ Description = Prevents other Pokémon from lowering its Attack or Sp. Atk stat.
 Name = Iaijutsu
 Description = Doubles the power of blade moves on the first turn.
 #-------------------------------
+[ICEBODY]
+Name = Ice Body
+Description = Heals 1/8th of its max HP each turn in a hail.
+Flags = HailSynergy
+#-------------------------------
 [ICEFACE]
 Name = Ice Face
 Description = Prevents a physical attack. Restored if its hailing when it enters, or when hail begins.
@@ -563,6 +576,10 @@ Flags = SunshineSynergy
 [INSOMNIA]
 Name = Insomnia
 Description = Prevents the Pokémon from falling asleep.
+#-------------------------------
+[INTREPIDSWORD]
+Name = Intrepid Sword
+Description = Raises Attack upon entry.
 #-------------------------------
 [JASPERCHARGE]
 Name = Jasper Charge

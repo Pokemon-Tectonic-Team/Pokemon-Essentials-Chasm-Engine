@@ -90,8 +90,7 @@ class PokeBattle_Move
                 if targets.length == 1
                     @battle.pbDisplayBrief(_INTL("Its base power was adjusted to {1}!", bp))
                 else
-                    @battle.pbDisplayBrief(_INTL("Its base power was adjusted to {1} against {2}!", bp,
-target.pbThis(true)))
+                    @battle.pbDisplayBrief(_INTL("Its base power was adjusted to {1} against {2}!", bp, target.pbThis(true)))
                 end
             end
         end
@@ -144,6 +143,15 @@ target.pbThis(true)))
         return false
     end
 
+    def canDiffract?(user, targets, checkingForAI = false)
+        return false unless damagingMove?
+        return false if chargingTurnMove?
+        return false unless targets.length == 1
+        return false unless lightMove?
+        return true if user.shouldAbilityApply?(:DIFFRACTION,checkingForAI) && user.protectedByScreen?
+        return false
+    end
+
     def numberOfHits(user, targets, checkingForAI = false)
         calcedHits = calcNumHits(user, targets, checkingForAI)
 
@@ -171,6 +179,7 @@ target.pbThis(true)))
     # can be 1 for Beat Up, and can be 2 for any moves affected by Parental Bond.
     def pbNumHits(user, targets, checkingForAI = false)
         return 2 if canParentalBond?(user, targets, checkingForAI)
+        return 2 if canDiffract?(user, targets, checkingForAI)
         numHits = 1
         numHits += 1 if user.shouldAbilityApply?(:SPACEINTERLOPER, checkingForAI) && damagingMove?
         numHits += 1 if user.effectActive?(:VolleyStance) && specialMove?
@@ -189,7 +198,7 @@ target.pbThis(true)))
     def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
         return if @autoTesting
         return unless showAnimation
-        if user.effects[:ParentalBond] == 1
+        if user.effects[:ParentalBond] == 1 || user.effects[:Diffraction] == 1
             @battle.pbCommonAnimation("ParentalBond", user, targets)
         else
             @battle.pbAnimation(id, user, targets, hitNum)

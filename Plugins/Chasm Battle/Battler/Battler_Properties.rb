@@ -56,9 +56,20 @@ class PokeBattle_Battler
     end
 
     def fainted?
-        return @hp <= 0 || afraid? || hasAbility?(:PACIFIST)
+        return @hp <= 0 || refusesToFight?
     end
     alias isFainted? fainted?
+
+    def refusesToFight?
+        return true if afraid?
+        idxTrainer = @battle.pbGetOwnerIndexFromBattlerIndex(index)
+        eachActiveAbility(true, ignoreGas:true) do |ability|
+            return true if BattleHandlers.triggerForbidsUserSwitchInAbility(
+                ability, @battle, self.pokemon, pbOwnSide.index, idxTrainer, pokemonIndex, false
+            )
+        end
+        return false
+    end
 
     def afraid?
         return false unless @pokemon

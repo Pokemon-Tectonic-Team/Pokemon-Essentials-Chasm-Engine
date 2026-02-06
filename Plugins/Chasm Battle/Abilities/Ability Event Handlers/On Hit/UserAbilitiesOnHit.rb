@@ -352,7 +352,6 @@ BattleHandlers::UserAbilityOnHit.add(:LAUOHOLASSO,
 # Other Abilities
 #########################################
 
-
 BattleHandlers::UserAbilityOnHit.add(:COREPROVENANCE,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
     next unless move.physicalMove?

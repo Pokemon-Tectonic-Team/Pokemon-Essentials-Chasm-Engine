@@ -77,9 +77,25 @@ class PokeBattle_Battle
         end
     end
 
+    def pbShowPokemonAbilitySplash(pkmn, sideIndex, ability, delay = false)
+        aiLearnsPokemonAbility(pkmn, sideIndex, ability)
+        return unless showMessages?
+        @scene.pbShowPokemonAbilitySplash(pkmn, sideIndex, ability)
+        if delay
+            frames = Graphics.frame_rate # Default 1 second
+            frames /= 2 if fastTransitions?
+            frames.times { @scene.pbUpdate }
+        end
+    end
+
     def pbHideAbilitySplash(battler)
         return unless showMessages?
         @scene.pbHideAbilitySplash(battler)
+    end
+
+    def pbHidePokemonAbilitySplash(sideIndex)
+        return unless showMessages?
+        @scene.pbHidePokemonAbilitySplash(sideIndex)
     end
 
     def pbReplaceAbilitySplash(battler, ability, delay = false)

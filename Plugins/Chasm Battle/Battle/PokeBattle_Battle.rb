@@ -132,7 +132,7 @@ class PokeBattle_Battle
     def pbAbleCount(idxBattler = 0)
         party = pbParty(idxBattler)
         count = 0
-        party.each { |pkmn| count += 1 if pkmn && pkmn.able? }
+        party.each_with_index { |pkmn, i| count += 1 if pkmn && pkmn.able?(false, getAbleParametersByBattlerIndex(i, idxBattler)) }
         return count
     end
 
@@ -142,7 +142,7 @@ class PokeBattle_Battle
         eachSameSideBattler(idxBattler) { |b| inBattleIndices.push(b.pokemonIndex) }
         count = 0
         party.each_with_index do |pkmn, idxParty|
-            next if !pkmn || !pkmn.able?
+            next if !pkmn || !pkmn.able?(false, getAbleParametersByBattlerIndex(idxParty, idxBattler))
             next if inBattleIndices.include?(idxParty)
             count += 1
         end
@@ -166,7 +166,7 @@ class PokeBattle_Battle
                 idxTeam += 1
                 nextStart = (idxTeam < partyStarts.length - 1) ? partyStarts[idxTeam + 1] : party.length
             end
-            next if !pkmn || !pkmn.able?
+            next if !pkmn || !pkmn.able?(false, getAbleParameters(i, side, pbGetOwnerIndexFromBattlerIndex(side)))
             ret[idxTeam] = 0 unless ret[idxTeam]
             ret[idxTeam] += 1
         end
@@ -213,6 +213,37 @@ class PokeBattle_Battle
         party.each_with_index { |pkmn, i| yield pkmn, i if pkmn && i >= idxPartyStart && i < idxPartyEnd }
     end
 
+    def isLastMeetingConditionInTeam?(idxPokemon, side, idxTrainer)
+        final_index = -1
+        eachInTeam(side, idxTrainer) do |pkmn, i|
+            if (yield pkmn, i)
+                if final_index != -1 # If another mon was already registered as meeting the condition
+                    return false # More than 1 battler is meeting the condition
+                end
+                final_index = i
+            end
+        end
+        return (final_index == idxPokemon)
+    end
+
+    def isLastAboveHalfHealthInTeam?(idxPokemon, side, idxTrainer)
+        return isLastMeetingConditionInTeam?(idxPokemon, side, idxTrainer) { |pkmn, i| pkmn.hp > pkmn.totalhp / 2}
+    end
+
+    def getAbleParameters(idxPokemon, side, idxTrainer)
+        ret = []
+        ret.push(:EXOSPHERICDESCENT) if isLastAboveHalfHealthInTeam?(idxPokemon, side, idxTrainer)
+        ret.push(:SLUMBERINGSWORD) if @field.effectActive?(:SlumberingSwordReady)
+        ret.push(:SLUMBERINGSHIELD) if @field.effectActive?(:SlumberingShieldReady)
+        ret.push(:PRIMORDIALSEAL) if haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+        return ret
+    end
+
+    # Runs the getAbleParameters for the pokemon at idxParty in the context of switching for the battler at idxBattler
+    def getAbleParametersByBattlerIndex(idxParty, idxBattler)
+        return getAbleParameters(idxParty, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler))
+    end
+
     # Used for Illusion.
     # NOTE: This cares about the temporary rearranged order of the team. That is,
     #       if you do some switching, the last Pokémon in the team could change
@@ -224,7 +255,7 @@ class PokeBattle_Battle
         ret = -1
         party.each_with_index do |pkmn, i|
             next if i < idxPartyStart || i >= idxPartyEnd # Check the team only
-            next if !pkmn || !pkmn.able? # Can't copy a non-fainted Pokémon or egg
+            next if !pkmn || !pkmn.able?(false, getAbleParametersByBattlerIndex(i, idxBattler)) # Can't copy a non-fainted Pokémon or egg
             ret = i if ret < 0 || partyOrders[i] > partyOrders[ret]
         end
         return ret
@@ -475,5 +506,18 @@ class PokeBattle_Battle
             end
         end
         return moveUser
+    end
+
+    def haveSpeciesEnteredBattle?(species)
+        pokemonEntered = @field.effects[:PokemonEntered]
+        return false if pokemonEntered.nil?
+        unless species.is_a?(Array)
+            return pokemonEntered.include?(species)
+        end
+        species.each do |specy|
+            next if pokemonEntered.include?(specy)
+            return false
+        end
+        return true
     end
 end

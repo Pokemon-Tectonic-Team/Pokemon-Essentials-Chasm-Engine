@@ -1296,7 +1296,7 @@ class PokeBattle_PartyAttackMove < PokeBattle_Move
     def calculatePartyAttackerList(user)
         @partyAttackerList = []
         @battle.eachInTeamFromBattlerIndex(user.index) do |pkmn, i|
-            next if !pkmn.able? || pkmn.status != :NONE
+            next if !pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault")) || pkmn.status != :NONE
             @partyAttackerList.push(i)
         end
     end

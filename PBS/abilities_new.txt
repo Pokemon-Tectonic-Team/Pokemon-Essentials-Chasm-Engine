@@ -224,6 +224,7 @@ Flags = HazardImmunity
 [BREAKTHROUGH]
 Name = Break Through
 Description = This Pokémon's moves deal 20% more damage and ignore immunities due to typing.
+Flags = BypassTypeImmunity
 #-------------------------------
 [BRILLIANTFLURRY]
 Name = Brilliant Flurry
@@ -310,10 +311,6 @@ Description = Physical moves have a 30% chance to frostbite targets.
 Name = City Razer
 Description = After knocking out any Pokémon with Waterfall, transforms into its Rampage form. Ability becomes Juggernaut.
 Flags = Immutable
-#-------------------------------
-[CLAUSTROPHOBIA]
-Name = Claustrophobia
-Description = If there is an active Room, enemies which swap in take Psychic-type damage equal to 1/6th their HP.
 #-------------------------------
 [CLEANFREAK]
 Name = Clean Freak
@@ -461,6 +458,10 @@ Flags = SandstormSynergy
 Name = Deterrent
 Description = Enemies which swap in take damage equal to 1/8th their HP.
 #-------------------------------
+[DIFFRACTION]
+Name = Diffraction
+Description = Light moves hit a second time for 33% damage if this Pokémon is protected by a screen.
+#-------------------------------
 [DIRECTCURRENT]
 Name = Direct Current
 Description = At the end of each turn, its Sp. Atk is lowered. Then, you choose to raise its Speed or heal it for 1/5th HP.
@@ -594,6 +595,11 @@ Flags = SandstormSynergy
 [EXORCIST]
 Name = Exorcist
 Description = Takes half damage from Psychic- and Ghost-type attacks.
+#-------------------------------
+[EXOSPHERICDESCENT]
+Name = Exospheric Descent
+Description = Cannot enter battle unless all party members are below half HP. Upon entry, transforms into Meteoric Form.
+Flags = Immutable,UnableByDefault
 #-------------------------------
 [EXOTHERMENGINE]
 Name = Exotherm Engine
@@ -1077,7 +1083,7 @@ Description = When this Pokémon gains a non-volatile status condition, its Sp. 
 #-------------------------------
 [INCOGNITO]
 Name = Incognito
-Description = Comes out disguised as this Pokémon in back. While disguised, copies its ability.
+Description = Comes out disguised as the Pokémon in the party's last spot. While disguised, copies its ability.
 Flags = Immutable
 #-------------------------------
 [INDESTRUCTIBLE]
@@ -1108,6 +1114,10 @@ Description = Upon entry, blinds all foes.
 Name = Inner Heat
 Description = Summons sunshine for four turns when hit by an attack.
 Flags = SunshineSynergy
+#-------------------------------
+[INSCRUTABLEORDERS]
+Name = Inscrutable Orders
+Description = This Pokémon deals 30% more move damage, but is continually tormented.
 #-------------------------------
 [INSECTCOLLECTOR]
 Name = Insect Collector
@@ -1201,6 +1211,14 @@ Flags = Immutable
 Name = Lauoho Lasso
 Description = On the first turn, its special attacks trap the target and damage it for three turns.
 #-------------------------------
+[LEADDANCER]
+Name = Lead Dancer
+Description = The user's dance moves have increased priority.
+#-------------------------------
+[LEADSINGER]
+Name = Lead Singer
+Description = Boosts power of sound-based moves by 30%. After using a sound move, all enemy attacks target this Pokémon this turn.
+#-------------------------------
 [LEVIATHAN]
 Name = Leviathan
 Description = Protected from critical hits. Can't be burned or frostbitten.
@@ -1241,7 +1259,7 @@ Description = Multi-hit moves can hit up to twice as many times.
 #-------------------------------
 [LONGRECEIVER]
 Name = Long Receiver
-Description = Copies the Ability of this Pokémon it switches in to replace.
+Description = Copies the Ability of the Pokémon it switches in to replace.
 #-------------------------------
 [LONGTERMVIEW]
 Name = Long-term View
@@ -1380,6 +1398,11 @@ Name = Moon Prism Power
 Description = When the Full Moon rises, heals for 50% of its total HP. This can overheal.
 Flags = MoonglowSynergy
 #-------------------------------
+[MOUNTINGCHILL]
+Name = Mounting Chill
+Description = Heals 1/8th of its max HP each turn in a hail.
+Flags = HailSynergy
+#-------------------------------
 [MULTIHEADED]
 Name = Multiheaded
 Description = While this Pokémon is below half health, takes 33% less damage from attacks.
@@ -1484,7 +1507,7 @@ Description = After knocking out any Pokémon, raises its Sp. Atk and Speed.
 #-------------------------------
 [OVERFLOWINGHEART]
 Name = Overflowing Heart
-Description = Copies the unmodified stats of this Pokémon it switches in to replace.
+Description = Copies the unmodified stats of the Pokémon it switches in to replace.
 #-------------------------------
 [OVERTHINKING]
 Name = Overthinking
@@ -1523,7 +1546,7 @@ Description = Immune to Flying-type moves and deals 50% more damage with them.
 #-------------------------------
 [PERENNIALPAYLOAD]
 Name = Perennial Payload
-Description = After fainting from exploding, revives after five turns.
+Description = After fainting from self-destructing, revives after five turns.
 #-------------------------------
 [PERFECTIONIST]
 Name = Perfectionist
@@ -1532,6 +1555,10 @@ Description = This Pokémon's hits deal half damage unless they are critical.
 [PERFECTLUCK]
 Name = Perfect Luck
 Description = Maximizes the frequency of multi-hit moves. Always deals critical hits.
+#-------------------------------
+[PERSONALDEMESNE]
+Name = Personal Demesne
+Description = At the end of each turn, all enemy Pokémon lose 1/10th HP if there is an active room.
 #-------------------------------
 [PESTILENT]
 Name = Pestilent
@@ -1623,6 +1650,11 @@ Description = Deals 30% more move damage to Pokémon slower than it.
 Name = Pressure Valve
 Description = Right before this Pokémon is attacked, the attacker's stat changes are reset.
 Flags = SetupCounterAI
+#-------------------------------
+[PRIMORDIALSEAL]
+Name = Primordial Seal
+Description = This Pokémon cannot enter the battle before Regidrago, Regice, Regirock, Registeel and Regieleki have.
+Flags = Immutable,UnableByDefault
 #-------------------------------
 [PROTECTIVEINSTINCT]
 Name = Protective Instinct
@@ -1879,6 +1911,11 @@ Name = Scathing Syzygy
 Description = Boosts all of this Pokémon's move damage by 25% during eclipse.
 Flags = EclipseSynergy
 #-------------------------------
+[SCENECHANGE]
+Name = Scene Change
+Description = When using a physical move, switch to Pirouette Forme. When using a special move, switch to Aria Forme.
+Flags = Uncopyable
+#-------------------------------
 [SCHADENFREUDE]
 Name = Schadenfreude
 Description = Restores 1/4th health after any foe faints.
@@ -1888,9 +1925,13 @@ Name = Scoured Silhouette
 Description = Upon entry during sandstorm, lowers foe's Attack and Sp. Atk by two steps.
 Flags = SandstormSynergy
 #-------------------------------
+[SCYTHEHORNSTYLE]
+Name = Scythe-Horn Style
+Description = After attacking the same foe twice, they become fractured, and a trap of levitating stones is set on their side.
+#-------------------------------
 [SEALINGBODY]
 Name = Sealing Body
-Description = Moves used on this Pokémon are disabled for two turns.
+Description = Moves used against this Pokémon are disabled for two turns.
 #-------------------------------
 [SEARINGWINGS]
 Name = Searing Wings
@@ -1932,6 +1973,10 @@ Description = Doubles the critical hit chance of random crit moves. This Pokémo
 [SHELLCRACKER]
 Name = Shellcracker
 Description = Its physical attacks reduce the target's Defense.
+#-------------------------------
+[SHIELDSMITHING]
+Name = Shield-Smithing
+Description = Immune to Steel-type moves, and boosts Defense and Sp. Def when hit by one.
 #-------------------------------
 [SHIFTINGFIST]
 Name = Shifting Fist
@@ -2011,6 +2056,16 @@ Description = Its attacks deal 50% more move damage against sleeping targets.
 Name = Slumbering Drake
 Description = Falls asleep upon entry, but raises all of its stats by two steps.
 #-------------------------------
+[SLUMBERINGSHIELD]
+Name = Slumbering Shield
+Description = Cannot enter battle until a Rusted Shield is dropped on the field or after ten turns. Upon entry, transforms into Crowned form.
+Flags = Immutable,UnableByDefault
+#-------------------------------
+[SLUMBERINGSWORD]
+Name = Slumbering Sword
+Description = Cannot enter battle until a Rusted Sword is dropped on the field or after ten turns. Upon entry, transforms into Crowned form.
+Flags = Immutable,UnableByDefault
+#-------------------------------
 [SNOOZEFEST]
 Name = Snoozefest
 Description = Whenever this Pokémon falls asleep, each other battler becomes drowsy.
@@ -2056,7 +2111,7 @@ Description = This Pokémon and its allies' moves are twice as likely to be crit
 #-------------------------------
 [SPINESPLODE]
 Name = Spinesplode
-Description = Leaves two hazard layers of Spikes after it self-destructs.
+Description = Leaves two hazard layers of Spikes after self-destructing.
 #-------------------------------
 [SPINTENSITY]
 Name = Spintensity
@@ -2065,6 +2120,10 @@ Description = Speed is raised each turn. Speed is reset when hit, but the attack
 [SPINYRUSE]
 Name = Spiny Ruse
 Description = Foes that attack this Pokémon while it is hidden take 25% HP damage.
+#-------------------------------
+[SPRIGHORNSTYLE]
+Name = Sprig-Horn Style
+Description = After attacking the same foe twice, they become trapped for three turns, and this Pokémon heals 33% HP. This can overheal.
 #-------------------------------
 [STABILITY]
 Name = Stability
@@ -2088,6 +2147,10 @@ Description = Sets a Light Screen for four turns upon entry.
 Name = Stars Align
 Description = During eclipse, its moves can't miss and always activate their random effects.
 Flags = EclipseSynergy
+#-------------------------------
+[STAYOFEXECUTION]
+Name = Stay of Execution
+Description = Blade moves always crit. However, their damage is dealt at the end of the round.
 #-------------------------------
 [STEAMPOWER]
 Name = Steam Power
@@ -2228,9 +2291,17 @@ Description = This Pokémon's Speed is doubled while using kicking moves.
 Name = Sword Breaker
 Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
 #-------------------------------
+[SWORDHORNSTYLE]
+Name = Sword-Horn Style
+Description = After attacking the same foe twice, they become numbed, and a Sanctuary is set on this Pokémon's side for three turns.
+#-------------------------------
 [SWORDPLAY]
 Name = Swordplay
 Description = Boosts the power of blade moves by 30%.
+#-------------------------------
+[SWORDSMITHING]
+Name = Sword-Smithing
+Description = Immune to Steel-type moves, and boosts Attack and Sp. Atk when hit by one.
 #-------------------------------
 [TAIGATREKKER]
 Name = Taiga Trekker
@@ -2361,11 +2432,11 @@ Description = Before using a status move against a single foe, lowers their Defe
 [UNBOUND]
 Name = Unbound
 Description = Moves ignore Abilities that would affect its moves or activate after hitting the target, and immunities due to typing.
-Flags = MoldBreaking
+Flags = MoldBreaking,BypassTypeImmunity
 #-------------------------------
 [UNBREAKABLE]
 Name = Unbreakable
-Description = Prevents half the self-damage from recoil and Self-Destruct/Explosion.
+Description = Prevents half the self-damage from recoil and self-destructing.
 #-------------------------------
 [UNCANNYLUCK]
 Name = Uncanny Luck

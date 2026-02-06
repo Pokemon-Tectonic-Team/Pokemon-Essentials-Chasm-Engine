@@ -1,6 +1,6 @@
 WEATHER_ABILITY_HEALING_FRACTION = 0.125 # 1/8
 
-BattleHandlers::EORWeatherAbility.add(:ICEBODY,
+BattleHandlers::EORWeatherAbility.add(:MOUNTINGCHILL,
   proc { |ability, weather, battler, battle|
     next unless battle.icy?
       healingMessage = _INTL("{1} incorporates hail into its body.", battler.pbThis)

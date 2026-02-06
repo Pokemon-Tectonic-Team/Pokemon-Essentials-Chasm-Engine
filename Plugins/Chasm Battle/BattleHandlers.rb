@@ -28,6 +28,7 @@ module BattleHandlers
     # Battler's HP changed
     HPHealItem                          = ItemHandlerHash.new
     AbilityOnHPDroppedBelowHalf         = AbilityHandlerHash.new
+    AbilityOnHPDropped                  = AbilityHandlerHash.new
     # Battler's status problem
     StatusCheckAbilityNonIgnorable      = AbilityHandlerHash.new   # Comatose
     StatusImmunityAbility               = AbilityHandlerHash.new
@@ -51,7 +52,7 @@ module BattleHandlers
     PriorityBracketUseAbility           = AbilityHandlerHash.new   # None!
     PriorityBracketUseItem              = ItemHandlerHash.new
     # Targeting style changes
-    MoveMakeHitAllNearFoesAbility    = AbilityHandlerHash.new
+    MoveMakeHitAllNearFoesAbility       = AbilityHandlerHash.new
     # Move usage failures
     AbilityOnFlinch                     = AbilityHandlerHash.new # Steadfast
     MoveBlockingAbility                 = AbilityHandlerHash.new
@@ -110,7 +111,6 @@ module BattleHandlers
     TargetAbilityKnockedBelowHalf       = AbilityHandlerHash.new
     EndOfMoveItem                       = ItemHandlerHash.new   # Leppa Berry
     EndOfMoveStatRestoreItem            = ItemHandlerHash.new   # White Herb
-    UserAbilityEndOfExhaustingMove      = AbilityHandlerHash.new # Remanent Voltage
     UserAbilityEndOfTrappingMove        = AbilityHandlerHash.new # Denticle Debris
     UserAbilityOnSemiInvulnerable       = AbilityHandlerHash.new
     # Experience and EV gain
@@ -165,6 +165,8 @@ module BattleHandlers
     # Moves missing abilities  
     UserAbilityOnMiss                 = AbilityHandlerHash.new
     TargetAbilityOnMiss               = AbilityHandlerHash.new
+    # Switch-in forbiddance abilities
+    ForbidsUserSwitchInAbility          = AbilityHandlerHash.new
 
     #=============================================================================
 
@@ -212,6 +214,10 @@ module BattleHandlers
     def self.triggerAbilityOnHPDroppedBelowHalf(ability, user, battle)
         ret = AbilityOnHPDroppedBelowHalf.trigger(ability, user, battle)
         return !ret.nil? ? ret : false
+    end
+
+    def self.triggerAbilityOnHPDropped(ability, user, battle, old_fraction, new_fraction)
+        AbilityOnHPDropped.trigger(ability, user, battle)
     end
 
     #=============================================================================
@@ -469,8 +475,8 @@ module BattleHandlers
         return !ret.nil? ? ret : c
     end
 
-    def self.triggerGuaranteedCriticalUserAbility(ability, user, target, battle)
-        ret = GuaranteedCriticalUserAbility.trigger(ability, user, target, battle)
+    def self.triggerGuaranteedCriticalUserAbility(ability, user, target, battle, move)
+        ret = GuaranteedCriticalUserAbility.trigger(ability, user, target, battle, move)
         return !ret.nil? ? ret : false
     end
 
@@ -564,10 +570,6 @@ module BattleHandlers
     def self.triggerEndOfMoveStatRestoreItem(item, battler, battle, forced)
         ret = EndOfMoveStatRestoreItem.trigger(item, battler, battle, forced)
         return !ret.nil? ? ret : false
-    end
-
-    def self.triggerUserAbilityEndOfExhaustingMove(ability, user, targets, move, battle)
-        UserAbilityEndOfExhaustingMove.trigger(ability, user, targets, move, battle)
     end
 
     def self.triggerUserAbilityEndOfTrappingMove(ability, user, target, move, battle)
@@ -774,12 +776,20 @@ module BattleHandlers
     end
 
     #=============================================================================
-
+    
     def self.triggerUserAbilityOnMiss(ability, user, targets, move, battle)
         UserAbilityOnMiss.trigger(ability, user, targets, move, battle)
     end
-
+    
     def self.triggerTargetAbilityOnMiss(ability, user, target, move, battle)
         TargetAbilityOnMiss.trigger(ability, user, target, move, battle)
     end
+    
+    #=============================================================================
+
+    def self.triggerForbidsUserSwitchInAbility(ability, battle, partyMember, side, idxTrainer, idxParty, show_messages)
+        ret = ForbidsUserSwitchInAbility.trigger(ability, battle, partyMember, side, idxTrainer, idxParty, show_messages)
+        return !ret.nil? ? ret : false
+    end
+
 end

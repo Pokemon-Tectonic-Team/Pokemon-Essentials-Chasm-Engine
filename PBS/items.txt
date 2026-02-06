@@ -689,6 +689,13 @@ Pocket = 13
 Price = 12000
 Description = An item to be held by a Pokémon. The user gets both of its legal abilities, but its stats are cut by 10%.
 #-------------------------------
+[TECHNIQUEBOOSTER]
+Name = Technique Booster
+NamePlural = Technique Boosters
+Pocket = 13
+Price = 12000
+Description = An item to be held by a Pokémon. Signature attacks made by the holder are boosted by 40%.
+#-------------------------------
 [BIGROOT]
 Name = Big Root
 NamePlural = Big Roots
@@ -2415,14 +2422,14 @@ Name = Rusted Shield
 NamePlural = Rusted Shields
 Pocket = 13
 Price = 0
-Description = Used by a hero to halt a terrible disaster. If given to Zamazenta, turns it into its Crowned form.
+Description = Used by a hero to halt a terrible disaster. The wielder takes 10% less move damage.
 #-------------------------------
 [RUSTEDSWORD]
 Name = Rusted Sword
 NamePlural = Rusted Swords
 Pocket = 13
 Price = 0
-Description = Used by a hero to halt a terrible disaster. If given to Zacian, turns it into its Crowned form.
+Description = Used by a hero to halt a terrible disaster. The wielder deals 10% more move damage.
 #-------------------------------
 [REINSOFUNITY]
 Name = Reins of Unity

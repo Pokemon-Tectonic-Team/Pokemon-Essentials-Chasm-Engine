@@ -247,7 +247,7 @@ class PokeBattle_Move_UseHighestBasePowerMoveFromUserParty < PokeBattle_Move
         optimizedBP = -1
         @battle.pbParty(user.index).each_with_index do |pkmn, i|
             next if !pkmn || i == user.pokemonIndex
-            next unless pkmn.able?
+            next unless pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
             pkmn.moves.each do |move|
                 next if move.category == 2
                 next unless move.base_damage > optimizedBP

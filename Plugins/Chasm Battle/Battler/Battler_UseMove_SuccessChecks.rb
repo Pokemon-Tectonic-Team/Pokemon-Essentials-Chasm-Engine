@@ -228,7 +228,7 @@ class PokeBattle_Battler
             return false
         end
 
-        if effectActive?(:HyperBeam) # Intentionally before Truant
+        if effectActive?(:HyperBeam) && !effectActive?(:BypassExhaustion) # Intentionally before Truant
             if aiCheck
                 echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to exhaustion failure (Hyperbeam, etc.)")
             else
@@ -236,7 +236,7 @@ class PokeBattle_Battler
             end
             return false
         end
-        if effectActive?(:AttachedTo)
+        if effectActive?(:AttachedTo) && !effectActive?(:BypassExhaustion)
             if aiCheck
                 echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to attachment failure")
             else
@@ -279,6 +279,15 @@ class PokeBattle_Battler
                 @battle.pbDisplay(_INTL("{1} refuses to battle!", pbThis))
                 onMoveFailed(move)
                 hideMyAbilitySplash
+                return false
+            end
+        elsif refusesToFight?
+            if aiCheck
+                echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Refuses to fight)")
+                return false
+            else
+                @battle.pbDisplay(_INTL("{1} refuses to battle!", pbThis))
+                onMoveFailed(move)
                 return false
             end
         end
@@ -369,7 +378,7 @@ class PokeBattle_Battler
                 @battle.pbDisplay(_INTL("{1} was ignored, and failed to protect {2}!", effectDisplayName,
 target.pbThis(true)))
             end
-            if protectionIgnoredByAbility && user.hasActiveAbility?(:PHANTASMAL)
+            if protectionIgnoredByAbility && user.hasActiveAbility?([:PHANTASMAL, :PRIMEVALBREAKTHROUGH])
                 target.damageState.partiallyProtected = true
             end
             return false
@@ -397,6 +406,7 @@ target.pbThis(true)))
         protectionIgnoredByAbility = false
         protectionIgnoredByAbility = true if user.shouldAbilityApply?(:UNSEENFIST, aiCheck) && move.physicalMove?
         protectionIgnoredByAbility = true if user.shouldAbilityApply?(:PHANTASMAL, aiCheck) && move.is_a?(PokeBattle_Move_TwoTurnAttackInvulnerable)
+        protectionIgnoredByAbility = true if user.shouldAbilityApply?(:PRIMEVALBREAKTHROUGH, aiCheck)
 
 
         # Only check the target's side if the target is not the self

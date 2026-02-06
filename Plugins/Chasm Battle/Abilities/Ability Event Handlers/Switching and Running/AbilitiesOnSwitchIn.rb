@@ -338,6 +338,24 @@ BattleHandlers::AbilityOnSwitchIn.add(:TRIAGE,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:LEADDANCER,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} takes center stage!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:LEADSINGER,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} steals the show!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
 BattleHandlers::AbilityOnSwitchIn.add(:SWIFTSTOMPS,
   proc { |ability, battler, battle, aiCheck|
       next 0 if aiCheck
@@ -352,6 +370,15 @@ BattleHandlers::AbilityOnSwitchIn.add(:BREAKTHROUGH,
       next 0 if aiCheck
       battle.pbShowAbilitySplash(battler, ability)
       battle.pbDisplay(_INTL("{1} overpowers type immunities!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:PRIMEVALBREAKTHROUGH,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} overpowers type immunities and protections!", battler.pbThis))
       battle.pbHideAbilitySplash(battler)
   }
 )
@@ -1408,6 +1435,60 @@ BattleHandlers::AbilityOnSwitchIn.add(:INKSPRAY,
       end
     end
     next score if aiCheck
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:INSCRUTABLEORDERS,
+  proc { |ability, battler, battle, aiCheck|
+    battle.pbShowAbilitySplash(battler, ability)
+    battler.applyEffect(:Torment)
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+
+BattleHandlers::AbilityOnSwitchIn.add(:EXOSPHERICDESCENT,
+  proc { |ability, battler, battle, aiCheck|
+    next 0 unless battler.form == 0
+    next 100 if aiCheck
+    battle.pbShowAbilitySplash(battler, ability)
+    battler.pbChangeForm(1, _INTL("{1} flies in like a comet!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSWORD,
+  proc { |ability, battler, battle, aiCheck|
+    next -100 unless battle.field.effectActive?(:SlumberingSwordReady)
+    next 0 unless battler.form == 0
+    next 100 if aiCheck
+    battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Sword!", battler.pbThis)) if battle.field.effectActive?(:RustedSwordDropped)
+    battle.pbShowAbilitySplash(battler, ability)
+    battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSHIELD,
+  proc { |ability, battler, battle, aiCheck|
+    next -100 unless battle.field.effectActive?(:SlumberingShieldReady)
+    next 0 unless battler.form == 0
+    next 100 if aiCheck
+    battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Shield!", battler.pbThis)) if battle.field.effectActive?(:RustedShieldDropped)
+    battle.pbShowAbilitySplash(battler, ability)
+    battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:PRIMORDIALSEAL,
+  proc { |ability, battler, battle, aiCheck|
+    next -100 unless battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+    next 0 unless battler.form == 0
+    next 100 if aiCheck
+    battle.pbShowAbilitySplash(battler, ability)
+    battle.pbDisplay(_INTL("Eons course through {1}'s being!", battler.pbThis(true)))
     battle.pbHideAbilitySplash(battler)
   }
 )

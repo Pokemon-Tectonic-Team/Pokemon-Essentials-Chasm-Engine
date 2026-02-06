@@ -202,9 +202,9 @@ class PokeBattle_Move_WishingWellScalesWithMoney < PokeBattle_Move
     end
 end
 
-
-
+#===============================================================================
 # User gains an extra move per turn. (Empowered Work Up)
+#===============================================================================
 class PokeBattle_Move_EmpoweredWorkUp < PokeBattle_Move
     include EmpoweredMove
 

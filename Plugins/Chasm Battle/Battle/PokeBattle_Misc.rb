@@ -89,6 +89,33 @@ class PokeBattle_Battle
         return @field.effectActive?(:NeutralizingGas)
     end
 
+    def anyMonHasAbility?(ability)
+        [@party1, @party2].each do |party|
+            party.each do |pkmn|
+                return true if pkmn.hasAbility?(ability)
+            end
+        end
+        return false
+    end
+    
+    def anyMonSlumberingShield?
+        return anyMonHasAbility?(:SLUMBERINGSHIELD)
+    end
+
+    def anyMonSlumberingSword?
+        return anyMonHasAbility?(:SLUMBERINGSWORD)
+    end
+
+    def pbCheckSlumbering
+        if @turnCount == 10 && (
+            (anyMonSlumberingShield? && !@field.effectActive?(:SlumberingShieldReady)) || 
+            (anyMonSlumberingSword? && !@field.effectActive?(:SlumberingShieldReady)))
+            pbDisplay(_INTL("The battle reaches an apex!"))
+            @field.applyEffect(:SlumberingShieldReady) if anyMonSlumberingShield?
+            @field.applyEffect(:SlumberingSwordReady) if anyMonSlumberingSword?
+        end
+    end
+
     def pbCheckAlliedAbility(abil, idxBattler = 0, nearOnly = false)
         eachSameSideBattler(idxBattler) do |b|
             next if nearOnly && !b.near?(idxBattler)
@@ -267,6 +294,13 @@ class PokeBattle_Battle
         return if @knownAbilities[battler.pokemon.personalID].include?(ability)
         @knownAbilities[battler.pokemon.personalID].push(ability)
         echoln("[AI LEARNING] The AI is now aware of #{battler.pbThis(true)}'s ability #{ability}")
+    end
+
+    def aiLearnsPokemonAbility(pkmn, ownerIndex, ability)
+        return unless ownerIndex == 0
+        return if @knownAbilities[pkmn.personalID].include?(ability)
+        @knownAbilities[pkmn.personalID].push(ability)
+        echoln("[AI LEARNING] The AI is now aware of #{pkmn.name}'s ability #{ability}")
     end
 
     # If given an array, returns true if the AI knows of ANY of the listed abilities

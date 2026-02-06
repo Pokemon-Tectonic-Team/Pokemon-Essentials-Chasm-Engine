@@ -6,6 +6,7 @@ class PokemonPokedexInfo_Scene
 
     LEVEL_MOVES_PAGE_ID = 6
     OTHER_MOVES_PAGE_ID = 7
+    AREA_PAGE_ID = 9
     FORMS_PAGE_ID = 10
 
     def pageTitles
@@ -35,8 +36,7 @@ class PokemonPokedexInfo_Scene
         @sprites["infosprite"].x = 104
         @sprites["infosprite"].y = 136
         @mapdata = pbLoadTownMapData
-        map_metadata = GameData::MapMetadata.try_get($game_map.map_id)
-        mappos = map_metadata ? map_metadata.town_map_position : nil
+        mappos = getDisplayedPositionOfGameMap($game_map.map_id)
         if @region < 0                                 # Use player's current region
             @region = mappos ? mappos[0] : 0 # Region 0 default
         end
@@ -54,7 +54,9 @@ class PokemonPokedexInfo_Scene
         end
         @sprites["areahighlight"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
         @sprites["areaoverlay"] = IconSprite.new(0, 0, @viewport)
-        @sprites["areaoverlay"].setBitmap("Graphics/Pictures/Pokedex/overlay_area")
+        areaOverlayPath = "Graphics/Pictures/Pokedex/overlay_area"
+        areaOverlayPath += "_dark" if darkMode?
+        @sprites["areaoverlay"].setBitmap(areaOverlayPath)
         @sprites["formfront"] = PokemonSprite.new(@viewport)
         @sprites["formfront"].setOffset(PictureOrigin::Center)
         @sprites["formfront"].x = 130
@@ -109,6 +111,8 @@ class PokemonPokedexInfo_Scene
 
         @showShinyForms = $PokemonGlobal.dex_forms_shows_shinies || false
 
+        @showAreaMap = $PokemonGlobal.dex_area_shows_map || false
+
         @speciesCalcedFor = nil
         @formCalcedFor = nil
         recalculate_other_moves_lists if @page == OTHER_MOVES_PAGE_ID
@@ -131,6 +135,11 @@ class PokemonPokedexInfo_Scene
     end
 
     def pbUpdate
+        if @page == AREA_PAGE_ID
+            intensity = (Graphics.frame_count % 40)*12
+            intensity = 480 - intensity if intensity > 240
+            @sprites["areahighlight"].opacity = intensity
+        end
         pbUpdateSpriteHash(@sprites)
     end
 
@@ -200,9 +209,9 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         overlay.clear
         # Make certain sprites visible or invisible
         @sprites["infosprite"].visible = (@page == 1)
-        @sprites["areamap"].visible       = false if @sprites["areamap"] # (@page==7) if @sprites["areamap"]
-        @sprites["areahighlight"].visible = false if @sprites["areahighlight"] # (@page==7) if @sprites["areahighlight"]
-        @sprites["areaoverlay"].visible   = false if @sprites["areaoverlay"] # (@page==7) if @sprites["areaoverlay"]
+        @sprites["areamap"].visible       = (@page == AREA_PAGE_ID && @showAreaMap) if @sprites["areamap"]
+        @sprites["areahighlight"].visible = (@page == AREA_PAGE_ID && @showAreaMap) if @sprites["areahighlight"]
+        @sprites["areaoverlay"].visible   = (@page == AREA_PAGE_ID && @showAreaMap) if @sprites["areaoverlay"]
         @sprites["formfront"].visible     = (@page == FORMS_PAGE_ID) if @sprites["formfront"]
         @sprites["formback"].visible      = (@page == FORMS_PAGE_ID) if @sprites["formback"]
         @sprites["formicon"].visible      = (@page == FORMS_PAGE_ID) if @sprites["formicon"]
@@ -969,6 +978,14 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
     end
 
     def drawPageArea
+        if @showAreaMap
+            drawAreaMapVisual
+        else
+            drawAreaText
+        end
+    end
+
+    def drawAreaText
         bg_path = "Graphics/Pictures/Pokedex/bg_area"
         bg_path += "_dark" if darkMode?
         @sprites["background"].setBitmap(_INTL(bg_path))
@@ -1030,6 +1047,90 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 end
             end
         end
+
+        textpos = []
+        textpos.push([_INTL("SPECIAL/D to show map"),Graphics.width/2,346,2,base,shadow])
+        pbDrawTextPositions(overlay,textpos)
+    end
+
+    def drawAreaMapVisual
+        overlay = @sprites["overlay"].bitmap
+        base   = MessageConfig.pbDefaultTextMainColor
+        shadow = MessageConfig.pbDefaultTextShadowColor
+
+        @sprites["areahighlight"].bitmap.clear
+        # Fill the array "points" with all squares of the region map in which the
+        # species can be found
+        points = []
+        mapwidth = 1 + PokemonRegionMap_Scene::RIGHT - PokemonRegionMap_Scene::LEFT
+        GameData::Encounter.each_of_version($PokemonGlobal.encounter_version) do |enc_data|
+            next if !pbFindEncounter(enc_data.types, @species)
+            map_metadata = GameData::MapMetadata.try_get(enc_data.map)
+            begin
+                mappos = getDisplayedPositionOfGameMap(enc_data.map)
+            rescue NoMethodError
+                next
+            end
+            next if !mappos || mappos[0] != @region
+            showpoint = true
+            for loc in @mapdata[@region][2]
+                showpoint = false if loc[0]==mappos[1] && loc[1]==mappos[2] && loc[7] && !$game_switches[loc[7]]
+            end
+            next if !showpoint
+            mapsize = map_metadata.town_map_size
+            if mapsize && mapsize[0] && mapsize[0]>0
+                sqwidth  = mapsize[0]
+                sqheight = (mapsize[1].length*1.0/mapsize[0]).ceil
+                for i in 0...sqwidth
+                    for j in 0...sqheight
+                        if mapsize[1][i+j*sqwidth,1].to_i>0
+                        points[mappos[1]+i+(mappos[2]+j)*mapwidth] = true
+                        end
+                    end
+                end
+            else
+                points[mappos[1]+mappos[2]*mapwidth] = true
+            end
+        end
+        # Draw coloured squares on each square of the region map with a nest
+        pointcolor   = Color.new(0,248,248)
+        pointcolorhl = Color.new(192,248,248)
+        sqwidth = PokemonRegionMap_Scene::SQUAREWIDTH
+        sqheight = PokemonRegionMap_Scene::SQUAREHEIGHT
+        for j in 0...points.length
+            if points[j]
+                x = (j%mapwidth)*sqwidth
+                x += (Graphics.width-@sprites["areamap"].bitmap.width)/2
+                y = (j/mapwidth)*sqheight
+                y += (Graphics.height+32-@sprites["areamap"].bitmap.height)/2
+                @sprites["areahighlight"].bitmap.fill_rect(x,y,sqwidth,sqheight,pointcolor)
+                if j-mapwidth<0 || !points[j-mapwidth]
+                    @sprites["areahighlight"].bitmap.fill_rect(x,y-2,sqwidth,2,pointcolorhl)
+                end
+                if j+mapwidth>=points.length || !points[j+mapwidth]
+                    @sprites["areahighlight"].bitmap.fill_rect(x,y+sqheight,sqwidth,2,pointcolorhl)
+                end
+                if j%mapwidth==0 || !points[j-1]
+                    @sprites["areahighlight"].bitmap.fill_rect(x-2,y,2,sqheight,pointcolorhl)
+                end
+                if (j+1)%mapwidth==0 || !points[j+1]
+                    @sprites["areahighlight"].bitmap.fill_rect(x+sqwidth,y,2,sqheight,pointcolorhl)
+                end
+            end
+        end
+        # Set the text
+        textpos = []
+        if points.length==0
+            overlayAreaNonePath = "Graphics/Pictures/Pokedex/overlay_areanone"
+            overlayAreaNonePath += "_dark" if darkMode?
+            pbDrawImagePositions(overlay,[
+                [sprintf(overlayAreaNonePath),108,188]
+            ])
+            textpos.push([_INTL("Area unknown"),Graphics.width/2,Graphics.height/2 - 6,2,base,shadow])
+        end
+        textpos.push([pbGetMessage(MessageTypes::RegionNames,@region),414,38,2,base,shadow])
+        textpos.push([_INTL("SPECIAL/D to hide map"),Graphics.width/2,346,2,base,shadow])
+        pbDrawTextPositions(overlay,textpos)
     end
 
     def drawPageForms
@@ -1587,6 +1688,11 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
             elsif Input.trigger?(Input::SPECIAL)
                 if @page == OTHER_MOVES_PAGE_ID
                     toggle_other_moves_list_sort_mode
+                    dorefresh = true
+                elsif @page == AREA_PAGE_ID
+                    pbPlayDecisionSE
+                    @showAreaMap = !@showAreaMap
+                    $PokemonGlobal.dex_area_shows_map = @showAreaMap
                     dorefresh = true
                 elsif @page == FORMS_PAGE_ID
                     pbPlayDecisionSE

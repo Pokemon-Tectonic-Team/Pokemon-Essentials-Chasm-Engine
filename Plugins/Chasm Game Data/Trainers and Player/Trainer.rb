@@ -158,7 +158,7 @@ class Trainer
     # Checks whether the trainer would still have an unfainted Pokémon if the
     # Pokémon given by _index_ were removed from the party.
     def has_other_able_pokemon?(index)
-      @party.each_with_index { |pkmn, i| return true if i != index && pkmn.able? }
+      @party.each_with_index { |pkmn, i| return true if i != index && pkmn.able?}
       return false
     end
   

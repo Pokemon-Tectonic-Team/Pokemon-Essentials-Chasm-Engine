@@ -1,14 +1,31 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
+[PRIMEVALBOULDERNEST]
+Name = Primeval Boulder Nest
+Description = Lays a hazard of levitating stones around the opponent when its HP is lowered below 75% HP.
+#-------------------------------
+[PRIMEVALBREAKTHROUGH]
+Name = Primeval Break Through
+Description = This Pokémon's moves deal 20% more damage, ignore immunities due to typing and deal half damage to protected targets.
+Flags = BypassTypeImmunity
+#-------------------------------
 [PRIMEVALDISGUISE]
 Name = Primeval Disguise
-Description = The Pokemon starts as a very convincing Pikachu!
+Description = This Pokémon starts as a very convincing Pikachu!
 Flags = Uncopyable,Immutable
+#-------------------------------
+[PRIMEVALFLOURISHING]
+Name = Primeval Flourishing
+Description = At the end of each turn, grows one size larger and all of its stats are raised. If damaged three times in a turn, reverts back.
 #-------------------------------
 [PRIMEVALIMPOSTER]
 Name = Primeval Imposter
 Description = Transforms into the entire enemy team, except buffed!
 Flags = Uncopyable
+#-------------------------------
+[PRIMEVALMEGALAUNCHER]
+Name = Primeval Mega Launcher
+Description = Pulse moves deal 50% more damage, and deal 10% of their damage again on the next turn.
 #-------------------------------
 [PRIMEVALREGENERATOR]
 Name = Primeval Regenerator
@@ -17,3 +34,7 @@ Description = Heals for 1/4th of its HP at the end of every turn.
 [PRIMEVALSLOWSTART]
 Name = Primeval Slow Start
 Description = Attack and Speed are halved.
+#-------------------------------
+[PRIMEVALSWORDBREAKER]
+Name = Primeval Sword-Breaker
+Description = If this Pokémon takes over 120 damage from an attack, the attacker becomes fractured.

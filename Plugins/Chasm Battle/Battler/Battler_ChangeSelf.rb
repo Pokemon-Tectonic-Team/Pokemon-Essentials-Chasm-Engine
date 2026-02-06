@@ -797,6 +797,7 @@ end
             @battle.pbDisplay(_INTL("{1} gained the Ability {2}!", pbThis, getAbilityName(newAbility)))
             hideMyAbilitySplash
         end
+        pbEffectsOnSwitchIn
     end
 
     def replaceAbility(newAbility, showSplashes = true, swapper = nil, replacementMsg: nil)

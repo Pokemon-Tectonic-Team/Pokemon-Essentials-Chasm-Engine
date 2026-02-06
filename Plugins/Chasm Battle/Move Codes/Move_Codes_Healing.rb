@@ -50,7 +50,7 @@ class PokeBattle_Move_HealUserPositionNextTurn < PokeBattle_Move
     def getEffectScore(user, _target)
         score = (user.totalhp / user.level) * 40
         score -= wishTurns(user) * 10
-        score *= user.levelNerf(false,false,0.5) if user.level <= 30 && !user.pbOwnedByPlayer? # AI nerf
+        score *= user.levelNerfMisc(0.5)
         return score
     end
 end
@@ -905,7 +905,7 @@ class PokeBattle_Move_UserLosesQuarterHPPartyMembersHealQuarterHP < PokeBattle_M
     end
 
     def validPokemon(pkmn)
-        return pkmn&.able? && pkmn.hp < pkmn.totalhp
+        return pkmn&.able?(true, GameData::Ability.getByFlag("UnableByDefault")) && pkmn.hp < pkmn.totalhp
     end
 
     def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)

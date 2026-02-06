@@ -82,10 +82,6 @@ Description = Repeats another Pokémon's dance move immediately.
 Name = Dark Aura
 Description = Powers up each Pokémon's Dark-type moves by 33%.
 #-------------------------------
-[DAUNTLESSSHIELD]
-Name = Dauntless Shield
-Description = Raises Defense upon entry.
-#-------------------------------
 [DEFEATIST]
 Name = Defeatist
 Description = Halves move damage when HP becomes half or less.
@@ -221,28 +217,23 @@ Name = Hydration
 Description = Heals non-volatile status conditions each turn if in rainstorm.
 Flags = RainstormSynergy
 #-------------------------------
-[ICEBODY]
-Name = Ice Body
-Description = Heals 1/8th of its max HP each turn in a hail.
-Flags = HailSynergy
-#-------------------------------
 [ICESCALES]
 Name = Ice Scales
 Description = Doubles this Pokémon's Sp. Def.
 #-------------------------------
 [ILLUSION]
 Name = Illusion
-Description = Comes out disguised as this Pokémon in back.
+Description = Comes out disguised as the Pokémon in the party's last spot.
 Flags = Immutable
 #-------------------------------
 [IMPOSTER]
 Name = Imposter
-Description = It transforms itself into this Pokémon it is facing.
+Description = It transforms itself into the Pokémon it is facing.
 Flags = Immutable
 #-------------------------------
 [INNARDSOUT]
 Name = Innards Out
-Description = Damages an attacker that lands the finishing hit.
+Description = When this Pokémon is knocked out by an attack, the attacker takes damage equal to this Pokémon's previous HP.
 #-------------------------------
 [INNERFOCUS]
 Name = Inner Focus
@@ -252,10 +243,6 @@ Flags = FlinchImmunity
 [INTIMIDATE]
 Name = Intimidate
 Description = Upon entry, lowers the foe's Attack stat by two steps.
-#-------------------------------
-[INTREPIDSWORD]
-Name = Intrepid Sword
-Description = Raises Attack upon entry.
 #-------------------------------
 [IRONBARBS]
 Name = Iron Barbs

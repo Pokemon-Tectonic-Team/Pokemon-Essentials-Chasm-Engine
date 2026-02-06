@@ -30,6 +30,11 @@ class PokeBattle_Battler
                 end
             end
         end
+        if @battle.field.effectActive?(:PokemonEntered)
+            @battle.field.effects[:PokemonEntered].push(@species) unless @battle.field.effects[:PokemonEntered].include?(@species)
+        else
+            @battle.field.applyEffect(:PokemonEntered,[@species])
+        end
         # Berry check, status-curing ability check
         pbHeldItemTriggerCheck if switchIn
         pbAbilityStatusCureCheck
@@ -103,6 +108,9 @@ class PokeBattle_Battler
     # Used for Emergency Exit/Wimp Out.
     def pbAbilitiesOnDamageTaken(oldHP, newHP = -1)
         newHP = @hp if newHP < 0
+        eachActiveAbility(true) do |ability|
+            BattleHandlers.triggerAbilityOnHPDropped(ability, self, @battle, oldHP.to_f/@totalhp.to_f, newHP.to_f/@totalhp.to_f)
+        end
         return false if oldHP < @totalhp / 2 || newHP >= @totalhp / 2 # Didn't drop below half
         ret = false
         eachActiveAbility(true) do |ability|
@@ -294,6 +302,16 @@ class PokeBattle_Battler
         items.delete_at(itemIndex)
         applyEffect(:ItemLost) if items.length == 0
         refreshDataBox
+
+        if item == :RUSTEDSWORD && !@battle.field.effectActive?(:SlumberingSwordReady) && @battle.anyMonSlumberingSword?
+            @battle.field.applyEffect(:RustedSwordDropped)
+            @battle.field.applyEffect(:SlumberingSwordReady)
+        end
+        
+        if item == :RUSTEDSHIELD && !@battle.field.effectActive?(:SlumberingShieldReady) && @battle.anyMonSlumberingShield?
+            @battle.field.applyEffect(:RustedShieldDropped)
+            @battle.field.applyEffect(:SlumberingShieldReady)
+        end
         
         @battle.updateTribeCounts
     end

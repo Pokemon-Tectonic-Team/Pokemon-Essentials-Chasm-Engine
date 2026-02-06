@@ -54,6 +54,15 @@ class PokeBattle_Move
             end
         end
 
+        if user.hasAbility?(:STAYOFEXECUTION) && bladeMove?
+            delayedDamage = finalCalculatedDamage
+            finalCalculatedDamage = 0
+            if delayedDamage > 0 && !aiCheck
+                target.effects[:DelayedDamage] = [] unless target.effectActive?(:DelayedDamage)
+                target.effects[:DelayedDamage].push([1,delayedDamage])
+            end
+        end
+
         if target.boss?
             # All damage up to the phase lower health bound is unmodified
             unmodifiedDamage = [target.hp - target.avatarPhaseLowerHealthBound,finalCalculatedDamage].min
@@ -501,10 +510,18 @@ class PokeBattle_Move
             if user.hasActiveAbility?(:PARENTALBOND) || (user.hasActiveAbility?(:STRIKETWICE) && @battle.rainy?)
                 multipliers[:base_damage_multiplier] *= 1.25
             end
+            if (user.hasActiveAbility?(:DIFFRACTION) && user.protectedByScreen?)
+                multipliers[:base_damage_multiplier] *= (4.0 / 3.0)
+            end
+                
         else
             # Parental Bond's second attack
             if user.effects[:ParentalBond] == 1
                 multipliers[:base_damage_multiplier] *= 0.25
+            end
+            # Diffraction's second attack
+            if user.effects[:Diffraction] == 1
+                multipliers[:base_damage_multiplier] *= (1.0 / 3.0)
             end
             # Me First
             if user.effectActive?(:MeFirst)

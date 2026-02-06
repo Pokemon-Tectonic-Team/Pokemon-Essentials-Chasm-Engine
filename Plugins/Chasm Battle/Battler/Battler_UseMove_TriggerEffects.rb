@@ -174,9 +174,6 @@ user.pbThis(true)))
         switchedBattlers = []
         user.eachActiveAbility do |ability|
             BattleHandlers.triggerUserAbilityEndOfMove(ability, user, targets, move, @battle, switchedBattlers)
-            if user.effectActive?(:HyperBeam)
-                BattleHandlers.triggerUserAbilityEndOfExhaustingMove(ability, user, targets, move, @battle)
-            end
         end
 
         # Consume gems, etc.

@@ -124,6 +124,19 @@ end
 # Hits 2-5 times, then repeats. The user is exhausted afterwards. (Spray and Pray)
 #===============================================================================
 class PokeBattle_Move_HitTwoToFiveTimesTwiceThenExhaust < PokeBattle_Move_HitTwoToFiveTimes
+    def initialize(battle, move)
+        super
+        @exhaustionTracker = :HyperBeam
+    end
+
+    def exhaustionTracker
+        return @exhaustionTracker
+    end
+
+    def exhaustingMove?
+        return true
+    end
+    
     def pbEffectAfterAllHits(user, target)
         unless user.effectActive?(:SprayAndPray)
             @battle.pbDisplay(_INTL("{1} sends another volley!", user.pbThis))
@@ -134,7 +147,7 @@ class PokeBattle_Move_HitTwoToFiveTimesTwiceThenExhaust < PokeBattle_Move_HitTwo
                 @battle.pbDisplay(_INTL("{1} skipped exhaustion due to its Energy Herb!", user.pbThis))
                 user.consumeItem(:ENERGYHERB)
             else
-                user.applyEffect(:HyperBeam, 2)
+                user.applyEffect(@exhaustionTracker, 2)
             end
         end
     end

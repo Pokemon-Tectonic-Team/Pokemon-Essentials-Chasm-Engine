@@ -95,7 +95,7 @@ class PokeBattle_Move_RaiseUserAndAlliesSpdAcc1 < PokeBattle_Move
         return false if damagingMove?
         failed = true
         @battle.eachSameSideBattler(user) do |b|
-            next unless b.pbCanRaiseAnyOfStats?(@statUp, user, self)
+            next unless b.pbCanRaiseAnyOfStats?(@statUp, user, move: self)
             failed = false
         end
         if failed
@@ -129,5 +129,16 @@ class PokeBattle_Move_RaiseUserAndAlliesSpdAcc1 < PokeBattle_Move
             score += getMultiStatUpEffectScore(@statUp, user, b)
         end
         return score
+    end
+end
+
+#===============================================================================
+# Raises the Speed by 1 step and Accuracy by 4 steps of the user and allies. (Fandango)
+#===============================================================================
+
+class PokeBattle_Move_RaiseUserAndAlliesSpe1Acc4 < PokeBattle_Move_RaiseUserAndAlliesSpdAcc1
+    def initialize(battle, move)
+        super
+        @statUp = [:SPEED, 1, :ACCURACY, 4]
     end
 end

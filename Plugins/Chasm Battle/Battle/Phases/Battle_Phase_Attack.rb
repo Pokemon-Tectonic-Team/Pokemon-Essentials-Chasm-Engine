@@ -112,6 +112,24 @@ class PokeBattle_Battle
         end
     end
 
+    def pbAttackPhaseSceneChange
+        pbPriority.each do |b|
+            next unless @choices[b.index][0] == :UseMove && !b.fainted?
+            next if b.asleep?
+            next if b.movedThisRound?
+            next unless b.hasActiveAbility?(:SCENECHANGE)
+            move = @choices[b.index][2]
+            next if move.statusMove?
+            next if move.callsAnotherMove?
+            newForm = move.physicalMove? ? 1 : 0
+            next unless newForm
+            next if b.form == newForm
+            pbShowAbilitySplash(b, :SCENECHANGE)
+            b.pbChangeForm(newForm,_INTL("{1} changes its form to fit its next move!",b.pbThis))
+            pbHideAbilitySplash(b)
+        end
+    end
+
     def pbAttackPhaseMoves
         # Show charging messages (Focus Punch)
         pbPriority.each do |b|
@@ -228,6 +246,7 @@ class PokeBattle_Battle
         pbAttackPhaseItems
         return true if @decision > 0
         pbAttackPhaseCloaking
+        pbAttackPhaseSceneChange
         return false
     end
 

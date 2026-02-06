@@ -152,6 +152,7 @@ def battleKeywordsImportant
         "shrinks",
         "shrinking",
         "sugar rush",
+        "self-destructing",
     ]
 end
 

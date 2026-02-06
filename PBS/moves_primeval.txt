@@ -175,7 +175,7 @@ Accuracy = 0
 TotalPP = 1
 Target = UserSide
 FunctionCode = EmpoweredTailwind
-Flags = Empowered
+Flags = Wind,Empowered
 Description = The user sets a powerful tailwind for 6 turns, which also increases move damage by 30%. User becomes Flying-type.
 Animation = TAILWIND
 #-------------------------------
@@ -217,7 +217,6 @@ TotalPP = 1
 Target = AllNearFoes
 FunctionCode = 645
 Flags = CanProtect,Blade,Empowered
-EffectChance = 10
 Description = The user slashes all near foes with with poisonous blades or edges. Will be critical against poisoned targets.
 Animation = CROSSPOISON
 #-------------------------------
@@ -250,7 +249,7 @@ Description = The user raises its Attack, Defense, and Accuracy by two steps. Ad
 Name = Primeval Grey Mist
 Type = POISON
 Category = Status
-Accuracy = 100
+Accuracy = 0
 TotalPP = 1
 Target = User
 FunctionCode = EmpoweredGreyMist
@@ -279,7 +278,7 @@ TotalPP = 1
 Target = FoeSide
 FunctionCode = EmpoweredPoisonSpikes
 Flags = Empowered
-Description = The user lays 2 hazard layers of poison spikes on the foe's side. User becomes Poison-type.
+Description = The user lays two hazard layers of poison spikes on the foe's side. User becomes Poison-type.
 Animation = TOXICSPIKES
 #-------------------------------
 #		GROUND MOVES
@@ -330,7 +329,7 @@ TotalPP = 1
 Target = FoeSide
 FunctionCode = EmpoweredSpikes
 Flags = Empowered
-Description = The user lays 3 hazard layers of Spikes on the foe's side. User becomes Ground-type.
+Description = The user lays three hazard layers of Spikes on the foe's side. User becomes Ground-type.
 Animation = SPIKES
 #-------------------------------
 [WARPINGCORE]
@@ -489,7 +488,7 @@ Target = NearOther
 Priority = 1
 FunctionCode = EmpoweredBulletPunch
 Flags = CanProtect,Punch,Empowered
-Description = The user strikes the target with 3 punches like bullets. This move always goes first.
+Description = The user strikes the target with three punches like bullets. This move always goes first.
 Animation = BULLETPUNCH
 #-------------------------------
 [EMPOWEREDMETALCLAW]
@@ -607,7 +606,7 @@ TotalPP = 1
 Target = FoeSide
 FunctionCode = EmpoweredFlameSpikes
 Flags = Empowered
-Description = The user lays 2 hazard layers of burning spikes on the foe's side. User becomes Fire-type.
+Description = The user lays two hazard layers of burning spikes on the foe's side. User becomes Fire-type.
 Animation = FLAMESPIKES
 #-------------------------------
 [PRIMEVALIGNITE]
@@ -647,7 +646,7 @@ Target = AllNearFoes
 FunctionCode = EmpoweredBubbleBeam
 Flags = CanProtect,Empowered
 EffectChance = 100
-Description = A spray of bubbles is forcefully ejected at all nearby foes. This lowers their Speed by 3 steps.
+Description = A spray of bubbles is forcefully ejected at all nearby foes. This lowers their Speed by three steps.
 Animation = BUBBLEBEAM
 #-------------------------------
 [EMPOWEREDSURF]
@@ -673,7 +672,7 @@ Target = User
 FunctionCode = EmpoweredFlowState
 Flags = Empowered
 EffectChance = 100
-Description = The user enters a state of Total Focus, prevents stat steps from being lowered, raises Attack. and Sp. Def, and becomes Water-type.
+Description = The user enters a state of total focus, prevents stat steps from being lowered, raises Attack and Sp. Def, and becomes Water-type.
 Animation = FLOWSTATE
 #-------------------------------
 [PRIMEVALRAINSTORM]
@@ -723,7 +722,7 @@ TotalPP = 1
 Target = AllNearFoes
 FunctionCode = EmpoweredBulletSeed
 Flags = CanProtect,Empowered
-Description = The user forcefully shoots 6 seeds in rapid succession, spread among nearby enemies.
+Description = The user forcefully shoots six seeds in rapid succession, spread among nearby enemies.
 Animation = BULLETSEED
 #-------------------------------
 [EMPOWEREDGIGADRAIN]
@@ -832,7 +831,7 @@ Type = ELECTRIC
 Category = Status
 Accuracy = 0
 TotalPP = 1
-Target = BothSides
+Target = AllNearFoes
 FunctionCode = EmpoweredNumb
 Flags = Empowered
 Description = The user inflicts numb on all nearby foes. User becomes Electric-type.
@@ -898,7 +897,7 @@ TotalPP = 1
 Target = User
 FunctionCode = EmpoweredMagicCoat
 Flags = Empowered
-Description = Bounces back status moves for the next 3 turns. User becomes Psychic-type.
+Description = Bounces back status moves for the next three turns. User becomes Psychic-type.
 Animation = MAGICCOAT
 #-------------------------------
 [PRIMEVALMINDLINK]
@@ -934,7 +933,7 @@ TotalPP = 1
 Target = AllNearFoes
 FunctionCode = EmpoweredPacify
 Flags = Empowered
-Description = The user employs hypnotic suggestion to make a statused target fall into a deep sleep. User becomes Psychic-type.
+Description = The user employs hypnotic suggestion to make all nearby statused foes fall into a deep sleep. User becomes Psychic-type.
 Animation = HYPNOSIS
 #-------------------------------
 #		ICE MOVES
@@ -974,7 +973,7 @@ TotalPP = 1
 Target = FoeSide
 FunctionCode = EmpoweredFrostSpikes
 Flags = Empowered
-Description = The user lays 2 hazard layers of frozen spikes on the foe's side. User becomes Ice-type.
+Description = The user lays two hazard layers of frozen spikes on the foe's side. User becomes Ice-type.
 Animation = FROSTSPIKES
 #-------------------------------
 [PRIMEVALHAIL]

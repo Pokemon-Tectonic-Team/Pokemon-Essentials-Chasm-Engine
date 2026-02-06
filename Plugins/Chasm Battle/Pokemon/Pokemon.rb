@@ -284,8 +284,11 @@ class Pokemon
     end
 
     # @return [Boolean] whether the Pokémon is not fainted and not an egg
-    def able?(ignorePacifist = false)
+    def able?(ignorePacifist = false, additionalParameters = [])
         return false if hasAbility?(:PACIFIST) && !ignorePacifist
+        GameData::Ability.getByFlag("UnableByDefault").each do |unableAbilityID|
+            return false if hasAbility?(unableAbilityID) && !additionalParameters.include?(unableAbilityID)
+        end
         return !egg? && @hp > 0 && !@afraid
     end
 
@@ -863,16 +866,11 @@ class Pokemon
     def removeInvalidItems
         return unless items
         return if legalItems?(items, ownedByPlayer?)
-        if ownedByPlayer?
-            pbMessage(_INTL("{1} is no longer allowed to hold its current items.", name))
-            if boss?
-                removeItems
-            else
-                pbTakeItemsFromPokemon(self)
-            end
-        else
-            echoln(_INTL("#{name} is not allowed to hold its current items."))
+        pbMessage(_INTL("{1} is no longer allowed to hold its current items.", name))
+        if boss?
             removeItems
+        else
+            pbTakeItemsFromPokemon(self)
         end
     end
 

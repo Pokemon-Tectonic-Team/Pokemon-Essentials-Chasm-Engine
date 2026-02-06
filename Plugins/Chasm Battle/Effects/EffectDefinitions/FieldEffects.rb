@@ -300,3 +300,80 @@ GameData::BattleEffect.register_effect(:Field, {
         end
     end,
 })
+
+GameData::BattleEffect.register_effect(:Field, {
+    :id => :SlumberingShieldReady,
+    :real_name => "Slumbering Shield Ready",
+    :info_displayed => false,
+    :apply_proc => proc do |battle, _value|
+        slumberingShieldParties = []
+        [battle.party1, battle.party2].each_with_index do |party, partyIndex|
+            party.each do |pkmn, i|
+                if pkmn.hasAbility?(:SLUMBERINGSHIELD)
+                    slumberingShieldParties.push(partyIndex)
+                    battle.pbShowPokemonAbilitySplash(pkmn, partyIndex, :SLUMBERINGSHIELD)
+                    break
+                end
+            end
+        end
+        if slumberingShieldParties.length <= 1
+            battle.pbDisplay(_INTL("A howl can be heard in the distance! The Slumbering Shield wakes!"))
+        else
+            battle.pbDisplay(_INTL("A howl can be heard in the distance! The Slumbering Shields wake!"))
+        end
+        slumberingShieldParties.each do |s|
+            battle.pbHidePokemonAbilitySplash(s)
+        end
+    end
+})
+
+GameData::BattleEffect.register_effect(:Field, {
+    :id => :SlumberingSwordReady,
+    :real_name => "Slumbering Sword Ready",
+    :info_displayed => false,
+    :apply_proc => proc do |battle, _value|
+        slumberingSwordParties = []
+        [battle.party1, battle.party2].each_with_index do |party, partyIndex|
+            party.each do |pkmn, i|
+                if pkmn.hasAbility?(:SLUMBERINGSWORD)
+                    slumberingSwordParties.push(partyIndex)
+                    battle.pbShowPokemonAbilitySplash(pkmn, partyIndex, :SLUMBERINGSWORD)
+                    break
+                end
+            end
+        end
+        if slumberingSwordParties.length <= 1
+            battle.pbDisplay(_INTL("A howl can be heard in the distance! The Slumbering Sword wakes!"))
+        else
+            battle.pbDisplay(_INTL("A howl can be heard in the distance! The Slumbering Swords wake!"))
+        end
+        slumberingSwordParties.each do |s|
+            battle.pbHidePokemonAbilitySplash(s)
+        end
+    end
+})
+
+GameData::BattleEffect.register_effect(:Field, {
+    :id => :RustedShieldDropped,
+    :real_name => "Rusted Shield Dropped",
+    :info_displayed => false,
+    :apply_proc => proc do |battle, _value|
+        battle.pbDisplay(_INTL("The Rusted Shield clatters on the ground!"))
+    end
+})
+
+GameData::BattleEffect.register_effect(:Field, {
+    :id => :RustedSwordDropped,
+    :real_name => "Rusted Sword Dropped",
+    :info_displayed => false,
+    :apply_proc => proc do |battle, _value|
+        battle.pbDisplay(_INTL("The Rusted Sword clatters on the ground!"))
+    end
+})
+
+GameData::BattleEffect.register_effect(:Field, {
+    :id => :PokemonEntered,
+    :real_name => "Pokémon Entered",
+    :info_displayed => false,
+    :type => :Array,
+})

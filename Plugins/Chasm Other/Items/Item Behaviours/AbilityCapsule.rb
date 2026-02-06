@@ -20,6 +20,10 @@ ItemHandlers::UseOnPokemon.add(:ABILITYCAPSULE,proc { |item,pkmn,scene|
       pbSceneDefaultDisplay(_INTL("You may not make your last able Pokémon a pacifist."),scene)
       next false
     end
+    if GameData::Ability.getByFlag("UnableByDefault").include?(newabil.id) && $Trainer.able_pokemon_count <= 1
+      pbSceneDefaultDisplay(_INTL("You may not make your last able Pokémon have this ability."),scene)
+      next false
+    end
     if pbSceneDefaultConfirm(_INTL("Would you like to change {1}'s Ability to {2}?", pkmn.name,newabilname),scene)
       pkmn.ability_index = newabilindex
       pkmn.ability = newabil

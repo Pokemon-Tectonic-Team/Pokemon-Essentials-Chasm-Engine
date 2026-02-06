@@ -427,8 +427,9 @@ Pokedex = The power that lay hidden in its body now covers its horn, turning it 
 FormName = Pirouette
 Type1 = NORMAL
 Type2 = FIGHTING
-BaseStats = 100,130,90,130,75,75
-# Total = 600
+BaseStats = 100,130,120,115,75,80
+# Total = 620
+Abilities = LEADDANCER,SCENECHANGE
 #-------------------------------
 [GENESECT,1]
 FormName = Shock Drive
@@ -878,6 +879,7 @@ Type1 = FAIRY
 Type2 = STEEL
 BaseStats = 85,160,110,140,75,110
 # Total = 680
+Abilities = STAINLESSSTEEL
 Moves = 1,BEHEMOTHBLADE
 FormMove = BEHEMOTHBLADE
 Weight = 355.0
@@ -889,6 +891,7 @@ Type1 = FIGHTING
 Type2 = STEEL
 BaseStats = 85,125,135,125,75,135
 # Total = 680
+Abilities = STAINLESSSTEEL
 Moves = 1,BEHEMOTHBASH
 FormMove = BEHEMOTHBASH
 Weight = 785.0
@@ -939,11 +942,10 @@ Height = 5.0
 Weight = 999.7
 #-------------------------------
 [RAYQUAZA,1]
-FormName = Delta
-MegaMove = DRAGONASCENT
-MegaMessage = 1
-BaseStats = 105,150,90,95,150,90
-# Total = 680
+FormName = Meteoric
+BaseStats = 95,180,95,115,180,95
+# Total = 760
+Abilities = JUGGERNAUT
 Height = 10.8
 Weight = 392.0
 #-------------------------------

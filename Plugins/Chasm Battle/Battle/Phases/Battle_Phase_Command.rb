@@ -371,7 +371,7 @@ class PokeBattle_Battle
         unless @bossBattle
             [@party1, @party2].each_with_index do |party, partyIndex|
                 party.each_with_index do |pokemon, i|
-                    next unless pokemon&.able?
+                    next unless pokemon&.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
                     next if pbFindBattler(i, partyIndex) # Skip Pokémon in battle
                     pokemon.species = GameData::Species::DATA.keys.sample
                     pokemon.name = nil

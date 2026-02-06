@@ -224,7 +224,7 @@ class PokeBattle_Move_EmpoweredCruelty < PokeBattle_Move_DoubleDamageTargetStatu
 end
 
 #===============================================================================
-# Move deals double damage but heals the status condition every active Pokémon
+# Move deals double damage but heals the status condition of every active Pokémon
 # if the target has a status condition (Impurity Blaze)
 #===============================================================================
 class PokeBattle_Move_ImpurityBlaze < PokeBattle_Move
@@ -591,5 +591,18 @@ class PokeBattle_Move_DoubleDamageMoneyTargetStatused < PokeBattle_Move
         money = 8
         money *= 2 if target.pbHasAnyStatus?
         user.generateMoney(money)
+    end
+end
+#===============================================================================
+# Power is increased by 30% if the move is super-effective or hyper-effective. (Atmospheric Burst)
+#===============================================================================
+class PokeBattle_Move_DamageBoost30PercentSuperOrHyperEffective < PokeBattle_Move
+    def pbBaseDamage(baseDmg, user, target)
+        baseDmg *= 1.3 if target.damageState.typeMod == Effectiveness::SUPER_EFFECTIVE
+        return baseDmg
+    end
+
+    def shouldHighlight?(user, target)
+        return pbCalcTypeMod(:FLYING, user, target, true) == Effectiveness::SUPER_EFFECTIVE
     end
 end

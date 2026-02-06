@@ -56,16 +56,23 @@ class AbilitySplashBar < SpriteWrapper
     def battler=(value)
         @battler = value
         pokemon = @battler.illusion? ? @battler.disguisedAs : @battler.pokemon
-        @speciesIcon.setBitmap(GameData::Species.icon_filename_from_pokemon(pokemon))
-        @speciesIcon.src_rect.y = SPECIES_ICON_SRC_Y
-        @speciesIcon.src_rect.height = SPECIES_ICON_SRC_HEIGHT
-        @speciesIcon.src_rect.width = @speciesIcon.bitmap.width / 2
-        if !@battler.opposes?
-            @speciesIcon.mirror = true
-        end
+        setSpeciesIcon(GameData::Species.icon_filename_from_pokemon(pokemon))
+        mirrorSpeciesIcon(true) unless @battler.opposes?
         positionBar
         refresh
     end
+
+    def setSpeciesIcon(value)
+        @speciesIcon.setBitmap(value)
+        @speciesIcon.src_rect.y = SPECIES_ICON_SRC_Y
+        @speciesIcon.src_rect.height = SPECIES_ICON_SRC_HEIGHT
+        @speciesIcon.src_rect.width = @speciesIcon.bitmap.width / 2
+    end
+
+    def mirrorSpeciesIcon(value)
+        @speciesIcon.mirror = value
+    end
+
 
     def ability=(value)
         abilityData = GameData::Ability.get(value)

@@ -34,13 +34,6 @@ BattleHandlers::UserAbilityStartOfMove.add(:REFRACTIVE,
     moveUseTypeChangeAbility(ability, user, move, battle, true) if move.lightMove?
   }
 )
-
-BattleHandlers::UserAbilityEndOfMove.add(:RAGEMANEUVERS,
-  proc { |ability, user, targets, move, battle|
-    next unless move.rampagingMove?
-    user.applyEffect(:RampageLocked)
-  }
-)
   
 BattleHandlers::UserAbilityStartOfMove.add(:RAINBOWTRAIL,
   proc { |ability, user, targets, move, battle|
@@ -63,6 +56,15 @@ BattleHandlers::UserAbilityStartOfMove.add(:RAINBOWTRAIL,
     user.showMyAbilitySplash(ability)
     battle.pbDisplay(_INTL("{1}'s rainbows shine with an aura of {2}!", user.pbThis, typeName))
     battle.scene.pbRefresh
+    user.hideMyAbilitySplash
+  }
+)
+
+BattleHandlers::UserAbilityStartOfMove.add(:STAYOFEXECUTION,
+  proc { |ability, user, targets, move, battle|
+    next unless move.bladeMove?
+    user.showMyAbilitySplash(ability)
+    battle.pbDisplay(_INTL("{1} foresees an imminent demise!", user.pbThis))
     user.hideMyAbilitySplash
   }
 )

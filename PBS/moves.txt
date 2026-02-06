@@ -658,18 +658,6 @@ FunctionCode = CureUserStatus
 Flags = CanSnatch
 Description = The user rests to cure itself of any non-volatile status condition.
 #-------------------------------
-[RELICSONG]
-Name = Relic Song
-Type = NORMAL
-Category = Adaptive
-Power = 75
-Accuracy = 100
-TotalPP = 10
-Target = AllNearFoes
-FunctionCode = ChangeUserMeloettaForm
-Flags = CanProtect,Sound
-Description = An ancient song appeals to the hearts of those listening. Switches Meloetta's form.
-#-------------------------------
 [RETALIATE]
 Name = Retaliate
 Type = NORMAL
@@ -3443,7 +3431,7 @@ Description = The user engulfs the target in fierce flames, trapping and binding
 Name = Flame Charge
 Type = FIRE
 Category = Physical
-Power = 60
+Power = 50
 Accuracy = 100
 TotalPP = 15
 Target = NearOther

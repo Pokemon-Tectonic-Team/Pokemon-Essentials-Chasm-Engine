@@ -142,7 +142,7 @@ class PokeBattle_Battle
             trainer.each_with_index do |_t, idxTrainer|
                 ret[side][idxTrainer] = []
                 eachInTeam(side, idxTrainer) do |pkmn, idxPkmn|
-                    next unless pkmn.able?
+                    next unless pkmn.able?(false, getAbleParameters(idxPkmn, side, idxTrainer))
                     idxBattler = 2 * battlerNumber + side
                     pbCreateBattler(idxBattler, pkmn, idxPkmn)
                     ret[side][idxTrainer].push(idxBattler)
@@ -822,8 +822,8 @@ class PokeBattle_Battle
         counts   = [0, 0]
         hpTotals = [0, 0]
         for side in 0...2
-            pbParty(side).each do |pkmn|
-                next if !pkmn || !pkmn.able?
+            pbParty(side).each_with_index do |pkmn, idxPkmn|
+                next if !pkmn || !pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
                 counts[side]   += 1
                 hpTotals[side] += pkmn.hp
             end
@@ -841,7 +841,7 @@ class PokeBattle_Battle
         hpTotals = [0, 0]
         for side in 0...2
             pbParty(side).each do |pkmn|
-                next if !pkmn || !pkmn.able?
+                next if !pkmn || !pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
                 counts[side]   += 1
                 hpTotals[side] += 100 * pkmn.hp / pkmn.totalhp
             end

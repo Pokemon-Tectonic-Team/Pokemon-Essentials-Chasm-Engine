@@ -83,6 +83,18 @@ BattleHandlers::MoveImmunityTargetAbility.add(:FIREFIGHTER,
   }
 )
 
+BattleHandlers::MoveImmunityTargetAbility.add(:SWORDSMITHING,
+  proc { |ability, user, target, move, type, battle, showMessages, aiCheck|
+      next pbBattleMoveImmunityStatAbility(ability, user, target, move, type, :STEEL, ATTACKING_STATS_1, nil, battle, showMessages, aiCheck)
+  }
+)
+
+BattleHandlers::MoveImmunityTargetAbility.add(:SHIELDSMITHING,
+  proc { |ability, user, target, move, type, battle, showMessages, aiCheck|
+      next pbBattleMoveImmunityStatAbility(ability, user, target, move, type, :STEEL, DEFENDING_STATS_1, nil, battle, showMessages, aiCheck)
+  }
+)
+
 # pbBattleMoveImmunityHealAbility
 
 BattleHandlers::MoveImmunityTargetAbility.add(:HEARTLESS,

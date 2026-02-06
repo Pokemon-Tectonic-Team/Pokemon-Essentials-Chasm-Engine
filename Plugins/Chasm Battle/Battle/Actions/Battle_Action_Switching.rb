@@ -24,14 +24,18 @@ class PokeBattle_Battle
             end
             return false
         end
-        unless party[idxParty].able?
+        unless party[idxParty].able?(false, getAbleParametersByBattlerIndex(idxParty, idxBattler))
             if partyScene
                 if partyMember.afraid?
                     partyScene.pbDisplay(_INTL("{1} is too afraid to battle!", partyMember.name))
-                elsif partyMember.hasAbility?(:PACIFIST)
-                    pbMessage(_INTL("{1} refuses to join the battle. It's a pacifist!", partyMember.name))
                 else
-                    partyScene.pbDisplay(_INTL("{1} has no energy left to battle!", partyMember.name))
+                    echoln(partyMember.ability.id)
+                    pkmnRefusesToFight = BattleHandlers.triggerForbidsUserSwitchInAbility(
+                        partyMember.ability, self, partyMember, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler), idxParty, true
+                    )
+                    unless pkmnRefusesToFight
+                        partyScene.pbDisplay(_INTL("{1} has no energy left to battle!", partyMember.name))
+                    end
                 end
             end
             return false
@@ -56,6 +60,10 @@ class PokeBattle_Battle
         end
         if @battlers[idxBattler].effectActive?(:RampageLocked)
             partyScene.pbDisplay(_INTL("Rampaging Pokémon can't be switched out!")) if partyScene
+            return false
+        end
+        if @battlers[idxBattler].effectActive?(:BypassExhaustion)
+            partyScene.pbDisplay(_INTL("Exhausted Pokémon can't be switched out!")) if partyScene
             return false
         end
         # Check whether party Pokémon can switch in

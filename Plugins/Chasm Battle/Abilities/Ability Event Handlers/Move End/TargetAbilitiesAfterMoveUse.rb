@@ -36,7 +36,7 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:MONKEYMISCHIEF,
       next if switched.include?(user.index)
       next unless move.damagingMove?
       next unless user.activatesTargetAbilities?
-      next if battle.foretoldMove
+      next if user.dummy
       move.knockOffItems(target, user, ability: ability, firstItemOnly: true)
   }
 )
@@ -46,7 +46,7 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:MOONLIGHTER,
       next if switched.include?(user.index)
       next unless move.damagingMove?
       next unless user.activatesTargetAbilities?
-      next if battle.foretoldMove
+      next if user.dummy
       next unless battle.moonGlowing?
       item = user.firstItem
       if move.canStealItem?(user,target, item)
@@ -75,6 +75,18 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:PLASMAGLOBE,
       battle.pbDisplay(_INTL("{1} is damaged by recoil!", user.pbThis))
       user.pbItemHPHealCheck
       user.pbFaint if user.fainted?
+      battle.pbHideAbilitySplash(target)
+  }
+)
+
+BattleHandlers::TargetAbilityAfterMoveUse.add(:PRMIVALSWORDBREAKER,
+  proc { |ability, target, user, move, _switched, battle|
+      next unless move.damagingMove?
+      next if target.damageState.unaffected
+      next if target.damageState.totalHPLost < 120
+      next if user.effectActive?(:Fracture)
+      battle.pbShowAbilitySplash(target, ability)
+      user.applyEffect(:Fracture, applyEffectDurationModifiers(DEFAULT_FRACTURE_DURATION, target))
       battle.pbHideAbilitySplash(target)
   }
 )

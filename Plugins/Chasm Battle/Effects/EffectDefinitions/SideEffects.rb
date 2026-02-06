@@ -692,99 +692,8 @@ GameData::BattleEffect.register_effect(:Side, {
 })
 
 ##########################################
-# Internal Tracking
+# Genie Charm effects
 ##########################################
-GameData::BattleEffect.register_effect(:Side, {
-    :id => :LastRoundFainted,
-    :real_name => "Last Round Fainted",
-    :type => :Integer,
-    :default => -1,
-    :info_displayed => false,
-    :court_changed => false,
-})
-
-GameData::BattleEffect.register_effect(:Side, {
-    :id => :TyrannicalImmunity,
-    :real_name => "Spent Tyrannical Immunity",
-    :info_displayed => false,
-    :court_changed => false,
-})
-
-##########################################
-# Other
-##########################################
-GameData::BattleEffect.register_effect(:Side, {
-    :id => :Tailwind,
-    :real_name => "Tailwind Turns",
-    :type => :Integer,
-    :ticks_down_eor => true,
-    :apply_proc => proc do |battle, _side, teamName, value|
-        teamName = teamName.downcase
-        battle.pbDisplay(_INTL("A Tailwind blew from behind {1}!", teamName))
-        if value > 99
-            battle.pbDisplay(_INTL("It will last forever!"))
-        else
-            battle.pbDisplay(_INTL("It will last for {1} more turns!", value - 1))
-        end
-    end,
-    :disable_proc => proc do |battle, _side, teamName|
-        battle.pbDisplay(_INTL("{1}'s Tailwind was stopped!", teamName))
-    end,
-    :expire_proc => proc do |battle, _side, teamName|
-        battle.pbDisplay(_INTL("{1}'s Tailwind petered out.", teamName))
-    end,
-})
-
-GameData::BattleEffect.register_effect(:Side, {
-    :id => :EmpoweredTailwind,
-    :real_name => "Primeval Tailwind",
-    :type => :Integer,
-    :ticks_down_eor => true,
-    :apply_proc => proc do |battle, _side, teamName, value|
-        teamName = teamName.downcase
-        battle.pbDisplay(_INTL("A Primeval Tailwind blew from behind {1}!", teamName))
-        if value > 99
-            battle.pbDisplay(_INTL("It will last forever!"))
-        else
-            battle.pbDisplay(_INTL("It will last for {1} more turns!", value - 1))
-        end
-    end,
-    :disable_proc => proc do |battle, _side, teamName|
-        battle.pbDisplay(_INTL("{1}'s Primeval Tailwind was stopped!", teamName))
-    end,
-    :expire_proc => proc do |battle, _side, teamName|
-        battle.pbDisplay(_INTL("{1}'s Primeval Tailwind petered out.", teamName))
-    end,
-})
-
-GameData::BattleEffect.register_effect(:Side, {
-    :id => :EmpoweredEmbargo,
-    :real_name => "Items Supressed",
-    :apply_proc => proc do |battle, _side, teamName, _value|
-        battle.pbDisplay(_INTL("{1} can no longer use items!", teamName))
-    end,
-})
-
-GameData::BattleEffect.register_effect(:Side, {
-    :id => :Bulwark,
-    :real_name => "Bulwark",
-    :resets_eor => true,
-})
-
-GameData::BattleEffect.register_effect(:Side, {
-    :id => :ErodedRock,
-    :real_name => "Eroded Rocks",
-    :type => :Integer,
-    :maximum => 4,
-    :increment_proc => proc do |battle, _side, teamName, _value, increment|
-        teamName[0] = teamName[0].downcase
-        battle.pbDisplay(_INTL("A rock lands on the ground around {1}.", teamName))
-    end,
-    :disable_proc => proc do |battle, _side, teamName|
-        teamName[0] = teamName[0].downcase
-        battle.pbDisplay(_INTL("Each rock on the ground around {1} was absorbed!", teamName))
-    end,
-})
 
 GameData::BattleEffect.register_effect(:Side, {
     :id => :FeathersDropped,
@@ -887,6 +796,123 @@ GameData::BattleEffect.register_effect(:Side, {
     :disable_proc => proc do |battle, _side, teamName|
         teamName[0] = teamName[0].downcase
         battle.pbDisplay(_INTL("The scutes around {1} were absorbed!", teamName))
+    end,
+})
+
+##########################################
+# Internal Tracking
+##########################################
+GameData::BattleEffect.register_effect(:Side, {
+    :id => :LastRoundFainted,
+    :real_name => "Last Round Fainted",
+    :type => :Integer,
+    :default => -1,
+    :info_displayed => false,
+    :court_changed => false,
+})
+
+GameData::BattleEffect.register_effect(:Side, {
+    :id => :TyrannicalImmunity,
+    :real_name => "Spent Tyrannical Immunity",
+    :info_displayed => false,
+    :court_changed => false,
+})
+
+##########################################
+# Hero's Journey
+##########################################
+
+GameData::BattleEffect.register_effect(:Side, {
+    :id => :HerosJourneyKO,
+    :real_name => "Hero's Journey - KO",
+    :info_displayed => false,
+})
+
+GameData::BattleEffect.register_effect(:Side, {
+    :id => :HerosJourneyRevenge,
+    :real_name => "Hero's Journey - Revenge",
+    :info_displayed => false,
+})
+
+GameData::BattleEffect.register_effect(:Side, {
+    :id => :HerosJourneyStatus,
+    :real_name => "Hero's Journey - Status",
+    :info_displayed => false,
+})
+
+##########################################
+# Other
+##########################################
+GameData::BattleEffect.register_effect(:Side, {
+    :id => :Tailwind,
+    :real_name => "Tailwind Turns",
+    :type => :Integer,
+    :ticks_down_eor => true,
+    :apply_proc => proc do |battle, _side, teamName, value|
+        teamName = teamName.downcase
+        battle.pbDisplay(_INTL("A Tailwind blew from behind {1}!", teamName))
+        if value > 99
+            battle.pbDisplay(_INTL("It will last forever!"))
+        else
+            battle.pbDisplay(_INTL("It will last for {1} more turns!", value - 1))
+        end
+    end,
+    :disable_proc => proc do |battle, _side, teamName|
+        battle.pbDisplay(_INTL("{1}'s Tailwind was stopped!", teamName))
+    end,
+    :expire_proc => proc do |battle, _side, teamName|
+        battle.pbDisplay(_INTL("{1}'s Tailwind petered out.", teamName))
+    end,
+})
+
+GameData::BattleEffect.register_effect(:Side, {
+    :id => :EmpoweredTailwind,
+    :real_name => "Primeval Tailwind",
+    :type => :Integer,
+    :ticks_down_eor => true,
+    :apply_proc => proc do |battle, _side, teamName, value|
+        teamName = teamName.downcase
+        battle.pbDisplay(_INTL("A Primeval Tailwind blew from behind {1}!", teamName))
+        if value > 99
+            battle.pbDisplay(_INTL("It will last forever!"))
+        else
+            battle.pbDisplay(_INTL("It will last for {1} more turns!", value - 1))
+        end
+    end,
+    :disable_proc => proc do |battle, _side, teamName|
+        battle.pbDisplay(_INTL("{1}'s Primeval Tailwind was stopped!", teamName))
+    end,
+    :expire_proc => proc do |battle, _side, teamName|
+        battle.pbDisplay(_INTL("{1}'s Primeval Tailwind petered out.", teamName))
+    end,
+})
+
+GameData::BattleEffect.register_effect(:Side, {
+    :id => :EmpoweredEmbargo,
+    :real_name => "Items Supressed",
+    :apply_proc => proc do |battle, _side, teamName, _value|
+        battle.pbDisplay(_INTL("{1} can no longer use items!", teamName))
+    end,
+})
+
+GameData::BattleEffect.register_effect(:Side, {
+    :id => :Bulwark,
+    :real_name => "Bulwark",
+    :resets_eor => true,
+})
+
+GameData::BattleEffect.register_effect(:Side, {
+    :id => :ErodedRock,
+    :real_name => "Eroded Rocks",
+    :type => :Integer,
+    :maximum => 4,
+    :increment_proc => proc do |battle, _side, teamName, _value, increment|
+        teamName[0] = teamName[0].downcase
+        battle.pbDisplay(_INTL("A rock lands on the ground around {1}.", teamName))
+    end,
+    :disable_proc => proc do |battle, _side, teamName|
+        teamName[0] = teamName[0].downcase
+        battle.pbDisplay(_INTL("Each rock on the ground around {1} was absorbed!", teamName))
     end,
 })
 

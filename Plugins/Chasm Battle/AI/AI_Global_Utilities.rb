@@ -7,27 +7,6 @@ def pbRoughType(move, user)
 end
 
 #=============================================================================
-# Nerf the AI at lower levels, to maintain the same playstyle as endgame
-# Used in Wish, Switching, and Damage
-#=============================================================================
-def levelNerf(switch,damage,intensity)
-    levelBracket = (level / 5.0).ceil
-    levelPenalty = [0,15.0,15.0,13.0,10.0,8.0,5.0][levelBracket]
-    levelPenalty *= intensity
-    if switch == true
-        PBDebug.log("[STAY-IN RATING][LEVEL NERF] #{pbThis} (#{index}) is penalizing switching (+#{levelPenalty.round})")
-    elsif damage == true
-        levelPenalty = levelPenalty / 5 / 10 + 1.0
-        PBDebug.log"[LEVEL NERF] Adjusted score by (+#{((levelPenalty - 1) * 100).round})%"
-    else
-        levelPenalty = -levelPenalty / 5 / 10 + 1.0
-        PBDebug.log"[LEVEL NERF] Adjusted score by (-#{100 - (levelPenalty * 100).round})%"
-    end
-    
-    return levelPenalty
-end
-
-#=============================================================================
 # Figure out if the AI should play more aggressively
 # because the situation allows/requires it
 #=============================================================================

@@ -1035,7 +1035,6 @@ GameData::BattleEffect.register_effect(:Battler, {
     :expire_proc => proc do |battle, battler|
         battle.pbDisplay(_INTL("{1} spun down from its rampage.", battler.pbThis))
         battler.currentMove = nil
-        battler.disableEffect(:RampageLocked) if battler.effectActive?(:RampageLocked)
         if battler.effectActive?(:WillFaintAfterRampage)
             battle.pbDisplay(_INTL("Exhaustion finally catches up with {1}!", battler.pbThis(true)))
             battler.pbReduceHP(battler.hp,false,false)
@@ -1056,6 +1055,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :RampageLocked,
     :real_name => "Rampage Locked",
     :info_displayed => false,
+    :sub_effects => [:Rampaging]
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -1086,6 +1086,13 @@ GameData::BattleEffect.register_effect(:Battler, {
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :ParentalBond,
     :real_name => "Parental Bond",
+    :type => :Integer,
+    :resets_on_move_start => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :Diffraction,
+    :real_name => "Diffraction",
     :type => :Integer,
     :resets_on_move_start => true,
 })
@@ -2318,7 +2325,7 @@ GameData::BattleEffect.register_effect(:Battler, {
         end
         if damageToApply > 0
             battle.pbShowAbilitySplash(battler, :DELAYEDREACTION)
-            battle.pbDisplay(_INTL("{1} realized it had been attacked!", battler.pbThis(true)))
+            battle.pbDisplay(_INTL("{1} realized it had been attacked!", battler.pbThis))
             oldHP = battler.hp
             battler.damageState.displayedDamage = damageToApply
             damageToApply = battler.hp if damageToApply > battler.hp
@@ -2326,6 +2333,30 @@ GameData::BattleEffect.register_effect(:Battler, {
             battle.scene.pbHitAndHPLossAnimation([[battler, oldHP, 1]], true)
             battler.cleanupPreMoveDamage(battler, oldHP)
             battle.pbHideAbilitySplash(battler)
+        end
+    end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :DelayedDamage,
+    :real_name => "Delayed Damage",
+    :type => :Array,
+    :eor_proc => proc do |battle, battler, value|
+        damageToApply = 0
+        value.each do |delayedReactionEntry|
+            delayedReactionEntry[0] -= 1
+            if delayedReactionEntry[0] == 0
+                damageToApply += delayedReactionEntry[1]
+            end
+        end
+        if damageToApply > 0
+            battle.pbDisplay(_INTL("{1} received the incoming damage!", battler.pbThis))
+            oldHP = battler.hp
+            battler.damageState.displayedDamage = damageToApply
+            damageToApply = battler.hp if damageToApply > battler.hp
+            battler.pbReduceHP(damageToApply, false, false, false)
+            battle.scene.pbHitAndHPLossAnimation([[battler, oldHP, 1]], true)
+            battler.cleanupPreMoveDamage(battler, oldHP)
         end
     end,
 })
@@ -2600,32 +2631,48 @@ GameData::BattleEffect.register_effect(:Battler, {
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
-    :id => :HerosJourneyKO,
-    :real_name => "Hero's Journey KO",
+    :id => :BypassExhaustion,
+    :real_name => "Bypass Exhaustion",
     :info_displayed => false,
-    :apply_proc => proc do |battle, battler|
-        battle.pbDisplay(_INTL("{1} vanquishes its opponents!", battler.pbThis))
-        checkHerosJourney(battle, battler)
+    :apply_proc => proc do |_battle, battler, _value|
+        battler.currentMove = nil
+    end,
+    :sub_effects => [:HyperBeam],
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :HitsThisTurn,
+    :real_name => "Hit This Turn",
+    :type => :Integer,
+    :eor_proc => proc do |battle, battler, _value|
+        battler.disableEffect(:HitsThisTurn)
     end,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
-    :id => :HerosJourneyRevenge,
-    :real_name => "Hero's Journey Revenge",
+    :id => :IncomingDamageTurns,
+    :real_name => "Incoming Damage Turns",
+    :type => :Integer,
+    :ticks_down_eor => true,
     :info_displayed => false,
-    :apply_proc => proc do |battle, battler|
-        checkHerosJourney(battle, battler)
-    end,
+    :expire_proc => proc do |battle, battler|
+        raise _INTL("No incoming damage number was associated to the incoming damage event.") unless battler.effectActive?(:IncomingDamageAmount)
+        battle.pbDisplay(_INTL("A pulse bounced back to {1}!", battler.pbThis(true)))
+        oldHP = battler.hp
+        damageTaken = battler.effects[:IncomingDamageAmount]
+        battler.damageState.displayedDamage = damageTaken
+        battle.scene.pbDamageAnimation(battler)
+        battler.pbReduceHP(damageTaken, false)
+        battler.pbHealthLossChecks(oldHP)
+    end
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
-    :id => :HerosJourneyStatus,
-    :real_name => "Hero's Journey Status",
+    :id => :IncomingDamageAmount,
+    :real_name => "Incoming Damage Amount",
+    :type => :Integer,
     :info_displayed => false,
-    :apply_proc => proc do |battle, battler|
-        battle.pbDisplay(_INTL("{1} draws strength from patience!", battler.pbThis))
-        checkHerosJourney(battle, battler)
-    end,
+    :sub_effects => [:IncomingDamageTurns]
 })
 
 def checkHerosJourney(battle, battler)
@@ -2649,4 +2696,22 @@ GameData::BattleEffect.register_effect(:Battler, {
     :expire_proc => proc do |battle, battler|
         battler.disableEffect(:ExtraHidingTurn)
     end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :SprigHorn,
+    :real_name => "Sprig Horn First Hit",
+    :info_displayed => false
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ScytheHorn,
+    :real_name => "Scythe Horn First Hit",
+    :info_displayed => false
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :SwordHorn,
+    :real_name => "Sword Horn First Hit",
+    :info_displayed => false
 })

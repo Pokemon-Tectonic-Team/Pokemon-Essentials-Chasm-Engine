@@ -40,18 +40,18 @@ def pbChangeOnlineTrainerType
 end
 
 def pbChangeOnlineWinText
-  commands = []
-  CableClub::ONLINE_WIN_SPEECHES_LIST.each do |text|
-    commands.push(_INTL(text))
-  end
-  commands.push(_INTL("Cancel"))
+  speeches = CableClub::ONLINE_WIN_SPEECHES_LIST.map { |text| _INTL(text) }
+  initial_index = $Trainer.online_win_text || 0
+
+  pbMessage(_INTL("What do you want to say when you win?\\nNavigate to browse, then confirm to select."))
+
   loop do
-    cmd=pbMessage(_INTL("What do you want to say when you win?"),commands,-1)
-    if cmd>=0 && cmd<CableClub::ONLINE_WIN_SPEECHES_LIST.length-1
-      win_text=commands[cmd]
-      if pbConfirmMessage(_INTL("\"{1}\"\\nThis is what you wish to say?",win_text))
-        pbMessage(_INTL("\"{1}\"\\nThis is what you will say when you win.",win_text))
-        $Trainer.online_win_text=cmd
+    cmd = pbScrollableTextSelection(speeches, initial_index)
+    if cmd >= 0
+      win_text = speeches[cmd]
+      if pbConfirmMessage(_INTL("\"{1}\"\\nThis is what you wish to say?", win_text))
+        pbMessage(_INTL("\"{1}\"\\nThis is what you will say when you win.", win_text))
+        $Trainer.online_win_text = cmd
         break
       end
     else
@@ -61,18 +61,18 @@ def pbChangeOnlineWinText
 end
 
 def pbChangeOnlineLoseText
-  commands = []
-  CableClub::ONLINE_LOSE_SPEECHES_LIST.each do |text|
-    commands.push(_INTL(text))
-  end
-  commands.push(_INTL("Cancel"))
+  speeches = CableClub::ONLINE_LOSE_SPEECHES_LIST.map { |text| _INTL(text) }
+  initial_index = $Trainer.online_lose_text || 0
+
+  pbMessage(_INTL("What do you want to say when you lose?\\nNavigate to browse, then confirm to select."))
+
   loop do
-    cmd=pbMessage(_INTL("What do you want to say when you lose?"),commands,-1)
-    if cmd>=0 && cmd<CableClub::ONLINE_LOSE_SPEECHES_LIST.length-1
-      lose_text=commands[cmd]
-      if pbConfirmMessage(_INTL("\"{1}\"\\nThis is what you wish to say?",lose_text))
-        pbMessage(_INTL("\"{1}\"\\nThis is what you will say when you lose.",lose_text))
-        $Trainer.online_lose_text=cmd
+    cmd = pbScrollableTextSelection(speeches, initial_index)
+    if cmd >= 0
+      lose_text = speeches[cmd]
+      if pbConfirmMessage(_INTL("\"{1}\"\\nThis is what you wish to say?", lose_text))
+        pbMessage(_INTL("\"{1}\"\\nThis is what you will say when you lose.", lose_text))
+        $Trainer.online_lose_text = cmd
         break
       end
     else
