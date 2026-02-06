@@ -752,11 +752,11 @@ BattleHandlers::UserAbilityEndOfMove.add(:KARMICBALANCE,
         targets.each do |b|
           unchangedKarma = true if b.damageState.missed || b.damageState.unaffected
         end
-        next if unchangedKarma == true
-        if user.effectActive?(:ChoseAttack)
+        next if unchangedKarma
+        if move.damagingMove?
           user.pbLowerMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
           user.pbRaiseMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
-        elsif user.effectActive?(:ChoseStatus)
+        elsif move.statusMove?
           user.pbLowerMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
           user.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
         end

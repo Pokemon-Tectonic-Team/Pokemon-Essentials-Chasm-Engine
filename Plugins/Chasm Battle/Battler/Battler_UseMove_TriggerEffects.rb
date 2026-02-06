@@ -67,12 +67,11 @@ class PokeBattle_Battler
                 end
             end
             #Gulp Missile
-            if target.effectActive?(:Gulping, true)
-                PBDebug.log("[Lingering efect] #{target.pbThis}'s Gulp Missile")
+            if target.species == :CRAMORANT && target.form != 0
+                PBDebug.log("[Lingering effect] #{target.pbThis}'s Gulp Missile")
                 gulpform = target.form
-                target.form = 0
+                target.pbChangeForm(0,"Cramorant ejects its meal!")
                 battle.scene.pbChangePokemon(target, target.pokemon)
-                battle.scene.pbDamageAnimation(user)
                 user.applyFractionalDamage(1.0 / 4.0) if user.takesIndirectDamage?(true)
                 if gulpform == 1
                     user.pbLowerMultipleStatSteps(DEFENDING_STATS_1, target)
@@ -80,7 +79,6 @@ class PokeBattle_Battler
                     msg = nil
                     user.applyNumb(target, msg)
                 end
-                target.disableEffect(:Gulping)
             end
             # Are set to move, but haven't yet
             if @battle.choices[target.index][0] == :UseMove && !target.movedThisRound?

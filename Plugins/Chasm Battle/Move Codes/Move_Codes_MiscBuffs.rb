@@ -219,13 +219,23 @@ end
 #===============================================================================
 
 class PokeBattle_Move_GulpingDive < PokeBattle_Move
+    def pbMoveFailed?(user, _targets, show_message)
+        unless user.countsAs?(:CRAMORANT)
+            @battle.pbDisplay(_INTL("But {1} can't use the move!", user.pbThis(true))) if show_message
+            return true
+        end
+        return false
+    end
+
     def pbDisplayChargeMessage(user)
-        if user.canGulpMissile?
+        if user.form == 0
             battle.pbDisplay(_INTL("{1} fills its beak!", user.pbThis))
-            user.form = 2
-            user.form = 1 if user.hp > (user.totalhp / 2)
+            if user.hp > (user.totalhp / 2)
+                user.pbChangeForm(1, "Cramorant is gulping!")
+            else
+                user.pbChangeForm(2, "Cramorant is gorging!") 
+            end
             @battle.scene.pbChangePokemon(user, user.pokemon)
         end
-        user.applyEffect(:Gulping)
     end
 end

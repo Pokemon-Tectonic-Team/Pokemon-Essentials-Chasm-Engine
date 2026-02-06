@@ -4481,6 +4481,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = GulpingDive
+Flags = CanProtect,Uninvocable
 Description = The user dives down with its beak wide open. Transforms into Gulping or Gorging form.
 #-------------------------------
 [HARBORBREAKER]

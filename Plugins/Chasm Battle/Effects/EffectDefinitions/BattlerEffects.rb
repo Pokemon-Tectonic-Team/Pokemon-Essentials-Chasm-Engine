@@ -2650,9 +2650,3 @@ GameData::BattleEffect.register_effect(:Battler, {
         battler.disableEffect(:ExtraHidingTurn)
     end,
 })
-
-GameData::BattleEffect.register_effect(:Battler, {
-    :id => :Gulping,
-    :real_name => "Gulping",
-    :type => :Boolean,
-})
