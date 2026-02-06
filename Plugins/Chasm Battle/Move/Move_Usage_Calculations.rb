@@ -289,7 +289,7 @@ class PokeBattle_Move
                 next unless BattleHandlers.triggerCriticalPreventTargetAbility(ability, user, target, @battle)
                 unless checkingForAI
                     battle.pbShowAbilitySplash(target, ability)
-                    battle.pbDisplay(_INTL("{1} prevents the hit from being ical!", target.pbThis))
+                    battle.pbDisplay(_INTL("{1} prevents the hit from being critical!", target.pbThis))
                     battle.pbHideAbilitySplash(target)
                 end
                 return true
