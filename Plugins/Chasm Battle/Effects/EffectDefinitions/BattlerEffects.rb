@@ -2693,9 +2693,6 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Extra Hiding Turn",
     :type => :Integer,
     :ticks_down_eor => true,
-    :expire_proc => proc do |battle, battler|
-        battler.disableEffect(:ExtraHidingTurn)
-    end,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {

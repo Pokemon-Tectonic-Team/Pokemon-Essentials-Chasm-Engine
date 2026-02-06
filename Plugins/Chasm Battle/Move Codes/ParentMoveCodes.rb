@@ -555,6 +555,7 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
                 @chargingTurn = true
                 @damagingTurn = @powerHerb
             end
+            user.disableEffect(:ExtraHidingTurn)
         end
         return !@damagingTurn # Deliberately not "return @chargingTurn"
     end
