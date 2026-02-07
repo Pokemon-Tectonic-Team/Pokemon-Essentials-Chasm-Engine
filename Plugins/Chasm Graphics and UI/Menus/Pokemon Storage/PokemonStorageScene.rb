@@ -2,7 +2,7 @@
 # Pokémon storage visuals
 #===============================================================================
 class PokemonStorageScene
-    attr_reader :quickswap
+    attr_reader :cursormode
 
     def initialize
         @command = 1
@@ -22,7 +22,7 @@ class PokemonStorageScene
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
         @viewport.z = 99_999
         @selection = 0
-        @quickswap = false
+        @cursormode = :Default # Can also be :QuickSwap or :MultiSelect
         @filter = false
         @sprites = {}
         @choseFromParty = false
@@ -317,7 +317,7 @@ class PokemonStorageScene
                 end
             elsif Input.trigger?(Input::ACTION) && @command == 0 # Organize only
                 pbPlayDecisionSE
-                pbSetQuickSwap(!@quickswap)
+                incrementCursorMode
             elsif Input.trigger?(Input::BACK)
                 @selection = selection
                 return nil
@@ -337,6 +337,17 @@ class PokemonStorageScene
             if @storage.currentBox != currentBox
                 donationBoxTutorialCheck  
             end
+        end
+    end
+
+    def incrementCursorMode
+        case cursormode
+        when :Default
+            pbSetCursorMode(:QuickSwap)
+        when :QuickSwap
+            pbSetCursorMode(:MultiSelect)
+        when :MultiSelect
+            pbSetCursorMode(:Default)
         end
     end
 
@@ -396,9 +407,16 @@ class PokemonStorageScene
                 pbSetMosaic(selection)
             end
             update
-            if Input.trigger?(Input::ACTION) && @command == 0 # Organize only
+            if Input.release?(Input::ACTION) && @command == 0 # Organize only
                 pbPlayDecisionSE
-                pbSetQuickSwap(!@quickswap)
+                incrementCursorMode
+            elsif Input.time?(Input::ACTION) > 200_000 && @command == 0 # Hold for about a second...?
+                pbPlayDecisionSE
+                if @cursormode == :MultiSelect
+                    pbSetCursorMode(:Default)
+                else
+                    pbSetCursorMode(:MultiSelect)  
+                end
             elsif Input.trigger?(Input::BACK)
                 @selection = selection
                 return -1
@@ -515,9 +533,10 @@ class PokemonStorageScene
         end
     end
 
-    def pbSetQuickSwap(value)
-        @quickswap = value
-        @sprites["arrow"].quickswap = value
+    def pbSetCursorMode(value)
+        @cursormode = value
+        @sprites["arrow"].quickswap = @cursormode == :QuickSwap
+        @sprites["arrow"].multiselect = @cursormode == :MultiSelect
     end
 
     def pbShowPartyTab

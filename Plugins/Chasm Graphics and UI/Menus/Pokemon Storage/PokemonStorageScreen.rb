@@ -61,7 +61,7 @@ class PokemonStorageScreen
                     end
                     heldpoke = pbHeldPokemon
                     next if !pokemon && !heldpoke
-                    if @scene.quickswap
+                    if @scene.cursormode == :QuickSwap
                         if @heldpkmn
                             pokemon ? pbSwap(selected) : pbPlace(selected)
                         else
