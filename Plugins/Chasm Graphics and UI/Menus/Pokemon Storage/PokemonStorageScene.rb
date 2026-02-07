@@ -316,7 +316,6 @@ class PokemonStorageScene
                     pbSetMosaic(selection)
                 end
             elsif Input.trigger?(Input::ACTION) && @command == 0 # Organize only
-                pbPlayDecisionSE
                 incrementCursorMode
             elsif Input.trigger?(Input::BACK)
                 @selection = selection
@@ -341,6 +340,10 @@ class PokemonStorageScene
     end
 
     def incrementCursorMode
+        if @command == 4 # Selection mode
+           pbPlayBuzzerSE
+           return
+        end
         case cursormode
         when :Default
             pbSetCursorMode(:QuickSwap)
@@ -349,6 +352,7 @@ class PokemonStorageScene
         when :MultiSelect
             pbSetCursorMode(:Default)
         end
+        pbPlayDecisionSE
     end
 
     def pbSelectBox(party)
@@ -408,7 +412,6 @@ class PokemonStorageScene
             end
             update
             if Input.release?(Input::ACTION) && @command == 0 # Organize only
-                pbPlayDecisionSE
                 incrementCursorMode
             elsif Input.trigger?(Input::BACK)
                 @selection = selection
@@ -1048,6 +1051,10 @@ class PokemonStorageScene
         end
         pbDrawTextPositions(overlay, textstrings)
         @sprites["pokemon"].setPokemonBitmap(pokemon) if forceUpdatePokemon || @sprites["pokemon"].pokemon != pokemon
+    end
+
+    def refreshMultiSelectOverlay
+
     end
 
     def update

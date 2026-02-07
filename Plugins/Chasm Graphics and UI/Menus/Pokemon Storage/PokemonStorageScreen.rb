@@ -12,6 +12,7 @@ class PokemonStorageScreen
         @scene = scene
         @storage = storage
         @pbHeldPokemon = nil
+        @multiSelectedSlots = []
     end
 
     def pbStartScreen(command,ableProc = nil)
@@ -43,16 +44,16 @@ class PokemonStorageScreen
                         return true
                     end
                 else
-                    pokemon = @storage[selected[0], selected[1]]
-                    if pokemon && command == 4
-                        selectedBox = selected[0]
+                    pokemonAtSlot = @storage[selected[0], selected[1]]
+                    selectedBox = selected[0]
+                    if pokemonAtSlot && command == 4
                         if selectedBox > -1 && @storage[selectedBox].isDonationBox?
                             pbPlayBuzzerSE
                             pbDisplay(_INTL("You cannot select a donated Pokémon!"))
                             next
-                        elsif ableProc.nil? || ableProc.call(pokemon)
+                        elsif ableProc.nil? || ableProc.call(pokemonAtSlot)
                             @scene.pbCloseBox
-                            return pokemon,selected[0],selected[1]
+                            return pokemonAtSlot,selected[0],selected[1]
                         else
                             pbPlayBuzzerSE
                             pbDisplay(_INTL("That Pokémon is not a valid choice!"))
@@ -60,18 +61,41 @@ class PokemonStorageScreen
                         end
                     end
                     heldpoke = pbHeldPokemon
-                    next if !pokemon && !heldpoke
+
+                    if !pokemonAtSlot && !heldpoke
+                        if @scene.cursormode == :MultiSelect && !@multiSelectedSlots.empty?
+                            if selectedBox > -1 && @storage[selectedBox].isDonationBox?
+                                pbDisplay(_INTL("You cannot mass-move Pokémon into a Donation Box."))
+                                next
+                            else
+                                commands = [_INTL("Move Selection"), _INTL("Clear Selection"), _INTL("Cancel")]
+                                choice = pbShowCommands(_INTL("Do what with your selected Pokémon?"), commands, 0)
+                                case choice
+                                when 0
+                                    massMoveMultiSelection(selected)
+                                when 1
+                                    clearMultiSelection
+                                end
+                                next
+                            end
+                        else
+                            next 
+                        end
+                    end
+
                     if @scene.cursormode == :QuickSwap
                         if @heldpkmn
-                            pokemon ? pbSwap(selected) : pbPlace(selected)
+                            pokemonAtSlot ? pbSwap(selected) : pbPlace(selected)
                         else
                             pbHold(selected)
                         end
+                    elsif @scene.cursormode == :MultiSelect
+                        toggleMultiSelection(selected)
                     else
                         if heldpoke
                             selectedPokemon = heldpoke
-                        elsif pokemon
-                            selectedPokemon = pokemon
+                        elsif pokemonAtSlot
+                            selectedPokemon = pokemonAtSlot
                         end
                         interactionScene = TilingCardsStorageInteractionMenu_Scene.new(command,selectedPokemon,selected,heldpoke,self,@scene)
                         interactionScreen = TilingCardsStorageInteractionMenu.new(interactionScene)
@@ -306,6 +330,71 @@ class PokemonStorageScreen
         else return false
         end
         return true
+    end
+
+    def clearMultiSelection
+        @multiSelectedSlots.clear
+        @scene.refreshMultiSelectOverlay
+    end
+
+    def toggleMultiSelection(slot)
+        index = @multiSelectedSlots.index { |entry| entry[0] == slot[0] && entry[1] == slot[1] }
+        if index
+            echoln("Pokemon at slot #{slot[1]} of box #{slot[0]} removed multi-select")
+            @multiSelectedSlots.delete_at(index)
+            pbPlayCancelSE
+        else
+            echoln("Pokemon at slot #{slot[1]} of box #{slot[0]} added to multi-select")
+            @multiSelectedSlots.push(slot)
+            pbPlayDecisionSE
+        end
+        @scene.refreshMultiSelectOverlay
+    end
+
+    def massMoveMultiSelection(selection)
+        boxNumber = selection[0]
+        slotNumber = selection[1]
+
+        box = @storage.boxes[boxNumber]
+
+        if box[slotNumber]
+            pbDisplay(_INTL("Cannot mass move into an occupied spot."))
+            return
+        end
+
+        # Determine if there are enough open slots
+        openSlots = 0
+        for i in slotNumber...box.maxPokemon
+            next unless box[i].nil?
+            openSlots += 1
+        end
+
+        if openSlots < @multiSelectedSlots.length
+            pbDisplay(_INTL("Cannot mass move to this spot. Not enough open slots."))
+            return 
+        end
+
+        echoln("#{@multiSelectedSlots}")
+
+        pokemonMoved = 0
+        for i in slotNumber...box.maxPokemon
+            next unless box[i].nil?
+            nextSlotToMove = @multiSelectedSlots[pokemonMoved]
+            movingPokemonBox = nextSlotToMove[0]
+            movingPokemonSlot = nextSlotToMove[1]
+
+            # Make the swap
+            temp = @storage.boxes[movingPokemonBox][movingPokemonSlot]
+            @storage.boxes[movingPokemonBox][movingPokemonSlot] = nil
+            box[i] = temp
+
+            pokemonMoved += 1
+            break if pokemonMoved >= @multiSelectedSlots.length
+        end
+
+        clearMultiSelection
+        @scene.pbHardRefresh
+        pbDisplay(_INTL("{1} Pokémon have been mass moved to {2}.", pokemonMoved, box.getName(boxNumber)))
     end
 
     def pbChangeLock(boxNumber)

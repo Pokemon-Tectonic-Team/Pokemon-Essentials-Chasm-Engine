@@ -23,7 +23,6 @@ class PokemonBoxArrow < SpriteWrapper
                 nameWithSuffix = "#{graphicName}#{suffix}"
                 path = "Graphics/Pictures/Storage/cursor_#{nameWithSuffix}"
                 @handsprite.addBitmap(nameWithSuffix, path) 
-                echoln("#{nameWithSuffix} : #{path}")
             end 
         end
         modifyHandSprite("fist")
