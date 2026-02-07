@@ -410,13 +410,6 @@ class PokemonStorageScene
             if Input.release?(Input::ACTION) && @command == 0 # Organize only
                 pbPlayDecisionSE
                 incrementCursorMode
-            elsif Input.time?(Input::ACTION) > 200_000 && @command == 0 # Hold for about a second...?
-                pbPlayDecisionSE
-                if @cursormode == :MultiSelect
-                    pbSetCursorMode(:Default)
-                else
-                    pbSetCursorMode(:MultiSelect)  
-                end
             elsif Input.trigger?(Input::BACK)
                 @selection = selection
                 return -1
