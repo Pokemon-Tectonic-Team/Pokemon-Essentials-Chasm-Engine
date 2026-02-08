@@ -7,6 +7,7 @@ class PokemonStorageScreen
     attr_reader :scene
     attr_reader :storage
     attr_accessor :heldpkmn
+    attr_reader :multiSelectedSlots
 
     def initialize(scene, storage)
         @scene = scene
@@ -18,7 +19,10 @@ class PokemonStorageScreen
     def pbStartScreen(command,ableProc = nil)
         @heldpkmn = nil
         if command == 0 || command == 4 # Organise or Select
-            @scene.pbStartBox(self, command, ableProc)
+            multiSelectionProc = Proc.new { |boxNumber, slotNumber|
+                @multiSelectedSlots.any? { |selectedSlot| selectedSlot[0] == boxNumber && selectedSlot[1] == slotNumber }
+            }
+            @scene.pbStartBox(self, command, iconFadeProc: ableProc, iconMultiSelectionProc: multiSelectionProc)
             loop do
                 selected = @scene.pbSelectBox(@storage.party)
                 if selected.nil?
@@ -334,21 +338,19 @@ class PokemonStorageScreen
 
     def clearMultiSelection
         @multiSelectedSlots.clear
-        @scene.refreshMultiSelectOverlay
+        @scene.pbRefresh
     end
 
     def toggleMultiSelection(slot)
         index = @multiSelectedSlots.index { |entry| entry[0] == slot[0] && entry[1] == slot[1] }
         if index
-            echoln("Pokemon at slot #{slot[1]} of box #{slot[0]} removed multi-select")
             @multiSelectedSlots.delete_at(index)
             pbPlayCancelSE
         else
-            echoln("Pokemon at slot #{slot[1]} of box #{slot[0]} added to multi-select")
             @multiSelectedSlots.push(slot)
             pbPlayDecisionSE
         end
-        @scene.refreshMultiSelectOverlay
+        @scene.pbRefresh
     end
 
     def massMoveMultiSelection(selection)
@@ -364,35 +366,55 @@ class PokemonStorageScreen
 
         # Determine if there are enough open slots
         openSlots = 0
-        for i in slotNumber...box.maxPokemon
-            next unless box[i].nil?
-            openSlots += 1
+        if boxNumber == -1
+            for i in slotNumber...Settings::MAX_PARTY_SIZE
+                next unless @storage.party[i].nil?
+                openSlots += 1
+            end
+        else
+            for i in slotNumber...box.maxPokemon
+                next unless box[i].nil?
+                openSlots += 1
+            end  
         end
 
         if openSlots < @multiSelectedSlots.length
-            pbDisplay(_INTL("Cannot mass move to this spot. Not enough open slots."))
+            pbDisplay(_INTL("Cannot mass move to this spot."))
+            pbDisplay(_INTL("{1} open slots are needed, and there are only {2} here.",@multiSelectedSlots.length,openSlots))
             return 
         end
 
-        echoln("#{@multiSelectedSlots}")
-
-        pokemonMoved = 0
-        for i in slotNumber...box.maxPokemon
-            next unless box[i].nil?
-            nextSlotToMove = @multiSelectedSlots[pokemonMoved]
+        pokemonToMove = []
+        @multiSelectedSlots.each do |nextSlotToMove|
             movingPokemonBox = nextSlotToMove[0]
             movingPokemonSlot = nextSlotToMove[1]
 
-            # Make the swap
-            temp = @storage.boxes[movingPokemonBox][movingPokemonSlot]
-            @storage.boxes[movingPokemonBox][movingPokemonSlot] = nil
-            box[i] = temp
-
-            pokemonMoved += 1
-            break if pokemonMoved >= @multiSelectedSlots.length
+            # Remove the Pokemon from their original locations
+            if movingPokemonBox == -1
+                pokemonToMove.push(@storage.party[movingPokemonSlot])
+                @storage.party[movingPokemonSlot] = nil
+            else
+                pokemonToMove.push(@storage.boxes[movingPokemonBox][movingPokemonSlot])
+                @storage.boxes[movingPokemonBox][movingPokemonSlot] = nil
+            end
+        end
+        
+        pokemonMoved = 0
+        if boxNumber == -1
+            @storage.party.concat(pokemonToMove)
+            raise _INTL("ERROR! Party ended up higher than the size maximum.") if @storage.party.length > Settings::MAX_PARTY_SIZE
+        else
+            for i in slotNumber...box.maxPokemon
+                next unless box[i].nil?
+                box[i] = pokemonToMove[pokemonMoved]  
+                pokemonMoved += 1
+                break if pokemonMoved >= pokemonToMove.length
+            end
+            raise _INTL("ERROR! Couldn't move all Pokémon in a mass move.") if pokemonMoved != pokemonToMove.length
         end
 
         clearMultiSelection
+        @storage.party.compact!
         @scene.pbHardRefresh
         pbDisplay(_INTL("{1} Pokémon have been mass moved to {2}.", pokemonMoved, box.getName(boxNumber)))
     end

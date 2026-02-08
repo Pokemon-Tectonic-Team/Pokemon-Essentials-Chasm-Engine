@@ -5,7 +5,7 @@ class PokemonBoxSprite < SpriteWrapper
     attr_accessor :refreshBox
     attr_accessor :refreshSprites
 
-    def initialize(storage, boxnumber, viewport, fadeProc = nil)
+    def initialize(storage, boxnumber, viewport, fadeProc: nil, multiSelectionProc: nil)
         super(viewport)
         @storage = storage
         @boxnumber = boxnumber
@@ -13,11 +13,13 @@ class PokemonBoxSprite < SpriteWrapper
         @refreshSprites = true
         @pokemonsprites = []
         @fadeProc = fadeProc
+        @multiSelectionProc = multiSelectionProc
         for i in 0...PokemonBox::BOX_SIZE
             @pokemonsprites[i] = nil
             pokemon = @storage[boxnumber, i]
-            @pokemonsprites[i] = PokemonBoxIcon.new(pokemon, viewport)
+            @pokemonsprites[i] = PokemonBoxIcon_MultiSelected.new(pokemon, viewport)
             @pokemonsprites[i].faded = true if pokemon && @fadeProc && !@fadeProc.call(pokemon)
+            @pokemonsprites[i].multiselected = true if @multiSelectionProc && @multiSelectionProc.call(@boxnumber,i)
         end
         @contents = BitmapWrapper.new(324, 296)
         @lockbitmap = AnimatedBitmap.new("Graphics/Pictures/battle/icon_trapped")
@@ -135,12 +137,15 @@ class PokemonBoxSprite < SpriteWrapper
         for j in 0...PokemonBox::BOX_HEIGHT
             xval = self.x + 10
             for k in 0...PokemonBox::BOX_WIDTH
-                sprite = @pokemonsprites[j * PokemonBox::BOX_WIDTH + k]
+                arrayIndex = j * PokemonBox::BOX_WIDTH + k
+                sprite = @pokemonsprites[arrayIndex]
                 if sprite && !sprite.disposed?
                     sprite.viewport = viewport
                     sprite.x = xval
                     sprite.y = yval
                     sprite.z = 0
+
+                    sprite.multiselected = true if @multiSelectionProc && @multiSelectionProc.call(@boxnumber,arrayIndex)
                 end
                 xval += 48
             end
