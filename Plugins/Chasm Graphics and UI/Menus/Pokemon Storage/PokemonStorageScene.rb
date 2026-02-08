@@ -316,8 +316,8 @@ class PokemonStorageScene
                     pbUpdateOverlay(selection)
                     pbSetMosaic(selection)
                 end
-            elsif Input.trigger?(Input::ACTION) && @command == 0 # Organize only
-                incrementCursorMode
+            elsif Input.trigger?(Input::ACTION)
+                tryIncrementCursorMode
             elsif Input.trigger?(Input::BACK)
                 @selection = selection
                 return nil
@@ -340,8 +340,8 @@ class PokemonStorageScene
         end
     end
 
-    def incrementCursorMode
-        if @command == 4 # Selection mode
+    def tryIncrementCursorMode
+        unless @command == 0 # Organize mode
            pbPlayBuzzerSE
            return
         end
@@ -413,8 +413,8 @@ class PokemonStorageScene
                 pbSetMosaic(selection)
             end
             update
-            if Input.release?(Input::ACTION) && @command == 0 # Organize only
-                incrementCursorMode
+            if Input.release?(Input::ACTION)
+                tryIncrementCursorMode
             elsif Input.trigger?(Input::BACK)
                 @selection = selection
                 return -1
