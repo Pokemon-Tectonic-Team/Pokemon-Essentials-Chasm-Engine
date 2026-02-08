@@ -914,3 +914,21 @@ BattleHandlers::UserAbilityEndOfMove.add(:SWORDHORNSTYLE,
     end
   }
 )
+
+BattleHandlers::UserAbilityEndOfMove.add(:KARMICBALANCE,
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
+        next if battle.pbAllFainted?(user.idxOpposingSide)
+        unchangedKarma = false
+        targets.each do |b|
+          unchangedKarma = true if b.damageState.missed || b.damageState.unaffected
+        end
+        next if unchangedKarma
+        if move.damagingMove?
+          user.pbLowerMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
+          user.pbRaiseMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
+        elsif move.statusMove?
+          user.pbLowerMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
+          user.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
+        end
+  }
+)

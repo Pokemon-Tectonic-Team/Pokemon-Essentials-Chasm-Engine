@@ -2675,6 +2675,26 @@ GameData::BattleEffect.register_effect(:Battler, {
     :sub_effects => [:IncomingDamageTurns]
 })
 
+def checkHerosJourney(battle, battler)
+    return unless battler.hasActiveAbility?(:HEROSJOURNEY)
+    return unless battler.countsAs?(:KELDEO)
+    return unless battler.effectActive?(:HerosJourneyKO)
+    return unless battler.effectActive?(:HerosJourneyStatus)
+    return unless battler.effectActive?(:HerosJourneyRevenge)
+    battler.showMyAbilitySplash(:HEROSJOURNEY)
+    battle.pbDisplay(_INTL("A fierce resolution gathers around {1}!", battler.pbThis))
+    battler.applyFractionalHealing(1.0)
+    battler.pbChangeForm(1, _INTL("{1} transformed!",battler.pbThis))
+    battler.hideMyAbilitySplash
+end
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ExtraHidingTurn,
+    :real_name => "Extra Hiding Turn",
+    :type => :Integer,
+    :ticks_down_eor => true,
+})
+
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :SprigHorn,
     :real_name => "Sprig Horn First Hit",

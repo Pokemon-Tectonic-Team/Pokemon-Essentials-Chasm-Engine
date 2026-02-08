@@ -66,6 +66,19 @@ class PokeBattle_Battler
                     target.pbOpposingSide.incrementEffect(:Spikes)
                 end
             end
+            # Cramorant special on-hit effects
+            if target.species == :CRAMORANT && target.form != 0
+                PBDebug.log("[Lingering effect] #{target.pbThis}'s Gulp Missile")
+                gulpform = target.form
+                transformationMessage = target.form == 2 ? _INTL("Cramorant ejects the Pikachu!") : _INTL("Cramorant ejects its meal!")
+                target.pbChangeForm(0,transformationMessage)
+                user.applyFractionalDamage(1.0 / 4.0) if user.takesIndirectDamage?(true)
+                if gulpform == 1
+                    user.pbLowerMultipleStatSteps(DEFENDING_STATS_1, target)
+                elsif gulpform == 2
+                    user.applyNumb(target)
+                end
+            end
             # Are set to move, but haven't yet
             if @battle.choices[target.index][0] == :UseMove && !target.movedThisRound?
                 # Shell Trap (make the trapper move next if the trap was triggered)

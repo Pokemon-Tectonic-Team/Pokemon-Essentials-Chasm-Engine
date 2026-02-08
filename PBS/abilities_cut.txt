@@ -610,6 +610,10 @@ Name = Leaf Guard
 Description = Immune to non-volatile status conditions while in sunshine.
 Flags = SunshineSynergy
 #-------------------------------
+[LEAPFROMBELOW]
+Name = Leap from Below
+Description = This Pokémon's Speed is doubled while using charging moves.
+#-------------------------------
 [LEGSTRENGTH]
 Name = Leg Strength
 Description = Boosts the power of kicking moves by 30%.

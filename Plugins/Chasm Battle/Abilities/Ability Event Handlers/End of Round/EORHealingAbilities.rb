@@ -19,6 +19,25 @@ BattleHandlers::EORHealingAbility.add(:SHEDSKIN,
     }
 )
 
+BattleHandlers::EORHealingAbility.add(:REJUVENATE,
+    proc { |ability, battler, battle|
+        hasAnyRelevantEffect = false
+        battler.eachEffect(true) do |effect, _value, data|
+            next unless data.avatars_purge || data.is_mental?
+            hasAnyRelevantEffect = true
+        end
+        next unless hasAnyRelevantEffect
+        battle.pbShowAbilitySplash(battler, ability)
+        battle.pbDisplay(_INTL("{1} rejuvenates itself!", battler.pbThis))
+        battler.eachEffect(true) do |effect, _value, data|
+            next unless data.avatars_purge || data.is_mental?
+            battler.disableEffect(effect)
+        end
+        battle.pbHideAbilitySplash(battler)
+    }
+)
+
+
 BattleHandlers::EORHealingAbility.add(:HYDRATION,
     proc { |ability, battler, battle|
         next unless battler.hasAnyStatusNoTrigger

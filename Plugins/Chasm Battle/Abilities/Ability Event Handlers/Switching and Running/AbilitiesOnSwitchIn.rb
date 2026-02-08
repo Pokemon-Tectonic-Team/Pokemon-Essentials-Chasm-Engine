@@ -1340,6 +1340,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:ROOMLOCK,
   proc { |ability, battler, battle, aiCheck|
       next 0 if aiCheck
       battle.pbShowAbilitySplash(battler, ability)
+      battle.pbAnimation(:FAIRYLOCK, battler, nil, 0)
       battle.pbDisplay(_INTL("{1} prevents rooms from decaying!", battler.pbThis))
       battle.pbHideAbilitySplash(battler)
   }
@@ -1453,6 +1454,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:EXOSPHERICDESCENT,
     next 0 unless battler.form == 0
     next 100 if aiCheck
     battle.pbShowAbilitySplash(battler, ability)
+    battle.pbCommonAnimation("MegaEvolutionRayquaza", battler)
     battler.pbChangeForm(1, _INTL("{1} flies in like a comet!", battler.pbThis))
     battle.pbHideAbilitySplash(battler)
   }
@@ -1465,6 +1467,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSWORD,
     next 100 if aiCheck
     battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Sword!", battler.pbThis)) if battle.field.effectActive?(:RustedSwordDropped)
     battle.pbShowAbilitySplash(battler, ability)
+    battle.pbCommonAnimation("StanceAttack", battler)
     battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
     battle.pbHideAbilitySplash(battler)
   }
@@ -1477,6 +1480,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSHIELD,
     next 100 if aiCheck
     battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Shield!", battler.pbThis)) if battle.field.effectActive?(:RustedShieldDropped)
     battle.pbShowAbilitySplash(battler, ability)
+    battle.pbAnimation(:OBSTRUCT, battler, nil, 0)
     battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
     battle.pbHideAbilitySplash(battler)
   }

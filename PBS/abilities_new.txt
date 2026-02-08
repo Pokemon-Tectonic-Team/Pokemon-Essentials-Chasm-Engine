@@ -170,6 +170,10 @@ Name = Berry Bunch
 Description = Can hold two different items, if both are Berries.
 Flags = MultipleItems
 #-------------------------------
+[BIRDBRAINED]
+Name = Bird-Brained
+Description = Moves that make the user become hidden hide the user for one turn longer.
+#-------------------------------
 [BIRDOFPREY]
 Name = Bird of Prey
 Description = Deals 30% more damage to targets that are below half health or that swapped in this turn.
@@ -1170,6 +1174,10 @@ Flags = MoldBreaking
 Name = Karma
 Description = If an attack lowers this Pokémon's HP below half, the attacker becomes jinxed.
 #-------------------------------
+[KARMICBALANCE]
+Name = Karmic Balance
+Description = After attacks, lower Attack and Sp. Atk by two steps, and raise Defense and Sp. Def by two steps. After status moves, do the opposite.
+#-------------------------------
 [KELPLINK]
 Name = Kelp Link
 Description = Boosts Defense by 20%. When this Pokémon takes its second physical hit from the same attacker, they become leeched.
@@ -1210,10 +1218,6 @@ Description = The user's dance moves have increased priority.
 [LEADSINGER]
 Name = Lead Singer
 Description = Boosts power of sound-based moves by 30%. After using a sound move, all enemy attacks target this Pokémon this turn.
-#-------------------------------
-[LEAPFROMBELOW]
-Name = Leap from Below
-Description = This Pokémon's Speed is doubled while using charging moves.
 #-------------------------------
 [LEVIATHAN]
 Name = Leviathan
@@ -1772,6 +1776,10 @@ Flags = SunshineSynergy
 [REFUGE]
 Name = Refuge
 Description = Pokémon that swap in for this have their non-volatile status conditions healed, and take 30% less damage that turn.
+#-------------------------------
+[REJUVENATE]
+Name = Rejuvenate
+Description = At the end of each turn, heals from every volatile status condition.
 #-------------------------------
 [RELUCTANTWARRIOR]
 Name = Reluctant Warrior

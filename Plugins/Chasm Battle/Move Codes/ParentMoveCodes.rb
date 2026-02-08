@@ -540,6 +540,11 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
         @chargingTurn = false # Assume damaging turn by default
         @damagingTurn = true
         # 0 at start of charging turn, move's ID at start of damaging turn
+        if user.hasActiveAbility?(:BIRDBRAINED) && user.effectActive?(:ExtraHidingTurn)
+            @powerHerb = user.hasActiveItem?(:POWERHERB)
+            @chargingTurn = true
+            @damagingTurn = @powerHerb
+        end
         unless user.effectActive?(:TwoTurnAttack)
             if skipChargingTurn?(user)
                 @powerHerb = false
@@ -550,6 +555,7 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
                 @chargingTurn = true
                 @damagingTurn = @powerHerb
             end
+            user.disableEffect(:ExtraHidingTurn)
         end
         return !@damagingTurn # Deliberately not "return @chargingTurn"
     end
@@ -1418,7 +1424,7 @@ class PokeBattle_ForetoldMove < PokeBattle_Move
         elsif @id == :GHOSTLYTALE
             @battle.pbDisplay(_INTL("{1} weaves a tale of woe and horror!", user.pbThis))
         elsif @id == :STROKEOFMIDNIGHT
-            @battle.pbDisplay(_INTL("{1} knows when {1}'s time will run out!", user.pbThis, target.pbThis(true)))
+            @battle.pbDisplay(_INTL("{1} knows when {2}'s time will run out!", user.pbThis, target.pbThis(true)))
         elsif @id == :LOOMINGWINTER
             @battle.pbDisplay(_INTL("{1} feels a chill on the air... winter is coming!", user.pbThis))
         else # Default, for Future Sight

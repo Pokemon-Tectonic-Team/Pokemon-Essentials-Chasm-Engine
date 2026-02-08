@@ -1095,7 +1095,7 @@ TotalPP = 8
 Target = NearOther
 FunctionCode = DamageBoost30PercentSuperOrHyperEffective
 Flags = CanProtect
-Description = The user compresses air around the target to impossible density. If the move is super-effective or hyper-effective, damage is increased by 30%.
+Description = The user compresses air around the target to impossible density. If the move is super- or hyper-effective, damage is increased by 30%.
 Animation = TEMPEST
 #-------------------------------
 [BIRDSEYEVIEW]
@@ -4538,6 +4538,18 @@ Flags = CanProtect
 Description = The user propels a geyser of water at the target. This lowers the user's Sp. Atk and Sp. Def by two steps.
 Animation = WATERSPOUT
 #-------------------------------
+[GULPINGDIVE]
+Name = Gulping Dive
+Type = WATER
+Category = Physical
+Power = 90
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = GulpingDive
+Flags = CanProtect,Uninvocable
+Description = The user dives down with its beak wide open. Transforms into Gulping or Gorging form.
+#-------------------------------
 [HARBORBREAKER]
 Name = Harbor Breaker
 Type = WATER
@@ -5900,7 +5912,7 @@ Target = NearOther
 FunctionCode = DisableTargetLastMoveUsed
 Flags = CanProtect,Blade
 EffectChance = 100
-Description = Splits off a section of the target's psyche. Disables their last used move for 5 turns.
+Description = Splits off a section of the target's psyche. Disables their last used move for five turns.
 Animation = PSYCHOCUT
 #-------------------------------
 [CORECOLLAPSE]
@@ -6351,7 +6363,7 @@ TotalPP = 5
 Target = NearOther
 FunctionCode = CureDizzyAndUnlockBothAbilities
 Flags = CanProtect,CanMagicCoat
-Description = The user connects to the target's brainwaves to stabilize its mind, curing its dizziness, and granting it the legal ability it does not currently have.
+Description = The user connects to the target's brainwaves to stabilize its mind, curing its dizziness, and granting it its other legal ability.
 Animation = CALMMIND
 #-------------------------------
 [TOTALCONTROL]
