@@ -353,6 +353,7 @@ class PokemonStorageScene
         when :MultiSelect
             pbSetCursorMode(:Default)
         end
+        @screen.clearMultiSelection
         pbPlayDecisionSE
     end
 

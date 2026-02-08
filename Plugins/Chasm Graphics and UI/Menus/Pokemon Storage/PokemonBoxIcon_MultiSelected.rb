@@ -1,7 +1,7 @@
 class PokemonBoxIcon_MultiSelected < PokemonBoxIcon
   def initialize(pokemon, viewport = nil)
       @multiselected = false
-      @multiSelectSprite = IconSprite.new(0, 0, @viewport)
+      @multiSelectSprite = IconSprite.new(0, 0, viewport)
       plusPath = "Graphics/Pictures/Storage/multi_move_plus"
       @multiSelectSprite.setBitmap(plusPath)
       @multiSelectSprite.visible = false
@@ -20,12 +20,12 @@ class PokemonBoxIcon_MultiSelected < PokemonBoxIcon
 
   def x=(value)
     super
-    @multiSelectSprite.x = value
+    @multiSelectSprite.x = value + 18
   end
 
   def y=(value)
     super
-    @multiSelectSprite.y = value
+    @multiSelectSprite.y = value + 24
   end
 
   def z=(value)
@@ -36,6 +36,16 @@ class PokemonBoxIcon_MultiSelected < PokemonBoxIcon
   def opacity=(value)
     super
     @multiSelectSprite.opacity = value
+  end
+
+  def color=(value)
+    super
+    @multiSelectSprite.color = value
+  end
+
+  def tone=(value)
+    super
+    @multiSelectSprite.tone = value
   end
 
   def visible=(value)

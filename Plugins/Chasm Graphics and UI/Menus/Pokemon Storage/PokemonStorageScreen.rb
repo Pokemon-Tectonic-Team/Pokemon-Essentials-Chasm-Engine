@@ -73,7 +73,7 @@ class PokemonStorageScreen
                                 next
                             else
                                 commands = [_INTL("Move Selection"), _INTL("Clear Selection"), _INTL("Cancel")]
-                                choice = pbShowCommands(_INTL("Do what with your selected Pokémon?"), commands, 0)
+                                choice = pbShowCommands(_INTL("Do what with your {1} selected Pokémon?", @multiSelectedSlots.length), commands, 0)
                                 case choice
                                 when 0
                                     massMoveMultiSelection(selected)
@@ -347,6 +347,10 @@ class PokemonStorageScreen
             @multiSelectedSlots.delete_at(index)
             pbPlayCancelSE
         else
+            if @multiSelectedSlots.length >= PokemonBox::BOX_SIZE
+                pbDisplay(_INTL("Cannot multi-select more than a box's worth of Pokémon."))
+                return
+            end
             @multiSelectedSlots.push(slot)
             pbPlayDecisionSE
         end
@@ -362,6 +366,21 @@ class PokemonStorageScreen
         if box[slotNumber]
             pbDisplay(_INTL("Cannot mass move into an occupied spot."))
             return
+        end
+
+        # Check able party pokemon after move (only if not moving into the party)
+        unless boxNumber == -1
+            ablePartyAfterMove = 0
+            @storage.party.each_with_index do |partyMember,partyIndex|
+                next unless partyMember.able?
+                next if @multiSelectedSlots.any? {|selectedSlot| selectedSlot[0] == -1 && selectedSlot[1] == partyIndex}
+                ablePartyAfterMove += 1
+            end
+
+            if ablePartyAfterMove == 0
+                pbDisplay(_INTL("Cannot move all able Pokémon out of your party."))
+                return
+            end
         end
 
         # Determine if there are enough open slots

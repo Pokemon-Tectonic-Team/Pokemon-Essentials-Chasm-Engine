@@ -19,7 +19,6 @@ class PokemonBoxSprite < SpriteWrapper
             pokemon = @storage[boxnumber, i]
             @pokemonsprites[i] = PokemonBoxIcon_MultiSelected.new(pokemon, viewport)
             @pokemonsprites[i].faded = true if pokemon && @fadeProc && !@fadeProc.call(pokemon)
-            @pokemonsprites[i].multiselected = true if @multiSelectionProc && @multiSelectionProc.call(@boxnumber,i)
         end
         @contents = BitmapWrapper.new(324, 296)
         @lockbitmap = AnimatedBitmap.new("Graphics/Pictures/battle/icon_trapped")
@@ -145,7 +144,7 @@ class PokemonBoxSprite < SpriteWrapper
                     sprite.y = yval
                     sprite.z = 0
 
-                    sprite.multiselected = true if @multiSelectionProc && @multiSelectionProc.call(@boxnumber,arrayIndex)
+                    sprite.multiselected = @multiSelectionProc && @multiSelectionProc.call(@boxnumber,arrayIndex)
                 end
                 xval += 48
             end
