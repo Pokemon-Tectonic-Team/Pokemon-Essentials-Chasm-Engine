@@ -32,7 +32,7 @@ class PokeBattle_Move_GiftItem < PokeBattle_Move
         return true
     end
 
-    def resolutionChoice(user, replayed_choice)
+    def resolutionChoice(user, targets, replayed_choice)
         validItems = []
         validItemNames = []
         user.items.each do |item|
@@ -162,7 +162,7 @@ class PokeBattle_Move_Fling < PokeBattle_Move
         return true
     end
 
-    def resolutionChoice(user, replayed_choice)
+    def resolutionChoice(user, targets, replayed_choice)
         validItems = []
         validItemNames = []
         user.items.each do |item|
@@ -317,7 +317,7 @@ class PokeBattle_Move_NaturalGift < PokeBattle_Move
         return true
     end
 
-    def resolutionChoice(user, replayed_choice)
+    def resolutionChoice(user, targets, replayed_choice)
         validItems = []
         validItemNames = []
         user.items.each do |item|

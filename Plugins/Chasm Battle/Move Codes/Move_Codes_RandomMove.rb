@@ -158,7 +158,7 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureStatusMoves < PokeBattle_Mov
         end
     end
 
-    def resolutionChoice(user, replayed_choice)
+    def resolutionChoice(user, targets, replayed_choice)
         validMoves = []
         validMoveNames = []
         until validMoves.length == 3
@@ -285,7 +285,7 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureNonPsychicDamagingMoves < Po
         ]
     end
 
-    def resolutionChoice(user, replayed_choice)
+    def resolutionChoice(user, targets, replayed_choice)
         validMoves = []
         validMoveNames = []
         until validMoves.length == 3

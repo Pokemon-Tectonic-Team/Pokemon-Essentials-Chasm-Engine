@@ -230,9 +230,6 @@ class PokeBattle_Battler
 
         return unless move # if move was not chosen somehow
 
-        # Make extra move choices
-        @recorded_choice = move.resolutionChoice(self, @replayed_choice)
-
         # Subtract PP
         if !specialUsage && !pbReducePP(move)
             @battle.pbDisplay(_INTL("{1} used {2}!", pbThis, move.name))
@@ -262,6 +259,9 @@ class PokeBattle_Battler
         presumedUser = pbFindUser(choice, move)
         presumedTargets = pbFindTargets(choice[3], move, presumedUser)
         move.calculateUsageOverrides(presumedUser,presumedTargets)
+
+        # Make extra move choices
+        @recorded_choice = move.resolutionChoice(self, presumedTargets, @replayed_choice)
 
         # Start effect of Mold Breaker
         @battle.moldBreaker = hasMoldBreaker?

@@ -110,7 +110,7 @@ end
 # Transforms the user into one of its Mega Forms. (Genotheosis)
 #===============================================================================
 class PokeBattle_Move_ChangeUserMewtwoChoiceOfForm < PokeBattle_Move
-    def resolutionChoice(user, replayed_choice)
+    def resolutionChoice(user, targets, replayed_choice)
         if @battle.autoTesting
             @chosenForm = rand(2) + 1
         elsif !user.pbOwnedByPlayer? # Trainer AI
@@ -394,7 +394,7 @@ end
 # Transforms the user into one of its forms. (Mutate)
 #===============================================================================
 class PokeBattle_Move_ChangeUserDeoxusChoiceOfForm < PokeBattle_Move
-    def resolutionChoice(user, replayed_choice)
+    def resolutionChoice(user, targets, replayed_choice)
         if @battle.autoTesting
             @chosenForm = rand(3) + 1
         elsif !user.pbOwnedByPlayer? # Trainer AI
@@ -773,7 +773,7 @@ class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
         ]
     end
 
-    def resolutionChoice(user)
+    def resolutionChoice(user, targets, replayed_choice)
         validMoveNames = []
         @validMoves.each do |move|
             validMoveNames.push(getMoveName(move))
@@ -782,11 +782,23 @@ class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
         if @battle.autoTesting
             @chosenMove = @validMoves.sample
         elsif !user.pbOwnedByPlayer? # Trainer AI
-            @chosenMove = @validMoves[0]
+            chosenMoveAndScore = [nil, -1]
+            @validMoves.each do |moveID|
+                moveObject = PokeBattle_Move.from_pokemon_move(user.battle, Pokemon::Move.new(moveID))
+                damageScore = 0
+                targets.each do |target|
+                    damageScore += user.battle.battleAI.pbGetMoveScore(moveObject, user, target)[0]
+                end
+                chosenMoveAndScore = [moveID, damageScore] if damageScore > chosenMoveAndScore[1]
+            end
+            @chosenMove = chosenMoveAndScore[0]
+        elsif !replayed_choice.nil?
+            @chosenMove = replayed_choice
         else
             chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames,0)
             @chosenMove = @validMoves[chosenIndex]
         end
+        return @chosenMove
     end
 
     def pbEffectAgainstTarget(user, target)
@@ -799,6 +811,16 @@ class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
 
     def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
         return # No animation
+    end
+
+    def getEffectScore(user, target)
+        overallDamageScore = 0
+        @validMoves.each do |moveID|
+            moveObject = PokeBattle_Move.from_pokemon_move(user.battle, Pokemon::Move.new(moveID))
+            damageScore = user.battle.battleAI.pbGetMoveScore(moveObject, user, target)[0]
+            overallDamageScore = [overallDamageScore, damageScore].max
+        end
+        return overallDamageScore
     end
 end
 
@@ -818,7 +840,7 @@ class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
         ]
     end
 
-    def resolutionChoice(user, replayed_choice)
+    def resolutionChoice(user, targets, replayed_choice)
         validMoveNames = []
         @validMoves.each do |move|
             validMoveNames.push(getMoveName(move))
@@ -827,14 +849,23 @@ class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
         if @battle.autoTesting
             @chosenMove = @validMoves.sample
         elsif !user.pbOwnedByPlayer? # Trainer AI
-            @chosenMove = @validMoves[0]
+            chosenMoveAndScore = [nil, -1]
+            @validMoves.each do |moveID|
+                moveObject = PokeBattle_Move.from_pokemon_move(user.battle, Pokemon::Move.new(moveID))
+                damageScore = 0
+                targets.each do |target|
+                    damageScore += user.battle.battleAI.pbGetMoveScore(moveObject, user, target)[0]
+                end
+                chosenMoveAndScore = [moveID, damageScore] if damageScore > chosenMoveAndScore[1]
+            end
+            @chosenMove = chosenMoveAndScore[0]
         elsif !replayed_choice.nil?
             @chosenMove = replayed_choice
         else
             chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames,0)
             @chosenMove = @validMoves[chosenIndex]
-            return @chosenMove
         end
+        return @chosenMove
     end
 
     def pbEffectAgainstTarget(user, target)
@@ -847,6 +878,16 @@ class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
 
     def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
         return # No animation
+    end
+
+    def getEffectScore(user, target)
+        overallDamageScore = 0
+        @validMoves.each do |moveID|
+            moveObject = PokeBattle_Move.from_pokemon_move(user.battle, Pokemon::Move.new(moveID))
+            damageScore = user.battle.battleAI.pbGetMoveScore(moveObject, user, target)[0]
+            overallDamageScore = [overallDamageScore, damageScore].max
+        end
+        return overallDamageScore
     end
 end
 

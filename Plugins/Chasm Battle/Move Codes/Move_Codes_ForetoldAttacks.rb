@@ -19,7 +19,7 @@ class PokeBattle_Move_AttackOneTurnLaterChooseIceFireElectricType < PokeBattle_F
         @turnCount = 2
     end
 
-    def resolutionChoice(user, replayed_choice)
+    def resolutionChoice(user, targets, replayed_choice)
         return nil if damagingMove?
         validTypes = %i[FIRE ELECTRIC ICE]
         validTypeNames = []

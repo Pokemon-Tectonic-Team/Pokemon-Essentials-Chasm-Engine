@@ -440,7 +440,7 @@ end
 # Target becomes your choice of Dragon, Fairy, or Steel type. (Regalia)
 #===============================================================================
 class PokeBattle_Move_SetTargetTypesToChoiceOfDragonFairySteel < PokeBattle_Move
-    def resolutionChoice(user, replayed_choice)
+    def resolutionChoice(user, targets, replayed_choice)
         validTypes = %i[DRAGON FAIRY STEEL]
         validTypeNames = []
         validTypes.each do |typeID|
