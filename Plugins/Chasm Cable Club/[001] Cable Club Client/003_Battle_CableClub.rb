@@ -94,6 +94,22 @@ class PokeBattle_CableClub < PokeBattle_Battle
     @battleAI  = PokeBattle_CableClub_AI.new(self)
     @battleRNG = Random.new(seed)
     @rngCalls = 0
+    # Diagnostic RNG logging for desync debugging (Debug mode only)
+    @rngLogFile = nil
+    if $DEBUG
+      Dir.mkdir("Analysis") unless Dir.exist?("Analysis")
+      timestamp = Time.now.strftime("%Y%m%d_%H%M%S")
+      filename = "Analysis/rng_log_client#{client_id}_#{timestamp}.txt"
+      @rngLogFile = File.open(filename, "w")
+      @rngLogFile.puts("=== Cable Club RNG Diagnostic Log ===")
+      @rngLogFile.puts("Client ID: #{client_id}")
+      @rngLogFile.puts("Seed: #{seed}")
+      @rngLogFile.puts("Player: #{$Trainer.name}")
+      @rngLogFile.puts("Opponent: #{opponent.name}")
+      @rngLogFile.puts("Started: #{Time.now}")
+      @rngLogFile.puts("=" * 40)
+      @rngLogFile.flush
+    end
   end
 
   # Override command phase to swap AI and player order
@@ -165,11 +181,37 @@ class PokeBattle_CableClub < PokeBattle_Battle
   
   def pbRandom(x)
     @rngCalls += 1
+    result = @battleRNG.rand(x)
+    if $DEBUG && @rngLogFile
+      # Capture the stack trace, filtering to only battle-relevant frames
+      trace = caller.select { |frame| frame.include?("Chasm") || frame.include?("Cable Club") }
+      @rngLogFile.puts("--- RNG Call ##{@rngCalls} ---")
+      @rngLogFile.puts("Turn: #{@turnCount || 'pre-battle'}")
+      @rngLogFile.puts("rand(#{x}) => #{result}")
+      # Battler state snapshot
+      @battlers.each_with_index do |b, i|
+        next unless b
+        @rngLogFile.puts("  Battler[#{i}]: #{b.pbThis} (#{b.species}) HP=#{b.hp}/#{b.totalhp} Status=#{b.status} Fainted=#{b.fainted?}")
+      end
+      # Stack trace
+      @rngLogFile.puts("Stack:")
+      trace.each { |frame| @rngLogFile.puts("  #{frame}") }
+      @rngLogFile.puts("")
+      @rngLogFile.flush
+    end
     echoln("RNG calls this battle: #{rngCalls}")
-    return @battleRNG.rand(x)
+    return result
   end
 
   def dispose
+    if @rngLogFile
+      @rngLogFile.puts("=== Battle Ended ===")
+      @rngLogFile.puts("Total RNG calls: #{@rngCalls}")
+      @rngLogFile.puts("Decision: #{@decision}")
+      @rngLogFile.puts("Ended: #{Time.now}")
+      @rngLogFile.close
+      @rngLogFile = nil
+    end
     Thread.current[:current_cable_club_battle] = nil
     super
   end

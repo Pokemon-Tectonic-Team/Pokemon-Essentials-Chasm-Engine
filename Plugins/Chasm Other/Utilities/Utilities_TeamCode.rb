@@ -189,7 +189,19 @@ def decode_team(code)
 
     # Set ability
     if ability_id.length > 0
-      mon.ability = GameData::Ability.get(ability_id.to_sym).id
+      resolved_ability = GameData::Ability.get(ability_id.to_sym).id
+      # Find the matching ability_index from species data so it stays consistent
+      sp_data = mon.species_data
+      index = sp_data.abilities.index(resolved_ability)
+      if index
+        mon.ability_index = index # Should also set ability automatically
+      elsif 
+        echoln(_INTL("WARNING: Illegal ability #{ability_id} for species #{mon_id} in team code."))
+        mon.ability_index = 0 # Default to first ability index for consistent behaviour
+        mon.ability = resolved_ability # Override with illegal ability anyway, but it may cause issues
+      end
+    else
+      mon.ability_index = 0 # Default to first ability index if no ability specified
     end
 
     # Set items
@@ -200,10 +212,15 @@ def decode_team(code)
     mon.itemTypeChosen = GameData::Type.get(item1_type_id.to_sym).id if item1_type_id.length > 0
 
     # Set moves
+    if move1_id.length > 0
+      # If we have moves specified, remove level 1 moves so that the Pokemon has only the specified moves
+      mon.forget_all_moves
+    end
     mon.learn_move(GameData::Move.get(move1_id.to_sym).id) if move1_id.length > 0
     mon.learn_move(GameData::Move.get(move2_id.to_sym).id) if move2_id.length > 0
     mon.learn_move(GameData::Move.get(move3_id.to_sym).id) if move3_id.length > 0
     mon.learn_move(GameData::Move.get(move4_id.to_sym).id) if move4_id.length > 0
+    
 
     # Decode stats (style points and level)
     decode_stats(mon, buffer)
