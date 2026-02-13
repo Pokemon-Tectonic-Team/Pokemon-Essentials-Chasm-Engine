@@ -4110,6 +4110,18 @@ FrontSprite = 0,12
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
+[MMARSHTOMP]
+BackSprite = 3,8
+FrontSprite = -3,18
+ShadowX = 0
+ShadowSize = 2
+#-------------------------------
+[MMUDKIP]
+BackSprite = 0,21
+FrontSprite = -11,22
+ShadowX = 0
+ShadowSize = 2
+#-------------------------------
 [MMUNNA]
 BackSprite = 0,16
 FrontSprite = 0,14
@@ -4247,6 +4259,12 @@ BackSprite = 0,13
 FrontSprite = 0,16
 ShadowX = 0
 ShadowSize = 2
+#-------------------------------
+[MSWAMPERT]
+BackSprite = 9,14
+FrontSprite = -5,20
+ShadowX = 0
+ShadowSize = 3
 #-------------------------------
 [MTANGELA]
 BackSprite = 0,27

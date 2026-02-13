@@ -6944,6 +6944,18 @@ EffectChance = 30
 Description = Exhales magical fumes with a 30% chance to burn or frostbite the target depending on their stats.
 Animation = DRAGONBREATH
 #-------------------------------
+[DRAGOMASTWAVES]
+Name = Dragomast Waves
+Type = DRAGON
+Category = Special
+Power = 80
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = LowerTargetEvasion4
+Flags = CanProtect,Pulse
+Description = Sends cloying waves of energy forward, lowering hit foes Evasion by four steps.
+#-------------------------------
 [DRAGONRIDE]
 Name = Dragon Ride
 Type = DRAGON

@@ -2395,6 +2395,10 @@ Description = Takes 30% less damage from Pokémon that are trapped.
 Name = Traumatizing
 Description = Foes whose stats are lowered by this Pokémon keep those lowered stats even after switching.
 #-------------------------------
+[TREMORSENSE]
+Name = Tremor Sense
+Description = Whenever a grounded foe attacks, this Pokémon gains priority against them on the next turn.
+#-------------------------------
 [TRENCHCARVER]
 Name = Trench Carver
 Description = This Pokémon's Speed is doubled while using recoil moves.

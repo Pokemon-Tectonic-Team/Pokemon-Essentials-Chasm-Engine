@@ -7427,6 +7427,60 @@ Kind = Mud Fish
 Pokedex = It can swim while towing a large ship. It bashes down foes with a swing of its thick arms.
 Generation = 3
 #-------------------------------
+[MMUDKIP]
+Name = M. Mudkip
+Type1 = DRAGON
+Type2 = GROUND
+# HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+BaseStats = 80,30,45,50,60,45
+# Total = 310
+BaseEXP = 62
+Rareness = 115
+Abilities = TREMORSENSE,REGENERATOR
+Moves = 1,MUDSLING,4,TWISTER,8,WATERGUN,12,RECOVER,16,DRAGONBREATH,20,MUDSHOT,24,WATERPULSE,28,LIFEDEW,32,HISS,36,SEISMICWAVE,40,ECHOLOCATE,44,SNIPESHOT,48,MUDSLIDE,52,LOOMOVER,56,PULVERIZERCHORD,60,WATERSPOUT,64,DRAGONENERGY
+LineMoves = ACIDSPRAY,AQUAJET,AROMATICMIST,BLIGHT,BLIZZARD,BODYSLAM,BRAINFREEZE,BREACH,BRUTALSWING,BUBBLEBEAM,CENSOR,CHACHING,CLEARSMOG,CRUELTY,CRUSHINGCHASM,CURLUP,DARKPULSE,DEFOG,DISARMINGSHOT,DIVE,DRACOMETEOR,DRAGONENERGY,DRAGONHAMMER,DRAGONPULSE,DRAGONTAIL,DREAD,DREAMABSORB,DUSTDEVIL,EARTHPOWER,ECLIPSE,EERIESPELL,ENDEAVOR,ERODE,FIGHTINGCHANCE,FINALIZE,FLAIL,FLING,FOLLOWME,FOOL,FOULPLAY,GEYSER,GRAVITY,GREYMIST,GUARDSPLIT,GUTTURALROAR,HEARTSWAP,HELIOPAUSE,HONESIGHT,HYDROPUMP,ICESHARD,ICYWIND,INURE,KEELHAUL,KNOCKOFF,LASHOUT,LAUNDER,LIGHTNINGSLAM,LURK,MENDINGSPRING,MIASMA,MIRRORCOAT,MISTBURST,MORNINGSTAR,MUDSHOT,NATURALPROTECTION,NULLPULSE,PAYDAY,POISONFANG,POLARIZEDROOM,PROFANE,PSYCHESWITCH,PSYCHIC,PSYPIERCE,PUZZLEROOM,RAPIDSPIN,RETREAT,RIPTIDE,RISINGPOWER,ROAR,RUIN,SANDBLASTING,SANDSTORM,SCAM,SCOUR,SHOREUP,SHORTCIRCUIT,SKYFALL,SMIRK,SNARL,SNORE,SPIKES,STEALTHROCK,SUBSTITUTE,SUPERCOOL,SURF,THUNDER,TRUENAME,VOLTSWITCH,WATERFALL,WAVEBREAK,WEATHERBURST,WHELM,WISH,YAWN,ZAPCANNON
+Tribes = SERENE,CHARMER,ASSASSIN
+StepsToHatch = 5355
+Height = 0.9
+Weight = 16.0
+Kind = Lush Cave
+Pokedex = This Pokémon was only found recently, as upheavals unsealed ancient caves rife with old life, where it promptly hid from sight in narrow spaces.
+Evolutions = MMARSHTOMP,Level,16
+#-------------------------------
+[MMARSHTOMP]
+Name = M. Marshtomp
+Type1 = DRAGON
+Type2 = GROUND
+# HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+BaseStats = 100,50,50,75,80,50
+# Total = 405
+BaseEXP = 142
+Rareness = 80
+Abilities = TREMORSENSE,REGENERATOR
+StepsToHatch = 5355
+Height = 3.2
+Weight = 40.0
+Kind = Lush Cave
+Pokedex = This Pokémon is much stronger than before, yet lazy. It is quick to make friends, but it might eat them in a pinch.
+Evolutions = MSWAMPERT,Level,36
+#-------------------------------
+[MSWAMPERT]
+Name = M. Swampert
+Type1 = DRAGON
+Type2 = GROUND
+# HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+BaseStats = 135,50,75,90,100,75
+# Total = 525
+BaseEXP = 241
+Rareness = 35
+Abilities = TREMORSENSE,REGENERATOR
+Moves = 0,DRAGOMASTWAVES
+StepsToHatch = 5355
+Height = 6.0
+Weight = 180.0
+Kind = Lush Cave
+Pokedex = Living in underwater caves with no light has given this Pokémon great sensitivity to vibrations. It pinpoints prey with extreme precision.
+#-------------------------------
 [POOCHYENA]
 Name = Poochyena
 Type1 = DARK

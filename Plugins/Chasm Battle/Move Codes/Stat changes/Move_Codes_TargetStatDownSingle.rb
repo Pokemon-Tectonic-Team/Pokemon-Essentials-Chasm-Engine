@@ -346,3 +346,13 @@ class PokeBattle_Move_LowerTargetHighestStat1 < PokeBattle_Move
         return getMultiStatDownEffectScore(statDownArray, user, target)
     end
 end
+
+#===============================================================================
+# Decreases the target's Evasion by 4 steps.
+#===============================================================================
+class PokeBattle_Move_LowerTargetEvasion4 < PokeBattle_TargetStatDownMove
+    def initialize(battle, move)
+        super
+        @statDown = [:EVASION, 4]
+    end
+end
