@@ -6951,10 +6951,12 @@ Category = Special
 Power = 80
 Accuracy = 100
 TotalPP = 15
-Target = NearOther
+Target = AllNearOthers
 FunctionCode = LowerTargetEvasion4
 Flags = CanProtect,Pulse
+EffectChance = 100
 Description = Sends cloying waves of energy forward, lowering hit foes Evasion by four steps.
+Animation = EARTHQUAKE
 #-------------------------------
 [DRAGONRIDE]
 Name = Dragon Ride
