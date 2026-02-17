@@ -713,7 +713,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         # Or of any of its evolutions
         if isSTAB
             moveName = "<b>#{moveName}</b>"
-        elsif move_data.category < 2 && isAnyEvolutionOfType(fSpecies, move_data.type)
+        elsif move_data.category != 2 && isAnyEvolutionOfType(fSpecies, move_data.type)
             moveName = "<i>#{moveName}</i>"
         end
 

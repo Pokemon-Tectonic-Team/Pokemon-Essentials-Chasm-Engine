@@ -32,5 +32,8 @@ def getEggMoves(pkmn)
 end
 
 def pbEggMoveScreen(pkmn)
-    return moveLearningScreen(pkmn,getEggMoves(pkmn))
+	getEggMovesProc = proc do |pokemon|
+		getEggMoves(pokemon)
+	end
+	return moveLearningScreen(pkmn, getEggMovesProc, addFirstMove: true)
 end

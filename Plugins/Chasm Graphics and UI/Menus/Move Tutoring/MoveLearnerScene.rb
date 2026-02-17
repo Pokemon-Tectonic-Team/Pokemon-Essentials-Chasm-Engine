@@ -20,31 +20,13 @@ class MoveLearner_Scene
         pbUpdateSpriteHash(@sprites)
     end
 
-    def pbStartScene(pokemon, unsortedMoves)
+    def pbStartScene(pokemon, movesProc)
         @pokemon = pokemon
-        @moves = [[],[],[]] # An array for each category
-        @moveCommands = [[],[],[]]
-        unsortedMoves.each do |m|
-            moveData = GameData::Move.get(m)
-            category = moveData.category
-
-            if category == 0 || category == 3 # Physical or adaptive
-                @moves[0].push(m)
-                @moveCommands[0].push(moveData.name)
-            end
-
-            if category == 1 || category == 3 # Special or adaptive
-                @moves[1].push(m)
-                @moveCommands[1].push(moveData.name)
-            end
-
-            if category == 2 # Status
-                @moves[2].push(m)
-                @moveCommands[2].push(moveData.name)
-            end
-        end
+        @movesProc = movesProc
 
         @tabSelected = 0
+
+        regenerateMoveList
 
         # Create sprite hash
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
@@ -99,6 +81,50 @@ class MoveLearner_Scene
         pbDeactivateWindows(@sprites)
         # Fade in all sprites
         pbFadeInAndShow(@sprites) { pbUpdate }
+    end
+
+    def regenerateMoveList
+        unsortedMoves = @movesProc.call(@pokemon)
+
+        speciesData = @pokemon.species_data
+        unsortedMoves.sort! { |move_a, move_b|
+            moveDataA = GameData::Move.get(move_a)
+            moveDataB = GameData::Move.get(move_b)
+
+            if moveDataA.base_damage == moveDataB.base_damage
+                if speciesData.hasType?(moveDataA.type) == speciesData.hasType?(moveDataB.type)
+                    next GameData::Type.get(moveDataA.type).id_number <=> GameData::Type.get(moveDataB.type).id_number
+                elsif speciesData.hasType?(moveDataA.type)
+                    next -1
+                else
+                    next 1
+                end
+            else
+                next moveDataB.base_damage <=> moveDataA.base_damage
+            end
+        }
+
+        @moves = [[],[],[]] # An array for each category
+        @moveCommands = [[],[],[]]
+        unsortedMoves.each do |m|
+            moveData = GameData::Move.get(m)
+            category = moveData.category
+
+            if category == 0 || category == 3 # Physical or adaptive
+                @moves[0].push(m)
+                @moveCommands[0].push(moveData.name)
+            end
+
+            if category == 1 || category == 3 # Special or adaptive
+                @moves[1].push(m)
+                @moveCommands[1].push(moveData.name)
+            end
+
+            if category == 2 # Status
+                @moves[2].push(m)
+                @moveCommands[2].push(moveData.name)
+            end
+        end
     end
 
     def refreshMoveList
@@ -195,7 +221,7 @@ class MoveLearner_Scene
         # Or of any of its evolutions
         if isSTAB
             moveName = "<b>#{moveName}</b>"
-        elsif move_data.category < 2 && isAnyEvolutionOfType(fSpecies, move_data.type)
+        elsif move_data.category != 2 && isAnyEvolutionOfType(fSpecies, move_data.type)
             moveName = "<i>#{moveName}</i>"
         end
     
@@ -245,7 +271,11 @@ class MoveLearner_Scene
                     refreshMoveList
                     pbPlayCursorSE
                 elsif Input.trigger?(Input::ACTION)
-                    inputText = pbEnterText(_INTL("Enter selection."),0,20).downcase
+                    if @moves[@tabSelected].empty?
+                        pbMessage(_INTL("Cannot search on an empty tab."))
+                        next
+                    end
+                    inputText = pbEnterText(_INTL("Search for which move?"),0,20).downcase
                     unless inputText.blank?
                         filteredIndex = -1
                         @moves[@tabSelected].each_with_index do |move, index|
