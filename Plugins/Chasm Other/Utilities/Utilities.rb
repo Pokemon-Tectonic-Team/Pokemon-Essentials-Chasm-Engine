@@ -400,37 +400,16 @@ def pbMoveTutorAnnotations(move, movelist = nil)
     return ret
 end
 
-def pbMoveTutorChoose(move, movelist = nil, bymachine = false, oneusemachine = false)
+def pbMoveTutorChoose(move, byMachine: false)
     ret = false
     move = GameData::Move.get(move).id
-    if !movelist.nil? && movelist.is_a?(Array)
-        for i in 0...movelist.length
-            movelist[i] = GameData::Move.get(movelist[i]).id
-        end
+    canTutorProc = proc do |pokemon|
+        pokemon.compatible_with_move?(move)
     end
-    pbFadeOutIn do
-        movename = GameData::Move.get(move).name
-        annot = pbMoveTutorAnnotations(move, movelist)
-        scene = PokemonParty_Scene.new
-        screen = PokemonPartyScreen.new(scene, $Trainer.party)
-        screen.pbStartScene(_INTL("Teach which Pokémon?"), false, annot)
-        loop do
-            chosen = screen.pbChoosePokemon
-            break if chosen < 0
-            pokemon = $Trainer.party[chosen]
-            if pokemon.egg?
-                pbMessage(_INTL("Eggs can't be taught any moves.")) { screen.pbUpdate }
-            elsif movelist && !movelist.any? { |j| j == pokemon.species }
-                pbMessage(_INTL("{1} can't learn {2}.", pokemon.name, movename)) { screen.pbUpdate }
-            elsif !pokemon.compatible_with_move?(move)
-                pbMessage(_INTL("{1} can't learn {2}.", pokemon.name, movename)) { screen.pbUpdate }
-            elsif pbLearnMove(pokemon, move, false, bymachine, true) { screen.pbUpdate }
-                ret = true
-                break
-            end
-        end
-        screen.pbEndScene
+    tutorMoveProc = proc do |pokemon|
+        ret = true if pbLearnMove(pokemon, move, false, byMachine, true)
     end
+    pbChoosePokemonRepeatedly(tutorMoveProc, canTutorProc)
     return ret # Returns whether the move was learned by a Pokemon
 end
 
