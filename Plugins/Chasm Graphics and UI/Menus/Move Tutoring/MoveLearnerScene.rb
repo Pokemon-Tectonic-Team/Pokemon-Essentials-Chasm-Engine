@@ -87,12 +87,16 @@ class MoveLearner_Scene
         unsortedMoves = @movesProc.call(@pokemon)
 
         speciesData = @pokemon.species_data
+
+        # Sorts moves first by base power (descending)
+        # Then by whether or not they are STAB (STAB moves go first)
+        # Then by type ID
         unsortedMoves.sort! { |move_a, move_b|
             moveDataA = GameData::Move.get(move_a)
             moveDataB = GameData::Move.get(move_b)
 
             if moveDataA.base_damage == moveDataB.base_damage
-                if speciesData.hasType?(moveDataA.type) == speciesData.hasType?(moveDataB.type)
+                if speciesData.hasType?(moveDataA.type) == speciesData.hasType?(moveDataB.type) # Both STAB or both not STAB
                     next GameData::Type.get(moveDataA.type).id_number <=> GameData::Type.get(moveDataB.type).id_number
                 elsif speciesData.hasType?(moveDataA.type)
                     next -1
