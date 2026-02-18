@@ -774,7 +774,7 @@ end
   
   def checkTrainerPokemonLegality(pkmn,trainerInfo)
       species_data = GameData::Species.get_species_form(pkmn.species,pkmn.form)
-      if pkmn.species != :SMEARGLE
+      unless pkmn.species_data.can_learn_sketch?
           pkmn.moves.each do |move|
               next unless move
               next if pkmn.species_data.learnable_moves.include?(move.id)

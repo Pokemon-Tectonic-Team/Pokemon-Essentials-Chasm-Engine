@@ -4,7 +4,7 @@ def primevalTutor()
 		return
 	end
     canPrimevalTutorProc = proc do |pkmn|
-        pkmn.species == :SMEARGLE
+        pkmn.species_data.can_learn_sketch?
     end
     learnPrimevalMoveProc = proc do |pkmn|
         pbPrimevalTutorScreen(pkmn)
