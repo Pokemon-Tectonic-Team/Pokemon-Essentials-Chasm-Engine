@@ -165,7 +165,7 @@ BattleHandlers::EORHealingAbility.add(:DIRECTCURRENT,
       battler.tryLowerStat(:SPECIAL_ATTACK, battler)
       choices = [_INTL("Speed"),_INTL("Healing")]
       if battle.autoTesting
-        choice = rand(1)
+        choice = battle.pbRandom(1)
       elsif !battler.pbOwnedByPlayer? # Trainer AI
         choice = 0
       else

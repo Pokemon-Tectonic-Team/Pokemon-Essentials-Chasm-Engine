@@ -100,7 +100,7 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:VOIDWARRANTY,
       
       battle.pbShowAbilitySplash(battler, ability)
       if battle.autoTesting
-        choiceIndex = rand(formChoices.length)
+        choiceIndex = battle.pbRandom(formChoices.length)
       elsif !battler.pbOwnedByPlayer? # Trainer AI
         choiceIndex = 0
       else

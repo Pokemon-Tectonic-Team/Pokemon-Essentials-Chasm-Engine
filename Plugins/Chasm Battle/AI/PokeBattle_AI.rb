@@ -15,7 +15,7 @@ class PokeBattle_AI
         @battlePalace = false
     end
 
-    def pbAIRandom(x); return rand(x); end
+    def pbAIRandom(x); return @battle.pbRandom(x); end
 
     def pbStdDev(choices)
         sum = 0

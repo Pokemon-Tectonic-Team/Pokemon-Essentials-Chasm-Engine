@@ -1,5 +1,7 @@
 module PokeBattle_BattleRecorder
 	
+	SAVE_RANDOM_LOG = true
+
 	attr_accessor :type #Battle type. 0 for wild, 1 for trainer, 2 for avatar
 
 	attr_accessor :recorded_choices #Array of the move choices made
@@ -88,8 +90,7 @@ module PokeBattle_BattleRecorder
 
 	def pbEndOfBattle
 		saveBattle("Last battle") if @save_battle
-		save_random_log = true
-		saveRandomLog(@save_battle ? "random_record.txt" : "random_replay.txt") if save_random_log
+		saveRandomLog(@save_battle ? "random_record.txt" : "random_replay.txt") if SAVE_RANDOM_LOG
 		super
 	end
 
