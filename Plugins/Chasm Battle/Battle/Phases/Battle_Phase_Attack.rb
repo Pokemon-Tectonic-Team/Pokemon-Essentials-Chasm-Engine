@@ -137,6 +137,9 @@ class PokeBattle_Battle
             next if b.movedThisRound?
             @choices[b.index][2].pbDisplayChargeMessage(b)
         end
+        # Helpers move now
+        @playerHelper&.useSelectedMove(self,0)
+        @opponentHelper&.useSelectedMove(self,1)
         # Main move processing loop
         loop do
             priority = pbPriority

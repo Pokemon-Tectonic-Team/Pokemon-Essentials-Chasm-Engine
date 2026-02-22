@@ -14,6 +14,8 @@ class PokeBattle_Battle
     attr_accessor :decision         # Decision: 0=undecided; 1=win; 2=loss; 3=escaped; 4=caught
     attr_reader   :player           # Player trainer (or array of trainers)
     attr_accessor :opponent         # Opponent trainer (or array of trainers)
+    attr_accessor :playerHelper     # A helper trainer for the player's side
+    attr_accessor :opponentHelper   # A helper trainer for the opponent's side
     attr_accessor :items            # Items held by opponents
     attr_accessor :endSpeeches
     attr_accessor :endSpeechesWin

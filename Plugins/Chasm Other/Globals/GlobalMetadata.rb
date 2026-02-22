@@ -13,6 +13,7 @@ class PokemonGlobalMetadata
     attr_accessor :phoneNumbers
     attr_accessor :phoneTime
     attr_accessor :partner
+    attr_accessor :helperTrainer
     attr_accessor :creditsPlayed
     # Pokédex
     attr_accessor :pokedexUnlocked # Deprecated, replaced with Player::Pokedex#unlocked_dexes
@@ -125,6 +126,7 @@ class PokemonGlobalMetadata
         @phoneNumbers         = []
         @phoneTime            = 0
         @partner              = nil
+        @helperTrainer        = nil
         @creditsPlayed        = false
         # Pokédex
         numRegions            = pbLoadRegionalDexes.length

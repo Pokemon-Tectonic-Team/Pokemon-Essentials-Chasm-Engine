@@ -19,6 +19,7 @@ class PokemonTemp
     attr_accessor :encounterType
     attr_accessor :evolutionLevels
     attr_writer   :dependentEvents
+    attr_accessor :opponentHelperTrainer
 
     # Overworld trackers
     attr_accessor :batterywarning
@@ -60,6 +61,7 @@ class PokemonTemp
 
     def clearBattleRules
       self.battleRules.clear
+      @opponentHelperTrainer = nil
     end
 
     def recordBattleRule(rule,var=nil)
@@ -92,6 +94,7 @@ class PokemonTemp
       when "base"                   then rules["base"]           = var
       when "outcome", "outcomevar"  then rules["outcomeVar"]     = var
       when "nopartner"              then rules["noPartner"]      = true
+      when "nohelper"               then rules["noHelper"]      = true
       when "randomorder";           then rules["randomOrder"]    = true
       when "turnstosurvive";        then rules["turnsToSurvive"] = var
       when "autotesting"            then rules["autotesting"]    = true
