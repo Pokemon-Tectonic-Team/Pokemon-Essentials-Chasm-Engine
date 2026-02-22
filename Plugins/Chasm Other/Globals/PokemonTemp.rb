@@ -101,15 +101,10 @@ class PokemonTemp
       when "playerambush"           then rules["playerambush"]   = true
       when "foeambush"              then rules["foeambush"]      = true
       when "lanetargeting"          then rules["lanetargeting"]   = true
-      when "doubleshift"           then rules["doubleshift"]   = true
+      when "doubleshift"            then rules["doubleshift"]   = true
       else
         raise _INTL("Battle rule \"{1}\" does not exist.", rule)
       end
     end
-
-    def dragonFlames
-      @dragonFlames = [] if @dragonFlames.nil?
-      return @dragonFlames
-  end
 end
   
