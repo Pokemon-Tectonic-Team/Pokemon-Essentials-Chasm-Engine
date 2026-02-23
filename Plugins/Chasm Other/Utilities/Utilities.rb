@@ -535,12 +535,19 @@ end
 DIR_SCREENSHOTS = "Screenshots"
 
 def pbScreenCapture(label = nil, show_message = false)
-	t = Time.now
-    fileName = label || t.strftime("[%Y-%m-%d] %H_%M_%S.%L")
+    if label
+        fileName = sprintf("%s %s", label, getCurrentTimeLabel)
+    else
+        fileName = getCurrentTimeLabel
+    end
   	Dir.mkdir(DIR_SCREENSHOTS) if !safeExists?(DIR_SCREENSHOTS)
   	capturefile = sprintf("%s/%s.png", DIR_SCREENSHOTS, fileName)
   	Graphics.screenshot(capturefile)
   	pbSEPlay("Pkmn exp full") if FileTest.audio_exist?("Audio/SE/Pkmn exp full")
 
 	pbMessage(_INTL("Screenshot saved to folder {1}\1",DIR_SCREENSHOTS)) if show_message
+end
+
+def getCurrentTimeLabel
+    return Time.now.strftime("[%Y-%m-%d] %H_%M_%S.%L")
 end

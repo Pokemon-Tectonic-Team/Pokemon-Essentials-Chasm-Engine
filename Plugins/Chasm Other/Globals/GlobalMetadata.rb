@@ -38,6 +38,7 @@ class PokemonGlobalMetadata
     # Affecting the map
     attr_accessor :bridge
     attr_accessor :repel
+    attr_accessor :stealthSpray
     attr_accessor :flashUsed
     attr_accessor :encounter_version
     # Map transfers
@@ -150,6 +151,7 @@ class PokemonGlobalMetadata
         # Affecting the map
         @bridge               = 0
         @repel                = 0
+        @stealthSpray         = 0
         @flashused            = false
         @encounter_version    = 0
         # Map transfers

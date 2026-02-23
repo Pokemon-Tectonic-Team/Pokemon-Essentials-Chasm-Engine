@@ -94,6 +94,7 @@ class Game_Player < Game_Character
       # All event loops
       for event in $game_map.events.values
         next if !event.name[/trainer\((\d+)\)/i]
+        next unless event.canTrainerVisionTrigger?
         distance = $~[1].to_i
         ignoreCollission = event.name[/distanttrainer/i]
         # If event coordinates and triggers are consistent
@@ -261,7 +262,7 @@ class Game_Player < Game_Character
     # * Refresh
     #-----------------------------------------------------------------------------
     def refresh
-      @opacity    = 255
+      @opacity    = stealthSprayActive? ? STEALTH_SPRAY_OPACITY : 255
       @blend_type = 0
     end
   
@@ -360,6 +361,7 @@ class Game_Player < Game_Character
             # If event coordinates and triggers are consistent
             next if !event.at_coordinate?(@x + x_offset, @y + y_offset)
             if event.name[/trainer\((\d+)\)/i]
+                next unless event.canTrainerVisionTrigger?
                 distance = $~[1].to_i
                 ignoreCollission = event.name[/distanttrainer/i]
                 next if !pbEventCanReachPlayer?(event,self,distance,ignoreCollission)

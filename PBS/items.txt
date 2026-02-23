@@ -16,6 +16,14 @@ Price = 5000
 FieldUse = Direct
 Description = Rare contraband. Any average solo trainer will flee from the stench of its explosion.
 #-------------------------------
+[STEALTHSPRAY]
+Name = Stealth Spray
+NamePlural = Stealth Spray
+Pocket = 1
+Price = 5000
+FieldUse = Direct
+Description = Rare contraband. Use it to become invisible to average solo trainers for 30 steps.
+#-------------------------------
 [FIRESTONE]
 Name = Fire Stone
 NamePlural = Fire Stones
