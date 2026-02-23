@@ -3,7 +3,7 @@ Events.onStepTaken += proc {
     $PokemonGlobal.stealthSpray -= 1
     if $PokemonGlobal.stealthSpray.zero?
       if $PokemonBag.pbHasItem?(:STEALTHSPRAY)
-        if pbConfirmMessage(_INTL("The stealth spray's effect wore off! Would you like to use another one?"))
+        if pbConfirmMessageSerious(_INTL("The stealth spray's effect wore off! Would you like to use another one?"))
           pbUseItem($PokemonBag,:STEALTHSPRAY)
         else
           refreshPlayerAndFollowerPokemon
