@@ -13,6 +13,7 @@ class HelperTrainer
 		@turnTimer = 0
 		@moveToUse = nil
 		@partyIndex = 0
+		@moveIndex = 0
     end
 
 	def full_name
@@ -25,7 +26,7 @@ class HelperTrainer
 		if @turnTimer > @turnsPerAction
 			@turnTimer = 0
 			@pokemonToUseMove = trainer.party[@partyIndex]
-			@moveToUse = @pokemonToUseMove.moves[0] # TO DO will want more complex logic here in the future
+			@moveToUse = @pokemonToUseMove.moves[@moveIndex]
 		else
 			@pokemonToUseMove = nil
 			@moveToUse = nil
@@ -47,6 +48,22 @@ class HelperTrainer
 	def useSelectedMove(battle,sideIndex)
 		moveUser = PokeBattle_Battler.new(battle, sideIndex)
 		moveUser.pbInitDummyPokemon(@pokemonToUseMove, @partyIndex, true)
-		moveUser.pbUseMoveSimple(@moveToUse.id)
+
+		moveData = GameData::Move.get(@moveToUse.id)
+        target_data = GameData::Target.get(moveData.target)
+
+		targetIndex = -1
+		if target_data.single_target? && target_data.targets_ally
+			targetIndex = sideIndex
+			echoln("Helper move has been set to target index #{targetIndex}")
+		end
+		
+		moveUser.pbUseMoveSimple(@moveToUse.id,targetIndex)
+		incrementMoveIndex
+	end
+
+	def incrementMoveIndex
+		@moveIndex += 1
+		@moveIndex = 0 if @moveIndex >= @pokemonToUseMove.moves.length
 	end
 end

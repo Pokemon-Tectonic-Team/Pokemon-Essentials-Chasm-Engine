@@ -199,7 +199,7 @@ move, false, true)
     #=============================================================================
     def pbAddTarget(targets, user, target, move, nearOnly = true, allowUser = false)
         return false if !target || (target.fainted? && !move.cannotRedirect?)
-        return false if !(allowUser && user == target) && nearOnly && !user.near?(target)
+        return false if !(allowUser && user == target) && nearOnly && !user.near?(target) && !user.dummy?
         targets.each { |b| return true if b.index == target.index }   # Already added
         targets.push(target)
         return true
@@ -208,7 +208,7 @@ move, false, true)
     def pbAddTargetRandomAlly(targets, user, _move, nearOnly = true)
         choices = []
         user.eachAlly do |b|
-            next if nearOnly && !user.near?(b)
+            next if nearOnly && !user.near?(b) && !user.dummy?
             pbAddTarget(choices, user, b, nearOnly)
         end
         return pbAddTarget(targets, user, choices[0], nearOnly) if choices.length == 1 # Avoids calling pbRandom if only one target is available
@@ -218,7 +218,7 @@ move, false, true)
     def pbAddTargetRandomFoe(targets, user, _move, nearOnly = true)
         choices = []
         user.eachOpposing do |b|
-            next if nearOnly && !user.near?(b)
+            next if nearOnly && !user.near?(b) && !user.dummy?
             pbAddTarget(choices, user, b, nearOnly)
         end
         return pbAddTarget(targets, user, choices[0], nearOnly) if choices.length == 1 # Avoids calling pbRandom if only one target is available
