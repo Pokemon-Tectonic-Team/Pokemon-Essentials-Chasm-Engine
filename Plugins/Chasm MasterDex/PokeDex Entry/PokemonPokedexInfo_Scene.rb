@@ -1230,7 +1230,17 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
             Input.update
             pbUpdate
             doRefresh = false
-            if Input.repeat?(Input::UP)
+            if Input.trigger?(Input::USE)
+                selection = @scrollableLists[@horizontalScroll][@scroll]    
+                if selection
+                    pbFadeOutIn do
+                        selection = selection[1] if selection.is_a?(Array)
+                        openSingleMoveDexScreen(selection)
+                    end
+                else
+                    pbPlayBuzzerSE
+                end
+            elsif Input.repeat?(Input::UP)
                 if @scroll > 0
                     pbPlayCursorSE
                     @scroll -= 1
