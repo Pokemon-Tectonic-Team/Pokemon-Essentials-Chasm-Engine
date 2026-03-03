@@ -269,6 +269,14 @@ module GameData
       def is_type_setting?
         return @flags.include?("TypeSetting")
       end
+
+      def is_exp_candy?
+        return @flags.include?("EXPCandy")
+      end
+
+      def is_in_goodie_bags?
+        return @flags.include?("InGoodieBags")
+      end
   
       def is_important?
         return true if is_key_item? || is_HM? || is_TM?
@@ -467,38 +475,6 @@ module Compiler
     f.write(sprintf("Name = %s\r\n", item.real_name))
     f.write(sprintf("NamePlural = %s\r\n", item.real_name_plural))
     modifiedPocket = item.pocket
-    # case item.pocket
-    # when 1
-    #   if item.is_evolution_item?
-    #     modifiedPocket = 4
-    #   elsif item.name.downcase.include?("fossil") || item.name.downcase.include?("token") || item.name.downcase.include?("ore") || item.name.downcase.include?("egg")
-    #     modifiedPocket = 16
-    #   end
-    # when 2
-    #   if item.name.downcase.include?("candy")
-    #     modifiedPocket = 3
-    #   end
-    # when 3
-    #   modifiedPocket = 14
-    # when 4
-    #   modifiedPocket = 5
-    # when 5
-    #   if item.is_berry?
-    #     modifiedPocket = 9
-    #   elsif item.is_gem?
-    #     modifiedPocket = 10
-    #   elsif item.is_herb?
-    #     modifiedPocket = 11
-    #   elsif item.is_clothing?
-    #     modifiedPocket = 12
-    #   else
-    #     modifiedPocket = 13
-    #   end
-    # when 6
-    #   modifiedPocket = 15
-    # when 7
-    #   modifiedPocket = 6
-    # end
     f.write(sprintf("Pocket = %d\r\n", modifiedPocket))
     f.write(sprintf("Price = %d\r\n", item.price))
     f.write(sprintf("SellPrice = %d\r\n", item.sell_price)) if item.sell_price != item.price / 2

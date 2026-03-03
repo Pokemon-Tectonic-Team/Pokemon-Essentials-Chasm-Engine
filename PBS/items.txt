@@ -24,6 +24,46 @@ Price = 5000
 FieldUse = Direct
 Description = Rare contraband. Use it to become invisible to average solo trainers for 30 steps.
 #-------------------------------
+[GOODIEBAGT1]
+Name = Goodie Bag T1
+NamePlural = Goodie Bags T1
+Pocket = 1
+Price = 1600
+FieldUse = Direct
+Description = A tier one goodie bag containing a mix of candy, Poké Balls, and money.
+#-------------------------------
+[GOODIEBAGT2]
+Name = Goodie Bag T2
+NamePlural = Goodie Bags T2
+Pocket = 1
+Price = 3200
+FieldUse = Direct
+Description = A tier two goodie bag containing a mix of candy, Poké Balls, and money.
+#-------------------------------
+[GOODIEBAGT3]
+Name = Goodie Bag T3
+NamePlural = Goodie Bags T3
+Pocket = 1
+Price = 6400
+FieldUse = Direct
+Description = A tier three goodie bag containing a mix of candy, Poké Balls, and money.
+#-------------------------------
+[GOODIEBAGT4]
+Name = Goodie Bag T4
+NamePlural = Goodie Bags T4
+Pocket = 1
+Price = 12800
+FieldUse = Direct
+Description = A tier four goodie bag containing a mix of candy, Poké Balls, and money.
+#-------------------------------
+[GOODIEBAGT5]
+Name = Goodie Bag T5
+NamePlural = Goodie Bags T5
+Pocket = 1
+Price = 25600
+FieldUse = Direct
+Description = A tier five goodie bag containing a mix of candy, Poké Balls, and money.
+#-------------------------------
 [FIRESTONE]
 Name = Fire Stone
 NamePlural = Fire Stones
@@ -1456,7 +1496,7 @@ NamePlural = Potions
 Pocket = 2
 Price = 300
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = SkipPocketMessage,InGoodieBags
 Description = A spray-type medicine for wounds. It restores the HP of one Pokémon, fainted or able, by 40 points.
 #-------------------------------
 [SUPERPOTION]
@@ -1465,7 +1505,7 @@ NamePlural = Super Potions
 Pocket = 2
 Price = 600
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = SkipPocketMessage,InGoodieBags
 Description = A spray-type medicine for wounds. It restores the HP of one Pokémon, fainted or able, by 80 points.
 #-------------------------------
 [HYPERPOTION]
@@ -1474,7 +1514,7 @@ NamePlural = Hyper Potions
 Pocket = 2
 Price = 900
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = SkipPocketMessage,InGoodieBags
 Description = A spray-type medicine for wounds. It restores the HP of one Pokémon, fainted or able, by 120 points.
 #-------------------------------
 [MAXPOTION]
@@ -1483,7 +1523,7 @@ NamePlural = Max Potions
 Pocket = 2
 Price = 1200
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = SkipPocketMessage,InGoodieBags
 Description = A spray-type medicine for wounds. It completely restores the HP of a single Pokémon, fainted or able.
 #-------------------------------
 [FULLRESTORE]
@@ -1492,7 +1532,7 @@ NamePlural = Full Restores
 Pocket = 2
 Price = 1500
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = SkipPocketMessage,InGoodieBags
 Description = A medicine that fully restores the HP and heals any status problems of a single Pokémon, fainted or able.
 #-------------------------------
 [SACREDASH]
@@ -1550,6 +1590,7 @@ NamePlural = Sweet Hearts
 Pocket = 2
 Price = 300
 FieldUse = OnPokemon
+Flags = InGoodieBags
 Description = Very sweet chocolate. It restores the HP of one Pokémon by 40 points and makes it happier.
 #-------------------------------
 [FRESHWATER]
@@ -1634,7 +1675,7 @@ NamePlural = Poké Balls
 Pocket = 14
 Price = 200
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A device for catching wild Pokémon. It is thrown like a ball at the target. It is designed as a capsule system.
 #-------------------------------
 [GREATBALL]
@@ -1643,7 +1684,7 @@ NamePlural = Great Balls
 Pocket = 14
 Price = 400
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A good, high-performance Ball with 1.5x strength compared to a regular ball.
 #-------------------------------
 [ULTRABALL]
@@ -1652,7 +1693,7 @@ NamePlural = Ultra Balls
 Pocket = 14
 Price = 800
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = An ultra-performance Ball with 2x the strength of a regular ball.
 #-------------------------------
 [SLICEBALL]
@@ -1661,7 +1702,7 @@ NamePlural = Slice Balls
 Pocket = 14
 Price = 400
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A sharp Poké Ball that damages the Pokémon for 1/4th of its HP if it fails to catch it.
 #-------------------------------
 [POTIONBALL]
@@ -1670,7 +1711,7 @@ NamePlural = Potion Balls
 Pocket = 14
 Price = 300
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A medicinal Poké Ball that heals the Pokémon for 1/4th of its HP if it fails to catch it.
 #-------------------------------
 [LEECHBALL]
@@ -1679,7 +1720,7 @@ NamePlural = Leech Balls
 Pocket = 14
 Price = 400
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A parasitic Poké Ball that leeches the Pokémon if it fails to catch it.
 #-------------------------------
 [DISABLEBALL]
@@ -1688,7 +1729,7 @@ NamePlural = Disable Balls
 Pocket = 14
 Price = 300
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A mentally disrupting Poké Ball that disables the Pokémon's last used move for 10 turns if it fails to catch it.
 #-------------------------------
 [HEALBALL]
@@ -1697,7 +1738,7 @@ NamePlural = Heal Balls
 Pocket = 14
 Price = 300
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A remedial Poké Ball that restores the caught Pokémon's HP and eliminates any status problem.
 #-------------------------------
 [FRIENDBALL]
@@ -1706,7 +1747,7 @@ NamePlural = Friend Balls
 Pocket = 14
 Price = 300
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A Poké Ball that makes caught Pokémon more friendly.
 #-------------------------------
 [LUXURYBALL]
@@ -1715,7 +1756,7 @@ NamePlural = Luxury Balls
 Pocket = 14
 Price = 800
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A comfortable Poké Ball that makes a caught wild Pokémon gain happiness twice as quickly.
 #-------------------------------
 [TIMERBALL]
@@ -1724,7 +1765,7 @@ NamePlural = Timer Balls
 Pocket = 14
 Price = 400
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A somewhat different Ball that becomes up to 4x better the more turns there are in a battle.
 #-------------------------------
 [QUICKBALL]
@@ -1733,7 +1774,7 @@ NamePlural = Quick Balls
 Pocket = 14
 Price = 800
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A somewhat different Poké Ball which has 3x strength on the first turn of a wild encounter.
 #-------------------------------
 [NESTBALL]
@@ -1742,7 +1783,7 @@ NamePlural = Nest Balls
 Pocket = 14
 Price = 400
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A somewhat different Poké Ball that works better the lower the Pokémon's level is below your level cap.
 #-------------------------------
 [REPEATBALL]
@@ -1751,7 +1792,7 @@ NamePlural = Repeat Balls
 Pocket = 14
 Price = 400
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A somewhat different Poké Ball that works at 3.5x strength on Pokémon species that were previously caught.
 #-------------------------------
 [HEAVYBALL]
@@ -1778,7 +1819,7 @@ NamePlural = Dream Balls
 Pocket = 14
 Price = 300
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
+Flags = PokeBall,SnagBall,SkipPocketMessage,InGoodieBags
 Description = A somewhat different Poké Ball that makes it easier to catch wild Pokémon while they're asleep.
 #-------------------------------
 [BEASTBALL]
@@ -2377,7 +2418,7 @@ NamePlural = Exp. Candies XS
 Pocket = 3
 Price = 60
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = SkipPocketMessage,EXPCandy,InGoodieBags
 Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 250 Exp. Points.
 #-------------------------------
 [EXPCANDYS]
@@ -2386,7 +2427,7 @@ NamePlural = Exp. Candies S
 Pocket = 3
 Price = 225
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = SkipPocketMessage,EXPCandy,InGoodieBags
 Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 1000 Exp. Points.
 #-------------------------------
 [EXPCANDYM]
@@ -2395,7 +2436,7 @@ NamePlural = Exp. Candies M
 Pocket = 3
 Price = 800
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = SkipPocketMessage,EXPCandy,InGoodieBags
 Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 4,000 Exp. Points.
 #-------------------------------
 [EXPCANDYL]
@@ -2404,7 +2445,7 @@ NamePlural = Exp. Candies L
 Pocket = 3
 Price = 3200
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = SkipPocketMessage,EXPCandy,InGoodieBags
 Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 16,000 Exp. Points.
 #-------------------------------
 [EXPCANDYXL]
@@ -2413,7 +2454,7 @@ NamePlural = Exp. Candies XL
 Pocket = 3
 Price = 12000
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = SkipPocketMessage,EXPCandy,InGoodieBags
 Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 64,000 Exp. Points.
 #-------------------------------
 [FOSSILIZEDBIRD]
