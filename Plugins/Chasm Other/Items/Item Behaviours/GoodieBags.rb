@@ -1,20 +1,29 @@
 def getGoodieBagItemList
-	return $GoodieBagContents.clone unless $GoodieBagContents.nil?
+	return $GoodieBagContents unless $GoodieBagContents.nil?
 	$GoodieBagContents = {}
+	$GoodieBagContents[:EXP_CANDY] = {}
+	$GoodieBagContents[:OTHER] = {}
 	GameData::Item.each do |itemData|
 		next unless itemData.is_in_goodie_bags?
 		price = itemData.price
-		price /= 2 if itemData.is_exp_candy? # Fudge the price of EXP candy
-		$GoodieBagContents[itemData.id] = price
+		if itemData.is_exp_candy?
+			$GoodieBagContents[:EXP_CANDY][itemData.id] = price
+		else
+			$GoodieBagContents[:OTHER][itemData.id] = price
+		end
 	end
-	$GoodieBagContents = $GoodieBagContents.sort_by { |itemID, price| -price}.to_h
-	return $GoodieBagContents.clone
+	$GoodieBagContents[:EXP_CANDY] = $GoodieBagContents[:EXP_CANDY].sort_by { |itemID, price| -price}.to_h
+	$GoodieBagContents[:OTHER] 	   = $GoodieBagContents[:OTHER].sort_by { |itemID, price| -price}.to_h
+	return $GoodieBagContents
 end
 
-def openGoodieBag(item,moneyLeft,maxItemCount)
+def openGoodieBag(item,totalMoney,maxItemCount)
 	pbUseItemMessage(item)
 	
-	itemsReceived, moneyLeft = generateGoodieBagContents(moneyLeft,maxItemCount)
+	# Randomize money amount
+	totalMoney = randomizeGoodieBagValue(totalMoney)
+
+	itemsReceived, moneyLeft = generateGoodieBagContents(totalMoney,maxItemCount)
 
 	itemsReceived.each do |itemReceived, quantity|
 		pbReceiveItem(itemReceived, quantity)
@@ -27,50 +36,75 @@ def openGoodieBag(item,moneyLeft,maxItemCount)
 	return 3
 end
 
-def generateGoodieBagContents(moneyLeft,maxItemCount)
-	possibleItemList = getGoodieBagItemList
+def generateGoodieBagContents(totalMoney,maxItemCount)
+	itemLists = getGoodieBagItemList
 
+	moneySpentOnCandy = 0
+
+	moneyLeft = totalMoney
 	itemsReceived = {}
-	until possibleItemList.empty? || itemsReceived.length >= maxItemCount
 
+	expCandyList = itemLists[:EXP_CANDY]
+	expCandyList.each_pair do |expCandy, price|
+		next if price > (moneyLeft / 4)
+		amount = 1
+		# If price low, add multiple
+		moneyThreshold = [3.0,3.5,4.0].sample
+		while (price * amount) < (moneyLeft / moneyThreshold)
+			amount += 1
+		end
+		itemsReceived[expCandy] = amount
+		moneySpending = price * amount # Account for spent money
+		moneyLeft -= moneySpending
+		moneySpentOnCandy = moneySpending
+		break if moneyLeft < totalMoney / 2
+	end
+
+	moneySpentOnOther = 0
+	possibleOtherItemList = itemLists[:OTHER].clone
+
+	until possibleOtherItemList.empty? || itemsReceived.length >= maxItemCount
 		# Reject items that are too expensive
-		possibleItemList.reject! { |itemID, price|
+		possibleOtherItemList.reject! { |itemID, price|
 			price > moneyLeft
 		}
 
-		if possibleItemList.keys.length == 0
+		if possibleOtherItemList.keys.length == 0
 			break
-		elsif possibleItemList.keys.length == 1
-			chosenItem = possibleItemList.keys[0]
+		elsif possibleOtherItemList.keys.length == 1
+			chosenItem = possibleOtherItemList.keys[0]
 		else
-			mean = possibleItemList.length * 0.3 # Left biased
-			stddev = possibleItemList.length / 2.0 # Relatively broad distribution
+			mean = possibleOtherItemList.length * 0.3 # Left biased
+			stddev = possibleOtherItemList.length / 2.0 # Relatively broad distribution
 			gaussX, gaussY = gaussian(mean, stddev)
 
 			gaussX = gaussX.floor
 			gaussX = [0,gaussX].max
-			gaussX = [gaussX,possibleItemList.length - 1].min
-			chosenItem = possibleItemList.keys[gaussX]
+			gaussX = [gaussX,possibleOtherItemList.length - 1].min
+			chosenItem = possibleOtherItemList.keys[gaussX]
 
-			echoln("Random: #{gaussX} / #{possibleItemList.length}")
+			echoln("Random: #{gaussX} / #{possibleOtherItemList.length}")
 		end
 
 		amount = 1
 		# If price low, add multiple
-		while (possibleItemList[chosenItem] * amount) < (moneyLeft / maxItemCount)
+		while (possibleOtherItemList[chosenItem] * amount) < (moneyLeft / maxItemCount)
 			amount += 1
 		end
 		itemsReceived[chosenItem] = amount
 
-		moneyLeft -= possibleItemList[chosenItem] * amount # Account for spent money
+		moneySpending = possibleOtherItemList[chosenItem] * amount # Account for spent money
+		moneyLeft -= moneySpending
+		moneySpentOnOther += moneySpending
 	end
 
 	echoln("")
-	echoln("Goodie bag contents:")
+	echoln("Goodie bag: (value #{totalMoney})")
 	itemsReceived.each do |itemReceived, quantity|
 		echoln("  #{itemReceived} (#{quantity})")
 	end
 	echoln("  $#{moneyLeft}")
+	echoln("#{((10_000 * moneySpentOnCandy / totalMoney.to_f).floor / 100).to_s_formatted} percent of money spent on candy.")
 
 	return itemsReceived, moneyLeft
 end
@@ -86,7 +120,16 @@ end
 
 def GGBC(bagTier = 1)
 	bagTier -= 1
-	generateGoodieBagContents(GOODIE_BAG_VALUES[bagTier],GOODIE_BAG_SIZES[bagTier])
+	totalMoney = randomizeGoodieBagValue(GOODIE_BAG_VALUES[bagTier])
+	bagSize = GOODIE_BAG_SIZES[bagTier]
+	generateGoodieBagContents(totalMoney,bagSize)
+end
+
+# Differ by +/- 20%
+def randomizeGoodieBagValue(totalMoney)
+	totalMoney *= (0.8 + (0.4 * Random.rand))
+	totalMoney = (totalMoney/100.0).round * 100 # Round to nearest one hundred
+	return totalMoney
 end
 
 GOODIE_BAG_VALUES = [3200,6400,12800,25_600,51_200]
