@@ -163,6 +163,19 @@ BattleHandlers::MoveImmunityTargetAbility.add(:PECKINGORDER,
   }
 )
 
+BattleHandlers::MoveImmunityTargetAbility.add(:MINDLESS,
+  proc { |ability, user, target, _move, type, battle, showMessages, aiCheck|
+      next false if user.index == target.index
+      next false if type != :PSYCHIC
+      if showMessages
+          battle.pbShowAbilitySplash(target, ability)
+          battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
+          battle.pbHideAbilitySplash(target)
+      end
+      next true
+  }
+)
+
 BattleHandlers::MoveImmunityTargetAbility.add(:SLICKSURFACE,
   proc { |ability, _user, target, move, _type, battle, showMessages|
       next false unless move.healingMove? && move.damagingMove?

@@ -1067,4 +1067,9 @@ class PokeBattle_Battler
             yield move, index
         end
     end
+
+    MENTAL_BLOCKING_ABILITIES = [:MENTALBLOCK, :MINDLESS]
+    def mentalBlockActive?
+        return MENTAL_BLOCKING_ABILITIES.any? { |abil| hasActiveAbilityAI?(abil) }
+    end
 end

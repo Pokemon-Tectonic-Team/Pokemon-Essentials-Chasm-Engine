@@ -2674,6 +2674,19 @@ EffectChance = 10
 Description = The user applies a painful chemical to the target with a smack. It has a 10% chance to poison.
 Animation = SKITTERSMACK
 #-------------------------------
+[LIFEDRAIN]
+Name = Life Drain
+Type = BUG
+Category = Physical
+Power = 90
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = HealUserByHalfOfDamageDoneOverheal
+Flags = CanProtect
+Description = The user stabs the target with a sharp spike to drain its life force. The user's HP is restored by 50% of the damage dealt. This can overheal.
+Animation = LEECHLIFE
+#-------------------------------
 [LIGHTSHOW]
 Name = Light Show
 Type = BUG
