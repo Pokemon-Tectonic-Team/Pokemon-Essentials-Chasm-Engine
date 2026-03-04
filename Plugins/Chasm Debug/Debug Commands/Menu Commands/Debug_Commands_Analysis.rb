@@ -383,7 +383,7 @@ end
           file.write("Move, Type, Category, Level Up Count, Tutor Count, Same-Type Count, Off-type Count\r\n")
           move_counts.each do |move_id,counts|
               moveData = GameData::Move.get(move_id)
-              categoryLabel = ["PHYSICAL","SPECIAL","STATUS"][moveData.category]
+              categoryLabel = ["PHYSICAL","SPECIAL","STATUS","ADAPTIVE"][moveData.category]
               file.write("#{move_id},#{moveData.type},#{categoryLabel},#{counts[0]},#{counts[1]},#{counts[2]},#{counts[3]}\r\n")
           end
       }

@@ -290,6 +290,8 @@ class MoveDex_Scene
                 acceptSearchResults do
                     debugFilterToNonSignature
                 end
+            elsif Input.pressex?(0x45) && $DEBUG # E, for Export
+                exportDexListAsCSV
             else
                 for key_index in 1..6 do
                     if Input.pressex?("NUMBER_#{key_index}".to_sym)
@@ -453,5 +455,19 @@ class MoveDex_Scene
     def updateSearchCursor(index)
         @sprites["searchCursor"].x = index.even? ? 72 : 296
         @sprites["searchCursor"].y = 62 + index / 2 * 96
+    end
+
+    def exportDexListAsCSV
+        File.open("Analysis/moves.csv","wb") { |file|
+            file.write("MoveID,Move Name,Type,Category,Base Power,Accuracy,Priority,Target,Description\r\n")
+            @moveList.each do |dex_item|
+                data = dex_item[:data]
+                targetName = GameData::Target.get(data.target).name
+                category = ["Physical", "Special", "Status", "Adaptive"][data.category]
+                moveLine = "#{data.id},#{data.name},#{data.type},#{category},#{data.base_damage},#{data.accuracy},#{data.priority},#{targetName},\"#{data.description}\"\r\n"
+                file.write(moveLine)
+            end
+        }
+        pbMessage(_INTL("Move data written to Analysis/moves.csv"))
     end
 end
