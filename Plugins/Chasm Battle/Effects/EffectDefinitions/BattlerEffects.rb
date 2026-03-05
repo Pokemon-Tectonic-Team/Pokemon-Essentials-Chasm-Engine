@@ -1607,6 +1607,22 @@ GameData::BattleEffect.register_effect(:Battler, {
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
+    :id => :TremorSensed,
+    :real_name => "Sensed By",
+    :type => :Array,
+    :eor_proc => proc do |battle, battler, value|
+        value.each { |entry| entry[0] -= 1 }
+        value.reject! { |entry| entry[0] <= 0 }
+        battler.disableEffect(:TremorSensed) if value.empty?
+    end,
+    :info_custom_description => proc do |value, _string, descriptionArray|
+        value.each do |entry|
+            descriptionArray.push(entry[2])
+        end
+    end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
     :id => :Type3,
     :real_name => "Added Type",
     :type => :Type,
