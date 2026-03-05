@@ -4716,7 +4716,7 @@ StepsToHatch = 7905
 Height = 0.5
 Weight = 11.5
 Kind = Facehugger
-Pokedex = TODO.
+Pokedex = Its fossils were found in the depths of Makyan caves. However, it is alien to anything from the same time. It resembles a popular horror movie monster.
 Evolutions = MKABUTOPS,Level,36
 #-------------------------------
 [MKABUTOPS]
@@ -4734,7 +4734,7 @@ StepsToHatch = 7905
 Height = 1.3
 Weight = 40.5
 Kind = Hive Mind
-Pokedex = TODO.
+Pokedex = After evolution, this Pokémon began to resemble other extinct Pokémon of their time. They multiply by converting native biomass into more Kabuto.
 #-------------------------------
 [AERODACTYL]
 Name = Aerodactyl
