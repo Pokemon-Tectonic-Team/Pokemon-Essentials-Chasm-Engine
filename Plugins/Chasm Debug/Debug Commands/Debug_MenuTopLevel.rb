@@ -31,7 +31,14 @@ DebugMenuCommands.register("pokemonmenu", {
   DebugMenuCommands.register("editorsmenu", {
     "parent"      => "main",
     "name"        => _INTL("Information editors..."),
-    "description" => _INTL("Edit information in the PBS files, terrain tags, battle animations, etc."),
+    "description" => _INTL("Edit information in the PBS files, terrain tags, etc."),
+    "always_show" => true
+  })
+
+  DebugMenuCommands.register("animationsmenu", {
+    "parent"      => "main",
+    "name"        => _INTL("Animation editors..."),
+    "description" => _INTL("Edit, organize, import, export, or compile move animations."),
     "always_show" => true
   })
 

@@ -15,20 +15,13 @@ def mentorCoordinator
     choice = pbMessage(_INTL("I'm the Mentor Coordinator. How can I help?"),choices,choices.length)
 
     if choice == cmdMentorMoves
-        while true
-            pbChoosePokemon(1, 3, proc { |p|
-                p.can_mentor_move?
-            }, false)
-            if $game_variables[1] < 0
-                break
-            elsif !pbGetPokemon(1).can_mentor_move?
-                pbMessage(_INTL("Sorry, it doesn't appear that 1 can have any moves mentored to it at the moment..", p.name))
-            else
-                loop do
-                    break unless pbMentorMoveScreen(pbGetPokemon(1))
-                end
-            end
+        canChooseForMentoringProc = proc do |pkmn|
+            pkmn.can_mentor_move?
         end
+        learnMentorMoveProc = proc do |pkmn|
+            pbMentorMoveScreen(pkmn)
+        end
+        pbChoosePokemonRepeatedly(learnMentorMoveProc, canChooseForMentoringProc)
     elsif choice == cmdExplainMentorMoves
         pbMessage(_INTL("I help your Pokemon to teach each other moves!"))
         pbMessage(_INTL("Pokemon can teach moves they know, moves they used to know, and moves earlier on their level up learnset."))
@@ -59,7 +52,10 @@ end
 def pbMentorMoveScreen(pkmn)
     mentorableMoves = getMentorableMoves(pkmn)
     return false if mentorableMoves.empty?
-    return moveLearningScreen(pkmn, mentorableMoves, true)
+    getMentorMovesProc = proc do |pokemon|
+        getMentorableMoves(pkmn)
+    end
+    return moveLearningScreen(pkmn, getMentorMovesProc, addFirstMove: true)
 end
 
 class Pokemon

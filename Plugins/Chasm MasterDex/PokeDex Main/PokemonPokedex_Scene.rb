@@ -14,8 +14,10 @@ class PokemonPokedex_Scene
     end
 
     def pbStartScene
-        generateSpeciesUseData if $DEBUG
-        generateSignaturesData if $DEBUG
+        if $DEBUG
+            generateSpeciesUseData
+            generateSignaturesData
+        end
 
         @sliderbitmap       	= AnimatedBitmap.new("Graphics/Pictures/Pokedex/icon_slider")
         @typebitmap         	= AnimatedBitmap.new(addLanguageSuffix("Graphics/Pictures/Pokedex/icon_types"))
@@ -72,6 +74,7 @@ class PokemonPokedex_Scene
     end
 
     def generateSpeciesUseData
+        return if $SpeciesUseData
         speciesUsed = {}
         GameData::Species.each do |species_data|
             next if species_data.form != 0
@@ -87,7 +90,7 @@ class PokemonPokedex_Scene
             end
         end
 
-        @speciesUseData = {}
+        $SpeciesUseData = {}
         speciesUsed.each do |species, arrayOfTrainerData|
             arrayOfTrainerData.uniq!
             arrayOfTrainerData.compact!
@@ -100,13 +103,13 @@ class PokemonPokedex_Scene
                     regularTrainerUseCount += 1
                 end
             end
-            @speciesUseData[species] = [regularTrainerUseCount, monumentTrainerUseCount]
+            $SpeciesUseData[species] = [regularTrainerUseCount, monumentTrainerUseCount]
         end
     end
 
     def generateSignaturesData
-        @signatureAbilities = getSignatureAbilities
-        @signatureMoves	= getSignatureMoves
+        $SignatureAbilities = getSignatureAbilities unless $SignatureAbilities
+        $SignatureMoves	= getSignatureMoves unless $SignatureMoves
     end
 
     def pbEndScene
@@ -1019,6 +1022,8 @@ class PokemonPokedex_Scene
                     acceptSearchResults do
                         debugFilterToRegularLine
                     end
+                elsif Input.pressex?(0x45) && $DEBUG # E, for Export
+                    exportDexListAsCSV
 				else
 					for key_index in 1..6 do
 						if Input.pressex?("NUMBER_#{key_index}".to_sym)
@@ -1203,6 +1208,21 @@ class PokemonPokedex_Scene
             average = ((baseStatTotals[s.id] / total) * 100).floor / 100
             echoln("#{s.name}: #{average}")
         end
+    end
+
+    def exportDexListAsCSV
+        File.open("Analysis/species.csv","wb") { |file|
+            file.write("SpeciesID,Species Name,Dex Number,Type1,Type2,Ability1,Ability2,HP,Atk,Def,SpAtk,SpDef,Speed\r\n")
+            @dexlist.each do |dexEntry|
+                speciesLine = ""
+                data = GameData::Species.get(dexEntry[:species])
+                stats = data.base_stats
+                type2 = (data.type2 == data.type1) ? "" : data.type2
+                speciesLine = "#{data.id},#{data.name},#{data.id_number},#{data.type1},#{type2},#{data.abilities[0]},#{data.abilities[1]},#{stats[:HP]},#{stats[:ATTACK]},#{stats[:DEFENSE]},#{stats[:SPECIAL_ATTACK]},#{stats[:SPECIAL_DEFENSE]},#{stats[:SPEED]}\r\n"
+                file.write(speciesLine)
+            end
+        }
+        pbMessage(_INTL("Species data written to Analysis/species.csv"))
     end
 end
 

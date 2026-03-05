@@ -392,7 +392,7 @@ class PokeBattle_Battle
                     cursesToAdd = triggerBattleStartApplyCurse(policy, self, [])
                     curses.concat(cursesToAdd)
 
-                    @metaGamingStatItems = true if policy == :METAGAMES_STAT_ITEMS
+                    @statItemsAreMetagameRevealed = true if policy == :METAGAMES_STAT_ITEMS
                 end
             end
         end

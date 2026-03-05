@@ -787,7 +787,7 @@ end
         end
     end
 
-    def addAbility(newAbility,showcase = false)
+    def addAbility(newAbility,showcase = false, triggerSwitchIn: true)
         return if @ability_ids.include?(newAbility)
         newAbility = GameData::Ability.try_get(newAbility).id
         @ability_ids.push(newAbility)
@@ -797,7 +797,7 @@ end
             @battle.pbDisplay(_INTL("{1} gained the Ability {2}!", pbThis, getAbilityName(newAbility)))
             hideMyAbilitySplash
         end
-        pbEffectsOnSwitchIn
+        pbEffectsOnSwitchIn if triggerSwitchIn
     end
 
     def replaceAbility(newAbility, showSplashes = true, swapper = nil, replacementMsg: nil)

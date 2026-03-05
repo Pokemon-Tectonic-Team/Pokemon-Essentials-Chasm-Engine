@@ -31,6 +31,7 @@ zombygoast<s>elusivestowaway
 Kei<s>Atteathesilly
 noodleman<s>Manycrows
 Eseria<s>Reinhart Menken
+Badman<s>
 
 {INSERTS_PLUGIN_CREDITS_DO_NOT_REMOVE}
 

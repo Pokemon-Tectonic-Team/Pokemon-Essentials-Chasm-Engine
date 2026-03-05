@@ -241,7 +241,7 @@ Accuracy = 100
 TotalPP = 5
 Target = User
 FunctionCode = RaiseUserAndAlliesSpe1Acc4
-Flags = CanSnatch
+Flags = CanSnatch,Dance
 Description = The user performs a spirited dance for its allies and itself, raising their Speed and raising their Accuracy by four steps.
 Animation = TEETERDANCE
 #-------------------------------
@@ -511,6 +511,7 @@ Target = User
 Priority = -6
 FunctionCode = SwitchOutUserStatusMove
 Description = The user switches out to a party Pokémon in waiting. Always goes last.
+Animation = TELEPORT
 #-------------------------------
 [RISINGPOWER]
 Name = Rising Power
@@ -597,7 +598,7 @@ TotalPP = 25
 Target = AllNearFoes
 FunctionCode = LowerTargetSpDef2
 Flags = CanProtect,CanMagicCoat
-Description = The user smirks with confidence. The Sp. Def of nearby enemies is lowered.
+Description = The user smirks with confidence. The Sp. Def of nearby enemies is lowered by two steps.
 Animation = SCARYFACE
 #-------------------------------
 [STELLARATE]
@@ -1423,6 +1424,7 @@ Target = NearOther
 FunctionCode = RecoilFifthOfDamageDealt
 Flags = CanProtect
 Description = The target is struck with large, imposing wings. The user also takes 20% recoil.
+Animation = WINGATTACK
 #-------------------------------
 #		POISON MOVES
 #-------------------------------
@@ -2538,6 +2540,7 @@ FunctionCode = LowerTargetSpd3
 Flags = CanProtect
 EffectChance = 100
 Description = The user makes the target have an allergic reaction. This reduces their Speed by three steps.
+Animation = POLLENPUFF
 #-------------------------------
 [BIOFLASH]
 Name = Bio Flash

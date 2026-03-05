@@ -147,6 +147,9 @@ def decode_stats(mon, buffer)
   mon.ev[:SPECIAL_DEFENSE] = style_sdef
   mon.ev[:SPEED] = style_speed
   mon.level = level
+
+  # force stats to recalculate
+  mon.calc_stats
 end
 
 def decode_team(code)
@@ -224,6 +227,14 @@ def decode_team(code)
 
     # Decode stats (style points and level)
     decode_stats(mon, buffer)
+
+    # roll any traits we have the happiness threshold for so it's not in limbo later
+    # any we haven't unlocked will return nil as appropriate
+    mon.trait1
+    mon.trait2
+    mon.trait3
+    mon.like
+    mon.dislike
 
     party.push(mon)
   end

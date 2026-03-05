@@ -196,3 +196,13 @@ def getNameForEncounterType(encounterType)
 	end
 	return _INTL("Unknown")
 end
+
+def isAnyEvolutionOfType(species_data, type)
+	ret = false
+	species_data.get_evolutions.each do |evolution_data|
+			evoSpecies_data = GameData::Species.get_species_form(evolution_data[0], species_data.form)
+			ret = true if [evoSpecies_data.type1, evoSpecies_data.type2].include?(type)
+			ret = true if isAnyEvolutionOfType(evoSpecies_data, type) # Recursion!!
+	end
+	return ret
+end

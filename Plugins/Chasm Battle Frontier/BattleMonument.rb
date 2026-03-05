@@ -118,7 +118,7 @@ def battleMonumentRecievePlayerInLobby
 end
 
 def battleMonumentTeamSnapshot
-    teamSnapshot(_INTL("Battle Monument Team {1}",Time.now.strftime("[%Y-%m-%d] %H_%M_%S.%L")))  
+    teamSnapshot(_INTL("Battle Monument Team {1}", getCurrentTimeLabel))  
 end
 
 def lerp_i(int1, int2, factor)

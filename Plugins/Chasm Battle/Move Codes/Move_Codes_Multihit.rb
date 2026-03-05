@@ -177,6 +177,11 @@ class PokeBattle_Move_HitOncePerUserTeamMemberSpecial < PokeBattle_PartyAttackMo
         super
         @statUsed = :SPECIAL_ATTACK
     end
+
+    def getDetailsForMoveDex(detailsList = [])
+        detailsList << _INTL("<u>Base Power per Hit</u>:")
+        detailsList << _INTL("10 + (base Special Attack stat / 8)")
+    end
 end
 
 #===============================================================================

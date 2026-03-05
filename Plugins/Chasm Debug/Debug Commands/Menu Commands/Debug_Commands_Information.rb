@@ -176,46 +176,6 @@
       end
     }
   })
-  
-  DebugMenuCommands.register("animeditor", {
-    "parent"      => "editorsmenu",
-    "name"        => _INTL("Battle Animation Editor"),
-    "description" => _INTL("Edit the battle animations."),
-    "always_show" => true,
-    "effect"      => proc {
-      pbFadeOutIn { pbAnimationEditor }
-    }
-  })
-  
-  DebugMenuCommands.register("animorganiser", {
-    "parent"      => "editorsmenu",
-    "name"        => _INTL("Battle Animation Organiser"),
-    "description" => _INTL("Rearrange/add/delete battle animations."),
-    "always_show" => true,
-    "effect"      => proc {
-      pbFadeOutIn { pbAnimationsOrganiser }
-    }
-  })
-  
-  DebugMenuCommands.register("importanims", {
-    "parent"      => "editorsmenu",
-    "name"        => _INTL("Import All Battle Animations"),
-    "description" => _INTL("Import all battle animations from the \"Animations\" folder."),
-    "always_show" => true,
-    "effect"      => proc {
-      pbImportAllAnimations
-    }
-  })
-  
-  DebugMenuCommands.register("exportanims", {
-    "parent"      => "editorsmenu",
-    "name"        => _INTL("Export All Battle Animations"),
-    "description" => _INTL("Export all battle animations individually to the \"Animations\" folder."),
-    "always_show" => true,
-    "effect"      => proc {
-      pbExportAllAnimations
-    }
-  })
 
   DebugMenuCommands.register("consolidateeggmoves", {
     "parent"      => "editorsmenu",

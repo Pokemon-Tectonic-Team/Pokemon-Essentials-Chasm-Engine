@@ -16,6 +16,14 @@ Price = 5000
 FieldUse = Direct
 Description = Rare contraband. Any average solo trainer will flee from the stench of its explosion.
 #-------------------------------
+[STEALTHSPRAY]
+Name = Stealth Spray
+NamePlural = Stealth Spray
+Pocket = 1
+Price = 5000
+FieldUse = Direct
+Description = Rare contraband. Use it to become invisible to average solo trainers for 30 steps.
+#-------------------------------
 [FIRESTONE]
 Name = Fire Stone
 NamePlural = Fire Stones
@@ -2178,7 +2186,7 @@ NamePlural = Kee Berries
 Pocket = 9
 Price = 20
 Flags = Berry
-Description = If held by a Pokémon, this Berry will increase the holder's Defense by four steps if it's hit with a physical move.
+Description = If held by a Pokémon and a physical attack hits it, raises the holder's Defense by four steps.
 #-------------------------------
 [MARANGABERRY]
 Name = Maranga Berry
@@ -2186,7 +2194,7 @@ NamePlural = Maranga Berries
 Pocket = 9
 Price = 20
 Flags = Berry
-Description = If held by a Pokémon, this Berry will increase the holder's Sp. Def by four steps if it's hit with a special move.
+Description = If held by a Pokémon and a special attack hits it, raises the holder's Sp. Def by four steps.
 #-------------------------------
 [BICYCLE]
 Name = Bicycle
@@ -2272,6 +2280,20 @@ NamePlural = Blue Orbs
 Pocket = 13
 Price = 0
 Description = A shiny blue orb that is said to have a legend tied to it. It's known to be connected with the Hoenn region.
+#-------------------------------
+[LIGHTSTONE]
+Name = Light Stone
+NamePlural = Light Stones
+Pocket = 6
+Price = 0
+Description = Reshiram's body was destroyed and changed into this stone. It is said to be waiting for a hero.
+#-------------------------------
+[DARKSTONE]
+Name = Dark Stone
+NamePlural = Dark Stones
+Pocket = 6
+Price = 0
+Description = Zekrom's body was destroyed and changed into this stone. It is said to be waiting for a hero.
 #-------------------------------
 [LUMIOSEGALETTE]
 Name = Lumiose Galette
@@ -2818,7 +2840,7 @@ Pocket = 7
 Price = 0
 FieldUse = Direct
 Flags = KeyItem,SkipPocketMessage
-Description = A vessel for negative emotions. Perfectly defeat enough trainers to earn its rewards.
+Description = A vessel for negative emotions. To earn its rewards, perfect trainers and make them flee from you.
 #-------------------------------
 [SMARTPHONE]
 Name = Smart Phone

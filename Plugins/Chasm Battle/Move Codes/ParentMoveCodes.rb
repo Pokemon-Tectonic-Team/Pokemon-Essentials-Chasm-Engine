@@ -1337,6 +1337,11 @@ class PokeBattle_PartyAttackMove < PokeBattle_Move
         end
         return baseDamageFromStat(totalBaseStat / @partyAttackerList.length)
     end
+
+    def getDetailsForMoveDex(detailsList = [])
+        detailsList << _INTL("<u>Base Power per Hit</u>:")
+        detailsList << _INTL("10 + (base Attack stat / 8)")
+    end
 end
 
 class PokeBattle_ForetoldMove < PokeBattle_Move

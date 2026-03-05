@@ -696,9 +696,9 @@ class PokemonPokedex_Scene
                 next false if autoDisqualifyFromSearch(dex_item[:species])
 
                 if selection == 0
-                    next @signatureMoves.has_value?(dex_item[:data].id) || @signatureAbilities.has_value?(dex_item[:data].id)
+                    next $SignatureMoves.has_value?(dex_item[:data].id) || $SignatureAbilities.has_value?(dex_item[:data].id)
                 else
-                    next !@signatureMoves.has_value?(dex_item[:data].id) && !@signatureAbilities.has_value?(dex_item[:data].id)
+                    next !$SignatureMoves.has_value?(dex_item[:data].id) && !$SignatureAbilities.has_value?(dex_item[:data].id)
                 end
             end
             return dexlist
@@ -877,7 +877,7 @@ class PokemonPokedex_Scene
     def searchByNoMonumentUses
         dexlist = searchStartingList
         dexlist = dexlist.find_all do |dex_item|
-            monumentTrainerUseCount = @speciesUseData[entry[:species]][1]
+            monumentTrainerUseCount = $SpeciesUseData[entry[:species]][1]
             next monumentTrainerUseCount == 0
         end
         return dexlist
@@ -1133,13 +1133,13 @@ class PokemonPokedex_Scene
             elsif cmdSortByExperienceGrant > -1 && selection == cmdSortByExperienceGrant
                 next speciesData.base_exp
             elsif cmdSortByTrainerCount > -1 && selection == cmdSortByTrainerCount
-                useCounts = @speciesUseData[dex_item[:species]]
+                useCounts = $SpeciesUseData[dex_item[:species]]
                 next (useCounts[0] + useCounts[1]) || 0
             elsif cmdSortByNormalTrainerCount > -1 && selection == cmdSortByNormalTrainerCount
-                useCounts = @speciesUseData[dex_item[:species]]
+                useCounts = $SpeciesUseData[dex_item[:species]]
                 next useCounts[0]
             elsif cmdSortByMonumentTrainerCount > -1 && selection == cmdSortByMonumentTrainerCount
-                useCounts = @speciesUseData[dex_item[:species]]
+                useCounts = $SpeciesUseData[dex_item[:species]]
                 next useCounts[1]
             elsif cmdSortByCoverageTypesCount > -1 && selection == cmdSortByCoverageTypesCount
                 next get_bnb_coverage(speciesData).size

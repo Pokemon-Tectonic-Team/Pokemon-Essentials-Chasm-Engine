@@ -564,6 +564,10 @@ module GameData
             return FORM_SPECIFIC_MOVES[@species]
         end
 
+        def can_learn_sketch?
+            return learnable_moves.any? {|move| GameData::Move.get(move).function_code == "ReplaceMoveWithTargetLastMoveUsed"}
+        end
+
         # "normal" here refers to obtaining pokemon by normal means, not going out of your way to sequence break
         def available_by?(level, normal = false)
             query = normal ? earliest_available_normal : earliest_available

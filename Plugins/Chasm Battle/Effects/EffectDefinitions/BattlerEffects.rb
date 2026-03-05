@@ -2553,6 +2553,11 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :ColorCollector,
     :real_name => "Collecting Colors",
     :type => :Array,
+    :info_custom_description => proc do |value, string, descriptionArray|
+        value.each do |typeCollected|
+            descriptionArray.push(GameData::Type.get(typeCollected).name) 
+        end
+    end,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {

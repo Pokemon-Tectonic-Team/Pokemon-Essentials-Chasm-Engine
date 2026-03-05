@@ -1199,6 +1199,7 @@ class Pokemon
 
     def trait1
         return nil if @happiness < PERSONALITY_THRESHOLD_ONE
+        return nil if @Trait1.nil? && $game_temp.in_battle # don't roll traits mid-battle to avoid CC desyncs
         @Trait1 = GameData::Trait.getRandomTrait while @Trait1.nil? || @Trait1 == @Trait2 || @Trait1 == @Trait3
         return @Trait1
     end
@@ -1211,6 +1212,7 @@ class Pokemon
 
     def trait2
         return nil if @happiness < PERSONALITY_THRESHOLD_TWO
+        return nil if @Trait2.nil? && $game_temp.in_battle
         @Trait2 = GameData::Trait.getRandomTrait while @Trait2.nil? || @Trait2 == @Trait1 || @Trait2 == @Trait3
         return @Trait2
     end
@@ -1223,6 +1225,7 @@ class Pokemon
 
     def trait3
         return nil if @happiness < PERSONALITY_THRESHOLD_THREE
+        return nil if @Trait3.nil? && $game_temp.in_battle
         @Trait3 = GameData::Trait.getRandomTrait while @Trait3.nil? || @Trait3 == @Trait1 || @Trait3 == @Trait2
         return @Trait3
     end
@@ -1235,6 +1238,7 @@ class Pokemon
 
     def like
         return nil if @happiness < PERSONALITY_THRESHOLD_FOUR
+        return nil if @Like.nil? && $game_temp.in_battle
         @Like = GameData::Like.getRandomLike while @Like.nil? || @Like == @Dislike
         return @Like
     end
@@ -1247,6 +1251,7 @@ class Pokemon
 
     def dislike
         return nil if happiness < PERSONALITY_THRESHOLD_FOUR
+        return nil if @Dislike.nil? && $game_temp.in_battle
         @Dislike = GameData::Dislike.getRandomDislike while @Dislike.nil? || @Dislike == @Like
         return @Dislike
     end

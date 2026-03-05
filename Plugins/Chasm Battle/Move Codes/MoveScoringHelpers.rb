@@ -625,6 +625,19 @@ def getMultiStatDownEffectScore(statDownArray, user, target, fakeStepModifier: 0
     
     score *= 1.7 if user.ownersPolicies.include?(:PRIORITIZESTATDOWN) && user.opposes?(target)
     
+    if user.opposes?(target)
+        if target.hasActiveAbilityAI?(:DEFIANT)
+            echoln("\t\t[EFFECT SCORING] The target has Defiant! Applying large penalty.")
+            score -= 80
+        elsif target.hasActiveAbilityAI?(:COMPETITIVE)
+            echoln("\t\t[EFFECT SCORING] The target has Competitive! Applying large penalty.")
+            score -= 80
+        elsif target.hasActiveAbilityAI?(:IMPERIOUS)
+            echoln("\t\t[EFFECT SCORING] The target has Imperious! Applying moderate penalty.")
+            score -= 40
+        end
+    end
+
     return score.ceil
 end
 
@@ -636,6 +649,11 @@ def getWeatherSettingEffectScore(weatherType, user, battle, finalDuration = 4, c
 
     finalDuration = user.getWeatherSettingDuration(weatherType, finalDuration, true) if checkExtensions
     currentDuration = battle.field.weather == weatherType ? battle.field.weatherDuration : 0
+
+    if currentDuration < 0
+        echoln("\t\t[EFFECT SCORING] Score for setting weather #{weatherType} is 0 due to an infinite duration (#{currentDuration})")
+        return 0
+    end
 
     if currentDuration >= finalDuration
         echoln("\t\t[EFFECT SCORING] Score for setting weather #{weatherType} is 0 due to final duration #{finalDuration} being less than the current duration #{currentDuration}")
