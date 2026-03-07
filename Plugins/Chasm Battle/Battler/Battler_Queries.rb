@@ -1071,4 +1071,11 @@ class PokeBattle_Battler
     def mentalBlockActiveAI?
         return hasActiveAbility?(GameData::Ability.getByFlag("MentalBlocking"))
     end
+
+    def hasMentalEffect?
+        eachEffect(true) do |_effect, _value, data|
+        return true if data.is_mental?
+    end
+    return false
+  end
 end
