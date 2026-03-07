@@ -3950,19 +3950,6 @@ FunctionCode = WaterPledge
 Flags = CanProtect
 Description = A column of water hits the target. When used with its Fire equivalent, it creates a Rainbow.
 #-------------------------------
-[WATERPULSE]
-Name = Water Pulse
-Type = WATER
-Category = Special
-Power = 65
-Accuracy = 100
-TotalPP = 15
-Target = NearOther
-FunctionCode = Dizzy
-Flags = CanProtect,Pulse
-EffectChance = 30
-Description = The user attacks the target with a pulsing blast of water. It has a 30% chance to dizzy.
-#-------------------------------
 [WATERSHURIKEN]
 Name = Water Shuriken
 Type = WATER

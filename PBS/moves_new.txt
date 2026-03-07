@@ -3505,9 +3505,9 @@ Power = 110
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = UserLosesTenthOfTotalHP
+FunctionCode = UserLosesEighthOfTotalHP
 Flags = CanProtect
-Description = The user uses explosive force to shoot shards of its own body at the target. The user loses 10% of its max HP.
+Description = The user uses explosive force to shoot shards of its own body at the target. The user loses 1/8th of its max HP.
 Animation = SPIKECANNON
 #-------------------------------
 [HAIRFLIP]
@@ -3774,11 +3774,11 @@ Type = STEEL
 Category = Special
 Power = 80
 Accuracy = 100
-TotalPP = 10
+TotalPP = 15
 Target = NearOther
-FunctionCode = UserLosesTenthOfTotalHP
+FunctionCode = UserLosesEighthOfTotalHP
 Flags = CanProtect
-Description = The user shoots shards of its own body at the target. The user loses 10% of its max HP.
+Description = The user shoots shards of its own body at the target. The user loses 1/8th of its max HP.
 Animation = SPIKECANNON
 #-------------------------------
 [SHREDSHOT]
@@ -3789,9 +3789,9 @@ Power = 55
 Accuracy = 100
 TotalPP = 30
 Target = NearOther
-FunctionCode = UserLosesTenthOfTotalHP
+FunctionCode = UserLosesEighthOfTotalHP
 Flags = CanProtect
-Description = The user shreds off bits of its own body to launch at the target. The user loses 10% of its max HP.
+Description = The user shreds off bits of its own body to launch at the target. The user loses 1/8th of its max HP.
 Animation = SPIKECANNON
 #-------------------------------
 [SLAG]
@@ -4346,6 +4346,19 @@ Animation = INFERNOOVERDRIVE
 #-------------------------------
 #		WATER MOVES
 #-------------------------------
+[AQUASHOCK]
+Name = Aqua Shock
+Type = WATER
+Category = Special
+Power = 80
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = UserLosesEighthOfTotalHP
+Flags = CanProtect,Pulse
+Description = The user rapidly changes water pressure, creating a pulsing shockwave. The user loses 1/8th of its max HP.
+Animation = WATERPULSE
+#-------------------------------
 [AQUATICCRUNCH]
 Name = Aquatic Crunch
 Type = WATER
@@ -4436,6 +4449,19 @@ FunctionCode = LowerTargetSpd1
 Flags = CanProtect
 EffectChance = 20
 Description = A blast of bubbles is shot at the target. It has a 20% chance to lower the target's Speed stat.
+#-------------------------------
+[CAVITATION]
+Name = Cavitation
+Type = WATER
+Category = Special
+Power = 110
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = UserLosesEighthOfTotalHP
+Flags = CanProtect,Pulse
+Description = A water vacuum is induced and rapidly collapsed, generating an intense pulsing water blast. The user loses 1/8th of its max HP.
+Animation = WATERPULSE
 #-------------------------------
 [DRAGBENEATH]
 Name = Drag Beneath

@@ -2640,6 +2640,19 @@ Flags = CanProtect,Biting
 EffectChance = 100
 Description = The user bites with added telekinetic force. During eclipse, the target also becomes numbed.
 #-------------------------------
+[WATERPULSE]
+Name = Water Pulse
+Type = WATER
+Category = Special
+Power = 65
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Pulse
+EffectChance = 30
+Description = The user attacks the target with a pulsing blast of water. It has a 30% chance to dizzy.
+#-------------------------------
 [WATERSPORT]
 Name = Water Sport
 Type = WATER
