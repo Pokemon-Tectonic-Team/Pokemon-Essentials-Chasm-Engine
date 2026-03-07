@@ -1335,7 +1335,7 @@ Description = When this Pokémon is hit thrice, all party members heal for 1/8th
 [MENTALBLOCK]
 Name = Mental Block
 Description = This Pokémon is immune to mental effects and can't be Dizzied, or Flinched.
-Flags = FlinchImmunity
+Flags = FlinchImmunity,MentalBlocking
 #-------------------------------
 [MENTALDAMAGE]
 Name = Mental Damage
@@ -1363,6 +1363,7 @@ Flags = SunshineSynergy
 [MINDLESS]
 Name = Mindless
 Description = Immune to Psychic-type moves and mental effects.
+Flags = MentalBlocking
 #-------------------------------
 [MISTFORM]
 Name = Mist Form

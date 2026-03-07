@@ -1068,8 +1068,7 @@ class PokeBattle_Battler
         end
     end
 
-    MENTAL_BLOCKING_ABILITIES = [:MENTALBLOCK, :MINDLESS]
-    def mentalBlockActive?
-        return MENTAL_BLOCKING_ABILITIES.any? { |abil| hasActiveAbilityAI?(abil) }
+    def mentalBlockActiveAI?
+        return hasActiveAbility?(GameData::Ability.getByFlag("MentalBlocking"))
     end
 end
