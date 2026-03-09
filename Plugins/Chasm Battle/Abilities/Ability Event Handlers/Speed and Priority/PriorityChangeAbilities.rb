@@ -65,7 +65,7 @@ BattleHandlers::PriorityChangeAbility.add(:TREMORSENSE,
           target.effects[:TremorSensed].reject! { |entry| entry[1] == battler.index }
           target.disableEffect(:TremorSensed) if target.effects[:TremorSensed].empty?
           battler.showMyAbilitySplash(ability)
-          battler.battle.pbDisplay(_INTL("{1} ambushed {2}!", battler.pbThis, target.pbThis(true)))
+          battler.battle.pbDisplay(_INTL("{1} predicted {2}'s actions, and struck first!", battler.pbThis, target.pbThis(true)))
           battler.hideMyAbilitySplash
       end
       next 1
