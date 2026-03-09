@@ -3487,6 +3487,19 @@ Flags = CanSnatch
 Description = The user employs psychic power to switch its unmodified Attack with its unmodified Defense.
 Animation = CALMMIND
 #-------------------------------
+[PSYCHIC]
+Name = Psychic
+Type = PSYCHIC
+Category = Special
+Power = 90
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+EffectChance = 20
+Description = The target is hit by a strong telekinetic force. It has a 20% chance to lower Sp. Def.
+#-------------------------------
 [PSYCHICTERRAIN]
 Name = Psychic Terrain
 Type = PSYCHIC
@@ -3947,6 +3960,20 @@ FunctionCode = Invalid
 Flags = CanProtect,CanMagicCoat
 Description = The target's Sp. Atk stat is raised by three steps. It then hurts itself in its mental turmoil.
 #-------------------------------
+[HARSHVOICE]
+Name = Harsh Voice
+Type = DARK
+Category = Special
+Power = 40
+Accuracy = 100
+TotalPP = 20
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Sound
+EffectChance = 40
+Description = The target is confronted with painful words. It has a 40% chance to make the target flinch.
+Animation = DARKPULSE
+#-------------------------------
 [NASTYPLOT]
 Name = Nasty Plot
 Type = DARK
@@ -4240,3 +4267,17 @@ FunctionCode = Invalid
 Flags = CanProtect,Sound
 Description = The target is put to sleep, and the user's Attack is raised. Fails unless the target is at or below half health.
 Animation = SING
+#-------------------------------
+[FIREPULSE]
+Name = Fire Pulse
+Type = FIRE
+Category = Special
+Power = 60
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Burn
+Flags = CanProtect,Pulse
+EffectChance = 20
+Description = The user attacks the target with a pulsing blast of fire. It has a 20% chance to burn.
+Animation = FLAMEBURST

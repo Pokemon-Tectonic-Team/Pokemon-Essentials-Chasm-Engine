@@ -3975,20 +3975,6 @@ Flags = CanProtect,CanMagicCoat
 Description = The user emits great amounts of heat, burning the target and adding the Fire-type to it.
 Animation = MORNINGSUN
 #-------------------------------
-[FIREPULSE]
-Name = Fire Pulse
-Type = FIRE
-Category = Special
-Power = 60
-Accuracy = 100
-TotalPP = 15
-Target = NearOther
-FunctionCode = Burn
-Flags = CanProtect,Pulse
-EffectChance = 20
-Description = The user attacks the target with a pulsing blast of fire. It has a 20% chance to burn.
-Animation = FLAMEBURST
-#-------------------------------
 [FIREWORKS]
 Name = Fireworks
 Type = FIRE
@@ -4303,7 +4289,7 @@ Accuracy = 100
 TotalPP = 12
 Target = NearOther
 FunctionCode = FlameSpikes
-Flags = CanProtect,Pulse
+Flags = CanProtect
 Description = The user launches volcanic debris, dealing damage and setting a hazard layer of burning spikes around the target.
 Animation = FLAMEBURST
 #-------------------------------
@@ -4341,8 +4327,8 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = Basic
-Flags = CanProtect,CanRandomCrit
-Description = The user launches a concentrated ball of searing white flame. Can random critical hit.
+Flags = CanProtect,CanRandomCrit,Light
+Description = The user launches a concentrated ball of searing, bright white flame. Can random critical hit.
 #-------------------------------
 [WILDFIREMELT]
 Name = Wildfire Melt
@@ -6171,6 +6157,20 @@ FunctionCode = UserMakeSubstitute50RaiseSpd4
 Flags = CanSnatch
 Description = The user spends 50% HP to create a Substitute. If successful, the user's Speed is raised by four steps.
 #-------------------------------
+[NEURALPULSE]
+Name = Neural Pulse
+Type = PSYCHIC
+Category = Special
+Power = 90
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = LowerTargetSpDef1
+Flags = CanProtect,Pulse
+EffectChance = 20
+Description = The target is hit by a strong telekinetic force. It has a 20% chance to lower Sp. Def.
+Animation = PSYCHIC
+#-------------------------------
 [ODDROOM]
 Name = Odd Room
 Type = PSYCHIC
@@ -7487,8 +7487,8 @@ EffectChance = 100
 Description = The user attacks with dark illusions. This also lowers the target's Defense stat by two steps.
 Animation = DARKPULSE
 #-------------------------------
-[HARSHVOICE]
-Name = Harsh Voice
+[HARSHVIBES]
+Name = Harsh Vibes
 Type = DARK
 Category = Special
 Power = 40
@@ -7496,9 +7496,9 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = Flinch
-Flags = CanProtect,Sound
+Flags = CanProtect,Pulse
 EffectChance = 40
-Description = The target is confronted with painful words. It has a 40% chance to make the target flinch.
+Description = The target is attacked with a pulse of negative feelings. It has a 40% chance to make the target flinch.
 Animation = DARKPULSE
 #-------------------------------
 [HATEFULHAYMAKER]
@@ -8485,3 +8485,16 @@ FunctionCode = Rampage
 Flags = CanProtect
 Description = The user attacks with simple determination and rampages for two turns.
 Animation = THRASH
+#-------------------------------
+[FLARE]
+Name = Flare
+Type = FIRE
+Power = 60
+Category = Special
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Basic
+Flags = CanProtect,CanRandomCrit,Light
+Description = The user flashes with a burst of intensely bright flame. Can random critical hit.
+Animation = WHITEFLAME
