@@ -14,6 +14,15 @@ BattleHandlers::TargetAbilityKnockedBelowHalf.add(:BRILLIANTFLURRY,
     }
 )
 
+BattleHandlers::TargetAbilityKnockedBelowHalf.add(:BIOHAZARD,
+    proc { |ability, target, user, move, _switched, battle|
+        next if user.dummy
+        battle.pbShowAbilitySplash(target, ability)
+        user.tryLowerStat(user.highestStat, target, increment: 4, move: move)
+        battle.pbHideAbilitySplash(target)
+    }
+)
+
 BattleHandlers::TargetAbilityKnockedBelowHalf.add(:STICKYMOLD,
     proc { |ability, target, user, move, _switched, battle|
         next if user.dummy

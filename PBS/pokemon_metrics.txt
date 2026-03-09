@@ -4080,6 +4080,18 @@ FrontSprite = 0,11
 ShadowX = 0
 ShadowSize = 3
 #-------------------------------
+[MKABUTO]
+BackSprite = 0,18
+FrontSprite = -7,23
+ShadowX = 0
+ShadowSize = 2
+#-------------------------------
+[MKABUTOPS]
+BackSprite = 0,11
+FrontSprite = -12,14
+ShadowX = 0
+ShadowSize = 3
+#-------------------------------
 [MLILLIGANT]
 BackSprite = 0,16
 FrontSprite = 0,19
@@ -4107,6 +4119,18 @@ ShadowSize = 2
 [MMANTYKE]
 BackSprite = 0,24
 FrontSprite = 0,12
+ShadowX = 0
+ShadowSize = 2
+#-------------------------------
+[MMARSHTOMP]
+BackSprite = 3,8
+FrontSprite = -3,18
+ShadowX = 0
+ShadowSize = 2
+#-------------------------------
+[MMUDKIP]
+BackSprite = 0,21
+FrontSprite = -11,22
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
@@ -4247,6 +4271,12 @@ BackSprite = 0,13
 FrontSprite = 0,16
 ShadowX = 0
 ShadowSize = 2
+#-------------------------------
+[MSWAMPERT]
+BackSprite = 9,14
+FrontSprite = -5,20
+ShadowX = 0
+ShadowSize = 3
 #-------------------------------
 [MTANGELA]
 BackSprite = 0,27

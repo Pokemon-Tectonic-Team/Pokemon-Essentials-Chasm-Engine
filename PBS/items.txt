@@ -291,6 +291,14 @@ Price = 5000
 Flags = Fossil
 Description = A fossil from a strange Pokémon that once lived on the land. It resembles Makyan Omanyte.
 #-------------------------------
+[ALIENFOSSIL]
+Name = Alien Fossil
+NamePlural = Alien Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil from a strange Pokémon that once lived on the land. It resembles Makyan Kabuto.
+#-------------------------------
 [HONEY]
 Name = Honey
 NamePlural = Honey

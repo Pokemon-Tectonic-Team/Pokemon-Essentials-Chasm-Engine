@@ -170,6 +170,10 @@ Name = Berry Bunch
 Description = Can hold two different items, if both are Berries.
 Flags = MultipleItems
 #-------------------------------
+[BIOHAZARD]
+Name = Biohazard
+Description = If an attack lowers its HP below half, lowers the attacker's highest stat by four steps.
+#-------------------------------
 [BIRDBRAINED]
 Name = Bird-Brained
 Description = Moves that make the user become hidden hide the user for one turn longer.
@@ -1330,8 +1334,8 @@ Description = When this Pokémon is hit thrice, all party members heal for 1/8th
 #-------------------------------
 [MENTALBLOCK]
 Name = Mental Block
-Description = This Pokémon can't be Taunted, Encored, Tormented, Heal Blocked, Disabled, Barred, Dizzied, or Flinched.
-Flags = FlinchImmunity
+Description = This Pokémon is immune to mental effects and can't be Dizzied, or Flinched.
+Flags = FlinchImmunity,MentalBlocking
 #-------------------------------
 [MENTALDAMAGE]
 Name = Mental Damage
@@ -1355,6 +1359,11 @@ Flags = MoonglowSynergy
 Name = Midnight Sun
 Description = Powers up this Pokémon's Dark-type moves by 50% in sunshine.
 Flags = SunshineSynergy
+#-------------------------------
+[MINDLESS]
+Name = Mindless
+Description = Immune to Psychic-type moves and mental effects.
+Flags = MentalBlocking
 #-------------------------------
 [MISTFORM]
 Name = Mist Form
@@ -2394,6 +2403,10 @@ Description = Takes 30% less damage from Pokémon that are trapped.
 [TRAUMATIZING]
 Name = Traumatizing
 Description = Foes whose stats are lowered by this Pokémon keep those lowered stats even after switching.
+#-------------------------------
+[TREMORSENSE]
+Name = Tremor Sense
+Description = Whenever a grounded foe attacks, this Pokémon gains priority against them on the next turn.
 #-------------------------------
 [TRENCHCARVER]
 Name = Trench Carver

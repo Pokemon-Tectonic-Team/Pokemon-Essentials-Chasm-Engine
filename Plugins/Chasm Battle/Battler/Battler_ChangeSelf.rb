@@ -612,36 +612,6 @@ class PokeBattle_Battler
         end
     end
 
-    def disableBaseStatEffects
-        disableEffect(:BaseAttack)
-        disableEffect(:BaseSpecialAttack)
-        disableEffect(:BaseDefense)
-        disableEffect(:BaseSpecialDefense)
-        disableEffect(:BaseSpeed)
-    end
-
-def disableLoweredBaseStatEffects
-  base_stats = @pokemon&.baseStats
-  return if base_stats.nil?
-
-  {
-    BaseAttack: :ATTACK,
-    BaseDefense: :DEFENSE,
-    BaseSpecialAttack: :SPECIAL_ATTACK,
-    BaseSpecialDefense: :SPECIAL_DEFENSE,
-    BaseSpeed: :SPEED
-  }.each do |effect_sym, stat_sym|
-    current_effect = @effects[effect_sym]
-    next if current_effect.nil?
-
-    stat_data = GameData::Stat.get(stat_sym)
-    original_base = base_stats[stat_data.id]
-    next if original_base.nil?
-
-    disableEffect(effect_sym) if current_effect < original_base
-  end
-end
-
     def pbTransform(target)
         @battle.scene.pbChangePokemon(self, target.pokemon)
 
@@ -815,5 +785,46 @@ end
         @battle.pbHideAbilitySplash(swapper) if showSplashes && swapper
         pbOnAbilitiesLost(oldAbilities) unless oldAbil.nil?
         pbEffectsOnSwitchIn
+    end
+
+    #=============================================================================
+    # Disabling of various effects
+    #=============================================================================
+
+    def disableBaseStatEffects
+        disableEffect(:BaseAttack)
+        disableEffect(:BaseSpecialAttack)
+        disableEffect(:BaseDefense)
+        disableEffect(:BaseSpecialDefense)
+        disableEffect(:BaseSpeed)
+    end
+
+    def disableLoweredBaseStatEffects
+        base_stats = @pokemon&.baseStats
+        return if base_stats.nil?
+
+        {
+            BaseAttack: :ATTACK,
+            BaseDefense: :DEFENSE,
+            BaseSpecialAttack: :SPECIAL_ATTACK,
+            BaseSpecialDefense: :SPECIAL_DEFENSE,
+            BaseSpeed: :SPEED
+        }.each do |effect_sym, stat_sym|
+            current_effect = @effects[effect_sym]
+            next if current_effect.nil?
+
+            stat_data = GameData::Stat.get(stat_sym)
+            original_base = base_stats[stat_data.id]
+            next if original_base.nil?
+
+            disableEffect(effect_sym) if current_effect < original_base
+        end
+    end
+
+    def disableMentalEffects
+        eachEffect(true) do |effect, _value, data|
+            next unless data.is_mental?
+            disableEffect(effect)
+        end
     end
 end

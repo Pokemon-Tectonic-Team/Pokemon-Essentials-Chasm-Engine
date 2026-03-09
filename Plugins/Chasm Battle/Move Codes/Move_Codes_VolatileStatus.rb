@@ -21,7 +21,7 @@ class PokeBattle_Move_DisableTargetUsingSameMoveConsecutively < PokeBattle_Move
     end
 
     def getTargetAffectingEffectScore(_user, target)
-        return 0 if target.hasActiveAbilityAI?(:MENTALBLOCK)
+        return 0 if target.mentalBlockActiveAI?
         score = 60
         score += 40 unless target.hasDamagingAttack?
         return score
@@ -226,7 +226,7 @@ class PokeBattle_Move_DisableTargetStatusMoves4 < PokeBattle_Move
 
     def getTargetAffectingEffectScore(user, target)
         return 0 if target.substituted? && statusMove? && !ignoresSubstitute?(user)
-        return 0 if target.hasActiveAbilityAI?(:MENTALBLOCK)
+        return 0 if target.mentalBlockActiveAI?
         unkownHate = target.unknownMovesCountAI 
         return 0 unless target.hasStatusMove? || unkownHate == 4
         firstTurnScore = 0
@@ -334,7 +334,7 @@ class PokeBattle_Move_DisableTargetUsingDifferentMove4 < PokeBattle_Move
     end
 
     def getTargetAffectingEffectScore(user, target)
-        return 0 if target.hasActiveAbilityAI?(:MENTALBLOCK)
+        return 0 if target.mentalBlockActiveAI?
         score = 60
         score += 40 if target.trapped?
         userSpeed = user.pbSpeed(true, move: self)
@@ -392,7 +392,7 @@ class PokeBattle_Move_DisableTargetUsingOffTypeMove4 < PokeBattle_Move
 
     def getTargetAffectingEffectScore(user, target)
         return 0 if target.substituted? && statusMove?
-        return 0 if target.hasActiveAbilityAI?(:MENTALBLOCK)
+        return 0 if target.mentalBlockActiveAI?
         return 0 unless target.hasOffTypeMove?
         return 40 + applyEffectDurationModifiers(getBarTurns(target), user) * 20
     end

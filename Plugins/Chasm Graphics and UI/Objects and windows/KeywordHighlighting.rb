@@ -149,6 +149,7 @@ def battleKeywordsImportant
         "foretold",
         "barred",
         "bar",
+        "mental",
         "shrinks",
         "shrinking",
         "sugar rush",

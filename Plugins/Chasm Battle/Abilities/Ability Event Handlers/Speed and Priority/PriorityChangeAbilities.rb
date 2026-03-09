@@ -54,3 +54,20 @@ BattleHandlers::PriorityChangeAbility.add(:LEADDANCER,
       next 1 if move.danceMove?
   }
 )
+
+BattleHandlers::PriorityChangeAbility.add(:TREMORSENSE,
+  proc { |ability, battler, _move, _pri, targets = nil, aiCheck = false|
+      next unless targets&.length == 1
+      target = targets[0]
+      next unless target.effectActive?(:TremorSensed)
+      next unless target.effects[:TremorSensed].any? { |entry| entry[1] == battler.index }
+      unless aiCheck
+          target.effects[:TremorSensed].reject! { |entry| entry[1] == battler.index }
+          target.disableEffect(:TremorSensed) if target.effects[:TremorSensed].empty?
+          battler.showMyAbilitySplash(ability)
+          battler.battle.pbDisplay(_INTL("{1} predicted {2}'s actions, and struck first!", battler.pbThis, target.pbThis(true)))
+          battler.hideMyAbilitySplash
+      end
+      next 1
+  }
+)
