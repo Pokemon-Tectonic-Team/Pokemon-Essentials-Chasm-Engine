@@ -179,11 +179,19 @@ class PokeBattle_Move
     # The maximum number of hits in a round this move will actually perform. This
     # can be 1 for Beat Up, and can be 2 for any moves affected by Parental Bond.
     def pbNumHits(user, targets, checkingForAI = false)
+        if user.shouldAbilityApply?(:FICKLEUNION, checkingForAI) && pulseMove?
+            if checkingForAI
+                return getRandomMultihitNumberAI(user, targets)
+            else
+                return getRandomMultihitNumber(user, targets)
+            end
+        end
         return 2 if canParentalBond?(user, targets, checkingForAI)
         return 2 if canDiffract?(user, targets, checkingForAI)
         numHits = 1
         numHits += 1 if user.shouldAbilityApply?(:SPACEINTERLOPER, checkingForAI) && damagingMove?
         numHits += 1 if user.effectActive?(:VolleyStance) && specialMove?
+        numHits += 1  && damagingMove?
         return numHits
     end
 

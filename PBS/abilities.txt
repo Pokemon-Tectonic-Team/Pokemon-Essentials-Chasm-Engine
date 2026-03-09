@@ -456,6 +456,7 @@ Description = Stat changes in this Pokémon are doubled.
 [SKILLLINK]
 Name = Skill Link
 Description = Maximizes the frequency of "two to five" multi-hit moves.
+Flags = MaxRandomHits
 #-------------------------------
 [SLOWSTART]
 Name = Slow Start

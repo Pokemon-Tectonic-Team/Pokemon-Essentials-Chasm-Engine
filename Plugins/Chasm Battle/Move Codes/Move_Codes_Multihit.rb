@@ -58,32 +58,40 @@ end
 module RandomHitable
     def multiHitMove?; return true; end
 
-    def pbNumHits(user, _targets, _checkingForAI = false)
-        if user.hasActiveItem?(:LOADEDDICE)
-            hitChances = [4, 5]
-        else
-            hitChances = [2, 2, 3, 3, 4, 5]
-        end
-        if user.hasActiveAbility?(%i[SKILLLINK PERFECTLUCK])
-            numHits = hitChances.last
-        else
-            numHits = hitChances.sample
-        end
-        numHits += 1 if user.hasActiveAbility?(:REPETITION)
-        return numHits
+    def pbNumHits(user, targets, _checkingForAI = false)
+        return getRandomMultihitNumber(user, targets)
     end
 
-    def pbNumHitsAI(user, _targets)
-        if user.hasActiveAbilityAI?(%i[SKILLLINK PERFECTLUCK])
-            score = 5 
-        elsif user.hasActiveItemAI?(:LOADEDDICE)
-            score = 4.5
-        else
-            score = 19.0 / 6.0 # Average
-        end
-        score += 1 if user.hasActiveAbilityAI?(:REPETITION)
-        return score
+    def pbNumHitsAI(user, targets)
+        return getRandomMultihitNumberAI(user, targets)
     end
+end
+
+def getRandomMultihitNumber(user, _targets)
+    if user.hasActiveItem?(:LOADEDDICE)
+        hitChances = [4, 5]
+    else
+        hitChances = [2, 2, 3, 3, 4, 5]
+    end
+    if user.hasActiveAbility?(GameData::Ability.getByFlag("MaxRandomHits"))
+        numHits = hitChances.last
+    else
+        numHits = hitChances.sample
+    end
+    numHits += 1 if user.hasActiveAbility?(:REPETITION)
+    return numHits
+end
+
+def getRandomMultihitNumberAI(user, _targets)
+    if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("MaxRandomHits"))
+        score = 5 
+    elsif user.hasActiveItemAI?(:LOADEDDICE)
+        score = 4.5
+    else
+        score = 19.0 / 6.0 # Average
+    end
+    score += 1 if user.hasActiveAbilityAI?(:REPETITION)
+    return score
 end
 
 class PokeBattle_Move_HitTwoToFiveTimes < PokeBattle_Move

@@ -683,6 +683,10 @@ Name = Ferrofluid
 Description = Takes 30% less damage in a rainstorm.
 Flags = RainstormSynergy
 #-------------------------------
+[FICKLEUNION]
+Name = Fickle Union
+Description = Pulse moves multi-hit two to five times at 30% power.
+#-------------------------------
 [FIELDOFDEATH]
 Name = Field of Death
 Description = While this Pokémon is on the field, all attacks restore their user's HP by 30% of damage dealt.
@@ -1577,6 +1581,7 @@ Description = This Pokémon's hits deal half damage unless they are critical.
 [PERFECTLUCK]
 Name = Perfect Luck
 Description = Maximizes the frequency of multi-hit moves. Always deals critical hits.
+Flags = MaxRandomHits
 #-------------------------------
 [PERSONALDEMESNE]
 Name = Personal Demesne
