@@ -3938,6 +3938,19 @@ Flags = CanProtect
 Description = The user rushes the target at blazing-fast speed. This attack always goes before any other move.
 Animation = FLAMECHARGE
 #-------------------------------
+[BROIL]
+Name = Broil
+Type = FIRE
+Category = Special
+Power = 60
+Accuracy = 100
+TotalPP = 10
+Target = AllNearFoes
+FunctionCode = Burn
+Flags = CanProtect,Wind
+EffectChance = 30
+Description = The user attacks by sending a wave of hot air towards the target. It has a 30% chance to burn.
+#-------------------------------
 [CRIMSONSTORM]
 Name = Crimson Storm
 Type = FIRE
@@ -3998,6 +4011,19 @@ Target = FoeSide
 FunctionCode = FlameSpikes
 Flags = CanMagicCoat
 Description = The user lays a hazard layer of burning spikes on the foe's side. One layer hurts switched in foes, two layers burns.
+#-------------------------------
+[FLARE]
+Name = Flare
+Type = FIRE
+Category = Special
+Power = 60
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Basic
+Flags = CanProtect,CanRandomCrit,Light
+Description = The user flashes with a burst of intensely bright flame. Can random critical hit.
+Animation = WHITEFLAME
 #-------------------------------
 [FLAREUP]
 Name = Flare Up
@@ -8485,16 +8511,3 @@ FunctionCode = Rampage
 Flags = CanProtect
 Description = The user attacks with simple determination and rampages for two turns.
 Animation = THRASH
-#-------------------------------
-[FLARE]
-Name = Flare
-Type = FIRE
-Power = 60
-Category = Special
-Accuracy = 100
-TotalPP = 15
-Target = NearOther
-FunctionCode = Basic
-Flags = CanProtect,CanRandomCrit,Light
-Description = The user flashes with a burst of intensely bright flame. Can random critical hit.
-Animation = WHITEFLAME
