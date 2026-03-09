@@ -155,7 +155,7 @@ class PokeBattle_Battler
                 echoln(msg)
                 return false
             end
-            statusPreventingAbility = hasActiveAbility?(%i[ASSAULTSPINES])
+            statusPreventingAbility = hasActiveAbility?(GameData::Ability.getByFlag("NoStatusUse"))
             if statusPreventingAbility
                 msg = _INTL("The effects of the {1} prevent status moves from being used!", getAbilityName(statusPreventingAbility))
                 if showMessages

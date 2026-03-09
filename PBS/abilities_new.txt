@@ -102,6 +102,7 @@ Description = Uses Aromatherapy if an attack lowers its HP to half or below.
 [ASSAULTSPINES]
 Name = Assault Spines
 Description = Doubles Sp. Def, but this Pokémon can't use status moves.
+Flags = NoStatusUse
 #-------------------------------
 [ASTRALHARVEST]
 Name = Astral Harvest
@@ -1223,6 +1224,10 @@ Description = The user's dance moves have increased priority.
 Name = Lead Singer
 Description = Boosts power of sound-based moves by 30%. After using a sound move, all enemy attacks target this Pokémon this turn.
 #-------------------------------
+[LETEMHAVEIT]
+Name = Let 'Em Have It
+Description = This Pokémon's pulse attacks become spread and deal 25% more damage.
+#-------------------------------
 [LEVIATHAN]
 Name = Leviathan
 Description = Protected from critical hits. Can't be burned or frostbitten.
@@ -1268,6 +1273,10 @@ Description = Copies the Ability of the Pokémon it switches in to replace.
 [LONGTERMVIEW]
 Name = Long-term View
 Description = Effects placed by this Pokemon last 50% longer.
+#-------------------------------
+[LOOSECANNON]
+Name = Loose Cannon
+Description = This Pokémon's Speed is doubled while using pulse moves.
 #-------------------------------
 [LOUD]
 Name = Loud
@@ -1315,6 +1324,10 @@ Description = If an attack lowers this Pokémon's HP below half, the attacker be
 Name = Malicious Glow
 Description = When attacking during moonglow, uses the target's Attack and Sp. Atk instead of its own.
 Flags = MoonglowSynergy
+#-------------------------------
+[MANIFESTATION]
+Name = Manifestation
+Description = Boosts the power of pulse moves by 50%, and makes them physical when that would be more effective.
 #-------------------------------
 [MARINE]
 Name = Marine
@@ -2211,6 +2224,11 @@ Description = Powers up Rock-type moves by 50%.
 Name = Stressful
 Description = Makes foes stressed and unable to use their items.
 #-------------------------------
+[STRIKECORONA]
+Name = Strike Corona
+Description = Doubles Defense, but this Pokémon can't use status moves.
+Flags = NoStatusUse
+#-------------------------------
 [STRIKETWICE]
 Name = Strikes Twice
 Description = In rainstorm, each of its hits is followed by an extra hit at 25% power.
@@ -2423,6 +2441,10 @@ Description = Powers up Ground-type moves by 50%.
 [ULTRAADAPTED]
 Name = Ultra Adapted
 Description = Powers up moves of the same type by 50%.
+#-------------------------------
+[ULTRABUSTER]
+Name = Ultra Buster
+Description = Boosts the power of punch and pulse moves by 50%.
 #-------------------------------
 [UMBRALTENACITY]
 Name = Umbral Tenacity

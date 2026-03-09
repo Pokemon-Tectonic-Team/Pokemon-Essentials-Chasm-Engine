@@ -27,3 +27,9 @@ BattleHandlers::MoveMakeHitAllNearFoesAbility.add(:HORDETACTICS,
       next type == :NORMAL
   }
 )
+
+BattleHandlers::MoveMakeHitAllNearFoesAbility.add(:LETEMHAVEIT,
+  proc { |ability, user, move, type, battle|
+      next move.pulseMove?
+  }
+)
