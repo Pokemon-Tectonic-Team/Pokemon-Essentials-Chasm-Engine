@@ -6542,14 +6542,14 @@ Animation = HAIL
 Name = Frigid Flurry
 Type = ICE
 Category = Special
-Power = 80
+Power = 85
 Accuracy = 100
 TotalPP = 10
 Target = AllNearFoes
 FunctionCode = Frostbite
 Flags = CanProtect,Wind
-EffectChance = 30
-Description = The user summons a wind that drains vitality from all nearby foes. This has a 30% chance to frostbite them.
+EffectChance = 20
+Description = The user summons a wind that drains vitality from all nearby foes. This has a 20% chance to frostbite them.
 Animation = ICYWIND
 #-------------------------------
 [FRIGIDJEALOUSY]
