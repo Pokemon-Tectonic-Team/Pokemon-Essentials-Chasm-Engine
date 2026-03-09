@@ -2167,19 +2167,6 @@ Flags = CanProtect,CanMagicCoat
 Description = The user weakens the target's bones, making them fracture. They deal 33% less damage.
 Animation = TARSHOT
 #-------------------------------
-[GLIMMERPULSE]
-Name = Glimmer Pulse
-Type = ROCK
-Category = Special
-Power = 60
-Accuracy = 100
-TotalPP = 10
-Target = NearOther
-FunctionCode = DoubleDamageGemConsumed
-Flags = CanProtect,Pulse
-Description = The user harms the target with a pulse of power. Deals double damage if the user has used a gem this battle.
-Animation = POWERGEM
-#-------------------------------
 [GRANITEHEAD]
 Name = Granite Head
 Type = ROCK
@@ -2390,6 +2377,19 @@ FunctionCode = SwitchOutTargetIfMisses
 Flags = CanProtect
 Description = If this move misses, the target is forced to switch out. Always goes last.
 Animation = SMACKDOWN
+#-------------------------------
+[SHATTEREDLIGHT]
+Name = Shattered Light
+Type = ROCK
+Category = Special
+Power = 60
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = DoubleDamageGemConsumed
+Flags = CanProtect,Light
+Description = The target is struck from all angles by light like gemstones. Deals double damage if the user has used a gem this battle.
+Animation = POWERGEM
 #-------------------------------
 [SHATTERSHOT]
 Name = Shatter Shot

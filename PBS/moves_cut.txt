@@ -1713,6 +1713,19 @@ Flags = CanSnatch,Light
 Description = A diamond-tough force-field protects the user's side for 5 turns from critical hits, and reduces move damage taken.
 Animation = LIGHTSCREEN
 #-------------------------------
+[GLIMMERPULSE]
+Name = Glimmer Pulse
+Type = ROCK
+Category = Special
+Power = 60
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Pulse
+Description = The user harms the target with a pulse of power. Deals double damage if the user has used a gem this battle.
+Animation = POWERGEM
+#-------------------------------
 [HEADSMASH]
 Name = Head Smash
 Type = ROCK
