@@ -3506,14 +3506,14 @@ Description = The user slams the opposing side with its flaming body. The heavie
 Name = Heat Wave
 Type = FIRE
 Category = Special
-Power = 80
+Power = 85
 Accuracy = 100
 TotalPP = 10
 Target = AllNearFoes
 FunctionCode = Burn
 Flags = CanProtect,Wind
-EffectChance = 30
-Description = The user attacks by exhaling hot breath on the opposing team. It has a 30% chance to burn.
+EffectChance = 20
+Description = The user attacks by exhaling hot breath on the opposing team. It has a 20% chance to burn.
 #-------------------------------
 [INCINERATE]
 Name = Incinerate
