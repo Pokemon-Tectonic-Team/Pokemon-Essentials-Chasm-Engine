@@ -796,7 +796,7 @@ Flags = Immutable
 #-------------------------------
 [FRIGHTENINGFANGS]
 Name = Frightening Fangs
-Description = After using a Bite move, lowers the target's highest attacking stat by two steps.
+Description = After using a biting move, lowers the target's highest attacking stat by two steps.
 #-------------------------------
 [FRIGIDREFLECTION]
 Name = Frigid Reflection
