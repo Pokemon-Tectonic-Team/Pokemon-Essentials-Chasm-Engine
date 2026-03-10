@@ -1919,7 +1919,7 @@ TotalPP = 15
 Target = NearOther
 FunctionCode = TwoTurnAttackInvulnerableHitsThreeTimes
 Flags = CanProtect
-Description = The user hits the target with each of its heads. It burrows, charging and becoming hidden, then attacks on the second turn. Strikes three times.
+Description = The user burrows and hits with its heads, charging and becoming hidden, then attacks on the second turn. Strikes three times.
 Animation = DIG
 #-------------------------------
 [RUMBLE]
