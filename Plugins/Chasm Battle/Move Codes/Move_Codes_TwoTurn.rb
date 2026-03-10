@@ -566,3 +566,16 @@ class PokeBattle_Move_TwoTurnMoveSleepTarget < PokeBattle_TwoTurnMove
         return getSleepEffectScore(user, target)
     end
 end
+
+#===============================================================================
+# Two turn attack that hits three times. Skips first turn, attacks second turn. (Rotary Headbutt)
+# (Handled in Battler's pbSuccessCheckPerHit): Is semi-invulnerable during use.
+#===============================================================================
+class PokeBattle_Move_TwoTurnAttackInvulnerableHitsThreeTimes < PokeBattle_Move_TwoTurnAttackInvulnerable
+    def pbChargingTurnMessage(user, _targets)
+        @battle.pbDisplay(_INTL("{1} burrowed its way under the ground!", user.pbThis))
+    end
+
+    def multiHitMove?; return true; end
+    def pbNumHits(_user, _targets, _checkingForAI = false); return 3; end
+end

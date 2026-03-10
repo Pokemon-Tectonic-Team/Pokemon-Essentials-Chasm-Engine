@@ -1913,13 +1913,13 @@ Animation = SCORCHINGSANDS
 Name = Rotary Headbutt
 Type = GROUND
 Category = Physical
-Power = 40
+Power = 55
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
-FunctionCode = HitThreeTimes
+FunctionCode = TwoTurnAttackInvulnerableHitsThreeTimes
 Flags = CanProtect
-Description = The user hits the target with each of its heads from underground. Strikes three times.
+Description = The user hits the target with each of its heads. It burrows, charging and becoming hidden, then attacks on the second turn. Strikes three times.
 Animation = DIG
 #-------------------------------
 [RUMBLE]

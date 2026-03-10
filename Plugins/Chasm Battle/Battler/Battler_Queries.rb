@@ -552,7 +552,8 @@ class PokeBattle_Battler
         "TwoTurnAttackInvulnerableRemoveProtections",
         "TwoTurnAttackInvulnerableInSkyRecoilQuarterOfDamageDealt",
         "TwoTurnAttackInvulnerableScalesFaster",
-        "TwoTurnAttackInvulnerableJinxFrostbite",)
+        "TwoTurnAttackInvulnerableJinxFrostbite",
+        "TwoTurnAttackInvulnerableHitsThreeTimes",)
     end
 
     def pbEncoredMoveIndex

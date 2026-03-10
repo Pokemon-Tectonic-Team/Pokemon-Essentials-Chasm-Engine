@@ -102,6 +102,8 @@ move, false, true)
             return true unless move.hitsFlyingTargets?
         elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderground") # Dig
             return true unless move.hitsDiggingTargets?
+        elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableHitsThreeTimes") # Rotary Headbutt
+            return true unless move.hitsDiggingTargets?
         elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderwater") # Dive
             return true unless move.hitsDivingTargets?
         elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableHiding") # Lurk and Hidden Strike
