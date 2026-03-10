@@ -341,7 +341,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 drawFormattedTextEx(overlay, abilityTextX, ability1Y, 450, abilityNameText, abilityNameColor,
               abilityNameShadow)
 
-                ability1Description = addBattleKeywordHighlighting(ability1.description)
+                ability1Description = addBattleKeywordHighlighting(ability1.description, isAbility: true)
                 drawFormattedTextEx(overlay, abilityTextX, ability1Y + 34, 450, ability1Description, base, shadow)
                 
                 # add mutability labels
@@ -369,7 +369,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 drawFormattedTextEx(overlay, abilityTextX, ability2Y, 450, abilityNameText, abilityNameColor,
               abilityNameShadow)
 
-                ability2Description = addBattleKeywordHighlighting(ability2.description)
+                ability2Description = addBattleKeywordHighlighting(ability2.description, isAbility: true)
                 drawFormattedTextEx(overlay, abilityTextX, ability2Y + 34, 450, ability2Description, base, shadow)
                 
                 # add mutability labels
