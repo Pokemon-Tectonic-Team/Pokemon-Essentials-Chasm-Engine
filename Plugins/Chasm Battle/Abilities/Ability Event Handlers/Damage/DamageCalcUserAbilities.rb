@@ -89,6 +89,15 @@ BattleHandlers::DamageCalcUserAbility.add(:FICKLEUNION,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:ULTRABUSTER,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if move.pulseMove? || move.punchingMove?
+      mults[:base_damage_multiplier] *= 1.5
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
 BattleHandlers::DamageCalcUserAbility.add(:REFRACTIVE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.lightMove?
