@@ -191,7 +191,6 @@ class PokeBattle_Move
         numHits = 1
         numHits += 1 if user.shouldAbilityApply?(:SPACEINTERLOPER, checkingForAI) && damagingMove?
         numHits += 1 if user.effectActive?(:VolleyStance) && specialMove?
-        numHits += 1  && damagingMove?
         return numHits
     end
 
