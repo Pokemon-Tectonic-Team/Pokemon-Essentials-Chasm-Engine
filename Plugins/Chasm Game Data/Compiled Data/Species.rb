@@ -141,25 +141,6 @@ module GameData
             @type1                 = hash[:type1]                 || :NORMAL
             @type2                 = hash[:type2]                 || @type1
             @base_stats            = hash[:base_stats]            || {}
-            oldBST = 0
-            newBST = 0
-            GameData::Stat.each_main do |s|
-                @base_stats[s.id] = 1 if !@base_stats[s.id] || @base_stats[s.id] <= 0
-                next if @base_stats[s.id] % 5 == 0 || @base_stats[s.id] == 1
-                oldValue = @base_stats[s.id]
-                newValue = (oldValue / 5.0).round(0) * 5
-
-                @base_stats[s.id] = newValue
-
-                oldBST += oldValue
-                newBST += newValue
-            end
-            if newBST > oldBST + 5
-                echoln("[STAT ROUNDING] #{@id} BST increased by #{newBST - oldBST} due to base stats rounding to nearest 5")  
-            end
-            if newBST < oldBST - 5
-                echoln("[STAT ROUNDING] #{@id} BST decreased by #{newBST - oldBST} due to base stats rounding to nearest 5")
-            end
             @base_exp              = hash[:base_exp]              || 100
             @growth_rate           = hash[:growth_rate]           || DEFAULT_GROWTH_RATE
             @gender_ratio          = hash[:gender_ratio]          || DEFAULT_GENDER_RATIO
@@ -195,6 +176,28 @@ module GameData
             @flags                 = hash[:flags]                 || []
             @formalizer            = hash[:formalizer]            || []
             @sticky_items          = hash[:sticky_items]          || []
+
+            unless (@flags.include?("NoStatRounding")) 
+                oldBST = 0
+                newBST = 0
+                GameData::Stat.each_main do |s|
+                    @base_stats[s.id] = 1 if !@base_stats[s.id] || @base_stats[s.id] <= 0
+                    next if @base_stats[s.id] % 5 == 0 || @base_stats[s.id] == 1
+                    oldValue = @base_stats[s.id]
+                    newValue = (oldValue / 5.0).round(0) * 5
+
+                    @base_stats[s.id] = newValue
+
+                    oldBST += oldValue
+                    newBST += newValue
+                end
+                if newBST > oldBST + 5
+                    echoln("[STAT ROUNDING] #{@id} BST increased by #{newBST - oldBST} due to base stats rounding to nearest 5")  
+                end
+                if newBST < oldBST - 5
+                    echoln("[STAT ROUNDING] #{@id} BST decreased by #{newBST - oldBST} due to base stats rounding to nearest 5")
+                end
+            end
 
             legalityChecks
         end
