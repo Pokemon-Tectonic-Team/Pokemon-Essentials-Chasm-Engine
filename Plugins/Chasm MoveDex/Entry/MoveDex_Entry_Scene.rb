@@ -558,8 +558,9 @@ class MoveDex_Entry_Scene
                 selection = @currentSpeciesList[@columnSelected][@scroll]
                 if selection
                     selection = selection[0] if selection.is_a?(Array)
-                    pbPlayDecisionSE 
-                    openSingleDexScreen(selection)
+                    pbPlayDecisionSE
+                    $dex_cross_link = { type: :species, id: selection }
+                    break
                 else
                     pbPlayBuzzerSE
                 end
@@ -778,6 +779,7 @@ class MoveDex_Entry_Scene
                     if canScrollSpeciesList?
                         pbPlayDecisionSE
                         pbScrollSpeciesList
+                        break if $dex_cross_link
                     else
                         pbPlayBuzzerSE
                     end

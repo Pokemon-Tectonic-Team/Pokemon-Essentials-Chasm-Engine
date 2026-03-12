@@ -664,6 +664,13 @@ class PokemonPokedex_Scene
                 index = currentListIndex
                 @sprites["pokedex"].index = index
                 next
+            # Cross-dex link (e.g. clicked a move to open MoveDex)
+            elsif $dex_cross_link
+                link = $dex_cross_link
+                $dex_cross_link = nil
+                _navigateDexChain(link[:type], link[:id])
+                # After the chain completes, reopen the same species entry
+                next
             # Otherwise, we were given the last looked index of the current dexlist
             # Go back to the main pokedex menu, at that index
             else

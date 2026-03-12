@@ -1,43 +1,91 @@
-def openSingleDexScreen(pokemon)
+def _resolveDexSpecies(pokemon)
 	if pokemon.respond_to?('species')
 		$Trainer.pokedex.register_last_seen(pokemon)
-		species = pokemon.species
+		return pokemon.species
 	else
 		speciesData = GameData::Species.get(pokemon)
-		species = speciesData.species
 		$Trainer.pokedex.set_last_form_seen(speciesData.species, 0, speciesData.form)
+		return speciesData.species
 	end
-	ret = nil
-	pbFadeOutIn {
-		scene = PokemonPokedexInfo_Scene.new
-		screen = PokemonPokedexInfoScreen.new(scene)
-		ret = screen.pbStartSceneSingle(species)
-	}
-	if ret.is_a?(Symbol)
-		echoln("Opening single dex screen from hyperlink to: #{ret}")
-		openSingleDexScreen(ret)
+end
+
+# Coordinator loop that prevents unbounded MasterDex <-> MoveDex nesting.
+# Instead of each dex directly opening the other (creating a deep call stack),
+# this loop alternates between them. Pressing BACK exits the entire chain.
+def _navigateDexChain(type, id)
+	$dex_cross_link = nil
+	loop do
+		if type == :species
+			species = _resolveDexSpecies(id)
+			ret = nil
+			pbFadeOutIn {
+				scene = PokemonPokedexInfo_Scene.new
+				screen = PokemonPokedexInfoScreen.new(scene)
+				ret = screen.pbStartSceneSingle(species)
+			}
+			if $dex_cross_link
+				type = $dex_cross_link[:type]
+				id = $dex_cross_link[:id]
+				$dex_cross_link = nil
+			elsif ret.is_a?(Symbol)
+				echoln("Opening single dex screen from hyperlink to: #{ret}")
+				id = ret
+			else
+				break
+			end
+		elsif type == :move
+			move = id
+			move = move[0] if move.is_a?(Array)
+			moveList = []
+			GameData::Move.each do |moveData|
+				next unless moveData.learnable?
+				next unless moveInfoViewable?(moveData.id)
+				moveList.push({
+					:move => moveData.id,
+					:data => moveData
+				})
+			end
+			moveList.sort_by! { |dex_item| dex_item[:data].name }
+			moveIndex = moveList.index { |entry| entry[:move] == move } || 0
+			pbFadeOutIn do
+				scene = MoveDex_Entry_Scene.new
+				screen = MoveDex_Entry_Screen.new(scene)
+				screen.pbStartScreen(moveList, moveIndex)
+			end
+			if $dex_cross_link
+				type = $dex_cross_link[:type]
+				id = $dex_cross_link[:id]
+				$dex_cross_link = nil
+			else
+				break
+			end
+		else
+			break
+		end
 	end
+end
+
+def openSingleDexScreen(pokemon)
+	_navigateDexChain(:species, pokemon)
 end
 alias speciesEntry openSingleDexScreen
 
 def openPartyDexScreen(pokemon,index)
-	if pokemon.respond_to?('species')
-		$Trainer.pokedex.register_last_seen(pokemon)
-		species = pokemon.species
-	else
-		speciesData = GameData::Species.get(pokemon)
-		species = speciesData.species
-		$Trainer.pokedex.set_last_form_seen(speciesData.species, 0, speciesData.form)
-	end
+	species = _resolveDexSpecies(pokemon)
+	$dex_cross_link = nil
 	ret = nil
 	pbFadeOutIn {
 		scene = PokemonPokedexInfo_Scene.new
 		screen = PokemonPokedexInfoScreen.new(scene)
 		ret = screen.pbStartSceneParty(index)
 	}
-	if ret.is_a?(Symbol)
+	if $dex_cross_link
+		link = $dex_cross_link
+		$dex_cross_link = nil
+		_navigateDexChain(link[:type], link[:id])
+	elsif ret.is_a?(Symbol)
 		echoln("Opening single dex screen from hyperlink to: #{ret}")
-		openSingleDexScreen(ret)
+		_navigateDexChain(:species, ret)
 	end
 end
 alias speciesPartyEntry openSingleDexScreen

@@ -1231,12 +1231,11 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
             pbUpdate
             doRefresh = false
             if Input.trigger?(Input::USE)
-                selection = @scrollableLists[@horizontalScroll][@scroll]    
+                selection = @scrollableLists[@horizontalScroll][@scroll]
                 if selection
-                    pbFadeOutIn do
-                        selection = selection[1] if selection.is_a?(Array)
-                        openSingleMoveDexScreen(selection)
-                    end
+                    selection = selection[1] if selection.is_a?(Array)
+                    $dex_cross_link = { type: :move, id: selection }
+                    break
                 else
                     pbPlayBuzzerSE
                 end
@@ -1577,6 +1576,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 elsif @page == LEVEL_MOVES_PAGE_ID || @page == OTHER_MOVES_PAGE_ID
                     pbPlayDecisionSE
                     pbScroll
+                    break if $dex_cross_link
                     dorefresh = true
                 elsif @page == 8 && @evolutionsArray.length > 0   # Evolutions
                     if @linksEnabled
