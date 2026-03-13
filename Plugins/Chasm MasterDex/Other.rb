@@ -1,4 +1,4 @@
-def _resolveDexSpecies(pokemon)
+def resolveDexSpecies(pokemon)
 	if pokemon.respond_to?('species')
 		$Trainer.pokedex.register_last_seen(pokemon)
 		return pokemon.species
@@ -12,7 +12,7 @@ end
 # Coordinator loop that prevents unbounded MasterDex <-> MoveDex nesting.
 # Instead of each dex directly opening the other (creating a deep call stack),
 # this loop alternates between them. Pressing BACK exits the entire chain.
-def _navigateDexChain(type, id)
+def navigateDexChain(type, id)
 	$dex_cross_link = nil
 	loop do
 		if type == :species
