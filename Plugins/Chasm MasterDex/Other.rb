@@ -16,7 +16,7 @@ def navigateDexChain(type, id)
 	$dex_cross_link = nil
 	loop do
 		if type == :species
-			species = _resolveDexSpecies(id)
+			species = resolveDexSpecies(id)
 			ret = nil
 			pbFadeOutIn {
 				scene = PokemonPokedexInfo_Scene.new
@@ -66,12 +66,11 @@ def navigateDexChain(type, id)
 end
 
 def openSingleDexScreen(pokemon)
-	_navigateDexChain(:species, pokemon)
 end
 alias speciesEntry openSingleDexScreen
 
 def openPartyDexScreen(pokemon,index)
-	species = _resolveDexSpecies(pokemon)
+	species = resolveDexSpecies(pokemon)
 	$dex_cross_link = nil
 	ret = nil
 	pbFadeOutIn {
@@ -82,10 +81,10 @@ def openPartyDexScreen(pokemon,index)
 	if $dex_cross_link
 		link = $dex_cross_link
 		$dex_cross_link = nil
-		_navigateDexChain(link[:type], link[:id])
+		navigateDexChain(link[:type], link[:id])
 	elsif ret.is_a?(Symbol)
 		echoln("Opening single dex screen from hyperlink to: #{ret}")
-		_navigateDexChain(:species, ret)
+		navigateDexChain(:species, ret)
 	end
 end
 alias speciesPartyEntry openSingleDexScreen

@@ -668,7 +668,7 @@ class PokemonPokedex_Scene
             elsif $dex_cross_link
                 link = $dex_cross_link
                 $dex_cross_link = nil
-                _navigateDexChain(link[:type], link[:id])
+                navigateDexChain(link[:type], link[:id])
                 # After the chain completes, reopen the same species entry
                 next
             # Otherwise, we were given the last looked index of the current dexlist

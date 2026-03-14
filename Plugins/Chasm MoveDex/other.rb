@@ -1,3 +1,3 @@
 def openSingleMoveDexScreen(move, moveList = nil, moveIndex = nil)
-  _navigateDexChain(:move, move)
+  navigateDexChain(:move, move)
 end
