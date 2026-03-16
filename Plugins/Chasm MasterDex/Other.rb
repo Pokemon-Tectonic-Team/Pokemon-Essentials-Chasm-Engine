@@ -66,6 +66,7 @@ def navigateDexChain(type, id)
 end
 
 def openSingleDexScreen(pokemon)
+	navigateDexChain(:species, pokemon)
 end
 alias speciesEntry openSingleDexScreen
 
