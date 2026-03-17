@@ -569,8 +569,8 @@ class PokeBattle_Move_RaiseTargetAtkSpAtk3TargetHitsSelfAdaptive < PokeBattle_Mo
         return score
     end
 
-    def calculateDamageForHitAI(user,target,type,baseDmg,numTargets)
-        damage = calculateDamageForHit(user,target,type,baseDmg,numTargets,true)
+    def calculateDamageForHitAI(user,target,type,baseDmg,numTargets,ai_context=nil)
+        damage = calculateDamageForHit(user,target,type,baseDmg,numTargets,true,ai_context)
         damage *= 1.75 unless targetIsUnaware?(target, aiCheck: true)
         return damage
     end

@@ -1,5 +1,52 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
+[YOUNGSTER,GemTest]
+Pokemon = CHARIZARD,70
+    Moves = FLAMETHROWER,WHITEFLAME,AERIALACE,HOTSHOT
+    AbilityIndex = 0 # Pure Rage
+    Item = FIREGEM
+#-------------------------------
+[YOUNGSTER,StrengthHerbTest]
+Pokemon = SMEARGLE,70
+    Moves = FLAMETHROWER,EARTHQUAKE,ICEBEAM,THUNDERBOLT
+    AbilityIndex = 0 # Mental Block
+    Item = STRENGTHHERB
+#-------------------------------
+[YOUNGSTER,IntellectHerbTest]
+Pokemon = SMEARGLE,70
+    Moves = EARTHQUAKE,FLAMETHROWER,DIZZYPUNCH,CLOSECOMBAT
+    AbilityIndex = 1 # Technician
+    Item = INTELLECTHERB
+#-------------------------------
+[YOUNGSTER,SkillHerbTest]
+Pokemon = SMEARGLE,70
+    Moves = THUNDER,FIREBLAST,THUNDERBOLT,BLIZZARD
+    AbilityIndex = 1 # Technician
+    Item = SKILLHERB
+#-------------------------------
+[YOUNGSTER,LuckHerbTest]
+Pokemon = SMEARGLE,70
+    Moves = FLAMETHROWER,ICEBEAM,AERIALACE,THUNDERBOLT
+    AbilityIndex = 0 # Mental Block
+    Item = LUCKHERB
+#-------------------------------
+[YOUNGSTER,PowerHerbTest]
+Pokemon = SMEARGLE,70
+    Moves = SOLARBEAM,FLY,FLAMETHROWER,DIG
+    AbilityIndex = 0 # Mental Block
+    Item = POWERHERB
+#-------------------------------
+[YOUNGSTER,NoPowerHerbTest]
+Pokemon = SMEARGLE,70
+    Moves = SOLARBEAM,FLY,FLAMETHROWER,DIG
+    AbilityIndex = 0 # Mental Block
+#-------------------------------
+[YOUNGSTER,OverheatEdgeCase]
+Pokemon = SMEARGLE,70
+    Moves = OVERHEAT,AERIALACE,SQUALLDART,COLDFRONT
+    AbilityIndex = 1 # Technician
+    Item = FLYINGGEM
+#-------------------------------
 [BATTLEGIRL,Tester]
 Pokemon = SLAKING,70
     Moves = TACKLE

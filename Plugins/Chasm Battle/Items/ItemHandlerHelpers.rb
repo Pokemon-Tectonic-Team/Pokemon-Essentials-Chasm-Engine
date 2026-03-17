@@ -53,12 +53,13 @@ def pbBattleTypeWeakingBerry(item, type, moveType, target, mults, feast = false,
     target.battle.pbCommonAnimation("Nom", target) unless aiCheck
 end
 
-def pbBattleGem(item, user, type, move, mults, moveType, aiCheck = false)
+def pbBattleGem(item, user, type, move, mults, moveType, aiCheck = false, ai_context = nil)
     # Pledge moves never consume Gems
     return if move.is_a?(PokeBattle_PledgeMove)
     return if moveType != type
     return unless user.canConsumeGem?
     user.applyEffect(:GemConsumed, item) unless aiCheck
+    ai_context[:item_consumed] = true if ai_context
     mults[:base_damage_multiplier] *= 1.5
 end
 

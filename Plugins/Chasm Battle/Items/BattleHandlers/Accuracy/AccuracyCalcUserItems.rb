@@ -5,9 +5,10 @@ BattleHandlers::AccuracyCalcUserItem.add(:WIDELENS,
 )
 
 BattleHandlers::AccuracyCalcUserItem.add(:SKILLHERB,
-  proc { |item, mults, user, _target, _move, _type, aiCheck|
+  proc { |item, mults, user, _target, _move, _type, aiCheck, ai_context|
       next unless mults[:base_accuracy] < 100
       mults[:base_accuracy] = 0 # Can't miss
       user.applyEffect(:SkillHerbConsumed) unless aiCheck
+      ai_context[:item_consumed] = true if ai_context
   }
 )

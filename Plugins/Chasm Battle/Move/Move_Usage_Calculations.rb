@@ -154,7 +154,7 @@ class PokeBattle_Move
         return @battle.pbRandom(100) < modifiers[:base_accuracy] * calc
     end
 
-    def pbCalcAccuracyModifiers(user, target, modifiers, aiCheck = false, aiType = nil)
+    def pbCalcAccuracyModifiers(user, target, modifiers, aiCheck = false, aiType = nil, ai_context = nil)
         typeToUse = aiCheck ? aiType : @calcType
         # Ability effects that alter accuracy calculation
         user.eachAbilityShouldApply(aiCheck) do |ability|
@@ -172,7 +172,7 @@ class PokeBattle_Move
         end
         # Item effects that alter accuracy calculation
         user.eachActiveItem do |item|
-            BattleHandlers.triggerAccuracyCalcUserItem(item, modifiers, user, target, self, typeToUse, aiCheck)
+            BattleHandlers.triggerAccuracyCalcUserItem(item, modifiers, user, target, self, typeToUse, aiCheck, ai_context)
         end
         target.eachActiveItem do |item|
             BattleHandlers.triggerAccuracyCalcTargetItem(item, modifiers, user, target, self, typeToUse)
@@ -397,7 +397,7 @@ showMessages)
         return true
     end
 
-    def pbAdditionalEffectChance(user, target, type, effectChance = 0, aiCheck = false)
+    def pbAdditionalEffectChance(user, target, type, effectChance = 0, aiCheck = false, ai_context = nil)
         return 100 if @battle.pbCheckGlobalAbility(:WISHMAKER)
         # Abilities ensure effect chance
         user.eachAbilityShouldApply(aiCheck) do |ability|
@@ -431,6 +431,7 @@ showMessages)
         if ret < 100 && user.shouldItemApply?(:LUCKHERB, aiCheck)
             ret = 100
             user.applyEffect(:LuckHerbConsumed) unless aiCheck
+            ai_context[:item_consumed] = true if ai_context
         end
         return ret
     end

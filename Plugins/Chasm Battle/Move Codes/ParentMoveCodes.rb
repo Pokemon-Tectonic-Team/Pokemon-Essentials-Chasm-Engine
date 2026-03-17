@@ -517,7 +517,7 @@ class PokeBattle_FixedDamageMove < PokeBattle_Move
         end
     end
 
-    def calculateDamageForHit(user, target, type, baseDmg, numTargets, aiCheck = false)
+    def calculateDamageForHit(user, target, type, baseDmg, numTargets, aiCheck = false, ai_context = nil)
         fixedDamage = pbFixedDamage(user, target)
         return fixedDamage if fixedDamage
         super
