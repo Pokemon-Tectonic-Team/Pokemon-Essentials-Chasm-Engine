@@ -130,9 +130,9 @@ BattleHandlers::HPHealItem.add(:ZALAKABERRY,
 
 # Lucent Gem
 BattleHandlers::DamageCalcUserItem.add(:LUCENTGEM,
-    proc { |item,user,target,move,mults,baseDmg,type,aiCheck,ai_context|
+    proc { |item,user,target,move,mults,baseDmg,type,aiCheck,aiContext|
         user.applyEffect(:GemConsumed,item) unless aiCheck
-        ai_context[:item_consumed] = true if ai_context
+        aiContext[:item_consumed] = true if aiContext
         mults[:base_damage_multiplier] *= 1.5
     }
 )

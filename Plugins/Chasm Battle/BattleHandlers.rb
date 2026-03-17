@@ -364,8 +364,8 @@ module BattleHandlers
         AccuracyCalcTargetAbility.trigger(ability, mults, user, target, move, type)
     end
 
-    def self.triggerAccuracyCalcUserItem(item, mults, user, target, move, type, aiCheck, ai_context = nil)
-        AccuracyCalcUserItem.trigger(item, mults, user, target, move, type, aiCheck, ai_context)
+    def self.triggerAccuracyCalcUserItem(item, mults, user, target, move, type, aiCheck, aiContext = nil)
+        AccuracyCalcUserItem.trigger(item, mults, user, target, move, type, aiCheck, aiContext)
     end
 
     def self.triggerAccuracyCalcTargetItem(item, mults, user, target, move, type)
@@ -382,8 +382,8 @@ module BattleHandlers
         DamageCalcUserAllyAbility.trigger(ability, user, target, move, mults, baseDmg, type, aiCheck)
     end
 
-    def self.triggerDamageCalcUserItem(item, user, target, move, mults, baseDmg, type, aiCheck = false, ai_context = nil)
-        DamageCalcUserItem.trigger(item, user, target, move, mults, baseDmg, type, aiCheck, ai_context)
+    def self.triggerDamageCalcUserItem(item, user, target, move, mults, baseDmg, type, aiCheck = false, aiContext = nil)
+        DamageCalcUserItem.trigger(item, user, target, move, mults, baseDmg, type, aiCheck, aiContext)
     end
 
     #=============================================================================

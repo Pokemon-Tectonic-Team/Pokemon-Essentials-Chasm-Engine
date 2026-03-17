@@ -236,17 +236,17 @@ class PokeBattle_AI
         damageScore = 0
         triggersScore = 0
         willFaint = false
-        ai_context = { item_consumed: false }
+        aiContext = { item_consumed: false }
         # Power Herb: consumed when using a two-turn move
         if move.chargingTurnMove? && user.hasActiveItemAI?(:POWERHERB)
-            ai_context[:item_consumed] = true
+            aiContext[:item_consumed] = true
         end
         damagingMove = move.damagingMove?(true)
         if damagingMove
             # Adjust the score based on the move dealing damage
             # and perhaps a percent chance to actually benefit from its effect score
             begin
-                damageScore,damageDealt,willFaint = pbGetMoveScoreDamage(move, user, target, numTargets, ai_context)
+                damageScore,damageDealt,willFaint = pbGetMoveScoreDamage(move, user, target, numTargets, aiContext)
             rescue StandardError => exception
                 pbPrintException($!) if $DEBUG
             end
@@ -324,7 +324,7 @@ class PokeBattle_AI
         # Modify the effect score by the move's additional effect chance if it has one
         if move.randomEffect?
             type = pbRoughType(move, user)
-            realProcChance = move.pbAdditionalEffectChance(user, target, type, 0, true, ai_context)
+            realProcChance = move.pbAdditionalEffectChance(user, target, type, 0, true, aiContext)
             realProcChance = 0 unless move.canApplyRandomAddedEffects?(user,target,realProcChance,false,true)
             factor = (realProcChance / 100.0)
             echoln("\t[MOVE SCORING] #{user.pbThis} multiplies #{move.id}'s effect score of #{effectScore} by #{factor} based on effect chance")
@@ -349,7 +349,7 @@ class PokeBattle_AI
         end
 
         # Account for accuracy of move
-        accuracy = pbRoughAccuracy(move, user, target, ai_context)
+        accuracy = pbRoughAccuracy(move, user, target, aiContext)
         score *= accuracy / 100.0
 
         if accuracy < 100
@@ -379,7 +379,7 @@ class PokeBattle_AI
         
         # Create kill info
         if willFaint
-            killInfo = KillInfo.new(user,move,user.pbSpeed(true, move: move),@battle.getMovePriority(move, user, [target], true), score, ai_context[:item_consumed])
+            killInfo = KillInfo.new(user,move,user.pbSpeed(true, move: move),@battle.getMovePriority(move, user, [target], true), score, aiContext[:item_consumed])
         else
             killInfo = nil
         end
@@ -422,8 +422,8 @@ class PokeBattle_AI
     # Add to a move's score based on how much damage it will deal (as a percentage
     # of the target's current HP)
     #=============================================================================
-    def pbGetMoveScoreDamage(move, user, target, numTargets = 1, ai_context = nil)
-        realDamage,damagePercentage,subDestroyed = getDamageAnalysisAI(move, user, target, numTargets, ai_context)
+    def pbGetMoveScoreDamage(move, user, target, numTargets = 1, aiContext = nil)
+        realDamage,damagePercentage,subDestroyed = getDamageAnalysisAI(move, user, target, numTargets, aiContext)
 
         # Adjust score
         willFaint = false
@@ -449,9 +449,9 @@ class PokeBattle_AI
         return damageScore,realDamage,willFaint
     end
 
-    def getDamageAnalysisAI(move, user, target, numTargets = 1, ai_context = nil)
+    def getDamageAnalysisAI(move, user, target, numTargets = 1, aiContext = nil)
         # Calculate how much damage the move will do (roughly)
-        realDamage,subDestroyed = pbTotalDamageAI(move, user, target, numTargets, ai_context)
+        realDamage,subDestroyed = pbTotalDamageAI(move, user, target, numTargets, aiContext)
 
         # Convert damage to percentage of target's remaining HP
         damagePercentage = realDamage * 100.0 / target.totalhp
