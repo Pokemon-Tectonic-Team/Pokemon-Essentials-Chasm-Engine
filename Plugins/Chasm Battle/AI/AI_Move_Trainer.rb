@@ -93,7 +93,7 @@ class PokeBattle_AI
             end
             echoln("\t[MOVE SCORING] Undoing move cut because Urgency (#{urgency}) might require sacrificing the battler")
         end
-        # If multiple moves KO the target, prefer ones that don't waste a consumable item
+        # If multiple moves KO the target, prefer ones that don't waste an item
         # Only penalize if a non-consuming KO move scores at least as high as the best consuming KO
         bestConsumingKOScore = 0
         bestNonConsumingKOScore = 0
@@ -110,7 +110,7 @@ class PokeBattle_AI
             choices.each_with_index do |c, idx|
                 ki = killInfoPerChoice[idx]
                 if ki && ki.consumesItem
-                    echoln("\t[MOVE SCORING] Penalizing #{ki.move.id} score: would waste consumable item on a KO that other moves can achieve")
+                    echoln("\t[MOVE SCORING] Penalizing #{ki.move.id} score: would waste item on a KO that other moves can achieve")
                     c[1] = (c[1] * 0.8).round
                 end
             end
