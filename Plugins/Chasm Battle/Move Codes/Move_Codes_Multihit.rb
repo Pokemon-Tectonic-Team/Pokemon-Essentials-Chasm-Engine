@@ -144,6 +144,10 @@ class PokeBattle_Move_HitTwoToFiveTimesTwiceThenExhaust < PokeBattle_Move_HitTwo
     def exhaustingMove?
         return true
     end
+
+    def consumesItem?(user)
+        user.hasActiveItemAI?(:ENERGYHERB)
+    end
     
     def pbEffectAfterAllHits(user, target)
         unless user.effectActive?(:SprayAndPray)

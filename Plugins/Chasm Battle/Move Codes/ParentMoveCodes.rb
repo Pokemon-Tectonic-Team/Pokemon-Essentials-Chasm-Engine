@@ -387,6 +387,10 @@ class PokeBattle_MultiStatUpMove < PokeBattle_Move
 end
 
 class PokeBattle_StatDownMove < PokeBattle_Move
+    def consumesItem?(user)
+        user.hasActiveItemAI?(:WHITEHERB)
+    end
+
     def pbEffectWhenDealingDamage(user, target)
         return if @battle.pbAllFainted?(target.idxOwnSide)
         user.pbLowerMultipleStatSteps(@statDown, user, move: self)
