@@ -199,6 +199,7 @@ class PokeBattle_Move
     def screenRemovalMove?; return false; end
     def rampagingMove?; return false; end
     def exhaustingMove?; return false; end
+    def consumesItem?(_user); return false; end
   
     def ignoresSubstitute?(user)   # user is the Pokémon using this move
       return true if soundMove?

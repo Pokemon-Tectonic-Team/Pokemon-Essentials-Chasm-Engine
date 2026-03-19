@@ -640,6 +640,10 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
         return score
     end
 
+    def consumesItem?(user)
+        user.hasActiveItemAI?(:POWERHERB) && !skipChargingTurn?(user)
+    end
+
     def skipChargingTurn?(user); return false; end
 
     def skipChargingTurn

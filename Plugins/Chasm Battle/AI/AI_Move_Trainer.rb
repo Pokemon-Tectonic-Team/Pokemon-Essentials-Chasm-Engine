@@ -237,8 +237,8 @@ class PokeBattle_AI
         triggersScore = 0
         willFaint = false
         aiContext = { item_consumed: false }
-        # Power Herb: consumed when using a two-turn move
-        if move.chargingTurnMove? && user.hasActiveItemAI?(:POWERHERB)
+        # Check if the move itself consumes the user's item (Fling, Bestow, Power Herb, etc.)
+        if move.consumesItem?(user)
             aiContext[:item_consumed] = true
         end
         damagingMove = move.damagingMove?(true)

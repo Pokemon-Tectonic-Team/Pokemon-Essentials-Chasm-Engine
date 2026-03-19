@@ -2,6 +2,7 @@
 # User gives one of its items to the target. (Bestow)
 #===============================================================================
 class PokeBattle_Move_GiftItem < PokeBattle_Move
+    def consumesItem?(_user); return true; end
     def ignoresSubstitute?(_user); return true; end
 
     def validItem(user,item)
@@ -127,6 +128,8 @@ end
 # User flings its item at the target. Power/effect depend on the item. (Fling)
 #===============================================================================
 class PokeBattle_Move_Fling < PokeBattle_Move
+    def consumesItem?(_user); return true; end
+
     def validItem(user,item)
         return !(user.unlosableItem?(item) || GameData::Item.get(item).is_mega_stone?)
     end
@@ -263,6 +266,8 @@ end
 # (Natural Gift, Evernalize)
 #===============================================================================
 class PokeBattle_Move_NaturalGift < PokeBattle_Move
+    def consumesItem?(user); return user.hasAnyBerry?; end
+
     def initialize(battle, move)
         super
         @typeArray = {
@@ -421,6 +426,7 @@ end
 # Consumes berry and raises the user's Defense and Sp. Def by 1 step. (Stuff Cheeks)
 #===============================================================================
 class PokeBattle_Move_EatBerryRaiseDefenses1 < PokeBattle_Move
+    def consumesItem?(user); return user.hasAnyBerry?; end
     def pbMoveFailed?(user, _targets, show_message)
         unless user.hasAnyBerry?
             @battle.pbDisplay(_INTL("But it failed, because {1} has no berries!", user.pbThis(true))) if show_message

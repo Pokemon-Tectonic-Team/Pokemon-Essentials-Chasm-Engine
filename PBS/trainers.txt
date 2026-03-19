@@ -47,6 +47,18 @@ Pokemon = SMEARGLE,70
     AbilityIndex = 1 # Technician
     Item = FLYINGGEM
 #-------------------------------
+[YOUNGSTER,FlingTest]
+Pokemon = SMEARGLE,70
+    Moves = FLING,EARTHQUAKE,FLAMETHROWER,ICEBEAM
+    AbilityIndex = 0 # Mental Block
+    Item = IRONBALL
+#-------------------------------
+[YOUNGSTER,NaturalGiftTest]
+Pokemon = SMEARGLE,70
+    Moves = NATURALGIFT,EARTHQUAKE,FLAMETHROWER,ICEBEAM
+    AbilityIndex = 1 # Technician
+    Item = SITRUSBERRY
+#-------------------------------
 [BATTLEGIRL,Tester]
 Pokemon = SLAKING,70
     Moves = TACKLE
