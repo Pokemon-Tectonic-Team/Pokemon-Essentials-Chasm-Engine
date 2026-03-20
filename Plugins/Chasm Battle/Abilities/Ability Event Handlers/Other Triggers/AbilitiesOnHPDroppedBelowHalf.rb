@@ -104,7 +104,13 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:VOIDWARRANTY,
       elsif !battler.pbOwnedByPlayer? # Trainer AI
         choiceIndex = 0
       else
-        choiceIndex = battle.scene.pbShowCommands(_INTL("Which form should {1} take?",battler.name),choiceNames,0)
+        thinkingNames = [_INTL("I'm thinking...")] + choiceNames
+        choiceIndex = 0
+        loop do
+            choiceIndex = battle.scene.pbShowCommands(_INTL("Which form should {1} take?",battler.name),thinkingNames,0)
+            break if choiceIndex > 0
+        end
+        choiceIndex -= 1
       end
       battler.pbChangeForm(formChoices[choiceIndex], _INTL("{1} takes on a new machine!", battler.pbThis))
       battle.pbHideAbilitySplash(battler)

@@ -1388,8 +1388,13 @@ BattleHandlers::AbilityOnSwitchIn.add(:FALSEFRONT,
               end
               chosenType = chosenType || validTypes[0]
           else
-              chosenIndex = battle.scene.pbShowCommands(_INTL("Which type should {1} fake?", battler.pbThis(true)),validTypeNames,0)
-              chosenType = validTypes[chosenIndex]
+              thinkingNames = [_INTL("I'm thinking...")] + validTypeNames
+              chosenIndex = 0
+              loop do
+                  chosenIndex = battle.scene.pbShowCommands(_INTL("Which type should {1} fake?", battler.pbThis(true)),thinkingNames,0)
+                  break if chosenIndex > 0
+              end
+              chosenType = validTypes[chosenIndex - 1]
           end
       end
       battler.applyEffect(:Type3,chosenType)
