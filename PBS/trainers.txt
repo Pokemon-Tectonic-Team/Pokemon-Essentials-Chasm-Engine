@@ -1,11 +1,5 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
-[YOUNGSTER,LuckHerbTest]
-Pokemon = SMEARGLE,70
-    Moves = THUNDERBOLT,ICEBEAM,FLAMETHROWER,AERIALACE
-    AbilityIndex = 1 # Technician
-    Item = LUCKHERB
-#-------------------------------
 [BATTLEGIRL,Tester]
 Pokemon = SLAKING,70
     Moves = TACKLE

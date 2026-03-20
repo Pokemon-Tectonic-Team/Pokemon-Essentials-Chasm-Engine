@@ -280,12 +280,6 @@ class PokeBattle_AI
                 targetAffectingEffectScore = move.getTargetAffectingEffectScore(user, target)
             end
             damageBasedEffectScore = move.getDamageBasedEffectScore(user, target, damageDealt)
-            # Cap damage + target-affecting effect score at 249 for non-KO moves
-            # so they never outscore a KO move (250) on damage alone
-            if !willFaint && damagingMove && damageScore + targetAffectingEffectScore > 249
-                echoln("\t[MOVE SCORING] Capping non-KO damage + target effect score from #{damageScore + targetAffectingEffectScore} to 249")
-                targetAffectingEffectScore = 249 - damageScore
-            end
             effectScore += regularEffectScore
             effectScore += faintEffectScore
             effectScore += targetAffectingEffectScore
@@ -304,8 +298,19 @@ class PokeBattle_AI
             factor = (realProcChance / 100.0)
             echoln("\t[MOVE SCORING] #{user.pbThis} multiplies #{move.id}'s effect score of #{effectScore} by #{factor} based on effect chance")
             effectScore *= factor
+            targetAffectingEffectScore *= factor
         end
         effectScore = effectScore.floor
+
+        # Cap damage + target-affecting effect score at 249 for non-KO moves
+        # so they never outscore a KO move (250) on damage alone
+        if !willFaint && damagingMove
+            scaledTargetEffect = targetAffectingEffectScore.floor
+            if damageScore + scaledTargetEffect > 249
+                echoln("\t[MOVE SCORING] Capping non-KO damage + target effect score from #{damageScore + scaledTargetEffect} to 249")
+                effectScore -= scaledTargetEffect - (249 - damageScore)
+            end
+        end
 
         # Combine
         score = damageScore + triggersScore + effectScore
