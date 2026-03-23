@@ -2721,6 +2721,15 @@ FieldUse = Direct
 Flags = KeyItem
 Description = A small, versatile machine that can be used to repel wild Pokémon, or draw them near.
 #-------------------------------
+[POKEMONLURE]
+Name = Pokémon Lure
+NamePlural = Pokémon Lures
+Pocket = 7
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = An sweet-smelling fragrance that can be used to attract Pokémon you've never caught before, and increase the chance of wild double battles.
+#-------------------------------
 [POKEXRAY]
 Name = Poké X-Ray
 NamePlural = Poké X-Rays

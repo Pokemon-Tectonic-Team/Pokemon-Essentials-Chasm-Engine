@@ -71,6 +71,8 @@ class PokemonGlobalMetadata
     attr_accessor :chroma_clarion_recharge_steps
     # Cell booster
     attr_accessor :cell_booster_inactive
+    # Pokemon lure
+    attr_accessor :pokemon_lure_inactive
     # Ragged journal
     attr_accessor :ragged_journal_pages_collected
     # Randomizer
