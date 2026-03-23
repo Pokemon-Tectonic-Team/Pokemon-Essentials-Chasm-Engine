@@ -1000,6 +1000,10 @@ Name = High-rise
 Description = This Pokémon and its allies are immune to weather downsides.
 Flags = AllWeatherSynergy
 #-------------------------------
+[HITANDRUN]
+Name = Hit and Run
+Description = When this Pokémon knocks a foe below half health, this Pokémon switches out.
+#-------------------------------
 [HIVEMIND]
 Name = Hive Mind
 Description = Powers up Bug-type moves of itself and its allies by 50%.
@@ -1992,6 +1996,10 @@ Flags = HailSynergy
 [SEVERE]
 Name = Severe
 Description = Its attacks are critical against numbed targets.
+#-------------------------------
+[SHAREDSPOILS]
+Name = Shared Spoils
+Description = When this Pokémon removes a foe's item, choose a party member to hold it.
 #-------------------------------
 [SHARPSHOOTER]
 Name = Sharpshooter
