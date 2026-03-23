@@ -21,3 +21,7 @@ ItemHandlers::ConfirmUseInField.add(:POKEMONLURE,proc { |item|
 ItemHandlers::UseInField.add(:POKEMONLURE,proc { |item|
 	next usePokemonLure
 })
+
+def pokemonLureInactive?
+	return $PokemonGlobal.pokemon_lure_inactive || false
+end
