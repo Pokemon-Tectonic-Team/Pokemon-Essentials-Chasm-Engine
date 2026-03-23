@@ -3495,8 +3495,8 @@ Accuracy = 100
 TotalPP = 8
 Target = NearOther
 FunctionCode = HitThreeTimesLowerTargetDef1DisablesSelf
-EffectChance = 100
 Flags = CanProtect
+EffectChance = 100
 Description = The user launches piercing feathers 3 times, lowering the foe's Defense. Then, this move is disabled.
 Animation = SPIKECANNON
 #-------------------------------
