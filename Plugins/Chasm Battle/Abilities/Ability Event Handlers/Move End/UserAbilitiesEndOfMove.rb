@@ -203,7 +203,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:DEADOFWINTER,
   }
 )
 
-BattleHandlers::UserAbilityEndOfMove.add(:SALTATIONSURGE,
+BattleHandlers::UserAbilityEndOfMove.add(:DUSTYTRAIL,
   proc { |ability, user, targets, _move, battle, _switchedBattlers|
       next if battle.pbAllFainted?(user.idxOpposingSide)
       next unless targets.any? { |b| b.damageState.fainted }

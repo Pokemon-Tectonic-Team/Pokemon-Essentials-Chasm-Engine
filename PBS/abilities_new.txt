@@ -530,6 +530,11 @@ Name = Drifting Mist
 Description = Creates Grey Mist for three turns upon entry.
 Flags = SetupCounterAI
 #-------------------------------
+[DUSTYTRAIL]
+Name = Dusty Trail
+Description = After knocking out any Pokémon, summons sandstorm for four turns.
+Flags = SandstormSynergy
+#-------------------------------
 [DYNAMICENTRANCE]
 Name = Dynamic Entrance
 Description = Speed is doubled on the first turn.
@@ -1890,11 +1895,6 @@ Name = Safe Passage
 Description = Doubles Defense in rainstorm.
 Flags = RainstormSynergy
 #-------------------------------
-[SALTATIONSURGE]
-Name = Saltation Surge
-Description = After knocking out any Pokémon, summons sandstorm for four turns.
-Flags = SandstormSynergy
-#-------------------------------
 [SANDBURST]
 Name = Sand Burst
 Description = Summons a sandstorm for four turns when hit by an attack.
@@ -2223,7 +2223,7 @@ Flags = MoldBreaking,RedirectionImmunity
 #-------------------------------
 [STRATAGEM]
 Name = Stratagem
-Description = Powers up Rock-type moves by 50%.
+Description = Gets a random gem at the end of each turn if it has no item. The gem will match the type of an attacking move the user knows.
 #-------------------------------
 [STRESSFUL]
 Name = Stressful
