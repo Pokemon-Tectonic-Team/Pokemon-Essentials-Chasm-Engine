@@ -427,15 +427,6 @@ BattleHandlers::DamageCalcUserAbility.add(:STEELWORKER,
 
 BattleHandlers::DamageCalcUserAbility.copy(:STEELWORKER, :STEELYSHELL, :PULVERIZE)
 
-BattleHandlers::DamageCalcUserAbility.add(:STRATAGEM,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if type == :ROCK
-      mults[:base_damage_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
-
 BattleHandlers::DamageCalcUserAbility.add(:SURFSUP,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :WATER
