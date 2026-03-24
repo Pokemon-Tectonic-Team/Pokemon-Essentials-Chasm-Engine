@@ -332,6 +332,12 @@ class PokeBattle_AI
         end
         effectScore = effectScore.floor
 
+        # Small penalty for consuming a held item
+        if aiContext[:item_consumed]
+            effectScore -= 5
+            echoln("\t[MOVE SCORING] -5 to effect score: move would consume held item")
+        end
+
         # Combine
         score = damageScore + triggersScore + effectScore
         if damagingMove

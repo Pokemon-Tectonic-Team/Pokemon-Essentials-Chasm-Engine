@@ -400,7 +400,7 @@ class PokeBattle_StatDownMove < PokeBattle_Move
         if user.hasActiveItemAI?(:EJECTPACK)
             return getSwitchOutEffectScore(user)
         elsif user.hasActiveItemAI?(:WHITEHERB)
-            return -5 # Uses up the white herb
+            return 0 # Item consumption penalty handled by consumesItem?
         else
             statDownAI = []
             for i in 0...@statDown.length / 2
