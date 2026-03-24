@@ -2223,7 +2223,7 @@ Flags = MoldBreaking,RedirectionImmunity
 #-------------------------------
 [STRATAGEM]
 Name = Stratagem
-Description = Gets a random gem at the end of each turn if it has no item. The gem will match the type of an attacking move the user knows.
+Description = At the end of each turn, if it has no item, gets a random gem that matches the type of one of its attacking moves.
 #-------------------------------
 [STRESSFUL]
 Name = Stressful
