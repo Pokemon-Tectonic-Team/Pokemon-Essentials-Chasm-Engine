@@ -184,3 +184,18 @@ class PokeBattle_Move_RaiseUserSpAtk1Speed2LowerUserSpDef1 < PokeBattle_StatUpDo
         @statDown = [:SPECIAL_DEFENSE, 2]
     end
 end
+
+#===============================================================================
+# Increases each stat by 3 steps. Resets user's stat steps after 2 turns. (Fleeting Footwork)
+#===============================================================================
+class PokeBattle_Move_RRaiseUserMainStats3ResetUserStatSteps2Turnsr < PokeBattle_MultiStatUpMove
+    def initialize(battle, move)
+        super
+        @statUp = ALL_STATS_3
+    end
+
+    def pbEffectGeneral(user)
+        super
+        user.applyEffect(:FleetingFootwork, 2)
+    end
+end
