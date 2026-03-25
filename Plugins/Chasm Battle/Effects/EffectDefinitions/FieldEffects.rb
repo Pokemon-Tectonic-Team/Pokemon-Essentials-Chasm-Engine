@@ -103,6 +103,11 @@ GameData::BattleEffect.register_effect(:Field, {
 })
 
 GameData::BattleEffect.register_effect(:Field, {
+    :id => :TreasureTracker,
+    :real_name => "Treasure Tracker",
+})
+
+GameData::BattleEffect.register_effect(:Field, {
     :id => :NeutralizingGas,
     :real_name => "Neutralizing Gas",
     :apply_proc => proc do |battle, _value|

@@ -521,6 +521,10 @@ Flags = EclipseSynergy
 Name = Heliocentrism
 Description = Traps the foe during gravity.
 #-------------------------------
+[HERDING]
+Name = Herding
+Description = Wild Pokémon are more likely to appear in pairs and to be species you've never caught before.
+#-------------------------------
 [HONEYGATHER]
 Name = Honey Gather
 Description = The Pokémon may gather Honey from somewhere.

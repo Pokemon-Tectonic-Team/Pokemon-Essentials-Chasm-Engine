@@ -977,10 +977,6 @@ Name = Herbalist
 Description = Can hold two different items, if both are Herbs.
 Flags = MultipleItems
 #-------------------------------
-[HERDING]
-Name = Herding
-Description = Wild Pokémon are more likely to appear in pairs and to be species you've never caught before.
-#-------------------------------
 [HEROICFINALE]
 Name = Heroic Finale
 Description = Turns to Finale Form when only unfainted on team. Ability becomes Inner Focus.
@@ -2426,6 +2422,10 @@ Description = Takes 30% less damage from Pokémon that are trapped.
 [TRAUMATIZING]
 Name = Traumatizing
 Description = Foes whose stats are lowered by this Pokémon keep those lowered stats even after switching.
+#-------------------------------
+[TREASURETRACKER]
+Name = Treasure Tracker
+Description = Increase the money rewarded by trainers from battles in which it participates by 50%.
 #-------------------------------
 [TREMORSENSE]
 Name = Tremor Sense

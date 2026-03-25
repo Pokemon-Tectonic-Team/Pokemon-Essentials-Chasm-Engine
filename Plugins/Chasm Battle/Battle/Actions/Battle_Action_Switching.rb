@@ -451,10 +451,13 @@ class PokeBattle_Battle
         # Record money-doubling effect of Amulet Coin/Luck Incense
         @field.applyEffect(:AmuletCoin) if !battler.opposes? && battler.hasItem?(%i[AMULETCOIN LUCKINCENSE])
 
-        # Record money-doubling effect of Fortune ability
+        # Record money-increasing effect of Hard Worker ability
         @field.applyEffect(:HardWorker) if !battler.opposes? && battler.hasActiveAbility?(:HARDWORKER)
 
-        # Record money-doubling effect of Bliss ability
+        # Record money-increasing effect of Treasure Tracker ability
+        @field.applyEffect(:TreasureTracker) if !battler.opposes? && battler.hasActiveAbility?(:TREASURETRACKER)
+
+        # Record exp-increasing effect of Bliss ability
         @field.applyEffect(:Bliss) if !battler.opposes? && battler.hasActiveAbility?(:BLISS)
 
         # Reset poison ticking up
