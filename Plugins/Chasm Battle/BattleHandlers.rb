@@ -144,6 +144,8 @@ module BattleHandlers
     RunFromBattleItem                   = ItemHandlerHash.new # Smoke Ball
     # Consuming items
     OnBerryConsumedAbility              = AbilityHandlerHash.new
+    OnItemActivatedAbility              = AbilityHandlerHash.new   # Juggling (own item activated)
+    OnAllyItemActivatedAbility          = AbilityHandlerHash.new   # Juggling (ally's item activated)
     # Other triggers
     ItemOnEnemyStatGain                 = ItemHandlerHash.new
     ItemOnStatLoss                      = ItemHandlerHash.new
@@ -704,6 +706,16 @@ module BattleHandlers
 
     def self.triggerOnBerryConsumedAbility(ability, user, berry, ownitem, battle)
         ret = OnBerryConsumedAbility.trigger(ability, user, berry, ownitem, battle)
+        return !ret.nil? ? ret : false
+    end
+
+    def self.triggerOnItemActivatedAbility(ability, user, item, battle)
+        ret = OnItemActivatedAbility.trigger(ability, user, item, battle)
+        return !ret.nil? ? ret : false
+    end
+
+    def self.triggerOnAllyItemActivatedAbility(ability, user, consumer, item, battle)
+        ret = OnAllyItemActivatedAbility.trigger(ability, user, consumer, item, battle)
         return !ret.nil? ? ret : false
     end
 

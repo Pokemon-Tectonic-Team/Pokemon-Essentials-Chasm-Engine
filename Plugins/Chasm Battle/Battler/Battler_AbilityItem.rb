@@ -342,6 +342,18 @@ class PokeBattle_Battler
         setBelched if belch && itemData.is_berry?
         setLustered if belch && itemData.is_gem?
         removeItem(item)
+        # Juggling and similar - fire when an item activates (not when destroyed/stolen)
+        if recoverable
+            eachActiveAbility do |ability|
+                BattleHandlers.triggerOnItemActivatedAbility(ability, self, item, @battle)
+            end
+            eachAlly do |ally|
+                next if ally.fainted?
+                ally.eachActiveAbility do |ability|
+                    BattleHandlers.triggerOnAllyItemActivatedAbility(ability, ally, self, item, @battle)
+                end
+            end
+        end
     end
 
     # item_to_use is an item ID or GameData::Item object. ownitem is whether the
