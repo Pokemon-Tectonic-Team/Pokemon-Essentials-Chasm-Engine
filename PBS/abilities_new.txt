@@ -1185,7 +1185,7 @@ Flags = MoldBreaking
 #-------------------------------
 [JUGGLING]
 Name = Juggling
-Description = When this Pokémon's held item activates, it is passed to an ally, and vice versa.
+Description = When this Pokémon consumes its held item, it is passed to an ally instead, and vice versa.
 #-------------------------------
 [KARMA]
 Name = Karma
