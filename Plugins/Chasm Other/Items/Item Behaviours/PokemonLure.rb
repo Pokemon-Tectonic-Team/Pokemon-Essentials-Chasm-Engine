@@ -22,6 +22,10 @@ ItemHandlers::UseInField.add(:POKEMONLURE,proc { |item|
 	next usePokemonLure
 })
 
+def pokemonLureActive?
+    return $PokemonBag && pbHasItem?(:POKEMONLURE) && !pokemonLureInactive?
+end
+
 def pokemonLureInactive?
-	return $PokemonGlobal.pokemon_lure_inactive || false
+	return ($PokemonGlobal.pokemon_lure_inactive || false)
 end
