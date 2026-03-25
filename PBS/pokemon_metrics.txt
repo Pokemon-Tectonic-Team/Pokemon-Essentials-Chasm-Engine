@@ -3768,6 +3768,12 @@ FrontSprite = 4,8
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
+[MBLAZIKEN]
+BackSprite = 0,7
+FrontSprite = 3,11
+ShadowX = 0
+ShadowSize = 2
+#-------------------------------
 [MBOLDORE]
 BackSprite = 0,26
 FrontSprite = 3,31
@@ -3789,6 +3795,12 @@ ShadowSize = 2
 [MCASCOON]
 BackSprite = 1,33
 FrontSprite = -1,38
+ShadowX = 0
+ShadowSize = 2
+#-------------------------------
+[MCOMBUSKEN]
+BackSprite = 0,15
+FrontSprite = 2,21
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
@@ -4289,6 +4301,12 @@ BackSprite = 0,16
 FrontSprite = 4,4
 ShadowX = 0
 ShadowSize = 3
+#-------------------------------
+[MTORCHIC]
+BackSprite = 0,27
+FrontSprite = 3,29
+ShadowX = 0
+ShadowSize = 1
 #-------------------------------
 [MUDBRAY]
 BackSprite = 0,20
