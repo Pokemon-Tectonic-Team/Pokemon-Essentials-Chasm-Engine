@@ -2738,11 +2738,9 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :FleetingFootwork,
     :real_name => "Fleeting Footwork",
     :type => :Integer,
-    :resets_on_cancel => true,
     :ticks_down_eor => true,
-    :multi_turn_tracker => true,
     :apply_proc => proc do |battle, battler, value|
-        battle.pbDisplay(_INTL("{1} will burn out in {2} turns!", battler.pbThis, value))
+        battle.pbDisplay(_INTL("{1} will tire out in {2} turns!", battler.pbThis, value - 1))
     end,
     :expire_proc => proc do |battle, battler|
         battler.pbResetStatSteps

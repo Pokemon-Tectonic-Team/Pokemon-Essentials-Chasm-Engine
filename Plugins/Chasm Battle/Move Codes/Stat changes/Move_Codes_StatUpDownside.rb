@@ -194,8 +194,19 @@ class PokeBattle_Move_RaiseUserMainStats3ResetUserStatSteps2Turns < PokeBattle_M
         @statUp = ALL_STATS_3
     end
 
+    def pbMoveFailed?(user, targets, show_message)
+        if user.effectActive?(:FleetingFootwork)
+            if show_message
+                @battle.pbDisplay(_INTL("But it failed, since {1} is already lost in the dance!", user.pbThis(true)))
+            end
+            return true
+        end
+        super
+    end
+
     def pbEffectGeneral(user)
         super
-        user.applyEffect(:FleetingFootwork, 2)
+        # expires after 2 full turns, set value to 3 to account for the current turn
+        user.applyEffect(:FleetingFootwork, 3)
     end
 end
