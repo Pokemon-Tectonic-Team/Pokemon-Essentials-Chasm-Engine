@@ -7444,7 +7444,7 @@ Pokedex = This Pokémon invents a new dance routine every day. After performance
 Evolutions = MBLAZIKEN,Level,36
 #-------------------------------
 [MBLAZIKEN]
-Name = MBlaziken
+Name = M. Blaziken
 Type1 = FAIRY
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def

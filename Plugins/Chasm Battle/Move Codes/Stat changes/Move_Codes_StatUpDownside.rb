@@ -188,7 +188,7 @@ end
 #===============================================================================
 # Increases each stat by 3 steps. Resets user's stat steps after 2 turns. (Fleeting Footwork)
 #===============================================================================
-class PokeBattle_Move_RRaiseUserMainStats3ResetUserStatSteps2Turnsr < PokeBattle_MultiStatUpMove
+class PokeBattle_Move_RaiseUserMainStats3ResetUserStatSteps2Turns < PokeBattle_MultiStatUpMove
     def initialize(battle, move)
         super
         @statUp = ALL_STATS_3
