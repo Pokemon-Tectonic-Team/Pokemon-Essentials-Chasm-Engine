@@ -7406,6 +7406,60 @@ Kind = Blaze
 Pokedex = Blaziken has incredibly strong legs - it can easily clear a 30-story building in one leap. This Pokémon's blazing punches leave its foes scorched and blackened.
 Generation = 3
 #-------------------------------
+[MTORCHIC]
+Name = M. Torchic
+Type1 = FAIRY
+Type2 = FIGHTING
+# HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+BaseStats = 40,65,35,70,65,35
+# Total = 310
+BaseEXP = 62
+Rareness = 115
+Abilities = JUGGLING,BOGGLINGBOLERO
+Moves = 1,DISARMINGVOICE,1,TEETERDANCE,3,AURAPULSE,6,KICKSTART,9,FRONTKICK,12,EAGERTICKLING,15,ILLWISHES,18,CAPOEIRA,21,BALEFULBOP,24,HEARTSTAMP,27,FEATHERDANCE,27,STARDANCE,30,LOWSWEEP,33,MISADVENTURE,36,WHIRLWINDKICK,39,ZENHEADBUTT,42,ENCHANTINGSONG,45,DETACHMENT,48,BREAKDANCE,51,PSYCHESWITCH,54,SUPERPOWER,57,FLEURCANNON,60,PSYCHOBOOST
+LineMoves = ACCELEROCK,AFTERYOU,AURASPHERE,AURORABEAM,AUTUMNBLAST,BABYDOLLEYES,BACKHAND,BAR,BIRDSEYEVIEW,BLOSSOM,CENSOR,CHARGEBEAM,COACHING,CURRENTCRASH,DEADEND,DIAMONDFORCE,DISABLE,DRAGONDANCE,DRAININGKISS,DREAMDANCE,DYNAMICPUNCH,ELECTROBALL,ELECTROSLASH,ENCORE,ENERGYBALL,FEATHERDANCE,FLASHSEED,FOCUSBLAST,FROSTBARB,GHOSTLYGRASP,GHOSTLYTALE,GLACIALRAM,HEARTSWAP,HIGHJUMPKICK,ICEBERGBASH,ILLWISHES,INFINITEFORCE,LIGHTNINGDANCE,LIGHTSHOW,LOOMINGWINTER,LUMINACHAIN,MEFIRST,METEORASSAULT,MISTBURST,MOONGLOW,MORNINGSTAR,NATURALPROTECTION,NERVEBLOCK,NEURALPULSE,PACIFY,RECOVER,ROCKOUT,ROOTDRIVER,SHADOWSNEAK,SHATTEREDLIGHT,SILVERWIND,SKILLSWAP,SMOLDERRAVE,SMUSH,SNATCH,SOLARBEAM,STARDANCE,STARFALL,SUBMISSION,SWORDSDANCE,SYMBIOSIS,TAUNT,TEETERDANCE,TOPSYTURVY,UTURN,VACUUMWAVE,VOLTSWITCH,WOODHAMMER,WORKUP,XSCISSOR
+Tribes = HARMONIC,STAMPEDE
+StepsToHatch = 5355
+Height = 0.4
+Weight = 2.5
+Kind = Cheer
+Pokedex = This Pokémon is drawn to sounds of revelry. It is commonly sighted in the crowd at fairgrounds and festivals.
+Evolutions = MCOMBUSKEN,Level,16
+#-------------------------------
+[MCOMBUSKEN]
+Name = M. Combusken
+Type1 = FAIRY
+Type2 = FIGHTING
+# HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+BaseStats = 55,90,50,95,90,50
+# Total = 430
+BaseEXP = 142
+Rareness = 80
+Abilities = JUGGLING,BOGGLINGBOLERO
+StepsToHatch = 5355
+Height = 0.9
+Weight = 19.5
+Kind = Canival
+Pokedex = This Pokémon invents a new dance routine every day. After performances, it tosses treats and trinkets into the crowd.
+Evolutions = MBLAZIKEN,Level,36
+#-------------------------------
+[MBLAZIKEN]
+Name = MBlaziken
+Type1 = FAIRY
+Type2 = FIGHTING
+# HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+BaseStats = 70,120,60,125,120,60
+# Total = 555
+BaseEXP = 239
+Rareness = 35
+Abilities = JUGGLING,BOGGLINGBOLERO
+Moves = 0,FLEETINGFOOTWORK
+StepsToHatch = 5355
+Height = 1.9
+Weight = 52.0
+Kind = Saturnalia
+Pokedex = This Pokémon ensures festivities will remain both safe and lively. It deftly leaps between tents and rooftops, subduing anyone who would ruin the fun.
+#-------------------------------
 [MUDKIP]
 Name = Mudkip
 Type1 = WATER

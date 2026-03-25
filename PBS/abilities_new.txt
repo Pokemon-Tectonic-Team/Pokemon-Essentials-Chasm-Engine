@@ -209,6 +209,10 @@ Flags = SunshineSynergy
 Name = Bliss
 Description = Increase the EXP gained from battles in which it participates by 50%.
 #-------------------------------
+[BOGGLINGBOLERO]
+Name = Boggling Bolero
+Description = After using a dance move, lowers one of each foe's Attack and Sp. Atk, whichever is higher.
+#-------------------------------
 [BOTTOMFEEDER]
 Name = Bottom Feeder
 Description = Heals from binding damage it deals. Takes 25% less damage from Pokémon that are trapped.
@@ -1178,6 +1182,10 @@ Description = Uses Wish after knocking out any Pokémon.
 Name = Juggernaut
 Description = This Pokémon's moves deal 20% more damage and ignore abilities that would affect them.
 Flags = MoldBreaking
+#-------------------------------
+[JUGGLING]
+Name = Juggling
+Description = When this Pokémon's held item activates, it is passed to an ally, and vice versa.
 #-------------------------------
 [KARMA]
 Name = Karma

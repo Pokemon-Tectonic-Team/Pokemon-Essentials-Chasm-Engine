@@ -8025,6 +8025,17 @@ Flags = Sound
 Description = An enchanting outcry. Can't miss and skips protections.
 Animation = SING
 #-------------------------------
+[FLEETINGFOOTWORK]
+Name = Fleeting Footwork
+Type = FAIRY
+Category = Status
+Accuracy = 0
+TotalPP = 3
+Target = User
+FunctionCode = RaiseUserMainStats3ResetUserStatSteps2Turns
+Flags = Dance
+Description = The user dances vigorously, raising all its stats by three steps. The user’s stat steps are reset two turns later.
+#-------------------------------
 [FLORALGRAMARYE]
 Name = Floral Gramarye
 Type = FAIRY
