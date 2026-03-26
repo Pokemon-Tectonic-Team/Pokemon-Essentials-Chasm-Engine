@@ -13,6 +13,10 @@ class PokeBattle_Move_TwoTurnAttack < PokeBattle_Move
 
     def exhaustingMove?; return true; end
 
+    def consumesItem?(user)
+        user.hasActiveItemAI?(:ENERGYHERB)
+    end
+
     def pbEffectGeneral(user)
         if user.hasActiveItem?(:ENERGYHERB)
             @battle.pbCommonAnimation("UseItem", user)

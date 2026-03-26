@@ -534,6 +534,11 @@ Name = Drifting Mist
 Description = Creates Grey Mist for three turns upon entry.
 Flags = SetupCounterAI
 #-------------------------------
+[DUSTYTRAIL]
+Name = Dusty Trail
+Description = After knocking out any Pokémon, summons sandstorm for four turns.
+Flags = SandstormSynergy
+#-------------------------------
 [DYNAMICENTRANCE]
 Name = Dynamic Entrance
 Description = Speed is doubled on the first turn.
@@ -981,10 +986,6 @@ Name = Herbalist
 Description = Can hold two different items, if both are Herbs.
 Flags = MultipleItems
 #-------------------------------
-[HERDING]
-Name = Herding
-Description = Wild Pokémon are more likely to appear in pairs and to be species you've never caught before.
-#-------------------------------
 [HEROICFINALE]
 Name = Heroic Finale
 Description = Turns to Finale Form when only unfainted on team. Ability becomes Inner Focus.
@@ -1003,6 +1004,10 @@ Description = Has Judgment as its 5th move.
 Name = High-rise
 Description = This Pokémon and its allies are immune to weather downsides.
 Flags = AllWeatherSynergy
+#-------------------------------
+[HITANDRUN]
+Name = Hit and Run
+Description = When this Pokémon knocks a foe below half health, this Pokémon switches out.
 #-------------------------------
 [HIVEMIND]
 Name = Hive Mind
@@ -1898,11 +1903,6 @@ Name = Safe Passage
 Description = Doubles Defense in rainstorm.
 Flags = RainstormSynergy
 #-------------------------------
-[SALTATIONSURGE]
-Name = Saltation Surge
-Description = After knocking out any Pokémon, summons sandstorm for four turns.
-Flags = SandstormSynergy
-#-------------------------------
 [SANDBURST]
 Name = Sand Burst
 Description = Summons a sandstorm for four turns when hit by an attack.
@@ -2000,6 +2000,10 @@ Flags = HailSynergy
 [SEVERE]
 Name = Severe
 Description = Its attacks are critical against numbed targets.
+#-------------------------------
+[SHAREDSPOILS]
+Name = Shared Spoils
+Description = When this Pokémon removes a foe's item, choose a party member to hold it.
 #-------------------------------
 [SHARPSHOOTER]
 Name = Sharpshooter
@@ -2231,7 +2235,7 @@ Flags = MoldBreaking,RedirectionImmunity
 #-------------------------------
 [STRATAGEM]
 Name = Stratagem
-Description = Powers up Rock-type moves by 50%.
+Description = At the end of each turn, if it has no item, gets a random gem that matches the type of one of its attacking moves.
 #-------------------------------
 [STRESSFUL]
 Name = Stressful
@@ -2434,6 +2438,10 @@ Description = Takes 30% less damage from Pokémon that are trapped.
 [TRAUMATIZING]
 Name = Traumatizing
 Description = Foes whose stats are lowered by this Pokémon keep those lowered stats even after switching.
+#-------------------------------
+[TREASURETRACKER]
+Name = Treasure Tracker
+Description = Increase the money rewarded by trainers from battles in which it participates by 50%.
 #-------------------------------
 [TREMORSENSE]
 Name = Tremor Sense

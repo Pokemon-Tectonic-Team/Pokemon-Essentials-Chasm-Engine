@@ -62,6 +62,7 @@ module Game
     def self.load(save_data)
       validate save_data => Hash
       SaveData.load_all_values(save_data)
+      $PokemonTemp = PokemonTemp.new # reset temp data in case we're coming from another save
       self.load_map
       pbAutoplayOnSave
       $game_map.update

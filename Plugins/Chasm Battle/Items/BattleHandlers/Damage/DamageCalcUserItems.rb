@@ -180,110 +180,110 @@ BattleHandlers::DamageCalcUserItem.copy(:TWISTEDSPOON, :MINDPLATE)
 ######################################################################
 
 BattleHandlers::DamageCalcUserItem.add(:BUGGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :BUG, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :BUG, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:FAIRYGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :FAIRY, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :FAIRY, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:FIGHTINGGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :FIGHTING, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :FIGHTING, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:FIREGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :FIRE, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :FIRE, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:FLYINGGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :FLYING, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :FLYING, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:GHOSTGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :GHOST, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :GHOST, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:GRASSGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :GRASS, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :GRASS, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:DARKGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :DARK, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :DARK, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:DRAGONGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :DRAGON, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :DRAGON, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:ELECTRICGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :ELECTRIC, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :ELECTRIC, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:GROUNDGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :GROUND, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :GROUND, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:ICEGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :ICE, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :ICE, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:NORMALGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :NORMAL, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :NORMAL, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:POISONGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :POISON, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :POISON, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:PSYCHICGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :PSYCHIC, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :PSYCHIC, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:ROCKGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :ROCK, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :ROCK, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:WATERGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :WATER, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :WATER, move, mults, type, aiCheck, aiContext)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:STEELGEM,
-  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck|
-      pbBattleGem(item, user, :STEEL, move, mults, type, aiCheck)
+  proc { |item, user, _target, move, mults, _baseDmg, type, aiCheck, aiContext|
+      pbBattleGem(item, user, :STEEL, move, mults, type, aiCheck, aiContext)
   }
 )
 
@@ -292,23 +292,25 @@ BattleHandlers::DamageCalcUserItem.add(:STEELGEM,
 ######################################################################
 
 BattleHandlers::DamageCalcUserItem.add(:STRENGTHHERB,
-  proc { |item, user, target, move, mults, _baseDmg, type, aiCheck|
+  proc { |item, user, target, move, mults, _baseDmg, type, aiCheck, aiContext|
       next unless move.category == 1 # Originally special, used instead of specialMove? because of adaptive moves and interloper abilities
       unless aiCheck
         user.applyEffect(:EmpoweringHerbConsumed, item)
         user.aiLearnsItem(item)
       end
+      aiContext[:item_consumed] = true if aiContext
       mults[:final_damage_multiplier] *= 1.15
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:INTELLECTHERB,
-  proc { |item, user, target, move, mults, _baseDmg, type, aiCheck|
+  proc { |item, user, target, move, mults, _baseDmg, type, aiCheck, aiContext|
       next unless move.category == 0 # Originally physical, used instead of specialMove? because of adaptive moves and interloper abilities
       unless aiCheck
         user.applyEffect(:EmpoweringHerbConsumed, item)
         user.aiLearnsItem(item)
       end
+      aiContext[:item_consumed] = true if aiContext
       mults[:final_damage_multiplier] *= 1.15
   }
 )

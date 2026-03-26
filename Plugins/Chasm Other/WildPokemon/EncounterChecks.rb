@@ -163,7 +163,7 @@ class PokemonEncounters
     return false if $PokemonTemp.currentDexSearch
     return true if $game_player.pbTerrainTag.double_wild_encounters
     chance = Settings::DOUBLE_WILD_BATTLE_CHANCE
-    chance *= 2 if herdingActive?
+    chance *= 2 if pokemonLureActive?
     return true if rand(100) < chance
     return false
   end
@@ -257,7 +257,7 @@ class PokemonEncounters
 	
     # 25% chance to only roll on Pokemon not yet caught
     uncaught_enc_list = enc_list.clone.delete_if{|e| $Trainer.owned?(e[1])}
-    uncaughtChance = herdingActive? ? 50 : 25
+    uncaughtChance = pokemonLureActive? ? 50 : 25
     if uncaught_enc_list.length > 0 && rand(100) < uncaughtChance
       echoln("Only rolling encounters for uncaught Pokemon!\n")
       enc_list = uncaught_enc_list

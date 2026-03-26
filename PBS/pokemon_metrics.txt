@@ -1,4 +1,4 @@
-﻿# See the documentation on the wiki to learn how to edit this file.
+# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
 [ABOMASNOW]
 BackSprite = 0,14
@@ -3942,6 +3942,12 @@ FrontSprite = 6,22
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
+[MGROVYLE]
+BackSprite = 0,23
+FrontSprite = 0,15
+ShadowX = 0
+ShadowSize = 2
+#-------------------------------
 [MHAEROBIC]
 BackSprite = 0,13
 FrontSprite = -4,14
@@ -4248,6 +4254,12 @@ FrontSprite = -2,24
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
+[MSCEPTILE]
+BackSprite = 0,6
+FrontSprite = -11,8
+ShadowX = 0
+ShadowSize = 3
+#-------------------------------
 [MSEAKING]
 BackSprite = 0,15
 FrontSprite = -3,11
@@ -4305,6 +4317,12 @@ ShadowSize = 3
 [MTORCHIC]
 BackSprite = 0,27
 FrontSprite = 3,29
+ShadowX = 0
+ShadowSize = 1
+#-------------------------------
+[MTREECKO]
+BackSprite = 0,22
+FrontSprite = -3,16
 ShadowX = 0
 ShadowSize = 1
 #-------------------------------

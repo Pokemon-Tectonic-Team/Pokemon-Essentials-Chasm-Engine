@@ -203,7 +203,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:DEADOFWINTER,
   }
 )
 
-BattleHandlers::UserAbilityEndOfMove.add(:SALTATIONSURGE,
+BattleHandlers::UserAbilityEndOfMove.add(:DUSTYTRAIL,
   proc { |ability, user, targets, _move, battle, _switchedBattlers|
       next if battle.pbAllFainted?(user.idxOpposingSide)
       next unless targets.any? { |b| b.damageState.fainted }
@@ -945,5 +945,15 @@ BattleHandlers::UserAbilityEndOfMove.add(:KARMICBALANCE,
           user.pbLowerMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
           user.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
         end
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:HITANDRUN,
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
+      next if user.dummy
+      next unless move.damagingMove?
+      if (targets.any? { |b| b.knockedBelowHalf? })
+        next battle.triggeredSwitchOut(user.index, ability: ability)
+      end
   }
 )

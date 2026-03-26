@@ -25,11 +25,11 @@ class PokeBattle_Move
         target.damageState.calcDamage = calculateDamageForHit(user,target,type,baseDmg,numTargets)
     end
 
-    def calculateDamageForHitAI(user,target,type,baseDmg,numTargets)
-        calculateDamageForHit(user,target,type,baseDmg,numTargets,true)
+    def calculateDamageForHitAI(user,target,type,baseDmg,numTargets,aiContext=nil)
+        calculateDamageForHit(user,target,type,baseDmg,numTargets,true,aiContext)
     end
 
-    def calculateDamageForHit(user,target,type,baseDmg,numTargets,aiCheck=false)
+    def calculateDamageForHit(user,target,type,baseDmg,numTargets,aiCheck=false,aiContext=nil)
         echoln("[DAMAGE CALC] Calcing damage based on given base power #{baseDmg} and type #{type}") if DAMAGE_CALC_DEBUG
         
         # Get the relevant attacking and defending stat values (after steps)
@@ -37,7 +37,7 @@ class PokeBattle_Move
 
         # Calculate all multiplier effects
         multipliers = initializeMultipliers
-        pbCalcDamageMultipliers(user,target,numTargets,type,baseDmg,multipliers,aiCheck)
+        pbCalcDamageMultipliers(user,target,numTargets,type,baseDmg,multipliers,aiCheck,aiContext)
 
         # Main damage calculation
         finalCalculatedDamage = calcDamageWithMultipliers(baseDmg,attack,defense,user.level,multipliers)
@@ -475,7 +475,7 @@ class PokeBattle_Move
         end
     end
       
-    def pbCalcDamageMultipliers(user,target,numTargets,type,baseDmg,multipliers,aiCheck=false)
+    def pbCalcDamageMultipliers(user,target,numTargets,type,baseDmg,multipliers,aiCheck=false,aiContext=nil)
         pbCalcAbilityDamageMultipliers(user,target,type,baseDmg,multipliers,aiCheck)
         pbCalcWeatherDamageMultipliers(user,target,type,multipliers,aiCheck)
         pbCalcStatusesDamageMultipliers(user,target,multipliers,aiCheck)
@@ -484,7 +484,7 @@ class PokeBattle_Move
 
         # Item effects that alter damage
         user.eachItemShouldApply(aiCheck) do |item|
-            BattleHandlers.triggerDamageCalcUserItem(item,user,target,self,multipliers,baseDmg,type,aiCheck)
+            BattleHandlers.triggerDamageCalcUserItem(item,user,target,self,multipliers,baseDmg,type,aiCheck,aiContext)
         end
         target.eachItemShouldApply(aiCheck) do |item|
             BattleHandlers.triggerDamageCalcTargetItem(item,user,target,self,multipliers,baseDmg,type,aiCheck)

@@ -3486,6 +3486,20 @@ Flags = CanProtect
 Description = Conductive materials ensnare the target, trapping and binding it for three turns.
 Animation = MAGNETBOMB
 #-------------------------------
+[FEATHERLOCKVOLLEY]
+Name = Featherlock Volley
+Type = STEEL
+Category = Physical
+Power = 25
+Accuracy = 100
+TotalPP = 8
+Target = NearOther
+FunctionCode = HitThreeTimesLowerTargetDef1DisablesSelf
+Flags = CanProtect
+EffectChance = 100
+Description = The user launches piercing feathers 3 times, lowering the foe's Defense. Then, this move is disabled.
+Animation = SPIKECANNON
+#-------------------------------
 [FEATHERWARD]
 Name = Feather Ward
 Type = STEEL
