@@ -251,7 +251,7 @@ class PokeBattle_Scene
     end
 
     def pbChooseWithThinkingLoop(message, choices)
-      thinkingChoices = [_INTL("I'm thinking..."), ...choices]
+      thinkingChoices = [_INTL("I'm thinking..."), *choices]
       chosenIndex = 0
       loop do
         chosenIndex = battle.scene.pbShowCommands(message,thinkingChoices,0)
