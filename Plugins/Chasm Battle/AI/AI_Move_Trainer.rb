@@ -1,4 +1,6 @@
 class PokeBattle_AI
+    KILL_SCORE = 250 
+
     def pbChooseMovesTrainer(idxBattler, choices)
         user = @battle.battlers[idxBattler]
         owner = @battle.pbGetOwnerFromBattlerIndex(user.index)
@@ -298,8 +300,19 @@ class PokeBattle_AI
             factor = (realProcChance / 100.0)
             echoln("\t[MOVE SCORING] #{user.pbThis} multiplies #{move.id}'s effect score of #{effectScore} by #{factor} based on effect chance")
             effectScore *= factor
+            targetAffectingEffectScore *= factor
         end
         effectScore = effectScore.floor
+
+        # Cap damage + target-affecting effect score at 249 for non-KO moves
+        # so they never outscore a KO move (250) on damage alone
+        if !willFaint && damagingMove
+            scaledTargetEffect = targetAffectingEffectScore.floor
+            if damageScore + scaledTargetEffect >= KILL_SCORE
+                echoln("\t[MOVE SCORING] Capping non-KO damage + target effect score from #{damageScore + scaledTargetEffect} to #{KILL_SCORE - 1}")
+                effectScore -= scaledTargetEffect - (KILL_SCORE - damageScore - 1)
+            end
+        end
 
         # Combine
         score = damageScore + triggersScore + effectScore
@@ -398,7 +411,7 @@ class PokeBattle_AI
         willFaint = false
         if realDamage >= target.hp
             realDamage = target.hp
-            damageScore = 250
+            damageScore = KILL_SCORE 
             willFaint = true
         else
             # Only care about KO thresholds
