@@ -4,11 +4,11 @@ BattleHandlers::EndOfMoveItem.add(:LEPPABERRY,
         choice = nil
         if battler.lastMoveUsed
             battler.pokemon.moves.each_with_index do |m, i|
-            next if m.id != battler.lastMoveUsed
+                next if m.id != battler.lastMoveUsed
                 if m.total_pp > 0 && m.pp == 0
                     choice = i
                 end
-            break
+                break
             end
         end
         if choice.nil?
@@ -22,7 +22,7 @@ BattleHandlers::EndOfMoveItem.add(:LEPPABERRY,
         end
         if choice.nil? && forced
             battler.pokemon.moves.each_with_index do |m, i|
-            next if m.total_pp <= 0 || m.pp == m.total_pp
+                next if m.total_pp <= 0 || m.pp == m.total_pp
                 choice = i
                 break
             end
