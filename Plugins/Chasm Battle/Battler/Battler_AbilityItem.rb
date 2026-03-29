@@ -347,6 +347,7 @@ class PokeBattle_Battler
             eachActiveAbility do |ability|
                 BattleHandlers.triggerOnItemActivatedAbility(ability, self, item, @battle)
             end
+            @battle.instance_variable_set(:@juggling_item_taken, false)
             eachAlly do |ally|
                 next if ally.fainted?
                 ally.eachActiveAbility do |ability|

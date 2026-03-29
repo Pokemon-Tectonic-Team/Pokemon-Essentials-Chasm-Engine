@@ -32,6 +32,10 @@ BattleHandlers::OnAllyItemActivatedAbility.add(:JUGGLING,
         # Skip if the consumer also has JUGGLING — already handled by OnItemActivatedAbility
         next if consumer.hasActiveAbility?(:JUGGLING)
         next unless user.canAddItem?(item)
+        # Prevent multiple Juggling users from each catching the same item.
+        # The flag is reset at the call site before each activation's ally loop.
+        next if battle.instance_variable_get(:@juggling_item_taken)
+        battle.instance_variable_set(:@juggling_item_taken, true)
         battle.pbShowAbilitySplash(user, ability)
         user.giveItem(item)
         battle.pbDisplay(_INTL("{1} caught {2}'s {3}!", user.pbThis, consumer.pbThis(true), getItemName(item)))
