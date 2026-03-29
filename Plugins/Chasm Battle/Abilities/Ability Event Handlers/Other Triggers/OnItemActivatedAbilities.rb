@@ -1,10 +1,24 @@
-# When the JUGGLING user's own item activates, pass it to a random ally.
+# When the JUGGLING user's own item activates, pass it to an ally.
+# If multiple valid allies exist and the user is player-controlled, the player chooses.
 BattleHandlers::OnItemActivatedAbility.add(:JUGGLING,
     proc { |ability, user, item, battle|
-        ally = nil
-        user.eachAlly { |b| next unless b.canAddItem?(item); ally = b; break }
-        next if ally.nil?
+        valid_allies = []
+        user.eachAlly { |b| valid_allies << b if b.canAddItem?(item) }
+        next if valid_allies.empty?
         battle.pbShowAbilitySplash(user, ability)
+        if valid_allies.length == 1
+            ally = valid_allies[0]
+        elsif user.pbOwnedByPlayer?
+            # TODO: use a thinking loop for this once that PR is merged
+            choice = battle.pbShowCommands(
+                _INTL("Pass {1} to which ally?", getItemName(item)),
+                valid_allies.map { |b| b.pbThis },
+                false
+            )
+            ally = valid_allies[choice]
+        else
+            ally = valid_allies.sample
+        end
         ally.giveItem(item)
         battle.pbDisplay(_INTL("{1} juggled its {2} to {3}!", user.pbThis, getItemName(item), ally.pbThis(true)))
         battle.pbHideAbilitySplash(user)
