@@ -9,11 +9,9 @@ BattleHandlers::OnItemActivatedAbility.add(:JUGGLING,
         if valid_allies.length == 1
             ally = valid_allies[0]
         elsif user.pbOwnedByPlayer?
-            # TODO: use a thinking loop for this once that PR is merged
-            choice = battle.pbShowCommands(
+            choice = battle.scene.pbChooseWithThinkingLoop(
                 _INTL("Pass {1} to which ally?", getItemName(item)),
-                valid_allies.map { |b| b.pbThis },
-                false
+                valid_allies.map { |b| b.pbThis })
             )
             ally = valid_allies[choice]
         else
