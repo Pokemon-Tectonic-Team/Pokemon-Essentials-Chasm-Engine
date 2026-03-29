@@ -209,4 +209,10 @@ class PokeBattle_Move_RaiseUserMainStats3ResetUserStatSteps2Turns < PokeBattle_M
         # expires after 2 full turns, set value to 3 to account for the current turn
         user.applyEffect(:FleetingFootwork, 3)
     end
+
+    def getEffectScore(user, _target)
+        score = super # start with the score for the stat boosts
+        score -= statStepsValueScore(user) # reduce score for any existing stat boosts that might be wiped
+        return score
+    end
 end
