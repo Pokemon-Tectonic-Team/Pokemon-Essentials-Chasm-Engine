@@ -2743,7 +2743,10 @@ GameData::BattleEffect.register_effect(:Battler, {
         battle.pbDisplay(_INTL("{1} will tire out in {2} turns!", battler.pbThis, value - 1))
     end,
     :expire_proc => proc do |battle, battler|
-        battler.pbResetStatSteps
-        battle.pbDisplay(_INTL("{1}'s stat changes were eliminated!", battler.pbThis))
+        battle.pbDisplay(_INTL("{1} is too tired to keep up the footwork!", battler.pbThis))
+        if battler.hasAlteredStatSteps?
+            battler.pbResetStatSteps
+            battle.pbDisplay(_INTL("{1}'s stat changes were eliminated!", battler.pbThis))
+        end
     end,
 })
