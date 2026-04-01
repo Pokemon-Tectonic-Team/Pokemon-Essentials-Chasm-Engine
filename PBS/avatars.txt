@@ -108,14 +108,14 @@ HPMult = 8.0
 Item = SALACBERRY
 #-------------------------------
 [ZAMAZENTA]
-Ability = SHIELDSMITHING
+Ability = STAINLESSSTEEL
 Moves1 = IRONHEAD,CLOSECOMBAT,PRIMEVALSPIKES
 Moves2 = STOMPINGTANTRUM
 HPMult = 4.0
 Form = 1
 #-------------------------------
 [ZACIAN]
-Ability = SWORDSMITHING
+Ability = STAINLESSSTEEL
 Moves1 = SACREDSWORD,PLAYROUGH,PRIMEVALSTRINGSHOT
 Moves2 = XSCISSOR
 HPMult = 4.0
