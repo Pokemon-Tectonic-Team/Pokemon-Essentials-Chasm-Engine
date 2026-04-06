@@ -10,5 +10,6 @@ SaveData.register_conversion(:tm_fixing_340) do
     save_data[:bag].pbChangeItem(:TMTRICK,:TMSWITCHEROO)
     save_data[:bag].pbChangeItem(:TMBULLETTRAIN,:TMMETEORMASH)
     save_data[:bag].pbChangeItem(:TMSEERSTRIKE,:TMPSYCHOSCISSION)
+    save_data[:bag].pbChangeItem(:TMPSYCHIC,:TMNEURALPULSE)
   end
 end

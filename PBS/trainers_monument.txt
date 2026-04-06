@@ -210,7 +210,7 @@ Pokemon = NIDOKING,70
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 20,20,10,0,20,0
 Pokemon = TYRANTRUM,70
-    Moves = BEDROCKBREAKER,CLOSECOMBAT,CRUNCH,PSYCHICFANGS
+    Moves = BEDROCKBREAKER,SUBMISSION,CRUNCH,PSYCHICFANGS
     AbilityIndex = 1 # Rock Head
     Item = STRIKEVEST
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
@@ -1001,7 +1001,7 @@ Pokemon = XATU,70
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 20,0,15,0,0,15
 Pokemon = MNINETALES,70
-    Moves = SLAG,SHADOWBALL,WEATHERBURST,ENERGYBALL
+    Moves = SLAG,SHADOWBALL,WEATHERBURST,SCORCHINGSANDS
     AbilityIndex = 0 # Gild
     Item = EJECTPACK
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
@@ -1063,7 +1063,7 @@ Pokemon = DRAGONITE,70
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 20,20,0,10,20,0
 Pokemon = MNINETALES,70
-    Moves = REFLECT,HEX,SLAG,ENERGYBALL
+    Moves = REFLECT,HEX,SLAG,SCORCHINGSANDS
     AbilityIndex = 1 # Luxury Taste
     Item = ROCKYHELMET
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
@@ -1330,7 +1330,7 @@ Pokemon = LINOONE,70
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 0,20,10,20,20,0
 Pokemon = PIDGEOT,70
-    Moves = TEMPEST,DUSTSTORM,SUPERCOOL,THUNDER
+    Moves = TEMPEST,DUSTSTORM,BLIZZARD,THUNDER
     AbilityIndex = 0 # No Guard
     Item = HEAVYDUTYBOOTS
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
@@ -1691,7 +1691,7 @@ Pokemon = AMOONGUSS,70
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 10,0,20,0,0,20
 Pokemon = HELECTRODE,70
-    Moves = EXPLOSION,WILDCHARGE,WOODHAMMER,PROTECT
+    Moves = EXPLOSION,VOLTTACKLE,WOODHAMMER,PROTECT
     AbilityIndex = 0 # Perennial Payload
     Item = POWERLOCK
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
@@ -2055,7 +2055,7 @@ Pokemon = FLYGON,70
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 20,20,10,0,20,0
 Pokemon = EXCADRILL,70
-    Moves = EARTHQUAKE,METEORMASH,RAPIDSPIN,SWORDSDANCE
+    Moves = DRILLRUN,METEORMASH,RAPIDSPIN,SWORDSDANCE
     AbilityIndex = 0 # Sandworn Auger
     Item = STEELGEM
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
