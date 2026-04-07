@@ -332,6 +332,7 @@ Description = Traps foes with non-volatile status conditions.
 [CLOAKING]
 Name = Cloaking
 Description = It changes form to match the move it selected.
+Flags = Immutable
 #-------------------------------
 [CLOUDBURST]
 Name = Cloudburst
@@ -370,6 +371,7 @@ Description = Using or being hit by a physical move leaves a rock on the field. 
 [COSTUMECHANGE]
 Name = Costume Change
 Description = Changes to the form of your choosing after switching out.
+Flags = Immutable
 #-------------------------------
 [COTTONDECOY]
 Name = Cotton Decoy

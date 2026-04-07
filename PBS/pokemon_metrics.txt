@@ -2617,8 +2617,8 @@ ShadowX = 0
 ShadowSize = 2
 #-------------------------------
 [GSLOWPOKE]
-BackSprite = 0,34
-FrontSprite = 0,38
+BackSprite = 0,26
+FrontSprite = 0,29
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------

@@ -763,7 +763,7 @@ class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
         ]
     end
 
-    def resolutionChoice(user)
+    def resolutionChoice(user, replayed_choice)
         validMoveNames = []
         @validMoves.each do |move|
             validMoveNames.push(getMoveName(move))

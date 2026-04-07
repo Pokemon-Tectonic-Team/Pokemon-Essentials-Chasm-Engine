@@ -258,11 +258,11 @@ LandTall,20,20
     25,PSYDUCK,19,21
     25,YANMA,19,21
 Puddle,20,20
-    33,POLIWAG,19,21
-    17,BARBOACH,19,21
-    17,SURSKIT,19,21
-    17,TYMPOLE,19,21
-    16,CLAUNCHER,19,21
+    20,BARBOACH,19,21
+    20,CLAUNCHER,19,21
+    20,POLIWAG,19,21
+    20,SURSKIT,19,21
+    20,TYMPOLE,19,21
 #-------------------------------
 [056] # Novo Town
 FloweryGrass,20,20
@@ -329,6 +329,12 @@ Puddle,20,20
     20,STARYU,18,20
     20,TENTACOOL,18,20
 #-------------------------------
+[082] # Alloy Station 531
+Special,,20,20
+    1,MMUDKIP,15
+    1,MTORCHIC,15
+    1,MTREECKO,15
+#-------------------------------
 [085] # Worried Man's House
 Special,,20,20
     1,FRILLISH,15
@@ -336,6 +342,10 @@ Special,,20,20
 [086] # Zigzagoon Nest
 Special,,20,20
     1,GZIGZAGOON,15
+#-------------------------------
+[089] # Svait Lodge
+Special,,20,20
+    1,EEVEE,15
 #-------------------------------
 [090] # Employees' House
 Special,,20,20
@@ -368,6 +378,11 @@ DarkCave,20,20
     20,DUNSPARCE,18,20
     20,LARVITAR,18,20
     20,TYNAMO,18,20
+Puddle,20,40
+    25,DEWPIDER,35,37
+    25,MMUDKIP,35,37
+    25,POLIWHIRL,35,37
+    25,STUNFISK,35,37
 #-------------------------------
 [121] # Kilna Ascent
 Land,20,20
@@ -397,6 +412,7 @@ Special,,20,20
     1,FURRET,15
     1,KABUTO,15
     1,LILEEP,15
+    1,MKABUTO,15
     1,MOMANYTE,15
     1,OMANYTE,15
     1,SHIELDON,15
@@ -445,6 +461,10 @@ FloweryGrass,20,10
     25,BUDEW,7,9
     25,RATTATA,7,9
     25,TOGEPI,7,9
+#-------------------------------
+[137] # Svait Lodge Room 3
+Special,,20,20
+    1,CORSOLA,20
 #-------------------------------
 [138] # Scenic Trail
 Land,20,10
@@ -702,12 +722,11 @@ DarkCave,20,20
     17,GMEOWTH,25,27
     16,ROGGENROLA,25,27
 Mud,40,40
-    17,CARNIVINE,34,36
-    17,CRAMORANT,34,36
-    17,GSTUNFISK,34,36
-    17,STUNFISK,34,36
-    16,SEVIPER,34,36
-    16,ZANGOOSE,34,36
+    20,CARNIVINE,34,36
+    20,CRAMORANT,34,36
+    20,GSTUNFISK,34,36
+    20,SEVIPER,34,36
+    20,ZANGOOSE,34,36
 #-------------------------------
 [214] # Team Chasm HQ
 DarkCave,20,20

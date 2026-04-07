@@ -883,6 +883,12 @@ Gender = Male
 BaseMoney = 120
 IntroBGM = BLACKBELT
 #-------------------------------
+[KILLU]
+Name = Killu
+Gender = Female
+BaseMoney = 120
+IntroBGM = MONK
+#-------------------------------
 [KIMONOGIRL]
 Name = Kimono Girl
 Gender = Female

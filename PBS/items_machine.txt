@@ -828,14 +828,14 @@ FieldUse = TM
 Flags = SkipPocketMessage
 Move = PSYCHOSCISSION
 #-------------------------------
-[TMPSYCHIC]
+[TMNEURALPULSE]
 Name = Unnamed
 NamePlural = Unnamed
 Pocket = 5
 Price = 4000
 FieldUse = TM
 Flags = SkipPocketMessage
-Move = PSYCHIC
+Move = NEURALPULSE
 #-------------------------------
 [TMXSCISSOR]
 Name = Unnamed
