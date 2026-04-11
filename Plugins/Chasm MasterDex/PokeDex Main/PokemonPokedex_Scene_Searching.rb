@@ -1,10 +1,9 @@
 class PokemonPokedex_Scene
-    def searchBySpeciesName
+    def searchBySpeciesName(dexlist)
         nameInput = pbEnterText(_INTL("Search species..."), 0, 12)
         if nameInput && nameInput != ""
             reversed = nameInput[0] == "-"
             nameInput = nameInput[1..-1] if reversed
-            dexlist = searchStartingList
             dexlist = dexlist.find_all do |dex_item|
                 next false if autoDisqualifyFromSearch(dex_item[:species])
                 searchPokeName = dex_item[:data].name
@@ -16,7 +15,7 @@ class PokemonPokedex_Scene
         return nil
     end
 
-    def searchByAbility
+    def searchByAbility(dexlist)
         abilitySearchTypeSelection = pbMessage(_INTL("Which search?"), [_INTL("Name"), _INTL("Description"), _INTL("Cancel")],
 3)
         return if abilitySearchTypeSelection == 2
@@ -40,7 +39,6 @@ class PokemonPokedex_Scene
                         next
                     end
 
-                    dexlist = searchStartingList
                     dexlist = dexlist.find_all do |dex_item|
                         next false if autoDisqualifyFromSearch(dex_item[:species])
                         searchPokeAbilities = dex_item[:data].abilities
@@ -60,7 +58,6 @@ class PokemonPokedex_Scene
                 reversed = abilityDescriptionInput[0] == "-"
                 abilityDescriptionInput = abilityDescriptionInput[1..-1] if reversed
 
-                dexlist = searchStartingList
                 dexlist = dexlist.find_all do |dex_item|
                     next false if autoDisqualifyFromSearch(dex_item[:species])
                     searchPokeAbilities = dex_item[:data].abilities
@@ -82,7 +79,7 @@ class PokemonPokedex_Scene
         return nil
     end
 
-    def searchByMoveLearned
+    def searchByMoveLearned(dexlist)
         learningMethodSelection = pbMessage(_INTL("Which method?"),[_INTL("Any"), _INTL("Level Up"), _INTL("By Specific Level"), _INTL("Other"), _INTL("Coverage Type"), _INTL("Cancel")], 6)
         return if learningMethodSelection == 5
 
@@ -124,7 +121,6 @@ class PokemonPokedex_Scene
                     next
                 end
 
-                dexlist = searchStartingList
                 dexlist = dexlist.find_all do |dex_item|
                     next false if autoDisqualifyFromSearch(dex_item[:species])
 
@@ -164,7 +160,6 @@ class PokemonPokedex_Scene
                     next
                 end
 
-                dexlist = searchStartingList
                 dexlist = dexlist.find_all do |dex_item|
                     next false if autoDisqualifyFromSearch(dex_item[:species])
                     contains = false
@@ -211,7 +206,7 @@ class PokemonPokedex_Scene
         return nil
     end
 
-    def searchByType
+    def searchByType(dexlist)
         selections = [_INTL("Either"), _INTL("Full"), _INTL("Cancel")]
         learningMethodSelection = pbMessage(_INTL("Either type or full typing?"), selections, selections.length)
         return if learningMethodSelection == selections.length - 1
@@ -249,7 +244,6 @@ class PokemonPokedex_Scene
 
                 typesInputArray = [typesInputArray[0], typesInputArray[0]] if typesInputArray.length == 1
 
-                dexlist = searchStartingList
                 dexlist = dexlist.find_all do |dex_item|
                     next false if autoDisqualifyFromSearch(dex_item[:species])
                     searchPokeType1 = dex_item[:data].type1
@@ -273,7 +267,7 @@ class PokemonPokedex_Scene
         end
     end
 
-    def searchByEvolutionMethod
+    def searchByEvolutionMethod(dexlist)
         selections = [_INTL("Can Evolve by Method"), _INTL("Evolved From Method"), _INTL("No Evolutions"), _INTL("No Prevolutions"),  _INTL("Has Prevo and Evo"), _INTL("Split Evo"), _INTL("Nth Stage of Line"), _INTL("Cancel")]
         relationSelection = pbMessage(_INTL("Which search?"), selections, selections.length)
         return if relationSelection == 7
@@ -283,7 +277,6 @@ class PokemonPokedex_Scene
             if evoMethodTextInput && evoMethodTextInput != ""
                 reversed = evoMethodTextInput[0] == "-"
                 evoMethodTextInput = evoMethodTextInput[1..-1] if reversed
-                dexlist = searchStartingList
                 dexlist = dexlist.find_all do |dex_item|
                     next false if autoDisqualifyFromSearch(dex_item[:species])
                     anyContain = false
@@ -313,7 +306,6 @@ class PokemonPokedex_Scene
                     return nil  
                 end
 
-                dexlist = searchStartingList
                 dexlist = dexlist.find_all do |dex_item|
                     next false if autoDisqualifyFromSearch(dex_item[:species])
                     prevosList = getPrevosInLineAsList(dex_item[:data])
@@ -322,7 +314,6 @@ class PokemonPokedex_Scene
                 return dexlist
             end
         else
-            dexlist = searchStartingList
             dexlist = dexlist.find_all do |dex_item|
                 next false if autoDisqualifyFromSearch(dex_item[:species])
 
@@ -346,15 +337,15 @@ class PokemonPokedex_Scene
         return nil
     end
 
-    def searchByAvailableLevel
+    def searchByAvailableLevel(dexlist)
         commands = ["Minimum Level", "Normal Availability", "Cancel"]
         command = pbMessage(_INTL("What threshold for availability?"), commands, commands.length)
         return if command == commands.length - 1
         normal = command == 1
-        return searchByAvailableLevelBase(normal)
+        return searchByAvailableLevelBase(dexlist, normal)
     end
 
-    def searchByAvailableLevelBase(normal = false)
+    def searchByAvailableLevelBase(dexlist, normal = false)
         levelTextInput = pbEnterText(_INTL("Search available by level..."), 0, 3)
         if levelTextInput && levelTextInput != ""
             reversed = levelTextInput[0] == "-"
@@ -365,7 +356,6 @@ class PokemonPokedex_Scene
 
             levelCheck = roundUpToNextCap(levelIntAttempt)
 
-            dexlist = searchStartingList
             dexlist = dexlist.find_all do |dex_item|
                 next false if autoDisqualifyFromSearch(dex_item[:species])
                 available = dex_item[:data].available_by?(levelCheck, normal)
@@ -376,11 +366,9 @@ class PokemonPokedex_Scene
         return nil
     end
 
-    def searchByCollecting
+    def searchByCollecting(dexlist)
         selection = pbMessage(_INTL("Which search?"),[_INTL("Starred"), _INTL("Owned"), _INTL("Not Starred"), _INTL("Not Owned"), _INTL("Cancel")], 5)
         if selection != 4
-            dexlist = searchStartingList
-
             dexlist = dexlist.find_all do |dex_item|
                 species = dex_item[:species]
                 next false if autoDisqualifyFromSearch(species)
@@ -402,7 +390,7 @@ class PokemonPokedex_Scene
         return nil
     end
 
-    def searchByStatComparison
+    def searchByStatComparison(dexlist)
         statSelection = pbMessage(_INTL("Which stat?"), [_INTL("HP"), _INTL("Attack"), _INTL("Defense"), _INTL("Sp. Atk"), _INTL("Sp. Def"), _INTL("Speed"), _INTL("Total"), _INTL("Phys. EHP"), _INTL("Spec. EHP"), _INTL("Cancel"),], 10)
         return if statSelection == 9
         comparisonSelection = pbMessage(_INTL("Which comparison?"), [_INTL("Equal to number"),_INTL("Greater than number"), _INTL("Less than number"), _INTL("Equal to stat"),_INTL("Greater than stat"), _INTL("Less than stat"), _INTL("Cancel"),], 7)
@@ -428,7 +416,6 @@ class PokemonPokedex_Scene
 
         comparitorA = stats[statSelection]
 
-        dexlist = searchStartingList
         dexlist = dexlist.find_all do |dex_item|
             next false if autoDisqualifyFromSearch(dex_item[:species])
 
@@ -474,7 +461,7 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def searchByMisc
+    def searchByMisc(dexlist)
         miscSearches = []
         cmdCollecting	= -1
         cmdMapFound = -1
@@ -509,41 +496,39 @@ class PokemonPokedex_Scene
         miscSearches.push(_INTL("Cancel"))
         searchSelection = pbMessage(_INTL("Which search?"), miscSearches, miscSearches.length + 1)
         if cmdCollecting > -1 && searchSelection == cmdCollecting
-            return searchByCollecting
+            return searchByCollecting(dexlist)
         elsif cmdMapFound > -1 && searchSelection == cmdMapFound
-            return searchByMapFound
+            return searchByMapFound(dexlist)
         elsif cmdZooSection > -1 && searchSelection == cmdZooSection
-            return searchByZooSection
+            return searchByZooSection(dexlist)
         elsif cmdIsLegendary > -1 && searchSelection == cmdIsLegendary
-            return searchByLegendary
+            return searchByLegendary(dexlist)
         elsif cmdWildItem > -1 && searchSelection == cmdWildItem
-            return searchByWildItem
+            return searchByWildItem(dexlist)
         elsif cmdGeneration > -1 && searchSelection == cmdGeneration
-            return searchByGeneration
+            return searchByGeneration(dexlist)
         elsif cmdMovesetConformance > -1 && searchSelection == cmdMovesetConformance
-            return searchByMovesetConformance
+            return searchByMovesetConformance(dexlist)
         elsif cmdNoMonumentUses > -1 && searchSelection == cmdNoMonumentUses
-            return searchByNoMonumentUses
+            return searchByNoMonumentUses(dexlist)
         elsif cmdOneAbility > -1 && searchSelection == cmdOneAbility
-            return searchByOneAbility
+            return searchByOneAbility(dexlist)
         elsif cmdHasSignatureMove > -1 && searchSelection == cmdHasSignatureMove
-            return searchBySignatureMove
+            return searchBySignatureMove(dexlist)
         elsif cmdHasSignatureAbility > -1 && searchSelection == cmdHasSignatureAbility
-            return searchBySignatureAbility
+            return searchBySignatureAbility(dexlist)
         elsif cmdAvatarData > -1 && searchSelection == cmdAvatarData
-            return searchByHasAvatarData
+            return searchByHasAvatarData(dexlist)
         elsif cmdHasSignature > -1 && searchSelection == cmdHasSignature
-            return searchBySignature
+            return searchBySignature(dexlist)
         elsif cmdMultipleForms > -1 && searchSelection == cmdMultipleForms
-            return searchByMultipleForms
+            return searchByMultipleForms(dexlist)
         elsif cmdInvertList > -1 && searchSelection == cmdInvertList
-            return invertSearchList
+            return invertSearchList(dexlist)
         end
     end
 
-    def searchByMultipleForms
-        dexlist = searchStartingList
-
+    def searchByMultipleForms(dexlist)
         hasMultipleForms = {}
 
         GameData::Species.each do |sp|
@@ -560,9 +545,7 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def searchByTribe
-        dexlist = searchStartingList
-
+    def searchByTribe(dexlist)
         commands = []
         tribes = []
         GameData::Tribe.each_legal do |tribe|
@@ -582,7 +565,7 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def searchByHasCoverageType
+    def searchByHasCoverageType(dexlist)
         while true
             typeInput = pbEnterText(_INTL("Search type..."), 0, 100)
             typeInput.downcase!
@@ -603,8 +586,6 @@ class PokemonPokedex_Scene
                 next
             end
 
-            dexlist = searchStartingList
-
             dexlist = dexlist.find_all do |dex_item|
                 next false if autoDisqualifyFromSearch(dex_item[:species])
 
@@ -616,9 +597,7 @@ class PokemonPokedex_Scene
         end
     end
 
-    def searchByOneAbility
-        dexlist = searchStartingList
-
+    def searchByOneAbility(dexlist)
         dexlist = dexlist.find_all do |dex_item|
             next false if autoDisqualifyFromSearch(dex_item[:species])
 
@@ -627,12 +606,10 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def searchBySignatureMove
+    def searchBySignatureMove(dexlist)
         selection = pbMessage(_INTL("Which search?"), [_INTL("Has Signature Move"), _INTL("Doesn't"), _INTL("Cancel")], 3)
         if selection != 2
             reversed = selection == 1
-
-            dexlist = searchStartingList
 
             dexlist = dexlist.find_all do |dex_item|
                 next false if autoDisqualifyFromSearch(dex_item[:species])
@@ -654,11 +631,9 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def searchBySignatureAbility
+    def searchBySignatureAbility(dexlist)
         selection = pbMessage(_INTL("Signature abilities?"), [_INTL("Neither"), _INTL("At Least One"), _INTL("Exactly One"), _INTL("Both"), _INTL("Cancel")], 5)
         if selection != 4
-            dexlist = searchStartingList
-
             dexlist = dexlist.find_all do |dex_item|
                 next false if autoDisqualifyFromSearch(dex_item[:species])
 
@@ -682,9 +657,7 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def searchByHasAvatarData
-        dexlist = searchStartingList
-
+    def searchByHasAvatarData(dexlist)
         dexlist = dexlist.find_all do |dex_item|
             next false if autoDisqualifyFromSearch(dex_item[:species])
             next GameData::Avatar.exists?(dex_item[:data].species)
@@ -692,11 +665,9 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def searchBySignature
+    def searchBySignature(dexlist)
         selection = pbMessage(_INTL("Which search?"), [_INTL("Has Signature"), _INTL("Doesn't"), _INTL("Cancel")], 3)
         if selection != 2
-            dexlist = searchStartingList
-
             dexlist = dexlist.find_all do |dex_item|
                 next false if autoDisqualifyFromSearch(dex_item[:species])
 
@@ -711,9 +682,7 @@ class PokemonPokedex_Scene
         return nil
     end
 
-    def searchByWildItem
-        dexlist = searchStartingList
-
+    def searchByWildItem(dexlist)
         wildItemNameTextInput = pbEnterText(_INTL("Search item name..."), 0, 20)
         return if wildItemNameTextInput.blank?
         reversed = wildItemNameTextInput[0] == "-"
@@ -740,9 +709,7 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def searchByMapFound
-        dexlist = searchStartingList
-
+    def searchByMapFound(dexlist)
         mapNameTextInput = pbEnterText(_INTL("Search map name..."), 0, 20)
         return if mapNameTextInput.blank?
         reversed = mapNameTextInput[0] == "-"
@@ -772,9 +739,7 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def searchByMovesetConformance
-        dexlist = searchStartingList
-
+    def searchByMovesetConformance(dexlist)
         commandAny = -1
         command4Tempo = -1
         commandMaxLevelUp = -1
@@ -879,8 +844,7 @@ class PokemonPokedex_Scene
         return nil
     end
 
-    def searchByNoMonumentUses
-        dexlist = searchStartingList
+    def searchByNoMonumentUses(dexlist)
         dexlist = dexlist.find_all do |dex_item|
             monumentTrainerUseCount = $SpeciesUseData[entry[:species]][1]
             next monumentTrainerUseCount == 0
@@ -888,11 +852,9 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def searchByLegendary
+    def searchByLegendary(dexlist)
         selection = pbMessage(_INTL("Which search?"), [_INTL("Legendary"), _INTL("Not Legendary"), _INTL("Cancel")], 3)
         if selection != 2
-            dexlist = searchStartingList
-
             dexlist = dexlist.find_all do |dex_item|
                 if selection == 1
                     next !dex_item[:data].isLegendary?
@@ -905,9 +867,7 @@ class PokemonPokedex_Scene
         return nil
     end
 
-    def searchByGeneration
-        dexlist = searchStartingList
-
+    def searchByGeneration(dexlist)
         generationNumber = 0
         while true
             generationNumberTextInput = pbEnterText(_INTL("Search generation number..."), 0, 20)
@@ -930,7 +890,7 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def invertSearchList
+    def invertSearchList(dexlist)
         dexlist = pbGetDexList
         dexlist = dexlist.find_all do |dex_item|
             next false if autoDisqualifyFromSearch(dex_item[:species])
@@ -939,14 +899,13 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def searchByTypeMatchup
+    def searchByTypeMatchup(dexlist)
         sectionSelection = pbMessage(_INTL("Which interaction?"), [_INTL("Weak To"), _INTL("Resists"),_INTL("Immune To"), _INTL("Neutral To"), _INTL("Has Immunity"), _INTL("Has Hyper Weakness"), _INTL("Cancel"),], 7)
         return if sectionSelection == 6
 
         if sectionSelection <= 3
-            return searchByTypeEffectiveness(sectionSelection)
+            return searchByTypeEffectiveness(dexlist, sectionSelection)
         else
-            dexlist = searchStartingList
             dexlist = dexlist.find_all do |dex_item|
                 next false if autoDisqualifyFromSearch(dex_item[:species])
 
@@ -973,7 +932,7 @@ class PokemonPokedex_Scene
         end
     end
 
-    def searchByTypeEffectiveness(effectivenessSelection)
+    def searchByTypeEffectiveness(dexlist, effectivenessSelection)
         while true
             typesInput = pbEnterText(_INTL("Which type(s)?"), 0, 100)
             typesInput.downcase!
@@ -1003,7 +962,6 @@ class PokemonPokedex_Scene
                 end
                 next if invalid
 
-                dexlist = searchStartingList
                 dexlist = dexlist.find_all do |dex_item|
                     next false if autoDisqualifyFromSearch(dex_item[:species])
 
@@ -1030,7 +988,7 @@ class PokemonPokedex_Scene
         end
     end
 
-    def sortByStat
+    def sortByStat(dexlist)
         statSelection = pbMessage(_INTL("Which stat?"), [_INTL("HP"), _INTL("Attack"), _INTL("Defense"),
                                                   _INTL("Sp. Atk"), _INTL("Sp. Def"), _INTL("Speed"), _INTL("Total"), _INTL("Phys. EHP"), _INTL("Spec. EHP"), _INTL("Cancel"),], 10)
         return if statSelection == 9
@@ -1069,7 +1027,7 @@ class PokemonPokedex_Scene
         return dexlist
     end
 
-    def sortByOther
+    def sortByOther(dexlist)
         cmdSortByName = -1
         cmdSortByType = -1
         cmdSortByGenderRate = -1
@@ -1154,7 +1112,7 @@ class PokemonPokedex_Scene
     end
 end
 
-def sortByName
+def sortByName(dexlist)
     sortDirection = pbMessage(_INTL("Which direction?"), [_INTL("A-Z"), _INTL("Z-A"), _INTL("Cancel")], 3)
     return if sortDirection == 2
     dexlist = @dexlist

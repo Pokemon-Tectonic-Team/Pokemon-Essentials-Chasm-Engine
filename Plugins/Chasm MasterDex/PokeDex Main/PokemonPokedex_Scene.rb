@@ -188,8 +188,30 @@ class PokemonPokedex_Scene
         return ret
     end
 
-    def searchStartingList
-        return SEARCHES_STACK ? @dexlist : pbGetDexList
+    def searchStartParams
+        if SEARCHES_STACK
+            if @searchResults
+                commands = []
+                commands.push(_INTL("Species In Both Searches"))
+                commands.push(_INTL("Species In Either Search"))
+                commands.push(_INTL("Overwrite the Existing List."))
+                commands.push(_INTL("Cancel"))
+                choice = pbMessage(_INTL("You are combining searches. Which result do you want?"),commands,4)
+                case choice
+                when 0
+                    return pbGetDexList, :BOOLEAN_AND
+                when 1
+                    return pbGetDexList, :BOOLEAN_OR
+                when 2
+                    return pbGetDexList, :OVERWRITE
+                end
+                return @dexlist, nil
+            else
+                return @dexlist, nil
+            end
+        else
+            return pbGetDexList, nil
+        end
     end
 
     def autoDisqualifyFromSearch(species_sym)
@@ -794,8 +816,8 @@ class PokemonPokedex_Scene
                 pbPlayCloseMenuSE
                 break
             elsif Input.trigger?(Input::USE)
-				searchChanged = acceptSearchResults2 do
-					send SEARCH_METHODS_INDEX[index]
+				searchChanged = acceptSearchResults2 do |dexList|
+					send SEARCH_METHODS_INDEX[index], dexList
 				end
                 if searchChanged
                     break
@@ -817,9 +839,12 @@ class PokemonPokedex_Scene
         pbPlayDecisionSE
         @sprites["pokedex"].active = false
         begin
-            dexlist = searchingBlock.call
+            searchStartingList, booleanLogic = searchStartParams
+            return false unless searchStartingList
+            dexlist = searchingBlock.call(searchStartingList)
+            dexlist = combineDexLists(@dexlist, dexlist, booleanLogic) if dexlist && booleanLogic
             if !dexlist
-            # Do nothing
+                # Do nothing
             elsif dexlist.length == 0
                 if @searchResults
                     pbMessage(_INTL("Attempted to do a combined search, but no matching Pokémon were found."))
@@ -846,9 +871,12 @@ class PokemonPokedex_Scene
     def acceptSearchResults2(&searchingBlock)
         pbPlayDecisionSE
         begin
-            dexlist = searchingBlock.call
+            searchStartingList, booleanLogic = searchStartParams
+            return false unless searchStartingList
+            dexlist = searchingBlock.call(searchStartingList)
+            dexlist = combineDexLists(@dexlist, dexlist, booleanLogic) if dexlist && booleanLogic
             if !dexlist
-            # Do nothing
+                # Do nothing
             elsif dexlist.length == 0
                 if @searchResults
                     pbMessage(_INTL("Attempted to do a combined search, but no matching Pokémon were found."))
@@ -867,6 +895,27 @@ class PokemonPokedex_Scene
             pbMessage(_INTL("An unknown error has occured."))
         end
         return false
+    end
+
+    def combineDexLists(dexListA,dexListB,booleanLogic)
+        case booleanLogic
+        when :OVERWRITE
+            return dexListB
+        when :BOOLEAN_AND
+            combinedDexList = dexListA.find_all do |dexEntryA|
+                next dexListB.any? { |dexEntryB| dexEntryB[:species] == dexEntryA[:species] }
+            end
+            return combinedDexList
+        when :BOOLEAN_OR
+            combinedDexList = []
+            combinedDexList = pbGetDexList.find_all do |dexEntry|
+                inDexListA = dexListA.any? { |dexEntryA| dexEntryA[:species] == dexEntry[:species] }
+                inDexListB = dexListB.any? { |dexEntryB| dexEntryB[:species] == dexEntry[:species] }
+                next inDexListA || inDexListB
+            end
+            return combinedDexList
+        end
+        return dexListA
     end
 
     def pbPokedex
@@ -1026,8 +1075,8 @@ class PokemonPokedex_Scene
                 elsif Input.pressex?(0x54) && $DEBUG # T, for Tutor
                     modifyTutorLearnability
                 elsif Input.pressex?(0x46) && $DEBUG # F, for Filter
-                    acceptSearchResults do
-                        debugFilterToRegularLine
+                    acceptSearchResults do |dexList|
+                        debugFilterToRegularLine(dexList)
                     end
                 elsif Input.pressex?(0x45) && $DEBUG # E, for Export
                     exportDexListAsCSV
@@ -1036,8 +1085,8 @@ class PokemonPokedex_Scene
 						if Input.pressex?("NUMBER_#{key_index}".to_sym)
 							searchIndex = key_index - 1
 							searchIndex += 6 if Input.press?(Input::CTRL)
-							acceptSearchResults do
-								send SEARCH_METHODS_INDEX[searchIndex]
+							acceptSearchResults do |dexList|
+								send SEARCH_METHODS_INDEX[searchIndex], dexList
 							end
 						end
 					end
@@ -1048,8 +1097,7 @@ class PokemonPokedex_Scene
 
     #### DEBUG FUNCTIONALITY ###
 
-    def debugFilterToRegularLine
-        dexlist = searchStartingList
+    def debugFilterToRegularLine(dexlist)
         dexlist = dexlist.find_all do |dex_item|
             next !dex_item[:data].isLegendary? && dex_item[:data].get_evolutions.length == 0
         end

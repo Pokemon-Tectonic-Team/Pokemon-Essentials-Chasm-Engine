@@ -2,7 +2,7 @@ class MoveDex_Scene
     ##################################################
     # FILTERS
     ##################################################
-    def searchByMoveName
+    def searchByMoveName(dexlist)
         nameInput = pbEnterText(_INTL("Search name..."), 0, 20)
         if nameInput && nameInput != ""
             reversed = nameInput[0] == "-"
