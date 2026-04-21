@@ -4909,7 +4909,7 @@ Accuracy = 100
 TotalPP = 8
 Target = NearOther
 FunctionCode = FailsIfUserNotAsleepWakeUpUser
-Flags = CanProtect
+Flags = CanProtect,Uninvocable
 Description = The user wakes to unleash devastating tides. Can only be used while asleep, and wakes the user up.
 Animation = SURF
 #-------------------------------
