@@ -625,6 +625,19 @@ Flags = CanProtect,Light
 Description = A barrage of star-shaped rays are shot at the target, to multi-hit two to five times. Can't miss and skips protections.
 Animation = SWIFT
 #-------------------------------
+[STERTOR]
+Name = Stertor
+Type = NORMAL
+Category = Adaptive
+Power = 115
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = FailsIfUserNotAsleep
+Flags = CanProtect,Sound,Uninvocable
+Description = The user emits a deep, rumbling snore. This move can only be used while asleep.
+Animation = SNORE
+#-------------------------------
 [THIEVINGSPREE]
 Name = Thieving Spree
 Type = NORMAL
@@ -1005,6 +1018,19 @@ FunctionCode = LowerUserSpAtk4
 Flags = CanProtect
 Description = The user attacks with a burst of inner energy. Lowers the user's Sp. Atk by four steps.
 Animation = AURASPHERE
+#-------------------------------
+[SLEEPWALKSTRIKE]
+Name = Sleepwalk Strike
+Type = FIGHTING
+Category = Physical
+Power = 110
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = FailsIfUserNotAsleep
+Flags = CanProtect,Kick,Uninvocable
+Description = The user mimics Kung Fu techniques while sleeping. This move can only be used while asleep.
+Animation = LOWSWEEP
 #-------------------------------
 [SMASH]
 Name = Smash
@@ -6425,6 +6451,19 @@ FunctionCode = TwoTurnAttackChargeRaiseUserAtk2
 Flags = CanProtect
 Description = Charges with astral power and boosts its Attack by two steps on one turn, then attacks on the second turn.
 #-------------------------------
+[REMBURST]
+Name = REM Burst
+Type = PSYCHIC
+Category = Special
+Power = 110
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = FailsIfUserNotAsleep
+Flags = CanProtect,Pulse,Uninvocable
+Description = The user forces its dreams to manifest, attacking the opponent. This move can only be used while asleep.
+Animation = PSYCHIC
+#-------------------------------
 [REVERBWARD]
 Name = Reverb Ward
 Type = PSYCHIC
@@ -7282,6 +7321,19 @@ Flags = CanProtect
 Description = The user attacks with overwhelming power, ignoring positive stat changes and abilities.
 Animation = DRAGONCLAW
 #-------------------------------
+[SLUMBERINGROAR]
+Name = Slumbering Roar
+Type = DRAGON
+Category = Special
+Power = 110
+Accuracy = 100
+TotalPP = 10
+Target = AllNearOthers
+FunctionCode = FailsIfUserNotAsleep
+Flags = CanProtect,Sound,Uninvocable
+Description = The user lets out a thunderous noise while sleeping. This move can only be used while asleep.
+Animation = SNARL
+#-------------------------------
 [TRANSCENDENTENERGY]
 Name = Transcendent Energy
 Type = DRAGON
@@ -7905,6 +7957,19 @@ FunctionCode = Leech
 Flags = CanProtect,Sound
 EffectChance = 20
 Description = The user bullies the target, causing mental damage. This has a 20% chance to leech.
+#-------------------------------
+[TOSSNTURN]
+Name = Toss n' Turn
+Type = DARK
+Category = Physical
+Power = 110
+Accuracy = 100
+TotalPP = 10
+Target = AllNearOthers
+FunctionCode = FailsIfUserNotAsleep
+Flags = CanProtect,Uninvocable
+Description = The user swings aggressively while suffering from nightmares. This move can only be used while asleep.
+Animation = BRUTALSWING
 #-------------------------------
 [VERMINCLOUD]
 Name = Vermin Cloud

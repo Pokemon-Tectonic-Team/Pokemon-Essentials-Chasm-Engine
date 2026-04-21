@@ -796,7 +796,7 @@ TotalPP = 12
 Target = NearOther
 FunctionCode = FailsIfUserNotAsleep
 Flags = CanProtect,Sound,Uninvocable
-Description = An attack that can be used only if the user is asleep.
+Description = The user emits a snoring sound. This move can only be used while asleep.
 #-------------------------------
 [SPITUP]
 Name = Spit Up
