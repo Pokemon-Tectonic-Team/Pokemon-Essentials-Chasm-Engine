@@ -2766,17 +2766,6 @@ FunctionCode = IgnoreTargetAbility
 Flags = CanProtect,Light,ForceSignature
 Description = The user emits a sinister ray. This move can be used on the target regardless of its Abilities.
 #-------------------------------
-[NIGHTMARE]
-Name = Nightmare
-Type = GHOST
-Category = Status
-Accuracy = 100
-TotalPP = 12
-Target = NearOther
-FunctionCode = StartDamageTargetEachTurnIfTargetAsleep
-Flags = CanProtect
-Description = A sleeping target sees a nightmare that inflicts 25% damage every turn.
-#-------------------------------
 [OMINOUSWIND]
 Name = Ominous Wind
 Type = GHOST

@@ -2047,6 +2047,17 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = The user attacks the target from a blind spot. Always goes first. Deals 50% more damage in a hailstorm.
 #-------------------------------
+[NIGHTMARE]
+Name = Nightmare
+Type = GHOST
+Category = Status
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = A sleeping target sees a nightmare that inflicts 25% damage every turn.
+#-------------------------------
 [NIGHTSHADE]
 Name = Night Shade
 Type = GHOST

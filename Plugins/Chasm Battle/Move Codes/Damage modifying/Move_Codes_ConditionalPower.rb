@@ -132,6 +132,28 @@ class PokeBattle_Move_TripleDamageAgainstPoisoned < PokeBattle_Move
 end
 
 #===============================================================================
+# Deals 30% more damage if the user is asleep. (Plummet, Ashral Shift)
+#===============================================================================
+class PokeBattle_Move_30DamageIfUserAsleep < PokeBattle_Move
+    def usableWhenAsleep?; return true; end
+    
+    def pbBaseDamage(baseDmg, user, _target)
+        baseDmg *= 1.3 if user.asleep?
+        return baseDmg
+    end
+end
+
+#===============================================================================
+# Deals 50% more damage if the target is asleep. (Possession)
+#===============================================================================
+class PokeBattle_Move_50DamageIfTargetAsleep < PokeBattle_Move
+    def pbBaseDamage(baseDmg, _user, target)
+        baseDmg *= 1.5 if target.asleep?
+        return baseDmg
+    end
+end
+
+#===============================================================================
 # Power is doubled if the target is paralyzed. Cures the target of numb.
 # (Smelling Salts)
 #===============================================================================
@@ -176,7 +198,7 @@ class PokeBattle_Move_Drainage < PokeBattle_Move
 end
 
 #===============================================================================
-# Power is doubled if the target is asleep. Wakes the target up. (Wake-Up Slap)
+# Power is doubled if the target is asleep. Wakes the target up.
 #===============================================================================
 class PokeBattle_Move_WakeUpSlap < PokeBattle_Move
     def pbBaseDamage(baseDmg, _user, target)
