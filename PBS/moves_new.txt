@@ -7967,7 +7967,7 @@ Accuracy = 100
 TotalPP = 10
 Target = AllNearOthers
 FunctionCode = FailsIfUserNotAsleep
-Flags = CanProtect,Uninvocable
+Flags = CanProtect,Punch,Uninvocable
 Description = The user swings aggressively while suffering from nightmares. This move can only be used while asleep.
 Animation = BRUTALSWING
 #-------------------------------
