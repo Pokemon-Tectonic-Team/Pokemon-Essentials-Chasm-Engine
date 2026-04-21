@@ -4865,13 +4865,13 @@ Animation = LIQUIDATION
 Name = Wakeful Tide
 Type = WATER
 Category = Special
-Power = 120
+Power = 150
 Accuracy = 100
 TotalPP = 8
 Target = NearOther
-FunctionCode = TwoTurnAttackChargeSleep
+FunctionCode = FailsIfUserNotAsleepWakeUpUser
 Flags = CanProtect
-Description = The user charges and cures itself of non-volatile status conditions by sleeping on the first turn, then wakes to unleash the tides.
+Description = The user wakes to unleash devastating tides. Can only be used while asleep, and wakes the user up.
 Animation = SURF
 #-------------------------------
 [WATERLOG]
