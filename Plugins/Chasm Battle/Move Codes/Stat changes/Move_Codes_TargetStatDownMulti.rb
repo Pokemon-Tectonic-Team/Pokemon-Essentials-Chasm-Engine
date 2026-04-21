@@ -49,7 +49,7 @@ class PokeBattle_Move_SleepUserLowerDefSpdef4 < PokeBattle_TargetMultiStatDownMo
     end
 
     def pbEffectGeneral(user)
-        user.applySleepSelf(_INTL("{1} played dead!", user.pbThis))
+        user.applySleepSelf(_INTL("{1} played dead!", user.pbThis), 2)
     end
 end
 

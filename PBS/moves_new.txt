@@ -432,7 +432,7 @@ TotalPP = 5
 Target = AllNearFoes
 FunctionCode = SleepUserLowerDefSpdef4
 Flags = CanProtect,CanMagicCoat
-Description = The user suddenly falls asleep, making enemies drop their guard, lowering their Defense and Sp. Def by four steps.
+Description = The user suddenly falls asleep for one turn, making enemies drop their guard, lowering their Defense and Sp. Def by four steps.
 #-------------------------------
 [PRANK]
 Name = Prank
