@@ -423,6 +423,17 @@ Flags = CanProtect,Pulse
 Description = The user shoots a pulse of neutral particles at the target.
 Animation = STOREDPOWER
 #-------------------------------
+[PLAYDEAD]
+Name = Play Dead
+Type = NORMAL
+Category = Status
+Accuracy = 0
+TotalPP = 5
+Target = AllNearFoes
+FunctionCode = SleepUserLowerDefSpdef4
+Flags = CanProtect,CanMagicCoat
+Description = The user suddenly falls asleep, making enemies drop their guard, lowering their Defense and Sp. Def by four steps.
+#-------------------------------
 [PRANK]
 Name = Prank
 Type = NORMAL
@@ -7987,6 +7998,18 @@ Target = User
 FunctionCode = RaiseUserSpAtk4
 Flags = CanSnatch,Dance
 Description = The user dances in tune with a dreamlike energy, raising their Sp. Atk by four steps.
+#-------------------------------
+[DREAMSCAPE]
+Name = Dreamscape
+Type = FAIRY
+Category = Status
+Accuracy = 0
+TotalPP = 8
+Target = UserSide
+FunctionCode = SleepUserSetupSanctuary8
+Flags = CanSnatch,Light
+Description = The user goes to sleep and enters a dreamscape. This sets Sanctuary on the user's side for eight turns.
+Animation = LUCKYCHANT
 #-------------------------------
 [EAGERTICKLING]
 Name = Eager Tickling
