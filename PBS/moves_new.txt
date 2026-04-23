@@ -3044,7 +3044,7 @@ TotalPP = 12
 Target = NearOther
 FunctionCode = 30DamageIfUserAsleep
 Flags = CanProtect
-Description = The user goes into another plane and displaces the target's soul. This does 30% more damage if the user is asleep.
+Description = The user goes into another plane and displaces the target's soul. This move does 30% more damage if the user is asleep.
 Animation = OMINOUSWIND
 #-------------------------------
 [BINDFATE]
