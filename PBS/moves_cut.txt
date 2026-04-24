@@ -1603,6 +1603,18 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = The user causes a huge landslide to cover the field.
 #-------------------------------
+[LANDSWRATH]
+Name = Land's Wrath
+Type = GROUND
+Category = Physical
+Power = 90
+Accuracy = 100
+TotalPP = 10
+Target = AllNearFoes
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user gathers the energy of the land and focuses that power on foes to damage them.
+#-------------------------------
 [MAGNITUDE]
 Name = Magnitude
 Type = GROUND
@@ -2046,6 +2058,17 @@ Priority = 1
 FunctionCode = Invalid
 Flags = CanProtect
 Description = The user attacks the target from a blind spot. Always goes first. Deals 50% more damage in a hailstorm.
+#-------------------------------
+[NIGHTMARE]
+Name = Nightmare
+Type = GHOST
+Category = Status
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = A sleeping target sees a nightmare that inflicts 25% damage every turn.
 #-------------------------------
 [NIGHTSHADE]
 Name = Night Shade

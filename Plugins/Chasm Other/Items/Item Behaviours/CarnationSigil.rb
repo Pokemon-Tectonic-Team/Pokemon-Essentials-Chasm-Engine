@@ -1,14 +1,24 @@
 ItemHandlers::UseFromBag.add(:CARNATIONSIGIL,proc { |item|
     next 0 unless canTeleport?(true)
-    next pbMessage(_INTL("You feel yourself being pulled away.")) ? 2 : 0
+    showCarnationSigilUseMessage
+    next 2
 })
 
 ItemHandlers::ConfirmUseInField.add(:CARNATIONSIGIL,proc { |item|
   next false unless canTeleport?(true)
-  next pbMessage(_INTL("You feel yourself being pulled away."))
+  showCarnationSigilUseMessage
+  next true
 })
 
+def showCarnationSigilUseMessage
+    pbMessage(_INTL("You feel yourself being pulled away."))
+end
+
 ItemHandlers::UseInField.add(:CARNATIONSIGIL,proc { |item|
+    next useCarnationSigil
+})
+
+def useCarnationSigil
     commands = []
     commands.push(_INTL("The Tower"))
     commands.push(_INTL("The Stockpile"))
@@ -17,11 +27,11 @@ ItemHandlers::UseInField.add(:CARNATIONSIGIL,proc { |item|
     case choiceNumber
     when 0
         transferPlayerToEvent(30,Down,186)
-        next 1
+        return 1
     when 1
         transferPlayerToEvent(13,Down,126)
-        next 1
+        return 1
     when 2
-        next 0
+        return 0
     end
-})
+end

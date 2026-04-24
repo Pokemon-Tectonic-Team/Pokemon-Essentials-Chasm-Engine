@@ -3011,7 +3011,7 @@ Pokemon = FLAPPLE,70
     Name = Nootin'
     Gender = female
     Moves = CLASSICALPHYSICS,UTURN
-    AbilityIndex = 0 # Hustle
+    AbilityIndex = 1 # Tinted Lens
     Item = TECHNIQUEBOOSTER
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 20,20,0,10,20,0
@@ -3205,6 +3205,56 @@ Pokemon = MHAEROBIC,70
     Moves = LUNASUCRE,HYPERVOICE,MOONBLAST,PSYCHESWITCH
     AbilityIndex = 0 # Moon Prism Power
     Item = WISEGLASSES
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+#-------------------------------
+[LADY2,Eseria]
+TrainerTypeLabel = DEVELOPER
+Pokemon = RUBARIOR,70
+    Name = Stasis
+    Gender = female
+    Moves = STEALTHROCK,FOULPLAY,WILLOWISP,STITCHUP
+    AbilityIndex = 0 # Warding
+    Item = LEFTOVERS
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,0,20,0,0,10
+Pokemon = SIMISAGE,70
+    Name = Overgrowth
+    Gender = female
+    Moves = DREAMDANCE,FRENZYPLANT,HYPERBEAM,TAUNT
+    AbilityIndex = 1 # Reclamation
+    Item = ENERGYHERB
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+Pokemon = MJELLICENT,70
+    Name = Despair
+    Gender = female
+    Moves = BADENDING,RECOVER,DISTURB,LIGHTNINGSLAM
+    AbilityIndex = 1 # No Hope
+    Item = POWERLOCK
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,20,0,20,0
+Pokemon = MANIKLAW,70
+    Name = Entropy
+    Gender = female
+    Moves = WILLOWISP,SIXFEETUNDER,STITCHUP,HORIZONSLICE
+    AbilityIndex = 0 # Malice
+    Item = SITRUSBERRY
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,20,0,20,0
+Pokemon = SKUNTANK,70
+    Gender = female
+    Moves = GRIMEGRAPPLE,CRUNCH,SWEETSELENE,POISONJAB
+    AbilityIndex = 0 # Offensive
+    Item = LIFEORB
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+Pokemon = GDARMANITAN,70
+    Name = Violence
+    Gender = female
+    Moves = EARTHQUAKE,CLOSECOMBAT,GLACIALRAM,ADAMANTINEPRESS
+    AbilityIndex = 0 # Gorilla Tactics
+    Item = CHOICEBAND
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 10,20,0,20,20,0
 #-------------------------------
@@ -6584,7 +6634,7 @@ Pokemon = JUMPLUFF,70
 Pokemon = HAWLUCHA,70
     Item = CLARITYSASH
 Pokemon = PALMANTRA,70
-    Item = BUGRING
+    Item = GHOSTRING
 Pokemon = DRAGONITE,70
     Moves = ROOST,DRAGONDANCE,OUTRAGE,FLY
     Item = LUNCHBOX
@@ -6651,49 +6701,49 @@ Pokemon = MGIGALITH,70
 [TRAINER_Sang,Sang,4]
 Policies = EQ_PROTECT
 Flags = NoPerfect
+Pokemon = SENSIBELLE,70
+    Name = Heron Gem
+    Gender = female
+    Moves = HYPERVOICE,HEARTRHYTHM,RECOVER,PROTECT
+    AbilityIndex = 1 # Regenerator
+Pokemon = MFURRET,70
+    Name = Kite Mask
+    Gender = female
+    Moves = HUNDREDHANDCLAP,SNORE,REST,ONEIROMANCY
+    AbilityIndex = 0 # Filter
+    Item = WEAKNESSPOLICY
+Pokemon = DIGGERSBY,70
+    Name = Eagle Rift
+    Gender = male
+    Moves = MEGAPUNCH,EARTHQUAKE,PROTECT,BULKUP
+    AbilityIndex = 1 # Lucky Charm
+    Item = FOCUSSASH
+Pokemon = TOXICROAK,70
+    Name = Rook Knife
+    Gender = male
+    Moves = BELCH,WHIRLWINDKICK,DARKALLURE,PROTECT
+    AbilityIndex = 1 # Dry Skin
+    Item = SITRUSBERRY
 Pokemon = EXPLOUD,70
     Name = Egret Ash
     Gender = female
-    Moves = HYPERVOICE,FLAMETHROWER,SHADOWBALL,PROTECT
+    Moves = HYPERVOICE,FLAMETHROWER,SHADOWBALL,BOOMBURST
     AbilityIndex = 0 # Echo
 Pokemon = SEISMITOAD,70
     Name = Ibis Veil
     Gender = female
     Moves = HYPERVOICE,SLUDGEWAVE,EARTHQUAKE,BUBBLEBLASTER
     AbilityIndex = 1 # Resonant
-Pokemon = WIGGLYTUFF,70
-    Name = Wren Glass
-    Gender = male
-    Moves = UPROAR,LULLABY,PLAYROUGH,PROTECT
-    AbilityIndex = 1 # Maestro
-    Item = THROATSPRAY
-Pokemon = KROOKODILE,70
-    Name = Stork Saw
-    Gender = male
-    Moves = CRUSHINGCHASM,CRUNCH,STAREDOWN,CRIMSONSTORM
-    AbilityIndex = 0 # Hand Off
-    Item = WILDCARD
-Pokemon = CHATOT,70
-    Name = Dove Abyss
-    Gender = male
-    Moves = CHATTER,BUGBUZZ,SNARL,PROTECT
-    AbilityIndex = 1 # Fascinate
-    Item = SITRUSBERRY
-Pokemon = MAMOSWINE,70
-    Name = Hawk Doll
-    Gender = female
-    Moves = GLACIALRAM,SHIVERDANCE,EARTHQUAKE,ADAMANTINEPRESS
-    AbilityIndex = 0 # Thick Fat
 #-------------------------------
 [TRAINER_Sang,Sang,5]
 ExtendsVersion = 4
 Policies = CURSE_PERISH_SONGED
-Pokemon = EXPLOUD,70
-    Item = STRIKEVEST
+Pokemon = SENSIBELLE,70
+    Item = WATERBALLOON
 Pokemon = SEISMITOAD,70
     Item = LIFEORB
-Pokemon = MAMOSWINE,70
-    Item = LEFTOVERS
+Pokemon = EXPLOUD,70
+    Item = STRIKEVEST
 #-------------------------------
 [ANOTHERPOSSIBLEZAIN,Zain]
 Policies = ALTERNATE_ZAIN
@@ -7757,7 +7807,7 @@ Pokemon = SEVIPER,58
 #-------------------------------
 [MEDIUM,Paula]
 Pokemon = GENGAR,57
-    Moves = SLUDGEWAVE,ICEBEAM,SHADOWBALL,AURASPHERE
+    Moves = SLUDGEWAVE,ICEBEAM,SHADOWBALL,NEURALPULSE
     AbilityIndex = 0 # Levitate
     Item = ICEGEM
 Pokemon = MMUSHARNA,57

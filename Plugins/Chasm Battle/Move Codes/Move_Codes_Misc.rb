@@ -861,6 +861,15 @@ class PokeBattle_Move_FailsIfUserNotAsleep < PokeBattle_Move
 end
 
 #===============================================================================
+# Fails if the user is not asleep and wakes up the user. (Wakeful Tide)
+#===============================================================================
+class PokeBattle_Move_FailsIfUserNotAsleepWakeUpUser < PokeBattle_Move_FailsIfUserNotAsleep
+    def pbEffectAfterAllHits(user, targets)
+        user.pbCureStatus(true, :SLEEP)
+    end
+end
+
+#===============================================================================
 # Uses each other Sound move the Pokemon knows. (Wall of Sound)
 #===============================================================================
 class PokeBattle_Move_UseAllOtherSoundMoves < PokeBattle_Move

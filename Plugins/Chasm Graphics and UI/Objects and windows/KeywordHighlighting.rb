@@ -113,6 +113,7 @@ def battleKeywordsImportant
         "critical hits",
         "critical hit",
         "screens",
+		"sanctuary",
         "invulnerable",
         "clothing",
         "Grey Mist",

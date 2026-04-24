@@ -105,7 +105,7 @@ BattleHandlers::EOREffectAbility.add(:EXTREMEPOWER,
   }
 )
 
-BattleHandlers::EOREffectAbility.copy(:EXTREMEPOWER,:EXTREMEVOLTAGE,:LIVEFAST,:BURDENED)
+BattleHandlers::EOREffectAbility.copy(:EXTREMEPOWER,:EXTREMEVOLTAGE,:LIVEFAST,:BURDENED,:FADINGFURY)
 
 BattleHandlers::EOREffectAbility.add(:TENDERIZE,
   proc { |ability, battler, battle|

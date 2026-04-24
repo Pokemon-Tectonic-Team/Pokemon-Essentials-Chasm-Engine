@@ -643,6 +643,10 @@ Name = Extremophile
 Description = Heals by 1/8th of its max HP each turn if in eclipse.
 Flags = EclipseSynergy
 #-------------------------------
+[FADINGFURY]
+Name = Fading Fury
+Description = Boosts the power of kick and light moves by 50%, but this Pokémon is hurt for 1/10th HP each turn.
+#-------------------------------
 [FAEVEIL]
 Name = Fae Veil
 Description = Prevents itself and allies from being burned, frostbitten, or numbed.

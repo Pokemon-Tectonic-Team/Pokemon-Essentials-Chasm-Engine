@@ -199,12 +199,19 @@ def roundUpToNextCap(level)
 end
 
 def speciesInfoViewable?(speciesID)
-    return true if $DEBUG
     speciesData = GameData::Species.get(speciesID)
-    return false if speciesData.isTest?
-    return true if $Trainer.seen?(speciesID)
-    return false if speciesData.isLegendary?
-    return true
+    return false if speciesData.isTest? && !$DEBUG
+
+	return true if $Trainer.seen?(speciesID)
+
+	case $Options.hide_unseen_species || 1
+	when 0
+		return false
+	when 1
+		return !speciesData.isLegendary?
+	when 2
+		return true
+	end
 end
 
 def getNameForEncounterType(encounterType)

@@ -399,7 +399,7 @@ class PokeBattle_Move_DisableTargetUsingOffTypeMove4 < PokeBattle_Move
 end
 
 #===============================================================================
-# Target will lose 1/4 of max HP at end of each round, while asleep. (Nightmare)
+# Target will lose 1/4 of max HP at end of each round, while asleep.
 #===============================================================================
 class PokeBattle_Move_StartDamageTargetEachTurnIfTargetAsleep < PokeBattle_Move
     def pbFailsAgainstTarget?(_user, target, show_message)

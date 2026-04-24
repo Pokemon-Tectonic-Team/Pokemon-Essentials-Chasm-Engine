@@ -6979,10 +6979,10 @@ ShadowX = 0
 ShadowSize = 2
 #-------------------------------
 [WOLFEROC]
-BackSprite = 0,16
-FrontSprite = -8,23
+BackSprite = 0,18
+FrontSprite = 0,22
 ShadowX = 0
-ShadowSize = 3
+ShadowSize = 2
 #-------------------------------
 [WOOBAT]
 BackSprite = 0,30

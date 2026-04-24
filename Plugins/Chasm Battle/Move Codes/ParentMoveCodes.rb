@@ -536,6 +536,12 @@ end
 class PokeBattle_TwoTurnMove < PokeBattle_Move
     def chargingTurnMove?; return true; end
 
+    def worksWithNoTargets?(user = nil)
+        return false if user.nil?
+        return true if @chargingTurn && !@damagingTurn
+        return false
+    end
+
     # :TwoTurnAttack is set to the move's ID if this
     # method returns true, or nil if false.
     # Non-nil means the charging turn. nil means the attacking turn.

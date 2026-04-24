@@ -1025,7 +1025,7 @@ class PokeBattle_Battler
             if b.pbOwnSide.effectActive?(:CoralOvergrowth)
                 unless b.damageState.hpLost <= 0
                     hpGain = (b.damageState.hpLost / 3.0).round
-                    user.pbRecoverHPFromDrain(hpGain, b, user: user)
+                    user.pbRecoverHPFromDrain(hpGain, b, user: user, canOverheal: true)
                 end
             end
         end

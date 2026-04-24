@@ -33,6 +33,7 @@ BattleHandlers::EORHealingAbility.add(:REJUVENATE,
             next unless data.avatars_purge || data.is_mental?
             battler.disableEffect(effect)
         end
+        battle.scene.pbRefresh
         battle.pbHideAbilitySplash(battler)
     }
 )

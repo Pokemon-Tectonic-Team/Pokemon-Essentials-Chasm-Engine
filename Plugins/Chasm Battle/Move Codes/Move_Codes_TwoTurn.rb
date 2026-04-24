@@ -124,7 +124,7 @@ class PokeBattle_Move_TwoTurnAttackBurnTarget < PokeBattle_TwoTurnMove
 end
 
 #===============================================================================
-# Cures NVSC and sleeps on 1st Turn and Attacks on 2nd (Wakeful Tide)
+# Cures NVSC and sleeps on 1st Turn and Attacks on 2nd
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackChargeSleep < PokeBattle_TwoTurnMove
     def usableWhenAsleep?; return true; end

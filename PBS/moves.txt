@@ -790,13 +790,13 @@ Description = This attack inflicts double damage on a numbed foe. It also cures 
 Name = Snore
 Type = NORMAL
 Category = Adaptive
-Power = 90
+Power = 80
 Accuracy = 100
 TotalPP = 12
 Target = NearOther
 FunctionCode = FailsIfUserNotAsleep
 Flags = CanProtect,Sound,Uninvocable
-Description = An attack that can be used only if the user is asleep.
+Description = The user emits a snoring sound. This move can only be used while asleep.
 #-------------------------------
 [SPITUP]
 Name = Spit Up
@@ -2072,18 +2072,6 @@ Target = BothSides
 FunctionCode = StartGravity5
 Description = Gravity is intensified for five turns, grounding all Pokémon, doubling their weight, and doubling all move Accuracy.
 #-------------------------------
-[LANDSWRATH]
-Name = Land's Wrath
-Type = GROUND
-Category = Physical
-Power = 90
-Accuracy = 100
-TotalPP = 10
-Target = AllNearFoes
-FunctionCode = Basic
-Flags = CanProtect
-Description = The user gathers the energy of the land and focuses that power on foes to damage them.
-#-------------------------------
 [MUDSHOT]
 Name = Mud Shot
 Type = GROUND
@@ -2251,7 +2239,7 @@ Description = Charges with space power and boosts its Sp. Atk by two steps on on
 Name = Power Gem
 Type = ROCK
 Category = Special
-Power = 90
+Power = 95
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
@@ -2765,17 +2753,6 @@ Target = NearOther
 FunctionCode = IgnoreTargetAbility
 Flags = CanProtect,Light,ForceSignature
 Description = The user emits a sinister ray. This move can be used on the target regardless of its Abilities.
-#-------------------------------
-[NIGHTMARE]
-Name = Nightmare
-Type = GHOST
-Category = Status
-Accuracy = 100
-TotalPP = 12
-Target = NearOther
-FunctionCode = StartDamageTargetEachTurnIfTargetAsleep
-Flags = CanProtect
-Description = A sleeping target sees a nightmare that inflicts 25% damage every turn.
 #-------------------------------
 [OMINOUSWIND]
 Name = Ominous Wind

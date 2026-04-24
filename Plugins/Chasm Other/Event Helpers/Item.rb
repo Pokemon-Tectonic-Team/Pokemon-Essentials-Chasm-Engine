@@ -96,6 +96,11 @@ def combineSigil
         pbReceiveItem(:CARNATIONSIGIL)
         $PokemonBag.pbDeleteItem(:SIGILLEFTHALF)
         $PokemonBag.pbDeleteItem(:SIGILRIGHTHALF)
+
+        if pbConfirmMessage(_INTL("Activate it immediately?"))
+            showCarnationSigilUseMessage
+            useCarnationSigil
+        end
     end
 end
 

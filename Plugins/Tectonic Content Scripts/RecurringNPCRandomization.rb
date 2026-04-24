@@ -222,7 +222,7 @@ def pointOfNoReturnConfirmation
     canTealMaskNPCQuestFail = !getGlobalSwitch(NPC2_TRAITOR_SWITCH)
 
     if canCrimsonMaskNPCQuestFail && canTealMaskNPCQuestFail
-        pbMessage(_INTL("\\wm\\ss\\l[2]Beyond this door, a <imp>Crimson Masked</imp> and a <imp>Teal Mask</imp> await you."))
+        pbMessage(_INTL("\\wm\\ss\\l[2]Beyond this door, a <imp>Crimson Mask</imp> and a <imp>Teal Mask</imp> await you."))
     elsif canCrimsonMaskNPCQuestFail
         pbMessage(_INTL("\\wm\\ss\\l[2]Beyond this door, a <imp>Crimson Mask</imp> awaits you."))
     elsif canTealMaskNPCQuestFail

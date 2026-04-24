@@ -4854,3 +4854,12 @@ Price = 4000
 FieldUse = TM
 Flags = SkipPocketMessage
 Move = PSYCHIC
+#-------------------------------
+[TMSLEEPTALK]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 4000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SLEEPTALK

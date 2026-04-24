@@ -915,7 +915,6 @@ BattleHandlers::TargetAbilityOnHit.add(:INFECTED,
         next unless user.canChangeType?
         next -15 if aiCheck
         user.replaceAbility(ability, user.opposes?(target), target)
-        user.applyEffect(:Type3,:GRASS) unless user.pbHasType?(:GRASS)
     }
 )
 

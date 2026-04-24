@@ -343,7 +343,7 @@ class PokeBattle_Battler
             end
         end
         if %i[FRAGILELOCKET LUNCHBOX].include?(checkitem)
-            @battle.pbDisplay(_INTL("But {1} hold's tightly onto its {2}!", pbThis(false), getItemName(checkitem))) if showMessages
+            @battle.pbDisplay(_INTL("But {1} holds tightly onto its {2}!", pbThis(false), getItemName(checkitem))) if showMessages
             return true
         end
         # Other unlosable items

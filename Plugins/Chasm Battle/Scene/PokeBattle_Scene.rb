@@ -254,7 +254,7 @@ class PokeBattle_Scene
       thinkingChoices = [_INTL("I'm thinking..."), *choices]
       chosenIndex = 0
       loop do
-        chosenIndex = battle.scene.pbShowCommands(message,thinkingChoices,0)
+        chosenIndex = @battle.scene.pbShowCommands(message,thinkingChoices,0)
         break if chosenIndex > 0
       end
       return chosenIndex - 1

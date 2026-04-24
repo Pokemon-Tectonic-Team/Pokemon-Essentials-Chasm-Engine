@@ -181,10 +181,10 @@ BattleHandlers::AttackCalcUserAbility.add(:EXTREMEPOWER,
   }
 )
 
-BattleHandlers::AttackCalcAllyAbility.add(:CASTELLAN,
-  proc { |ability, _user, battle, spAtkMult|
+BattleHandlers::AttackCalcUserAbility.add(:CASTELLAN,
+  proc { |ability, _user, battle, attackMult|
       attackMult *= 1.3 if battle.roomActive?
-      next spAtkMult
+      next attackMult
   }
 )
 
