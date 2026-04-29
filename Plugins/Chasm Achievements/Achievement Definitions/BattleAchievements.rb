@@ -1,0 +1,3 @@
+def checkBattleStateAchievements(battle)
+
+end
