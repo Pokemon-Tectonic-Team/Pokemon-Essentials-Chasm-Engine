@@ -3,6 +3,7 @@
 [AIRLOCK]
 Name = Air Lock
 Description = Suppresses the effects of weather.
+Flags = ForceSignature
 #-------------------------------
 [ANALYTIC]
 Name = Analytic
@@ -11,12 +12,12 @@ Description = Boosts move power when this Pokémon moves last by 30%.
 [ASONEGHOST]
 Name = As One
 Description = Possesses two Abilities: Unnerve and Grim Neigh.
-Flags = Immutable
+Flags = Immutable,ForceSignature
 #-------------------------------
 [ASONEICE]
 Name = As One
 Description = Possesses two Abilities: Unnerve and Chilling Neigh.
-Flags = Immutable
+Flags = Immutable,ForceSignature
 #-------------------------------
 [BADDREAMS]
 Name = Bad Dreams
@@ -46,7 +47,7 @@ Flags = SunshineSynergy
 [CLEARBODY]
 Name = Clear Body
 Description = Prevents stat steps from being lowered (except when self-inflicted).
-Flags = OtherStatDropImmunity
+Flags = OtherStatDropImmunity,ForceSignature
 #-------------------------------
 [COMATOSE]
 Name = Comatose
@@ -81,10 +82,6 @@ Description = Repeats another Pokémon's dance move immediately.
 [DARKAURA]
 Name = Dark Aura
 Description = Powers up each Pokémon's Dark-type moves by 33%.
-#-------------------------------
-[DAUNTLESSSHIELD]
-Name = Dauntless Shield
-Description = Raises Defense upon entry.
 #-------------------------------
 [DEFEATIST]
 Name = Defeatist
@@ -221,28 +218,23 @@ Name = Hydration
 Description = Heals non-volatile status conditions each turn if in rainstorm.
 Flags = RainstormSynergy
 #-------------------------------
-[ICEBODY]
-Name = Ice Body
-Description = Heals 1/8th of its max HP each turn in a hail.
-Flags = HailSynergy
-#-------------------------------
 [ICESCALES]
 Name = Ice Scales
 Description = Doubles this Pokémon's Sp. Def.
 #-------------------------------
 [ILLUSION]
 Name = Illusion
-Description = Comes out disguised as this Pokémon in back.
+Description = Comes out disguised as the Pokémon in the party's last spot.
 Flags = Immutable
 #-------------------------------
 [IMPOSTER]
 Name = Imposter
-Description = It transforms itself into this Pokémon it is facing.
+Description = It transforms itself into the Pokémon it is facing.
 Flags = Immutable
 #-------------------------------
 [INNARDSOUT]
 Name = Innards Out
-Description = Damages an attacker that lands the finishing hit.
+Description = When this Pokémon is knocked out by an attack, the attacker takes damage equal to this Pokémon's previous HP.
 #-------------------------------
 [INNERFOCUS]
 Name = Inner Focus
@@ -252,10 +244,6 @@ Flags = FlinchImmunity
 [INTIMIDATE]
 Name = Intimidate
 Description = Upon entry, lowers the foe's Attack stat by two steps.
-#-------------------------------
-[INTREPIDSWORD]
-Name = Intrepid Sword
-Description = Raises Attack upon entry.
 #-------------------------------
 [IRONBARBS]
 Name = Iron Barbs
@@ -322,11 +310,7 @@ Description = All non-volatile status conditions heal when switched out.
 [NEUROFORCE]
 Name = Neuroforce
 Description = Powers up super-effective moves by 30%.
-#-------------------------------
-[NEUTRALIZINGGAS]
-Name = Neutralizing Gas
-Description = Abilities will be nullified or will not be triggered.
-Flags = Immutable
+Flags = ForceSignature
 #-------------------------------
 [NOGUARD]
 Name = No Guard
@@ -469,6 +453,7 @@ Description = Stat changes in this Pokémon are doubled.
 [SKILLLINK]
 Name = Skill Link
 Description = Maximizes the frequency of "two to five" multi-hit moves.
+Flags = MaxRandomHits
 #-------------------------------
 [SLOWSTART]
 Name = Slow Start
@@ -622,6 +607,7 @@ Description = Physical attacks against this Pokémon raise its Speed by two step
 [WIMPOUT]
 Name = Wimp Out
 Description = Cowardly switches out if its HP is lowered below half.
+Flags = ForceSignature
 #-------------------------------
 [WONDERGUARD]
 Name = Wonder Guard

@@ -92,14 +92,16 @@ class Window_TextEntry_Keyboard_Terminal < Window_TextEntry
         # Moving cursor
         if Input.triggerex?(:LEFT) || Input.repeatex?(:LEFT)
             if @helper.cursor > 0
-                @helper.cursor -= 1
+                @helper.cursor -= Input.timeex?(:LEFT) > 400_000 ? 2 : 1
+                @helper.cursor = 0 if @helper.cursor < 0
                 @frame = 0
                 refresh
             end
             return
         elsif Input.triggerex?(:RIGHT) || Input.repeatex?(:RIGHT)
             if @helper.cursor < mainText.length
-                @helper.cursor += 1
+                @helper.cursor += Input.timeex?(:RIGHT) > 400_000 ? 2 : 1
+                @helper.cursor = mainText.length if @helper.cursor > mainText.length
                 @frame = 0
                 refresh
             end
@@ -118,6 +120,7 @@ class Window_TextEntry_Keyboard_Terminal < Window_TextEntry
             return
         elsif Input.triggerex?(:BACKSPACE) || Input.repeatex?(:BACKSPACE)
             delete if @helper.cursor > 0
+            delete if @helper.cursor > 0 && Input.timeex?(:BACKSPACE) > 400_000
             return
         elsif Input.triggerex?(:UP) && $InCommandLine
             if $game_temp.debug_commands_history.length > $game_temp.debug_commands_index + 1

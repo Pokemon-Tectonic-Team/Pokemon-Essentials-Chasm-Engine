@@ -28,22 +28,6 @@ class PokeBattle_Move_WaterlogTargetHitsDivers < PokeBattle_WaterlogMove
         baseDmg *= 2 if target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderwater") # Dive
         return baseDmg
     end
-
-    def pbEffectAfterAllHits(user, target)
-        if !target.damageState.unaffected && !target.damageState.protected && !target.damageState.missed && user.canGulpMissile?
-            user.form = 2
-            user.form = 1 if user.hp > (user.totalhp / 2)
-            @battle.scene.pbChangePokemon(user, user.pokemon)
-        end
-    end
-
-    def getEffectScore(user, _target)
-        score = super
-        if user.canGulpMissile?
-          score += 50
-        end
-        return score
-    end
 end
 
 # Empowered Surf

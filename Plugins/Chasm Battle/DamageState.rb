@@ -11,6 +11,7 @@ class PokeBattle_DamageState
 	attr_accessor :totalHPLostCritical	# Like totalHPLost, but only counts critical hits
 	attr_accessor :displayedDamage 		# The damage to display above the hit battler
 	attr_accessor :totalCalcedDamage  # The total damage calculated over all hits (overkill counted)
+	attr_accessor :finalBaseDamage    # The final BP after modifiers (e.g. Hex), for abilities like Huggable
 	attr_accessor :fainted         		# Whether battler was knocked out by the move
 	attr_accessor :missed          		# Whether the move failed the accuracy check
 	attr_accessor :calcDamage      		# Calculated damage
@@ -48,6 +49,7 @@ class PokeBattle_DamageState
 		@totalHPLost        = 0
 		@totalHPLostCritical = 0
 		@totalCalcedDamage	= 0
+		@finalBaseDamage    = 0
 		@fainted            = false
 		@messagesPerHit			= true
 		@partiallyProtected	= false

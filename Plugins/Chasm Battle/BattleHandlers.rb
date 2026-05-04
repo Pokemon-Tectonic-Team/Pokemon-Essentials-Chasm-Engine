@@ -28,6 +28,7 @@ module BattleHandlers
     # Battler's HP changed
     HPHealItem                          = ItemHandlerHash.new
     AbilityOnHPDroppedBelowHalf         = AbilityHandlerHash.new
+    AbilityOnHPDropped                  = AbilityHandlerHash.new
     # Battler's status problem
     StatusCheckAbilityNonIgnorable      = AbilityHandlerHash.new   # Comatose
     StatusImmunityAbility               = AbilityHandlerHash.new
@@ -51,7 +52,7 @@ module BattleHandlers
     PriorityBracketUseAbility           = AbilityHandlerHash.new   # None!
     PriorityBracketUseItem              = ItemHandlerHash.new
     # Targeting style changes
-    MoveMakeHitAllNearFoesAbility    = AbilityHandlerHash.new
+    MoveMakeHitAllNearFoesAbility       = AbilityHandlerHash.new
     # Move usage failures
     AbilityOnFlinch                     = AbilityHandlerHash.new # Steadfast
     MoveBlockingAbility                 = AbilityHandlerHash.new
@@ -110,7 +111,6 @@ module BattleHandlers
     TargetAbilityKnockedBelowHalf       = AbilityHandlerHash.new
     EndOfMoveItem                       = ItemHandlerHash.new   # Leppa Berry
     EndOfMoveStatRestoreItem            = ItemHandlerHash.new   # White Herb
-    UserAbilityEndOfExhaustingMove      = AbilityHandlerHash.new # Remanent Voltage
     UserAbilityEndOfTrappingMove        = AbilityHandlerHash.new # Denticle Debris
     UserAbilityOnSemiInvulnerable       = AbilityHandlerHash.new
     # Experience and EV gain
@@ -144,6 +144,8 @@ module BattleHandlers
     RunFromBattleItem                   = ItemHandlerHash.new # Smoke Ball
     # Consuming items
     OnBerryConsumedAbility              = AbilityHandlerHash.new
+    OnItemActivatedAbility              = AbilityHandlerHash.new   # Juggling (own item activated)
+    OnAllyItemActivatedAbility          = AbilityHandlerHash.new   # Juggling (ally's item activated)
     # Other triggers
     ItemOnEnemyStatGain                 = ItemHandlerHash.new
     ItemOnStatLoss                      = ItemHandlerHash.new
@@ -165,6 +167,8 @@ module BattleHandlers
     # Moves missing abilities  
     UserAbilityOnMiss                 = AbilityHandlerHash.new
     TargetAbilityOnMiss               = AbilityHandlerHash.new
+    # Switch-in forbiddance abilities
+    ForbidsUserSwitchInAbility          = AbilityHandlerHash.new
 
     #=============================================================================
 
@@ -212,6 +216,10 @@ module BattleHandlers
     def self.triggerAbilityOnHPDroppedBelowHalf(ability, user, battle)
         ret = AbilityOnHPDroppedBelowHalf.trigger(ability, user, battle)
         return !ret.nil? ? ret : false
+    end
+
+    def self.triggerAbilityOnHPDropped(ability, user, battle, old_fraction, new_fraction)
+        AbilityOnHPDropped.trigger(ability, user, battle)
     end
 
     #=============================================================================
@@ -358,8 +366,8 @@ module BattleHandlers
         AccuracyCalcTargetAbility.trigger(ability, mults, user, target, move, type)
     end
 
-    def self.triggerAccuracyCalcUserItem(item, mults, user, target, move, type, aiCheck)
-        AccuracyCalcUserItem.trigger(item, mults, user, target, move, type, aiCheck)
+    def self.triggerAccuracyCalcUserItem(item, mults, user, target, move, type, aiCheck, aiContext = nil)
+        AccuracyCalcUserItem.trigger(item, mults, user, target, move, type, aiCheck, aiContext)
     end
 
     def self.triggerAccuracyCalcTargetItem(item, mults, user, target, move, type)
@@ -376,8 +384,8 @@ module BattleHandlers
         DamageCalcUserAllyAbility.trigger(ability, user, target, move, mults, baseDmg, type, aiCheck)
     end
 
-    def self.triggerDamageCalcUserItem(item, user, target, move, mults, baseDmg, type, aiCheck = false)
-        DamageCalcUserItem.trigger(item, user, target, move, mults, baseDmg, type, aiCheck)
+    def self.triggerDamageCalcUserItem(item, user, target, move, mults, baseDmg, type, aiCheck = false, aiContext = nil)
+        DamageCalcUserItem.trigger(item, user, target, move, mults, baseDmg, type, aiCheck, aiContext)
     end
 
     #=============================================================================
@@ -469,8 +477,8 @@ module BattleHandlers
         return !ret.nil? ? ret : c
     end
 
-    def self.triggerGuaranteedCriticalUserAbility(ability, user, target, battle)
-        ret = GuaranteedCriticalUserAbility.trigger(ability, user, target, battle)
+    def self.triggerGuaranteedCriticalUserAbility(ability, user, target, battle, move)
+        ret = GuaranteedCriticalUserAbility.trigger(ability, user, target, battle, move)
         return !ret.nil? ? ret : false
     end
 
@@ -566,10 +574,6 @@ module BattleHandlers
         return !ret.nil? ? ret : false
     end
 
-    def self.triggerUserAbilityEndOfExhaustingMove(ability, user, targets, move, battle)
-        UserAbilityEndOfExhaustingMove.trigger(ability, user, targets, move, battle)
-    end
-
     def self.triggerUserAbilityEndOfTrappingMove(ability, user, target, move, battle)
         UserAbilityEndOfTrappingMove.trigger(ability, user, target, move, battle)
     end
@@ -636,8 +640,8 @@ module BattleHandlers
         return !ret.nil? ? ret : false
     end
 
-    def self.triggerCertainSwitchingUserItem(item, switcher, battle)
-        ret = CertainSwitchingUserItem.trigger(item, switcher, battle)
+    def self.triggerCertainSwitchingUserItem(item, switcher, battle, trappingProc)
+        ret = CertainSwitchingUserItem.trigger(item, switcher, battle, trappingProc)
         return !ret.nil? ? ret : false
     end
 
@@ -702,6 +706,16 @@ module BattleHandlers
 
     def self.triggerOnBerryConsumedAbility(ability, user, berry, ownitem, battle)
         ret = OnBerryConsumedAbility.trigger(ability, user, berry, ownitem, battle)
+        return !ret.nil? ? ret : false
+    end
+
+    def self.triggerOnItemActivatedAbility(ability, user, item, battle)
+        ret = OnItemActivatedAbility.trigger(ability, user, item, battle)
+        return !ret.nil? ? ret : false
+    end
+
+    def self.triggerOnAllyItemActivatedAbility(ability, user, consumer, item, battle)
+        ret = OnAllyItemActivatedAbility.trigger(ability, user, consumer, item, battle)
         return !ret.nil? ? ret : false
     end
 
@@ -774,12 +788,20 @@ module BattleHandlers
     end
 
     #=============================================================================
-
+    
     def self.triggerUserAbilityOnMiss(ability, user, targets, move, battle)
         UserAbilityOnMiss.trigger(ability, user, targets, move, battle)
     end
-
+    
     def self.triggerTargetAbilityOnMiss(ability, user, target, move, battle)
         TargetAbilityOnMiss.trigger(ability, user, target, move, battle)
     end
+    
+    #=============================================================================
+
+    def self.triggerForbidsUserSwitchInAbility(ability, battle, partyMember, side, idxTrainer, idxParty, show_messages)
+        ret = ForbidsUserSwitchInAbility.trigger(ability, battle, partyMember, side, idxTrainer, idxParty, show_messages)
+        return !ret.nil? ? ret : false
+    end
+
 end

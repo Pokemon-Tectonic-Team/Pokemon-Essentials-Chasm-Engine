@@ -23,10 +23,27 @@ def getRandomWarpPointOnMap(mapid, avoidEdges = false)
     x = 0
     y = 0
 
-    lowestX = avoidEdges ? 8 : 0
-    lowestY = avoidEdges ? 8 : 0
-    highestX = avoidEdges ? (map.width-8) : map.width
-    highestY = avoidEdges ? (map.height-8) : map.height
+    if avoidEdges
+        lowestX = 0
+        lowestY = 0
+        highestX = map.width
+        highestY = map.height
+    else
+        lowestX = 8
+        lowestY = 8
+        highestX = map.width - 8
+        highestY = map.height - 8
+
+        # Avoid issues from maps being too small
+        while highestX < lowestX
+            highestX += 1
+            lowestX -= 1
+        end
+        while highestY < lowestY
+            highestY += 1
+            lowestY -= 1
+        end
+    end
 
     100.times do
         x = rand(lowestX..highestX)

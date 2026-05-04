@@ -217,18 +217,15 @@ class PokeBattle_Move_SetTargetTypesToBug < PokeBattle_Move
             @battle.pbDisplay(_INTL("But it failed, since the Bug-type doesn't exist!")) if show_message
             return true
         end
-        unless target.canChangeType?
-            @battle.pbDisplay(_INTL("But it failed, since {1} can't change their type!", target.pbThis(true))) if show_message
-            return true
-        end
-        unless target.pbHasOtherType?(:BUG)
-            @battle.pbDisplay(_INTL("But it failed, since {1} is already only Bug-type!", target.pbThis(true))) if show_message
-            return true
-        end
         return false
     end
 
     def pbEffectAgainstTarget(_user, target)
+        unless target.canChangeType?
+            @battle.pbDisplay(_INTL("But {1} couldn't change its type!", target.pbThis))
+            return
+        end
+        return if !target.pbHasOtherType?(:BUG)
         target.pbChangeTypes(:BUG)
         typeName = GameData::Type.get(:BUG).name
         @battle.pbDisplay(_INTL("{1} transformed into the {2} type!", target.pbThis, typeName))
@@ -427,12 +424,12 @@ class PokeBattle_Move_TypeAndEffectDependsOnUserRotomForm < PokeBattle_Move
 
     def getDetailsForMoveDex(detailsList = [])
         detailsList << _INTL("Form effects:")
-        detailsList << _INTL("<u>No Machine</u>: Numb")
-        detailsList << _INTL("<u>Heat</u>: Burn")
-        detailsList << _INTL("<u>Wash</u>: Waterlog")
-        detailsList << _INTL("<u>Frost</u>: Frostbite")
-        detailsList << _INTL("<u>Fan</u>: Dizzy")
-        detailsList << _INTL("<u>Mow</u>: Leech")
+        detailsList << _INTL("<u>No Machine</u>: Electric-type, Numb")
+        detailsList << _INTL("<u>Heat</u>: Fire-type, Burn")
+        detailsList << _INTL("<u>Wash</u>: Water-type, Waterlog")
+        detailsList << _INTL("<u>Frost</u>: Ice-type, Frostbite")
+        detailsList << _INTL("<u>Fan</u>: Flying-type, Dizzy")
+        detailsList << _INTL("<u>Mow</u>: Grass-type, Leech")
     end
 end
 

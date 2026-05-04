@@ -60,10 +60,48 @@ BattleHandlers::DamageCalcUserAbility.add(:MEGALAUNCHER,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.copy(:MEGALAUNCHER, :PRIMEVALMEGALAUNCHER, :MANIFESTATION)
+
 BattleHandlers::DamageCalcUserAbility.add(:EMANATION,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.pulseMove?
       mults[:base_damage_multiplier] *= 1.3
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:LETEMHAVEIT,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if move.pulseMove?
+      mults[:attack_multiplier] *= 1.25
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:FICKLEUNION,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if move.pulseMove?
+      mults[:base_damage_multiplier] *= 0.3
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:ULTRABUSTER,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if move.pulseMove? || move.punchingMove?
+      mults[:base_damage_multiplier] *= 1.5
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:FADINGFURY,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if move.lightMove? || move.kickingMove?
+      mults[:base_damage_multiplier] *= 1.5
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -208,6 +246,8 @@ BattleHandlers::DamageCalcUserAbility.add(:LOUD,
 
 BattleHandlers::DamageCalcUserAbility.copy(:LOUD, :TUNEDOUT)
 
+BattleHandlers::DamageCalcUserAbility.copy(:LOUD, :LEADSINGER)
+
 BattleHandlers::DamageCalcUserAbility.add(:EARSPLITTING,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.soundMove?
@@ -219,7 +259,7 @@ BattleHandlers::DamageCalcUserAbility.add(:EARSPLITTING,
 
 BattleHandlers::DamageCalcUserAbility.add(:SWORDPLAY,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if move.bladeMove?
+    if move.sliceMove?
       mults[:base_damage_multiplier] *= 1.3
       user.aiLearnsAbility(ability) unless aiCheck
     end
@@ -230,7 +270,7 @@ BattleHandlers::DamageCalcUserAbility.copy(:SWORDPLAY, :RAZORSEDGE, :BLADEBRAINE
 
 BattleHandlers::DamageCalcUserAbility.add(:SHARPNESS,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if move.bladeMove?
+    if move.sliceMove?
       mults[:base_damage_multiplier] *= 1.5
       user.aiLearnsAbility(ability) unless aiCheck
     end
@@ -395,15 +435,6 @@ BattleHandlers::DamageCalcUserAbility.add(:STEELWORKER,
 )
 
 BattleHandlers::DamageCalcUserAbility.copy(:STEELWORKER, :STEELYSHELL, :PULVERIZE)
-
-BattleHandlers::DamageCalcUserAbility.add(:STRATAGEM,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if type == :ROCK
-      mults[:base_damage_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
 
 BattleHandlers::DamageCalcUserAbility.add(:SURFSUP,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
@@ -973,14 +1004,30 @@ BattleHandlers::DamageCalcUserAbility.add(:SLUMBERFORCE,
 
 BattleHandlers::DamageCalcUserAbility.add(:BREAKTHROUGH,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    mults[:attack_multiplier] *= 1.2
+    mults[:base_damage_multiplier] *= 1.2
     user.aiLearnsAbility(ability) unless aiCheck
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.copy(:BREAKTHROUGH, :PRIMEVALBREAKTHROUGH)
+
 BattleHandlers::DamageCalcUserAbility.add(:JUGGERNAUT,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    mults[:attack_multiplier] *= 1.2
+    mults[:base_damage_multiplier] *= 1.2
+    user.aiLearnsAbility(ability) unless aiCheck
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:STRAIGHTAHEAD,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    mults[:base_damage_multiplier] *= 1.2
+    user.aiLearnsAbility(ability) unless aiCheck
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:INSCRUTABLEORDERS,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    mults[:base_damage_multiplier] *= 1.3
     user.aiLearnsAbility(ability) unless aiCheck
   }
 )
@@ -991,5 +1038,12 @@ BattleHandlers::DamageCalcUserAbility.add(:HAPHAZARD,
       mults[:base_damage_multiplier] *= 1.3
       user.aiLearnsAbility(ability) unless aiCheck
     end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:FUELHUNGRY,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    mults[:base_damage_multiplier] *= 1.5
+    user.aiLearnsAbility(ability) unless aiCheck
   }
 )

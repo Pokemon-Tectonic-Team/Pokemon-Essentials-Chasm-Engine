@@ -16,6 +16,14 @@ Price = 5000
 FieldUse = Direct
 Description = Rare contraband. Any average solo trainer will flee from the stench of its explosion.
 #-------------------------------
+[STEALTHSPRAY]
+Name = Stealth Spray
+NamePlural = Stealth Spray
+Pocket = 1
+Price = 5000
+FieldUse = Direct
+Description = Rare contraband. Use it to become invisible to average solo trainers for 15 steps.
+#-------------------------------
 [FIRESTONE]
 Name = Fire Stone
 NamePlural = Fire Stones
@@ -283,6 +291,14 @@ Price = 5000
 Flags = Fossil
 Description = A fossil from a strange Pokémon that once lived on the land. It resembles Makyan Omanyte.
 #-------------------------------
+[ALIENFOSSIL]
+Name = Alien Fossil
+NamePlural = Alien Fossils
+Pocket = 16
+Price = 5000
+Flags = Fossil
+Description = A fossil from a strange Pokémon that once lived on the land. It resembles Makyan Kabuto.
+#-------------------------------
 [HONEY]
 Name = Honey
 NamePlural = Honey
@@ -296,7 +312,7 @@ Name = Pretty Feather
 NamePlural = Pretty Feathers
 Pocket = 15
 Price = 3000
-Description = A beautiful feather. It can be sold to shops for $1500.
+Description = A beautiful feather. It can be sold to shops for $1,500.
 #-------------------------------
 [TINYMUSHROOM]
 Name = Tiny Mushroom
@@ -310,98 +326,98 @@ Name = Big Mushroom
 NamePlural = Big Mushrooms
 Pocket = 15
 Price = 5000
-Description = A large and rare mushroom. It can be sold to shops for $2500.
+Description = A large and rare mushroom. It can be sold to shops for $2,500.
 #-------------------------------
 [BALMMUSHROOM]
 Name = Balm Mushroom
 NamePlural = Balm Mushrooms
 Pocket = 15
 Price = 15000
-Description = A rare mushroom which gives off a nice fragrance. It can be sold to shops for $7500.
+Description = A rare mushroom which gives off a nice fragrance. It can be sold to shops for $7,500.
 #-------------------------------
 [PEARL]
 Name = Pearl
 NamePlural = Pearls
 Pocket = 15
 Price = 2000
-Description = A somewhat-small pearl that sparkles in a pretty silver color. It can be sold to shops for $1000.
+Description = A somewhat-small pearl that sparkles in a pretty silver color. It can be sold to shops for $1,000.
 #-------------------------------
 [BIGPEARL]
 Name = Big Pearl
 NamePlural = Big Pearls
 Pocket = 15
 Price = 8000
-Description = A quite-large pearl that sparkles in a pretty silver color. It can be sold to shops for $4000.
+Description = A quite-large pearl that sparkles in a pretty silver color. It can be sold to shops for $4,000.
 #-------------------------------
 [PEARLSTRING]
 Name = Pearl String
 NamePlural = Pearl Strings
 Pocket = 15
 Price = 20000
-Description = Very large pearls that sparkle in a pretty silver color. It can be sold to shops for $10000.
+Description = Very large pearls that sparkle in a pretty silver color. It can be sold to shops for $10,000.
 #-------------------------------
 [STARDUST]
 Name = Stardust
 NamePlural = Stardusts
 Pocket = 15
 Price = 3000
-Description = Lovely, red-colored sand with a loose, silky feel. It can be sold to shops for $1500.
+Description = Lovely, red-colored sand with a loose, silky feel. It can be sold to shops for $1,500.
 #-------------------------------
 [STARPIECE]
 Name = Star Piece
 NamePlural = Star Pieces
 Pocket = 15
 Price = 12000
-Description = A shard of a pretty gem that sparkles in a red color. It can be sold to shops for $6000.
+Description = A shard of a pretty gem that sparkles in a red color. It can be sold to shops for $6,000.
 #-------------------------------
 [COMETSHARD]
 Name = Comet Shard
 NamePlural = Comet Shards
 Pocket = 15
 Price = 25000
-Description = A shard which fell to the ground when a comet approached. It can be sold to shops for $12500.
+Description = A shard which fell to the ground when a comet approached. It can be sold to shops for $12,500.
 #-------------------------------
 [NUGGET]
 Name = Gold Nugget
 NamePlural = Gold Nuggets
 Pocket = 15
 Price = 10000
-Description = A nugget of pure gold that gives off a lustrous gleam. It can be sold to shops for $5000.
+Description = A nugget of pure gold that gives off a lustrous gleam. It can be sold to shops for $5,000.
 #-------------------------------
 [BIGNUGGET]
 Name = Big Nugget
 NamePlural = Big Nuggets
 Pocket = 15
 Price = 40000
-Description = A big nugget of pure gold that gives off a lustrous gleam. It can be sold to shops for $20000.
+Description = A big nugget of pure gold that gives off a lustrous gleam. It can be sold to shops for $20,000.
 #-------------------------------
 [SLOWPOKETAIL]
 Name = Slowpoke Tail
 NamePlural = Slowpoke Tails
 Pocket = 15
 Price = 8000
-Description = A very tasty tail of something. It can be sold to shops for $4000.
+Description = A very tasty tail of something. It can be sold to shops for $4,000.
 #-------------------------------
 [RAREBONE]
 Name = Rare Bone
 NamePlural = Rare Bones
 Pocket = 15
 Price = 5000
-Description = A bone that is extremely valuable for Pokémon archaeology. It can be sold to shops for $2500.
+Description = A bone that is extremely valuable for Pokémon archaeology. It can be sold to shops for $2,500.
 #-------------------------------
 [RELICCOPPER]
 Name = Relic Copper
 NamePlural = Relic Coppers
 Pocket = 15
 Price = 2000
-Description = A copper coin used in a civilization about 3,000 years ago. It can be sold to shops for $1000.
+Description = A copper coin used in a civilization about 3,000 years ago. It can be sold to shops for $1,000.
 #-------------------------------
 [RELICSILVER]
 Name = Relic Silver
 NamePlural = Relic Silvers
 Pocket = 15
 Price = 10000
-Description = A silver coin used in a civilization about 3,000 years ago. It can be sold to shops for $5000.
+Description = A silver coin used in a civilization about 3,000 years ago. It can be sold to shops for $5,000.
 #-------------------------------
 [RELICGOLD]
 Name = Relic Gold
@@ -541,13 +557,6 @@ Pocket = 13
 Price = 4000
 Description = An item to be held by a Pokémon. This discarded carapace lets the holder switch out of battle without fail.
 #-------------------------------
-[SMOKEBALL]
-Name = Smoke Ball
-NamePlural = Smoke Balls
-Pocket = 13
-Price = 4000
-Description = An item to be held by a Pokémon. It enables the holder to flee from any wild Pokémon without fail.
-#-------------------------------
 [LUCKYEGG]
 Name = Lucky Egg
 NamePlural = Lucky Eggs
@@ -574,7 +583,7 @@ Name = Cleanse Tag
 NamePlural = Cleanse Tags
 Pocket = 13
 Price = 5000
-Description = An item to be held by a Pokémon. It prevents wild Pokémon encounters if the holder is the first one in the party.
+Description = A held item. It prevents wild Pokémon encounters if the holder is the first one in the party.
 #-------------------------------
 [CHOICEBAND]
 Name = Choice Band
@@ -689,6 +698,13 @@ Pocket = 13
 Price = 12000
 Description = An item to be held by a Pokémon. The user gets both of its legal abilities, but its stats are cut by 10%.
 #-------------------------------
+[TECHNIQUEBOOSTER]
+Name = Technique Booster
+NamePlural = Technique Boosters
+Pocket = 13
+Price = 12000
+Description = An item to be held by a Pokémon. Signature attacks made by the holder are boosted by 40%.
+#-------------------------------
 [BIGROOT]
 Name = Big Root
 NamePlural = Big Roots
@@ -723,7 +739,7 @@ Name = Water Balloon
 NamePlural = Water Balloons
 Pocket = 13
 Price = 8000
-Description = A held item. At half health, the holder breaks the balloon and gains an Aqua Ring.
+Description = A held item. At half health, the holder breaks the balloon and gains an Aqua Ring, healing 10% HP per turn.
 #-------------------------------
 [MENTALHERB]
 Name = Mental Herb
@@ -779,7 +795,7 @@ NamePlural = Power Herbs
 Pocket = 11
 Price = 4000
 Flags = Herb
-Description = A single-use item to be held by a Pokémon. It allows the immediate use of a move that charges up first.
+Description = An item to be held by a Pokémon. It allows the immediate use of a move that charges up first.
 #-------------------------------
 [ENERGYHERB]
 Name = Energy Herb
@@ -787,7 +803,7 @@ NamePlural = Energy Herbs
 Pocket = 11
 Price = 4000
 Flags = Herb
-Description = A single-use item to be held by a Pokémon. It allows user to skip the recharging turn of an exhausting move.
+Description = An item to be held by a Pokémon. It allows user to skip the recharging turn of an exhausting move.
 #-------------------------------
 [MIRRORHERB]
 Name = Mirror Herb
@@ -958,7 +974,7 @@ Name = Whetstone
 NamePlural = Whetstones
 Pocket = 13
 Price = 4000
-Description = Raises Attack by two steps when the Pokémon uses a blade move the first time each battle.
+Description = Raises Attack by two steps when the Pokémon uses a slice move the first time each battle.
 #-------------------------------
 [PINWHEEL]
 Name = Pinwheel
@@ -1586,60 +1602,6 @@ Price = 800
 FieldUse = OnPokemon
 Description = Fried dough dipped in vanilla syrup. Heals a single Pokémon by 100 HP, and grants it 4000 Experience points.
 #-------------------------------
-[MASTERBALL]
-Name = Master Ball
-NamePlural = Master Balls
-Pocket = 14
-Price = 0
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,NoBallSwap
-Description = The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.
-#-------------------------------
-[RADIANTBALL]
-Name = Radiant Ball
-NamePlural = Radiant Balls
-Pocket = 14
-Price = 0
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,NoBallSwap
-Description = A ball with a mythical quality. It will catch any wild Pokémon without fail, and turn that Pokémon shiny.
-#-------------------------------
-[ARCBALL]
-Name = Arc Ball
-NamePlural = Arc Balls
-Pocket = 14
-Price = 0
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,NoBallSwap
-Description = The Poke ball that contains Arceus. Unable to be replicated by humans, so how did you see this description.
-#-------------------------------
-[ULTRABALL]
-Name = Ultra Ball
-NamePlural = Ultra Balls
-Pocket = 14
-Price = 800
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = An ultra-performance Ball with 2x the strength of a regular ball.
-#-------------------------------
-[GREATBALL]
-Name = Great Ball
-NamePlural = Great Balls
-Pocket = 14
-Price = 400
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A good, high-performance Ball with 1.5x strength compared to a regular ball.
-#-------------------------------
-[POKEBALL]
-Name = Poké Ball
-NamePlural = Poké Balls
-Pocket = 14
-Price = 200
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A device for catching wild Pokémon. It is thrown like a ball at the target. It is designed as a capsule system.
-#-------------------------------
 [SAFARIBALL]
 Name = Safari Ball
 NamePlural = Safari Balls
@@ -1658,6 +1620,123 @@ BattleUse = OnFoe
 Flags = PokeBall,SnagBall,SkipPocketMessage
 Description = A special Poké Ball for the Bug-Catching Contest.
 #-------------------------------
+[BALLLAUNCHER]
+Name = Ball Launcher
+NamePlural = Ball Launchers
+Pocket = 14
+Price = 0
+BattleUse = OnFoe
+Flags = KeyItem,PokeBall,SnagBall
+Description = A device which creates then launches regular Poké Balls, never running out.
+#-------------------------------
+[POKEBALL]
+Name = Poké Ball
+NamePlural = Poké Balls
+Pocket = 14
+Price = 200
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A device for catching wild Pokémon. It is thrown like a ball at the target. It is designed as a capsule system.
+#-------------------------------
+[GREATBALL]
+Name = Great Ball
+NamePlural = Great Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A good, high-performance Ball with 1.5x strength compared to a regular ball.
+#-------------------------------
+[ULTRABALL]
+Name = Ultra Ball
+NamePlural = Ultra Balls
+Pocket = 14
+Price = 800
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = An ultra-performance Ball with 2x the strength of a regular ball.
+#-------------------------------
+[SLICEBALL]
+Name = Slice Ball
+NamePlural = Slice Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A sharp Poké Ball that damages the Pokémon for 1/4th of its HP if it fails to catch it.
+#-------------------------------
+[POTIONBALL]
+Name = Potion Ball
+NamePlural = Potion Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A medicinal Poké Ball that heals the Pokémon for 1/4th of its HP if it fails to catch it.
+#-------------------------------
+[LEECHBALL]
+Name = Leech Ball
+NamePlural = Leech Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A parasitic Poké Ball that leeches the Pokémon if it fails to catch it.
+#-------------------------------
+[DISABLEBALL]
+Name = Disable Ball
+NamePlural = Disable Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A disorienting Poké Ball that disables the Pokémon's last used move for 10 turns if it fails to catch it.
+#-------------------------------
+[HEALBALL]
+Name = Heal Ball
+NamePlural = Heal Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A remedial Poké Ball that restores the caught Pokémon's HP and eliminates any status problem.
+#-------------------------------
+[FRIENDBALL]
+Name = Friend Ball
+NamePlural = Friend Balls
+Pocket = 14
+Price = 300
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A Poké Ball that makes caught Pokémon more friendly.
+#-------------------------------
+[LUXURYBALL]
+Name = Luxury Ball
+NamePlural = Luxury Balls
+Pocket = 14
+Price = 800
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A comfortable Poké Ball that makes a caught wild Pokémon gain happiness twice as quickly.
+#-------------------------------
+[TIMERBALL]
+Name = Timer Ball
+NamePlural = Timer Balls
+Pocket = 14
+Price = 400
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A somewhat different Ball that becomes up to 4x better the more turns there are in a battle.
+#-------------------------------
+[QUICKBALL]
+Name = Quick Ball
+NamePlural = Quick Balls
+Pocket = 14
+Price = 800
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,SkipPocketMessage
+Description = A somewhat different Poké Ball which has 3x strength on the first turn of a wild encounter.
+#-------------------------------
 [NESTBALL]
 Name = Nest Ball
 NamePlural = Nest Balls
@@ -1675,69 +1754,6 @@ Price = 400
 BattleUse = OnFoe
 Flags = PokeBall,SnagBall,SkipPocketMessage
 Description = A somewhat different Poké Ball that works at 3.5x strength on Pokémon species that were previously caught.
-#-------------------------------
-[TIMERBALL]
-Name = Timer Ball
-NamePlural = Timer Balls
-Pocket = 14
-Price = 400
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A somewhat different Ball that becomes up to 4x better the more turns there are in a battle.
-#-------------------------------
-[LUXURYBALL]
-Name = Luxury Ball
-NamePlural = Luxury Balls
-Pocket = 14
-Price = 800
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A comfortable Poké Ball that makes a caught wild Pokémon gain happiness twice as quickly.
-#-------------------------------
-[PREMIERBALL]
-Name = Premier Ball
-NamePlural = Premier Balls
-Pocket = 14
-Price = 20
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A somewhat rare Poké Ball that has been specially made to commemorate an event of some sort.
-#-------------------------------
-[HEALBALL]
-Name = Heal Ball
-NamePlural = Heal Balls
-Pocket = 14
-Price = 300
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A remedial Poké Ball that restores the caught Pokémon's HP and eliminates any status problem.
-#-------------------------------
-[QUICKBALL]
-Name = Quick Ball
-NamePlural = Quick Balls
-Pocket = 14
-Price = 800
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A somewhat different Poké Ball which has 3x strength on the first turn of a wild encounter.
-#-------------------------------
-[CHERISHBALL]
-Name = Cherish Ball
-NamePlural = Cherish Balls
-Pocket = 14
-Price = 800
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage,NoBallSwap
-Description = A quite rare Poké Ball that has been specially crafted to commemorate an occasion of some sort.
-#-------------------------------
-[FRIENDBALL]
-Name = Friend Ball
-NamePlural = Friend Balls
-Pocket = 14
-Price = 300
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A Poké Ball that makes caught Pokémon more friendly.
 #-------------------------------
 [HEAVYBALL]
 Name = Heavy Ball
@@ -1775,41 +1791,23 @@ BattleUse = OnFoe
 Flags = PokeBall,SnagBall,SkipPocketMessage,NoBallSwap
 Description = A special Poké Ball with 5x strength against Ultra Beasts.
 #-------------------------------
-[SLICEBALL]
-Name = Slice Ball
-NamePlural = Slice Balls
+[PREMIERBALL]
+Name = Premier Ball
+NamePlural = Premier Balls
 Pocket = 14
-Price = 400
+Price = 20
 BattleUse = OnFoe
 Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A sharp Poké Ball that damages the Pokémon for 1/4th of its HP if it fails to catch it.
+Description = A somewhat rare Poké Ball that has been specially made to commemorate an event of some sort.
 #-------------------------------
-[LEECHBALL]
-Name = Leech Ball
-NamePlural = Leech Balls
+[CHERISHBALL]
+Name = Cherish Ball
+NamePlural = Cherish Balls
 Pocket = 14
-Price = 400
+Price = 800
 BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A parasitic Poké Ball that leeches the Pokémon if it fails to catch it.
-#-------------------------------
-[POTIONBALL]
-Name = Potion Ball
-NamePlural = Potion Balls
-Pocket = 14
-Price = 300
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A medicinal Poké Ball that heals the Pokémon for 1/4th of its HP if it fails to catch it.
-#-------------------------------
-[DISABLEBALL]
-Name = Disable Ball
-NamePlural = Disable Balls
-Pocket = 14
-Price = 300
-BattleUse = OnFoe
-Flags = PokeBall,SnagBall,SkipPocketMessage
-Description = A mentally disrupting Poké Ball that disables the Pokémon's last used move for 10 turns if it fails to catch it.
+Flags = PokeBall,SnagBall,SkipPocketMessage,NoBallSwap
+Description = A quite rare Poké Ball that has been specially crafted to commemorate an occasion of some sort.
 #-------------------------------
 [ROYALBALL]
 Name = Royal Ball
@@ -1819,6 +1817,33 @@ Price = 1000
 BattleUse = OnFoe
 Flags = PokeBall,SnagBall,SkipPocketMessage,NoBallSwap
 Description = A ball whose striking appearance makes it popular despite its poor performance.
+#-------------------------------
+[MASTERBALL]
+Name = Master Ball
+NamePlural = Master Balls
+Pocket = 14
+Price = 0
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,NoBallSwap
+Description = The best Ball with the ultimate level of performance. It will catch any wild Pokémon without fail.
+#-------------------------------
+[RADIANTBALL]
+Name = Radiant Ball
+NamePlural = Radiant Balls
+Pocket = 14
+Price = 0
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,NoBallSwap
+Description = A ball with a mythical quality. It will catch any wild Pokémon without fail, and turn that Pokémon shiny.
+#-------------------------------
+[ARCBALL]
+Name = Arc Ball
+NamePlural = Arc Balls
+Pocket = 14
+Price = 0
+BattleUse = OnFoe
+Flags = PokeBall,SnagBall,NoBallSwap
+Description = The Poke ball that contains Arceus. Unable to be replicated by humans, so how did you see this description.
 #-------------------------------
 [CHERIBERRY]
 Name = Cheri Berry
@@ -2162,7 +2187,7 @@ NamePlural = Kee Berries
 Pocket = 9
 Price = 20
 Flags = Berry
-Description = If held by a Pokémon, this Berry will increase the holder's Defense by four steps if it's hit with a physical move.
+Description = If held by a Pokémon and a physical attack hits it, raises the holder's Defense by four steps.
 #-------------------------------
 [MARANGABERRY]
 Name = Maranga Berry
@@ -2170,7 +2195,7 @@ NamePlural = Maranga Berries
 Pocket = 9
 Price = 20
 Flags = Berry
-Description = If held by a Pokémon, this Berry will increase the holder's Sp. Def by four steps if it's hit with a special move.
+Description = If held by a Pokémon and a special attack hits it, raises the holder's Sp. Def by four steps.
 #-------------------------------
 [BICYCLE]
 Name = Bicycle
@@ -2257,6 +2282,20 @@ Pocket = 13
 Price = 0
 Description = A shiny blue orb that is said to have a legend tied to it. It's known to be connected with the Hoenn region.
 #-------------------------------
+[LIGHTSTONE]
+Name = Light Stone
+NamePlural = Light Stones
+Pocket = 6
+Price = 0
+Description = Reshiram's body was destroyed and changed into this stone. It is said to be waiting for a hero.
+#-------------------------------
+[DARKSTONE]
+Name = Dark Stone
+NamePlural = Dark Stones
+Pocket = 6
+Price = 0
+Description = Zekrom's body was destroyed and changed into this stone. It is said to be waiting for a hero.
+#-------------------------------
 [LUMIOSEGALETTE]
 Name = Lumiose Galette
 NamePlural = Lumiose Galettes
@@ -2331,7 +2370,7 @@ Pocket = 8
 Price = 0
 FieldUse = OnPokemon
 Flags = KeyItem
-Description = An item holding Zygarde's Cores and Cells. You can use it to change Zygarde's ability.
+Description = An item holding Zygarde's Cores and Cells. You can use it to change Zygarde's forme.
 #-------------------------------
 [EXPCANDYXS]
 Name = Exp. Candy XS
@@ -2415,14 +2454,14 @@ Name = Rusted Shield
 NamePlural = Rusted Shields
 Pocket = 13
 Price = 0
-Description = Used by a hero to halt a terrible disaster. If given to Zamazenta, turns it into its Crowned form.
+Description = Used by a hero to halt a terrible disaster. The wielder takes 10% less move damage.
 #-------------------------------
 [RUSTEDSWORD]
 Name = Rusted Sword
 NamePlural = Rusted Swords
 Pocket = 13
 Price = 0
-Description = Used by a hero to halt a terrible disaster. If given to Zacian, turns it into its Crowned form.
+Description = Used by a hero to halt a terrible disaster. The wielder deals 10% more move damage.
 #-------------------------------
 [REINSOFUNITY]
 Name = Reins of Unity
@@ -2431,7 +2470,7 @@ Pocket = 8
 Price = 0
 FieldUse = OnPokemon
 Flags = KeyItem
-Description = Reins that people presented to the king. They enable Calyrex to connect and communicate with its beloved steed.
+Description = Reins that people presented to the king. They enable Calyrex to connect with its beloved steed.
 #-------------------------------
 [EXPCHARM]
 Name = EXP Charm
@@ -2439,7 +2478,7 @@ NamePlural = EXP Charms
 Pocket = 7
 Price = 0
 Flags = KeyItem,SkipPocketMessage
-Description = A charm that increases the Exp. Points that Pokémon can get by 10%. A machine-like object is inside the charm.
+Description = A charm that increases the EXP. Pokémon earn by 10%. A machine-like object is inside the charm.
 #-------------------------------
 [CATCHINGCHARM]
 Name = Catching Charm
@@ -2682,6 +2721,15 @@ FieldUse = Direct
 Flags = KeyItem
 Description = A small, versatile machine that can be used to repel wild Pokémon, or draw them near.
 #-------------------------------
+[POKEMONLURE]
+Name = Pokémon Lure
+NamePlural = Pokémon Lures
+Pocket = 7
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A fragrance that increases the chance of wild double battles, and attracts uncaught Pokémon.
+#-------------------------------
 [POKEXRAY]
 Name = Poké X-Ray
 NamePlural = Poké X-Rays
@@ -2743,15 +2791,6 @@ FieldUse = OnPokemon
 Flags = KeyItem
 Description = Infinitely mutating alien DNA. It allows a Pokémon with two abilities to switch abilities when used.
 #-------------------------------
-[BALLLAUNCHER]
-Name = Ball Launcher
-NamePlural = Ball Launchers
-Pocket = 14
-Price = 0
-BattleUse = OnFoe
-Flags = KeyItem,PokeBall,SnagBall
-Description = A device which creates then launches regular Poké Balls, never running out.
-#-------------------------------
 [PERFORMANCEANALYZER]
 Name = Performance Analyzer
 NamePlural = Performance Analyzers
@@ -2795,3 +2834,38 @@ Price = 50000
 FieldUse = OnPokemon
 Flags = EvolutionItem
 Description = A vial of shimmering ocean water. It makes a certain Pokémon evolve.
+#-------------------------------
+[VIPCARD]
+Name = VIP Card
+NamePlural = VIP Cards
+Pocket = 6
+Price = 0
+Flags = KeyItem,SkipPocketMessage
+Description = A glamorous steel card. While holding it, all vendors cost 10% less and Pokécenter Marts have extra items.
+#-------------------------------
+[OMINOUSEGG]
+Name = Ominous Egg
+NamePlural = Ominous Eggs
+Pocket = 7
+Price = 0
+FieldUse = Direct
+Flags = KeyItem,SkipPocketMessage
+Description = A vessel for negative emotions. To earn its rewards, perfect trainers and make them flee from you.
+#-------------------------------
+[SMARTPHONE]
+Name = Smart Phone
+NamePlural = Smart Phones
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A smart phone. Use it to take selfies.
+#-------------------------------
+[VSRECORDER]
+Name = VS Recorder
+NamePlural = VS Recorders
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A hi-tech battle recording device. Use it to manage and replay past battles.

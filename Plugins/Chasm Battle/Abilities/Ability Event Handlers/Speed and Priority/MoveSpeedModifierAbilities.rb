@@ -86,9 +86,9 @@ BattleHandlers::MoveSpeedModifierAbility.add(:GOSSAMERGALE,
     }
 )
 
-BattleHandlers::MoveSpeedModifierAbility.add(:LEAPFROMBELOW,
+BattleHandlers::MoveSpeedModifierAbility.add(:LOOSECANNON,
     proc { |ability, battler, move, battle, mult, aiCheck|
-        next unless (aiCheck && move.nil?) || move.chargingTurnMove?
+        next unless (aiCheck && move.nil?) || move.pulseMove?
         if aiCheck
             next mult * 2.0
         else

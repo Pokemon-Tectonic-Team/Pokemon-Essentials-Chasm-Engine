@@ -261,19 +261,33 @@ def setWaypointSummonable(waypointEventID)
 end
 
 def totemAuraSummon(species)
-	unless pbHasItem?(LEGEND_SUMMONING_KEY_ITEM)
+	unless pbHasItem?(LEGEND_SUMMONING_KEY_ITEM) || pbHasItem?(LEGEND_SUMMONING_CONSUMABLE_ITEM)
 		pbMessage(_INTL("You sense an powerful presence trying to manifest on this spot."))
 		pbMessage(_INTL("However, you seem to lack a way to interact with it."))
 		return
 	end
+
 	speciesName = GameData::Species.get(species).name
 	pbMessage(_INTL("An Avatar Totem is partially manifested on this spot."))
 	pbMessage(_INTL("It pulses with the frequency of {1}.",speciesName))
-	return unless pbConfirmMessage(_INTL("\\i[{1}]Activate the {2} to summon {3}?", LEGEND_SUMMONING_KEY_ITEM, getItemName(LEGEND_SUMMONING_KEY_ITEM), speciesName))
-	if $waypoints_tracker.summonPokemonFromWaypoint(species,get_character(0))
-		pbMessage(_INTL("The summoning spot exhausted its energy."))
-		setMySwitch('A')
-		return true
+	if pbHasItem?(LEGEND_SUMMONING_KEY_ITEM)
+		if pbConfirmMessage(_INTL("\\i[{1}]Activate the {2} to summon {3}?", LEGEND_SUMMONING_KEY_ITEM, getItemName(LEGEND_SUMMONING_KEY_ITEM), speciesName))
+			if $waypoints_tracker.summonPokemonFromWaypoint(species,get_character(0))
+				pbMessage(_INTL("The summoning spot exhausted its energy."))
+				setMySwitch('A')
+				return true
+			end
+			return false
+		end
+	elsif pbHasItem?(LEGEND_SUMMONING_CONSUMABLE_ITEM)
+		if pbConfirmMessage(_INTL("\\i[{1}]Expend the {2} to summon {3}?", LEGEND_SUMMONING_CONSUMABLE_ITEM, getItemName(LEGEND_SUMMONING_CONSUMABLE_ITEM), speciesName))
+			if $waypoints_tracker.summonPokemonFromWaypoint(species,get_character(0))
+				pbMessage(_INTL("The summoning spot exhausted its energy."))
+				setMySwitch('A')
+				return true
+			end
+			return false
+		end
 	end
 end
 

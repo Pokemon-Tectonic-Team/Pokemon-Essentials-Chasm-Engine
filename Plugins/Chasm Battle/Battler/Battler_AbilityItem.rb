@@ -14,6 +14,10 @@ class PokeBattle_Battler
             next unless (!fainted? && GameData::Ability.get(ability).is_immutable_ability?) || abilityActive?
             BattleHandlers.triggerAbilityOnSwitchIn(ability, self, @battle)
         end
+        # Activate Mirror Herb / Paradox Herb for opponents after ALL entry ability
+        # stat gains have accumulated (e.g. Slumbering Drake raising multiple stats).
+        # During moves this is handled by consumeMoveTriggeredItems in pbEffectsAfterMove.
+        consumeMoveTriggeredItems(self)
         # Check for end of primordial weather
         @battle.pbEndPrimordialWeather
         # Items that trigger upon switching in (Air Balloon message)
@@ -29,6 +33,11 @@ class PokeBattle_Battler
                     end 
                 end
             end
+        end
+        if @battle.field.effectActive?(:PokemonEntered)
+            @battle.field.effects[:PokemonEntered].push(@species) unless @battle.field.effects[:PokemonEntered].include?(@species)
+        else
+            @battle.field.applyEffect(:PokemonEntered,[@species])
         end
         # Berry check, status-curing ability check
         pbHeldItemTriggerCheck if switchIn
@@ -103,6 +112,9 @@ class PokeBattle_Battler
     # Used for Emergency Exit/Wimp Out.
     def pbAbilitiesOnDamageTaken(oldHP, newHP = -1)
         newHP = @hp if newHP < 0
+        eachActiveAbility(true) do |ability|
+            BattleHandlers.triggerAbilityOnHPDropped(ability, self, @battle, oldHP.to_f/@totalhp.to_f, newHP.to_f/@totalhp.to_f)
+        end
         return false if oldHP < @totalhp / 2 || newHP >= @totalhp / 2 # Didn't drop below half
         ret = false
         eachActiveAbility(true) do |ability|
@@ -294,6 +306,16 @@ class PokeBattle_Battler
         items.delete_at(itemIndex)
         applyEffect(:ItemLost) if items.length == 0
         refreshDataBox
+
+        if item == :RUSTEDSWORD && !@battle.field.effectActive?(:SlumberingSwordReady) && @battle.anyMonSlumberingSword?
+            @battle.field.applyEffect(:RustedSwordDropped)
+            @battle.field.applyEffect(:SlumberingSwordReady)
+        end
+        
+        if item == :RUSTEDSHIELD && !@battle.field.effectActive?(:SlumberingShieldReady) && @battle.anyMonSlumberingShield?
+            @battle.field.applyEffect(:RustedShieldDropped)
+            @battle.field.applyEffect(:SlumberingShieldReady)
+        end
         
         @battle.updateTribeCounts
     end
@@ -324,6 +346,19 @@ class PokeBattle_Battler
         setBelched if belch && itemData.is_berry?
         setLustered if belch && itemData.is_gem?
         removeItem(item)
+        # Juggling and similar - fire when an item activates (not when destroyed/stolen)
+        if recoverable
+            eachActiveAbility do |ability|
+                BattleHandlers.triggerOnItemActivatedAbility(ability, self, item, @battle)
+            end
+            @battle.jugglingItemTaken = false
+            eachAlly do |ally|
+                next if ally.fainted?
+                ally.eachActiveAbility do |ability|
+                    BattleHandlers.triggerOnAllyItemActivatedAbility(ability, ally, self, item, @battle)
+                end
+            end
+        end
     end
 
     # item_to_use is an item ID or GameData::Item object. ownitem is whether the

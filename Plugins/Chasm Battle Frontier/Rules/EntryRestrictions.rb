@@ -182,7 +182,7 @@ end
   #===============================================================================
   class AblePokemonRestriction
     def isValid?(pkmn)
-      return pkmn && pkmn.able?
+      return pkmn && pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
     end
   end
   

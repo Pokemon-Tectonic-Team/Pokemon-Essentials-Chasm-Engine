@@ -10,6 +10,7 @@ module Game
       $data_common_events = load_data('Data/CommonEvents.rxdata')
       $data_system        = load_data('Data/System.rxdata')
       pbLoadBattleAnimations
+      pbLoadMoveToAnim
       GameData.load_all
       map_file = format('Data/Map%03d.rxdata', $data_system.start_map_id)
       if $data_system.start_map_id == 0 || !pbRgssExists?(map_file)
@@ -62,6 +63,7 @@ module Game
     def self.load(save_data)
       validate save_data => Hash
       SaveData.load_all_values(save_data)
+      $PokemonTemp.reset_session_data # reset transient state in case we're coming from another save
       self.load_map
       pbAutoplayOnSave
       $game_map.update

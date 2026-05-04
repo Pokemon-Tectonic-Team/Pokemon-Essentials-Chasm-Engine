@@ -7,7 +7,10 @@ ItemHandlers::UseOnPokemon.add(:FIGMENT,proc { |item,pkmn,scene|
         pbSceneDefaultDisplay(_INTL("It won't have any effect."),scene)
         next false
     end
-    next moveLearningScreen(pkmn,pkmn.learnable_moves,true)
+    getFigmentMovesProc = proc do |pokemon|
+        pokemon.learnable_moves
+    end
+    next moveLearningScreen(pkmn, getFigmentMovesProc, addFirstMove: true, singleUse: true)
 })
 
 class Pokemon

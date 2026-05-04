@@ -266,7 +266,11 @@ class PokeBattle_Battle
                         pbDisplay(_INTL("The Total Eclipse arrives!"))
                     end
                 end
-                pbCommonAnimation("Eclipse")
+                if primevalVariant
+                    pbCommonAnimation("RingEclipse")
+                else
+                    pbCommonAnimation("Eclipse")
+                end
                 anyAffected = false
                 debuff = primevalVariant ? ALL_STATS_3 : ALL_STATS_2
                 priority.each do |b|
@@ -298,7 +302,11 @@ class PokeBattle_Battle
                         pbDisplay(_INTL("The Full Moon rises!"))
                     end
                 end
-                pbCommonAnimation("Moonglow")
+                if primevalVariant
+                    pbCommonAnimation("BloodMoon")
+                else
+                    pbCommonAnimation("Moonglow")
+                end
                 anyAffected = false
                 priority.each do |b|
                     next if b.fainted?

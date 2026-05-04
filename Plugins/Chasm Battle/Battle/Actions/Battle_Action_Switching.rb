@@ -24,14 +24,18 @@ class PokeBattle_Battle
             end
             return false
         end
-        unless party[idxParty].able?
+        unless party[idxParty].able?(false, getAbleParametersByBattlerIndex(idxParty, idxBattler))
             if partyScene
                 if partyMember.afraid?
                     partyScene.pbDisplay(_INTL("{1} is too afraid to battle!", partyMember.name))
-                elsif partyMember.hasAbility?(:PACIFIST)
-                    pbMessage(_INTL("{1} refuses to join the battle. It's a pacifist!", partyMember.name))
                 else
-                    partyScene.pbDisplay(_INTL("{1} has no energy left to battle!", partyMember.name))
+                    echoln(partyMember.ability.id)
+                    pkmnRefusesToFight = BattleHandlers.triggerForbidsUserSwitchInAbility(
+                        partyMember.ability, self, partyMember, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler), idxParty, true
+                    )
+                    unless pkmnRefusesToFight
+                        partyScene.pbDisplay(_INTL("{1} has no energy left to battle!", partyMember.name))
+                    end
                 end
             end
             return false
@@ -56,6 +60,10 @@ class PokeBattle_Battle
         end
         if @battlers[idxBattler].effectActive?(:RampageLocked)
             partyScene.pbDisplay(_INTL("Rampaging Pokémon can't be switched out!")) if partyScene
+            return false
+        end
+        if @battlers[idxBattler].effectActive?(:BypassExhaustion)
+            partyScene.pbDisplay(_INTL("Exhausted Pokémon can't be switched out!")) if partyScene
             return false
         end
         # Check whether party Pokémon can switch in
@@ -88,7 +96,7 @@ class PokeBattle_Battle
         end
         # Item effects that allow switching no matter what
         battler.eachActiveItem do |item|
-            return false if BattleHandlers.triggerCertainSwitchingUserItem(item, battler, self)
+            return false if BattleHandlers.triggerCertainSwitchingUserItem(item, battler, self, false)
         end
 
         # Other certain trapping effects
@@ -390,6 +398,8 @@ class PokeBattle_Battle
     #=============================================================================
     # Called at the start of battle only.
     def pbOnActiveAll
+        # Primeval Imposter activates first.
+        pbPriorityPrimevalImposter
         # Neutralizing Gas activates before anything.
         pbPriorityNeutralizingGas
         # Weather-inducing abilities, Trace, Imposter, etc.
@@ -401,6 +411,15 @@ class PokeBattle_Battle
         pbCalculatePriority
         # Check forms are correct
         eachBattler { |b| b.pbCheckForm }
+    end
+
+    # Called at the start of battle only; Primeval Imposter activates before Neutralizing Gas.
+    def pbPriorityPrimevalImposter
+        eachBattler do |b|
+            next if !b || b.fainted?
+            next unless b.hasAbility?(:PRIMEVALIMPOSTER)
+            BattleHandlers.triggerAbilityOnSwitchIn(:PRIMEVALIMPOSTER, b, self)
+        end
     end
 
     # Called at the start of battle only; Neutralizing Gas activates before anything.
@@ -432,10 +451,13 @@ class PokeBattle_Battle
         # Record money-doubling effect of Amulet Coin/Luck Incense
         @field.applyEffect(:AmuletCoin) if !battler.opposes? && battler.hasItem?(%i[AMULETCOIN LUCKINCENSE])
 
-        # Record money-doubling effect of Fortune ability
+        # Record money-increasing effect of Hard Worker ability
         @field.applyEffect(:HardWorker) if !battler.opposes? && battler.hasActiveAbility?(:HARDWORKER)
 
-        # Record money-doubling effect of Bliss ability
+        # Record money-increasing effect of Treasure Tracker ability
+        @field.applyEffect(:TreasureTracker) if !battler.opposes? && battler.hasActiveAbility?(:TREASURETRACKER)
+
+        # Record exp-increasing effect of Bliss ability
         @field.applyEffect(:Bliss) if !battler.opposes? && battler.hasActiveAbility?(:BLISS)
 
         # Reset poison ticking up
@@ -466,6 +488,21 @@ class PokeBattle_Battle
         eachOtherSideBattler(battler.index) do |enemy|
             enemy.eachActiveAbility do |ability|
                 BattleHandlers.triggerAbilityOnEnemySwitchIn(ability, battler, enemy, self)
+            end
+        end
+
+        # Announce immunity to passive trapping abilities (e.g. RUNNINGFREE)
+        eachOtherSideBattler(battler.index) do |enemy|
+            enemy.eachActiveAbility do |ability|
+                next unless BattleHandlers.triggerTrappingTargetAbility(ability, battler, enemy, self)
+                hasImmunity = false
+                battler.eachActiveAbility { |sa| hasImmunity = true if BattleHandlers.triggerCertainSwitchingUserAbility(sa, battler, self, false) }
+                battler.eachActiveItem { |si| hasImmunity = true if BattleHandlers.triggerCertainSwitchingUserItem(si, battler, self, false) }
+                next unless hasImmunity
+                pbShowAbilitySplash(enemy, ability)
+                battler.eachActiveAbility { |sa| BattleHandlers.triggerCertainSwitchingUserAbility(sa, battler, self, true) }
+                battler.eachActiveItem { |si| BattleHandlers.triggerCertainSwitchingUserItem(si, battler, self, true) }
+                pbHideAbilitySplash(enemy)
             end
         end
 

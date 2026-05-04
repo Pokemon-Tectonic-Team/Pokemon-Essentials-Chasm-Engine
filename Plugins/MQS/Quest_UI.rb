@@ -307,7 +307,13 @@ class QuestList_Scene
   end
 
   def drawOtherInfo(quest)
+    @sprites["overlay2"].bitmap.clear
     @sprites["overlay3"].bitmap.clear
+    # Quest name
+    questName = $quest_data.getName(quest.id)
+    pbDrawTextPositions(@sprites["overlay2"].bitmap,[
+      ["#{questName}",Graphics.width/2 - 12,-2,2,Color.new(248,248,248),Color.new(0,0,0),true]
+    ])
     # Guest giver
     questGiver = $quest_data.getQuestGiver(quest.id)
     # If 'nil' or missing, set to '???'

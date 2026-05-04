@@ -3,23 +3,22 @@ def primevalTutor()
 		showNoTeamEditingMessage()
 		return
 	end
-
-    while true do
-        pbChoosePokemon(1,3,proc{|p|
-            p.species == :SMEARGLE
-        },false)
-        if $game_variables[1] < 0
-            break
-        else
-            pbPrimevalTutorScreen(pbMapInterpreter.pbGetPokemon(1))
-        end
+    canPrimevalTutorProc = proc do |pkmn|
+        pkmn.species_data.can_learn_sketch?
     end
+    learnPrimevalMoveProc = proc do |pkmn|
+        pbPrimevalTutorScreen(pkmn)
+    end
+    pbChoosePokemonRepeatedly(learnPrimevalMoveProc, canPrimevalTutorProc)
 end
 
 def pbPrimevalTutorScreen(pkmn)
     primevalMoves = getPrimevalMoves(pkmn)
     return false if primevalMoves.empty?
-    return moveLearningScreen(pkmn, primevalMoves, true)
+    getPrimevalMovesProc = proc do |pokemon|
+        getPrimevalMoves(pokemon)
+    end
+    return moveLearningScreen(pkmn, getPrimevalMovesProc, addFirstMove: true)
 end
 
 def getPrimevalMoves(pkmn)

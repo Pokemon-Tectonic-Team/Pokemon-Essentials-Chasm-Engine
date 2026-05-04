@@ -32,7 +32,7 @@ BattleHandlers::TargetItemOnHit.add(:ROWAPBERRY,
 
 BattleHandlers::TargetItemOnHit.add(:ROCKYHELMET,
   proc { |item, user, target, move, battle, aiCheck, aiNumHits|
-      next if battle.foretoldMove
+      next if user.dummy
       next unless move.physicalMove?
       next unless user.takesIndirectDamage?
       next -10 * aiNumHits if aiCheck
@@ -44,7 +44,7 @@ BattleHandlers::TargetItemOnHit.add(:ROCKYHELMET,
 
 BattleHandlers::TargetItemOnHit.add(:HIVISJACKET,
   proc { |item, user, target, move, battle, aiCheck, aiNumHits|
-      next if battle.foretoldMove
+      next if user.dummy
       next if move.physicalMove?
       next unless user.takesIndirectDamage?
       next -10 * aiNumHits if aiCheck
@@ -113,7 +113,7 @@ BattleHandlers::TargetItemOnHit.add(:WEAKNESSPOLICY,
 
 BattleHandlers::TargetItemOnHit.add(:STICKYBARB,
   proc { |item, user, target, move, battle, aiCheck, aiNumHits|
-      next if battle.foretoldMove
+      next if user.dummy
       next unless user.canAddItem?(item)
       next -20 if aiCheck 
       user.giveItem(item)

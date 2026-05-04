@@ -125,3 +125,10 @@ BattleHandlers::DamageCalcTargetItem.add(:COVERTCLOAK,
     target.aiLearnsItem(item) unless aiCheck
   }
 )
+
+BattleHandlers::DamageCalcTargetItem.add(:RUSTEDSHIELD,
+  proc { |item, user, target, _move, mults, _baseDmg, _type, aiCheck|
+    mults[:final_damage_multiplier] *= 0.9
+    target.aiLearnsItem(item) unless aiCheck
+  }
+)

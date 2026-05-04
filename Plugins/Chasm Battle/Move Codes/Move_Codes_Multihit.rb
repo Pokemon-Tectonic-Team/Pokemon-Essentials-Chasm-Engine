@@ -28,6 +28,23 @@ class PokeBattle_Move_HitThreeTimesAlwaysCriticalHit < PokeBattle_Move_AlwaysCri
 end
 
 #===============================================================================
+# Hits 3 times, reduces Defense by 1, and disables itself. (Featherlock Volley)
+#===============================================================================
+class PokeBattle_Move_HitThreeTimesLowerTargetDef1DisablesSelf < PokeBattle_TargetStatDownMove
+    def initialize(battle, move)
+        super
+        @statDown = [:DEFENSE, 1]
+    end
+    
+    def multiHitMove?; return true; end
+    def pbNumHits(_user, _targets, _checkingForAI = false); return 3; end
+    
+    def pbEffectAfterAllHits(user, _target)
+        user.applyEffect(:Disable, 5)
+    end
+end
+
+#===============================================================================
 # Hits three times as Beedrill and five times as Wornet. (Manyneedle)
 #===============================================================================
 class PokeBattle_Move_HitsThreeTimesAsBeedrillFiveTimesAsWornet < PokeBattle_Move
@@ -58,32 +75,40 @@ end
 module RandomHitable
     def multiHitMove?; return true; end
 
-    def pbNumHits(user, _targets, _checkingForAI = false)
-        if user.hasActiveItem?(:LOADEDDICE)
-            hitChances = [4, 5]
-        else
-            hitChances = [2, 2, 3, 3, 4, 5]
-        end
-        if user.hasActiveAbility?(%i[SKILLLINK PERFECTLUCK])
-            numHits = hitChances.last
-        else
-            numHits = hitChances.sample
-        end
-        numHits += 1 if user.hasActiveAbility?(:REPETITION)
-        return numHits
+    def pbNumHits(user, targets, _checkingForAI = false)
+        return getRandomMultihitNumber(user, targets)
     end
 
-    def pbNumHitsAI(user, _targets)
-        if user.hasActiveAbilityAI?(%i[SKILLLINK PERFECTLUCK])
-            score = 5 
-        elsif user.hasActiveItemAI?(:LOADEDDICE)
-            score = 4.5
-        else
-            score = 19.0 / 6.0 # Average
-        end
-        score += 1 if user.hasActiveAbilityAI?(:REPETITION)
-        return score
+    def pbNumHitsAI(user, targets)
+        return getRandomMultihitNumberAI(user, targets)
     end
+end
+
+def getRandomMultihitNumber(user, _targets)
+    if user.hasActiveItem?(:LOADEDDICE)
+        hitChances = [4, 5]
+    else
+        hitChances = [2, 2, 3, 3, 4, 5]
+    end
+    if user.hasActiveAbility?(GameData::Ability.getByFlag("MaxRandomHits"))
+        numHits = hitChances.last
+    else
+        numHits = hitChances.sample
+    end
+    numHits += 1 if user.hasActiveAbility?(:REPETITION)
+    return numHits
+end
+
+def getRandomMultihitNumberAI(user, _targets)
+    if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("MaxRandomHits"))
+        score = 5 
+    elsif user.hasActiveItemAI?(:LOADEDDICE)
+        score = 4.5
+    else
+        score = 19.0 / 6.0 # Average
+    end
+    score += 1 if user.hasActiveAbilityAI?(:REPETITION)
+    return score
 end
 
 class PokeBattle_Move_HitTwoToFiveTimes < PokeBattle_Move
@@ -124,6 +149,23 @@ end
 # Hits 2-5 times, then repeats. The user is exhausted afterwards. (Spray and Pray)
 #===============================================================================
 class PokeBattle_Move_HitTwoToFiveTimesTwiceThenExhaust < PokeBattle_Move_HitTwoToFiveTimes
+    def initialize(battle, move)
+        super
+        @exhaustionTracker = :HyperBeam
+    end
+
+    def exhaustionTracker
+        return @exhaustionTracker
+    end
+
+    def exhaustingMove?
+        return true
+    end
+
+    def consumesItem?(user)
+        user.hasActiveItemAI?(:ENERGYHERB)
+    end
+    
     def pbEffectAfterAllHits(user, target)
         unless user.effectActive?(:SprayAndPray)
             @battle.pbDisplay(_INTL("{1} sends another volley!", user.pbThis))
@@ -134,7 +176,7 @@ class PokeBattle_Move_HitTwoToFiveTimesTwiceThenExhaust < PokeBattle_Move_HitTwo
                 @battle.pbDisplay(_INTL("{1} skipped exhaustion due to its Energy Herb!", user.pbThis))
                 user.consumeItem(:ENERGYHERB)
             else
-                user.applyEffect(:HyperBeam, 2)
+                user.applyEffect(@exhaustionTracker, 2)
             end
         end
     end
@@ -163,6 +205,11 @@ class PokeBattle_Move_HitOncePerUserTeamMemberSpecial < PokeBattle_PartyAttackMo
     def initialize(battle, move)
         super
         @statUsed = :SPECIAL_ATTACK
+    end
+
+    def getDetailsForMoveDex(detailsList = [])
+        detailsList << _INTL("<u>Base Power per Hit</u>:")
+        detailsList << _INTL("10 + (base Special Attack stat / 8)")
     end
 end
 

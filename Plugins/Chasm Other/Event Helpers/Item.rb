@@ -44,6 +44,14 @@ def candyRock(level,multiplier = 2)
         command_end # Exit event processing
         return
     end
+    pbSEPlay('Mining pick')
+    pbWait(10)
+    pbSEPlay('Mining pick')
+    pbWait(10)
+    pbSEPlay('Mining pick')
+    pbWait(10)
+    pbSEPlay('Anim/PRSFX- Rock Throw2')
+    pbWait(20)
     receiveCandyBatch(level,multiplier)
 end
 

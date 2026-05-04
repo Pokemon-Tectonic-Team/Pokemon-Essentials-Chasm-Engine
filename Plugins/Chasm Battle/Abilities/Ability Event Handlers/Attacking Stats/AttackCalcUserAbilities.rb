@@ -181,17 +181,10 @@ BattleHandlers::AttackCalcUserAbility.add(:EXTREMEPOWER,
   }
 )
 
-BattleHandlers::AttackCalcUserAbility.add(:FUELHUNGRY,
-  proc { |ability, _user, _battle, attackMult|
-      attackMult *= 1.3
-      next attackMult
-  }
-)
-
-BattleHandlers::AttackCalcAllyAbility.add(:CASTELLAN,
-  proc { |ability, _user, battle, spAtkMult|
+BattleHandlers::AttackCalcUserAbility.add(:CASTELLAN,
+  proc { |ability, _user, battle, attackMult|
       attackMult *= 1.3 if battle.roomActive?
-      next spAtkMult
+      next attackMult
   }
 )
 

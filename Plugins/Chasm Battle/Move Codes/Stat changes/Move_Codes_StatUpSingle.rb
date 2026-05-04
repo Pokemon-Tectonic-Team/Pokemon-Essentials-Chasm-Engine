@@ -113,6 +113,17 @@ class PokeBattle_Move_RaiseUserDef2 < PokeBattle_StatUpMove
     end
 end
 
+# Empowered Spiky Shield
+class PokeBattle_Move_EmpoweredSpikyShield < PokeBattle_Move_RaiseUserDef2
+    include EmpoweredMove
+
+    def pbEffectGeneral(user)
+        super
+        user.addAbility(:IRONBARBS,true)
+        transformType(user, :GRASS)
+    end
+end
+
 #===============================================================================
 # Increases the user's Defense by 3 steps.
 #===============================================================================
@@ -329,6 +340,17 @@ class PokeBattle_Move_RaiseUserSpDef2 < PokeBattle_StatUpMove
     def initialize(battle, move)
         super
         @statUp = [:SPECIAL_DEFENSE, 2]
+    end
+end
+
+# Empowered Mirror Shield
+class PokeBattle_Move_EmpoweredMirrorShield < PokeBattle_Move_RaiseUserSpDef2
+    include EmpoweredMove
+
+    def pbEffectGeneral(user)
+        super
+        user.addAbility(:FEEDBACK,true)
+        transformType(user, :STEEL)
     end
 end
 

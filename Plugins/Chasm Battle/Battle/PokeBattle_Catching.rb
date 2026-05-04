@@ -132,11 +132,6 @@ class PokeBattle_Battle
             playMentorshipTutorial
         end
 
-        # Enable the PokEstate with a phonecall
-        if getGlobalSwitch(ESTATE_DISABLED_SWITCH) && !getGlobalSwitch(ESTATE_PHONECALL_GLOBAL) && $Trainer.pokedex.owned_count >= 12
-            $PokemonGlobal.shouldProcEstateCall = true
-        end
-
         @caughtPokemon.clear
     end
 

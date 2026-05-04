@@ -66,7 +66,7 @@ TotalPP = 5
 Target = NearOther
 FunctionCode = TrapTarget
 Flags = CanMagicCoat
-Description = The user blocks the target's way with arms splayed wide to trap the target.
+Description = The user traps the target by physically blocking its way or scaring it in place.
 #-------------------------------
 [BODYSLAM]
 Name = Body Slam
@@ -305,7 +305,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = CanProtect,Blade,CanRandomCrit
+Flags = CanProtect,Slice,CanRandomCrit
 Description = The target is multi-hit two to five times with raking swipes. Can random critical hit.
 #-------------------------------
 [GIGAIMPACT]
@@ -424,7 +424,7 @@ Target = NearOther
 FunctionCode = Flinch
 Flags = CanProtect,Biting
 EffectChance = 50
-Description = The user bites hard on the target with its sharp front fangs. It has a 50% to make the target flinch.
+Description = The user bites hard on the target with its sharp fangs. It has a 50% to make the target flinch.
 #-------------------------------
 [HYPERVOICE]
 Name = Hyper Voice
@@ -655,20 +655,8 @@ Accuracy = 0
 TotalPP = 15
 Target = User
 FunctionCode = CureUserStatus
-Flags = CanSnatch
+Flags = CanSnatch,Staple
 Description = The user rests to cure itself of any non-volatile status condition.
-#-------------------------------
-[RELICSONG]
-Name = Relic Song
-Type = NORMAL
-Category = Adaptive
-Power = 75
-Accuracy = 100
-TotalPP = 10
-Target = AllNearFoes
-FunctionCode = ChangeUserMeloettaForm
-Flags = CanProtect,Sound
-Description = An ancient song appeals to the hearts of those listening. Switches Meloetta's form.
 #-------------------------------
 [RETALIATE]
 Name = Retaliate
@@ -715,7 +703,7 @@ Accuracy = 100
 TotalPP = 30
 Target = NearOther
 FunctionCode = Basic
-Flags = CanProtect,CanRandomCrit,Blade
+Flags = CanProtect,CanRandomCrit,Slice
 Description = Hard, pointed, and sharp claws rake the target to inflict damage. Can random critical hit.
 #-------------------------------
 [SELFDESTRUCT]
@@ -783,7 +771,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = Basic
-Flags = CanProtect,CanRandomCrit,Blade
+Flags = CanProtect,CanRandomCrit,Slice
 Description = The target is attacked with a slash of claws or blades. Can random critical hit.
 #-------------------------------
 [SMELLINGSALTS]
@@ -802,24 +790,13 @@ Description = This attack inflicts double damage on a numbed foe. It also cures 
 Name = Snore
 Type = NORMAL
 Category = Adaptive
-Power = 90
+Power = 80
 Accuracy = 100
 TotalPP = 12
 Target = NearOther
 FunctionCode = FailsIfUserNotAsleep
 Flags = CanProtect,Sound,Uninvocable
-Description = An attack that can be used only if the user is asleep.
-#-------------------------------
-[SOFTBOILED]
-Name = Soft-Boiled
-Type = NORMAL
-Category = Status
-Accuracy = 0
-TotalPP = 8
-Target = User
-FunctionCode = HealUserHalfOfTotalHP
-Flags = CanSnatch
-Description = The user heals itself by half of its max HP.
+Description = The user emits a snoring sound. This move can only be used while asleep.
 #-------------------------------
 [SPITUP]
 Name = Spit Up
@@ -1207,7 +1184,7 @@ Type = FIGHTING
 Category = Physical
 Power = 90
 Accuracy = 100
-TotalPP = 12
+TotalPP = 15
 Target = NearOther
 FunctionCode = Basic
 Flags = CanProtect,CanRandomCrit
@@ -1258,7 +1235,7 @@ Power = 1
 Accuracy = 100
 TotalPP = 5
 Target = NearOther
-FunctionCode = Basic
+FunctionCode = UserFaintsFixedDamageUserHP
 Flags = CanProtect
 Description = The user risks all to attack the foe. The user faints but does damage equal to its HP.
 #-------------------------------
@@ -1444,7 +1421,7 @@ Accuracy = 100
 TotalPP = 12
 Target = NearOther
 FunctionCode = IgnoreTargetDefSpDefEvaStatStages
-Flags = CanProtect,Blade
+Flags = CanProtect,Slice
 Description = The user attacks by slicing with its long horns. Ignores the target's stat step changes.
 #-------------------------------
 [SECRETSWORD]
@@ -1456,7 +1433,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = DoesPhysicalDamage
-Flags = CanProtect,Blade
+Flags = CanProtect,Slice
 Description = The user cuts with its long horn. The odd power contained in it does physical damage to the foe.
 #-------------------------------
 [STORMTHROW]
@@ -1544,7 +1521,7 @@ Accuracy = 0
 TotalPP = 15
 Target = NearOther
 FunctionCode = AlwaysHits
-Flags = Blade
+Flags = Slice
 Description = The user confounds the foe with speed, then slashes. Can't miss and skips protections.
 #-------------------------------
 [AIRSLASH]
@@ -1836,7 +1813,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = Basic
-Flags = CanProtect,CanRandomCrit,Blade
+Flags = CanProtect,CanRandomCrit,Slice
 Description = A slashing attack with a poisonous blade. Can random critical hit.
 #-------------------------------
 [GUNKSHOT]
@@ -1870,10 +1847,10 @@ Type = POISON
 Category = Status
 Accuracy = 100
 TotalPP = 10
-Target = NearFoe
+Target = NearOther
 FunctionCode = Poison
 Flags = CanProtect,CanMagicCoat,Wind
-Description = A cloud of poison gas is sprayed in the face of the foe, poisoning it.
+Description = A cloud of poison gas is sprayed in the face of the target, poisoning it.
 #-------------------------------
 [POISONJAB]
 Name = Poison Jab
@@ -2095,18 +2072,6 @@ Target = BothSides
 FunctionCode = StartGravity5
 Description = Gravity is intensified for five turns, grounding all Pokémon, doubling their weight, and doubling all move Accuracy.
 #-------------------------------
-[LANDSWRATH]
-Name = Land's Wrath
-Type = GROUND
-Category = Physical
-Power = 90
-Accuracy = 100
-TotalPP = 10
-Target = AllNearFoes
-FunctionCode = Basic
-Flags = CanProtect
-Description = The user gathers the energy of the land and focuses that power on foes to damage them.
-#-------------------------------
 [MUDSHOT]
 Name = Mud Shot
 Type = GROUND
@@ -2129,7 +2094,7 @@ Accuracy = 80
 TotalPP = 10
 Target = AllNearFoes
 FunctionCode = Basic
-Flags = CanProtect,Blade
+Flags = CanProtect,Slice
 Description = The user attacks its foes by manifesting the power of the land in fearsome blades of stone.
 #-------------------------------
 [SANDSEARSTORM]
@@ -2152,7 +2117,7 @@ Type = GROUND
 Category = Special
 Power = 90
 Accuracy = 100
-TotalPP = 10
+TotalPP = 15
 Target = NearOther
 FunctionCode = Burn
 Flags = CanProtect
@@ -2179,7 +2144,7 @@ TotalPP = 15
 Target = FoeSide
 FunctionCode = Spikes
 Flags = CanMagicCoat
-Description = The user lays a hazard layer of Spikes at the foe's feet. Foes that switch into battle are hurt a bit for each layer.
+Description = The user lays a hazard layer of Spikes on the foe's side. Foes that switch into battle are hurt a bit for each layer.
 #-------------------------------
 [STOMPINGTANTRUM]
 Name = Stomping Tantrum
@@ -2274,7 +2239,7 @@ Description = Charges with space power and boosts its Sp. Atk by two steps on on
 Name = Power Gem
 Type = ROCK
 Category = Special
-Power = 90
+Power = 95
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
@@ -2384,7 +2349,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = StealthRock
-Flags = CanProtect,Blade
+Flags = CanProtect,Slice
 Description = The user swings its stone axes. This leaves a levitating stone hazard floating around the target.
 Animation = STONEEDGE
 #-------------------------------
@@ -2689,7 +2654,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = Basic
-Flags = CanProtect,CanRandomCrit,Blade
+Flags = CanProtect,CanRandomCrit,Slice
 Description = The user slashes at the foe by crossing its scythes or claws. Can random critical hit.
 #-------------------------------
 #		GHOST MOVES
@@ -2789,17 +2754,6 @@ FunctionCode = IgnoreTargetAbility
 Flags = CanProtect,Light,ForceSignature
 Description = The user emits a sinister ray. This move can be used on the target regardless of its Abilities.
 #-------------------------------
-[NIGHTMARE]
-Name = Nightmare
-Type = GHOST
-Category = Status
-Accuracy = 100
-TotalPP = 12
-Target = NearOther
-FunctionCode = StartDamageTargetEachTurnIfTargetAsleep
-Flags = CanProtect
-Description = A sleeping target sees a nightmare that inflicts 25% damage every turn.
-#-------------------------------
 [OMINOUSWIND]
 Name = Ominous Wind
 Type = GHOST
@@ -2881,7 +2835,7 @@ Accuracy = 100
 TotalPP = 12
 Target = NearOther
 FunctionCode = Basic
-Flags = CanProtect,CanRandomCrit
+Flags = CanProtect,CanRandomCrit,Slice
 Description = The user slashes with a sharp claw made from shadows. Can random critical hit.
 #-------------------------------
 [SHADOWFORCE]
@@ -3001,7 +2955,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = Basic
-Flags = CanProtect,Blade
+Flags = CanProtect,Slice
 Description = The user becomes a gigantic sword and cuts the target.
 #-------------------------------
 [BULLETPUNCH]
@@ -3159,7 +3113,7 @@ Accuracy = 100
 TotalPP = 30
 Target = NearOther
 FunctionCode = RaiseUserAtk1
-Flags = CanProtect
+Flags = CanProtect,Slice
 EffectChance = 20
 Description = The target is raked with steel claws. It has a 20% chance to raise Attack.
 #-------------------------------
@@ -3180,7 +3134,7 @@ Type = STEEL
 Category = Physical
 Power = 90
 Accuracy = 100
-TotalPP = 10
+TotalPP = 15
 Target = NearOther
 FunctionCode = RaiseUserAtk1
 Flags = CanProtect,Punch
@@ -3294,25 +3248,12 @@ Type = FIRE
 Category = Physical
 Power = 90
 Accuracy = 100
-TotalPP = 10
+TotalPP = 15
 Target = NearOther
 FunctionCode = Burn
 Flags = CanProtect,Kick
 EffectChance = 10
 Description = The user launches a fiery kick. It has a 10% chance to burn.
-#-------------------------------
-[BLUEFLARE]
-Name = Blue Flare
-Type = FIRE
-Category = Special
-Power = 130
-Accuracy = 80
-TotalPP = 5
-Target = NearOther
-FunctionCode = Burn
-Flags = CanProtect
-EffectChance = 30
-Description = The user attacks by engulfing the foe in a beautiful, yet intense, blue flame. It has a 30% chance to burn.
 #-------------------------------
 [BURNINGJEALOUSY]
 Name = Burning Jealousy
@@ -3412,7 +3353,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = FirePledge
 Flags = CanProtect
-Description = A column of fire hits the target. When used with its Grass equivalent, it creates a Sea of Fire.
+Description = A column of fire hits the target. When used with its Grass equivalent, it creates a Sea of Fire for four turns.
 #-------------------------------
 [FIREPUNCH]
 Name = Fire Punch
@@ -3443,7 +3384,7 @@ Description = The user engulfs the target in fierce flames, trapping and binding
 Name = Flame Charge
 Type = FIRE
 Category = Physical
-Power = 60
+Power = 50
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
@@ -3458,7 +3399,7 @@ Type = FIRE
 Category = Special
 Power = 90
 Accuracy = 100
-TotalPP = 12
+TotalPP = 15
 Target = NearOther
 FunctionCode = Burn
 Flags = CanProtect
@@ -3490,18 +3431,6 @@ FunctionCode = RecoilThirdOfDamageDealt
 Flags = CanProtect
 Description = The user runs at the foe while on fire. The user also takes 33% recoil.
 #-------------------------------
-[FUSIONFLARE]
-Name = Fusion Flare
-Type = FIRE
-Category = Special
-Power = 100
-Accuracy = 100
-TotalPP = 5
-Target = NearOther
-FunctionCode = FusionFlare
-Flags = CanProtect
-Description = The user brings down a giant flame. It does more damage if influenced by an enormous thunderbolt.
-#-------------------------------
 [HEATCRASH]
 Name = Heat Crash
 Type = FIRE
@@ -3518,14 +3447,14 @@ Description = The user slams the opposing side with its flaming body. The heavie
 Name = Heat Wave
 Type = FIRE
 Category = Special
-Power = 80
+Power = 85
 Accuracy = 100
 TotalPP = 10
 Target = AllNearFoes
 FunctionCode = Burn
 Flags = CanProtect,Wind
-EffectChance = 30
-Description = The user attacks by exhaling hot breath on the opposing team. It has a 30% chance to burn.
+EffectChance = 20
+Description = The user attacks by exhaling hot breath on the opposing team. It has a 20% chance to burn.
 #-------------------------------
 [INCINERATE]
 Name = Incinerate
@@ -3834,7 +3763,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = LowerTargetDef1
-Flags = CanProtect,Blade
+Flags = CanProtect,Slice
 EffectChance = 50
 Description = The user cuts the foe with sharp shells. It has a 50% chance to lower Defense.
 #-------------------------------
@@ -3868,7 +3797,7 @@ Type = WATER
 Category = Special
 Power = 90
 Accuracy = 100
-TotalPP = 12
+TotalPP = 15
 Target = NearOther
 FunctionCode = Basic
 Flags = CanProtect,CanRandomCrit
@@ -3906,7 +3835,7 @@ Type = WATER
 Category = Special
 Power = 90
 Accuracy = 100
-TotalPP = 12
+TotalPP = 10
 Target = AllNearOthers
 FunctionCode = WaterlogTargetHitsDivers
 Flags = CanProtect
@@ -3960,20 +3889,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = WaterPledge
 Flags = CanProtect
-Description = A column of water hits the target. When used with its Fire equivalent, it creates a Rainbow.
-#-------------------------------
-[WATERPULSE]
-Name = Water Pulse
-Type = WATER
-Category = Special
-Power = 65
-Accuracy = 100
-TotalPP = 15
-Target = NearOther
-FunctionCode = Dizzy
-Flags = CanProtect,Pulse
-EffectChance = 30
-Description = The user attacks the target with a pulsing blast of water. It has a 30% chance to dizzy.
+Description = A column of water hits the target. When used with its Fire equivalent, it creates a Rainbow for four turns.
 #-------------------------------
 [WATERSHURIKEN]
 Name = Water Shuriken
@@ -4133,7 +4049,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = GrassPledge
 Flags = CanProtect
-Description = A column of grass hits the target. When used with its Water equivalent, it creates a vast Swamp.
+Description = A column of grass hits the target. When used with its Water equivalent, it creates a vast Swamp for four turns.
 #-------------------------------
 [GROWTH]
 Name = Growth
@@ -4177,7 +4093,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = Basic
-Flags = CanProtect,CanRandomCrit,Blade
+Flags = CanProtect,CanRandomCrit,Slice
 Description = The user handles a sharp leaf like a sword and attacks by slashing. Can random critical hit.
 #-------------------------------
 [LEAFSTORM]
@@ -4218,7 +4134,7 @@ Description = The user scatters leaves that chase the target. Can't miss and ski
 Name = Mega Drain
 Type = GRASS
 Category = Special
-Power = 40
+Power = 50
 Accuracy = 100
 TotalPP = 12
 Target = NearOther
@@ -4259,7 +4175,7 @@ Accuracy = 100
 TotalPP = 20
 Target = AllNearFoes
 FunctionCode = Basic
-Flags = CanProtect,CanRandomCrit
+Flags = CanProtect,CanRandomCrit,Slice
 Description = Sharp-edged leaves are launched to slash at the opposing team. Can random critical hit.
 #-------------------------------
 [SEEDFLARE]
@@ -4382,19 +4298,6 @@ FunctionCode = DamageBoost50PercentTargetNotAttacked
 Flags = CanProtect
 Description = Attacks with an electrified beak. Deals 50% more damage unless the target has moved this turn.
 #-------------------------------
-[BOLTSTRIKE]
-Name = Bolt Strike
-Type = ELECTRIC
-Category = Physical
-Power = 130
-Accuracy = 80
-TotalPP = 5
-Target = NearOther
-FunctionCode = Numb
-Flags = CanProtect
-EffectChance = 30
-Description = The user launches at its foe, surrounding itself with lightning. It has a 30% chance to numb.
-#-------------------------------
 [CHARGE]
 Name = Charge
 Type = ELECTRIC
@@ -4454,18 +4357,6 @@ FunctionCode = LowerTargetSpd2
 Flags = CanProtect
 EffectChance = 100
 Description = The user captures and attacks foes by using an electric net, which lowers their Speed stat by two steps.
-#-------------------------------
-[FUSIONBOLT]
-Name = Fusion Bolt
-Type = ELECTRIC
-Category = Physical
-Power = 100
-Accuracy = 100
-TotalPP = 5
-Target = NearOther
-FunctionCode = FusionBolt
-Flags = CanProtect
-Description = The user throws down a giant thunderbolt. It does more damage if influenced by an enormous flame.
 #-------------------------------
 [MAGNETRISE]
 Name = Magnet Rise
@@ -4675,7 +4566,7 @@ Accuracy = 50
 TotalPP = 5
 Target = NearOther
 FunctionCode = Numb
-Flags = CanProtect,Pulse
+Flags = CanProtect
 EffectChance = 100
 Description = The user fires an electric blast like a cannon to inflict damage and cause numbing.
 #-------------------------------
@@ -4913,19 +4804,6 @@ Flags = CanProtect,Light
 EffectChance = 30
 Description = The target is attacked with a peculiar ray. It has a 30% chance to dizzy.
 #-------------------------------
-[PSYCHIC]
-Name = Psychic
-Type = PSYCHIC
-Category = Special
-Power = 90
-Accuracy = 100
-TotalPP = 15
-Target = NearOther
-FunctionCode = LowerTargetSpDef1
-Flags = CanProtect
-EffectChance = 20
-Description = The target is hit by a strong telekinetic force. It has a 20% chance to lower Sp. Def.
-#-------------------------------
 [PSYCHICFANGS]
 Name = Psychic Fang
 Type = PSYCHIC
@@ -4959,7 +4837,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = Basic
-Flags = CanProtect,CanRandomCrit,Blade
+Flags = CanProtect,CanRandomCrit,Slice
 Description = The user tears at the target with blades formed by psychic power. Can random critical hit.
 #-------------------------------
 [PSYCHOSHIFT]
@@ -5351,7 +5229,7 @@ Accuracy = 100
 TotalPP = 12
 Target = NearOther
 FunctionCode = Basic
-Flags = CanProtect
+Flags = CanProtect,Slice
 Description = The user slashes the target with huge, sharp claws.
 #-------------------------------
 [DRAGONDANCE]
@@ -5571,7 +5449,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = SpikesFirstLayerOnly
-Flags = CanProtect,Blade
+Flags = CanProtect,Slice
 Description = The user slashes its shell blade, leaving a hazard layer of Spikes under the target if none have already been placed.
 Animation = NIGHTSLASH
 #-------------------------------
@@ -5642,7 +5520,7 @@ Type = DARK
 Category = Physical
 Power = 90
 Accuracy = 0
-TotalPP = 10
+TotalPP = 12
 Target = NearOther
 FunctionCode = AlwaysHits
 Description = The user fakes the target out and stabs them with its disheveled hair. Can't miss and skips protections.
@@ -5765,17 +5643,6 @@ Flags = CanProtect
 EffectChance = 100
 Description = If the user's stats were lowered during the turn, the power of this move is doubled.
 #-------------------------------
-[MEANLOOK]
-Name = Mean Look
-Type = DARK
-Category = Status
-Accuracy = 0
-TotalPP = 5
-Target = NearOther
-FunctionCode = TrapTarget
-Flags = CanMagicCoat
-Description = The user pins the target with a dark, arresting look. The target becomes trapped.
-#-------------------------------
 [MEMENTO]
 Name = Memento
 Type = DARK
@@ -5796,7 +5663,7 @@ Accuracy = 100
 TotalPP = 12
 Target = NearOther
 FunctionCode = Basic
-Flags = CanProtect,CanRandomCrit,Blade
+Flags = CanProtect,CanRandomCrit,Slice
 Description = The user slashes the target the instant an opportunity arises. Can random critical hit.
 Animation = NIGHTSLASH
 #-------------------------------

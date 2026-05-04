@@ -2,13 +2,13 @@
 # Pokémon storage visuals
 #===============================================================================
 class PokemonStorageScene
-    attr_reader :quickswap
+    attr_reader :cursormode
 
     def initialize
         @command = 1
     end
 
-    def pbStartBox(screen, command, iconFadeProc = nil)
+    def pbStartBox(screen, command, iconFadeProc: nil, iconMultiSelectionProc: nil)
         @screen = screen
         @storage = screen.storage
         @bgviewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
@@ -22,14 +22,15 @@ class PokemonStorageScene
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
         @viewport.z = 99_999
         @selection = 0
-        @quickswap = false
+        @cursormode = :Default # Can also be :QuickSwap or :MultiSelect
         @filter = false
         @sprites = {}
         @choseFromParty = false
         @command = command
         addBackgroundPlane(@sprites, "background", "Storage/bg", @bgviewport)
         @iconFadeProc = iconFadeProc
-        @sprites["box"] = PokemonBoxSprite.new(@storage, @storage.currentBox, @boxviewport, @iconFadeProc)
+        @iconMultiSelectionProc = iconMultiSelectionProc
+        @sprites["box"] = PokemonBoxSprite.new(@storage, @storage.currentBox, @boxviewport, fadeProc: @iconFadeProc, multiSelectionProc: @iconMultiSelectionProc)
         @sprites["boxsides"] = IconSprite.new(0, 0, @boxsidesviewport)
         overlay_path = "Graphics/Pictures/Storage/overlay_main"
         overlay_path += "_dark" if darkMode?
@@ -40,7 +41,7 @@ class PokemonStorageScene
         @sprites["pokemon"].setOffset(PictureOrigin::Center)
         @sprites["pokemon"].x = 90
         @sprites["pokemon"].y = 138
-        @sprites["boxparty"] = PokemonBoxPartySprite.new(@storage.party, @boxsidesviewport, iconFadeProc)
+        @sprites["boxparty"] = PokemonBoxPartySprite.new(@storage.party, @boxsidesviewport, fadeProc: @iconFadeProc, multiSelectionProc: @iconMultiSelectionProc)
         if command != 2 # Drop down tab only on Deposit
             @sprites["boxparty"].x = 182
             @sprites["boxparty"].y = Graphics.height
@@ -315,9 +316,8 @@ class PokemonStorageScene
                     pbUpdateOverlay(selection)
                     pbSetMosaic(selection)
                 end
-            elsif Input.trigger?(Input::ACTION) && @command == 0 # Organize only
-                pbPlayDecisionSE
-                pbSetQuickSwap(!@quickswap)
+            elsif Input.trigger?(Input::ACTION)
+                tryIncrementCursorMode
             elsif Input.trigger?(Input::BACK)
                 @selection = selection
                 return nil
@@ -338,6 +338,23 @@ class PokemonStorageScene
                 donationBoxTutorialCheck  
             end
         end
+    end
+
+    def tryIncrementCursorMode
+        unless @command == 0 # Organize mode
+           pbPlayBuzzerSE
+           return
+        end
+        case cursormode
+        when :Default
+            pbSetCursorMode(:QuickSwap)
+        when :QuickSwap
+            pbSetCursorMode(:MultiSelect)
+        when :MultiSelect
+            pbSetCursorMode(:Default)
+        end
+        @screen.clearMultiSelection
+        pbPlayDecisionSE
     end
 
     def pbSelectBox(party)
@@ -396,9 +413,8 @@ class PokemonStorageScene
                 pbSetMosaic(selection)
             end
             update
-            if Input.trigger?(Input::ACTION) && @command == 0 # Organize only
-                pbPlayDecisionSE
-                pbSetQuickSwap(!@quickswap)
+            if Input.release?(Input::ACTION)
+                tryIncrementCursorMode
             elsif Input.trigger?(Input::BACK)
                 @selection = selection
                 return -1
@@ -450,7 +466,7 @@ class PokemonStorageScene
     end
 
     def pbSwitchBoxToRight(newbox)
-        newbox = PokemonBoxSprite.new(@storage, newbox, @boxviewport, @iconFadeProc)
+        newbox = PokemonBoxSprite.new(@storage, newbox, @boxviewport, fadeProc: @iconFadeProc, multiSelectionProc: @iconMultiSelectionProc)
         newbox.x = 520
         Graphics.frame_reset
         distancePerFrame = 64 * 20 / Graphics.frame_rate
@@ -470,7 +486,7 @@ class PokemonStorageScene
     end
 
     def pbSwitchBoxToLeft(newbox)
-        newbox = PokemonBoxSprite.new(@storage, newbox, @boxviewport, @iconFadeProc)
+        newbox = PokemonBoxSprite.new(@storage, newbox, @boxviewport, fadeProc: @iconFadeProc, multiSelectionProc: @iconMultiSelectionProc)
         newbox.x = -152
         Graphics.frame_reset
         distancePerFrame = 64 * 20 / Graphics.frame_rate
@@ -515,9 +531,10 @@ class PokemonStorageScene
         end
     end
 
-    def pbSetQuickSwap(value)
-        @quickswap = value
-        @sprites["arrow"].quickswap = value
+    def pbSetCursorMode(value)
+        @cursormode = value
+        @sprites["arrow"].quickswap = @cursormode == :QuickSwap
+        @sprites["arrow"].multiselect = @cursormode == :MultiSelect
     end
 
     def pbShowPartyTab
@@ -934,9 +951,9 @@ class PokemonStorageScene
     def pbHardRefresh
         oldPartyY = @sprites["boxparty"].y
         @sprites["box"].dispose
-        @sprites["box"] = PokemonBoxSprite.new(@storage, @storage.currentBox, @boxviewport, @iconFadeProc)
+        @sprites["box"] = PokemonBoxSprite.new(@storage, @storage.currentBox, @boxviewport, fadeProc: @iconFadeProc, multiSelectionProc: @iconMultiSelectionProc)
         @sprites["boxparty"].dispose
-        @sprites["boxparty"] = PokemonBoxPartySprite.new(@storage.party, @boxsidesviewport)
+        @sprites["boxparty"] = PokemonBoxPartySprite.new(@storage.party, @boxsidesviewport, fadeProc: @iconFadeProc, multiSelectionProc: @iconMultiSelectionProc)
         @sprites["boxparty"].y = oldPartyY
     end
 

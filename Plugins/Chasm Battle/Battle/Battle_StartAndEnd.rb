@@ -142,7 +142,7 @@ class PokeBattle_Battle
             trainer.each_with_index do |_t, idxTrainer|
                 ret[side][idxTrainer] = []
                 eachInTeam(side, idxTrainer) do |pkmn, idxPkmn|
-                    next unless pkmn.able?
+                    next unless pkmn.able?(false, getAbleParameters(idxPkmn, side, idxTrainer))
                     idxBattler = 2 * battlerNumber + side
                     pbCreateBattler(idxBattler, pkmn, idxPkmn)
                     ret[side][idxTrainer].push(idxBattler)
@@ -392,7 +392,7 @@ class PokeBattle_Battle
                     cursesToAdd = triggerBattleStartApplyCurse(policy, self, [])
                     curses.concat(cursesToAdd)
 
-                    @metaGamingStatItems = true if policy == :METAGAMES_STAT_ITEMS
+                    @statItemsAreMetagameRevealed = true if policy == :METAGAMES_STAT_ITEMS
                 end
             end
         end
@@ -636,6 +636,13 @@ class PokeBattle_Battle
         return moneyMult
     end
 
+    # money multiplier only for end of battle rewards, not affecting scattered coins
+    def endOfBattleMoneyMult
+        mult = moneyMult
+        mult *= 1.5 if @field.effectActive?(:TreasureTracker)
+        return mult
+    end
+
     def pbGainMoney
         return if !@internalBattle || !@moneyGain
         # Money rewarded from opposing trainers
@@ -646,7 +653,7 @@ class PokeBattle_Battle
                 baseMoney = 10 + baseMoney / 2
                 tMoney += pbMaxLevelInTeam(1, i) * baseMoney
             end
-            tMoney = (tMoney * moneyMult).floor
+            tMoney = (tMoney * endOfBattleMoneyMult).floor
             oldMoney = pbPlayer.money
             pbPlayer.money += tMoney
             moneyGained = pbPlayer.money - oldMoney
@@ -822,8 +829,8 @@ class PokeBattle_Battle
         counts   = [0, 0]
         hpTotals = [0, 0]
         for side in 0...2
-            pbParty(side).each do |pkmn|
-                next if !pkmn || !pkmn.able?
+            pbParty(side).each_with_index do |pkmn, idxPkmn|
+                next if !pkmn || !pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
                 counts[side]   += 1
                 hpTotals[side] += pkmn.hp
             end
@@ -841,7 +848,7 @@ class PokeBattle_Battle
         hpTotals = [0, 0]
         for side in 0...2
             pbParty(side).each do |pkmn|
-                next if !pkmn || !pkmn.able?
+                next if !pkmn || !pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
                 counts[side]   += 1
                 hpTotals[side] += 100 * pkmn.hp / pkmn.totalhp
             end

@@ -22,7 +22,7 @@ class PokemonPartyScreen
     for i in 0...@party.length
       annot[i] = ordinals[statuses[i]]
     end
-    @scene.pbStartScene(@party,_INTL("Choose Vinemon and confirm."),annot,true)
+    @scene.pbStartScene(@party,_INTL("Choose Pokémon and confirm."),annot,true)
     loop do
       realorder = []
       for i in 0...@party.length
@@ -85,7 +85,7 @@ class PokemonPartyScreen
         statuses[pkmnid] = 1
         pbRefreshSingle(pkmnid)
       elsif cmdSummary>=0 && command==cmdSummary
-        @scene.pbSummary(pkmnid,true)
+        @scene.pbSummary(pkmnid)
       end
     end
     @scene.pbEndScene

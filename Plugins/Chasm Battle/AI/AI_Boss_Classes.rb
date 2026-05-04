@@ -499,6 +499,10 @@ class PokeBattle_AI_LINOONE < PokeBattle_AI_Boss
         super
         @warnedIFFMove.add(:COVET, {
             :condition => proc { |_move, user, target, _battle|
+                # if we know the target's item, only use if it's stealable
+                target.eachAIKnownItem do |item|
+                    next false if target.unlosableItem?(item)
+                end
                 next target.hasAnyItem?
             },
             :warning => proc { |_move, user, targets, _battle|

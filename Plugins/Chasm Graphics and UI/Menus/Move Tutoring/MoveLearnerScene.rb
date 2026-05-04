@@ -6,6 +6,7 @@ class MoveLearner_Scene
 
     VISIBLEMOVES = 5
     MOVE_ENTRY_HEIGHT = 40
+    SIGNATURE_COLOR = Color.new(211, 175, 44)
 
     def pbDisplay(msg, brief = false)
         UIHelper.pbDisplay(@sprites["msgwindow"], msg, brief) { pbUpdate }
@@ -19,32 +20,13 @@ class MoveLearner_Scene
         pbUpdateSpriteHash(@sprites)
     end
 
-    def pbStartScene(pokemon, unsortedMoves)
-
+    def pbStartScene(pokemon, movesProc)
         @pokemon = pokemon
-        @moves = [[],[],[]] # An array for each category
-        @moveCommands = [[],[],[]]
-        unsortedMoves.each do |m|
-            moveData = GameData::Move.get(m)
-            category = moveData.category
-
-            if category == 0 || category == 3 # Physical or adaptive
-                @moves[0].push(m)
-                @moveCommands[0].push(moveData.name)
-            end
-
-            if category == 1 || category == 3 # Special or adaptive
-                @moves[1].push(m)
-                @moveCommands[1].push(moveData.name)
-            end
-
-            if category == 2 # Status
-                @moves[2].push(m)
-                @moveCommands[2].push(moveData.name)
-            end
-        end
+        @movesProc = movesProc
 
         @tabSelected = 0
+
+        regenerateMoveList
 
         # Create sprite hash
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
@@ -101,6 +83,54 @@ class MoveLearner_Scene
         pbFadeInAndShow(@sprites) { pbUpdate }
     end
 
+    def regenerateMoveList
+        unsortedMoves = @movesProc.call(@pokemon)
+
+        speciesData = @pokemon.species_data
+
+        # Sorts moves first by base power (descending)
+        # Then by whether or not they are STAB (STAB moves go first)
+        # Then by type ID
+        unsortedMoves.sort! { |move_a, move_b|
+            moveDataA = GameData::Move.get(move_a)
+            moveDataB = GameData::Move.get(move_b)
+
+            if moveDataA.base_damage == moveDataB.base_damage
+                if speciesData.hasType?(moveDataA.type) == speciesData.hasType?(moveDataB.type) # Both STAB or both not STAB
+                    next GameData::Type.get(moveDataA.type).id_number <=> GameData::Type.get(moveDataB.type).id_number
+                elsif speciesData.hasType?(moveDataA.type)
+                    next -1
+                else
+                    next 1
+                end
+            else
+                next moveDataB.base_damage <=> moveDataA.base_damage
+            end
+        }
+
+        @moves = [[],[],[]] # An array for each category
+        @moveCommands = [[],[],[]]
+        unsortedMoves.each do |m|
+            moveData = GameData::Move.get(m)
+            category = moveData.category
+
+            if category == 0 || category == 3 # Physical or adaptive
+                @moves[0].push(m)
+                @moveCommands[0].push(moveData.name)
+            end
+
+            if category == 1 || category == 3 # Special or adaptive
+                @moves[1].push(m)
+                @moveCommands[1].push(moveData.name)
+            end
+
+            if category == 2 # Status
+                @moves[2].push(m)
+                @moveCommands[2].push(moveData.name)
+            end
+        end
+    end
+
     def refreshMoveList
         @sprites["commands"].commands = @moveCommands[@tabSelected]
         @sprites["commands"].index = 0
@@ -121,14 +151,9 @@ class MoveLearner_Scene
 
         base = MessageConfig.pbDefaultTextMainColor
         shadow = MessageConfig.pbDefaultTextShadowColor
-        title_base = MessageConfig::DARK_TEXT_MAIN_COLOR
-        title_shadow = MessageConfig::DARK_TEXT_SHADOW_COLOR
 
         textpos = []
         imagepos = []
-
-        # Draw the title
-        #textpos.push([_INTL("Teach which move?"), 16, 2, 0, title_base, title_shadow])
 
         # Draw the pokemon's info
         type1_number = GameData::Type.get(@pokemon.type1).id_number
@@ -142,7 +167,7 @@ class MoveLearner_Scene
             overlay.blt(428, 44, @typebitmap.bitmap, type2rect)
         end
 
-        startingYPos = 74
+        startingYPos = 80
         if @moves[@tabSelected].length > 0
             yPos = startingYPos
             # Draw the selectable move elements
@@ -152,7 +177,8 @@ class MoveLearner_Scene
                     moveData = GameData::Move.get(moveobject)
                     # type_number = GameData::Type.get(moveData.type).id_number
                     # imagepos.push([addLanguageSuffix("Graphics/Pictures/types"), 12, yPos + 8, 0, type_number * 28, 64, 28])
-                    textpos.push([moveData.name, 126, yPos, 2, base, shadow])
+                    formattedName, nameColor, nameShadow = getFormattedMoveName(moveobject)
+                    drawFormattedTextEx(overlay, 16, yPos, 450, formattedName, nameColor, nameShadow)
                 end
                 yPos += MOVE_ENTRY_HEIGHT
             end
@@ -167,7 +193,7 @@ class MoveLearner_Scene
             selectedMoveID = @moves[@tabSelected][@sprites["commands"].index]
             drawMoveInfo(selectedMoveID)
         else
-            textpos.push([_INTL("None"), 126, startingYPos-2, 2, base, shadow])
+            textpos.push([_INTL("None"), 126, startingYPos-12, 2, base, shadow])
             @extraInfoOverlay.bitmap.clear
         end
 
@@ -182,6 +208,39 @@ class MoveLearner_Scene
 
     def drawMoveInfo(selected_move)
         writeMoveInfoToInfoOverlayBackwardsL(@extraInfoOverlay.bitmap, selected_move, false)
+    end
+
+    def getFormattedMoveName(move)
+        fSpecies = @pokemon.species_data
+        move_data = GameData::Move.get(move)
+        moveName = move_data.name
+    
+        if move_data.type == :FLEX
+            isSTAB = true
+        else
+            isSTAB = move_data.category != 2 && [fSpecies.type1, fSpecies.type2].include?(move_data.type)
+        end
+    
+        # Add formatting based on if the move is the same type as the user
+        # Or of any of its evolutions
+        if isSTAB
+            moveName = "<b>#{moveName}</b>"
+        elsif move_data.category != 2 && isAnyEvolutionOfType(fSpecies, move_data.type)
+            moveName = "<i>#{moveName}</i>"
+        end
+    
+        color = MessageConfig.pbDefaultTextMainColor
+        if move_data.is_signature?
+            if isSTAB
+                moveName = "<outln2>" + moveName + "</outln2>"
+            else
+                moveName = "<outln>" + moveName + "</outln>"
+            end
+            shadow = SIGNATURE_COLOR
+        else
+            shadow = MessageConfig.pbDefaultTextShadowColor
+        end
+        return moveName, color, shadow
     end
 
     # Processes the scene
@@ -215,6 +274,29 @@ class MoveLearner_Scene
                     @tabSelected = 0 if @tabSelected > 2
                     refreshMoveList
                     pbPlayCursorSE
+                elsif Input.trigger?(Input::ACTION)
+                    if @moves[@tabSelected].empty?
+                        pbMessage(_INTL("Cannot search on an empty tab."))
+                        next
+                    end
+                    inputText = pbEnterText(_INTL("Search for which move?"),0,20).downcase
+                    unless inputText.blank?
+                        filteredIndex = -1
+                        @moves[@tabSelected].each_with_index do |move, index|
+                            next unless GameData::Move.get(move).name.downcase.include?(inputText)
+                            filteredIndex = index
+                            break
+                        end
+
+                        if filteredIndex >= 0
+                            pbPlayCursorSE
+                            @sprites["commands"].index = filteredIndex
+                            setReminderSelPosition
+                            pbDrawMoveList
+                        else
+                            pbMessage(_INTL("No matching move was found in this tab."))
+                        end
+                    end
                 end
             end
         end

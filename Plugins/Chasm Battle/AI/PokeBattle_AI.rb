@@ -1,4 +1,4 @@
-KillInfo = Struct.new(:user, :move, :speed, :priority, :score)
+KillInfo = Struct.new(:user, :move, :speed, :priority, :score, :consumesItem)
 
 class PokeBattle_AI
     attr_reader :precalculatedChoices

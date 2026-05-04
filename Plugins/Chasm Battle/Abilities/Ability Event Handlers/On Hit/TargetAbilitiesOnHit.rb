@@ -66,6 +66,7 @@ BattleHandlers::TargetAbilityOnHit.add(:GRAVITYWELL,
 
 BattleHandlers::TargetAbilityOnHit.add(:GOOEY,
   proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
+        next if user.dummy
         next unless move.physicalMove?
         if aiCheck
             ret = 0
@@ -80,6 +81,7 @@ BattleHandlers::TargetAbilityOnHit.add(:GOOEY,
 
 BattleHandlers::TargetAbilityOnHit.add(:SICKENING,
   proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
+        next if user.dummy
         next unless move.specialMove?
         if aiCheck
             ret = 0
@@ -300,6 +302,7 @@ BattleHandlers::TargetAbilityOnHit.add(:CONSTRICTOR,
         next if user.effectActive?(:Trapping)
         next if user.effectActive?(:Binding)
         next if target.effectActive?(:SwitchedIn)
+        next if user.dummy
         trappingDuration = 3
         trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
         score = 30
@@ -322,6 +325,7 @@ BattleHandlers::TargetAbilityOnHit.add(:MAGNETTRAP,
         next if user.effectActive?(:Trapping)
         next if user.effectActive?(:Binding)
         next if target.effectActive?(:SwitchedIn)
+        next if user.dummy
         trappingDuration = 3
         trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
         score = 30
@@ -378,19 +382,11 @@ BattleHandlers::TargetAbilityOnHit.add(:BOUNCEBACK,
   }
 )
 
-BattleHandlers::TargetAbilityOnHit.add(:FRIGIDREFLECTION,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next unless move.specialMove?
-        next if target.fainted?
-        next -60 if aiCheck
-        battle.forceUseMove(target, move.id, user.index, ability: ability)
-    }
-)
 
 BattleHandlers::TargetAbilityOnHit.add(:HUGGABLE,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
         next if target.fainted?
-        next unless move.baseDamage >= 95
+        next unless target.damageState.finalBaseDamage >= 95
         if aiCheck
             score = -5
             score -= getNumbEffectScore(target, user)
@@ -774,7 +770,7 @@ BattleHandlers::TargetAbilityOnHit.add(:MENDINGFEATHERCHARM,
             party.each_with_index do |partyMember, i|
                 previousHealthValues.push(partyMember.hp)
 			    previousStatusIndices.push(partyMember.getStatusImageIndex)
-                next unless partyMember.able?
+                next unless partyMember.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
                 battler = battle.pbFindBattler(i, target)
                 if battler
                     battler.applyFractionalHealing(MENDING_FEATHER_CHARM_HEALING_FRACTION, anim: false, anyAnim: false, showMessage: false)
@@ -901,6 +897,7 @@ BattleHandlers::TargetAbilityOnHit.add(:INNARDSOUT,
   
 BattleHandlers::TargetAbilityOnHit.add(:MUMMY,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next if user.dummy
         next if user.fainted?
         next if user.immutableAbility?
         next if user.hasAbility?(ability)
@@ -911,18 +908,19 @@ BattleHandlers::TargetAbilityOnHit.add(:MUMMY,
   
 BattleHandlers::TargetAbilityOnHit.add(:INFECTED,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next if user.dummy
         next if user.fainted?
         next if user.immutableAbility?
         next if user.hasAbility?(ability)
         next unless user.canChangeType?
         next -15 if aiCheck
         user.replaceAbility(ability, user.opposes?(target), target)
-        user.applyEffect(:Type3,:GRASS) unless user.pbHasType?(:GRASS)
     }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:WANDERINGSPIRIT,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next if user.dummy
         next if user.fainted?
         next if user.immutableAbility?
         next if user.hasAbility?(ability)
@@ -1056,6 +1054,7 @@ BattleHandlers::TargetAbilityOnHit.add(:COLORCOLLECTOR,
 
 BattleHandlers::TargetAbilityOnHit.add(:TANGLINGVINES,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next if user.dummy
         next if target.fainted?
         next -10 * aiNumHits if aiCheck
         target.showMyAbilitySplash(ability)
@@ -1063,5 +1062,34 @@ BattleHandlers::TargetAbilityOnHit.add(:TANGLINGVINES,
         user.pointAt(:TanglingVines, target)
         target.hideMyAbilitySplash
 
+    }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:PRIMEVALFLOURISHING,
+    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next if target.fainted?
+        next -10 * aiNumHits if aiCheck
+        next if target.form == 0
+        target.showMyAbilitySplash(ability)
+        if target.effectActive?(:HitsThisTurn)
+            if target.effects[:HitsThisTurn] == 3
+                battler.pbChangeForm(0, _INTL("{1}'s growth was reverted!", target.pbThis))
+                case target.form
+                when 1
+                    target.pbLowerMultipleStatSteps(ALL_STATS_1, target, ability: ability)
+                when 2
+                    target.pbLowerMultipleStatSteps(ALL_STATS_2, target, ability: ability)
+                when 3
+                    target.pbLowerMultipleStatSteps(ALL_STATS_3, target, ability: ability)
+                end
+            else
+                battle.pbDisplay(_INTL("{1}'s growth was stunted!", target.pbThis))
+                target.incrementEffect(:HitsThisTurn)
+            end
+        else
+            battle.pbDisplay(_INTL("{1}'s growth was stunted!", target.pbThis))
+            target.applyEffect(:HitsThisTurn, 1)
+        end
+        target.hideMyAbilitySplash
     }
 )

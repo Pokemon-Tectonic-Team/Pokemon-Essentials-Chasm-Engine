@@ -1,1 +1,8 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[BIDOOF]
+Ability = NORMALIZE
+Moves1 = BODYSLAM,PRIMEVALCALMMIND
+Moves2 = ZENHEADBUTT
+Turns = 1
+HPMult = 10.0

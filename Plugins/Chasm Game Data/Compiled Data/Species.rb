@@ -3,6 +3,7 @@ module GameData
         DEFAULT_GROWTH_RATE = :Medium
         DEFAULT_GENDER_RATIO = :Female50Percent
         DEFAULT_BASE_HAPPINESS = 70
+        DEFAULT_STAT_ROUNDING = 5
 
         attr_reader :id
         attr_reader :id_number
@@ -16,6 +17,7 @@ module GameData
         attr_reader :type1
         attr_reader :type2
         attr_reader :base_stats
+        attr_reader :stat_rounding
         attr_reader :base_exp
         attr_reader :growth_rate
         attr_reader :gender_ratio
@@ -42,6 +44,7 @@ module GameData
         attr_reader :mega_message
         attr_reader :notes
         attr_accessor :earliest_available
+        attr_accessor :earliest_available_normal
         attr_reader :flags
         attr_reader :formalizer
         attr_reader :sticky_items
@@ -80,6 +83,7 @@ module GameData
               "Type1"             => [0, "e", :Type],
               "Type2"             => [0, "e", :Type],
               "BaseStats"         => [0, "vvvvvv"],
+              "StatRounding"      => [0, "u"],
               "BaseEXP"           => [0, "v"],
               "Rareness"          => [0, "u"],
               "Happiness"         => [0, "u"],
@@ -140,25 +144,7 @@ module GameData
             @type1                 = hash[:type1]                 || :NORMAL
             @type2                 = hash[:type2]                 || @type1
             @base_stats            = hash[:base_stats]            || {}
-            oldBST = 0
-            newBST = 0
-            GameData::Stat.each_main do |s|
-                @base_stats[s.id] = 1 if !@base_stats[s.id] || @base_stats[s.id] <= 0
-                next if @base_stats[s.id] % 5 == 0 || @base_stats[s.id] == 1
-                oldValue = @base_stats[s.id]
-                newValue = (oldValue / 5.0).round(0) * 5
-
-                @base_stats[s.id] = newValue
-
-                oldBST += oldValue
-                newBST += newValue
-            end
-            if newBST > oldBST + 5
-                echoln("[STAT ROUNDING] #{@id} BST increased by #{newBST - oldBST} due to base stats rounding to nearest 5")  
-            end
-            if newBST < oldBST - 5
-                echoln("[STAT ROUNDING] #{@id} BST decreased by #{newBST - oldBST} due to base stats rounding to nearest 5")
-            end
+            @stat_rounding         = hash[:stat_rounding]         || DEFAULT_STAT_ROUNDING
             @base_exp              = hash[:base_exp]              || 100
             @growth_rate           = hash[:growth_rate]           || DEFAULT_GROWTH_RATE
             @gender_ratio          = hash[:gender_ratio]          || DEFAULT_GENDER_RATIO
@@ -188,11 +174,34 @@ module GameData
             @mega_message          = hash[:mega_message]          || 0
             @notes                 = hash[:notes]                 || ""
             @earliest_available    = nil
+            @earliest_available_normal = nil
             @tribes                = hash[:tribes]                || []
             @defined_in_extension  = hash[:defined_in_extension]  || false
             @flags                 = hash[:flags]                 || []
             @formalizer            = hash[:formalizer]            || []
             @sticky_items          = hash[:sticky_items]          || []
+
+            unless @stat_rounding == 0 
+                oldBST = 0
+                newBST = 0
+                GameData::Stat.each_main do |s|
+                    @base_stats[s.id] = 1 if !@base_stats[s.id] || @base_stats[s.id] <= 0
+                    next if @base_stats[s.id] % @stat_rounding == 0 || @base_stats[s.id] == 1
+                    oldValue = @base_stats[s.id]
+                    newValue = (oldValue / @stat_rounding.to_f).round(0) * @stat_rounding
+
+                    @base_stats[s.id] = newValue
+
+                    oldBST += oldValue
+                    newBST += newValue
+                end
+                if newBST > oldBST + @stat_rounding
+                    echoln("[STAT ROUNDING] #{@id} BST increased by #{newBST - oldBST} due to base stats rounding to nearest #{@stat_rounding}")  
+                end
+                if newBST < oldBST - @stat_rounding
+                    echoln("[STAT ROUNDING] #{@id} BST decreased by #{newBST - oldBST} due to base stats rounding to nearest #{@stat_rounding}")
+                end
+            end
 
             legalityChecks
         end
@@ -562,9 +571,15 @@ module GameData
             return FORM_SPECIFIC_MOVES[@species]
         end
 
-        def available_by?(level)
-            return false unless earliest_available
-            return level >= earliest_available
+        def can_learn_sketch?
+            return learnable_moves.any? {|move| GameData::Move.get(move).function_code == "ReplaceMoveWithTargetLastMoveUsed"}
+        end
+
+        # "normal" here refers to obtaining pokemon by normal means, not going out of your way to sequence break
+        def available_by?(level, normal = false)
+            query = normal ? earliest_available_normal : earliest_available
+            return false unless query
+            return level >= query
         end
 
         def get_prevolutions(exclude_invalid = true)
@@ -784,6 +799,7 @@ module Compiler
                       :type1                 => contents["Type1"],
                       :type2                 => contents["Type2"],
                       :base_stats            => contents["BaseStats"],
+                      :stat_rounding         => contents["StatRounding"],
                       :base_exp              => contents["BaseEXP"],
                       :growth_rate           => contents["GrowthRate"],
                       :gender_ratio          => contents["GenderRate"],
@@ -994,6 +1010,7 @@ module Compiler
                     :type1                 => contents["Type1"] || base_data.type1,
                     :type2                 => contents["Type2"] || base_data.type2,
                     :base_stats            => contents["BaseStats"] || base_data.base_stats,
+                    :stat_rounding         => contents["StatRounding"] || base_data.stat_rounding,
                     :base_exp              => contents["BaseEXP"] || base_data.base_exp,
                     :growth_rate           => base_data.growth_rate,
                     :gender_ratio          => base_data.gender_ratio,
@@ -1069,28 +1086,35 @@ module Compiler
     # Determine the earliest you can aquire each species in the game
     #=============================================================================
     def compile_species_earliest_levels
-        # A hash of all species in the game that can be aquired directly
+        # Hashes of all species in the game that can be aquired directly
         # where the key is the species ID and the value is the earliest level they can be directly aquired
-        earliestWildEncounters = {}
+        earliestWildEncountersMin = {}
+        earliestWildEncountersNormal = {}
 
         # Checking every single map in the game for encounters
         GameData::Encounter.each_of_version do |enc_data|
             # For each slot in that encounters data listing
             enc_data.types.each do |key, slots|
                 next unless slots
-                earliestLevelForSlot = enc_data.available_levels[key] || 100
+                # Track min and normal levels separately
+                minLevelForSlot = enc_data.min_available_levels[key] || enc_data.normal_available_levels[key] || 100
+                normalLevelForSlot = enc_data.normal_available_levels[key] || enc_data.min_available_levels[key] || 100
                 slots.each do |slot|
                     species = GameData::Species.get(slot[1]).species # get base form
-                    if !earliestWildEncounters.has_key?(species) || earliestWildEncounters[species] > earliestLevelForSlot
-                        earliestWildEncounters[species] = earliestLevelForSlot
+                    if !earliestWildEncountersMin.has_key?(species) || earliestWildEncountersMin[species] > minLevelForSlot
+                        earliestWildEncountersMin[species] = minLevelForSlot
+                    end
+                    if !earliestWildEncountersNormal.has_key?(species) || earliestWildEncountersNormal[species] > normalLevelForSlot
+                        earliestWildEncountersNormal[species] = normalLevelForSlot
                     end
                 end
             end
         end
 
-        # A hash where the key is a species
+        # Hashes where the key is a species
         # and the value is a hash that describes different ways of aquiring it
-        earliestAquisition = earliestWildEncounters.clone
+        earliestAquisitionMin = earliestWildEncountersMin.clone
+        earliestAquisitionNormal = earliestWildEncountersNormal.clone
 
         iterationCount = 0
         loop do
@@ -1098,8 +1122,11 @@ module Compiler
             iterationCount += 1
             GameData::Species.each do |speciesData|
                 species = speciesData.id
-                next unless earliestAquisition.has_key?(species)
-                earliestLevelForBase = earliestAquisition[species]
+                hasMin = earliestAquisitionMin.has_key?(species)
+                hasNormal = earliestAquisitionNormal.has_key?(species)
+                next unless hasMin || hasNormal
+                earliestLevelForBaseMin = earliestAquisitionMin[species] if hasMin
+                earliestLevelForBaseNormal = earliestAquisitionNormal[species] if hasNormal
 
                 evolutions = speciesData.get_evolutions
 
@@ -1108,6 +1135,7 @@ module Compiler
                     evoSpecies = evolutionEntry[0]
                     evoMethod = evolutionEntry[1]
                     param = evolutionEntry[2]
+                    evoLevelThreshold = nil
                     case evoMethod
                     # All method based on leveling up to a certain level
                     when :Level, :LevelDay, :LevelNight, :LevelMale, :LevelFemale, :LevelRain,
@@ -1123,19 +1151,34 @@ module Compiler
                         evoLevelThreshold = getEarliestLevelForItem(param)
                     end
 
-                    earliestLevelForEvolved = [earliestLevelForBase, evoLevelThreshold].max
+                    # Update min acquisition
+                    if hasMin
+                        earliestLevelForEvolvedMin = [earliestLevelForBaseMin, evoLevelThreshold].max
+                        if !earliestAquisitionMin.has_key?(evoSpecies) || earliestAquisitionMin[evoSpecies] > earliestLevelForEvolvedMin
+                            earliestAquisitionMin[evoSpecies] = earliestLevelForEvolvedMin
+                            madeAnyChanges = true
+                        end
+                    end
 
-                    if !earliestAquisition.has_key?(evoSpecies) || earliestAquisition[evoSpecies] > earliestLevelForEvolved
-                        earliestAquisition[evoSpecies] = earliestLevelForEvolved
-                        madeAnyChanges = true
+                    # Update normal acquisition
+                    if hasNormal
+                        earliestLevelForEvolvedNormal = [earliestLevelForBaseNormal, evoLevelThreshold].max
+                        if !earliestAquisitionNormal.has_key?(evoSpecies) || earliestAquisitionNormal[evoSpecies] > earliestLevelForEvolvedNormal
+                            earliestAquisitionNormal[evoSpecies] = earliestLevelForEvolvedNormal
+                            madeAnyChanges = true
+                        end
                     end
                 end
             end
             break unless madeAnyChanges
         end
 
-        earliestAquisition.each do |species, level|
+        earliestAquisitionMin.each do |species, level|
             GameData::Species.get(species).earliest_available = level
+        end
+
+        earliestAquisitionNormal.each do |species, level|
+            GameData::Species.get(species).earliest_available_normal = level
         end
 
         GameData::Species.save
@@ -1206,6 +1249,7 @@ module Compiler
         f.write(format("# HP, Attack, Defense, Speed, Sp. Atk, Sp. Def\r\n", total))
         f.write(format("BaseStats = %s\r\n", stats_array.join(",")))
         f.write(format("# Total = %s\r\n", total))
+        f.write(format("StatRounding = %s\r\n", species.stat_rounding)) unless species.stat_rounding == GameData::Species::DEFAULT_STAT_ROUNDING
         f.write(format("GenderRate = %s\r\n", species.gender_ratio)) unless species.gender_ratio == GameData::Species::DEFAULT_GENDER_RATIO
         f.write(format("GrowthRate = %s\r\n", species.growth_rate)) unless species.growth_rate == GameData::Species::DEFAULT_GROWTH_RATE
         f.write(format("BaseEXP = %d\r\n", species.base_exp))
@@ -1266,6 +1310,9 @@ module Compiler
         end
         all_abilities.uniq!
         all_moves.uniq!
+        # Expand form_list to include all forms between min and max,
+        # so indistinguished forms (e.g. Minior forms 1-6) are covered
+        form_list = (form_list.min..form_list.max).to_a
         f.write(format("[%s]\r\n", species.species))
         f.write(format("forms = %s\r\n", form_list.join(",")))
         f.write(format("gender_ratio = %s\r\n", species.gender_ratio))
