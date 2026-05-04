@@ -62,8 +62,7 @@ module PokeBattle_BattleRecorder
 	end
 
 	def pbCommandPhase
-		@recorded_choices.push([]) #Add turn array
-    (maxBattlerIndex + 1).times { |i| @recorded_choices[@turnCount].push([])} #Add array for each battler
+		@recorded_choices.push(Array.new(maxBattlerIndex + 1, []))
 		super
 		recordChoices
   end
