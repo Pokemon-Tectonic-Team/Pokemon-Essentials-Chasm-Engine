@@ -429,9 +429,12 @@ module QuestModule
   QUEST_LEGEND_MARSHADOW = {
     :Name => _INTL("Always In Character"),
     :QuestGiver => _INTL("The LARPers"),
-    :Stage1 => _INTL("See if you can find them again."),
-    :Location1 => _INTL("Makya"),
-    :QuestDescription => _INTL("Quite an eclectic group you've found. You've claimed their hoard, but this surely isn't the last time you'll find yourself encountering them."),
+    :Stage1 => _INTL("Investigate the voices."),
+    :Stage2 => _INTL("See if you can find them again."),
+    :Location1 => _INTL("Carnation Stockpile"),
+    :Location2 => _INTL("Makya"),
+    :QuestDescription1 => _INTL("You heard some strange voices echoing deep in a cave. Who will you encounter, if you decide to investigate where they're coming from?"),
+    :QuestDescription2 => _INTL("Quite an eclectic group you've found. You've claimed their hoard, but this surely isn't the last time you'll find yourself encountering them."),
   }
 
   QUEST_LEGEND_NULL = {
