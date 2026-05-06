@@ -385,7 +385,7 @@ class PokeBattle_Battle
             end
         end
         # Curses apply if at all
-        if @opponent && $PokemonGlobal.tarot_amulet_active
+        if @opponent
             @statItemsAreMetagameRevealed = false
             @opponent.each do |opponent|
                 opponent.policies.each do |policy|
