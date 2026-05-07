@@ -208,7 +208,7 @@ end
 # Returns the first unfainted, non-egg Pokémon in the player's party.
 def pbFirstAblePokemon(variable_ID)
   $Trainer.party.each_with_index do |pkmn, i|
-    next if !pkmn.able?
+    next if !pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
     pbSet(variable_ID, i)
     return pkmn
   end

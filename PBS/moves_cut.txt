@@ -621,6 +621,18 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = The user skillfully blasts the target, then steals their item. Items stolen from wild Pokémon are stored.
 #-------------------------------
+[RELICSONG]
+Name = Relic Song
+Type = NORMAL
+Category = Adaptive
+Power = 75
+Accuracy = 100
+TotalPP = 10
+Target = AllNearFoes
+FunctionCode = Invalid
+Flags = CanProtect,Sound
+Description = An ancient song appeals to the hearts of those listening. Switches Meloetta's form.
+#-------------------------------
 [RETURN]
 Name = Return
 Type = NORMAL
@@ -737,6 +749,17 @@ Target = NearOther
 FunctionCode = Invalid
 Flags = CanProtect,CanMagicCoat
 Description = The user releases an obscuring cloud of smoke or ink. It reduces the target's accuracy.
+#-------------------------------
+[SOFTBOILED]
+Name = Soft-Boiled
+Type = NORMAL
+Category = Status
+Accuracy = 0
+TotalPP = 8
+Target = User
+FunctionCode = Invalid
+Flags = CanSnatch
+Description = The user heals itself by half of its max HP.
 #-------------------------------
 [SONICBOOM]
 Name = Sonic Boom
@@ -1580,6 +1603,18 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = The user causes a huge landslide to cover the field.
 #-------------------------------
+[LANDSWRATH]
+Name = Land's Wrath
+Type = GROUND
+Category = Physical
+Power = 90
+Accuracy = 100
+TotalPP = 10
+Target = AllNearFoes
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user gathers the energy of the land and focuses that power on foes to damage them.
+#-------------------------------
 [MAGNITUDE]
 Name = Magnitude
 Type = GROUND
@@ -1700,6 +1735,19 @@ FunctionCode = Invalid
 Flags = CanSnatch,Light
 Description = A diamond-tough force-field protects the user's side for 5 turns from critical hits, and reduces move damage taken.
 Animation = LIGHTSCREEN
+#-------------------------------
+[GLIMMERPULSE]
+Name = Glimmer Pulse
+Type = ROCK
+Category = Special
+Power = 60
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Pulse
+Description = The user harms the target with a pulse of power. Deals double damage if the user has used a gem this battle.
+Animation = POWERGEM
 #-------------------------------
 [HEADSMASH]
 Name = Head Smash
@@ -2011,6 +2059,17 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = The user attacks the target from a blind spot. Always goes first. Deals 50% more damage in a hailstorm.
 #-------------------------------
+[NIGHTMARE]
+Name = Nightmare
+Type = GHOST
+Category = Status
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = A sleeping target sees a nightmare that inflicts 25% damage every turn.
+#-------------------------------
 [NIGHTSHADE]
 Name = Night Shade
 Type = GHOST
@@ -2272,6 +2331,19 @@ Description = Attacks while destroying the terrain. This move fails in the absen
 #-------------------------------
 #		FIRE MOVES
 #-------------------------------
+[BLUEFLARE]
+Name = Blue Flare
+Type = FIRE
+Category = Special
+Power = 130
+Accuracy = 80
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+EffectChance = 30
+Description = The user attacks by engulfing the foe in a beautiful, yet intense, blue flame. It has a 30% chance to burn.
+#-------------------------------
 [DESTRIERSWHIM]
 Name = Destrier's Whim
 Type = FIRE
@@ -2310,6 +2382,20 @@ Flags = CanProtect,Dance
 EffectChance = 50
 Description = Cloaked in flames, the user dances rhythmically. It has a 50% chance to raise its Sp. Atk.
 #-------------------------------
+[FIREPULSE]
+Name = Fire Pulse
+Type = FIRE
+Category = Special
+Power = 60
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Pulse
+EffectChance = 20
+Description = The user attacks the target with a pulsing blast of fire. It has a 20% chance to burn.
+Animation = FLAMEBURST
+#-------------------------------
 [FLAMEBURST]
 Name = Flame Burst
 Type = FIRE
@@ -2321,6 +2407,18 @@ Target = NearOther
 FunctionCode = Invalid
 Flags = CanProtect
 Description = The user attacks the foe with a bursting flame. It also damages Pokémon next to the target.
+#-------------------------------
+[FUSIONFLARE]
+Name = Fusion Flare
+Type = FIRE
+Category = Special
+Power = 100
+Accuracy = 100
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user brings down a giant flame. It does more damage if influenced by an enormous thunderbolt.
 #-------------------------------
 [HEATGYRE]
 Name = Heat Gyre
@@ -2627,6 +2725,19 @@ FunctionCode = Invalid
 Flags = CanProtect,Biting
 EffectChance = 100
 Description = The user bites with added telekinetic force. During eclipse, the target also becomes numbed.
+#-------------------------------
+[WATERPULSE]
+Name = Water Pulse
+Type = WATER
+Category = Special
+Power = 65
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Pulse
+EffectChance = 30
+Description = The user attacks the target with a pulsing blast of water. It has a 30% chance to dizzy.
 #-------------------------------
 [WATERSPORT]
 Name = Water Sport
@@ -3015,6 +3126,19 @@ Flags = CanProtect
 EffectChance = 10
 Description = Type changes depending on the user's form. It has a 10% chance to numb.
 #-------------------------------
+[BOLTSTRIKE]
+Name = Bolt Strike
+Type = ELECTRIC
+Category = Physical
+Power = 130
+Accuracy = 80
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+EffectChance = 30
+Description = The user launches at its foe, surrounding itself with lightning. It has a 30% chance to numb.
+#-------------------------------
 [DISCHARGE]
 Name = Discharge
 Type = ELECTRIC
@@ -3050,6 +3174,18 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = If the target uses a move this turn, that move becomes Electric-type.
 #-------------------------------
+[FUSIONBOLT]
+Name = Fusion Bolt
+Type = ELECTRIC
+Category = Physical
+Power = 100
+Accuracy = 100
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user throws down a giant thunderbolt. It does more damage if influenced by an enormous flame.
+#-------------------------------
 [IONDELUGE]
 Name = Ion Deluge
 Type = ELECTRIC
@@ -3073,6 +3209,20 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = Shoots a damaging spear at enemies, or a 4-step Speed-increasing electric charge at allies.
 Animation = THUNDERBOLT
+#-------------------------------
+[LUMINOUSBURST]
+Name = Luminous Burst
+Type = ELECTRIC
+Category = Special
+Power = 80
+Accuracy = 100
+TotalPP = 20
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Light
+EffectChance = 100
+Description = Cloaking itself in light energy, the user shocks the target, raising the user's Sp. Def by two steps.
+Animation = DISCHARGE
 #-------------------------------
 [MAGNETICFLUX]
 Name = Magnetic Flux
@@ -3462,6 +3612,19 @@ Flags = CanSnatch
 Description = The user employs psychic power to switch its unmodified Attack with its unmodified Defense.
 Animation = CALMMIND
 #-------------------------------
+[PSYCHIC]
+Name = Psychic
+Type = PSYCHIC
+Category = Special
+Power = 90
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+EffectChance = 20
+Description = The target is hit by a strong telekinetic force. It has a 20% chance to lower Sp. Def.
+#-------------------------------
 [PSYCHICTERRAIN]
 Name = Psychic Terrain
 Type = PSYCHIC
@@ -3825,6 +3988,19 @@ Flags = CanProtect
 EffectChance = 20
 Description = The user tackles the foe while exhibiting overwhelming menace. It may also make the target flinch.
 #-------------------------------
+[REND]
+Name = Rend
+Type = DRAGON
+Category = Physical
+Power = 90
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user shreds through the opponent's defenses, ignoring positive stat changes and abilities.
+Animation = DRAGONCLAW
+#-------------------------------
 [SCALEGLINT]
 Name = Scale Glint
 Type = DRAGON
@@ -3922,6 +4098,31 @@ FunctionCode = Invalid
 Flags = CanProtect,CanMagicCoat
 Description = The target's Sp. Atk stat is raised by three steps. It then hurts itself in its mental turmoil.
 #-------------------------------
+[HARSHVOICE]
+Name = Harsh Voice
+Type = DARK
+Category = Special
+Power = 40
+Accuracy = 100
+TotalPP = 20
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Sound
+EffectChance = 40
+Description = The target is confronted with painful words. It has a 40% chance to make the target flinch.
+Animation = DARKPULSE
+#-------------------------------
+[MEANLOOK]
+Name = Mean Look
+Type = DARK
+Category = Status
+Accuracy = 0
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanMagicCoat
+Description = The user pins the target with a dark, arresting look. The target becomes trapped.
+#-------------------------------
 [NASTYPLOT]
 Name = Nasty Plot
 Type = DARK
@@ -3969,17 +4170,6 @@ Target = NearOther
 FunctionCode = Invalid
 Flags = CanProtect
 Description = This attack's power increases by 10 for every one of the target's positive stat steps.
-#-------------------------------
-[SPOTTING]
-Name = Spotting
-Type = DARK
-Category = Status
-Accuracy = 0
-TotalPP = 15
-Target = NearAlly
-Priority = 5
-FunctionCode = Invalid
-Description = The user assists an ally by boosting the power and Accuracy of its next attack by 50%.
 #-------------------------------
 [ULTRAVIOLETPULSE]
 Name = Ultraviolet Pulse

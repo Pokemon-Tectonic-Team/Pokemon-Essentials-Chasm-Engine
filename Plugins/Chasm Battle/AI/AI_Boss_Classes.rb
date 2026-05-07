@@ -499,6 +499,10 @@ class PokeBattle_AI_LINOONE < PokeBattle_AI_Boss
         super
         @warnedIFFMove.add(:COVET, {
             :condition => proc { |_move, user, target, _battle|
+                # if we know the target's item, only use if it's stealable
+                target.eachAIKnownItem do |item|
+                    next false if target.unlosableItem?(item)
+                end
                 next target.hasAnyItem?
             },
             :warning => proc { |_move, user, targets, _battle|
@@ -672,7 +676,8 @@ class PokeBattle_AI_RUBARIOR < PokeBattle_AI_Boss
                 next target.hasRaisedStatSteps?
             },
             :warning => proc { |_move, user, targets, _battle|
-                _INTL("{1} is jealous of {2}'s good fortune!",user.pbThis, targets[0])
+                target = targets[0]
+                _INTL("{1} is jealous of {2}'s good fortune!",user.pbThis,target.pbThis(true))
             },
         })
     end

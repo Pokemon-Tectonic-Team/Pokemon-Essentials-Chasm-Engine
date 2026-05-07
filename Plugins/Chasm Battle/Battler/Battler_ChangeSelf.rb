@@ -5,6 +5,7 @@ class PokeBattle_Battler
     # Change HP
     #=============================================================================
     def pbReduceHP(amt, anim = true, registerDamage = true, anyAnim = true)
+        return if amt <= 0
         amt = amt.round
         amt = 1 if amt < 1
         amt = @hp if amt > @hp
@@ -521,8 +522,8 @@ class PokeBattle_Battler
                 case @battle.pbWeather
                 when :Sunshine, :HarshSun   then newForm = 1
                 when :Rainstorm, :HeavyRain then newForm = 2
-                when :Hail             then newForm = 3
-                when :Sandstorm        then newForm = 4
+                when :Hail, :IceAge         then newForm = 3
+                when :Sandstorm, :StarStorm then newForm = 4
                 when :Moonglow, :BloodMoon  then newForm = 5
                 when :Eclipse, :RingEclipse then newForm = 6    
                 end
@@ -610,36 +611,6 @@ class PokeBattle_Battler
             pbChangeForm(@form + 2, _INTL("{1} transformed into its Complete Forme!", pbThis))
         end
     end
-
-    def disableBaseStatEffects
-        disableEffect(:BaseAttack)
-        disableEffect(:BaseSpecialAttack)
-        disableEffect(:BaseDefense)
-        disableEffect(:BaseSpecialDefense)
-        disableEffect(:BaseSpeed)
-    end
-
-def disableLoweredBaseStatEffects
-  base_stats = @pokemon&.baseStats
-  return if base_stats.nil?
-
-  {
-    BaseAttack: :ATTACK,
-    BaseDefense: :DEFENSE,
-    BaseSpecialAttack: :SPECIAL_ATTACK,
-    BaseSpecialDefense: :SPECIAL_DEFENSE,
-    BaseSpeed: :SPEED
-  }.each do |effect_sym, stat_sym|
-    current_effect = @effects[effect_sym]
-    next if current_effect.nil?
-
-    stat_data = GameData::Stat.get(stat_sym)
-    original_base = base_stats[stat_data.id]
-    next if original_base.nil?
-
-    disableEffect(effect_sym) if current_effect < original_base
-  end
-end
 
     def pbTransform(target)
         @battle.scene.pbChangePokemon(self, target.pokemon)
@@ -786,7 +757,7 @@ end
         end
     end
 
-    def addAbility(newAbility,showcase = false)
+    def addAbility(newAbility,showcase = false, triggerSwitchIn: true)
         return if @ability_ids.include?(newAbility)
         newAbility = GameData::Ability.try_get(newAbility).id
         @ability_ids.push(newAbility)
@@ -796,6 +767,7 @@ end
             @battle.pbDisplay(_INTL("{1} gained the Ability {2}!", pbThis, getAbilityName(newAbility)))
             hideMyAbilitySplash
         end
+        pbEffectsOnSwitchIn if triggerSwitchIn
     end
 
     def replaceAbility(newAbility, showSplashes = true, swapper = nil, replacementMsg: nil)
@@ -813,5 +785,46 @@ end
         @battle.pbHideAbilitySplash(swapper) if showSplashes && swapper
         pbOnAbilitiesLost(oldAbilities) unless oldAbil.nil?
         pbEffectsOnSwitchIn
+    end
+
+    #=============================================================================
+    # Disabling of various effects
+    #=============================================================================
+
+    def disableBaseStatEffects
+        disableEffect(:BaseAttack)
+        disableEffect(:BaseSpecialAttack)
+        disableEffect(:BaseDefense)
+        disableEffect(:BaseSpecialDefense)
+        disableEffect(:BaseSpeed)
+    end
+
+    def disableLoweredBaseStatEffects
+        base_stats = @pokemon&.baseStats
+        return if base_stats.nil?
+
+        {
+            BaseAttack: :ATTACK,
+            BaseDefense: :DEFENSE,
+            BaseSpecialAttack: :SPECIAL_ATTACK,
+            BaseSpecialDefense: :SPECIAL_DEFENSE,
+            BaseSpeed: :SPEED
+        }.each do |effect_sym, stat_sym|
+            current_effect = @effects[effect_sym]
+            next if current_effect.nil?
+
+            stat_data = GameData::Stat.get(stat_sym)
+            original_base = base_stats[stat_data.id]
+            next if original_base.nil?
+
+            disableEffect(effect_sym) if current_effect < original_base
+        end
+    end
+
+    def disableMentalEffects
+        eachEffect(true) do |effect, _value, data|
+            next unless data.is_mental?
+            disableEffect(effect)
+        end
     end
 end

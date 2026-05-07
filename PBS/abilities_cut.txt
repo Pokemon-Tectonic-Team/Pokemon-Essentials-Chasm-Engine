@@ -98,6 +98,10 @@ Name = Battle Armor
 Description = The Pokémon is protected against critical hits.
 Flags = CritImmunity
 #-------------------------------
+[BATTLEHARDENED]
+Name = Battle-Hardened
+Description = Raises Defense and Sp. Def by three steps when its HP is lowered below half.
+#-------------------------------
 [BEASTBOOST]
 Name = Beast Boost
 Description = Boosts its best stat each time it deals a KO.
@@ -175,6 +179,10 @@ Description = Boosts all of the Pokémon's move damage by 25% during eclipse.
 Name = Cautionary
 Description = Raises Def and Sp. Def by three steps each when its HP is lowered below half.
 #-------------------------------
+[CLAUSTROPHOBIA]
+Name = Claustrophobia
+Description = If there is an active Room, enemies which swap in take Psychic-type damage equal to 1/6th their HP.
+#-------------------------------
 [CLEAVING]
 Name = Cleaving
 Description = Ignores screens, Substitute, and Abilities that would affect its moves.
@@ -238,6 +246,10 @@ Description = Prevents the use of self-destructing moves.
 [DANGERSENSE]
 Name = Danger Sense
 Description = It avoids hazards and can't be knocked out with one hit.
+#-------------------------------
+[DAUNTLESSSHIELD]
+Name = Dauntless Shield
+Description = Raises Defense upon entry.
 #-------------------------------
 [DAWNBURST]
 Name = Dawnfall
@@ -385,10 +397,6 @@ Description = Raises Attack and Sp. Atk by two steps when hit by a not-very-effe
 Name = Forewarn
 Description = Determines what moves a foe has.
 #-------------------------------
-[FORTIFIED]
-Name = Fortified
-Description = Take 30% less damage from attacks on turns when it hasn't moved yet.
-#-------------------------------
 [FORTUNE]
 Name = Fortune
 Description = Doubles the money gained from battles in which it participates.
@@ -471,6 +479,10 @@ Description = Boosts Attack by 33% if has a status condition. Ignores burn physi
 Name = Gyre Spinner
 Description = Upon entry, traps each opponent in a whirlpool for two turns.
 #-------------------------------
+[HARDAS]
+Name = Hard As
+Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
+#-------------------------------
 [HARDWORKER]
 Name = Hard Worker
 Description = Increases the money gained from battles in which it participates by 50%.
@@ -509,6 +521,10 @@ Flags = EclipseSynergy
 Name = Heliocentrism
 Description = Traps the foe during gravity.
 #-------------------------------
+[HERDING]
+Name = Herding
+Description = Wild Pokémon are more likely to appear in pairs and to be species you've never caught before.
+#-------------------------------
 [HONEYGATHER]
 Name = Honey Gather
 Description = The Pokémon may gather Honey from somewhere.
@@ -528,6 +544,11 @@ Description = Prevents other Pokémon from lowering its Attack or Sp. Atk stat.
 [IAIJUTSU]
 Name = Iaijutsu
 Description = Doubles the power of blade moves on the first turn.
+#-------------------------------
+[ICEBODY]
+Name = Ice Body
+Description = Heals 1/8th of its max HP each turn in a hail.
+Flags = HailSynergy
 #-------------------------------
 [ICEFACE]
 Name = Ice Face
@@ -560,6 +581,10 @@ Flags = SunshineSynergy
 Name = Insomnia
 Description = Prevents the Pokémon from falling asleep.
 #-------------------------------
+[INTREPIDSWORD]
+Name = Intrepid Sword
+Description = Raises Attack upon entry.
+#-------------------------------
 [JASPERCHARGE]
 Name = Jasper Charge
 Description = Boosts Sp. Atk by 30%, but lowers Sp. Atk after using a special move.
@@ -588,6 +613,10 @@ Description = Deals 30% more damage when it's slower than the target.
 Name = Leaf Guard
 Description = Immune to non-volatile status conditions while in sunshine.
 Flags = SunshineSynergy
+#-------------------------------
+[LEAPFROMBELOW]
+Name = Leap from Below
+Description = This Pokémon's Speed is doubled while using charging moves.
 #-------------------------------
 [LEGSTRENGTH]
 Name = Leg Strength
@@ -755,6 +784,11 @@ Name = Nesting
 Description = Heals 1/12th HP per turn if there's a weather. Immune to weather downsides.
 Flags = AllWeatherSynergy
 #-------------------------------
+[NEUTRALIZINGGAS]
+Name = Neutralizing Gas
+Description = Abilities will be nullified or will not be triggered.
+Flags = Immutable
+#-------------------------------
 [NIGHTLIGHT]
 Name = Night Light
 Description = Boosts Sp. Atk by 30% in moonglow.
@@ -774,6 +808,10 @@ Description = Prevents it from becoming infatuated.
 [ODDAURA]
 Name = Odd Aura
 Description = Upon entry, creates an Odd Room for five turns, swapping offensive and defensive stats.
+#-------------------------------
+[ONTHEWIND]
+Name = On the Wind
+Description = Sets a Tailwind for four turns upon entry, increasing Speed.
 #-------------------------------
 [OVERACTING]
 Name = Over Acting
@@ -807,6 +845,10 @@ Description = Protects it and ally Pokémon from being poisoned.
 Name = Pearl Seeker
 Description = Upon entry during eclipse, if it has no item, finds and equips the Pearl of Fate.
 Flags = EclipseSynergy
+#-------------------------------
+[PERSISTENTGROWTH]
+Name = Persistent Growth
+Description = At the end of each of its turns, Speed is lowered but every other stat is raised.
 #-------------------------------
 [PICKPOCKET]
 Name = Pickpocket
@@ -1250,6 +1292,10 @@ Description = Prevents foes whose Attack is less than its from fleeing.
 Name = Teravolt
 Description = Moves can be used regardless of Abilities.
 #-------------------------------
+[TERRORIZE]
+Name = Terrorize
+Description = Flinching moves always activate their random effects. However, this Pokémon deals 10% less move damage.
+#-------------------------------
 [TIMESTRETCH]
 Name = Time Stretch
 Description = Between each turn there's another turn where no one moves.
@@ -1386,6 +1432,10 @@ Description = Boosts the power of wind-based moves by 30%.
 [WINTERWISDOM]
 Name = Summit Spirit
 Description = Boosts Sp. Atk by 30% in hail.
+#-------------------------------
+[WIRECUTTER]
+Name = Live Wire
+Description = Lays an electrical hazard around the opponent when its HP is lowered below half.
 #-------------------------------
 [WONDERSKIN]
 Name = Wonder Skin

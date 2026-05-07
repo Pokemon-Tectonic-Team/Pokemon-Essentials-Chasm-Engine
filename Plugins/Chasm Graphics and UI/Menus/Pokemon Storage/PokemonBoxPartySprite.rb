@@ -3,7 +3,7 @@
 # Party pop-up panel
 #===============================================================================
 class PokemonBoxPartySprite < SpriteWrapper
-    def initialize(party, viewport, fadeProc = nil)
+    def initialize(party, viewport, fadeProc: nil, multiSelectionProc: nil)
         super(viewport)
         @party = party
         party_path = "Graphics/Pictures/Storage/overlay_party"
@@ -11,11 +11,12 @@ class PokemonBoxPartySprite < SpriteWrapper
         @boxbitmap = AnimatedBitmap.new(party_path)
         @pokemonsprites = []
         @fadeProc = fadeProc
+        @multiSelectionProc = multiSelectionProc
         for i in 0...Settings::MAX_PARTY_SIZE
             @pokemonsprites[i] = nil
             pokemon = @party[i]
             if pokemon
-                @pokemonsprites[i] = PokemonBoxIcon.new(pokemon, viewport)
+                @pokemonsprites[i] = PokemonBoxIcon_MultiSelected.new(pokemon, viewport)
                 @pokemonsprites[i].faded = true if @fadeProc && !@fadeProc.call(pokemon)
             end
         end
@@ -104,6 +105,7 @@ class PokemonBoxPartySprite < SpriteWrapper
         end
         for j in 0...Settings::MAX_PARTY_SIZE
             @pokemonsprites[j] = nil if @pokemonsprites[j] && @pokemonsprites[j].disposed?
+            @pokemonsprites[j].multiselected = @multiSelectionProc && @multiSelectionProc.call(-1,j) if @pokemonsprites[j]
         end
         @pokemonsprites.compact!
         for j in 0...Settings::MAX_PARTY_SIZE

@@ -21,7 +21,7 @@ class PokeBattle_Move_DisableTargetUsingSameMoveConsecutively < PokeBattle_Move
     end
 
     def getTargetAffectingEffectScore(_user, target)
-        return 0 if target.hasActiveAbilityAI?(:MENTALBLOCK)
+        return 0 if target.mentalBlockActiveAI?
         score = 60
         score += 40 unless target.hasDamagingAttack?
         return score
@@ -226,7 +226,7 @@ class PokeBattle_Move_DisableTargetStatusMoves4 < PokeBattle_Move
 
     def getTargetAffectingEffectScore(user, target)
         return 0 if target.substituted? && statusMove? && !ignoresSubstitute?(user)
-        return 0 if target.hasActiveAbilityAI?(:MENTALBLOCK)
+        return 0 if target.mentalBlockActiveAI?
         unkownHate = target.unknownMovesCountAI 
         return 0 unless target.hasStatusMove? || unkownHate == 4
         firstTurnScore = 0
@@ -334,7 +334,7 @@ class PokeBattle_Move_DisableTargetUsingDifferentMove4 < PokeBattle_Move
     end
 
     def getTargetAffectingEffectScore(user, target)
-        return 0 if target.hasActiveAbilityAI?(:MENTALBLOCK)
+        return 0 if target.mentalBlockActiveAI?
         score = 60
         score += 40 if target.trapped?
         userSpeed = user.pbSpeed(true, move: self)
@@ -392,14 +392,14 @@ class PokeBattle_Move_DisableTargetUsingOffTypeMove4 < PokeBattle_Move
 
     def getTargetAffectingEffectScore(user, target)
         return 0 if target.substituted? && statusMove?
-        return 0 if target.hasActiveAbilityAI?(:MENTALBLOCK)
+        return 0 if target.mentalBlockActiveAI?
         return 0 unless target.hasOffTypeMove?
         return 40 + applyEffectDurationModifiers(getBarTurns(target), user) * 20
     end
 end
 
 #===============================================================================
-# Target will lose 1/4 of max HP at end of each round, while asleep. (Nightmare)
+# Target will lose 1/4 of max HP at end of each round, while asleep.
 #===============================================================================
 class PokeBattle_Move_StartDamageTargetEachTurnIfTargetAsleep < PokeBattle_Move
     def pbFailsAgainstTarget?(_user, target, show_message)
@@ -483,13 +483,15 @@ class PokeBattle_Move_CurseTarget < PokeBattle_Move
 end
 
 #===============================================================================
-# Curses the target. Money is gained from curse damage. (Pharaoh's Curse)
+# The target starts losing 1/8th of its health every turn. When it does,
+# Coins equal to 10 times the HP lost are scattered on the opposing side.
+# (Pharaoh's Curse)
 #===============================================================================
-class PokeBattle_Move_CurseTargetEarnMoneyFromCurse < PokeBattle_Move_CurseTarget
+class PokeBattle_Move_StartDamageTargetAndEarnMoneyEachTurn < PokeBattle_Move_CurseTarget
     def pbFailsAgainstTarget?(user, target, show_message)
         return false if damagingMove?
-        if target.effectActive?(:Curse) && target.effectActive?(:PharaohsCurse)
-            @battle.pbDisplay(_INTL("But it failed, since {1} is already cursed by the Pharoh!", target.pbThis(true))) if show_message
+        if target.effectActive?(:PharaohsCurse)
+            @battle.pbDisplay(_INTL("But it failed, since {1} is already experiencing the pharaoh's curse!", target.pbThis(true))) if show_message
             return true
         end
         return false
@@ -497,13 +499,11 @@ class PokeBattle_Move_CurseTargetEarnMoneyFromCurse < PokeBattle_Move_CurseTarge
 
     def pbEffectAgainstTarget(user, target)
         return if damagingMove?
-        target.applyEffect(:Curse) unless target.effectActive?(:Curse)
         target.applyEffect(:PharaohsCurse) unless target.effectActive?(:PharaohsCurse)
     end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
-        target.applyEffect(:Curse) unless target.effectActive?(:Curse)
         target.applyEffect(:PharaohsCurse) unless target.effectActive?(:PharaohsCurse)
     end
 end
@@ -617,16 +617,16 @@ class PokeBattle_Move_DisableTargetSoundMoves3 < PokeBattle_Move
 end
 
 #===============================================================================
-# Target cannot use blade-based moves for 2 more rounds. (Disarming Shot)
+# Target cannot use slice-based moves for 2 more rounds. (Disarming Shot)
 #===============================================================================
-class PokeBattle_Move_DisableTargetBladeMoves3 < PokeBattle_Move
+class PokeBattle_Move_DisableTargetSliceMoves3 < PokeBattle_Move
     def pbAdditionalEffect(user, target)
         return if target.fainted? || target.damageState.substitute
         target.applyEffect(:DisarmingShot, applyEffectDurationModifiers(3, user))
     end
 
     def getTargetAffectingEffectScore(_user, target)
-        return 30 if !target.effectActive?(:DisarmingShot) && target.hasBladeMove? && !target.substituted?
+        return 30 if !target.effectActive?(:DisarmingShot) && target.hasSliceMove? && !target.substituted?
         return 0
     end
 end

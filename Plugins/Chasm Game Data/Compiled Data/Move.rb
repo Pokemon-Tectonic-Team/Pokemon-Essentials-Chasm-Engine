@@ -147,7 +147,7 @@ module GameData
             "Sound"     => _INTL("Sound"),
             "Pulse"     => _INTL("Pulse"),
             "Dance"     => _INTL("Dance"),
-            "Blade"     => _INTL("Blade"),
+            "Slice"     => _INTL("Slice"),
             "Wind"      => _INTL("Wind"),
             "Kick"      => _INTL("Kick"),
             "Light"     => _INTL("Light"),

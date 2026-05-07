@@ -85,7 +85,7 @@ class PokeBattle_Battle
     def pbAttackPhaseCloaking
         pbPriority.each do |b|
             next unless @choices[b.index][0] == :UseMove && !b.fainted?
-            next if b.asleep?
+            next if b.asleep? && b.statusCount > 1
             next if b.movedThisRound?
             next unless b.hasActiveAbility?(:CLOAKING)
             move = @choices[b.index][2]
@@ -109,6 +109,47 @@ class PokeBattle_Battle
             end
             b.pbChangeForm(newForm,_INTL("{1} changes its cloak to fit its next move!",b.pbThis))
             pbHideAbilitySplash(b)
+        end
+    end
+
+    def pbAttackPhaseSceneChange
+        pbPriority.each do |b|
+            next unless @choices[b.index][0] == :UseMove && !b.fainted?
+            next if b.asleep? && b.statusCount > 1
+            next if b.movedThisRound?
+            next unless b.hasActiveAbility?(:SCENECHANGE)
+            move = @choices[b.index][2]
+            next if move.statusMove?
+            next if move.callsAnotherMove?
+            newForm = move.physicalMove? ? 1 : 0
+            next unless newForm
+            next if b.form == newForm
+            pbShowAbilitySplash(b, :SCENECHANGE)
+            b.pbChangeForm(newForm,_INTL("{1} changes its form to fit its next move!",b.pbThis))
+            pbHideAbilitySplash(b)
+        end
+    end
+
+    def pbAttackPhasePurestLight
+        pbPriority.each do |b|
+            next unless @choices[b.index][0] == :UseMove && !b.fainted?
+            next if b.asleep? && b.statusCount > 1
+            next if b.movedThisRound?
+            next unless b.hasActiveAbility?(:PURESTLIGHT)
+            move = @choices[b.index][2]
+            next if move.callsAnotherMove?
+            next unless move.id == :LIGHTTHATBURNSTHESKY
+            newForm = nil
+            case b.form
+            when 1
+                newForm = 3
+            when 2
+                newForm = 4
+            end
+            next unless newForm
+            next if b.form == newForm
+            @scene.pbCommonAnimation("UltraBurst", b)
+            b.pbChangeForm(newForm,_INTL("Bright light bursts out of {1}!", b.pbThis))
         end
     end
 
@@ -228,6 +269,8 @@ class PokeBattle_Battle
         pbAttackPhaseItems
         return true if @decision > 0
         pbAttackPhaseCloaking
+        pbAttackPhaseSceneChange
+        pbAttackPhasePurestLight
         return false
     end
 

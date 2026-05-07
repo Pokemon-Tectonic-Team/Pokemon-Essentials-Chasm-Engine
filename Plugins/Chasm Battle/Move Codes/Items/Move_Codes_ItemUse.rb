@@ -2,6 +2,7 @@
 # User gives one of its items to the target. (Bestow)
 #===============================================================================
 class PokeBattle_Move_GiftItem < PokeBattle_Move
+    def consumesItem?(_user); return true; end
     def ignoresSubstitute?(_user); return true; end
 
     def validItem(user,item)
@@ -127,6 +128,8 @@ end
 # User flings its item at the target. Power/effect depend on the item. (Fling)
 #===============================================================================
 class PokeBattle_Move_Fling < PokeBattle_Move
+    def consumesItem?(_user); return true; end
+
     def validItem(user,item)
         return !(user.unlosableItem?(item) || GameData::Item.get(item).is_mega_stone?)
     end
@@ -263,26 +266,28 @@ end
 # (Natural Gift, Evernalize)
 #===============================================================================
 class PokeBattle_Move_NaturalGift < PokeBattle_Move
+    def consumesItem?(user); return user.hasAnyBerry?; end
+
     def initialize(battle, move)
         super
         @typeArray = {
             :NORMAL   => [:CHILANBERRY],
-            :FIRE     => %i[CHERIBERRY BLUKBERRY WATMELBERRY OCCABERRY],
-            :WATER    => %i[CHESTOBERRY NANABBERRY DURINBERRY PASSHOBERRY],
-            :ELECTRIC => %i[PECHABERRY WEPEARBERRY BELUEBERRY WACANBERRY],
-            :GRASS    => %i[RAWSTBERRY PINAPBERRY RINDOBERRY LIECHIBERRY],
-            :ICE      => %i[ASPEARBERRY POMEGBERRY YACHEBERRY GANLONBERRY],
-            :FIGHTING => %i[LEPPABERRY KELPSYBERRY CHOPLEBERRY SALACBERRY],
-            :POISON   => %i[CADOBERRY QUALOTBERRY KEBIABERRY PETAYABERRY],
-            :GROUND   => %i[PERSIMBERRY HONDEWBERRY SHUCABERRY APICOTBERRY],
-            :FLYING   => %i[LUMBERRY GREPABERRY COBABERRY LANSATBERRY],
-            :PSYCHIC  => %i[SITRUSBERRY TAMATOBERRY PAYAPABERRY STARFBERRY],
-            :BUG      => %i[FIGYBERRY CORNNBERRY TANGABERRY ENIGMABERRY],
-            :ROCK     => %i[WIKIBERRY MAGOSTBERRY CHARTIBERRY MICLEBERRY],
-            :GHOST    => %i[MAGOBERRY RABUTABERRY KASIBBERRY CUSTAPBERRY],
-            :DRAGON   => %i[AGUAVBERRY NOMELBERRY HABANBERRY JABOCABERRY],
-            :DARK     => %i[IAPAPABERRY SPELONBERRY COLBURBERRY ROWAPBERRY MARANGABERRY],
-            :STEEL    => %i[RAZZBERRY PAMTREBERRY BABIRIBERRY],
+            :FIRE     => %i[CHERIBERRY OCCABERRY],
+            :WATER    => %i[CHESTOBERRY PASSHOBERRY],
+            :ELECTRIC => %i[PECHABERRY BELUEBERRY WACANBERRY],
+            :GRASS    => %i[RAWSTBERRY RINDOBERRY LIECHIBERRY],
+            :ICE      => %i[ASPEARBERRY YACHEBERRY GANLONBERRY],
+            :FIGHTING => %i[LEPPABERRY CHOPLEBERRY SALACBERRY],
+            :POISON   => %i[CADOBERRY KEBIABERRY PETAYABERRY],
+            :GROUND   => %i[PERSIMBERRY SHUCABERRY APICOTBERRY],
+            :FLYING   => %i[LUMBERRY COBABERRY LANSATBERRY],
+            :PSYCHIC  => %i[SITRUSBERRY PAYAPABERRY STARFBERRY],
+            :BUG      => %i[TANGABERRY ENIGMABERRY],
+            :ROCK     => %i[CHARTIBERRY MICLEBERRY],
+            :GHOST    => %i[KASIBBERRY CUSTAPBERRY],
+            :DRAGON   => %i[HABANBERRY JABOCABERRY],
+            :DARK     => %i[SPELONBERRY COLBURBERRY MARANGABERRY],
+            :STEEL    => %i[BABIRIBERRY ROWAPBERRY],
             :FAIRY    => %i[ROSELIBERRY KEEBERRY],
         }
         @chosenItem = nil
@@ -421,6 +426,7 @@ end
 # Consumes berry and raises the user's Defense and Sp. Def by 1 step. (Stuff Cheeks)
 #===============================================================================
 class PokeBattle_Move_EatBerryRaiseDefenses1 < PokeBattle_Move
+    def consumesItem?(user); return user.hasAnyBerry?; end
     def pbMoveFailed?(user, _targets, show_message)
         unless user.hasAnyBerry?
             @battle.pbDisplay(_INTL("But it failed, because {1} has no berries!", user.pbThis(true))) if show_message
@@ -497,7 +503,11 @@ end
 #===============================================================================
 class PokeBattle_Move_GrantUserPearlOfWisdom < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
-        return !user.canAddItem?(:PEARLOFWISDOM)
+        if !user.canAddItem?(:PEARLOFWISDOM)
+            @battle.pbDisplay(_INTL("{1} cannot form a {2}!", user.pbThis, getItemName(:PEARLOFWISDOM))) if show_message
+            return true
+        end
+        return false
     end
 
     def pbEffectGeneral(user)

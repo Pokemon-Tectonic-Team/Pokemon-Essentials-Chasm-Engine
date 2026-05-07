@@ -371,7 +371,7 @@ class StyleValueScreen
                 if @pool > 0
                     pbPlayBuzzerSE
                     @scene.pbDisplay(_INTL("There are still Style Points points left to assign!"))
-                elsif @scene.pbConfirm(_INTL("Finish adjusting Style Points?"))
+                else
                     @scene.pbEndScene
                     pbPlayCloseMenuSE
                     return
@@ -389,7 +389,7 @@ class StyleValueScreen
                     if @pool > 0
                         pbPlayBuzzerSE
                         @scene.pbDisplay(_INTL("There are still Style Points points left to assign!"))
-                    elsif @scene.pbConfirm(_INTL("Finish adjusting Style Points?"))
+                    else
                         @scene.pbEndScene
                         pbPlayCloseMenuSE
                         return

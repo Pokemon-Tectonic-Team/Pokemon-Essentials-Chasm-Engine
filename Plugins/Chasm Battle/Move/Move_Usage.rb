@@ -41,6 +41,7 @@ class PokeBattle_Move
     def calculateCategoryOverride(user, targets)
         return selectBestCategory(user, targets[0]) if punchingMove? && user.hasActiveAbility?(:MYSTICFIST)
         return selectBestCategory(user, targets[0]) if rampagingMove? && user.hasActiveAbility?(:WREAKHAVOC)
+        return selectBestCategory(user, targets[0]) if pulseMove? && user.hasActiveAbility?(:MANIFESTATION)
         return 0 if @category == 1 && user.hasActiveItem?(:STRENGTHHERB)
         return 1 if @category == 0 && user.hasActiveItem?(:INTELLECTHERB)
         return selectBestCategory(user) if adaptiveMove?
@@ -90,8 +91,7 @@ class PokeBattle_Move
                 if targets.length == 1
                     @battle.pbDisplayBrief(_INTL("Its base power was adjusted to {1}!", bp))
                 else
-                    @battle.pbDisplayBrief(_INTL("Its base power was adjusted to {1} against {2}!", bp,
-target.pbThis(true)))
+                    @battle.pbDisplayBrief(_INTL("Its base power was adjusted to {1} against {2}!", bp, target.pbThis(true)))
                 end
             end
         end
@@ -144,6 +144,15 @@ target.pbThis(true)))
         return false
     end
 
+    def canDiffract?(user, targets, checkingForAI = false)
+        return false unless damagingMove?
+        return false if chargingTurnMove?
+        return false unless targets.length == 1
+        return false unless lightMove?
+        return true if user.shouldAbilityApply?(:DIFFRACTION,checkingForAI) && user.protectedByScreen?
+        return false
+    end
+
     def numberOfHits(user, targets, checkingForAI = false)
         calcedHits = calcNumHits(user, targets, checkingForAI)
 
@@ -170,7 +179,15 @@ target.pbThis(true)))
     # The maximum number of hits in a round this move will actually perform. This
     # can be 1 for Beat Up, and can be 2 for any moves affected by Parental Bond.
     def pbNumHits(user, targets, checkingForAI = false)
+        if user.shouldAbilityApply?(:FICKLEUNION, checkingForAI) && pulseMove?
+            if checkingForAI
+                return getRandomMultihitNumberAI(user, targets)
+            else
+                return getRandomMultihitNumber(user, targets)
+            end
+        end
         return 2 if canParentalBond?(user, targets, checkingForAI)
+        return 2 if canDiffract?(user, targets, checkingForAI)
         numHits = 1
         numHits += 1 if user.shouldAbilityApply?(:SPACEINTERLOPER, checkingForAI) && damagingMove?
         numHits += 1 if user.effectActive?(:VolleyStance) && specialMove?
@@ -189,7 +206,7 @@ target.pbThis(true)))
     def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
         return if @autoTesting
         return unless showAnimation
-        if user.effects[:ParentalBond] == 1
+        if user.effects[:ParentalBond] == 1 || user.effects[:Diffraction] == 1
             @battle.pbCommonAnimation("ParentalBond", user, targets)
         else
             @battle.pbAnimation(id, user, targets, hitNum)
@@ -211,6 +228,7 @@ target.pbThis(true)))
     #=============================================================================
     def pbImmunityByAbility(user, target, showMessages = true, aiCheck = false)
         return false if @battle.moldBreaker
+        return false if target.semiInvulnerable?
         target.eachAbilityShouldApply(aiCheck) do |ability|
             return true if BattleHandlers.triggerMoveImmunityTargetAbility(ability, user, target, self, @calcType, @battle, showMessages, aiCheck)
         end
@@ -325,6 +343,7 @@ target.pbThis(true)))
 
         if damageNegated?(user, target)
             target.damageState.displayedDamage = 0
+            target.damageState.hpLost = 0
             return
         end
 
@@ -410,6 +429,17 @@ target.pbThis(true)))
             end
         end
 
+        if user.hasActiveAbility?(:STAYOFEXECUTION) && sliceMove?
+            delayedDamage = damage
+            if delayedDamage > 0
+                target.effects[:DelayedDamage] = [] unless target.effectActive?(:DelayedDamage)
+                target.effects[:DelayedDamage].push([1,delayedDamage])
+                target.damageState.displayedDamage = 0
+                target.damageState.hpLost = 0
+                return
+            end
+        end
+
         target.damageState.displayedDamage = damage if damageAdjusted
         damage = 0 if damage < 0
         target.damageState.displayedDamage = 0 if target.damageState.displayedDamage < 0
@@ -460,10 +490,8 @@ target.pbThis(true)))
     #=============================================================================
     # Messages upon being hit
     #=============================================================================
-    def pbEffectivenessMessage(_user, target, numTargets = 1)
-        return if target.damageState.disguise
-        return if target.damageState.thiefsDiversion
-        return if target.effectActive?(:LastGasp)
+    def pbEffectivenessMessage(user, target, numTargets = 1)
+        return if damageNegated?(user, target)
         return if defined?($Options.effectiveness_messages) && $Options.effectiveness_messages == 1
         if Effectiveness.hyper_effective?(target.damageState.typeMod)
             if numTargets > 1
@@ -502,8 +530,7 @@ target.pbThis(true)))
     end
 
     def pbHitEffectivenessMessages(user, target, numTargets = 1)
-        return if target.damageState.disguise
-        return if target.damageState.thiefsDiversion
+        return if damageNegated?(user, target)
         if target.damageState.substitute
             @battle.pbDisplay(_INTL("The substitute took damage for {1}!", target.pbThis(true)))
         end
@@ -567,6 +594,8 @@ target.pbThis(true)))
             @battle.pbDisplay(_INTL("{1} blocked the hit with its item!", target.pbThis))
             target.removeNonInitialItems
             @battle.pbHideAbilitySplash(target)
+        elsif target.effectActive?(:LastGasp)
+            @battle.pbDisplay(_INTL("{1} is invulnerable to all damage!", target.pbThis))
         end        
     end
 

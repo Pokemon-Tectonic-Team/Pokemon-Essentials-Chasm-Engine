@@ -410,6 +410,7 @@ module Settings
             _INTL("Type"),
             _INTL("Tribe"),
             _INTL("Total"),
+            _INTL("Progression"),
         ]
     end
 end

@@ -12,6 +12,7 @@ class PokeBattle_Battler
     attr_accessor  :lastRoundMoved, :lastMoveFailed, :lastRoundMoveFailed, :movesUsed, :currentMove
     attr_accessor  :tookDamage, :tookPhysicalHit, :tookSpecialHit, :tookPhysicalHitLastRound, :tookSpecialHitLastRound
     attr_accessor :damageState, :initialHP, :lastRoundHighestTypeModFromFoe
+    attr_accessor :movesUsedThisTurn, :movesUsedLastTurn
 
     # Avatar stuff
     attr_accessor  :boss, :avatarPhase
@@ -56,9 +57,20 @@ class PokeBattle_Battler
     end
 
     def fainted?
-        return @hp <= 0 || afraid? || hasAbility?(:PACIFIST)
+        return @hp <= 0 || refusesToFight?
     end
     alias isFainted? fainted?
+
+    def refusesToFight?
+        return true if afraid?
+        idxTrainer = @battle.pbGetOwnerIndexFromBattlerIndex(index)
+        eachActiveAbility(true, ignoreGas:true) do |ability|
+            return true if BattleHandlers.triggerForbidsUserSwitchInAbility(
+                ability, @battle, self.pokemon, pbOwnSide.index, idxTrainer, pokemonIndex, false
+            )
+        end
+        return false
+    end
 
     def afraid?
         return false unless @pokemon

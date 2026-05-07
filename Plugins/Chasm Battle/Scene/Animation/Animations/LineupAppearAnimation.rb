@@ -82,7 +82,7 @@ class LineupAppearAnimation < PokeBattle_Animation
     idxParty = getPartyIndexFromBallIndex(idxBall)
     graphicFilename     = "Graphics/Pictures/Battle/icon_ball_empty"
     if idxParty>=0 && idxParty<@party.length && @party[idxParty]
-      if !@party[idxParty].able?
+      if !@party[idxParty].able?(false, GameData::Ability.getByFlag("UnableByDefault"))
         graphicFilename = "Graphics/Pictures/Battle/icon_ball_faint"
       elsif @party[idxParty].status != :NONE
         graphicFilename = "Graphics/Pictures/Battle/icon_ball_status"

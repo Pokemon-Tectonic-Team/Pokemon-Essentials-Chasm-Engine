@@ -383,7 +383,7 @@ class PokEstate
 		
 		actualEvent.pages[0] = firstPage
 		
-		event.floats = floatingPokemon?(pokemon)
+		event.floats = pokemon.canFloat?
 		
 		event.refresh()
 	end
@@ -518,6 +518,7 @@ class PokEstate
 		cmdDeleteMove = -1
 		cmdEvolve  = -1
 		cmdStyle = -1
+		cmdSwapAbility = -1
 		cmdOmnitutor = -1
 		cmdCancel = -1
 
@@ -527,6 +528,7 @@ class PokEstate
 		newspecies = pokemon.check_evolution_on_level_up(false)
 		commands[cmdEvolve = commands.length]   = _INTL("Evolve") if newspecies
 		commands[cmdStyle = commands.length]  	= _INTL("Set Style") if pbHasItem?(:STYLINGKIT)
+		commands[cmdSwapAbility = commands.length]  	= _INTL("Swap Ability") if pbHasItem?(:VIRALHELIX)
 
 		if $PokemonGlobal.omnitutor_active && !getOmniMoves(pokemon).empty?
 			commands[cmdOmnitutor = commands.length]	= _INTL("OmniTutor")
@@ -562,6 +564,8 @@ class PokEstate
 			end
 		elsif cmdStyle >= 0 && modifyCommand == cmdStyle
 			pbStyleValueScreen(pokemon)
+		elsif cmdSwapAbility >= 0 && modifyCommand == cmdSwapAbility
+			pbSwapAbility(pokemon)
 		elsif cmdOmnitutor >= 0 && modifyCommand == cmdOmnitutor
 			omniTutorScreen(pokemon)
 		elsif cmdCancel > -1 && modifyCommand == cmdCancel
@@ -574,14 +578,14 @@ class PokEstate
 		speciesData = GameData::Species.get(pokemon.species)
 		page.direction_fix = false
 		page.move_type = 1 # Random
-		page.step_anime = stepAnimation || floatingPokemon?(pokemon)
+		page.step_anime = stepAnimation || pokemon.canFloat?
 		page.move_frequency = [[speciesData.base_stats[:SPEED] / 25,0].max,5].min
 	end
 	
 	def setDownIntoEstate(pokemon)
 		return unless isInEstate?()
 		
-		if $Trainer.able_pokemon_count == 1 && pokemon.able?
+		if $Trainer.able_pokemon_count == 1 && pokemon.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
 			pbMessage(_INTL("Can't set down your last able Pokemon!"))
 			return false
 		end

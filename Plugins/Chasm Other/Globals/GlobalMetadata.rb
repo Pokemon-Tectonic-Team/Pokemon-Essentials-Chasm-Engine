@@ -22,6 +22,7 @@ class PokemonGlobalMetadata
     attr_accessor :stored_search
     attr_accessor :dex_forms_shows_shinies
     attr_accessor :dex_tutor_list_sort_mode
+    attr_accessor :dex_area_shows_map
     # Day Care
     attr_accessor :daycare
     attr_accessor :daycareEgg
@@ -36,6 +37,7 @@ class PokemonGlobalMetadata
     # Affecting the map
     attr_accessor :bridge
     attr_accessor :repel
+    attr_accessor :stealthSpray
     attr_accessor :flashUsed
     attr_accessor :encounter_version
     # Map transfers
@@ -69,6 +71,8 @@ class PokemonGlobalMetadata
     attr_accessor :chroma_clarion_recharge_steps
     # Cell booster
     attr_accessor :cell_booster_inactive
+    # Pokemon lure
+    attr_accessor :pokemon_lure_inactive
     # Ragged journal
     attr_accessor :ragged_journal_pages_collected
     # Randomizer
@@ -100,8 +104,6 @@ class PokemonGlobalMetadata
     attr_accessor :shouldProcWhitebloomCall
     attr_accessor :shouldProcEstateCall
     attr_accessor :shouldProcJovanCall
-    # Tournament
-    attr_accessor :tournament
     # Dragon flames
     attr_writer :dragonFlamesCount
     # Circuit puzzles
@@ -149,6 +151,7 @@ class PokemonGlobalMetadata
         # Affecting the map
         @bridge               = 0
         @repel                = 0
+        @stealthSpray         = 0
         @flashused            = false
         @encounter_version    = 0
         # Map transfers
@@ -186,6 +189,7 @@ class PokemonGlobalMetadata
         # Masterdex
         @stored_search		  = nil
         @dex_forms_shows_shinies = false
+        @dex_area_shows_map = false
         @dex_tutor_list_sort_mode = 0
 
         @omnitutor_active     = false
@@ -195,8 +199,6 @@ class PokemonGlobalMetadata
 
         # Achievements
         @capture_counts_per_ball = {}
-
-        @tournament = RandomTournament.new
 
         # Regi dungeon puzzles
         @dragonFlamesCount = 0
@@ -221,6 +223,14 @@ class PokemonGlobalMetadata
 		end
 		return pokedexStars[species]
 	end
+
+    def setStarred(species)
+        pokedexStars[species] = true
+    end
+
+    def setUnStarred(species)
+        pokedexStars[species] = false
+    end
 
 	def toggleStarred(species)
 		if !pokedexStars.has_key?(species)

@@ -259,10 +259,12 @@ class TilingCardsStorageInteractionMenu_Scene < TilingCardsMenu_Scene
 		cmdDeleteMove = -1
 		cmdEvolve  = -1
 		cmdStyle = -1
+		cmdSwapAbility = -1
 		cmdOmnitutor = -1
 	
 		# Build the commands
 		commands[cmdStyle = commands.length]        = _INTL("Set Style") if pbHasItem?(:STYLINGKIT)
+		commands[cmdSwapAbility = commands.length]        = _INTL("Swap Ability") if pbHasItem?(:VIRALHELIX)
 		if $PokemonGlobal.omnitutor_active && !getOmniMoves(@pkmn).empty?
 			commands[cmdOmnitutor = commands.length]	= _INTL("OmniTutor")
 		end
@@ -298,6 +300,8 @@ class TilingCardsStorageInteractionMenu_Scene < TilingCardsMenu_Scene
 			return true
 		elsif cmdStyle >= 0 && modifyCommand == cmdStyle
 			pbStyleValueScreen(@pkmn)
+		elsif cmdSwapAbility >= 0 && modifyCommand == cmdSwapAbility
+			pbSwapAbility(@pkmn)
 		elsif cmdOmnitutor >= 0 && modifyCommand == cmdOmnitutor
 			omniTutorScreen(@pkmn)
 		end

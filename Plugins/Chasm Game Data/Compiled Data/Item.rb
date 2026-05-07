@@ -60,8 +60,6 @@ module GameData
           prefix = "machine"
           if item_data.is_HM?
             prefix = "machine_hm"
-          elsif item_data.is_TR?
-            prefix = "machine_tr"
           end
           move_type = GameData::Move.get(item_data.move).type
           type_data = GameData::Type.get(move_type)
@@ -131,8 +129,6 @@ module GameData
       def name
         if is_TM?
           return _INTL("TM {1}",GameData::Move.get(@move).name)
-        elsif is_TR?
-          return _INTL("TR {1}",GameData::Move.get(@move).name)
         elsif is_HM?
           return _INTL("HM {1}",GameData::Move.get(@move).name)
         elsif @id == :AIDKIT && $PokemonGlobal && $PokemonGlobal.teamHealerUpgrades && $PokemonGlobal.teamHealerUpgrades > 0
@@ -147,8 +143,6 @@ module GameData
       def name_plural
         if is_machine?
           return _INTL("{1} TMs",GameData::Move.get(@move).name_plural)
-        elsif is_TR?
-          return _INTL("{1} TRs",GameData::Move.get(@move).name_plural)
         elsif is_HM?
           return _INTL("{1} HMs",GameData::Move.get(@move).name_plural)
         else
@@ -167,8 +161,7 @@ module GameData
   
       def is_TM?;                   return @field_use == 3; end
       def is_HM?;                   return @field_use == 4; end
-      def is_TR?;                   return @field_use == 6; end
-      def is_machine?;              return is_TM? || is_HM? || is_TR?; end
+      def is_machine?;              return is_TM? || is_HM?; end
       def machine_index
         return GameData::Item.getMachineIndex(@id)
       end

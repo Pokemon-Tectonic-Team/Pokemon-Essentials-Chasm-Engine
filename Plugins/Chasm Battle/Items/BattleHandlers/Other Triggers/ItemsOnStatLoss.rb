@@ -13,6 +13,8 @@ BattleHandlers::ItemOnStatLoss.add(:EJECTPACK,
       battle.pbRecallAndReplace(battler.index, newPkmn)
       battle.pbClearChoice(battler.index) # Replacement Pokémon does nothing this round
       switched.push(battler.index)
-      battler.pbEffectsOnSwitchIn(true)
+      # NOTE: pbEffectsOnSwitchIn is called by the triggering context (triggersOnStatLoss
+      # or pbEffectsAfterMove2), not here, to match the pattern used by Eject Button/Red Card
+      # and to prevent double switch-in effects when triggered from pbEffectsAfterMove2.
   }
 )

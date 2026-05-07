@@ -46,14 +46,14 @@ class PokeBattle_Battle
                 numPartic = 0
                 b.participants.each do |partic|
                     next unless p1[partic] && pbIsOwner?(0, partic)
-                    next unless p1[partic].able? || Settings::FAINTED_POKEMON_EARN_EXP
+                    next unless p1[partic].able?(false, GameData::Ability.getByFlag("UnableByDefault")) || Settings::FAINTED_POKEMON_EARN_EXP
                     numPartic += 1
                 end
                 # Find which Pokémon have an Exp Share
                 expShare = []
                 unless expAll
                     eachInTeam(0, 0) do |pkmn, i|
-                        next unless pkmn.able? || Settings::FAINTED_POKEMON_EARN_EXP
+                        next unless pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault")) || Settings::FAINTED_POKEMON_EARN_EXP
                         next unless pkmn.hasItem?(:EXPSHARE)
                         expShare.push(i)
                     end
@@ -62,7 +62,7 @@ class PokeBattle_Battle
                 if numPartic > 0 || expShare.length > 0 || expAll
                     # Gain Exp for participants
                     eachInTeam(0, 0) do |pkmn, i|
-                        next unless pkmn.able? || Settings::FAINTED_POKEMON_EARN_EXP
+                        next unless pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault")) || Settings::FAINTED_POKEMON_EARN_EXP
                         next unless b.participants.include?(i) || expShare.include?(i)
                         pbGainExpOne(i, b, numPartic, expShare, expAll, hasExpJAR)
                     end
@@ -70,7 +70,7 @@ class PokeBattle_Battle
                     if expAll
                         showMessage = true
                         eachInTeam(0, 0) do |pkmn, i|
-                            next unless pkmn.able? || Settings::FAINTED_POKEMON_EARN_EXP
+                            next unless pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault")) || Settings::FAINTED_POKEMON_EARN_EXP
                             next if b.participants.include?(i) || expShare.include?(i)
                             pbDisplayPaused(_INTL("Your party Pokémon in waiting also got Exp. Points!")) if showMessage
                             showMessage = false
@@ -116,16 +116,11 @@ class PokeBattle_Battle
         end
         return if exp <= 0
         # Pokémon gain more Exp from trainer battles
-        if trainerBattle? || defeatedBattler.boss?
+        if trainerBattle? || (defeatedBattler.boss? && defeatedBattler.species_data.isLegendary?)
             exp *= 1.5
-            if $PokemonBag.pbHasItem?(:PERFORMANCEANALYZER2)
-                exp *= 1.1
-            elsif $PokemonBag.pbHasItem?(:PERFORMANCEANALYZER)
-                exp *= 1.0
-            end
-            exp = exp.floor
         end
-        exp /= 5
+        exp *= 1.1 if $PokemonBag.pbHasItem?(:PERFORMANCEANALYZER2)
+        exp = (exp/5.0).floor
         # Scale the gained Exp based on the gainer's level (or not)
         if Settings::SCALED_EXP_FORMULA
             levelAdjust = (2 * level + 10.0) / (pkmn.level + level + 10.0)

@@ -49,6 +49,8 @@ class PokeBattle_Battler
         return false unless affectedByWeatherDownsides?(checkingForAI)
         return false if shouldTypeApply?(:FAIRY, checkingForAI) || shouldTypeApply?(:DARK, checkingForAI)
         return false if shouldAbilityApply?(GameData::Ability.getByFlag("MoonglowSynergy"), checkingForAI)
+        return false if hasActiveItem?(:COURAGEBADGE)
+        return false if effectActive?(:FlinchImmunity)
         return true
     end
 end

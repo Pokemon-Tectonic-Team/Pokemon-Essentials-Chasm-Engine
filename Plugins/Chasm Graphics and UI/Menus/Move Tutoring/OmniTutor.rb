@@ -4,16 +4,13 @@ def useOmniTutor()
 		return
 	end
 
-    while true do
-        pbChoosePokemon(1,3,proc{|p|
-            p.can_omni_tutor?
-        },false)
-        if $game_variables[1] < 0
-            break
-        else
-            omniTutorScreen(pbMapInterpreter.pbGetPokemon(1))
-        end
+    canOmniTutorProc = proc do |pkmn|
+        pkmn.can_omni_tutor?
     end
+    learnFromOmniTutorProc = proc do |pkmn|
+        omniTutorScreen(pkmn)
+    end
+    pbChoosePokemonRepeatedly(learnFromOmniTutorProc, canOmniTutorProc)
 end
 
 def getTMLearnableMoves
@@ -45,7 +42,10 @@ def getOmniMoves(pkmn)
 end
 
 def omniTutorScreen(pkmn)
-    return moveLearningScreen(pkmn,getOmniMoves(pkmn),true)
+    getOmniMovesProc = proc do |pokemon|
+        getOmniMoves(pokemon)  
+    end
+    return moveLearningScreen(pkmn, getOmniMovesProc, addFirstMove: true)
 end
 
 class Pokemon

@@ -7,6 +7,16 @@ class PokeBattle_Move_TwoTurnAttack < PokeBattle_Move
         @exhaustionTracker = :HyperBeam
     end
 
+    def exhaustionTracker
+        return @exhaustionTracker
+    end
+
+    def exhaustingMove?; return true; end
+
+    def consumesItem?(user)
+        user.hasActiveItemAI?(:ENERGYHERB)
+    end
+
     def pbEffectGeneral(user)
         if user.hasActiveItem?(:ENERGYHERB)
             @battle.pbCommonAnimation("UseItem", user)
@@ -114,7 +124,7 @@ class PokeBattle_Move_TwoTurnAttackBurnTarget < PokeBattle_TwoTurnMove
 end
 
 #===============================================================================
-# Cures NVSC and sleeps on 1st Turn and Attacks on 2nd (Wakeful Tide)
+# Cures NVSC and sleeps on 1st Turn and Attacks on 2nd
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackChargeSleep < PokeBattle_TwoTurnMove
     def usableWhenAsleep?; return true; end
@@ -324,16 +334,6 @@ end
 class PokeBattle_Move_TwoTurnAttackInvulnerableUnderwater < PokeBattle_Move_TwoTurnAttackInvulnerable
     def pbChargingTurnMessage(user, _targets)
         @battle.pbDisplay(_INTL("{1} hid underwater!", user.pbThis))
-        if user.canGulpMissile?
-            user.form = 2
-            user.form = 1 if user.hp > (user.totalhp / 2)
-            @battle.scene.pbChangePokemon(user, user.pokemon)
-        end
-    end
-
-    def getEffectScore(user, _target)
-        return 40 if user.canGulpMissile?
-        return 0
     end
 end
 

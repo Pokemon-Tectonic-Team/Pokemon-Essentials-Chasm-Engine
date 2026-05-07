@@ -176,46 +176,6 @@
       end
     }
   })
-  
-  DebugMenuCommands.register("animeditor", {
-    "parent"      => "editorsmenu",
-    "name"        => _INTL("Battle Animation Editor"),
-    "description" => _INTL("Edit the battle animations."),
-    "always_show" => true,
-    "effect"      => proc {
-      pbFadeOutIn { pbAnimationEditor }
-    }
-  })
-  
-  DebugMenuCommands.register("animorganiser", {
-    "parent"      => "editorsmenu",
-    "name"        => _INTL("Battle Animation Organiser"),
-    "description" => _INTL("Rearrange/add/delete battle animations."),
-    "always_show" => true,
-    "effect"      => proc {
-      pbFadeOutIn { pbAnimationsOrganiser }
-    }
-  })
-  
-  DebugMenuCommands.register("importanims", {
-    "parent"      => "editorsmenu",
-    "name"        => _INTL("Import All Battle Animations"),
-    "description" => _INTL("Import all battle animations from the \"Animations\" folder."),
-    "always_show" => true,
-    "effect"      => proc {
-      pbImportAllAnimations
-    }
-  })
-  
-  DebugMenuCommands.register("exportanims", {
-    "parent"      => "editorsmenu",
-    "name"        => _INTL("Export All Battle Animations"),
-    "description" => _INTL("Export all battle animations individually to the \"Animations\" folder."),
-    "always_show" => true,
-    "effect"      => proc {
-      pbExportAllAnimations
-    }
-  })
 
   DebugMenuCommands.register("consolidateeggmoves", {
     "parent"      => "editorsmenu",
@@ -299,26 +259,31 @@
     "effect"      => proc {
       nameToReplace = pbEnterText(_INTL("Enter name to replace."),0,40)
       nameToSet = pbEnterText(_INTL("Enter name to put in."),0,40)
-      mapData = Compiler::MapData.new
-      for id in mapData.mapinfos.keys.sort
-          map = mapData.getMap(id)
-          next if !map || !mapData.mapinfos[id]
-          mapName = mapData.mapinfos[id].name
-          changed = false
-          for key in map.events.keys
-              event = map.events[key]
-              next if !event || event.pages.length==0
-              event.pages.each do |page|
-                next if nil_or_empty?(page.graphic.character_name)
-                next unless page.graphic.character_name == nameToReplace
-                page.graphic.character_name = nameToSet
-                changed = true
-              end
-          end
-          mapData.saveMap(id) if changed
-      end
+      swapEventGraphicsOnAllMaps(nameToReplace, nameToSet)
     }
   })
+
+def swapEventGraphicsOnAllMaps(nameToReplace, nameToSet, mapNameIncludes = nil)
+  mapData = Compiler::MapData.new
+  for id in mapData.mapinfos.keys.sort
+      map = mapData.getMap(id)
+      next if !map || !mapData.mapinfos[id]
+      mapName = mapData.mapinfos[id].name
+      next if mapNameIncludes && !mapName.downcase.include?(mapNameIncludes.downcase)
+      changed = false
+      for key in map.events.keys
+          event = map.events[key]
+          next if !event || event.pages.length==0
+          event.pages.each do |page|
+            next if nil_or_empty?(page.graphic.character_name)
+            next unless page.graphic.character_name == nameToReplace
+            page.graphic.character_name = nameToSet
+            changed = true
+          end
+      end
+      mapData.saveMap(id) if changed
+  end
+end
 
 DebugMenuCommands.register("tileset_rearranger", {
   "parent"      => "editorsmenu",

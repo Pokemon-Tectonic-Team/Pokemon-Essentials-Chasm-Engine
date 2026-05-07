@@ -36,7 +36,7 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:MONKEYMISCHIEF,
       next if switched.include?(user.index)
       next unless move.damagingMove?
       next unless user.activatesTargetAbilities?
-      next if battle.foretoldMove
+      next if user.dummy
       move.knockOffItems(target, user, ability: ability, firstItemOnly: true)
   }
 )
@@ -46,7 +46,7 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:MOONLIGHTER,
       next if switched.include?(user.index)
       next unless move.damagingMove?
       next unless user.activatesTargetAbilities?
-      next if battle.foretoldMove
+      next if user.dummy
       next unless battle.moonGlowing?
       item = user.firstItem
       if move.canStealItem?(user,target, item)
@@ -79,10 +79,32 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:PLASMAGLOBE,
   }
 )
 
+BattleHandlers::TargetAbilityAfterMoveUse.add(:PRMIVALSWORDBREAKER,
+  proc { |ability, target, user, move, _switched, battle|
+      next unless move.damagingMove?
+      next if target.damageState.unaffected
+      next if target.damageState.totalHPLost < 120
+      next if user.effectActive?(:Fracture)
+      battle.pbShowAbilitySplash(target, ability)
+      user.applyEffect(:Fracture, applyEffectDurationModifiers(DEFAULT_FRACTURE_DURATION, target))
+      battle.pbHideAbilitySplash(target)
+  }
+)
+
 BattleHandlers::TargetAbilityAfterMoveUse.add(:ABOVEITALL,
   proc { |ability, target, user, move, _switched, battle|
       next if target.fainted?
       next unless target.damageState.totalHPLost > 0
       battle.forceUseMove(target, :PARTINGSHOT, user.index, ability: ability)
   }
+)
+
+BattleHandlers::TargetAbilityAfterMoveUse.add(:FRIGIDREFLECTION,
+    proc { |ability, target, user, move, _switched, battle|
+        next unless move.specialMove?
+        next if target.fainted?
+        next unless user.activatesTargetAbilities?
+        next if target.damageState.calcDamage == 0 || target.damageState.substitute
+        battle.forceUseMove(target, move.id, user.index, ability: ability)
+    }
 )

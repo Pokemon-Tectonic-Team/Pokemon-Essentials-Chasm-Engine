@@ -1263,3 +1263,26 @@ def pbChoosePokemonForTrade(variableNumber,nameVarNumber,wanted)
 		next pkmn.species==wanted
 	})
 end
+
+# Choose a Pokémon in the party, then run the given proc, passing in the chosen Pokemon
+# Keep doing so until the player exits
+def pbChoosePokemonRepeatedly(selectionProc, ableProc = nil)
+	pbFadeOutIn {
+		scene = PokemonParty_Scene.new
+		screen = PokemonPartyScreen.new(scene,$Trainer.party)
+    screen.pbStartScene(_INTL("Choose a Pokémon."),false) unless ableProc
+    loop do
+      if ableProc
+        chosen = screen.pbChooseAblePokemon(ableProc)
+      else
+        chosen = screen.pbChoosePokemon
+      end
+      chosenPokemon = $Trainer.party[chosen]
+      if chosen < 0 || chosenPokemon.nil?
+        screen.pbEndScene
+        break
+      end
+      selectionProc.call(chosenPokemon)
+    end
+	}
+end

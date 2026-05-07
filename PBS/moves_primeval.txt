@@ -11,7 +11,7 @@ Accuracy = 100
 TotalPP = 1
 Target = NearOther
 FunctionCode = EmpoweredSlash
-Flags = CanProtect,Blade,Empowered
+Flags = CanProtect,Slice,Empowered
 Description = The target is attacked with a slash of claws or blades, always critting.
 Animation = SLASH
 #-------------------------------
@@ -175,7 +175,7 @@ Accuracy = 0
 TotalPP = 1
 Target = UserSide
 FunctionCode = EmpoweredTailwind
-Flags = Empowered
+Flags = Wind,Empowered
 Description = The user sets a powerful tailwind for 6 turns, which also increases move damage by 30%. User becomes Flying-type.
 Animation = TAILWIND
 #-------------------------------
@@ -216,8 +216,7 @@ Accuracy = 100
 TotalPP = 1
 Target = AllNearFoes
 FunctionCode = 645
-Flags = CanProtect,Blade,Empowered
-EffectChance = 10
+Flags = CanProtect,Slice,Empowered
 Description = The user slashes all near foes with with poisonous blades or edges. Will be critical against poisoned targets.
 Animation = CROSSPOISON
 #-------------------------------
@@ -250,7 +249,7 @@ Description = The user raises its Attack, Defense, and Accuracy by two steps. Ad
 Name = Primeval Grey Mist
 Type = POISON
 Category = Status
-Accuracy = 100
+Accuracy = 0
 TotalPP = 1
 Target = User
 FunctionCode = EmpoweredGreyMist
@@ -279,7 +278,7 @@ TotalPP = 1
 Target = FoeSide
 FunctionCode = EmpoweredPoisonSpikes
 Flags = Empowered
-Description = The user lays 2 hazard layers of poison spikes on the foe's side. User becomes Poison-type.
+Description = The user lays two hazard layers of poison spikes on the foe's side. User becomes Poison-type.
 Animation = TOXICSPIKES
 #-------------------------------
 #		GROUND MOVES
@@ -330,7 +329,7 @@ TotalPP = 1
 Target = FoeSide
 FunctionCode = EmpoweredSpikes
 Flags = Empowered
-Description = The user lays 3 hazard layers of Spikes on the foe's side. User becomes Ground-type.
+Description = The user lays three hazard layers of Spikes on the foe's side. User becomes Ground-type.
 Animation = SPIKES
 #-------------------------------
 [WARPINGCORE]
@@ -489,7 +488,7 @@ Target = NearOther
 Priority = 1
 FunctionCode = EmpoweredBulletPunch
 Flags = CanProtect,Punch,Empowered
-Description = The user strikes the target with 3 punches like bullets. This move always goes first.
+Description = The user strikes the target with three punches like bullets. This move always goes first.
 Animation = BULLETPUNCH
 #-------------------------------
 [EMPOWEREDMETALCLAW]
@@ -543,6 +542,19 @@ FunctionCode = EmpoweredLaserFocus
 Flags = Empowered
 Description = The user focuses intently, making every future attack critical. User becomes Steel-type.
 Animation = LASERFOCUS
+#-------------------------------
+[PRIMEVALMIRRORSHIELD]
+Name = Primeval Mirror Shield
+Type = STEEL
+Category = Status
+Accuracy = 0
+TotalPP = 1
+Target = User
+Priority = 4
+FunctionCode = EmpoweredMirrorShield
+Flags = Empowered
+Description = The user raises its Sp. Def by two steps and gains the ability Feedback. User becomes Steel-type.
+Animation = MIRRORSHIELD
 #-------------------------------
 [PRIMEVALPOLARIZEDROOM]
 Name = Primeval Polarized Room
@@ -607,7 +619,7 @@ TotalPP = 1
 Target = FoeSide
 FunctionCode = EmpoweredFlameSpikes
 Flags = Empowered
-Description = The user lays 2 hazard layers of burning spikes on the foe's side. User becomes Fire-type.
+Description = The user lays two hazard layers of burning spikes on the foe's side. User becomes Fire-type.
 Animation = FLAMESPIKES
 #-------------------------------
 [PRIMEVALIGNITE]
@@ -647,7 +659,7 @@ Target = AllNearFoes
 FunctionCode = EmpoweredBubbleBeam
 Flags = CanProtect,Empowered
 EffectChance = 100
-Description = A spray of bubbles is forcefully ejected at all nearby foes. This lowers their Speed by 3 steps.
+Description = A spray of bubbles is forcefully ejected at all nearby foes. This lowers their Speed by three steps.
 Animation = BUBBLEBEAM
 #-------------------------------
 [EMPOWEREDSURF]
@@ -673,7 +685,7 @@ Target = User
 FunctionCode = EmpoweredFlowState
 Flags = Empowered
 EffectChance = 100
-Description = The user TODO, boosts its Atk. and Sp. Def, and becomes a Water-type.
+Description = The user enters a state of total focus, prevents stat steps from being lowered, raises Attack and Sp. Def, and becomes Water-type.
 Animation = FLOWSTATE
 #-------------------------------
 [PRIMEVALRAINSTORM]
@@ -723,7 +735,7 @@ TotalPP = 1
 Target = AllNearFoes
 FunctionCode = EmpoweredBulletSeed
 Flags = CanProtect,Empowered
-Description = The user forcefully shoots 6 seeds in rapid succession, spread among nearby enemies.
+Description = The user forcefully shoots six seeds in rapid succession, spread among nearby enemies.
 Animation = BULLETSEED
 #-------------------------------
 [EMPOWEREDGIGADRAIN]
@@ -752,6 +764,18 @@ Flags = CanProtect,Light,Empowered
 Description = The user charges by gathering light, then blasts all near foes on the second turn.
 Animation = SOLARBEAM
 #-------------------------------
+[PRIMEVALAROMATHERAPY]
+Name = Primeval Aromatherapy
+Type = GRASS
+Category = Status
+Accuracy = 0
+TotalPP = 1
+Target = UserAndAllies
+FunctionCode = EmpoweredAromatherapy
+Flags = Empowered
+Description = The user heals all non-volatile status conditions affecting their party, gains the ability Stability, and heals itself for 25% HP. User becomes Grass-type.
+Animation = AROMATHERAPY
+#-------------------------------
 [PRIMEVALINGRAIN]
 Name = Primeval Ingrain
 Type = GRASS
@@ -775,6 +799,19 @@ FunctionCode = EmpoweredLeechSeed
 Flags = CanProtect,Empowered
 Description = The user inflicts leech on all nearby foes. User becomes Grass-type.
 Animation = LEECHSEED
+#-------------------------------
+[PRIMEVALSPIKYSHIELD]
+Name = Primeval Spiky Shield
+Type = GRASS
+Category = Status
+Accuracy = 0
+TotalPP = 1
+Target = User
+Priority = 4
+FunctionCode = EmpoweredSpikyShield
+Flags = Empowered
+Description = The user raises its Defense by two steps and gains the ability Iron Barbs. User becomes Grass-type.
+Animation = SPIKYSHIELD
 #-------------------------------
 [PRIMEVALSPORE]
 Name = Primeval Spore
@@ -832,7 +869,7 @@ Type = ELECTRIC
 Category = Status
 Accuracy = 0
 TotalPP = 1
-Target = BothSides
+Target = AllNearFoes
 FunctionCode = EmpoweredNumb
 Flags = Empowered
 Description = The user inflicts numb on all nearby foes. User becomes Electric-type.
@@ -898,7 +935,7 @@ TotalPP = 1
 Target = User
 FunctionCode = EmpoweredMagicCoat
 Flags = Empowered
-Description = Bounces back status moves for the next 3 turns. User becomes Psychic-type.
+Description = Bounces back status moves for the next three turns. User becomes Psychic-type.
 Animation = MAGICCOAT
 #-------------------------------
 [PRIMEVALMINDLINK]
@@ -934,7 +971,7 @@ TotalPP = 1
 Target = AllNearFoes
 FunctionCode = EmpoweredPacify
 Flags = Empowered
-Description = The user employs hypnotic suggestion to make a statused target fall into a deep sleep. User becomes Psychic-type.
+Description = The user employs hypnotic suggestion to make all nearby statused foes fall into a deep sleep. User becomes Psychic-type.
 Animation = HYPNOSIS
 #-------------------------------
 #		ICE MOVES
@@ -974,7 +1011,7 @@ TotalPP = 1
 Target = FoeSide
 FunctionCode = EmpoweredFrostSpikes
 Flags = Empowered
-Description = The user lays 2 hazard layers of frozen spikes on the foe's side. User becomes Ice-type.
+Description = The user lays two hazard layers of frozen spikes on the foe's side. User becomes Ice-type.
 Animation = FROSTSPIKES
 #-------------------------------
 [PRIMEVALHAIL]
@@ -1030,6 +1067,18 @@ EffectChance = 100
 Description = The user exhales a mighty gust that inflicts damage and numbs the target.
 Animation = DRAGONBREATH
 #-------------------------------
+[IDEALWORLD]
+Name = Ideal World
+Type = DRAGON
+Category = Status
+Accuracy = 0
+TotalPP = 3
+Target = AllBattlers
+FunctionCode = AddSteelTypeToTargetResetTargetStats
+Flags = AvatarSignature
+Description = A move that only the avatar of Zekrom can use. All battlers gain Steel-type and have their stat changes reset.
+Animation = TRICKROOM
+#-------------------------------
 [PRIMEVALDRAGONDANCE]
 Name = Primeval Dragon Dance
 Type = DRAGON
@@ -1053,6 +1102,18 @@ FunctionCode = EmpoweredLoomOver
 Flags = Empowered
 Description = The user lowers each near foe's highest stat by four steps. User becomes Dragon-type.
 Animation = LOOMOVER
+#-------------------------------
+[TRUEGLORY]
+Name = True Glory
+Type = DRAGON
+Category = Status
+Accuracy = 0
+TotalPP = 3
+Target = AllBattlers
+FunctionCode = RaiseTargetAllMainStats2
+Flags = AvatarSignature
+Description = A move that only the avatar of Reshiram can use. All battlers have all of their stats raised by two steps.
+Animation = WISH
 #-------------------------------
 #		DARK MOVES
 #-------------------------------

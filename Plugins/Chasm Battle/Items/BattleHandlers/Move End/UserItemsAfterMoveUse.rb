@@ -41,7 +41,7 @@ BattleHandlers::UserItemAfterMoveUse.add(:THROATSPRAY,
 BattleHandlers::UserItemAfterMoveUse.add(:WHETSTONE,
     proc { |item, user, _targets, move, numHits, battle|
         next if battle.pbAllFainted?(user.idxOwnSide) || battle.pbAllFainted?(user.idxOpposingSide)
-        next unless move.bladeMove?
+        next unless move.sliceMove?
         next if numHits == 0
         user.pbHeldItemTriggered(item) if user.tryRaiseStat(:ATTACK, user, item: item, increment: 2)
     }
@@ -88,6 +88,7 @@ BattleHandlers::UserItemAfterMoveUse.add(:WHITENINGPASTE,
         next unless move.bitingMove?
         next if numHits == 0
         user.pbHeldItemTriggered(item)
+        battle.pbDisplay(_INTL("{1}'s {2} reflected a blinding glare!", user.pbThis, getItemName(item)))
         user.eachOpposing do |b|
             b.applyEffect(:Blindness)
         end
@@ -99,6 +100,7 @@ BattleHandlers::UserItemAfterMoveUse.add(:FLASHBULB,
         next unless move.lightMove?
         next if numHits == 0
         user.pbHeldItemTriggered(item)
+        battle.pbDisplay(_INTL("{1}'s {2} burst in a blinding flash!", user.pbThis, getItemName(item)))
         user.eachOpposing do |b|
             b.applyEffect(:Blindness)
         end

@@ -180,3 +180,21 @@ class PokeBattle_Move_StartUserSideLessDamageFromNonAttackDamage < PokeBattle_Mo
         return getNaturalProtectionEffectScore(user, applyEffectDurationModifiers(@enchantmentDuration, user))
     end
 end
+
+#===============================================================================
+# Sets a coral overgrowth on the opposite side for the next 4 turns. (Coral Overgrowth)
+#===============================================================================
+class PokeBattle_Move_CoralOvergrowth < PokeBattle_Move
+    def initialize(battle, move)
+        super
+        @coralDuration = 5
+    end
+
+    def pbEffectGeneral(user)
+        user.pbOpposingSide.applyEffect(:CoralOvergrowth, applyEffectDurationModifiers(@coralDuration, user))
+    end
+
+    def getEffectScore(user, _target)
+        return 100
+    end
+end

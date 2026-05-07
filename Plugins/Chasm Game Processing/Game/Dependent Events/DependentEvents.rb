@@ -614,10 +614,20 @@ class DependentEvents
                     "Graphics/Characters/", "")
                 events[k][6] = fname
                 @realEvents[k].character_name = fname
-                @realEvents[k].floats = floatingPokemon?(params[5])
+                @realEvents[k].floats = params[5].canFloat?
             end
             return
         end
+    end
+
+    def update_opacity
+        events = $PokemonGlobal.dependentEvents
+        for k in 0...events.length
+            if events[k] && events[k][8][/FollowerPkmn/i]
+                @realEvents[k].opacity = stealthSprayActive? ? STEALTH_SPRAY_OPACITY : 255
+            end
+            return
+        end 
     end
 
     # Adds step animation for followers and update their speed
@@ -667,6 +677,7 @@ class DependentEvents
                            first_pkmn.gender, first_pkmn.shiny?,
                            false,first_pkmn])
         end
+        update_opacity
         if ret
             $PokemonTemp.dependentEvents.start_stepping
         else
@@ -675,7 +686,7 @@ class DependentEvents
         return ret
     end
 
-    # Command to update follower/ make it reappear
+    # Command to set a move route for all follower pokemon
     def set_move_route(commands, waitComplete = true)
         events = $PokemonGlobal.dependentEvents
         for i in 0...events.length

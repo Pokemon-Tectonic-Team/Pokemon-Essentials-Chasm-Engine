@@ -36,7 +36,7 @@ class PokeBattle_Move_CureUserPartyStatus < PokeBattle_Move
     end
 
     def validPokemon(pkmn)
-        return pkmn&.able? && pkmn.status != :NONE
+        return pkmn&.able?(true, GameData::Ability.getByFlag("UnableByDefault")) && pkmn.status != :NONE
     end
 
     def pbEffectGeneral(user)
@@ -77,6 +77,25 @@ class PokeBattle_Move_CureUserPartyStatus < PokeBattle_Move
             score += statusScore
         end
         return score
+    end
+end
+
+# Empowered Aromatherapy
+class PokeBattle_Move_EmpoweredAromatherapy < PokeBattle_Move_CureUserPartyStatus
+    include EmpoweredMove
+
+    def healingMove?; return true; end
+
+    def pbEffectGeneral(user)
+        super
+        user.applyFractionalHealing(1.0/4.0, user: user) unless user.fainted?
+        user.addAbility(:STABILITY, true)
+        transformType(user, :GRASS)
+    end
+
+    def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
+        super
+        @battle.pbDisplay(_INTL("A soothing aroma wafted through the area!"))
     end
 end
 
@@ -123,7 +142,7 @@ class PokeBattle_Move_CureUserPartyStatusDamagingMove < PokeBattle_Move
         # NOTE: This intentionally affects the partner trainer's inactive Pokémon
         #       too.
         @battle.pbParty(user.index).each_with_index do |pkmn, i|
-            next if !pkmn || !pkmn.able?
+            next if !pkmn || !pkmn.able?(true, GameData::Ability.getByFlag("UnableByDefault"))
             next if @battle.pbFindBattler(i, user) # Skip Pokémon in battle
             healStatus(pkmn)
         end

@@ -50,11 +50,13 @@ class PokeBattle_Move_Defog < PokeBattle_Move
 
     def getEffectScore(user, target)
         score = 0
+        ourSide   = user.pbOwnSide
+        targetSide = user.pbOpposingSide
         # Dislike removing hazards that affect the enemy
-        score -= 0.8 * hazardWeightOnSide(target.pbOwnSide) if target.alliesInReserve?
+        score -= 0.8 * hazardWeightOnSide(targetSide) if user.alliesInReserve?
         # Like removing hazards that affect us
-        score += hazardWeightOnSide(target.pbOpposingSide) if user.alliesInReserve?
-        target.pbOwnSide.eachEffect(true) do |effect, value, data|
+        score += hazardWeightOnSide(ourSide) if user.alliesInReserve?
+        targetSide.eachEffect(true) do |effect, value, data|
             next unless data.is_screen? || @miscEffects.include?(effect)
 			case value
 				when 2

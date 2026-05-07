@@ -3,6 +3,7 @@
 #===============================================================================
 class PokemonBoxArrow < SpriteWrapper
     attr_accessor :quickswap
+    attr_accessor :multiselect
 
     def initialize(viewport = nil)
         super(viewport)
@@ -10,19 +11,21 @@ class PokemonBoxArrow < SpriteWrapper
         @holding       = false
         @updating      = false
         @quickswap     = false
+        @multiselect   = false
         @grabbingState = 0
         @placingState  = 0
         @heldpkmn      = nil
         @handsprite    = ChangelingSprite.new(0, 0, viewport)
-        @handsprite.addBitmap("point1", "Graphics/Pictures/Storage/cursor_point_1")
-        @handsprite.addBitmap("point2", "Graphics/Pictures/Storage/cursor_point_2")
-        @handsprite.addBitmap("grab", "Graphics/Pictures/Storage/cursor_grab")
-        @handsprite.addBitmap("fist", "Graphics/Pictures/Storage/cursor_fist")
-        @handsprite.addBitmap("point1q", "Graphics/Pictures/Storage/cursor_point_1_q")
-        @handsprite.addBitmap("point2q", "Graphics/Pictures/Storage/cursor_point_2_q")
-        @handsprite.addBitmap("grabq", "Graphics/Pictures/Storage/cursor_grab_q")
-        @handsprite.addBitmap("fistq", "Graphics/Pictures/Storage/cursor_fist_q")
-        @handsprite.changeBitmap("fist")
+        arrowGraphics = ["point_1","point_2","grab","fist"]
+        suffixes = ["","_q","_m"]
+        arrowGraphics.each do |graphicName|
+            suffixes.each do |suffix|
+                nameWithSuffix = "#{graphicName}#{suffix}"
+                path = "Graphics/Pictures/Storage/cursor_#{nameWithSuffix}"
+                @handsprite.addBitmap(nameWithSuffix, path) 
+            end 
+        end
+        modifyHandSprite("fist")
         @spriteX = self.x
         @spriteY = self.y
     end
@@ -118,6 +121,12 @@ class PokemonBoxArrow < SpriteWrapper
         @heldpkmn.release if @heldpkmn
     end
 
+    def modifyHandSprite(graphicName)
+        graphicName += "_q" if @quickswap
+        graphicName += "_m" if @multiselect
+        @handsprite.changeBitmap(graphicName)
+    end
+
     def update
         @updating = true
         super
@@ -127,12 +136,12 @@ class PokemonBoxArrow < SpriteWrapper
         @holding = false unless heldpkmn
         if @grabbingState > 0
             if @grabbingState <= 4 * Graphics.frame_rate / 20
-                @handsprite.changeBitmap(@quickswap ? "grabq" : "grab")
+                modifyHandSprite("grab")
                 self.y = @spriteY + 4.0 * @grabbingState * 20 / Graphics.frame_rate
                 @grabbingState += 1
             elsif @grabbingState <= 8 * Graphics.frame_rate / 20
                 @holding = true
-                @handsprite.changeBitmap(@quickswap ? "fistq" : "fist")
+                modifyHandSprite("fist")
                 self.y = @spriteY + 4 * (8 * Graphics.frame_rate / 20 - @grabbingState) * 20 / Graphics.frame_rate
                 @grabbingState += 1
             else
@@ -140,27 +149,27 @@ class PokemonBoxArrow < SpriteWrapper
             end
         elsif @placingState > 0
             if @placingState <= 4 * Graphics.frame_rate / 20
-                @handsprite.changeBitmap(@quickswap ? "fistq" : "fist")
+                modifyHandSprite("fist")
                 self.y = @spriteY + 4.0 * @placingState * 20 / Graphics.frame_rate
                 @placingState += 1
             elsif @placingState <= 8 * Graphics.frame_rate / 20
                 @holding = false
                 @heldpkmn = nil
-                @handsprite.changeBitmap(@quickswap ? "grabq" : "grab")
+                modifyHandSprite("grab")
                 self.y = @spriteY + 4 * (8 * Graphics.frame_rate / 20 - @placingState) * 20 / Graphics.frame_rate
                 @placingState += 1
             else
                 @placingState = 0
             end
         elsif holding?
-            @handsprite.changeBitmap(@quickswap ? "fistq" : "fist")
+            modifyHandSprite("fist")
         else
             self.x = @spriteX
             self.y = @spriteY
             if @frame < Graphics.frame_rate / 2
-                @handsprite.changeBitmap(@quickswap ? "point1q" : "point1")
+                modifyHandSprite("point_1")
             else
-                @handsprite.changeBitmap(@quickswap ? "point2q" : "point2")
+                modifyHandSprite("point_2")
             end
         end
         @frame += 1

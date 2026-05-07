@@ -7,7 +7,7 @@ end
 DebugMenuCommands.register("findtextinevents", {
     "parent"      => "analysis",
     "name"        => _INTL("Find Text In Events"),
-    "description" => _INTL("Find events which have a peice of text in the params of their command list."),
+    "description" => _INTL("Find events which have a piece of text in the params of their command list."),
     "effect"      => proc { |sprites, viewport|
         textEntered = pbEnterText("Enter text...", 0, 32)
 
@@ -45,7 +45,7 @@ end
 DebugMenuCommands.register("replacetextinevents", {
     "parent"      => "analysis",
     "name"        => _INTL("Replace Text In Events"),
-    "description" => _INTL("Find events which have a peice of text in the params of their command list, and replace them with a new string."),
+    "description" => _INTL("Find events with a piece of text in their command params, replace with new string."),
     "effect"      => proc { |sprites, viewport|
         textEntered = pbEnterText("Enter text to replace...", 0, 32)
 
@@ -383,7 +383,7 @@ end
           file.write("Move, Type, Category, Level Up Count, Tutor Count, Same-Type Count, Off-type Count\r\n")
           move_counts.each do |move_id,counts|
               moveData = GameData::Move.get(move_id)
-              categoryLabel = ["PHYSICAL","SPECIAL","STATUS"][moveData.category]
+              categoryLabel = ["PHYSICAL","SPECIAL","STATUS","ADAPTIVE"][moveData.category]
               file.write("#{move_id},#{moveData.type},#{categoryLabel},#{counts[0]},#{counts[1]},#{counts[2]},#{counts[3]}\r\n")
           end
       }
@@ -396,13 +396,20 @@ end
     "name"        => _INTL("Count ability use"),
     "description" => _INTL("Count the number of uses of each ability by fully evolved base forms."),
     "effect"      => proc { |sprites, viewport|
-        echoln("AbilityName,Non-legend Count,Legend Count")
+        echoln("AbilityName,Total Count,Non-legend Count,Legend Count,Species List")
         abilityCounts = getAbilityCounts()
-        abilityCounts.each do |ability,count|
-          echoln("#{ability},#{count[0]},#{count[1]}")
-      end
+        abilityCounts.each do |ability,counts|
+            nonLegendCount = counts[0].length
+            legendCount = counts[1].length
+            fullList = counts[0].concat(counts[1])
+            nameArray = []
+            fullList.each do |speciesID|
+                nameArray.push(GameData::Species.get(speciesID).name)             
+            end
+            echoln("#{ability},#{nonLegendCount+legendCount},#{nonLegendCount},#{legendCount},#{nameArray.join(";")}")
+        end
   
-      pbMessage(_INTL("Printed out ability counts to the console."))
+        pbMessage(_INTL("Printed out ability counts to the console."))
     }
   })
   
@@ -767,7 +774,7 @@ end
   
   def checkTrainerPokemonLegality(pkmn,trainerInfo)
       species_data = GameData::Species.get_species_form(pkmn.species,pkmn.form)
-      if pkmn.species != :SMEARGLE
+      unless pkmn.species_data.can_learn_sketch?
           pkmn.moves.each do |move|
               next unless move
               next if pkmn.species_data.learnable_moves.include?(move.id)

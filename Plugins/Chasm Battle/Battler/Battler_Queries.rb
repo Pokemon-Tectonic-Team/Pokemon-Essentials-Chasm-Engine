@@ -343,7 +343,7 @@ class PokeBattle_Battler
             end
         end
         if %i[FRAGILELOCKET LUNCHBOX].include?(checkitem)
-            @battle.pbDisplay(_INTL("But {1} hold's tightly onto its {2}!", pbThis(false), getItemName(checkitem))) if showMessages
+            @battle.pbDisplay(_INTL("But {1} holds tightly onto its {2}!", pbThis(false), getItemName(checkitem))) if showMessages
             return true
         end
         # Other unlosable items
@@ -506,7 +506,7 @@ class PokeBattle_Battler
     def usingMultiTurnAttack?
         @effects.each do |effect, value|
             effectData = GameData::BattleEffect.get(effect)
-            next unless effectData.multi_turn_tracker? && !effectActive?(:RampageLocked)
+            next unless effectData.multi_turn_tracker? && !effectActive?(:RampageLocked) && !effectActive?(:BypassExhaustion)
             return true if effectData.active_value?(value)
         end
         return false
@@ -684,7 +684,7 @@ class PokeBattle_Battler
             return !hasAlly?
         end
         return false if fainted?
-        return @battle.pbGetOwnerFromBattlerIndex(@index).able_pokemon_count == 1
+        return @battle.pbGetOwnerFromBattlerIndex(@index).alive_pokemon_count == 1
     end
 
     def protectedAgainst?(user, move)
@@ -703,7 +703,7 @@ class PokeBattle_Battler
     end
 
     def canGulpMissile?
-        return @species == :CRAMORANT && hasActiveAbility?(:GULPMISSILE) && @form.zero?
+        return @species == :CRAMORANT && @form.zero?
     end
 
     def bunkeringDown?(checkingForAI = false)
@@ -1067,4 +1067,15 @@ class PokeBattle_Battler
             yield move, index
         end
     end
+
+    def mentalBlockActiveAI?
+        return hasActiveAbility?(GameData::Ability.getByFlag("MentalBlocking"))
+    end
+
+    def hasMentalEffect?
+        eachEffect(true) do |_effect, _value, data|
+        return true if data.is_mental?
+    end
+    return false
+  end
 end

@@ -85,7 +85,7 @@ def introduceAvatar(species,form=0)
 end
 
 def introduceAvatarQuicker(species,form=0)
-	$game_screen.start_shake(5, 5, 2 * Graphics.frame_rate)
+	$game_screen.start_shake(5, 5, 0.5 * Graphics.frame_rate)
 	quickCry(species, form)
 end
 

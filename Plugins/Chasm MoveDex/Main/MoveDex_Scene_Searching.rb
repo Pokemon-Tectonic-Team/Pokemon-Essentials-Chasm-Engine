@@ -110,6 +110,8 @@ class MoveDex_Scene
         cmdUninvocable  = -1
         cmdInvertList   = -1
         cmdEffectChance = -1
+        cmdCustomAnimation = -1
+        cmdCanon        = -1
         miscSearches[cmdTag = miscSearches.length]              = _INTL("Tag")
         miscSearches[cmdBasePower = miscSearches.length]        = _INTL("Base Power")
         miscSearches[cmdAccuracy = miscSearches.length]         = _INTL("Accuracy")
@@ -121,6 +123,8 @@ class MoveDex_Scene
         miscSearches[cmdNotes = miscSearches.length]            = _INTL("Has Notes")
         miscSearches[cmdLearnableOwned = miscSearches.length]   = _INTL("Learnable By")
         miscSearches[cmdUninvocable = miscSearches.length]      = _INTL("Uninvocable")
+        miscSearches[cmdCustomAnimation = miscSearches.length]  = _INTL("Custom Animation")
+        miscSearches[cmdCanon = miscSearches.length]            = _INTL("Canon")
         miscSearches[cmdInvertList = miscSearches.length]       = _INTL("Invert Current")
         miscSearches.push(_INTL("Cancel"))
         searchSelection = pbMessage(_INTL("Which search?"), miscSearches, miscSearches.length + 1)
@@ -148,6 +152,10 @@ class MoveDex_Scene
             return searchByUninvocability
         elsif cmdInvertList > -1 && searchSelection == cmdInvertList
             return invertSearchList
+        elsif cmdCustomAnimation > -1 && searchSelection == cmdCustomAnimation
+            return searchByCustomAnimation
+        elsif cmdCanon > -1 && searchSelection == cmdCanon
+            return searchByCanon
         end
     end
 
@@ -361,6 +369,34 @@ class MoveDex_Scene
 
         dexlist = dexlist.find_all do |dex_item|
             next !canInvokeMove?(dex_item[:move])
+        end
+        return dexlist
+    end
+
+    def searchByCanon
+        choices = [_INTL("Yes"), _INTL("No"), _INTL("Cancel")]
+        selection = pbMessage(_INTL("Is Canon?"), choices, choices.length)
+        return nil if selection == choices.length - 1
+
+        dexlist = searchStartingList
+
+        dexlist = dexlist.find_all do |dex_item|
+            next dex_item[:data].canon_move? ^ (selection == 1)
+        end
+        return dexlist
+    end
+
+    def searchByCustomAnimation
+        choices = [_INTL("Does"), _INTL("Doesn't"), _INTL("Cancel")]
+        selection = pbMessage(_INTL("Has Custom Animation?"), choices, choices.length)
+        return nil if selection == choices.length - 1
+
+        moveAnims = pbLoadMoveToAnim
+
+        dexlist = searchStartingList
+
+        dexlist = dexlist.find_all do |dex_item|
+            next  moveAnims[0][dex_item[:data].id_number].nil? ^ (selection == 0)
         end
         return dexlist
     end

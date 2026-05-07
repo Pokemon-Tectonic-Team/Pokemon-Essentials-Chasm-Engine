@@ -107,13 +107,13 @@ class Player_Quests
         @failed_quests.push(temp_quest)
         @active_quests.delete_at(i)
         found = true
-        unless skipAlert
-          questAlert(_INTL("Quest failed:"),quest)
-        end
         break
       end
     end
     @failed_quests.push(Quest.new(quest,color,story)) unless found
+    unless skipAlert
+      questAlert(_INTL("Quest failed:"),quest)
+    end
     return true
   end
   

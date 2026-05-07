@@ -23,7 +23,7 @@ PokEstate::LoadDataDependentAwards += proc {
 ##############################################
 # TRIBE REWARDS (22 of them)
 ##############################################
-tribeThreshold = [50]
+tribeThreshold = [100]
 tribeRewards = [[:EXPCANDYXL,4]]
 
 PokEstate::LoadDataDependentAwards += proc {
@@ -304,4 +304,29 @@ PokEstate::LoadDataDependentAwards += proc {
             }
         }
     )
+}
+
+##############################################
+# Level cap completion
+##############################################
+
+PokEstate::LoadDataDependentAwards += proc {
+    [15,20,25,30,35,40,45,50,55,60,65,70].each do |levelCap|
+        id = ("LEVELCAP" + levelCap.to_s + "AWARD").to_sym
+        PokEstate::GrantAwards.add(id,
+            proc { |pokedex|
+                itemsGiven = candiesForLevel(levelCap)
+                for i in 0...itemsGiven.length/2
+                    itemsGiven[i*2 + 1] *= 4 # Worth four trainer perfects / two saccharite deposits
+                end
+                next {
+                    reward: itemsGiven,
+                    description: _INTL("Level cap {1}",levelCap),
+                    page: 5,
+                    threshold: levelCap,
+                    amount: getLevelCap(),
+                }
+            }
+        )
+    end
 }

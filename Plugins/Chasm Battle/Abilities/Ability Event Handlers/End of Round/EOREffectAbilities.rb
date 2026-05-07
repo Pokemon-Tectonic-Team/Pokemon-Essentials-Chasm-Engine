@@ -105,7 +105,7 @@ BattleHandlers::EOREffectAbility.add(:EXTREMEPOWER,
   }
 )
 
-BattleHandlers::EOREffectAbility.copy(:EXTREMEPOWER,:EXTREMEVOLTAGE,:LIVEFAST,:BURDENED)
+BattleHandlers::EOREffectAbility.copy(:EXTREMEPOWER,:EXTREMEVOLTAGE,:LIVEFAST,:BURDENED,:FADINGFURY)
 
 BattleHandlers::EOREffectAbility.add(:TENDERIZE,
   proc { |ability, battler, battle|
@@ -142,6 +142,22 @@ BattleHandlers::EOREffectAbility.add(:FLOURISHING,
   }
 )
 
+BattleHandlers::EOREffectAbility.add(:PRIMEVALFLOURISHING,
+  proc { |ability, battler, battle|
+      # A Pokémon's turnCount is 0 if it became active after the beginning of a
+      # round
+      next if battler.turnCount == 0
+      next unless %i[PUMPKABOO GOURGEIST].include?(battler.species)
+      next if battler.form == 3
+      battle.pbShowAbilitySplash(battler, ability)
+      formChangeMessage = _INTL("{1} grows one size bigger!", battler.pbThis)
+      battler.pbChangeForm(battler.form + 1, formChangeMessage)
+      battler.pbRaiseMultipleStatSteps(ALL_STATS_1, battler, ability: ability)
+      battle.pbDisplay(_INTL("{1} is fully grown!", battler.pbThis)) if battler.form == 3
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
 NOXIOUS_DAMAGE_FRACTION = 1.0/12.0
 
 BattleHandlers::EOREffectAbility.add(:NOXIOUS,
@@ -162,6 +178,29 @@ BattleHandlers::EOREffectAbility.add(:NOXIOUS,
     battler.hideMyAbilitySplash
   }
 )
+
+PERSONAL_DEMESNE_DAMAGE_FRACTION = 1.0/10.0
+
+BattleHandlers::EOREffectAbility.add(:PERSONALDEMESNE,
+  proc { |ability, battler, battle|
+    next unless battle.roomActive?
+    anyPresent = false
+    battler.eachOpposing do |b|
+      anyPresent = true
+      break
+    end
+    next unless anyPresent
+    battler.showMyAbilitySplash(ability)
+    battler.eachOpposing do |b|
+      if b.takesIndirectDamage?(true)
+        battle.pbDisplay(_INTL("{1} is hurt by the foreboding presence!", b.pbThis))
+        b.applyFractionalDamage(PERSONAL_DEMESNE_DAMAGE_FRACTION, false)
+      end
+    end
+    battler.hideMyAbilitySplash
+  }
+)
+
 
 BattleHandlers::EOREffectAbility.add(:FIREFESTIVAL,
   proc { |ability, battler, battle|
@@ -223,5 +262,29 @@ BattleHandlers::EOREffectAbility.add(:OSCILLATION,
   battler.invertStatSteps(false)
   battle.pbDisplay(_INTL("{1} turns upside down! Its stat steps are inverted!", battler.pbThis))
   battler.hideMyAbilitySplash
+  }
+)
+
+BattleHandlers::EOREffectAbility.add(:PILEON,
+  proc { |ability, battler, battle|
+    if battler.turnCount != 0 && battler.turnCount % 3 == 0
+      battler.showMyAbilitySplash(ability)
+      if battler.effectAtMax?(:Stockpile)
+        battle.pbDisplay(_INTL("{1} would have gathered power, but it can't stockpile any more!", battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1} gathered up more power!", battler.pbThis))
+        battler.incrementEffect(:Stockpile)
+      end
+      battler.hideMyAbilitySplash
+    end
+  }
+)
+
+BattleHandlers::EOREffectAbility.add(:INSCRUTABLEORDERS,
+  proc { |ability, battler, battle|
+    next if battler.effectActive?(:Torment)
+    battle.pbShowAbilitySplash(battler, ability)
+    battler.applyEffect(:Torment)
+    battle.pbHideAbilitySplash(battler)
   }
 )

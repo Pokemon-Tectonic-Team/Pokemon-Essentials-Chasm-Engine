@@ -1,13 +1,12 @@
 module CableClub
-  # Do not change
-  PUBLIC_HOST = "34.61.122.15"
+  PUBLIC_HOST = "YOUR_IP_HERE"
   LOCAL_HOST = "127.0.0.1"
 
   DEV_PORT = 9998
   LIVE_PORT = 9999
 
   # Change if testing locally or connecting to 3rd party server
-  HOST = PUBLIC_HOST
+  HOST = LOCAL_HOST
   PORT = Settings::DEV_VERSION ? DEV_PORT : LIVE_PORT
 
   UNSAFE_CHARACTERS = ["\\", ","]
@@ -35,7 +34,7 @@ module CableClub
     _INTL("Well that's a downer..."),
     _INTL("You truly are a strong opponent."),
     _INTL("Seems like my Pokémon weren't enough to defeat you."),
-    _INTL("A loss... I've still got to get used to do that."),
+    _INTL("A loss... I've still got to get used to that."),
     _INTL("Well played..." )
   ]
   

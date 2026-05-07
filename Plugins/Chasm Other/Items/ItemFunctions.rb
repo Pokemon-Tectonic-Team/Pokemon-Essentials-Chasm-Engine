@@ -356,11 +356,11 @@ def pbUseItem(bag,item,bagscene=nil)
     end
     machine = itm.move
     return 0 unless machine
-    if pbMoveTutorChoose(machine,nil,true,itm.is_TR?)
-      bag.pbDeleteItem(item) if itm.is_TR?
+    if pbMoveTutorChoose(machine, byMachine: true)
       return 1
+    else
+      return 0
     end
-    return 0
   elsif useType==1 || useType==5   # Item is usable on a Pokémon
     if $Trainer.pokemon_count == 0
       pbMessage(_INTL("There is no Pokémon."))
@@ -434,10 +434,7 @@ def pbUseItemOnPokemon(item,pkmn,scene = nil)
     if !pkmn.compatible_with_move?(machine)
       pbMessage(_INTL("{1} can't learn {2}.",pkmn.name,movename)) { scene&.pbUpdate }
     else
-      if pbLearnMove(pkmn,machine,false,true,true) { scene&.pbUpdate }
-        $PokemonBag.pbDeleteItem(item) if itm.is_TR?
-        return true
-      end
+      return true if pbLearnMove(pkmn,machine,false,true,true) { scene&.pbUpdate }
     end
     return false
   end

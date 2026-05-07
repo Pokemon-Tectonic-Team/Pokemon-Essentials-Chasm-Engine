@@ -134,18 +134,20 @@ module GameData
         @@monumentTrainers.push(self) if @monumentTrainer
 
         @pokemon.each do |partyEntry|
-            next if partyEntry[:species] == :SMEARGLE
-            trainerName = "#{@trainer_type} #{@real_name}"
             speciesData = GameData::Species.get_species_form(partyEntry[:species],partyEntry[:form] || 0)
+            next if speciesData.can_learn_sketch?
+            trainerName = "#{@trainer_type} #{@real_name}"
             hasStatusMove = false
             partyEntry[:moves]&.each do |moveID|
                 moveData = GameData::Move.get(moveID)
-                unless moveData.learnable?
-                  Compiler.logLegalityError _INTL("Illegal move #{moveID} learnable by a party member of trainer #{trainerName}!")
-                end
+                unless @policies.include?(:ALLOW_ILLEGAL_MOVES)
+                  unless moveData.learnable?
+                    Compiler.logLegalityError _INTL("Illegal move #{moveID} learnable by a party member of trainer #{trainerName}!")
+                  end
 
-                unless speciesData.learnable_moves.include?(moveID)
-                  Compiler.logLegalityError _INTL("Trainer #{trainerName}'s #{speciesData.species} can't learn the move #{moveID} assigned to it!")
+                  unless speciesData.learnable_moves.include?(moveID)
+                    Compiler.logLegalityError _INTL("Trainer #{trainerName}'s #{speciesData.species} can't learn the move #{moveID} assigned to it!")
+                  end
                 end
 
                 hasStatusMove = true if moveData.status?

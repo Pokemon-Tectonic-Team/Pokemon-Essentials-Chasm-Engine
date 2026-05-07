@@ -97,6 +97,14 @@ class Trainer
       @party.each { |p| ret += 1 if p && p.able? }
       return ret
     end
+
+    # Counts party members that are alive (HP > 0, not afraid, not egg),
+    # regardless of ability-based restrictions like PACIFIST or UnableByDefault.
+    def alive_pokemon_count
+      ret = 0
+      @party.each { |p| ret += 1 if p && !p.fainted? }
+      return ret
+    end
   
     def party_full?
       return party_count >= Settings::MAX_PARTY_SIZE
@@ -158,7 +166,7 @@ class Trainer
     # Checks whether the trainer would still have an unfainted Pokémon if the
     # Pokémon given by _index_ were removed from the party.
     def has_other_able_pokemon?(index)
-      @party.each_with_index { |pkmn, i| return true if i != index && pkmn.able? }
+      @party.each_with_index { |pkmn, i| return true if i != index && pkmn.able?}
       return false
     end
   
