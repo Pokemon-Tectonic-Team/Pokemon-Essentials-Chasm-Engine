@@ -132,7 +132,11 @@ class PokeBattle_Battle
     def pbAbleCount(idxBattler = 0)
         party = pbParty(idxBattler)
         count = 0
-        party.each_with_index { |pkmn, i| count += 1 if pkmn && pkmn.able?(false, getAbleParametersByBattlerIndex(i, idxBattler)) }
+        wild_side = wildBattle? && idxBattler % 2 == 1
+        party.each_with_index do |pkmn, i|
+            able_params = wild_side ? GameData::Ability.getByFlag("UnableByDefault") : getAbleParametersByBattlerIndex(i, idxBattler)
+            count += 1 if pkmn && pkmn.able?(false, able_params)
+        end
         return count
     end
 
@@ -141,8 +145,10 @@ class PokeBattle_Battle
         inBattleIndices = []
         eachSameSideBattler(idxBattler) { |b| inBattleIndices.push(b.pokemonIndex) }
         count = 0
+        wild_side = wildBattle? && idxBattler % 2 == 1
         party.each_with_index do |pkmn, idxParty|
-            next if !pkmn || !pkmn.able?(false, getAbleParametersByBattlerIndex(idxParty, idxBattler))
+            able_params = wild_side ? GameData::Ability.getByFlag("UnableByDefault") : getAbleParametersByBattlerIndex(idxParty, idxBattler)
+            next if !pkmn || !pkmn.able?(false, able_params)
             next if inBattleIndices.include?(idxParty)
             count += 1
         end
@@ -166,7 +172,10 @@ class PokeBattle_Battle
                 idxTeam += 1
                 nextStart = (idxTeam < partyStarts.length - 1) ? partyStarts[idxTeam + 1] : party.length
             end
-            next if !pkmn || !pkmn.able?(false, getAbleParameters(i, side, pbGetOwnerIndexFromBattlerIndex(side)))
+            # Wild Pokémon appear in battle regardless of UnableByDefault restrictions,
+            # so bypass that check when counting the wild side's participants.
+            able_params = (wildBattle? && side == 1) ? GameData::Ability.getByFlag("UnableByDefault") : getAbleParameters(i, side, pbGetOwnerIndexFromBattlerIndex(side))
+            next if !pkmn || !pkmn.able?(false, able_params)
             ret[idxTeam] = 0 unless ret[idxTeam]
             ret[idxTeam] += 1
         end
