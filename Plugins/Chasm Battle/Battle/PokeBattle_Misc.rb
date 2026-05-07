@@ -400,8 +400,9 @@ class PokeBattle_Battle
                 end
             end
 
-            # If no same-type replacement found, replace from the back (lowest priority)
-            unless replacement_index
+            # If no same-type replacement found and the guess is full, displace the
+            # lowest-priority non-confirmed move to make room
+            if replacement_index.nil? && currentBestGuess.length >= 4
                 (currentBestGuess.length - 1).downto(0) do |index|
                     unless definiteKnowledge.include?(currentBestGuess[index]) or insertedMoveIndices.include?(index)
                         insertedMoveIndices.push(index)
@@ -411,11 +412,10 @@ class PokeBattle_Battle
                 end
             end
 
-            # Replace the slot if we found one
+            # Replace an existing slot, or just append if there's still room
             if replacement_index
                 currentBestGuess[replacement_index] = knownMoveID
             elsif currentBestGuess.length < 4
-                # If no replacement needed and we have room, just add it
                 currentBestGuess.push(knownMoveID)
             end
         end
