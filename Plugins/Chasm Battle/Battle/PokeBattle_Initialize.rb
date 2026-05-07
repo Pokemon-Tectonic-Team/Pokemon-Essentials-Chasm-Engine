@@ -277,11 +277,15 @@ class PokeBattle_Battle
         # Priority 1: All signature moves
         guess.concat(signature_moves)
 
-        # Priority 2: One STAB move per type (highest level for each type), skipping types already covered by a signature move
-        signature_types = signature_moves.map { |id| GameData::Move.get(id).type }.uniq
+        # Priority 2: One STAB move per type (highest level for each type), skipping types already
+        # covered by a damaging signature move (a status signature doesn't make a STAB redundant)
+        signature_damaging_types = signature_moves.filter_map { |id|
+            data = GameData::Move.get(id)
+            data.type unless data.category == 2
+        }.uniq
         remaining_slots = 4 - guess.length
         if remaining_slots > 0
-            stab_moves = stab_moves_by_type.reject { |type, _| signature_types.include?(type) }.values
+            stab_moves = stab_moves_by_type.reject { |type, _| signature_damaging_types.include?(type) }.values
             guess.concat(stab_moves.take(remaining_slots))
         end
 
