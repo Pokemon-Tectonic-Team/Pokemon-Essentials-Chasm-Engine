@@ -915,9 +915,9 @@ BattleHandlers::UserAbilityEndOfMove.add(:SWORDHORNSTYLE,
       next if target.damageState.missed || target.damageState.unaffected
       if target.effectActive?(:SwordHorn)
         target.pbInflictStatus(:NUMB, 0, nil, user) if target.pbCanInflictStatus?(:NUMB, user, true)
-        unless target.pbOwnSide.effectActive?(:Sanctuary)
-            battle.pbAnimation(:SANCTUARY, target, nil)
-            target.pbOwnSide.applyEffect(:Sanctuary, user.getScreenDuration(3))
+        unless user.pbOwnSide.effectActive?(:Sanctuary)
+            battle.pbAnimation(:SANCTUARY, user, nil)
+            user.pbOwnSide.applyEffect(:Sanctuary, user.getScreenDuration(3))
         end
         target.disableEffect(:SwordHorn)
       else
