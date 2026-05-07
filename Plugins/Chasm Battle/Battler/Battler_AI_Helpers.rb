@@ -81,7 +81,7 @@ class PokeBattle_Battler
     end
 
     def unknownMovesCountAI
-        movesNotKnownByAICount = 4
+        movesNotKnownByAICount = getMoves.compact.length
         eachAIKnownMove do |_move|
             movesNotKnownByAICount -= 1
         end
@@ -100,9 +100,20 @@ class PokeBattle_Battler
     # Iterate what the AI believes the player's Pokemon can do (for player-owned battlers)
     def eachGuessedMove
         return if movesHiddenByIllusion?
-        @battle.aiKnownMoves(@pokemon).each do |id|
+        guessedIDs = @battle.aiKnownMoves(@pokemon)
+        guessedIDs.each do |id|
             move = @battle.getBattleMoveInstanceFromID(id)
             next unless move
+            yield move
+        end
+        # Also yield extra moves that getMoves adds beyond the base move slots
+        # (e.g. Insight Room's 5th move, PURESTLIGHT's signature move).
+        # These come from visible game state so the AI can always determine them.
+        normalMoveIDs = @moves.compact.map(&:id)
+        getMoves.each do |move|
+            next unless move
+            next if normalMoveIDs.include?(move.id)  # Part of the hidden actual moveset
+            next if guessedIDs.include?(move.id)     # Already yielded above
             yield move
         end
     end

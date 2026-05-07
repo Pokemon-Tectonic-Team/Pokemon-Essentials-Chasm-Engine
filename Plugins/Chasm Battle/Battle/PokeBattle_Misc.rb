@@ -366,13 +366,15 @@ class PokeBattle_Battle
             echoln("[AI LEARNING] The AI now definitely knows #{battler.pbThis(true)}'s move #{getMoveName(moveID)}")
 
             # Rebuild the current best guess
-            rebuildCurrentBestGuess(pokemon)
+            rebuildCurrentBestGuess(battler)
         end
     end
 
     # Rebuild the current best guess by smartly replacing initial guess with definite knowledge
-    def rebuildCurrentBestGuess(pokemon)
+    def rebuildCurrentBestGuess(battler)
+        pokemon = battler.pokemon
         personalID = pokemon.personalID
+        maxMoves = battler.getMoves.compact.length
         initialGuess = @initialMoveGuess[personalID] || []
         definiteKnowledge = @definiteMoveKnowledge[personalID] || []
 
@@ -410,7 +412,7 @@ class PokeBattle_Battle
 
             # If no same-type replacement found and the guess is full, displace the
             # lowest-priority non-confirmed move to make room
-            if replacement_index.nil? && currentBestGuess.length >= 4
+            if replacement_index.nil? && currentBestGuess.length >= maxMoves
                 (currentBestGuess.length - 1).downto(0) do |index|
                     unless definiteKnowledge.include?(currentBestGuess[index]) or insertedMoveIndices.include?(index)
                         insertedMoveIndices.push(index)
@@ -423,7 +425,7 @@ class PokeBattle_Battle
             # Replace an existing slot, or just append if there's still room
             if replacement_index
                 currentBestGuess[replacement_index] = knownMoveID
-            elsif currentBestGuess.length < 4
+            elsif currentBestGuess.length < maxMoves
                 currentBestGuess.push(knownMoveID)
             end
         end
