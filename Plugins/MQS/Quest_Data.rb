@@ -33,7 +33,7 @@ module QuestModule
   QUEST_SKYLER = {
     :Name => _INTL("Dear Iconoclast"),
     :Stage1 => _INTL("Find him in Velenz."),
-    :Stage2 => _INTL("Find him north east."),
+    :Stage2 => _INTL("Find him south east."),
     :Stage3 => _INTL("Find him after your 7th badge."),
     :Stage4 => _INTL("Find him after the tournament."),
     :Location1 => _INTL("Velenz"),
