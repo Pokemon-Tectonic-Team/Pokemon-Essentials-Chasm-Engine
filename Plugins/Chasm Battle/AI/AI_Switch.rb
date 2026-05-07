@@ -496,14 +496,17 @@ class PokeBattle_AI
     end
 
     def highestMoveScoreForBattler(battler, opposingBattler: nil, killInfoArray: [])
-        choices, killInfo = pbGetBestTrainerMoveChoices(battler, opposingBattler: opposingBattler, killInfoArray: killInfoArray)
-
-        maxScore = 0
-        bestMove = nil
-        choices.each do |c|
-            next unless c[1] > maxScore
-            maxScore = c[1]
-            bestMove = battler.getMoves[c[0]].id
+        if battler.pbOwnedByPlayer?
+            maxScore, bestMove, killInfo = pbScorePredictedPlayerMoves(battler, opposingBattler: opposingBattler, killInfoArray: killInfoArray)
+        else
+            choices, killInfo = pbGetBestTrainerMoveChoices(battler, opposingBattler: opposingBattler, killInfoArray: killInfoArray)
+            maxScore = 0
+            bestMove = nil
+            choices.each do |c|
+                next unless c[1] > maxScore
+                maxScore = c[1]
+                bestMove = battler.getMoves[c[0]]&.id
+            end
         end
         if opposingBattler
             echoln("[MOVES SCORING] #{battler.pbThis}'s best move against target #{opposingBattler.pbThis(true)} is #{bestMove} at score #{maxScore}")
