@@ -2330,7 +2330,7 @@ Pokemon = CINCCINO,70
 Pokemon = DELCATTY,70
     AbilityIndex = 0 # Above It All
 #-------------------------------
-[COOLTRAINER_F,Zinnia]
+[DRAGONTAMER_F,Zinnia]
 TrainerTypeLabel = DEVELOPER
 Pokemon = GALVANTULA,70
     Moves = THUNDERBOLT,ENVENOM,BUGBUZZ,STINGINGJEALOUSY
@@ -2754,7 +2754,7 @@ Pokemon = UNOWN,70
     Moves = SECRETPOWER,DISCOVEREDPOWER
     AbilityIndex = 0 # Accumulation
 #-------------------------------
-[BEAUTY5,Bella]
+[DRAGONTAMER_F,Bella]
 TrainerTypeLabel = DEVELOPER
 Policies = ECLIPSE_TEAM
 Pokemon = INDEEDEE,70
