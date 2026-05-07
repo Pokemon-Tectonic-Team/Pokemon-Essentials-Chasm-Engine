@@ -2190,6 +2190,13 @@ GameData::BattleEffect.register_effect(:Battler, {
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
+    :id => :HitAndRunSwitch,
+    :real_name => "Hit and Run Switch",
+    :info_displayed => false,
+    :resets_eor => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
     :id => :MisdirectingFogSelected,
     :real_name => "Selected for Misdirecting Fog Switch",
 })

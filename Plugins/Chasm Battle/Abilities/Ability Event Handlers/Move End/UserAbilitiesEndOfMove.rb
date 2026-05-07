@@ -952,8 +952,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:HITANDRUN,
   proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
-      if (targets.any? { |b| b.knockedBelowHalf? })
-        next battle.triggeredSwitchOut(user.index, ability: ability)
-      end
+      next unless targets.any? { |b| b.knockedBelowHalf? }
+      user.applyEffect(:HitAndRunSwitch)
   }
 )
