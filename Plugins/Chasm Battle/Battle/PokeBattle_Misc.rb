@@ -338,6 +338,16 @@ class PokeBattle_Battle
         end
     end
 
+    def aiTransformed(battler)
+        return unless battler.pbOwnedByPlayer?
+        return if battler.boss?
+        personalID = battler.pokemon.personalID
+        @initialMoveGuess[personalID]      = []
+        @definiteMoveKnowledge[personalID] = []
+        @currentBestMoveGuess[personalID]  = []
+        echoln("[AI LEARNING] #{battler.pbThis(true)} transformed — move knowledge reset")
+    end
+
     def aiSeesMove(battler, moveID)
         return unless battler.pbOwnedByPlayer?
         return if battler.boss?
