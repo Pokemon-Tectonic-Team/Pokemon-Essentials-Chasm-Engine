@@ -629,6 +629,13 @@ BaseMoney = 32
 IntroBGM = ACETRAINER
 CableClub = true
 #-------------------------------
+[DRAGONTAMER_F]
+Name = Dragon Tamer
+Gender = Female
+BaseMoney = 32
+IntroBGM = ACETRAINER
+CableClub = true
+#-------------------------------
 [ELDER]
 Name = Elder
 Gender = Male
