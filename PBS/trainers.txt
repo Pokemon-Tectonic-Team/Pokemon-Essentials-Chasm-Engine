@@ -1093,7 +1093,7 @@ Pokemon = NINETALES,35
     Moves = CRIMSONSTORM,DAZZLINGGLEAM,SWEETKISS,DISABLE
     AbilityIndex = 0 # Cursed Tail
 Pokemon = NOIVERN,35
-    Moves = SCOUR,AIRSLASH,SUPERSONIC,GIGADRAIN
+    Moves = SCOUR,SONICSHRIEK,SUPERSONIC,GIGADRAIN
     AbilityIndex = 0 # Loud
 Pokemon = LEAVANNY,35
     Moves = LEAFBLADE,RAKE,STICKYWEB,FLOWSTATE
@@ -1855,8 +1855,8 @@ Pokemon = XATU,35
     AbilityIndex = 1 # Harbinger
     Item = PINPOINTROCK
 Pokemon = NOIVERN,35
-    Moves = SCOUR,AIRSLASH,MEGADRAIN,SUPERSONIC
-    AbilityIndex = 0 # Loud
+    Moves = SCOUR,AIRSLASH,SONICSHRIEK,SUPERSONIC
+    AbilityIndex = 1 # Fell Omen
 Pokemon = FORRETRESS,35
     Moves = SPIKECANNON,PINMISSILE,SPIKES,RAPIDSPIN
     AbilityIndex = 1 # Weathered
@@ -1906,7 +1906,7 @@ Pokemon = DRUDDIGON,55
     Moves = STANDTOGETHER,FLAMETHROWER,CRUELTY
     AbilityIndex = 1 # Well Suited
 Pokemon = NOIVERN,55
-    Moves = GIGADRAIN,AIRSLASH,SCOUR
+    Moves = GIGADRAIN,SONICSHRIEK,GUTTURALROAR
     AbilityIndex = 0 # Loud
 #-------------------------------
 [SAGE,Rennyo,1]
@@ -5350,7 +5350,7 @@ Pokemon = LANTURN,64
     AbilityIndex = 0 # Volt Absorb
     Item = CHOICESPECS
 Pokemon = NOIVERN,63
-    Moves = SCOUR,GIGADRAIN,AIRSLASH
+    Moves = GUTTURALROAR,HYPERVOICE,SONICSHRIEK
     AbilityIndex = 0 # Loud
     Item = DRAGONGEM
 #-------------------------------
