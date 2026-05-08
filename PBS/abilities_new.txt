@@ -2544,7 +2544,7 @@ Description = Moves that use stats other than the default deal 50% more damage.
 #-------------------------------
 [UNDYINGRAGE]
 Name = Undying Rage
-Description = This Pokémon cannot faint while rampaging, and rampages for an additional turn.
+Description = If this Pokemon would faint while rampaging, it faints when the rampage ends instead. Its rampages last an additional turn.
 #-------------------------------
 [UNFAZED]
 Name = Unfazed
