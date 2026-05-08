@@ -3707,14 +3707,14 @@ Pokemon = FARIGIRAF,45
     AbilityIndex = 0 # Cud Chew
     Item = SITRUSBERRY
 Pokemon = BEARTIC,45
-    Moves = ICEHAMMER,DRAINPUNCH,POISONJAB
+    Moves = ICEHAMMER,DRAINPUNCH,POISONJAB,AQUAJET
     AbilityIndex = 1 # Chronic Cold
     Item = WHITEHERB
 Pokemon = DEWGONG,45
-    Moves = FRIGIDFLURRY,SURF,CHILL
+    Moves = FRIGIDFLURRY,SURF,CHILL,FRIGIDJEALOUSY
     AbilityIndex = 0 # Cold-blooded
 Pokemon = DELPHOX,45
-    Moves = MYSTICALFIRE,PIERCINGDOUBT
+    Moves = MYSTICALFIRE,PIERCINGDOUBT,GRASSKNOT,LIGHTSCREEN
     AbilityIndex = 1 # Fascinate
 #-------------------------------
 [WORKER3,Bruce]
