@@ -1698,7 +1698,7 @@ TotalPP = 12
 Target = NearOther
 FunctionCode = RemovesTargetItem
 Flags = CanProtect
-Description = The user attacks with cloying slime, rendering the target's item sticky and unusable.
+Description = The user attacks with sticky slime, rendering the target's item unusable.
 Animation = SLUDGEBOMB
 #-------------------------------
 [STINGINGJEALOUSY]
@@ -7232,7 +7232,7 @@ Target = AllNearOthers
 FunctionCode = LowerTargetEvasion4
 Flags = CanProtect,Pulse
 EffectChance = 100
-Description = Sends cloying waves of energy forward, lowering hit foes Evasion by four steps.
+Description = Sends hindering waves of energy forward, lowering hit foes' Evasion by four steps.
 Animation = EARTHQUAKE
 #-------------------------------
 [DRAGONRIDE]
