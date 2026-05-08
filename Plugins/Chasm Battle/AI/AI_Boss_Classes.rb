@@ -49,7 +49,11 @@ end
 class PokeBattle_AI_KELDEO < PokeBattle_AI_Boss
     def initialize(user, battle)
         super
-        rejectPoisonMovesIfBelched
+        @beginBattle.push(proc { |user, battle|
+            battle.pbDisplayBossNarration(_INTL("Keldeo gallops in to protect the King's tomb!"))
+            user.pbOwnSide.applyEffect(:HerosJourneyRevenge)
+        })
+        secondMoveEveryOtherTurn(:SECRETSWORD)
     end
 end
 
