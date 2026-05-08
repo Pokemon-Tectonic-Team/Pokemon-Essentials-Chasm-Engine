@@ -1426,7 +1426,6 @@ BaseMoney = 60
 Name = Pokémon Trainer
 Gender = Unknown
 BaseMoney = 100
-BattleBGM = Battle vanya
 #-------------------------------
 [POKEMONTRAINER_Yezera]
 Name = Pokémon Trainer
