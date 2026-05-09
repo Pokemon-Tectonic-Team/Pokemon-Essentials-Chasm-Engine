@@ -5,7 +5,13 @@ end
 Events.onStepTaken += proc {
   $PokemonGlobal.autosaveSteps = 0 if !$PokemonGlobal.autosaveSteps
   $PokemonGlobal.autosaveSteps += 1 unless debugControl || isPlayerSliding?
-  if $PokemonGlobal.autosaveSteps >= 40
+  if $PokemonGlobal.autosaveSteps >= 1
+	begin
+		triggeredTrainerEvents = $game_player.pbTriggeredTrainerEvents([2])
+		next unless triggeredTrainerEvents.empty?
+	rescue
+		echoln("Error while checking for triggered trainers on autosave step.")
+	end
     autoSave
     $PokemonGlobal.autosaveSteps = 0
   end
