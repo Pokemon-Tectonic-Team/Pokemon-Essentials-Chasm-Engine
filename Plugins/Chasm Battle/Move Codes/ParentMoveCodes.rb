@@ -1368,6 +1368,7 @@ class PokeBattle_ForetoldMove < PokeBattle_Move
     end
 
     def pbOnStartUse(user, targets)
+        return if targets.any? { |t| t.position.effectActive?(:ForetoldMoveCounter) }
         if user.hasActiveAbility?(:FOREWARNING) && !@battle.foretoldMove
             user.showMyAbilitySplash(:FOREWARNING)
             @battle.pbDisplay(_INTL("{1} gives a taste of what's to come!", user.pbThis))
