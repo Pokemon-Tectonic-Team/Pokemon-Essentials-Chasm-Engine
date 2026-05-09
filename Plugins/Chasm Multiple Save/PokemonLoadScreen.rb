@@ -153,7 +153,7 @@ class PokemonLoadScreen
                     screen.pbStartScreen
                 end
             when cmd_player_survey
-                System.launch("https://forms.gle/PFJLiUVEq6SmnqFT9")
+                System.launch("https://docs.google.com/forms/d/e/1FAIpQLSdKOdjSSdCTIQvRYJKN9QwAIrbZyHA8RZDrWcrpS3e8fxsXKw/viewform?usp=sharing&ouid=104199604940661977082")
             when cmd_website
                 System.launch("https://www.tectonic-game.com/")
             when cmd_discord
