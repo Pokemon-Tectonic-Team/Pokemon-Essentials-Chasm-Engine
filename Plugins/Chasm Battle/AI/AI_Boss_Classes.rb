@@ -225,7 +225,7 @@ class PokeBattle_AI_MELOETTA < PokeBattle_AI_Boss
                 next battle.turnCount % 3 == 0
             },
             :warning => proc { |_move, user, _targets, _battle|
-                _INTL("{1}'s combines song and dance!",user.pbThis)
+                _INTL("{1} combines song and dance!",user.pbThis)
             },
         })
         firstMoveEveryOtherTurn(:CAPOEIRA)
