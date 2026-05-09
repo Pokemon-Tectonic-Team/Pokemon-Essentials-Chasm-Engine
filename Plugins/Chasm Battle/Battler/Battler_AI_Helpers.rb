@@ -50,6 +50,7 @@ class PokeBattle_Battler
     def canActThisTurn?
         return false if effectActive?(:HyperBeam) && !effectActive?(:BypassExhaustion)
         return false if effectActive?(:Attached) && !effectActive?(:BypassExhaustion)
+        return false if effectActive?(:IceSculpture)
         return false if effectActive?(:Truant)
         return false if refusesToFight?
         return false if willStayAsleepAI?
