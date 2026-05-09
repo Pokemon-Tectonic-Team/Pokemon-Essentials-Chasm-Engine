@@ -63,6 +63,8 @@ class PokeBattle_Battler
 
     def refusesToFight?
         return true if afraid?
+        # Wild Pokémon are already in the battle and should never refuse to fight.
+        return false if @battle.wildBattle? && pbOwnSide.index == 1
         idxTrainer = @battle.pbGetOwnerIndexFromBattlerIndex(index)
         eachActiveAbility(true, ignoreGas:true) do |ability|
             return true if BattleHandlers.triggerForbidsUserSwitchInAbility(
