@@ -3258,6 +3258,33 @@ Pokemon = GDARMANITAN,70
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 10,20,0,20,20,0
 #-------------------------------
+[WAITRESS3,Destiny]
+TrainerTypeLabel = DEVELOPER
+Pokemon = CONIFEAR,70
+    Moves = ROOTSHELTER,ICEBERGBASH,LEAFSTORM,HOLLYCHARM
+    AbilityIndex = 0 # Frost Scatter
+    Item = ICYROCK
+Pokemon = MEGANIUM,70
+    Moves = BREATHELIFE,AROMATHERAPY,HOLLYCHARM,LIGHTSCREEN
+    AbilityIndex = 0 # Fae Veil
+    Item = HIVISJACKET
+Pokemon = MILLIBLAZE,70
+    Moves = UTURN,FIRELASH,LUNGE,EARTHSPLITTER
+    AbilityIndex = 0 # Firefighter
+    Item = AGILITYHERB
+Pokemon = MMANTINE,70
+    Moves = HAIL,GLACIALCRUNCH,BLIGHT,SWORDSDANCE
+    AbilityIndex = 0 # Slush Rush
+    Item = LUMBERAXE
+Pokemon = FROSLASS,70
+    Moves = PHANTOMGATE,AURORAVEIL,BLIZZARD,SNOWYSORROWS
+    AbilityIndex = 1 # Dead of Winter
+    Item = GHOSTGEM
+Pokemon = MZANGOOSE,70
+    Moves = COLDSHOULDER,VIMRIPPER,CLOSECOMBAT,QUICKATTACK
+    AbilityIndex = 0 # Served Cold
+    Item = SEVENLEAGUEBOOTS
+#-------------------------------
 [LEADER_Bence,Bence]
 Policies = BENCE
 Flags = NoPerfect
