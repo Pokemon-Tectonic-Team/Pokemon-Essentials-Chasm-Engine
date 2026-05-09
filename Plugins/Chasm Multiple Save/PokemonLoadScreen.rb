@@ -97,6 +97,7 @@ class PokemonLoadScreen
         cmd_website         = -1
         cmd_discord         = -1
         cmd_wiki            = -1
+        cmd_wiki            = -1
         cmd_quit            = -1
         lastModifiedSaveName = FileSave.lastModifiedSaveName
         if FileSave.count > 0
@@ -110,6 +111,7 @@ class PokemonLoadScreen
         commands[cmd_website = commands.length]         = _INTL("Website")
         commands[cmd_discord = commands.length]         = _INTL("Discord")
         commands[cmd_wiki = commands.length]            = _INTL("Wiki")
+        commands[cmd_changelog = commands.length]       = _INTL("3.4 Changelog")
         commands[cmd_quit = commands.length]            = _INTL("Quit Game")
         @scene.pbStartScene(commands, false, nil, 0, 0)
         @scene.pbStartScene2
@@ -158,6 +160,8 @@ class PokemonLoadScreen
                 System.launch("https://discord.gg/J3r7zRaMvP")
             when cmd_wiki
                 System.launch("https://pokemontectonic.wiki.gg/")
+            when cmd_changelog
+                System.launch("https://bit.ly/tectonic_changes_340")
             when cmd_quit
                 pbPlayCloseMenuSE
                 @scene.pbEndScene
