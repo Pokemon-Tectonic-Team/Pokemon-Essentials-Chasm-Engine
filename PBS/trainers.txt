@@ -10319,6 +10319,45 @@ Pokemon = OBSTAGOON,70
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 10,20,0,20,20,0
 #-------------------------------
+[POKEMONTRAINER_Vanya,Vanya,2]
+Flags = NoPerfect
+Pokemon = TITANIX,70
+    Moves = PULVERIZERCHORD,SHARDSURGE,AURASPHERE,WIDEGUARD
+    AbilityIndex = 1 # Gravitas
+    Item = LUMBERAXE
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,0,0,20,10
+Pokemon = CRADILY,70
+    Moves = TERADRAIN,ROCKAPULT,SLUDGEWAVE,EARTHPOWER
+    AbilityIndex = 1 # Water Absorb
+    Item = ASSAULTVEST
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,10,0,20,0
+Pokemon = WHISCASH,70
+    Moves = BLIZZARD,RIPTIDE,PULVERIZERCHORD,PROTECT
+    AbilityIndex = 0 # Gravity Well
+    Item = LIFEORB
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,0,10,20,0
+Pokemon = TENTACRUEL,70
+    Moves = BLIZZARD,HYDROPUMP,VENOMORTAR,TERADRAIN
+    AbilityIndex = 0 # Sap Sipper
+    Item = STRIKEVEST
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,10,0,20,0
+Pokemon = WEAVILE,70
+    Moves = SUPERCOOL,CENSOR,NIGHTFELLING,SKEWER
+    AbilityIndex = 0 # Inner Focus
+    Item = CHOICEBAND
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+Pokemon = CURSOLA,70
+    Moves = ROCKAPULT,WILLOWISP,PROTECT,STRENGTHSAP
+    AbilityIndex = 0 # Gravity Well
+    Item = LIFEORB
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+#-------------------------------
 [ANOTHERPOSSIBLERAFAEL,Rafael]
 Policies = CURSE_FORCE_PERFECT
 Pokemon = DIANCIE,70
