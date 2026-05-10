@@ -1430,7 +1430,6 @@ BaseMoney = 100
 Name = Pokémon Trainer
 Gender = Female
 BaseMoney = 100
-Policies = PREDICTS_PLAYER
 #-------------------------------
 [POLICEMAN]
 Name = Policeman
