@@ -584,7 +584,6 @@ IntroBGM = DITTO_BACKPACKER
 Name = Pro Trainer
 Gender = Female
 BaseMoney = 32
-Policies = PROACTIVE_MATCHUP_SWAPPER
 IntroBGM = DITTO_ELITETRAINER
 BattleBGM = Battle pro
 #-------------------------------
