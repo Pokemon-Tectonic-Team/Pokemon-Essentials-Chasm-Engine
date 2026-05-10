@@ -1223,5 +1223,4 @@ Puddle,20,20
 #-------------------------------
 [438] # Bogdan Cement Plant
 Special,,40,40
-    1,CORSOLA,10
     1,SHUCKLE,10
