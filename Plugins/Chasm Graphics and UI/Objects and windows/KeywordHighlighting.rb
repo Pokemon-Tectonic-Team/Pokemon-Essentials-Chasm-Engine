@@ -112,6 +112,7 @@ def battleKeywordsImportant
         "critical hit chance",
         "critical hits",
         "critical hit",
+        "redirected",
         "screens",
         "screen",
         "reflect",

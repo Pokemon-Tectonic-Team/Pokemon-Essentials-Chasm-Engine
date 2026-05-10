@@ -2371,7 +2371,7 @@ Target = User
 Priority = 3
 FunctionCode = ProtectUserSideFromMultiTargetMovesRedirectAllMovesToUser
 Flags = CanSnatch
-Description = The user and its allies are protected from spread moves this turn, and enemies can only target the user. Fails if used in succession.
+Description = Protects the user and its allies from spread moves this turn and foes' moves get redirected to the user. Fails if used in succession.
 Animation = WIDEGUARD
 #-------------------------------
 [PETRIFY]
@@ -2815,7 +2815,7 @@ Target = User
 Priority = 2
 FunctionCode = RedirectAllMovesToUserLowerFoesAtkSpAtk1
 Flags = Uninvocable,Light
-Description = All foes have their Attack and Sp. Atk lowered. They can only target the user this turn.
+Description = All foes have their Attack and Sp. Atk lowered. All foes' moves get redirected to the user this turn.
 #-------------------------------
 [MANYNEEDLE]
 Name = Manyneedle

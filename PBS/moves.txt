@@ -294,7 +294,7 @@ Target = User
 Priority = 2
 FunctionCode = RedirectAllMovesToUser
 Flags = Uninvocable
-Description = The user draws attention to itself, making all targets take aim only at the user this turn.
+Description = The user draws attention to itself, making all foes' moves get redirected to the user this turn.
 #-------------------------------
 [FURYSWIPES]
 Name = Fury Swipes

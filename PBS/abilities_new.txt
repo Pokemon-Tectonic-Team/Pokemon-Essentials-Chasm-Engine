@@ -145,7 +145,7 @@ Description = Foretelling moves hit two turns quicker and deal 30% more damage.
 #-------------------------------
 [BAITFISH]
 Name = Bait Fish
-Description = Draws in moves from foes.
+Description = All foes' moves get redirected to this Pokémon while it's on the field.
 Flags = Immutable
 #-------------------------------
 [BALLLIGHTNING]
