@@ -34,7 +34,16 @@ class PokeBattle_Battle
     end
 
     def maxBattlerIndex
-        return (pbSideSize(0) > pbSideSize(1)) ? (pbSideSize(0) - 1) * 2 : pbSideSize(1) * 2 - 1
+        player = 0
+        opp = 1
+        # cable club messes with the order of battlers to ensure consistency
+        # so we have to do the same here to get the sides right
+        # doesn't matter in balanced matches but comes up with avatar summons
+        if (@client_id == 1)
+            player = 1
+            opp = 0
+        end
+        return (pbSideSize(player) > pbSideSize(opp)) ? (pbSideSize(player) - 1) * 2 : pbSideSize(opp) * 2 - 1
     end
 
     def bossBattle?
