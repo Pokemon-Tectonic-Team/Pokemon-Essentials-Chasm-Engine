@@ -1314,6 +1314,7 @@ BattleBGM = Battle champion vanya
 Name = Pokémon Master
 Gender = Unknown
 BaseMoney = 200
+Policies = SKEEVY_EEVEE_VANYA
 IntroBGM = TWINS2
 BattleBGM = Battle vanya final
 #-------------------------------
