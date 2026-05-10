@@ -151,7 +151,7 @@ class Server:
             st_ = self.clients[s_]
             logging.info("%s: connected to %s", st, st_)
 
-    def disconnect(self, s, reason="unknown error"):
+    def disconnect(self, s, reason="unknown error", details=None):
         try:
             st = self.clients.pop(s)
         except:
@@ -161,6 +161,9 @@ class Server:
                 writer = RecordWriter()
                 writer.str("disconnect")
                 writer.str(reason)
+                if details:
+                    for detail in details:
+                        writer.str(detail)
                 writer.send_now(s)
                 s.close()
             except Exception:
@@ -194,8 +197,9 @@ class Server:
                     hex(id),
                     peer_id,
                 )
-                if not self.valid_party(record):
-                    self.disconnect(s, "invalid party")
+                party_errors = self.valid_party(record)
+                if party_errors:
+                    self.disconnect(s, "invalid party", party_errors)
                 else:
                     st.state = Finding(
                         peer_id, name, id, ttype, party, win_text, lose_text
@@ -589,7 +593,7 @@ def make_party_validator(pbs_dir):
         if errors:
             logging.debug("Errors: %s", errors)
         logging.debug("--END PARTY VALIDATION--")
-        return not errors
+        return errors
 
     return validate_party
 
