@@ -26,7 +26,7 @@ module GameData
                                            "Wild" => 2, "wild" => 3, "W" => 3, "w" => 3, "3" => 3 }],
       "BaseMoney"  => [:base_money,  "u"],
       "SkillLevel" => [:skill_level, "u"],
-      "Policies"   => [:policies,    "*s"],
+      "Policies"   => [:policies,	   "*e",   :Policy],
       "IntroBGM"   => [:intro_ME,   "s"],
       "BattleBGM"  => [:battle_BGM,  "s"],
       "CursedBGM"  => [:cursed_battle_BGM,  "s"],
