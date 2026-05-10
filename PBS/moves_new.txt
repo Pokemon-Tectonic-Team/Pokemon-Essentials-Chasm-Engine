@@ -6823,7 +6823,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = FrostbiteAddIceType
 Flags = CanProtect,CanMagicCoat
-Description = The user absorbs the target's heat, frosbitting it and adding the Ice-type to it.
+Description = The user absorbs the target's heat, frostbiting it and adding the Ice-type to it.
 Animation = MOONLIGHT
 #-------------------------------
 [HYPERFROST]
