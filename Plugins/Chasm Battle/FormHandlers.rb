@@ -199,7 +199,7 @@ MultipleForms.register(:ROTOM,{
         move_name = pkmn.moves[move_index].name
         pkmn.forget_move_at_index(move_index)
         pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
-        pbLearnMove(:THUNDERSHOCK) if pkmn.numMoves == 0
+        pbLearnMove(pkmn, :MACHINATE, true)
       end
     else
       # Turned into an alternate form; try learning that form's unique move
@@ -215,7 +215,7 @@ MultipleForms.register(:ROTOM,{
         else
           pkmn.forget_move_at_index(move_index)
           pbMessage(_INTL("{1} forgot {2}...", pkmn.name, old_move_name))
-          pbLearnMove(:THUNDERSHOCK) if pkmn.numMoves == 0
+          pbLearnMove(pkmn, :MACHINATE, true)
         end
       else
         # Just try to learn this form's unique move

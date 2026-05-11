@@ -692,6 +692,13 @@ class PokeBattle_Battler
         applyEffect(:Substitute, subLife)
     end
 
+    def refreshBattleMoves
+        @moves.clear
+        @pokemon.moves.each do |move|
+            @moves.push(PokeBattle_Move.from_pokemon_move(@battle, move))
+        end
+    end
+
     #=============================================================================
     # Changing ability
     #=============================================================================
