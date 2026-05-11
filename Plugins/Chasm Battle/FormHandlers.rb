@@ -387,7 +387,7 @@ MultipleForms.register(:NECROZMA,{
         move_name = pkmn.moves[move_index].name
         pkmn.forget_move_at_index(move_index)
         pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
-        pbLearnMove(:CONFUSION) if pkmn.numMoves == 0
+        pbLearnMove(pkmn, :PHOTONGEYSER, true)
       end
     else
       # Turned into an alternate form; try learning that form's unique move
