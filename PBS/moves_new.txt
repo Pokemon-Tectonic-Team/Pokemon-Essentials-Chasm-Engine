@@ -395,7 +395,7 @@ Target = NearOther
 FunctionCode = ResetTargetStatSteps
 Flags = CanProtect,Pulse
 EffectChance = 100
-Description = The target is struck by a pulse of negative energy. This resets the target's stat changes.
+Description = The target is struck by a pulse of negative energy. This resets the target's positive stat changes.
 #-------------------------------
 [PALEBLADE]
 Name = Pale Blade
@@ -2099,7 +2099,7 @@ TotalPP = 12
 Target = NearOther
 FunctionCode = ResetTargetStatSteps
 Flags = CanProtect,Kick
-Description = The user attacks by flattening the target into the ground. The target's stat step changes are returned to normal.
+Description = The user attacks by flattening the target into the ground. This resets the target's positive stat changes.
 Animation = STOMP
 #-------------------------------
 [TRAMPLE]
