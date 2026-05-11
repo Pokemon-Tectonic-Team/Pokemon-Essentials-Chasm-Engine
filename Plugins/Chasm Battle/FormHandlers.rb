@@ -248,26 +248,26 @@ MultipleForms.register(:KYUREM,{
     next pkmn.form-2 if pkmn.form>=3   # Fused forms stop glowing
   },
   "onSetForm" => proc { |pkmn, form, oldForm|
-    case form
-    when 0   # Normal
-      pkmn.moves.each do |move|
-        if [:ICEBURN, :FREEZESHOCK].include?(move.id)
-          move.id = :GLACIATE if GameData::Move.exists?(:GLACIATE)
-        end
-        if [:FUSIONFLARE, :FUSIONBOLT].include?(move.id)
-          move.id = :SCARYFACE if GameData::Move.exists?(:SCARYFACE)
-        end
+    next if form > 2 || oldForm > 2   # Glowing in-battle form changes don't affect moveset
+    form_moves = GameData::Species.get(:KYUREM).form_specific_moves
+    if form == 0
+      # Turned back into the base form; forget form-specific moves
+      move_index = -1
+      pkmn.moves.each_with_index do |move, i|
+        next if !form_moves.any? { |m| m == move.id }
+        move_index = i
+        break
       end
-    when 1   # White
-      pkmn.moves.each do |move|
-        move.id = :ICEBURN if move.id == :GLACIATE && GameData::Move.exists?(:ICEBURN)
-        move.id = :FUSIONFLARE if move.id == :SCARYFACE && GameData::Move.exists?(:FUSIONFLARE)
+      if move_index >= 0
+        move_name = pkmn.moves[move_index].name
+        pkmn.forget_move_at_index(move_index)
+        pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
+        pbLearnMove(pkmn, :ABSOLUTEZERO, true)
       end
-    when 2   # Black
-      pkmn.moves.each do |move|
-        move.id = :FREEZESHOCK if move.id == :GLACIATE && GameData::Move.exists?(:FREEZESHOCK)
-        move.id = :FUSIONBOLT if move.id == :SCARYFACE && GameData::Move.exists?(:FUSIONBOLT)
-      end
+    else
+      # Turned into an alternate form; try learning that form's unique move
+      new_move_id = form_moves[form]
+      pbLearnMove(pkmn, new_move_id, true)
     end
   }
 })
