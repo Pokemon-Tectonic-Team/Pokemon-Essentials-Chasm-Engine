@@ -4077,7 +4077,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = CritsAgainstModifiedStatsResetsStats
-Flags = CanProtect
+Flags = CanProtect,ForceSignature
 Description = Guaranteed to critical hit if the target has stat step changes. The target is cleansed, reseting their stat changes.
 Animation = FLAMETHROWER
 #-------------------------------
@@ -5543,7 +5543,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = CritsAgainstUnmodifiedStatsRaiseTargetMainStatsOne
-Flags = CanProtect
+Flags = CanProtect,ForceSignature
 Description = Guaranteed to critical hit if the target has no stat step changes. The target is surged forward, raising all its stats.
 Animation = VOLTTACKLE
 #-------------------------------
