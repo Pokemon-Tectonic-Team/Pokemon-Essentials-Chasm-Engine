@@ -3817,6 +3817,19 @@ Flags = CanProtect
 EffectChance = 20
 Description = The user rapidly cools the target. It has a 20% chance to frostbite. Is super-effective on Water types.
 #-------------------------------
+[FREEZESHOCK]
+Name = Freeze Shock
+Type = ICE
+Category = Physical
+Power = 140
+Accuracy = 100
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,ForceSignature
+EffectChance = 30
+Description = Charges up, then on the second turn, the user strikes with electrified ice. It has a 30% chance to numb.
+#-------------------------------
 [HAZE]
 Name = Haze
 Type = ICE
@@ -3838,6 +3851,19 @@ Target = NearOther
 FunctionCode = Invalid
 Flags = CanProtect
 Description = The user rolls into the target. Its power doubles if it hits in succession.
+#-------------------------------
+[ICEBURN]
+Name = Ice Burn
+Type = ICE
+Category = Special
+Power = 140
+Accuracy = 100
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,ForceSignature
+EffectChance = 30
+Description = Charges up, then on the second turn, an ultracold, freezing wind surrounds the foe. It has a 30% chance to burn.
 #-------------------------------
 [ICEDUNGEON]
 Name = Ice Dungeon

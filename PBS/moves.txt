@@ -4981,19 +4981,6 @@ Flags = CanProtect,Wind
 EffectChance = 30
 Description = A blizzard strikes all near foes. Can't miss in hail. It has a 30% chance to frostbite.
 #-------------------------------
-[FREEZESHOCK]
-Name = Freeze Shock
-Type = ICE
-Category = Physical
-Power = 140
-Accuracy = 100
-TotalPP = 5
-Target = NearOther
-FunctionCode = TwoTurnAttackParalyzeTarget
-Flags = CanProtect,ForceSignature
-EffectChance = 30
-Description = Charges up, then on the second turn, the user strikes with electrified ice. It has a 30% chance to numb.
-#-------------------------------
 [FROSTBREATH]
 Name = Frost Breath
 Type = ICE
@@ -5053,19 +5040,6 @@ FunctionCode = Frostbite
 Flags = CanProtect
 EffectChance = 10
 Description = The target is struck with an icy-cold beam of energy. It has a 10% chance to frostbite.
-#-------------------------------
-[ICEBURN]
-Name = Ice Burn
-Type = ICE
-Category = Special
-Power = 140
-Accuracy = 100
-TotalPP = 5
-Target = NearOther
-FunctionCode = TwoTurnAttackBurnTarget
-Flags = CanProtect,ForceSignature
-EffectChance = 30
-Description = Charges up, then on the second turn, an ultracold, freezing wind surrounds the foe. It has a 30% chance to burn.
 #-------------------------------
 [ICEFANG]
 Name = Ice Fang
