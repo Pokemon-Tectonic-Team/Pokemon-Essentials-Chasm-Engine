@@ -2849,30 +2849,48 @@ TrainerTypeLabel = DEVELOPER
 Pokemon = PORYGONZ,70
     Name = Beepo
     Shiny = yes
-    Moves = HYPERBEAM,CRITICALERROR,PHANTOMGATE,ICEBEAM
-    AbilityIndex = 1 # Adapted
+    Moves = HYPERBEAM,CRITICALERROR,PHANTOMGATE,THUNDERBOLT
+    AbilityIndex = 1
     Item = ENERGYHERB
-Pokemon = PORYGONZ,70
-    Moves = SUBLIMATE,CONVERSION,CRITICALERROR,RECOVER
-    AbilityIndex = 1 # Adapted
-    Item = ICEGEM
-Pokemon = PORYGONZ,70
-    Moves = CURSEDOATH,FOULPLAY,NUMB,RECOVER
-    AbilityIndex = 0 # Realist
-    Item = CRYSTALVEIL
-    ItemType = DARK
-Pokemon = INTELEON,70
-    Moves = HYDROPUMP,LASERFOCUS,PSYCHOBOOST,SHADOWBALL
-    AbilityIndex = 1 # Incognito
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+Pokemon = LYCANROC,70
+    Name = Fluffles
+    Moves = STORMSHARDS,CLOSECOMBAT,ROCKALANCHE,GLACIALCRUNCH
+    AbilityIndex = 1
     Item = LIFEORB
-Pokemon = PORYGONZ,70
-    Moves = POWERHAMMER,DISTURB,HORIZONSLICE,CONVERSION
-    AbilityIndex = 1 # Adapted
-    Item = POWERLOCK
-Pokemon = PORYGONZ,70
-    Moves = DREAMDANCE,LASTRESORT
-    AbilityIndex = 1 # Adapted
-    Item = SITRUSBERRY
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+Pokemon = WOLFEROC,70
+    Name = Ruffles
+    Moves = TRUMPCARD,POWERGEM,ACROBATICS,TRAMPLE
+    AbilityIndex = 0
+    Item = NORMALGEM
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+Pokemon = ROUGAROC,70
+    Name = Scruffles
+    Moves = MONOLITHDROP,NIGHTFELLING,RIPTIDE,STORMSHARDS
+    AbilityIndex = 0
+    Item = STRIKEVEST
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,20,0,20,0
+Pokemon = CURESOLA,70
+    Name = Lilypad
+    Shiny = yes
+    Moves = CORALOVERGROWTH,EXPLOSION
+    AbilityIndex = 0
+    Item = CUSTAPBERRY
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,0,20,10,0,0
+Pokemon = MOTHIM,70
+    Moves = POWDERBOMB,LEECHSEED,LEAFSTORM,EARTHQUAKE
+    AbilityIndex = 0
+    Item = CRYSTALVEIL
+    ItemType = STEEL
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,0,20,20
+
 #-------------------------------
 [GUITARIST3,Envy]
 TrainerTypeLabel = DEVELOPER
