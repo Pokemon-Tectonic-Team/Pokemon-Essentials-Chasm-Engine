@@ -2850,28 +2850,28 @@ Pokemon = PORYGONZ,70
     Name = Beepo
     Shiny = yes
     Moves = HYPERBEAM,CRITICALERROR,PHANTOMGATE,THUNDERBOLT
-    AbilityIndex = 1
+    AbilityIndex = 1 # Adapted
     Item = ENERGYHERB
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 10,20,0,20,20,0
 Pokemon = LYCANROC,70
     Name = Fluffles
     Moves = STORMSHARDS,CLOSECOMBAT,ROCKALANCHE,GLACIALCRUNCH
-    AbilityIndex = 1
+    AbilityIndex = 1 # Serene Grace
     Item = LIFEORB
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 10,20,0,20,20,0
 Pokemon = WOLFEROC,70
     Name = Ruffles
     Moves = TRUMPCARD,POWERGEM,ACROBATICS,TRAMPLE
-    AbilityIndex = 0
+    AbilityIndex = 0 # Fading Fury
     Item = NORMALGEM
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 10,20,0,20,20,0
 Pokemon = ROUGAROC,70
     Name = Scruffles
     Moves = MONOLITHDROP,NIGHTFELLING,RIPTIDE,STORMSHARDS
-    AbilityIndex = 0
+    AbilityIndex = 0 # No Guard
     Item = STRIKEVEST
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 10,20,20,0,20,0
@@ -2879,18 +2879,17 @@ Pokemon = CURESOLA,70
     Name = Lilypad
     Shiny = yes
     Moves = CORALOVERGROWTH,EXPLOSION
-    AbilityIndex = 0
+    AbilityIndex = 0 # Long-term View
     Item = CUSTAPBERRY
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 20,0,20,10,0,0
 Pokemon = MOTHIM,70
     Moves = POWDERBOMB,LEECHSEED,LEAFSTORM,EARTHQUAKE
-    AbilityIndex = 0
+    AbilityIndex = 0 # Spare Scales
     Item = CRYSTALVEIL
     ItemType = STEEL
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 10,20,0,0,20,20
-
 #-------------------------------
 [GUITARIST3,Envy]
 TrainerTypeLabel = DEVELOPER
