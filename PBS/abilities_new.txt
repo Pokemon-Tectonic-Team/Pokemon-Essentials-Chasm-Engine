@@ -52,6 +52,10 @@ Name = All That Glitters
 Description = Can hold two different items, if both are Gems.
 Flags = MultipleItems
 #-------------------------------
+[AMBUSHPREDATOR]
+Name = Ambush Predator
+Description = Moves that cause the user to become hidden deal additional damage equal to half this Pokémon's level.
+#-------------------------------
 [ANARCHIC]
 Name = Anarchic
 Description = Doubles Speed in eclipse.

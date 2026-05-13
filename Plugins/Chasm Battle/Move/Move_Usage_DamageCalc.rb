@@ -608,6 +608,10 @@ class PokeBattle_Move
             finalCalculatedDamage += (user.level / 2).ceil
         end
 
+        if user.shouldAbilityApply?(:AMBUSHPREDATOR,aiCheck) && self.is_a?(PokeBattle_Move_TwoTurnAttackInvulnerable)
+            finalCalculatedDamage += (user.level / 2).ceil
+        end
+
         # Subtractive effects
         if target.shouldAbilityApply?(:DRAGONSBLOOD,aiCheck) && !@battle.moldBreaker
             finalCalculatedDamage -= target.level
