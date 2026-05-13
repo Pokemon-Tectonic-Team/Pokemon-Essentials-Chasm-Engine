@@ -7816,7 +7816,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = TwoTurnAttackInvulnerableHiding
 Flags = CanProtect
-Description = The user hides stealthily, charging and becoming hidden, then strikes from a blind spot on the second turn.
+Description = The user hides stealthily, charging and becoming hidden, then strikes on the second turn.
 Animation = PHANTOMFORCE
 #-------------------------------
 [MASSDESTRUCTION]
