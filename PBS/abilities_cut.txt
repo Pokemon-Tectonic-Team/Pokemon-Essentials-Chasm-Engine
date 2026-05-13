@@ -1192,6 +1192,11 @@ Name = Stalwart
 Description = Ignores effects changing the target of a move.
 Flags = RedirectionImmunity
 #-------------------------------
+[STAMPEDE]
+Name = Stampede
+Description = Doubles critical hit chance for each Speed step up. All moves can random critical hit.
+Flags = EnablesRandomCrits
+#-------------------------------
 [STEADFAST]
 Name = Steadfast
 Description = Raises Speed each time the Pokémon flinches.

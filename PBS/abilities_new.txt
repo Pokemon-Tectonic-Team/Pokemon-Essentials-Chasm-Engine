@@ -1928,6 +1928,11 @@ Description = All Pokémon deal 40% more move damage.
 Name = Running Free
 Description = Can't be numbed, waterlogged, trapped, or have its Speed lowered.
 #-------------------------------
+[RUNTHROUGH]
+Name = Run Through
+Description = Doubles critical hit chance for each Speed step up. All moves can random critical hit.
+Flags = EnablesRandomCrits
+#-------------------------------
 [RUSTWRACK]
 Name = Rust & Wrack
 Description = This Pokémon is also Steel-type, but it takes 15% more damage from moves.
@@ -2203,11 +2208,6 @@ Description = Can't be afflicted with any non-volatile status condition.
 Name = Stainless Steel
 Description = Prevents stat steps from being lowered (except when self-inflicted). Immune to weather downsides.
 Flags = AllWeatherSynergy,OtherStatDropImmunity
-#-------------------------------
-[STAMPEDE]
-Name = Stampede
-Description = Doubles critical hit chance for each Speed step up. All moves can random critical hit.
-Flags = EnablesRandomCrits
 #-------------------------------
 [STARGUARDIAN]
 Name = Star Guardian

@@ -210,7 +210,7 @@ class PokeBattle_Move_RaiseUserSpd4 < PokeBattle_StatUpMove
 
     def getEffectScore(user, target)
         score = super
-        score += 40 if user.hasActiveAbilityAI?(:STAMPEDE)
+        score += 40 if user.hasActiveAbilityAI?(:RUNTHROUGH)
         return score
     end
 end
@@ -257,7 +257,7 @@ class PokeBattle_Move_RaiseUserSpd5 < PokeBattle_StatUpMove
 
     def getEffectScore(user, target)
         score = super
-        score += 50 if user.hasActiveAbilityAI?(:STAMPEDE)
+        score += 50 if user.hasActiveAbilityAI?(:RUNTHROUGH)
         return score
     end
 end
