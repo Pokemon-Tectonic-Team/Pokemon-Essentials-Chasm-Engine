@@ -435,6 +435,10 @@ Name = Debris Field
 Description = Immune to non-volatile status conditions due to its hard shell. Boosts Sp. Atk and Speed by 30% in sandstorm.
 Flags = SandstormSynergy
 #-------------------------------
+[DEBUGGER]
+Name = Debugger
+Description = Grants immunity to Bug-type moves, and raises Speed if hit by one.
+#-------------------------------
 [DECONTAMINATION]
 Name = Decontamination
 Description = Prevents Bug- or Poison-type moves during moonglow.
