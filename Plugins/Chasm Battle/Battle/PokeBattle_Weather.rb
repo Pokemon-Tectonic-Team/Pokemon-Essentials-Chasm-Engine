@@ -419,7 +419,7 @@ class PokeBattle_Battle
             priority.each do |b|
                 next unless b.hasActiveAbility?(:DESERTSCAVENGER)
                 pbShowAbilitySplash(b, :DESERTSCAVENGER)
-                healingMessage = _INTL("{1} absorbs the suffering from the sandstorm", b.pbThis)
+                healingMessage = _INTL("{1} absorbs the suffering from the sandstorm.", b.pbThis)
                 b.pbRecoverHP(sandstormDamage, true, true, true, healingMessage)
                 pbHideAbilitySplash(b)
             end
