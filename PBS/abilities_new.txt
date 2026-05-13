@@ -1820,10 +1820,6 @@ Description = Heals 1/8th HP every turn if hit by an attack.
 Name = Rat's Nest
 Description = Lays an electrical hazard around the opponent when this Pokémon's HP is lowered below half.
 #-------------------------------
-[RATTLEEM]
-Name = Rattle 'Em
-Description = Moves that can flinch are 50% more likely. Deals 50% more damage to Pokémon with flinch immunity.
-#-------------------------------
 [RAZORSEDGE]
 Name = Razor's Edge
 Description = Boosts the power of slice moves by 30%. They're twice as likely to crit.

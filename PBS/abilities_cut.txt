@@ -963,6 +963,10 @@ Description = Doubles the speed of recoil moves.
 Name = Rattled
 Description = Bug-, Dark- and Ghost-type moves scare it and boost its Speed.
 #-------------------------------
+[RATTLEEM]
+Name = Rattle 'Em
+Description = Moves that can flinch are 50% more likely. Deals 50% more damage to Pokémon with flinch immunity.
+#-------------------------------
 [RECEIVER]
 Name = Receiver
 Description = Copies the Ability of a defeated ally.
