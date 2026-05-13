@@ -942,10 +942,6 @@ Name = Hailstone Helm
 Description = During hail, this Pokémon takes 50% less move damage, but its Speed is halved.
 Flags = HailSynergy
 #-------------------------------
-[HAIRTRIGGER]
-Name = Hair Trigger
-Description = When hit with a physical move, hits back instantly with Leafage.
-#-------------------------------
 [HANDOFF]
 Name = Hand Off
 Description = Trapping and binding effects against an enemy are passed over to an ally that swaps in for this Pokémon.
