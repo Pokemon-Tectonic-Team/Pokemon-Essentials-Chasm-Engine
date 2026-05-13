@@ -347,7 +347,7 @@ BattleHandlers::TargetAbilityOnHit.add(:MAGNETTRAP,
 
 # TODO: Make the checks here more detailed
 
-BattleHandlers::TargetAbilityOnHit.add(:RELUCTANTBLADE,
+BattleHandlers::TargetAbilityOnHit.add(:HAIRTRIGGER,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
         next unless move.physicalMove?
         next if target.fainted?
