@@ -1044,10 +1044,6 @@ Description = Powers up Bug-type moves of itself and its allies by 50%.
 Name = Holiday Cheer
 Description = Upon entry, heals self and allies for 25% of their max health.
 #-------------------------------
-[HONORABLE]
-Name = Honorable
-Description = Lowers priority of status moves used by any Pokémon.
-#-------------------------------
 [HOOLIGAN]
 Name = Hooligan
 Description = Powers up recoil and sound moves by 30%.
@@ -1278,10 +1274,6 @@ Description = This Pokémon's pulse attacks become spread and deal 25% more dama
 Name = Leviathan
 Description = Protected from critical hits. Can't be burned or frostbitten.
 Flags = CritImmunity
-#-------------------------------
-[LIFELINE]
-Name = Lifeline
-Description = At the end of each turn, heals self by 1/20th and a party member by the amount this Pokémon was healed.
 #-------------------------------
 [LIGHTTRICK]
 Name = Light Trick
@@ -2063,10 +2055,6 @@ Description = Immune to Steel-type moves and boosts Defense and Sp. Def when hit
 Name = Shifting Fist
 Description = Punching moves change this Pokémon's secondary type and their power is boosted by 30%.
 #-------------------------------
-[SHOCKSTYLE]
-Name = Shock Style
-Description = Powers up Fighting-type moves by 50%.
-#-------------------------------
 [SHOWOFF]
 Name = Show Off
 Description = When this Pokémon charges and becomes hidden, it lowers the Attack and Sp. Atk of all foes.
@@ -2524,11 +2512,6 @@ Description = Takes half damage from Dark- and Bug-type moves.
 [UNASSUMING]
 Name = Unassuming
 Description = Before using a status move against a single foe, lowers their Defense by two steps.
-#-------------------------------
-[UNBOUND]
-Name = Unbound
-Description = Moves ignore Abilities that would affect its moves or activate after hitting the target, and immunities due to typing.
-Flags = MoldBreaking,BypassTypeImmunity
 #-------------------------------
 [UNBREAKABLE]
 Name = Unbreakable

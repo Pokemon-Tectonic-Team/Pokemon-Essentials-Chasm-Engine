@@ -544,10 +544,6 @@ Description = Takes half damage from Fire- and Ice-type moves.
 Name = Tinted Lens
 Description = Doubles the damage of "not very effective" moves.
 #-------------------------------
-[TOUGHCLAWS]
-Name = Tough Claws
-Description = Increases Attack by 30%.
-#-------------------------------
 [TRANSISTOR]
 Name = Transistor
 Description = Powers up Electric-type moves by 50%.
