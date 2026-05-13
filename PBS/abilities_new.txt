@@ -29,7 +29,7 @@ Description = Raises Speed by four steps when its HP is lowered below half.
 #-------------------------------
 [AERODYNAMIC]
 Name = Aerodynamic
-Description = Grants immunity to Flying-type moves and raises Speed if hit by one.
+Description = Immune to Flying-type moves and raises Speed if hit by one.
 #-------------------------------
 [AFROTECTION]
 Name = Afrotection
@@ -301,7 +301,7 @@ Description = This Pokémon's Speed is doubled while using light-based moves.
 #-------------------------------
 [CHALLENGER]
 Name = Challenger
-Description = Immune to Fighting-type moves, and raises Attack and Sp. Atk if hit by one.
+Description = Immune to Fighting-type moves and raises Attack and Sp. Atk if hit by one.
 #-------------------------------
 [CHILLEDBODY]
 Name = Chilled Body
@@ -357,11 +357,11 @@ Description = Boosts Sp. Atk by 75%, but this Pokémon becomes frostbitten after
 #-------------------------------
 [COLDFUSION]
 Name = Cold Fusion
-Description = Immune to Fire and Electric-type moves, and raises Attack and Sp. Atk by two steps if hit by one.
+Description = Immune to Fire- and Electric-type moves and raises Attack and Sp. Atk by two steps if hit by one.
 #-------------------------------
 [COLDRECEPTION]
 Name = Cold Reception
-Description = Immune to Ice-type moves, and raises Attack and Sp. Atk if hit by one.
+Description = Immune to Ice-type moves and raises Attack and Sp. Atk if hit by one.
 #-------------------------------
 [COLORCOLLECTOR]
 Name = Color Collector
@@ -437,7 +437,7 @@ Flags = SandstormSynergy
 #-------------------------------
 [DEBUGGER]
 Name = Debugger
-Description = Grants immunity to Bug-type moves, and raises Speed if hit by one.
+Description = Immune to Bug-type moves and raises Speed if hit by one.
 #-------------------------------
 [DECONTAMINATION]
 Name = Decontamination
@@ -745,7 +745,7 @@ Description = At the end of every turn, each Pokémon takes 1/8th HP damage. Thi
 #-------------------------------
 [FIREFIGHTER]
 Name = Firefighter
-Description = Immune to Fire-type moves, and raises Attack and Sp. Atk if hit by one.
+Description = Immune to Fire-type moves and raises Attack and Sp. Atk if hit by one.
 #-------------------------------
 [FIRSTSTRIKE]
 Name = First Strike
@@ -782,7 +782,7 @@ Description = Hits opponent with Gust when switched out.
 #-------------------------------
 [FLYTRAP]
 Name = Flytrap
-Description = Grants immunity to Bug-type moves, and raises Attack and Sp. Atk when hit by one.
+Description = Immune to Bug-type moves and raises Attack and Sp. Atk when hit by one.
 #-------------------------------
 [FOGTOTEM]
 Name = Fog Totem
@@ -794,7 +794,7 @@ Description = Raises Speed by two steps after knocking out any Pokémon.
 #-------------------------------
 [FOOLHARDY]
 Name = Foolhardy
-Description = Immune to Psychic-type moves, and raises Attack and Sp. Atk if hit by one.
+Description = Immune to Psychic-type moves and raises Attack and Sp. Atk if hit by one.
 #-------------------------------
 [FOREMAN]
 Name = Foreman
@@ -986,7 +986,7 @@ Description = Immune to Fairy-type moves and restores 25% of max HP if hit by on
 #-------------------------------
 [HEARTOFJUSTICE]
 Name = Heart of Justice
-Description = Immune to Dark-type moves, and boosts Attack and Sp. Atk when hit by one.
+Description = Immune to Dark-type moves and boosts Attack and Sp. Atk when hit by one.
 #-------------------------------
 [HEATDEATH]
 Name = Heat Death
@@ -2057,7 +2057,7 @@ Description = Its physical attacks reduce the target's Defense.
 #-------------------------------
 [SHIELDSMITHING]
 Name = Shield-Smithing
-Description = Immune to Steel-type moves, and boosts Defense and Sp. Def when hit by one.
+Description = Immune to Steel-type moves and boosts Defense and Sp. Def when hit by one.
 #-------------------------------
 [SHIFTINGFIST]
 Name = Shifting Fist
@@ -2389,7 +2389,7 @@ Description = Boosts the power of slice moves by 30%.
 #-------------------------------
 [SWORDSMITHING]
 Name = Sword-Smithing
-Description = Immune to Steel-type moves, and boosts Attack and Sp. Atk when hit by one.
+Description = Immune to Steel-type moves and boosts Attack and Sp. Atk when hit by one.
 #-------------------------------
 [TAIGATREKKER]
 Name = Taiga Trekker
@@ -2565,7 +2565,7 @@ Description = After an attack reduces its HP below half, deals 1/4th of the atta
 #-------------------------------
 [VENOMDETTA]
 Name = Venomdetta
-Description = Immune to Poison-type moves, and raises Attack and Sp. Atk if hit by one.
+Description = Immune to Poison-type moves and raises Attack and Sp. Atk if hit by one.
 #-------------------------------
 [VENOMGORGER]
 Name = Venom Gorger
