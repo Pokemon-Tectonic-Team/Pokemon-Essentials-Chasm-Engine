@@ -4849,8 +4849,8 @@ Pokemon = MISMAGIUS,55
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 5,20,0,20,20,5
 Pokemon = KINGAMBIT,55
-    Moves = SWORDSDANCE,SEVER,WHIRLWINDKICK,BULLETPUNCH
-    AbilityIndex = 0 # Defiant
+    Moves = ADAMANTINEPRESS,SEVER,WHIRLWINDKICK,SLAY
+    AbilityIndex = 1 # Sturdy
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 10,20,0,20,20,0
 #-------------------------------
@@ -4870,8 +4870,8 @@ Pokemon = MISMAGIUS,55
 Pokemon = DECEAT,55
     ExtraItems = WHITENINGPASTE
 Pokemon = KINGAMBIT,55
-    Item = AIRBALLOON
-    ExtraItems = OCCABERRY
+    Item = WEAKNESSPOLICY
+    ExtraItems = SALACBERRY
 #-------------------------------
 [MASKEDVILLAIN_Sang,Silver]
 Policies = EQ_PROTECT
