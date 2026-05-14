@@ -415,6 +415,9 @@ class CableClubScreen
       when "invalid version"
         pbDisplay(_INTL("I'm sorry, your game version is out of date compared to the Cable Club."))
         return false
+      when "duplicate search"
+        pbDisplay(_INTL("I'm sorry, another player with your Trainer ID is already searching for that player."))
+        return false
       else
         pbDisplay(_INTL("I'm sorry, the Cable Club server has malfunctioned!"))
         return false

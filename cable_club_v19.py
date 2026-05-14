@@ -204,6 +204,16 @@ class Server:
                     st.state = Finding(
                         peer_id, name, id, ttype, party, win_text, lose_text
                     )
+                    # Reject if an identical search (same id -> same peer_id) already exists.
+                    for s_, st_ in self.clients.items():
+                        if (
+                            st is not st_
+                            and isinstance(st_.state, Finding)
+                            and public_id(st_.state.id) == public_id(id)
+                            and st_.state.peer_id == peer_id
+                        ):
+                            self.disconnect(s, "duplicate search")
+                            return
                     # Is the peer already waiting?
                     for s_, st_ in self.clients.items():
                         if (
