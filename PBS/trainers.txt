@@ -2986,6 +2986,7 @@ Pokemon = MANTINE,70
     EV = 20,0,0,10,0,20
 #-------------------------------
 [HEXMANIAC,Errata]
+TrainerTypeLabel = DEVELOPER
 Pokemon = INTELEON,70
     Name = Glasses 2
     Gender = female
@@ -3348,6 +3349,7 @@ Pokemon = RUBARIOR,70
     EV = 20,0,20,0,0,10
 #-------------------------------
 [FAIRYTALEGIRL,Emmi]
+TrainerTypeLabel = DEVELOPER
 Flags = NoPerfect
 Pokemon = HATTERENE,70
     Name = Silence
