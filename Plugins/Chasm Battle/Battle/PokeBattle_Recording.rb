@@ -73,6 +73,10 @@ module PokeBattle_BattleRecorder
 		recordChoices
 	end
 
+	def recordSkippedTurn
+		@recorded_choices.push([])
+	end
+
 	def pbStartBattle
 		@player_info                  = Marshal.dump(@player)
 		@opponent_info                = Marshal.dump(@opponent)
@@ -317,6 +321,7 @@ class PokeBattle_Battle
 	def registerRecordedChoice(index); end
 	def registerReplayedChoice(index); end
 	def registerRules; end
+	def recordSkippedTurn; end
 end
 
 class PokeBattle_TectonicRecordedBattle < PokeBattle_Battle

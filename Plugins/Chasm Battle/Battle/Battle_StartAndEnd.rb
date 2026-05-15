@@ -535,6 +535,7 @@ class PokeBattle_Battle
                 # End of round phase
                 PBDebug.logonerr { pbEndOfRoundPhase }
                 break if @decision > 0
+                recordSkippedTurn
                 @turnCount += 1
             end
 
