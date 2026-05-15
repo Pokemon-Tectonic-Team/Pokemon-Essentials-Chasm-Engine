@@ -161,7 +161,7 @@ class PokeBattle_Move_UseChoiceOf3LastUsedMoves < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenMoveID = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),moveNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),moveNames)
                 @chosenMoveID = moveChoices[chosenIndex]
                 return @chosenMoveID
             end
