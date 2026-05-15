@@ -158,7 +158,7 @@ class PokeBattle_Battle
             # Recalculate everything from scratch
             randomOrder = Array.new(maxBattlerIndex + 1) { |i| i }
             # don't do extra random calls if recalculating for info screen, to ensure cable club sync
-            if !infoScreen
+            unless infoScreen
                 (randomOrder.length - 1).times do |i| # Can't use shuffle! here
                     r = i + pbRandom(randomOrder.length - i)
                     randomOrder[i], randomOrder[r] = randomOrder[r], randomOrder[i]
