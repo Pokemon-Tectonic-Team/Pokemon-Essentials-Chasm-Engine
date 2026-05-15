@@ -378,9 +378,10 @@ class PokemonStorageScreen
         boxNumber = selection[0]
         slotNumber = selection[1]
 
-        box = @storage.boxes[boxNumber]
+        box = @storage.boxes[boxNumber] unless boxNumber == -1
 
-        if box[slotNumber]
+        occupied = (boxNumber == -1) ? @storage.party[slotNumber] : box[slotNumber]
+        if occupied
             pbDisplay(_INTL("Cannot mass move into an occupied spot."))
             return
         end
@@ -403,7 +404,7 @@ class PokemonStorageScreen
         # Determine if there are enough open slots
         openSlots = 0
         if boxNumber == -1
-            for i in slotNumber...Settings::MAX_PARTY_SIZE
+            for i in 0...Settings::MAX_PARTY_SIZE
                 next unless @storage.party[i].nil?
                 openSlots += 1
             end
