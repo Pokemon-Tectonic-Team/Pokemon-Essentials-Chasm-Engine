@@ -4315,7 +4315,7 @@ Accuracy = 100
 TotalPP = 30
 Target = NearOther
 FunctionCode = RaiseUserAtk3AlliesAtk1
-Flags = CanSnatch,Sound
+Flags = CanProtect,Sound
 Description = The user roars with the force of a volcano, raising the Attack of itself by three steps and allies' by one.
 Animation = HOWL
 #-------------------------------
