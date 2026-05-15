@@ -36,6 +36,12 @@ def completeSpiritAtollQuest
     end
 end
 
+def completeEventideQuest
+    if pbGetSelfSwitch(6, 'B', 414) && pbGetSelfSwitch(7, 'B', 414) 
+        completeQuest(:QUEST_LEGEND_EVENTIDE)
+    end
+end
+
 def completeKilnaThievesQuest
     if pbGetSelfSwitch(37, 'A', 3) && pbGetSelfSwitch(42, 'A', 3)
         completeQuest(:QUEST_STONES_KILNA)
