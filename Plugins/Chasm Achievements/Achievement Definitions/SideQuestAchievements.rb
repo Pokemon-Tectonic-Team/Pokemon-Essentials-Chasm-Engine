@@ -12,3 +12,8 @@ def checkVanyaDefeatNoGenderAchievement
     return unless genderlessCount >= 6
     unlockAchievement(:DEFEAT_MASTER_VANYA_FULL_GENDERLESS_TEAM)
 end
+
+def checkBellaBountyAPRafaelPerfectAchievement
+    return unless battlePerfected?
+    unlockAchievement(:BELLA_BOUNTY_SUPERBOSS)
+end

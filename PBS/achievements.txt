@@ -179,6 +179,12 @@ Description = Complete a full attempt of the Battle Monument (5 battles won) wit
 Page = 7
 DisabledInRandomizer = true
 #-------------------------------
+[BELLA_BOUNTY_SUPERBOSS]
+Name = The Final Straw
+Description = Defeat Another Possible Rafael in the Path of Paradise.
+Page = 7
+Hidden = true
+#-------------------------------
 [ACHIEVE_TRIBAL_BONUS]
 Name = Clannish
 Description = Start a battle while having an active Tribal bonus.
