@@ -151,14 +151,14 @@ class PokeBattle_Battle
     #=============================================================================
     # Turn order calculation (priority)
     #=============================================================================
-    def pbCalculatePriority(fullCalc = false, indexArray = nil, randomizeOrder = true)
+    def pbCalculatePriority(fullCalc = false, indexArray = nil, infoScreen = false)
         needRearranging = false
         if fullCalc
             @priorityTrickRoom = @field.effectActive?(:TrickRoom)
             # Recalculate everything from scratch
             randomOrder = Array.new(maxBattlerIndex + 1) { |i| i }
             # don't do extra random calls if recalculating for info screen, to ensure cable club sync
-            if randomizeOrder
+            if !infoScreen
                 (randomOrder.length - 1).times do |i| # Can't use shuffle! here
                     r = i + pbRandom(randomOrder.length - i)
                     randomOrder[i], randomOrder[r] = randomOrder[r], randomOrder[i]
@@ -183,7 +183,8 @@ class PokeBattle_Battle
                             target_index = CableClub::pokemon_target_order(@client_id)[target_index]                          
                         end
                         targets = b.pbFindTargets(target_index, move, b)
-                        pri = getMovePriority(move, b, targets)
+                        # if we're on the info screen, flag aiCheck to disable active effects like Tremorsense
+                        pri = getMovePriority(move, b, targets, infoScreen)
                         bArray[3] = pri
                         @choices[b.index][4] = pri
                     end
@@ -296,7 +297,7 @@ class PokeBattle_Battle
     # Pokemon with speed ties are assigned the same number
     def pbTurnOrderDisplayed
         # don't do extra random calls if recalculating for info screen, to ensure cable club sync
-        pbCalculatePriority(true,nil,false)
+        pbCalculatePriority(true,nil,true)
         
         speedHash = {}
 
