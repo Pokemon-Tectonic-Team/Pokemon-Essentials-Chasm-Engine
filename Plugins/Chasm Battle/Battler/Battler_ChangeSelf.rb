@@ -59,8 +59,7 @@ class PokeBattle_Battler
     def applyFractionalDamage(fraction, showDamageAnimation = true, basedOnCurrentHP = false, entryCheck = false, struggle: false, aiCheck: false)
         return 0 unless takesIndirectDamage? || struggle
 
-        aggravate = @battle.pbCheckOpposingAbility(:AGGRAVATE, @index) && !struggle
-        damageAmount = getFractionalDamageAmount(fraction,basedOnCurrentHP,aggravate: aggravate,struggle: struggle)
+        damageAmount = getFractionalDamageAmount(fraction, basedOnCurrentHP, aiCheck: false, struggle: struggle)
         
         if showDamageAnimation && !aiCheck && !@dummy
             @damageState.displayedDamage = damageAmount
@@ -87,21 +86,35 @@ class PokeBattle_Battler
         end
     end
 
-    def getFractionalDamageAmount(fraction,basedOnCurrentHP=false,aggravate: false,struggle: false)
+    def getFractionalDamageAmount(fraction, basedOnCurrentHP=false, aiCheck: false, struggle: false)
         return 0 unless takesIndirectDamage? || struggle
         fraction *= hpBasedEffectResistance if boss?
-        fraction *= 1.35 if aggravate
         if basedOnCurrentHP
             damageAmount = @hp * fraction
         else
             damageAmount = @totalhp * fraction
         end
-        unless struggle
-            damageAmount *= 0.66 if hasTribeBonus?(:ANIMATED)
-            damageAmount *= 0.5 if pbOwnSide.effectActive?(:NaturalProtection)
-        end
+        damageAmount *= getFractionalDamageModifier(aiCheck: false) unless struggle
         damageAmount = damageAmount.ceil
         return damageAmount
+    end
+
+    def getFractionalDamageModifier(aiCheck: false)
+        modifier = 1.0
+
+        # Check for Aggravate on foe's side
+        eachOpposing do |opp|
+            next unless opp.shouldAbilityApply?(:AGGRAVATE, aiCheck)
+            modifier *= 1.35
+            break
+        end
+
+        modifier *= 1.5 if takesSandstormDamage? && @battle.pbWeather == :StarStorm
+
+        modifier *= 0.66 if hasTribeBonus?(:ANIMATED)
+        modifier *= 0.5 if pbOwnSide.effectActive?(:NaturalProtection)
+
+        return modifier
     end
 
     def recoilDamageMult(checkingForAI = false)

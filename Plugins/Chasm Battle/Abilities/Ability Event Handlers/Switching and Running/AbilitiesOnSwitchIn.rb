@@ -501,6 +501,15 @@ BattleHandlers::AbilityOnSwitchIn.add(:HARSHTRUTHS,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:AGGRAVATE,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} intensifies fractional damage!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
 ##########################################
 # Screen setting abilities
 ##########################################
