@@ -3073,6 +3073,18 @@ FunctionCode = Invalid
 Flags = CanProtect,CanMagicCoat
 Description = A sweet scent that lowers the foe's evasiveness. It also lures wild Pokémon if used in grass, etc.
 #-------------------------------
+[TRAPJAW]
+Name = Trap Jaw
+Type = GRASS
+Category = Physical
+Power = 85
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Biting
+Description = Lures an enemy into its jaws. If they hit the user this turn, the user's HP is restored by 66% the damage dealt.
+#-------------------------------
 [VINEBIND]
 Name = Vinebind
 Type = GRASS
