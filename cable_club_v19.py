@@ -205,15 +205,18 @@ class Server:
                         peer_id, name, id, ttype, party, win_text, lose_text
                     )
                     # Is the peer already waiting?
-                    for s_, st_ in self.clients.items():
-                        if (
-                            st is not st_
-                            and isinstance(st_.state, Finding)
-                            and public_id(st_.state.id) == peer_id
-                            and st_.state.peer_id == public_id(id)
-                        ):
-                            self.connect(s, s_)
-                            break
+                    candidates = [
+                        s_
+                        for s_, st_ in self.clients.items()
+                        if st is not st_
+                        and isinstance(st_.state, Finding)
+                        and public_id(st_.state.id) == peer_id
+                        and st_.state.peer_id == public_id(id)
+                    ]
+                    if candidates:
+                        self.connect(s, candidates[0])
+                        for s_ in candidates[1:]:
+                            self.disconnect(s_, "peer already connected")
 
     # Finding, simply ignore messages until the peer connects.
     def handle_finding(self, s, st, message):

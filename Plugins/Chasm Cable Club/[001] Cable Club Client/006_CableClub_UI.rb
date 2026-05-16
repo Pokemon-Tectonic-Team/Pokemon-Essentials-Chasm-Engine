@@ -412,6 +412,9 @@ class CableClubScreen
       when "peer disconnected"
         pbDisplay(_INTL("I'm sorry, the other trainer has disconnected."))
         return true
+      when "peer already connected"
+        pbDisplay(_INTL("I'm sorry, that trainer connected to someone else with the same ID as you."))
+        return false
       when "invalid version"
         pbDisplay(_INTL("I'm sorry, your game version is out of date compared to the Cable Club."))
         return false
