@@ -1346,6 +1346,10 @@ Name = Lunatic
 Description = Boosts Attack by 30% in moonglow.
 Flags = MoonglowSynergy
 #-------------------------------
+[LURINGMAW]
+Name = Luring Maw
+Description = Draws in moves from foes with status conditions.
+#-------------------------------
 [LUXURYTASTE]
 Name = Luxury Taste
 Description = At end of turn, heals 1/12th HP if holding a clothing item.
