@@ -94,21 +94,27 @@ class PokeBattle_Battler
         else
             damageAmount = @totalhp * fraction
         end
-        unless struggle
-            # Check for Aggravate on foe's side
-            eachOpposing do |opp|
-                next unless opp.shouldAbilityApply?(:AGGRAVATE, aiCheck)
-                damageAmount *= 1.35
-                break
-            end
-
-            damageAmount *= 1.5 if takesSandstormDamage? && @battle.pbWeather == :StarStorm
-
-            damageAmount *= 0.66 if hasTribeBonus?(:ANIMATED)
-            damageAmount *= 0.5 if pbOwnSide.effectActive?(:NaturalProtection)
-        end
+        damageAmount *= getFractionalDamageModifier(aiCheck: false) unless struggle
         damageAmount = damageAmount.ceil
         return damageAmount
+    end
+
+    def getFractionalDamageModifier(aiCheck: false)
+        modifier = 1.0
+
+        # Check for Aggravate on foe's side
+        eachOpposing do |opp|
+            next unless opp.shouldAbilityApply?(:AGGRAVATE, aiCheck)
+            modifier *= 1.35
+            break
+        end
+
+        modifier *= 1.5 if takesSandstormDamage? && @battle.pbWeather == :StarStorm
+
+        modifier *= 0.66 if hasTribeBonus?(:ANIMATED)
+        modifier *= 0.5 if pbOwnSide.effectActive?(:NaturalProtection)
+
+        return modifier
     end
 
     def recoilDamageMult(checkingForAI = false)
