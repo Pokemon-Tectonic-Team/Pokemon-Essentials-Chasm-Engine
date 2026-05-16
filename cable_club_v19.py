@@ -213,6 +213,7 @@ class Server:
                             and st_.state.peer_id == public_id(id)
                         ):
                             self.connect(s, s_)
+                            break
 
     # Finding, simply ignore messages until the peer connects.
     def handle_finding(self, s, st, message):
