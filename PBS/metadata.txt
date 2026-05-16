@@ -212,6 +212,7 @@ Environment = Grass
 Outdoor = false
 ShowArea = true
 Bicycle = true
+MapPosition = 0,19,18
 BattleBack = cave1
 Environment = Cave
 #-------------------------------
@@ -353,6 +354,7 @@ Bicycle = false
 Outdoor = false
 ShowArea = false
 Bicycle = false
+MapPosition = 0,21,18
 #-------------------------------
 [045]
 # Secret Room
@@ -996,7 +998,7 @@ TeleportBlocked = true
 Outdoor = false
 ShowArea = true
 Bicycle = true
-MapPosition = 0,11,11
+MapPosition = 0,11,12
 BattleBack = cave2
 Environment = Cave
 #-------------------------------
