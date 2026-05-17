@@ -178,6 +178,10 @@ class WaypointsTracker
         unlockAchievement(:UNLOCK_ALL_WAYPOINTS)
     end
 
+	def isWaypointUnlocked?(waypointName)
+		return @activeWayPoints.has_key?(waypointName)
+	end
+
     def eachWaypoint
         mapData = Compiler::MapData.new
         for map_id in mapData.mapinfos.keys.sort
@@ -259,6 +263,10 @@ end
 
 def setWaypointSummonable(waypointEventID)
 	pbSetSelfSwitch(waypointEventID,'A',true)
+end
+
+def isWaypointUnlocked?(waypointName)
+	return $waypoints_tracker.isWaypointUnlocked?(waypointName)
 end
 
 def totemAuraSummon(species)
