@@ -198,3 +198,17 @@ class PokeBattle_Move_CoralOvergrowth < PokeBattle_Move
         return 100
     end
 end
+
+#===============================================================================
+# For 4 rounds, swaps the effects of speed on round order. (Trickster's Domain)
+#===============================================================================
+class PokeBattle_Move_StartSwapSpeedOrder5 < PokeBattle_Move
+    def initialize(battle, move)
+        super
+        @trickstersdomainDuration = 5
+    end
+
+    def pbEffectGeneral(_user)
+        @battle.field.applyEffect(:TrickstersDomain, applyEffectDurationModifiers(@trickstersdomainDuration, _user))
+    end
+end

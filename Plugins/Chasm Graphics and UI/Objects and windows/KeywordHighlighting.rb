@@ -96,7 +96,6 @@ def battleKeywordsImportant
         "traps",
         "trap",
         "gravity",
-        "trick room",
         "puzzle room",
         "odd room",
         "polarized room",

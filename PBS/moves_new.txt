@@ -6603,6 +6603,18 @@ Flags = CanProtect,CanRandomCrit
 Description = The user takes control of the target's mind to unleash an attack on it. Can random critical hit.
 Animation = PSYCHOCUT
 #-------------------------------
+[TRICKSTERSDOMAIN]
+Name = Trickster's Domain
+Type = PSYCHIC
+Category = Status
+Accuracy = 0
+TotalPP = 5
+Target = BothSides
+Priority = -7
+FunctionCode = StartSwapSpeedOrder5
+Description = The user creates a bizarre area in which slower Pokémon get to move first for five turns.
+Animation = TRICKROOM
+#-------------------------------
 [TUTELAGE]
 Name = Tutelage
 Type = PSYCHIC

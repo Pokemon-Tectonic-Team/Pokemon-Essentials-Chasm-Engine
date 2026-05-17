@@ -154,7 +154,7 @@ class PokeBattle_Battle
     def pbCalculatePriority(fullCalc = false, indexArray = nil, infoScreen = false)
         needRearranging = false
         if fullCalc
-            @priorityTrickRoom = @field.effectActive?(:TrickRoom)
+            @priorityTrickstersDomain = @field.effectActive?(:TrickstersDomain)
             # Recalculate everything from scratch
             randomOrder = Array.new(maxBattlerIndex + 1) { |i| i }
             # don't do extra random calls if recalculating for info screen, to ensure cable club sync
@@ -220,9 +220,9 @@ class PokeBattle_Battle
             end
             needRearranging = true
         else
-            if @field.effectActive?(:TrickRoom) != @priorityTrickRoom
+            if @field.effectActive?(:TrickstersDomain) != @priorityTrickstersDomain
                 needRearranging = true
-                @priorityTrickRoom = @field.effectActive?(:TrickRoom)
+                @priorityTrickstersDomain = @field.effectActive?(:TrickstersDomain)
             end
             # Just recheck all battler speeds
             @priority.each do |orderArray|
@@ -242,7 +242,7 @@ class PokeBattle_Battle
                 elsif a[2] != b[2]
                     # Sort by sub-priority (highest value first)
                     b[2] <=> a[2]
-                elsif @priorityTrickRoom
+                elsif @priorityTrickstersDomain
                     # Sort by speed (lowest first), and use tie-breaker if necessary
                     (a[1] == b[1]) ? b[4] <=> a[4] : a[1] <=> b[1]
                 else
@@ -293,7 +293,7 @@ class PokeBattle_Battle
     end
 
     # Returns a hash assigning each unfainted battler a number which explains in what order the battlers
-    # are expected to move this turn, accounting for only speed and trick room
+    # are expected to move this turn, accounting for only speed and trickster's domain
     # Pokemon with speed ties are assigned the same number
     def pbTurnOrderDisplayed
         # don't do extra random calls if recalculating for info screen, to ensure cable club sync
@@ -312,11 +312,11 @@ class PokeBattle_Battle
             end
         end
 
-        trickRoom = @field.effectActive?(:TrickRoom)
+        trickstersDomain = @field.effectActive?(:TrickstersDomain)
 
         sortedSpeedKeys = speedHash.keys.sort do |speedA, speedB|
             val = speedB <=> speedA
-            val *= -1 if trickRoom
+            val *= -1 if trickstersDomain
             next val
         end
 

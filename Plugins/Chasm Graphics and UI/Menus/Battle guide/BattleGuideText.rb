@@ -262,11 +262,10 @@ def battleGuideFieldEffectsHash
     return {
         _INTL("What are field effects?") => _INTL("Field effects are special effects that affect the entire battlefield. Multiple field effects can be active at the same time."),
         _INTL("Field Effect Duration") => _INTL("Field effects last a certain number of turns. The length differs depending on what move or ability summoned the field effect. Some durations can be enhanced by certain items."),
-        _INTL("Room Effects") => _INTL("Puzzle Room, Odd Room, Polarized Room and Trick Room are rooms. Multiple can be active at the same time. Their duration can be doubled with the Reinforcing Rod item."),
+        _INTL("Room Effects") => _INTL("Puzzle Room, Odd Room and Polarized Room are rooms. Multiple can be active at the same time. Their duration can be doubled with the Reinforcing Rod item."),
         _INTL("Puzzle Room") => _INTL("Puzzle Room swaps each Pokémon's Attack and Sp. Attack stats."),
         _INTL("Odd Room") => _INTL("Odd Room swaps each Pokémon's Attack and Defense and Sp. Attack and Sp. Defense."),
         _INTL("Polarized Room") => _INTL("Polarized Room raises super- and hyper-effective damage by 25% and lowers not-very and barely-effective damage by 25% of all Pokémon."),
-        _INTL("Trick Room") => _INTL("Trick Room reverses the turn order, making slower Pokémon move first and faster Pokémon move last."),
         _INTL("Gravity") => _INTL("Gravity grounds all Pokémon, doubles their weight, and doubles all move Accuracy."),
         _INTL("Grey Mist") => _INTL("Grey Mist resets all positive and negative stat changes back to neutral at the end of every turn."),
         _INTL("Floral Gramarye") => _INTL("Floral Gramarye heals every Pokémon on the field for 1/8th HP at the end of every turn."),

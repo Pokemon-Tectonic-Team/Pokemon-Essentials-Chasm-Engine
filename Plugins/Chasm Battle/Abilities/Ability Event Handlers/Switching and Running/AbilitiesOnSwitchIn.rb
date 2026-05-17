@@ -579,16 +579,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:ODDITY,
   }
 )
 
-BattleHandlers::AbilityOnSwitchIn.add(:SUBSPACESCHISM,
-  proc { |ability, battler, battle, aiCheck|
-      battle.pbShowAbilitySplash(battler, ability) unless aiCheck
-      battle.pbAnimation(:TRICKROOM, battler, nil, 0) unless aiCheck
-      score = battle.pbStartRoom(:TrickRoom, battler, ability, aiCheck)
-      battle.pbHideAbilitySplash(battler) unless aiCheck
-      next score
-  }
-)
-
 BattleHandlers::AbilityOnSwitchIn.add(:POLARIZING,
   proc { |ability, battler, battle, aiCheck|
       battle.pbShowAbilitySplash(battler, ability) unless aiCheck

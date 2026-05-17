@@ -3764,6 +3764,17 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = The user catches the target off guard and swaps its held item with its own.
 #-------------------------------
+[TRICKROOM]
+Name = Trick Room
+Type = PSYCHIC
+Category = Status
+Accuracy = 0
+TotalPP = 5
+Target = BothSides
+Priority = -7
+FunctionCode = Invalid
+Description = The user creates a bizarre area in which slower Pokémon get to move first for four turns.
+#-------------------------------
 [TWINBEAM]
 Name = Twin Beam
 Type = PSYCHIC

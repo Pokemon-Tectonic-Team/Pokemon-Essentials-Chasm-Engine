@@ -120,7 +120,7 @@ module GameData
             return @is_screen
         end
 
-        # Trick Room, etc
+        # Puzzle Room, etc
         def is_room?
             return @is_room
         end
