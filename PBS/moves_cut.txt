@@ -3853,6 +3853,19 @@ Flags = CanProtect,ForceSignature
 EffectChance = 30
 Description = Charges up, then on the second turn, the user strikes with electrified ice. It has a 30% chance to numb.
 #-------------------------------
+[GLACIATE]
+Name = Glaciate
+Type = ICE
+Category = Special
+Power = 65
+Accuracy = 100
+TotalPP = 10
+Target = AllNearFoes
+FunctionCode = Invalid
+Flags = CanProtect,Wind
+EffectChance = 100
+Description = The user attacks by blowing freezing cold air at all near foes. This attack reduces the targets' Speed by two steps.
+#-------------------------------
 [HAZE]
 Name = Haze
 Type = ICE
