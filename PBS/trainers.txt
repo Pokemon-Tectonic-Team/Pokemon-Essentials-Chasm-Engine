@@ -3898,7 +3898,7 @@ Pokemon = MPOLTEAGEIST,45
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 10,20,0,20,20,0
 Pokemon = BRUXISH,45
-    Moves = CRUNCH,PSYCHICFANGS,ELEMENTALCRUNCH
+    Moves = CRUNCH,PSYCHICFANGS,ELEMENTALCRUNCH,BARETEETH
     AbilityIndex = 1 # Bitey
     Item = EXPERTBELT
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
