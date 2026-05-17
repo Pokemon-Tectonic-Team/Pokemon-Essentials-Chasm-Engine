@@ -5392,6 +5392,18 @@ Flags = CanSnatch
 Description = Lays roots that heal the user by absorbing 1/8th HP from foes each turn. The user becomes trapped.
 Animation = INGRAIN
 #-------------------------------
+[SAPPINGJAW]
+Name = Sapping Jaw
+Type = GRASS
+Category = Physical
+Power = 85
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = HealUserByTwoThirdsOfDamageDoneIfTargetHurtUserThisTurn
+Flags = CanProtect,Biting
+Description = Saps an enemy lured into its jaws. If they hit the user this turn, the user's HP is restored by 66% the damage dealt.
+#-------------------------------
 [SAPPINGJEALOUSY]
 Name = Sapping Jealousy
 Type = GRASS
@@ -5493,18 +5505,6 @@ FunctionCode = SwitchOutTargetDamagingMoveNonRandom
 Flags = CanProtect,Sound
 Description = The user makes a scary sound by shaking, forcing the target to switch out. Always goes last.
 Animation = UPROAR
-#-------------------------------
-[TRAPJAW]
-Name = Trap Jaw
-Type = GRASS
-Category = Physical
-Power = 85
-Accuracy = 100
-TotalPP = 12
-Target = NearOther
-FunctionCode = HealUserByTwoThirdsOfDamageDoneIfTargetHurtUserThisTurn
-Flags = CanProtect,Biting
-Description = Lures an enemy into its jaws. If they hit the user this turn, the user's HP is restored by 66% the damage dealt.
 #-------------------------------
 [VINETRAP]
 Name = Vine Trap
