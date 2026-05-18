@@ -7,5 +7,8 @@ SaveData.register_conversion(:converting_switches_340) do
     selfSwitches = save_data[:self_switches]
 
     globalSwitches[51] = selfSwitches[[26,3,'C']] # Avatar of Vigoroth defeated in Bluepoint Grotto
+
+    globalSwitches[54] = selfSwitches[[282,3,'B']] # Catacombs Sang defeated
+    globalSwitches[55] = selfSwitches[[282,4,'B']] # Catacombs Plot completed
   end
 end
