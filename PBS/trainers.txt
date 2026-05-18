@@ -1899,35 +1899,35 @@ Pokemon = STUFFUL,25
     AbilityIndex = 0 # Intimidate
 #-------------------------------
 [DRAGONTAMER,Georgius,1]
-Pokemon = MARSHADOW,55
+Pokemon = MARSHADOW,50
     Moves = FAKEOUT,SHADOWPUNCH,DRAINPUNCH
     AbilityIndex = 1 # Impressionable
-Pokemon = DRUDDIGON,55
+Pokemon = DRUDDIGON,50
     Moves = STANDTOGETHER,FLAMETHROWER,CRUELTY
     AbilityIndex = 1 # Well Suited
-Pokemon = NOIVERN,55
+Pokemon = NOIVERN,50
     Moves = GIGADRAIN,SONICSHRIEK,GUTTURALROAR
     AbilityIndex = 0 # Loud
 #-------------------------------
 [SAGE,Rennyo,1]
-Pokemon = GARDEVOIR,55
+Pokemon = GARDEVOIR,50
     Moves = LIFEDEW,HELPINGHAND,MOONBLAST
     AbilityIndex = 1 # Feedback
-Pokemon = XATU,55
+Pokemon = XATU,50
     Moves = REFLECT,FUTURESIGHT,LIGHTSCREEN
     AbilityIndex = 0 # Seer
-Pokemon = DELIBIRD,55
+Pokemon = DELIBIRD,50
     Moves = TAILWIND,PACKAGE,CHILL
     AbilityIndex = 1 # Holiday Cheer
 #-------------------------------
 [HARLEQUIN,Vincenzi,1]
-Pokemon = LEAVANNY,55
+Pokemon = LEAVANNY,50
     Moves = XSCISSOR,LEAFBLADE,ANESTHETIZE
     AbilityIndex = 1 # Bladebrained
-Pokemon = PRIMARINA,55
+Pokemon = PRIMARINA,50
     Moves = GROWL,HYPERVOICE,SURF
     AbilityIndex = 0 # Tuned Out
-Pokemon = BEWEAR,55
+Pokemon = BEWEAR,50
     Moves = WIDEGUARD,BODYSLAM,CLOSECOMBAT
     AbilityIndex = 0 # Intimidate
 #-------------------------------
@@ -7781,51 +7781,51 @@ Pokemon = CASTFORM,70
     AbilityIndex = 1 # Forecast
 #-------------------------------
 [HEXMANIAC,Juno]
-Pokemon = OBSTAGOON,50
+Pokemon = OBSTAGOON,45
     Moves = DROWN,MINDSAP,HYPERVOICE,DARKALLURE
     AbilityIndex = 1 # Frustrate
     Item = EJECTBUTTON
-Pokemon = TORTERRA,51
+Pokemon = TORTERRA,46
     Moves = ROOTSHELTER,EARTHQUAKE,ADAMANTINEPRESS,WHIPKICK
     AbilityIndex = 1 # Living Armor
     Item = LEFTOVERS
-Pokemon = MIENSHAO,52
+Pokemon = MIENSHAO,47
     Moves = WHIPTRANCE,AIRSLASH,VOLTSWITCH,DISARMINGSHOT
     AbilityIndex = 1 # Natural Cure
-Pokemon = MDUSTOX,53
+Pokemon = MDUSTOX,48
     Moves = LIFTOFF,ACROBATICS,UTURN,LUNGE
     AbilityIndex = 0 # Harsh
 #-------------------------------
 [ARTIST3,Alicynthia]
 Policies = ECLIPSE_TEAM
-Pokemon = ALAKAZAM,53
+Pokemon = ALAKAZAM,48
     Moves = POLARIZEDROOM,NEURALPULSE,JAVELIN,NUMB
     AbilityIndex = 0 # Warping Effect
     Item = REINFORCINGROD
-Pokemon = HYDREIGON,55
+Pokemon = HYDREIGON,50
     Moves = TRIPLETHREAT,DARKPULSE,JAVELIN,FLAMETHROWER
     AbilityIndex = 1 # Sun Eater
     Item = PINPOINTROCK
-Pokemon = SCEPTILE,54
+Pokemon = SCEPTILE,49
     Moves = LEAFSTORM,WEATHERBURST,CALAMITOUSSLASH,ACROBATICS
     AbilityIndex = 1 # Wall Ninja
-Pokemon = REUNICLUS,53
+Pokemon = REUNICLUS,48
     Moves = ACIDBALL,PIERCINGDOUBT,ECLIPSE,RECOVER
     AbilityIndex = 0 # Extremophile
 #-------------------------------
 [SCHOOLKID_F2,Honesty]
-Pokemon = CHANDELURE,55
+Pokemon = CHANDELURE,50
     Moves = HEX,SHIVER,HEATWAVE,ENERGYBALL
     AbilityIndex = 0 # Light Trick
     Item = AIRBALLOON
-Pokemon = ZOROARK,53
+Pokemon = ZOROARK,48
     Moves = DARKPULSE,FLAMETHROWER,TOTALCONTROL,GRASSKNOT
     AbilityIndex = 0 # Illusion
-Pokemon = RIBOMBEE,54
+Pokemon = RIBOMBEE,49
     Moves = STICKYWEB,MOONBLAST,FACADE,BUGBUZZ
     AbilityIndex = 1 # Impulsive
     Item = FLAMEORB
-Pokemon = RIOJIN,53
+Pokemon = RIOJIN,48
     Moves = DARKPULSE,FLAMETHROWER,DETACHMENT,JAVELIN
     AbilityIndex = 1 # Inner Focus
 #-------------------------------
