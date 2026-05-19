@@ -7780,7 +7780,7 @@ Pokemon = CASTFORM,70
     Moves = WEATHERBURST,INVITESUNSHINE,SOLARBEAM,ICEBERGBASH
     AbilityIndex = 1 # Forecast
 #-------------------------------
-[HEXMANIAC,Juno]
+[HEXMANIAC_GHOST,Juno]
 Pokemon = OBSTAGOON,45
     Moves = DROWN,MINDSAP,HYPERVOICE,DARKALLURE
     AbilityIndex = 1 # Frustrate
@@ -7796,7 +7796,7 @@ Pokemon = MDUSTOX,48
     Moves = LIFTOFF,ACROBATICS,UTURN,LUNGE
     AbilityIndex = 0 # Harsh
 #-------------------------------
-[ARTIST3,Alicynthia]
+[ARTIST3_GHOST,Alicynthia]
 Policies = ECLIPSE_TEAM
 Pokemon = ALAKAZAM,48
     Moves = POLARIZEDROOM,NEURALPULSE,JAVELIN,NUMB
@@ -7813,7 +7813,7 @@ Pokemon = REUNICLUS,48
     Moves = ACIDBALL,PIERCINGDOUBT,ECLIPSE,RECOVER
     AbilityIndex = 0 # Extremophile
 #-------------------------------
-[SCHOOLKID_F2,Honesty]
+[SCHOOLKID_GHOST,Honesty]
 Pokemon = CHANDELURE,50
     Moves = HEX,SHIVER,HEATWAVE,ENERGYBALL
     AbilityIndex = 0 # Light Trick
