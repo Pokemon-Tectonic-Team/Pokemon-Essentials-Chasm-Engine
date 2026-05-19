@@ -224,7 +224,7 @@ Pokemon = NOIBAT,17
 ExtendsVersion = 0
 Policies = CURSE_PERFECT_LUCK
 Pokemon = LARVESTA,18
-    Moves = EMBER,STRUGGLEBUG,ABSORB,PROTECT
+    Moves = EMBER,STRUGGLEBUG,ABSORB,DRONING
     AbilityIndex = 1 # Dawnfall
     Item = SITRUSBERRY
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
@@ -1283,7 +1283,7 @@ Pokemon = ZOROARK,36
     Moves = GRIMVISIONS,PSYCHICFANGS,SEVER,FLAMETHROWER
     AbilityIndex = 0 # Illusion
 Pokemon = MIMIKYU,36
-    Moves = VIMRIPPER,CURSEDOATH,PROTECT,SAPPINGJEALOUSY
+    Moves = VIMRIPPER,CURSEDOATH,PLAYROUGH,SAPPINGJEALOUSY
     AbilityIndex = 0 # Disguise
     Item = LEFTOVERS
 #-------------------------------
@@ -1416,7 +1416,7 @@ Pokemon = LOMBRE,30
     Moves = AQUASHOCK,AUTUMNBLAST,ICYWIND,TEETERDANCE
     AbilityIndex = 0 # Groovy
 Pokemon = GYAMASK,30
-    Moves = WILLOWISP,BLUNTFORCE,CURSEDOATH,PROTECT
+    Moves = WILLOWISP,BLUNTFORCE,CURSEDOATH,BLOCK
     AbilityIndex = 0 # Wandering Spirit
     Item = CADOBERRY
 #-------------------------------
@@ -1446,7 +1446,7 @@ Pokemon = EKANS,27
 #-------------------------------
 [CAMPER,Christian]
 Pokemon = DUSCLOPS,28
-    Moves = WILLOWISP,SHADOWPUNCH,SHADOWSNEAK,PROTECT
+    Moves = WILLOWISP,SHADOWPUNCH,SHADOWSNEAK,CURSEDOATH
     AbilityIndex = 0 # Aggravate
 Pokemon = GLOOM,27
     Moves = STINKCLOUD,MEGADRAIN,PUFFBALL
@@ -3967,7 +3967,7 @@ Pokemon = REUNICLUS,55
     AbilityIndex = 1 # Juggernaut
     Item = KEEBERRY
 Pokemon = MANIKLAW,55
-    Moves = PROTECT,WILLOWISP,VIMRIPPER,PALEBLADE
+    Moves = KNOCKOFF,WILLOWISP,VIMRIPPER,PALEBLADE
     AbilityIndex = 0 # Malice
     Item = FOCUSSASH
 #-------------------------------
@@ -3989,7 +3989,7 @@ Pokemon = MAGMORTAR,60
     AbilityIndex = 0 # Strike Corona
     Item = STRIKEVEST
 Pokemon = MDRAGALGE,60
-    Moves = LIQUIDATION,HIGHJUMPKICK,PROTECT,WHIPKICK
+    Moves = LIQUIDATION,HIGHJUMPKICK,FACADE,WHIPKICK
     AbilityIndex = 1 # Hasty
     Item = FROSTORB
 #-------------------------------
@@ -4987,7 +4987,7 @@ Pokemon = AURORUS,57
     Moves = COLDSNAP,DIAMONDFORCE,NEURALPULSE,RECOVER
     AbilityIndex = 1 # Multiscale
 Pokemon = MZANGOOSE,56
-    Moves = SIXFEETUNDER,PROTECT,VIMRIPPER,CROSSCHOP
+    Moves = SIXFEETUNDER,POISONJAB,VIMRIPPER,CROSSCHOP
     AbilityIndex = 1 # Mental Damage
     Item = GHOSTGEM
 #-------------------------------
@@ -8076,14 +8076,14 @@ Pokemon = DARMANITAN,60
 #-------------------------------
 [DOCTOR,Renaldo]
 Pokemon = MAROMATISSE,60
-    Moves = SHADOWSNEAK,MORNINGSTAR,PERISHSONG,PROTECT
+    Moves = SHADOWSNEAK,MORNINGSTAR,PERISHSONG,POWERWHIP
     AbilityIndex = 0 # Reap What You Sow
     Item = WIDELENS
 Pokemon = GRAPPLOCT,60
     Moves = OCTOLOCK,DRAINPUNCH,BULKUP,DIVE
     AbilityIndex = 1 # Realist
 Pokemon = DUGTRIO,60
-    Moves = PROTECT,ROTARYHEADBUTT,PROPELLANT,ADAMANTINEPRESS
+    Moves = CRUSHINGCHASM,ROTARYHEADBUTT,PROPELLANT,ADAMANTINEPRESS
     AbilityIndex = 1 # Pit Fighter
 Pokemon = TENTACRUEL,60
     Moves = SLAMSHUT,POISONJAB,TERRORSWARM,KINETICGRIP
@@ -9683,7 +9683,7 @@ Pokemon = TOGEDEMARU,70
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 20,0,0,20,0,10
 Pokemon = TORTERRA,70
-    Moves = LEECHSEED,PROTECT,WOODHAMMER,STAMPDOWN
+    Moves = LEECHSEED,ROOTSHELTER,WOODHAMMER,STAMPDOWN
     AbilityIndex = 1 # Living Armor
     Item = LEFTOVERS
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
@@ -9891,7 +9891,7 @@ ExtendsVersion = 0
 Policies = CURSE_NO_MERCY_3
 Pokemon = HARIYAMA,70
     Name = Tenacity
-    Moves = PROTECT,BELLYDRUM,STORMTHROW,LIQUIDATION
+    Moves = BULLETPUNCH,BELLYDRUM,STORMTHROW,LIQUIDATION
     AbilityIndex = 1 # Fighting Vigor
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 11,20,15,0,20,4
