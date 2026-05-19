@@ -67,7 +67,7 @@ class WaypointsTracker
 				if map_metadata.nil? || map_metadata.town_map_position.nil?
 					recursiveMapID = mapInfos[recursiveMapID].parent_id
 				else
-				  	displayedPosition = map_metadata.town_map_position
+				  	displayedPosition = map_metadata.town_map_position.clone
 				end
 			end
 
