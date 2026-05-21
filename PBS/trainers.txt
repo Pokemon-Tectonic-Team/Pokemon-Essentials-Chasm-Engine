@@ -8545,6 +8545,123 @@ Pokemon = KLAWSAR,70
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 20,20,10,0,20,0
 #-------------------------------
+[POKEMONTRAINER_Vanya,Vanya,1]
+Flags = NoPerfect
+Pokemon = MUSHARNA,70
+    Moves = DREAMABSORB,SLACKOFF,SUGARBALL,CRYOSLEEP
+    AbilityIndex = 0 # Dream Weaver
+    Item = ENERGYHERB
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,0,0,20,10
+Pokemon = MMUSHARNA,70
+    Moves = SLUMBERINGROAR,REMBURST,DRAGONPULSE,DIAMONDFORCE
+    AbilityIndex = 1 # Fatigued
+    Item = COVERTCLOAK
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,10,0,20,0
+Pokemon = KOMALA,70
+    Moves = DREAMSCAPE,STERTOR,LASTRESORT
+    AbilityIndex = 1 # Snoozefest
+    Item = THROATSPRAY
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,0,10,20,0
+Pokemon = PARASECT,70
+    Moves = POSSESSION,SPORE,LEECHLIFE,FOLLOWME
+    AbilityIndex = 1 # Bad Dreams
+    Item = LEPPABERRY
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,20,0,20,0
+Pokemon = BRELOOM,70
+    Moves = SPORE,MACHPUNCH,DRAINPUNCH,POWERWHIP
+    AbilityIndex = 1 # Resolute
+    Item = FOCUSSASH
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,0,10,20,0
+Pokemon = OBSTAGOON,70
+    Moves = TOSSNTURN,STERTOR,REST,DOUBLEEDGE
+    AbilityIndex = 0 # Hooligan
+    Item = LIFEORB
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+#-------------------------------
+[POKEMONTRAINER_Vanya,Vanya,2]
+Flags = NoPerfect
+Pokemon = TITANIX,70
+    Moves = PULVERIZERCHORD,SHARDSURGE,AURASPHERE,WIDEGUARD
+    AbilityIndex = 1 # Gravitas
+    Item = LUMBERAXE
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,0,0,20,10
+Pokemon = CRADILY,70
+    Moves = TERADRAIN,ROCKAPULT,SLUDGEWAVE,EARTHPOWER
+    AbilityIndex = 1 # Water Absorb
+    Item = ASSAULTVEST
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,10,0,20,0
+Pokemon = WHISCASH,70
+    Moves = BLIZZARD,RIPTIDE,PULVERIZERCHORD,PROTECT
+    AbilityIndex = 0 # Gravity Well
+    Item = LIFEORB
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,0,10,20,0
+Pokemon = TENTACRUEL,70
+    Moves = BLIZZARD,HYDROPUMP,VENOMORTAR,TERADRAIN
+    AbilityIndex = 0 # Sap Sipper
+    Item = STRIKEVEST
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,10,0,20,0
+Pokemon = WEAVILE,70
+    Moves = SUPERCOOL,CENSOR,NIGHTFELLING,SKEWER
+    AbilityIndex = 0 # Inner Focus
+    Item = CHOICEBAND
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+Pokemon = CURSOLA,70
+    Moves = ROCKAPULT,WILLOWISP,PROTECT,STRENGTHSAP
+    AbilityIndex = 0 # Gravity Well
+    Item = LIFEORB
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+#-------------------------------
+[POKEMONTRAINER_Vanya,Vanya,3]
+Flags = NoPerfect,HailTeam
+Pokemon = KYUREM,70
+    Moves = ICEHAMMER,DRACOMETEOR,WYRMWOUNDING,ROOST
+    AbilityIndex = 0 # Heat Death
+    Item = EJECTPACK
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,20,0,20,0
+Pokemon = MNOCTOWL,70
+    Moves = SHEDCOAT,AIRSLASH,SUBLIMATE,EARTHPOWER
+    AbilityIndex = 1 # Winter Insulation
+    Item = WHITEHERB
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 20,20,0,10,20,0
+Pokemon = EMPOLEON,70
+    Moves = FRAGMENTATION,HARBORBREAKER,BRAVEBIRD,AURASPHERE
+    AbilityIndex = 1 # Winter's Wages
+    Item = CHOICESCARF
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+Pokemon = HDECIDUEYE,70
+    Moves = THREEFOLDVOLLEY,DEEPBREATHING,LEAFSTORM,TOTALCONTROL
+    AbilityIndex = 0 # Taiga Trekker
+    Item = SCOPELENS
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+Pokemon = HZOROARK,70
+    Moves = MALEFACTION,GHOSTLYTALE,DRIFTOFF,HAIL
+    AbilityIndex = 1 # Snow Shroud
+    Item = LEFTOVERS
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,20,20,0
+Pokemon = DRAGAPULT,70
+    Moves = FLY,DIVE,SIXFEETUNDER,UTURN
+    AbilityIndex = 0 # Fascinate
+    Item = LIFEORB
+    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+    EV = 10,20,0,0,20,20
+#-------------------------------
 [POKEMONCHAMPION_Vanya,Vanya]
 Flags = NoPerfect
 Pokemon = PINCURCHIN,70
@@ -8613,45 +8730,6 @@ Pokemon = DUSKNOIR,70
     Moves = STITCHUP,CURSEDOATH,SHORTCIRCUIT,WILLOWISP
     AbilityIndex = 0 # Aggravate
     Item = FRAGILELOCKET
-#-------------------------------
-[POKEMONTRAINER_Vanya,Vanya,3]
-Flags = NoPerfect,HailTeam
-Pokemon = KYUREM,70
-    Moves = ICEHAMMER,DRACOMETEOR,WYRMWOUNDING,ROOST
-    AbilityIndex = 0 # Heat Death
-    Item = EJECTPACK
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 10,20,20,0,20,0
-Pokemon = MNOCTOWL,70
-    Moves = SHEDCOAT,AIRSLASH,SUBLIMATE,EARTHPOWER
-    AbilityIndex = 1 # Winter Insulation
-    Item = WHITEHERB
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 20,20,0,10,20,0
-Pokemon = EMPOLEON,70
-    Moves = FRAGMENTATION,HARBORBREAKER,BRAVEBIRD,AURASPHERE
-    AbilityIndex = 1 # Winter's Wages
-    Item = CHOICESCARF
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 10,20,0,20,20,0
-Pokemon = HDECIDUEYE,70
-    Moves = THREEFOLDVOLLEY,DEEPBREATHING,LEAFSTORM,TOTALCONTROL
-    AbilityIndex = 0 # Taiga Trekker
-    Item = SCOPELENS
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 10,20,0,20,20,0
-Pokemon = HZOROARK,70
-    Moves = MALEFACTION,GHOSTLYTALE,DRIFTOFF,HAIL
-    AbilityIndex = 1 # Snow Shroud
-    Item = LEFTOVERS
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 10,20,0,20,20,0
-Pokemon = DRAGAPULT,70
-    Moves = FLY,DIVE,SIXFEETUNDER,UTURN
-    AbilityIndex = 0 # Fascinate
-    Item = LIFEORB
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 10,20,0,0,20,20
 #-------------------------------
 [POKEMONMASTER_Vanya,Vanya]
 Flags = NoPerfect
@@ -10419,84 +10497,6 @@ Pokemon = LANTURN,35
     Item = LEFTOVERS
     # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
     EV = 20,0,10,0,0,20
-#-------------------------------
-[POKEMONTRAINER_Vanya,Vanya,1]
-Flags = NoPerfect
-Pokemon = MUSHARNA,70
-    Moves = DREAMABSORB,SLACKOFF,SUGARBALL,CRYOSLEEP
-    AbilityIndex = 0 # Dream Weaver
-    Item = ENERGYHERB
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 20,20,0,0,20,10
-Pokemon = MMUSHARNA,70
-    Moves = SLUMBERINGROAR,REMBURST,DRAGONPULSE,DIAMONDFORCE
-    AbilityIndex = 1 # Fatigued
-    Item = COVERTCLOAK
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 20,20,10,0,20,0
-Pokemon = KOMALA,70
-    Moves = DREAMSCAPE,STERTOR,LASTRESORT
-    AbilityIndex = 1 # Snoozefest
-    Item = THROATSPRAY
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 20,20,0,10,20,0
-Pokemon = PARASECT,70
-    Moves = POSSESSION,SPORE,LEECHLIFE,FOLLOWME
-    AbilityIndex = 1 # Bad Dreams
-    Item = LEPPABERRY
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 10,20,20,0,20,0
-Pokemon = BRELOOM,70
-    Moves = SPORE,MACHPUNCH,DRAINPUNCH,POWERWHIP
-    AbilityIndex = 1 # Resolute
-    Item = FOCUSSASH
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 20,20,0,10,20,0
-Pokemon = OBSTAGOON,70
-    Moves = TOSSNTURN,STERTOR,REST,DOUBLEEDGE
-    AbilityIndex = 0 # Hooligan
-    Item = LIFEORB
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 10,20,0,20,20,0
-#-------------------------------
-[POKEMONTRAINER_Vanya,Vanya,2]
-Flags = NoPerfect
-Pokemon = TITANIX,70
-    Moves = PULVERIZERCHORD,SHARDSURGE,AURASPHERE,WIDEGUARD
-    AbilityIndex = 1 # Gravitas
-    Item = LUMBERAXE
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 20,20,0,0,20,10
-Pokemon = CRADILY,70
-    Moves = TERADRAIN,ROCKAPULT,SLUDGEWAVE,EARTHPOWER
-    AbilityIndex = 1 # Water Absorb
-    Item = ASSAULTVEST
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 20,20,10,0,20,0
-Pokemon = WHISCASH,70
-    Moves = BLIZZARD,RIPTIDE,PULVERIZERCHORD,PROTECT
-    AbilityIndex = 0 # Gravity Well
-    Item = LIFEORB
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 20,20,0,10,20,0
-Pokemon = TENTACRUEL,70
-    Moves = BLIZZARD,HYDROPUMP,VENOMORTAR,TERADRAIN
-    AbilityIndex = 0 # Sap Sipper
-    Item = STRIKEVEST
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 20,20,10,0,20,0
-Pokemon = WEAVILE,70
-    Moves = SUPERCOOL,CENSOR,NIGHTFELLING,SKEWER
-    AbilityIndex = 0 # Inner Focus
-    Item = CHOICEBAND
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 10,20,0,20,20,0
-Pokemon = CURSOLA,70
-    Moves = ROCKAPULT,WILLOWISP,PROTECT,STRENGTHSAP
-    AbilityIndex = 0 # Gravity Well
-    Item = LIFEORB
-    # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-    EV = 10,20,0,20,20,0
 #-------------------------------
 [ANOTHERPOSSIBLERAFAEL,Rafael]
 Policies = CURSE_FORCE_PERFECT
