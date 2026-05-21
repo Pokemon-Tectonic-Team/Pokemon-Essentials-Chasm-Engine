@@ -1162,3 +1162,10 @@ class PokeBattle_AI_GENGAR < PokeBattle_AI_Boss
         secondMoveEveryTurn(:SPECTRALTONGUE)
     end
 end
+
+class PokeBattle_AI_MTANGROWTH < PokeBattle_AI_Boss
+    def initialize(user, battle)
+        super
+        secondMoveEveryOtherTurn(:SYNTHESIS)
+    end
+end
