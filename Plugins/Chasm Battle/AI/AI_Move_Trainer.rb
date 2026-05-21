@@ -163,14 +163,10 @@ class PokeBattle_AI
                     next if target_data.targets_foe && !user.opposes?(b)
                     score,targetKillInfo,isSlowerDead2,isFasterDead2 = pbGetMoveScore(move, user, b, policies, 1, ignoreGeneralEffectScores, killInfoArray)
                     if user.opposes?(b)
-                        totalScore = score
-                        battlerCount = 1
                         b.eachRedirectingAlly do |ally|
-                            allyScore,allyKillInfo = pbGetMoveScore(move, user, b, policies, 1, ignoreGeneralEffectScores, killInfoArray)
-                            totalScore += allyScore
-                            battlerCount += 1
+                            allyScore,allyKillInfo = pbGetMoveScore(move, user, ally, policies, 1, ignoreGeneralEffectScores, killInfoArray)
+                            score = [score, allyScore].min
                         end
-                        score = totalScore / battlerCount
                     end
                     scoresAndTargets.push([score, b.index, targetKillInfo]) if score > 0
                 end
