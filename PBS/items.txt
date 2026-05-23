@@ -2664,6 +2664,14 @@ FieldUse = OnPokemon
 Flags = KeyItem
 Description = Use on a Pokémon to switch it into another one of its forms.
 #-------------------------------
+[SPANNINGBAND]
+Name = Spanning Bands
+NamePlural = Spanning Bands
+Pocket = 7
+Price = 0
+Flags = KeyItem
+Description = An ancient pair of interlocking ceramic rings. Unlocks the ability to teleport between Avatar Totems.
+#-------------------------------
 [BOXLINK]
 Name = Box Link
 NamePlural = Box Links

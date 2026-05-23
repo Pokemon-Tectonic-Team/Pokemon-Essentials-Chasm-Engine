@@ -161,7 +161,41 @@ class WaypointsTracker
 		
 		unless @activeWayPoints.has_key?(waypointName)
 			pbMessage(waypointRegisterMessage)
-			addWaypoint(waypointName,waypointEvent)
+
+			totemGlowSprite = $scene.spriteset.getAnimationForEvent(waypointEvent.id)
+
+			totemGlowSprite.switchAnimationMode(2)
+
+			# Pause for fading
+			loop do
+				Graphics.update
+				Input.update
+				pbUpdateSceneMap
+				break if totemGlowSprite.animationComplete?
+			end
+
+			totemGlowSprite.switchAnimationMode(1)
+
+			# Pause for cool animation
+			framesWaited = 0
+			loop do
+				Graphics.update
+				Input.update
+				# Intentionally duplicated
+				Graphics.update
+				Input.update
+				pbUpdateSceneMap
+				pbSEPlay("Totem activation") if framesWaited == 2
+				framesWaited += 1
+				break if totemGlowSprite.animationComplete?
+			end
+
+			totemGlowSprite.switchAnimationMode(0)
+
+			pbWait(10)
+			
+			# Disabled for testing purposes
+			#addWaypoint(waypointName,waypointEvent)
 
             checkForWaypointsAchievement
 		end
@@ -380,7 +414,7 @@ def waypointAccessMessageAlternative
 end
 
 def waypointRegisterMessage
-    return _INTL("\\i[SPANNINGBAND]The Spanning Bands glow in sync with the totem. You sense that some sort of connection has been created.")
+    return _INTL("\\i[SPANNINGBAND]The Spanning Bands glow in sync with the totem.")
 end
 
 def waypointUnableMessage
