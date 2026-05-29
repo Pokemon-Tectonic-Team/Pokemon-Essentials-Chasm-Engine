@@ -1,36 +1,131 @@
-inherit_from:
-- https://relaxed.ruby.style/rubocop.yml
-
-Style/Encoding:
-    Enabled: true
-
-Layout/LineLength:
-    Max: 200
-  
 AllCops:
-    TargetRubyVersion: 3.0
-    NewCops: enable
-  
+  TargetRubyVersion: 3.1
+  NewCops: enable
+
 Layout/IndentationStyle:
-    EnforcedStyle: tabs
+  EnforcedStyle: spaces
 
 Layout/IndentationWidth:
-    Enabled: false
-  
-Naming/VariableName:
-    EnforcedStyle: snake_case
+  Width: 4
 
-Naming/FileName:
-    Enabled: false
-    
-Style/FrozenStringLiteralComment:
-    EnforcedStyle: never
+Layout/LineLength:
+  Max: 200
 
 Style/StringLiterals:
-    EnforcedStyle: double_quotes
-    
-Style/GlobalVars:
-    Enabled: false
+  EnforcedStyle: double_quotes
 
-Layout/ArgumentAlignment:  
-    Enabled: false
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+
+Style/Encoding:
+  Enabled: true
+
+# RPG Maker uses global variables pervasively ($Trainer, $game_switches, etc.)
+Style/GlobalVars:
+  Enabled: false
+
+Style/SpecialGlobalVars:
+  Enabled: false
+
+# Metrics cops are impractical for complex game-engine battle logic
+Metrics:
+  Enabled: false
+
+# Naming
+Naming/FileName:
+  Enabled: false
+
+Naming/VariableName:
+  EnforcedStyle: snake_case
+
+# Layout cops that produce noise without improving readability in game code
+Layout/ArgumentAlignment:
+  Enabled: false
+
+Layout/HashAlignment:
+  Enabled: false
+
+Layout/FirstHashElementIndentation:
+  Enabled: false
+
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+# Style cops disabled for patterns that are common and intentional in this codebase
+Style/Documentation:
+  Enabled: false
+
+Style/RedundantReturn:
+  Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Style/ConditionalAssignment:
+  Enabled: false
+
+Style/TernaryParentheses:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/SingleLineMethods:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: false
+
+Style/AccessorGrouping:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
+  Enabled: false
+
+Style/Alias:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/NegatedIf:
+  Enabled: false
+
+Style/WhileUntilModifier:
+  Enabled: false
+
+Style/Lambda:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
