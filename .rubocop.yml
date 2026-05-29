@@ -38,6 +38,9 @@ Naming/FileName:
 Naming/VariableName:
   Enabled: false
 
+Naming/MethodName:
+  Enabled: false
+
 # Layout cops that produce noise without improving readability in game code
 Layout/ArgumentAlignment:
   Enabled: false
