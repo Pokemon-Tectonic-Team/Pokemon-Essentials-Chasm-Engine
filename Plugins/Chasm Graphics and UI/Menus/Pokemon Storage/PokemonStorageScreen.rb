@@ -16,10 +16,10 @@ class PokemonStorageScreen
         @multiSelectedSlots = []
     end
 
-    def pbStartScreen(command,ableProc = nil)
+    def pbStartScreen(command, ableProc = nil)
         @heldpkmn = nil
-        if command == 0 || command == 4 # Organise or Select
-            multiSelectionProc = Proc.new { |boxNumber, slotNumber|
+        if [0, 4].include?(command) # Organise or Select
+            multiSelectionProc = proc { |boxNumber, slotNumber|
                 @multiSelectedSlots.any? { |selectedSlot| selectedSlot[0] == boxNumber && selectedSlot[1] == slotNumber }
             }
             @scene.pbStartBox(self, command, iconFadeProc: ableProc, iconMultiSelectionProc: multiSelectionProc)
@@ -57,7 +57,7 @@ class PokemonStorageScreen
                             next
                         elsif ableProc.nil? || ableProc.call(pokemonAtSlot)
                             @scene.pbCloseBox
-                            return pokemonAtSlot,selected[0],selected[1]
+                            return pokemonAtSlot, selected[0], selected[1]
                         else
                             pbPlayBuzzerSE
                             pbDisplay(_INTL("That Pokémon is not a valid choice!"))
@@ -72,9 +72,6 @@ class PokemonStorageScreen
                                 pbDisplay(_INTL("You cannot mass-move Pokémon into a Donation Box."))
                                 next
                             else
-                                cmdMoveSelection = -1
-                                cmdTakeAllItems = -1
-                                cmdClearSelection = -1
 
                                 commands = []
                                 commands[cmdMoveSelection = commands.length] = _INTL("Move Selection")
@@ -82,7 +79,7 @@ class PokemonStorageScreen
                                 commands[cmdClearSelection = commands.length] = _INTL("Clear Selection")
                                 commands.push(_INTL("Cancel"))
                                 choice = pbShowCommands(_INTL("Do what with your {1} selected Pokémon?", @multiSelectedSlots.length), commands, 0)
-                                
+
                                 if choice == cmdMoveSelection && cmdMoveSelection > -1
                                     massMoveMultiSelection(selected)
                                 elsif choice == cmdTakeAllItems && cmdTakeAllItems > -1
@@ -92,7 +89,7 @@ class PokemonStorageScreen
                                 end
                             end
                         else
-                            next 
+                            next
                         end
                     end
 
@@ -118,7 +115,7 @@ class PokemonStorageScreen
                         elsif pokemonAtSlot
                             selectedPokemon = pokemonAtSlot
                         end
-                        interactionScene = TilingCardsStorageInteractionMenu_Scene.new(command,selectedPokemon,selected,heldpoke,self,@scene)
+                        interactionScene = TilingCardsStorageInteractionMenu_Scene.new(command, selectedPokemon, selected, heldpoke, self, @scene)
                         interactionScreen = TilingCardsStorageInteractionMenu.new(interactionScene)
                         interactionScreen.pbStartPokemonMenu
                     end
@@ -152,7 +149,7 @@ class PokemonStorageScreen
                     pokemon = @storage[selected[0], selected[1]]
                     next unless pokemon
 
-                    interactionScene = TilingCardsStorageInteractionMenu_Scene.new(command,pokemon,selected,nil,self,@scene)
+                    interactionScene = TilingCardsStorageInteractionMenu_Scene.new(command, pokemon, selected, nil, self, @scene)
                     interactionScreen = TilingCardsStorageInteractionMenu.new(interactionScene)
                     interactionScreen.pbStartPokemonMenu
                 end
@@ -175,7 +172,7 @@ class PokemonStorageScreen
                     pokemon = @storage[-1, selected]
                     next unless pokemon
 
-                    interactionScene = TilingCardsStorageInteractionMenu_Scene.new(command,pokemon,[-1,selected],nil,self,@scene)
+                    interactionScene = TilingCardsStorageInteractionMenu_Scene.new(command, pokemon, [-1, selected], nil, self, @scene)
                     interactionScreen = TilingCardsStorageInteractionMenu.new(interactionScene)
                     interactionScreen.pbStartPokemonMenu
                 end
@@ -186,7 +183,7 @@ class PokemonStorageScreen
             @scene.pbCloseBox
         end
         if command == 4
-            return [nil,nil,nil]
+            return [nil, nil, nil]
         else
             return false
         end
@@ -237,7 +234,7 @@ class PokemonStorageScreen
         box = selected[0]
         index = selected[1]
         if @storage[box].isDonationBox?
-            pbDisplay(_INTL("Can't withdraw from a donation box.")) 
+            pbDisplay(_INTL("Can't withdraw from a donation box."))
             return false
         end
         raise _INTL("Can't withdraw from party...") if box == -1
@@ -272,8 +269,8 @@ class PokemonStorageScreen
                     next
                 end
                 if destbox >= 0
-                    if @storage[destbox].isDonationBox?
-                        next unless pbStoreDonation(heldpoke || @storage[-1, index])
+                    if @storage[destbox].isDonationBox? && !pbStoreDonation(heldpoke || @storage[-1, index])
+                        next
                     end
                     if heldpoke || selected[0] == -1
                         p = heldpoke || @storage[-1, index]
@@ -303,7 +300,7 @@ class PokemonStorageScreen
             pbDisplay(_INTL("That's your last Pokémon!"))
             return
         elsif box > -1 && @storage[box].isDonationBox?
-            pbDisplay(_INTL("Can't withdraw from a donation box.")) 
+            pbDisplay(_INTL("Can't withdraw from a donation box."))
             return false
         end
         @scene.pbHold(selected)
@@ -320,8 +317,8 @@ class PokemonStorageScreen
             pbDisplay("Can't place that there.")
             return
         end
-        if box > -1 && @storage[box].isDonationBox?
-            return if !pbStoreDonation(@heldpkmn)
+        if box > -1 && @storage[box].isDonationBox? && !pbStoreDonation(@heldpkmn)
+            return
         end
         if box >= 0
             @heldpkmn.time_form_set = nil
@@ -346,9 +343,11 @@ class PokemonStorageScreen
                 pbDisplay(_INTL("{1} was stored forever.", pkmnname))
                 candiesFromDonating(lifetimeEXP)
                 pbDisplay(_INTL("Bye-bye, {1}!", pkmnname))
-            else return false
+            else
+                return false
             end
-        else return false
+        else
+            return false
         end
         return true
     end
@@ -397,9 +396,9 @@ class PokemonStorageScreen
         # Check able party pokemon after move (only if not moving into the party)
         unless boxNumber == -1
             ablePartyAfterMove = 0
-            @storage.party.each_with_index do |partyMember,partyIndex|
+            @storage.party.each_with_index do |partyMember, partyIndex|
                 next unless partyMember.able?
-                next if @multiSelectedSlots.any? {|selectedSlot| selectedSlot[0] == -1 && selectedSlot[1] == partyIndex}
+                next if @multiSelectedSlots.any? { |selectedSlot| selectedSlot[0] == -1 && selectedSlot[1] == partyIndex }
                 ablePartyAfterMove += 1
             end
 
@@ -420,13 +419,13 @@ class PokemonStorageScreen
             for i in slotNumber...box.maxPokemon
                 next unless box[i].nil?
                 openSlots += 1
-            end  
+            end
         end
 
         if openSlots < @multiSelectedSlots.length
             pbDisplay(_INTL("Cannot mass move to this spot."))
-            pbDisplay(_INTL("{1} open slots are needed, and there are only {2} here.",@multiSelectedSlots.length,openSlots))
-            return 
+            pbDisplay(_INTL("{1} open slots are needed, and there are only {2} here.", @multiSelectedSlots.length, openSlots))
+            return
         end
 
         pokemonToMove = []
@@ -443,7 +442,7 @@ class PokemonStorageScreen
                 @storage.boxes[movingPokemonBox][movingPokemonSlot] = nil
             end
         end
-        
+
         pokemonMoved = 0
         resultMessage = nil
         if boxNumber == -1
@@ -453,7 +452,7 @@ class PokemonStorageScreen
         else
             for i in slotNumber...box.maxPokemon
                 next unless box[i].nil?
-                box[i] = pokemonToMove[pokemonMoved]  
+                box[i] = pokemonToMove[pokemonMoved]
                 pokemonMoved += 1
                 break if pokemonMoved >= pokemonToMove.length
             end
@@ -466,7 +465,7 @@ class PokemonStorageScreen
         @scene.pbHardRefresh
         pbDisplay(resultMessage)
     end
-    
+
     def takeItemsMultiSelection
         purgeNilSlotsFromMultiSelection
         removedAnyItem = false
@@ -486,7 +485,7 @@ class PokemonStorageScreen
             pbTakeItemsFromPokemon(selectedPokemon)
             removedAnyItem = true
         end
-        pbDisplay(_INTL("No selected Pokémon are holding any items.")) unless removedAnyItem 
+        pbDisplay(_INTL("No selected Pokémon are holding any items.")) unless removedAnyItem
         @scene.pbHardRefresh
     end
 
@@ -506,10 +505,10 @@ class PokemonStorageScreen
     # Returns how many boxes were sorted
     def pbSortAll(sortingType)
         return 0 if @heldpkmn
-        
+
         validBoxes = []
         allPokemonInValidBoxes = []
-        
+
         # Store all pokemon in one big list
         @storage.boxes.each do |box|
             next if box.isLocked? || box.isDonationBox?
@@ -526,7 +525,7 @@ class PokemonStorageScreen
         @multiSelectedSlots.clear
 
         # Sort the big pokemon list
-        sortPokemonList(allPokemonInValidBoxes,sortingType)
+        sortPokemonList(allPokemonInValidBoxes, sortingType)
 
         # Store all pokemon back into storage
         validBoxes.each do |box|
@@ -550,28 +549,28 @@ class PokemonStorageScreen
         return false if box.isLocked?
         return false if box.empty?
         @multiSelectedSlots.clear
-        nitems = box.nitems - 1
+        box.nitems
         listOfPokemon = []
         for i in 0...PokemonBox::BOX_SIZE
             listOfPokemon.push(box[i]) if box[i]
         end
 
-        sortPokemonList(listOfPokemon,sortingType)
+        sortPokemonList(listOfPokemon, sortingType)
 
         # Store all pokemon back into storage
         box.clear
 
-		anyMoved = false
+        anyMoved = false
         for i in 0...PokemonBox::BOX_SIZE
             anyMoved = true if box[i] != listOfPokemon[i]
             box[i] = listOfPokemon[i]
         end
-        
+
         @scene.pbHardRefresh
         return anyMoved
     end
 
-    def sortPokemonList(listToSort,sortingType)
+    def sortPokemonList(listToSort, sortingType)
         if sortingType == 1 # Name
             listToSort.sort! { |a, b|
                 if a.name != b.name
@@ -623,7 +622,7 @@ class PokemonStorageScreen
                 else
                     a.personalID <=> b.personalID
                 end
-            }   
+            }
         elsif sortingType == 5 # Level
             listToSort.sort! { |a, b|
                 if a.level != b.level
@@ -670,7 +669,7 @@ class PokemonStorageScreen
         index = selected[1]
         raise _INTL("Position {1},{2} is empty...", box, index) unless @storage[box, index]
         if box != -1 && @storage[box].isDonationBox?
-            pbDisplay(_INTL("Can't withdraw from a donation box.")) 
+            pbDisplay(_INTL("Can't withdraw from a donation box."))
             return false
         end
         if box == -1 && pbAble?(@storage[box, index]) && pbAbleCount <= 1 && !pbAble?(@heldpkmn)
@@ -775,9 +774,9 @@ class PokemonStorageScreen
     end
 
     def pbUseItem(pokemon)
-        item = selectItemForUseOnPokemon($PokemonBag,pokemon)
+        item = selectItemForUseOnPokemon($PokemonBag, pokemon)
         return unless item
-        pbUseItemOnPokemon(item,pokemon)
+        pbUseItemOnPokemon(item, pokemon)
         @scene.pbHardRefresh
     end
 
@@ -798,12 +797,12 @@ class PokemonStorageScreen
 
         loop do
             commands = []
-            commands[jumpCommand = commands.length]         = _INTL("Jump")
+            commands[jumpCommand = commands.length] = _INTL("Jump")
             unless selectionMode || donationBox
                 commands[wallPaperCommand = commands.length]    = _INTL("Wallpaper")
                 commands[nameCommand = commands.length]         = _INTL("Name")
             end
-            commands[searchCommand = commands.length]       = _INTL("Search")
+            commands[searchCommand = commands.length] = _INTL("Search")
             unless selectionMode || donationBox
                 commands[sortCommand = commands.length]         = _INTL("Sort")
                 commands[sortAllCommand = commands.length]      = _INTL("Sort All")
@@ -814,7 +813,7 @@ class PokemonStorageScreen
                     commands[visitEstateCommand = commands.length] = _INTL("Visit PokÉstate")
                 end
             end
-            commands[cancelCommand = commands.length]       = _INTL("Cancel")
+            commands[cancelCommand = commands.length] = _INTL("Cancel")
             command = pbShowCommands(_INTL("What do you want to do?"), commands, command)
             if command == jumpCommand && jumpCommand > -1
                 destbox = @scene.pbChooseBox(_INTL("Jump to which Box?"))
@@ -877,8 +876,8 @@ class PokemonStorageScreen
                 sortMethod = @scene.pbChooseBoxSort(_INTL("How will you sort?"))
                 next unless sortMethod > 0
                 unless pbSortBox(sortMethod, @storage.currentBox)
-					@scene.pbDisplay(_INTL("Each Pokémon is already in the right place!"))
-				end
+                    @scene.pbDisplay(_INTL("Each Pokémon is already in the right place!"))
+                end
             elsif command == swapBoxCommand && swapBoxCommand > -1
                 if @heldpkmn
                     @scene.pbDisplay(_INTL("Can't swap boxes while you have a Pokémon in your hand!"))
@@ -895,11 +894,11 @@ class PokemonStorageScreen
                     nameB = boxB.getName(destbox)
                     @storage.boxes[destbox] = boxA
                     @storage.boxes[@storage.currentBox] = boxB
-    
+
                     @storage.currentBox = destbox
                     pbPlayDecisionSE
                     @scene.pbHardRefresh
-                    @scene.pbDisplay(_INTL("{1} has swapped position with {2}!",nameA,nameB))
+                    @scene.pbDisplay(_INTL("{1} has swapped position with {2}!", nameA, nameB))
                 end
             elsif command == sortAllCommand && sortAllCommand > -1
                 if @heldpkmn
@@ -938,14 +937,14 @@ class PokemonStorageScreen
             if selected.nil?
                 next if pbConfirm(_INTL("Continue Box operations?"))
                 break
-            elsif selected[0] == -4   # Box name
+            elsif selected[0] == -4 # Box name
                 pbBoxCommands
             else
                 pokemon = @storage[selected[0], selected[1]]
                 next unless pokemon
 
                 retValWrapper = [false]
-                interactionScene = TilingCardsStorageInteractionMenu_Scene.new(5,pokemon,selected,nil,self,@scene,retValWrapper)
+                interactionScene = TilingCardsStorageInteractionMenu_Scene.new(5, pokemon, selected, nil, self, @scene, retValWrapper)
                 interactionScreen = TilingCardsStorageInteractionMenu.new(interactionScene)
                 interactionScreen.pbStartPokemonMenu
                 if retValWrapper[0]
@@ -959,17 +958,17 @@ class PokemonStorageScreen
     end
 end
 
-def pbChooseBoxPokemon(variableNumber,storageLocVarNumber,ableProc=nil)
-	chosenPkmn = nil
+def pbChooseBoxPokemon(variableNumber, storageLocVarNumber, ableProc = nil)
+    chosenPkmn = nil
     storageBox = nil
     boxLocation = nil
-	pbFadeOutIn {
-		scene = PokemonStorageScene.new
+    pbFadeOutIn {
+        scene = PokemonStorageScene.new
         screen = PokemonStorageScreen.new(scene, $PokemonStorage)
-		chosenPkmn,storageBox,boxLocation = screen.pbStartScreen(4,ableProc)
-	}
-	pbSet(variableNumber,chosenPkmn)
-	pbSet(storageLocVarNumber,[storageBox,boxLocation])
+        chosenPkmn, storageBox, boxLocation = screen.pbStartScreen(4, ableProc)
+    }
+    pbSet(variableNumber, chosenPkmn)
+    pbSet(storageLocVarNumber, [storageBox, boxLocation])
 end
 
 def boxPokemonChosen?

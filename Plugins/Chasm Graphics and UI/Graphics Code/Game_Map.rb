@@ -1,12 +1,12 @@
 def tile_ID_from_coordinates(x, y)
-    return x * PokemonTilesetScene::TILES_PER_AUTOTILE if y == 0   # Autotile
-    return PokemonTilesetScene::TILESET_START_ID + (y - 1) * PokemonTilesetScene::TILES_PER_ROW + x
+    return x * PokemonTilesetScene::TILES_PER_AUTOTILE if y == 0 # Autotile
+    return PokemonTilesetScene::TILESET_START_ID + ((y - 1) * PokemonTilesetScene::TILES_PER_ROW) + x
 end
 
 def coordinates_from_tild_ID(tileID)
     return [tileID / PokemonTilesetScene::TILES_PER_AUTOTILE, 0] if tileID < PokemonTilesetScene::TILESET_START_ID
     x = (tileID - PokemonTilesetScene::TILESET_START_ID) % PokemonTilesetScene::TILES_PER_ROW
-    y = (tileID - PokemonTilesetScene::TILESET_START_ID) / PokemonTilesetScene::TILES_PER_ROW + 1
+    y = ((tileID - PokemonTilesetScene::TILESET_START_ID) / PokemonTilesetScene::TILES_PER_ROW) + 1
     return [x, y]
 end
 
@@ -110,7 +110,7 @@ class Game_Map
 
     def name
         ret = pbGetMessage(MessageTypes::MapNames, @map_id)
-        ret.gsub!(/\\PN/, $Trainer.name) if $Trainer
+        ret.gsub!("\\PN", $Trainer.name) if $Trainer
         return ret
     end
 
@@ -160,7 +160,7 @@ class Game_Map
             return false if self_event != dependent && dependent.x == x && dependent.y == y
         end
         return false unless valid?(x, y)
-        bit = (1 << (d / 2 - 1)) & 0x0f
+        bit = (1 << ((d / 2) - 1)) & 0x0f
         for event in events.values
             next if event.tile_id <= 0
             next if event == self_event
@@ -277,7 +277,7 @@ class Game_Map
     end
 
     def playerPassable?(x, y, d, _self_event = nil)
-        bit = (1 << (d / 2 - 1)) & 0x0f
+        bit = (1 << ((d / 2) - 1)) & 0x0f
         for i in [2, 1, 0]
             tile_id = data[x, y, i]
             terrain = GameData::TerrainTag.try_get(@terrain_tags[tile_id])
@@ -291,7 +291,7 @@ class Game_Map
                 # Prevent cycling in really tall grass/on ice
                 return false if $PokemonGlobal.bicycle && !terrain.can_bicycle?
                 # Depend on passability of bridge tile if on bridge
-                return (passage & bit == 0 && passage & 0x0f != 0x0f) if terrain.bridge && $PokemonGlobal.bridge > 0
+                return passage & bit == 0 && passage & 0x0f != 0x0f if terrain.bridge && $PokemonGlobal.bridge > 0
             end
             # Regular passability checks
             if !terrain || !terrain.ignore_passability
@@ -331,7 +331,7 @@ class Game_Map
         return false
     end
 
-    def terrain_tag(x, y, countBridge = false, checkEvents = false, self_event = nil)
+    def terrain_tag(x, y, countBridge = false, _checkEvents = false, self_event = nil)
         if valid?(x, y)
             for event in events.values
                 next if event == self_event || event.tile_id <= 0 || event.through
@@ -362,7 +362,7 @@ class Game_Map
         return if @display_x == value
         @display_x = value
         if GameData::MapMetadata.exists?(map_id) && GameData::MapMetadata.get(map_id).snap_edges
-            max_x = (width - Graphics.width * 1.0 / TILE_WIDTH) * REAL_RES_X
+            max_x = (width - (Graphics.width * 1.0 / TILE_WIDTH)) * REAL_RES_X
             @display_x = [0, [@display_x, max_x].min].max
         end
         $MapFactory.setMapsInRange if $MapFactory
@@ -372,7 +372,7 @@ class Game_Map
         return if @display_y == value
         @display_y = value
         if GameData::MapMetadata.exists?(map_id) && GameData::MapMetadata.get(map_id).snap_edges
-            max_y = (height - Graphics.height * 1.0 / TILE_HEIGHT) * REAL_RES_Y
+            max_y = (height - (Graphics.height * 1.0 / TILE_HEIGHT)) * REAL_RES_Y
             @display_y = [0, [@display_y, max_y].min].max
         end
         $MapFactory.setMapsInRange if $MapFactory
@@ -396,27 +396,27 @@ class Game_Map
 
     def scroll_downright(distance)
         @display_x = [@display_x + distance,
-           (self.width - Graphics.width*1.0/TILE_WIDTH) * REAL_RES_X].min
+                      (width - (Graphics.width * 1.0 / TILE_WIDTH)) * REAL_RES_X].min
         @display_y = [@display_y + distance,
-           (self.height - Graphics.height*1.0/TILE_HEIGHT) * REAL_RES_Y].min
-      end
-    
-      def scroll_downleft(distance)
+                      (height - (Graphics.height * 1.0 / TILE_HEIGHT)) * REAL_RES_Y].min
+    end
+
+    def scroll_downleft(distance)
         @display_x = [@display_x - distance, 0].max
         @display_y = [@display_y + distance,
-           (self.height - Graphics.height*1.0/TILE_HEIGHT) * REAL_RES_Y].min
-      end
-    
-      def scroll_upright(distance)
+                      (height - (Graphics.height * 1.0 / TILE_HEIGHT)) * REAL_RES_Y].min
+    end
+
+    def scroll_upright(distance)
         @display_x = [@display_x + distance,
-           (self.width - Graphics.width*1.0/TILE_WIDTH) * REAL_RES_X].min
+                      (width - (Graphics.width * 1.0 / TILE_WIDTH)) * REAL_RES_X].min
         @display_y = [@display_y - distance, 0].max
-      end
-    
-      def scroll_upleft(distance)
+    end
+
+    def scroll_upleft(distance)
         @display_x = [@display_x - distance, 0].max
         @display_y = [@display_y - distance, 0].max
-      end
+    end
 
     def start_scroll(direction, distance, speed)
         @scroll_direction = direction
@@ -488,15 +488,15 @@ class Game_Map
         if @fog_tone_duration >= 1
             d = @fog_tone_duration
             target = @fog_tone_target
-            @fog_tone.red   = (@fog_tone.red * (d - 1) + target.red) / d
-            @fog_tone.green = (@fog_tone.green * (d - 1) + target.green) / d
-            @fog_tone.blue  = (@fog_tone.blue * (d - 1) + target.blue) / d
-            @fog_tone.gray  = (@fog_tone.gray * (d - 1) + target.gray) / d
+            @fog_tone.red   = ((@fog_tone.red * (d - 1)) + target.red) / d
+            @fog_tone.green = ((@fog_tone.green * (d - 1)) + target.green) / d
+            @fog_tone.blue  = ((@fog_tone.blue * (d - 1)) + target.blue) / d
+            @fog_tone.gray  = ((@fog_tone.gray * (d - 1)) + target.gray) / d
             @fog_tone_duration -= 1
         end
         if @fog_opacity_duration >= 1
             d = @fog_opacity_duration
-            @fog_opacity = (@fog_opacity * (d - 1) + @fog_opacity_target) / d
+            @fog_opacity = ((@fog_opacity * (d - 1)) + @fog_opacity_target) / d
             @fog_opacity_duration -= 1
         end
     end
@@ -504,24 +504,24 @@ class Game_Map
     def update_scrolling
         # If scrolling
         if @scroll_rest > 0
-          # Change from scroll speed to distance in map coordinates
-          distance = (1<<@scroll_speed)*40/Graphics.frame_rate
-          distance = @scroll_rest if distance>@scroll_rest
-          # Execute scrolling
-          case @scroll_direction
-          when 1 then scroll_downleft(distance)
-          when 2 then scroll_down(distance)
-          when 3 then scroll_downright(distance)
-          when 4 then scroll_left(distance)
-          when 6 then scroll_right(distance)
-          when 7 then scroll_upleft(distance)
-          when 8 then scroll_up(distance)
-          when 9 then scroll_upright(distance)
-          end
-          # Subtract distance scrolled
-          @scroll_rest -= distance
+            # Change from scroll speed to distance in map coordinates
+            distance = (1 << @scroll_speed) * 40 / Graphics.frame_rate
+            distance = @scroll_rest if distance > @scroll_rest
+            # Execute scrolling
+            case @scroll_direction
+            when 1 then scroll_downleft(distance)
+            when 2 then scroll_down(distance)
+            when 3 then scroll_downright(distance)
+            when 4 then scroll_left(distance)
+            when 6 then scroll_right(distance)
+            when 7 then scroll_upleft(distance)
+            when 8 then scroll_up(distance)
+            when 9 then scroll_upright(distance)
+            end
+            # Subtract distance scrolled
+            @scroll_rest -= distance
         end
-      end
+    end
 
     def tileset_id;     return @map.tileset_id;     end
     def bgm;            return @map.bgm;            end
@@ -649,9 +649,9 @@ class Game_Map
     # Camera operations
     #-----------------------------------------------------------------------------
     def slideCameraToSpot(centerX, centerY, speed = 3)
-        distX = (centerX - 8) - (self.display_x / 128)
+        distX = (centerX - 8) - (display_x / 128)
         xDirection = distX > 0 ? 6 : 4
-        distY = (centerY - 6) - (self.display_y / 128)
+        distY = (centerY - 6) - (display_y / 128)
         yDirection = distY > 0 ? 2 : 8
         distXAbs = distX.abs
         distYAbs = distY.abs
@@ -665,15 +665,13 @@ class Game_Map
     end
 
     def timedCameraPreview(centerX, centerY, seconds = 5)
-        prevCameraX = self.display_x
-        prevCameraY = self.display_y
+        prevCameraX = display_x
+        prevCameraY = display_y
         blackFadeOutIn do
             centerCameraOnSpot(centerX, centerY)
             $scene.updateSpritesets
         end
         frame = 0
-        currentCenterX = centerX
-        currentCenterY = centerY
         until frame >= Graphics.frame_rate * seconds
             Graphics.update
             Input.update
@@ -688,8 +686,8 @@ class Game_Map
     end
 
     def controlledCameraPreview(centerX, centerY, maxXOffset = 6, maxYOffset = 3, cameraSpeed = 0.15)
-        prevCameraX = self.display_x
-        prevCameraY = self.display_y
+        prevCameraX = display_x
+        prevCameraY = display_y
         blackFadeOutIn do
             centerCameraOnSpot(centerX, centerY)
             $scene.updateSpritesets
@@ -698,26 +696,26 @@ class Game_Map
         @sprites = {}
 
         controlArrowsViewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
-        controlArrowsViewport.z = 99999
-        @sprites["scroll_arrow_up"] = AnimatedSprite.new("Graphics/Pictures/uparrow",8,28,40,2,controlArrowsViewport)
+        controlArrowsViewport.z = 99_999
+        @sprites["scroll_arrow_up"] = AnimatedSprite.new("Graphics/Pictures/uparrow", 8, 28, 40, 2, controlArrowsViewport)
         @sprites["scroll_arrow_up"].x = (Graphics.width - 28) / 2
         @sprites["scroll_arrow_up"].y = 4
         @sprites["scroll_arrow_up"].visible = true
         @sprites["scroll_arrow_up"].play
 
-        @sprites["scroll_arrow_down"] = AnimatedSprite.new("Graphics/Pictures/downarrow",8,28,40,2,controlArrowsViewport)
+        @sprites["scroll_arrow_down"] = AnimatedSprite.new("Graphics/Pictures/downarrow", 8, 28, 40, 2, controlArrowsViewport)
         @sprites["scroll_arrow_down"].x = (Graphics.width - 28) / 2
         @sprites["scroll_arrow_down"].y = Graphics.height - 44
         @sprites["scroll_arrow_down"].visible = true
         @sprites["scroll_arrow_down"].play
 
-        @sprites["scroll_arrow_left"] = AnimatedSprite.new("Graphics/Pictures/leftarrow",8,40,28,2,controlArrowsViewport)
+        @sprites["scroll_arrow_left"] = AnimatedSprite.new("Graphics/Pictures/leftarrow", 8, 40, 28, 2, controlArrowsViewport)
         @sprites["scroll_arrow_left"].x = 4
         @sprites["scroll_arrow_left"].y = (Graphics.height - 28) / 2
         @sprites["scroll_arrow_left"].visible = true
         @sprites["scroll_arrow_left"].play
 
-        @sprites["scroll_arrow_right"] = AnimatedSprite.new("Graphics/Pictures/rightarrow",8,40,28,2,controlArrowsViewport)
+        @sprites["scroll_arrow_right"] = AnimatedSprite.new("Graphics/Pictures/rightarrow", 8, 40, 28, 2, controlArrowsViewport)
         @sprites["scroll_arrow_right"].x = Graphics.width - 44
         @sprites["scroll_arrow_right"].y = (Graphics.height - 28) / 2
         @sprites["scroll_arrow_right"].visible = true
@@ -731,7 +729,7 @@ class Game_Map
             pbUpdateSpriteHash(@sprites)
             pbUpdateSceneMap
             break if Input.trigger?(Input::BACK)
-            
+
             xDir = 0
             yDir = 0
 
@@ -791,16 +789,16 @@ class Game_Map
     end
 
     def centerCameraOnSpot(centerX, centerY)
-        centerOffsetX = (Graphics.width / TILE_WIDTH) / 2 - 1
+        centerOffsetX = ((Graphics.width / TILE_WIDTH) / 2) - 1
         self.display_x = (centerX - centerOffsetX) * 128
-        centerOffsetY = (Graphics.height / TILE_HEIGHT) / 2 + 1
+        centerOffsetY = ((Graphics.height / TILE_HEIGHT) / 2) + 1
         self.display_y = (centerY - centerOffsetY) * 128
     end
 
     def centerCameraOnPlayer(xPixelsOffset = 0, yPixelsOffset = 0)
-        centerOffsetX = (Graphics.width / TILE_WIDTH) / 2 - 0.5
+        centerOffsetX = ((Graphics.width / TILE_WIDTH) / 2) - 0.5
         self.display_x = ($game_player.x - centerOffsetX + xPixelsOffset) * 128
-        centerOffsetY = (Graphics.height / TILE_HEIGHT) / 2 - 0.5
+        centerOffsetY = ((Graphics.height / TILE_HEIGHT) / 2) - 0.5
         self.display_y = ($game_player.y - centerOffsetY + yPixelsOffset) * 128
     end
 
@@ -812,26 +810,26 @@ end
 #===============================================================================
 #
 #===============================================================================
-def pbScrollMap(direction,distance,speed)
-  if speed==0
-    case direction
-    when 2 then $game_map.scroll_down(distance * Game_Map::REAL_RES_Y)
-    when 4 then $game_map.scroll_left(distance * Game_Map::REAL_RES_X)
-    when 6 then $game_map.scroll_right(distance * Game_Map::REAL_RES_X)
-    when 8 then $game_map.scroll_up(distance * Game_Map::REAL_RES_Y)
+def pbScrollMap(direction, distance, speed)
+    if speed == 0
+        case direction
+        when 2 then $game_map.scroll_down(distance * Game_Map::REAL_RES_Y)
+        when 4 then $game_map.scroll_left(distance * Game_Map::REAL_RES_X)
+        when 6 then $game_map.scroll_right(distance * Game_Map::REAL_RES_X)
+        when 8 then $game_map.scroll_up(distance * Game_Map::REAL_RES_Y)
+        end
+    else
+        $game_map.start_scroll(direction, distance, speed)
+        oldx = $game_map.display_x
+        oldy = $game_map.display_y
+        loop do
+            Graphics.update
+            Input.update
+            break if !$game_map.scrolling?
+            pbUpdateSceneMap
+            break if $game_map.display_x == oldx && $game_map.display_y == oldy
+            oldx = $game_map.display_x
+            oldy = $game_map.display_y
+        end
     end
-  else
-    $game_map.start_scroll(direction, distance, speed)
-    oldx = $game_map.display_x
-    oldy = $game_map.display_y
-    loop do
-      Graphics.update
-      Input.update
-      break if !$game_map.scrolling?
-      pbUpdateSceneMap
-      break if $game_map.display_x==oldx && $game_map.display_y==oldy
-      oldx = $game_map.display_x
-      oldy = $game_map.display_y
-    end
-  end
 end

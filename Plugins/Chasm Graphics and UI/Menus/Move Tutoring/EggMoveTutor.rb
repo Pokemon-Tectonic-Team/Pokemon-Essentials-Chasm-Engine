@@ -1,39 +1,39 @@
 class Pokemon
-	def can_egg_move?
-		return false if egg?
-		firstSpecies = GameData::Species.get(@species)
-		while GameData::Species.get(firstSpecies.get_previous_species()) != firstSpecies do
-			firstSpecies = GameData::Species.get(firstSpecies.get_previous_species())
-		end
-		firstSpecies.line_moves.each { |m| 
-			return true if !hasMove?(m)
-		}
-		return false
-	end
+    def can_egg_move?
+        return false if egg?
+        firstSpecies = GameData::Species.get(@species)
+        while GameData::Species.get(firstSpecies.get_previous_species) != firstSpecies
+            firstSpecies = GameData::Species.get(firstSpecies.get_previous_species)
+        end
+        firstSpecies.line_moves.each { |m|
+            return true if !hasMove?(m)
+        }
+        return false
+    end
 end
 
 def getEggMoves(pkmn)
-	moves = []
+    moves = []
 
     firstSpecies = GameData::Species.get(pkmn.species)
-	while GameData::Species.get(firstSpecies.get_previous_species()) != firstSpecies do
-		firstSpecies = GameData::Species.get(firstSpecies.get_previous_species())
-	end
+    while GameData::Species.get(firstSpecies.get_previous_species) != firstSpecies
+        firstSpecies = GameData::Species.get(firstSpecies.get_previous_species)
+    end
 
     firstSpecies.line_moves.each do |m|
-      next if pkmn.hasMove?(m)
-      moves.push(m)
+        next if pkmn.hasMove?(m)
+        moves.push(m)
     end
-	
-	moves.uniq!
-	moves.compact!
 
-	return moves
+    moves.uniq!
+    moves.compact!
+
+    return moves
 end
 
 def pbEggMoveScreen(pkmn)
-	getEggMovesProc = proc do |pokemon|
-		getEggMoves(pokemon)
-	end
-	return moveLearningScreen(pkmn, getEggMovesProc, addFirstMove: true)
+    getEggMovesProc = proc do |pokemon|
+        getEggMoves(pokemon)
+    end
+    return moveLearningScreen(pkmn, getEggMovesProc, addFirstMove: true)
 end

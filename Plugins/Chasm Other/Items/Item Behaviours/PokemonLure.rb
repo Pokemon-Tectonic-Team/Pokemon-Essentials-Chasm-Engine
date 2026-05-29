@@ -1,25 +1,25 @@
 def usePokemonLure
-	$PokemonGlobal.pokemon_lure_inactive = !$PokemonGlobal.pokemon_lure_inactive
-	duration = amuletMessageDuration / 2
-	if $PokemonGlobal.pokemon_lure_inactive
-		pbMessage(_INTL("\\db[Items/POKEMONLURE_inactive]The Pokémon Lure stops emitting fragrance.\\wtnp[{1}]",duration))
-	else
-		pbMessage(_INTL("\\db[Items/POKEMONLURE]The Pokémon Lure emits a sweet-smelling fragrance.\\wtnp[{1}]",duration))
-	end
-	return true
+    $PokemonGlobal.pokemon_lure_inactive = !$PokemonGlobal.pokemon_lure_inactive
+    duration = amuletMessageDuration / 2
+    if $PokemonGlobal.pokemon_lure_inactive
+        pbMessage(_INTL("\\db[Items/POKEMONLURE_inactive]The Pokémon Lure stops emitting fragrance.\\wtnp[{1}]", duration))
+    else
+        pbMessage(_INTL("\\db[Items/POKEMONLURE]The Pokémon Lure emits a sweet-smelling fragrance.\\wtnp[{1}]", duration))
+    end
+    return true
 end
 
-ItemHandlers::UseFromBag.add(:POKEMONLURE,proc { |item|
+ItemHandlers::UseFromBag.add(:POKEMONLURE, proc { |_item|
     usePokemonLure
-	next 1
+    next 1
 })
 
-ItemHandlers::ConfirmUseInField.add(:POKEMONLURE,proc { |item|
-  next true
+ItemHandlers::ConfirmUseInField.add(:POKEMONLURE, proc { |_item|
+    next true
 })
 
-ItemHandlers::UseInField.add(:POKEMONLURE,proc { |item|
-	next usePokemonLure
+ItemHandlers::UseInField.add(:POKEMONLURE, proc { |_item|
+    next usePokemonLure
 })
 
 def pokemonLureActive?
@@ -27,5 +27,5 @@ def pokemonLureActive?
 end
 
 def pokemonLureInactive?
-	return ($PokemonGlobal.pokemon_lure_inactive || false)
+    return $PokemonGlobal.pokemon_lure_inactive || false
 end

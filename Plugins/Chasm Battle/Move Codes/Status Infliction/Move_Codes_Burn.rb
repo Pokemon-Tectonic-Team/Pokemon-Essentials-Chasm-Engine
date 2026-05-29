@@ -54,7 +54,7 @@ class PokeBattle_Move_RaiseAllySpd4OrBurnFoe < PokeBattle_Move
         if user.opposes?(target)
             return getBurnEffectScore(user, target)
         else
-            return getMultiStatUpEffectScore([:SPEED,4])
+            return getMultiStatUpEffectScore([:SPEED, 4])
         end
     end
 end
@@ -117,11 +117,9 @@ end
 #===============================================================================
 class PokeBattle_Move_BurnAddFireType < PokeBattle_Move
     def pbFailsAgainstTarget?(_user, target, show_message)
-        if !target.canBurn?(_user, false, self) && !target.canChangeTypeTo?(:FIRE)
-            if show_message
-                @battle.pbDisplay(_INTL("But it failed, since {1} can't be burned or gain Fire-type!", target.pbThis(true)))
-            end
-        end 
+        if !target.canBurn?(_user, false, self) && !target.canChangeTypeTo?(:FIRE) && show_message
+            @battle.pbDisplay(_INTL("But it failed, since {1} can't be burned or gain Fire-type!", target.pbThis(true)))
+        end
         return false
     end
 

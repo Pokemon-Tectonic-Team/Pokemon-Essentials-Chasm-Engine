@@ -11,25 +11,25 @@ class AchievementsTracker
         return @achievementsEarned.include?(achievementID)
     end
 
-    def unlockAchievement(achievementID,ignoreAlreadyUnlocked = false)
+    def unlockAchievement(achievementID, ignoreAlreadyUnlocked = false)
         unless GameData::Achievement.try_get(achievementID)
             pbMessage(_INTL("Invalid Achievement {1}.", achievementID))
             return
         end
 
         if isAchievementUnlocked?(achievementID) && !ignoreAlreadyUnlocked
-            echoln(_INTL("Achievement {1} is already unlocked! Cannot unlock again.",achievementID))
+            echoln(_INTL("Achievement {1} is already unlocked! Cannot unlock again.", achievementID))
             return
         end
 
         if GameData::Achievement.get(achievementID).disabled_in_randomizer? && Randomizer.on?
-            echoln(_INTL("Achievement {1} is blocked from being completed, since randomizer is active.",achievementID))
+            echoln(_INTL("Achievement {1} is blocked from being completed, since randomizer is active.", achievementID))
             return
         end
 
         @achievementsEarned.push(achievementID)
         storeAchievements
-        echoln(_INTL("Unlocking achievement {1}.",achievementID))
+        echoln(_INTL("Unlocking achievement {1}.", achievementID))
         notifyAchievement(achievementID)
     end
 
@@ -39,14 +39,14 @@ class AchievementsTracker
     end
 
     def showAchievementPopup(name)
-        label = _INTL("Achievement Unlocked:\\n\\c[2]{1}",name)
+        label = _INTL("Achievement Unlocked:\\n\\c[2]{1}", name)
 
         pbWait(10)
         pbMessage(_INTL("\\cl\\l[2]\\op\\wu<ac>{1}</ac>\\wtnp[{2}]", label, achievementsPopupDuration))
     end
 
     def storeAchievements
-        File.open(AchievementsTracker.achievementsFilePath, 'wb') { |file| Marshal.dump($AchievementsTracker, file) }
+        File.open(AchievementsTracker.achievementsFilePath, "wb") { |file| Marshal.dump($AchievementsTracker, file) }
     end
 
     def dumpAchievements
@@ -69,17 +69,17 @@ class AchievementsTracker
 end
 
 def achievementsPopupDuration
-	dur = 80
-	dur -= 5 * $Options.textspeed
-	return dur
+    dur = 80
+    dur -= 5 * $Options.textspeed
+    return dur
 end
 
 def isAchievementUnlocked?(achievementID)
     return $AchievementsTracker.isAchievementUnlocked?(achievementID)
 end
 
-def unlockAchievement(achievementID,ignoreAlreadyUnlocked = false)
-    $AchievementsTracker.unlockAchievement(achievementID,ignoreAlreadyUnlocked)
+def unlockAchievement(achievementID, ignoreAlreadyUnlocked = false)
+    $AchievementsTracker.unlockAchievement(achievementID, ignoreAlreadyUnlocked)
 end
 
 def dumpAchievements

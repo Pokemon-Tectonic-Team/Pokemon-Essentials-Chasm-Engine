@@ -148,7 +148,7 @@ GameData::BattleEffect.register_effect(:Position, {
                     battler.showMyAbilitySplash(:LONGRECEIVER)
                     battle.pbDisplay(_INTL("{1} passes its ability to {2}!", abilityPasserName, battler.pbThis(true)))
                     battler.hideMyAbilitySplash
-                    battler.addAbility(abilityPasser.ability,true, triggerSwitchIn: false)
+                    battler.addAbility(abilityPasser.ability, true, triggerSwitchIn: false)
                     position.disableEffect(:PassingAbility)
                 end
             end
@@ -170,11 +170,11 @@ GameData::BattleEffect.register_effect(:Position, {
                 unless battler.hasAbility?(statPasser.ability)
                     battler.showMyAbilitySplash(:OVERFLOWINGHEART)
                     battle.pbDisplay(_INTL("{2} reads {1}'s heart and gains its stats!", statPasserName, battler.pbThis(true)))
-                    battler.applyEffect(:BaseAttack,statPasser.attack)
-                    battler.applyEffect(:BaseDefense,statPasser.defense)
-                    battler.applyEffect(:BaseSpecialAttack,statPasser.spatk)
-                    battler.applyEffect(:BaseSpecialDefense,statPasser.spdef)
-                    battler.applyEffect(:BaseSpeed,statPasser.speed)
+                    battler.applyEffect(:BaseAttack, statPasser.attack)
+                    battler.applyEffect(:BaseDefense, statPasser.defense)
+                    battler.applyEffect(:BaseSpecialAttack, statPasser.spatk)
+                    battler.applyEffect(:BaseSpecialDefense, statPasser.spdef)
+                    battler.applyEffect(:BaseSpeed, statPasser.speed)
                     position.disableEffect(:PassingStats)
                     battler.hideMyAbilitySplash
                 end
@@ -273,16 +273,16 @@ GameData::BattleEffect.register_effect(:Position, {
         # specifying "the ground below" cuz it's a position effect and not a battler effect
         battle.pbDisplay(_INTL("The ground below {1} was surrounded by rocky shards!", battler.pbThis(true)))
     end,
-    :eor_proc => proc do |battle, index, position, battler|
+    :eor_proc => proc do |battle, _index, _position, battler|
         if battler.takesIndirectDamage?
             battler.applyFractionalDamage(1.0 / 8.0)
             battle.pbDisplay(_INTL("{1} is hurt by the rocky shards!", battler.pbThis))
         end
     end,
-    :disable_proc => proc do |battle, index, position, battler|
+    :disable_proc => proc do |battle, _index, _position, battler|
         battle.pbDisplay(_INTL("The rocky shards surrounding {1} were sent away.", battler.pbThis(true)))
     end,
-    :expire_proc => proc do |battle, index, position, battler|
+    :expire_proc => proc do |battle, _index, _position, battler|
         battle.pbDisplay(_INTL("The rocky shards surrounding {1} crumbled away.", battler.pbThis(true)))
     end,
 })

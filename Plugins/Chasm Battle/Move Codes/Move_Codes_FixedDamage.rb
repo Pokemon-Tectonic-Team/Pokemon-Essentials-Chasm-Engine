@@ -59,7 +59,7 @@ class PokeBattle_Move_LowerTargetHPToUserHP < PokeBattle_FixedDamageMove
         end
         return false
     end
-    
+
     def pbFailsAgainstTargetAI?(user, target)
         return false if user.ownersPolicies.include?(:FEAR) && target.hp > 1 # Assume will be hit to 1
         return pbFailsAgainstTarget?(user, target, false)
@@ -70,11 +70,11 @@ class PokeBattle_Move_LowerTargetHPToUserHP < PokeBattle_FixedDamageMove
     def pbFixedDamage(user, target)
         return target.hp - user.hp
     end
-    
+
     def getEffectScore(user, target)
-        score = 0 
+        score = 0
         if !@battle.battleAI.userMovesFirst?(self, user, target) && target.hasDamagingAttack?
-            if user.ownersPolicies.include?(:FEAR) 
+            if user.ownersPolicies.include?(:FEAR)
                 score += 330 # huge bonus because always getting a -70% from being outsped and killed, reduce when AI understands focus sash
             else
                 score += 20

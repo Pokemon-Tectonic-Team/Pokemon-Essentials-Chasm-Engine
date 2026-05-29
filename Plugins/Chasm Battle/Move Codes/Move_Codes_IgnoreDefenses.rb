@@ -86,7 +86,7 @@ class PokeBattle_Move_HyperspaceFury < PokeBattle_StatDownMove
 end
 
 #===============================================================================
-# Ends the opposing side's screen effects. 
+# Ends the opposing side's screen effects.
 # (Brick Break, Psychic Fangs, Decompose, Seismic Wave)
 #===============================================================================
 class PokeBattle_Move_RemoveScreens < PokeBattle_Move
@@ -118,16 +118,16 @@ class PokeBattle_Move_RemoveScreens < PokeBattle_Move
 
     def getEffectScore(_user, target)
         score = 0
-        target.pbOwnSide.eachEffect(true) do |effect, value, data|
+        target.pbOwnSide.eachEffect(true) do |_effect, value, data|
             next unless data.is_screen?
-			case value
-				when 2
-					score += 30
-				when 3
-					score += 50
-				when 4..999
-					score += 130
-            end	
+            case value
+            when 2
+                score += 30
+            when 3
+                score += 50
+            when 4..999
+                score += 130
+            end
         end
         return score
     end
@@ -170,7 +170,7 @@ class PokeBattle_Move_RemoveScreensSubstituteProtections < PokeBattle_Move
     def ignoresSubstitute?(_user); return true; end
     def ignoresReflect?; return true; end
     def screenRemovalMove?; return true; end
-    
+
     def pbEffectAgainstTarget(_user, target)
         removeProtections(target)
         target.disableEffect(:Substitute)
@@ -201,16 +201,16 @@ class PokeBattle_Move_RemoveScreensSubstituteProtections < PokeBattle_Move
 
     def getEffectScore(_user, target)
         score = 0
-        target.pbOwnSide.eachEffect(true) do |effect, value, data|
+        target.pbOwnSide.eachEffect(true) do |_effect, value, data|
             next unless data.is_screen?
-			case value
-				when 2
-					score += 30
-				when 3
-					score += 50
-				when 4..999
-					score += 130
-            end	
+            case value
+            when 2
+                score += 30
+            when 3
+                score += 50
+            when 4..999
+                score += 130
+            end
         end
         score += 20 if target.substituted?
         return score

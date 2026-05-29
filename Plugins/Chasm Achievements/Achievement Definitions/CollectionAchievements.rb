@@ -8,11 +8,6 @@ def incrementSuccessfulCaptureCount(ball)
     checkForCapturesWithBallsAchievements unless $battle.is_replayed
 end
 
-def checkForCapturesWithBallsAchievements
+def checkForCapturesWithBallsAchievements; end
 
-end
-
-
-def checkForCaptureAchievements(ball, battle, pkmn)
-
-end
+def checkForCaptureAchievements(ball, battle, pkmn); end

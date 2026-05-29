@@ -59,13 +59,13 @@ class PokemonStorageScene
         pbSetSystemFont(@sprites["markingoverlay"].bitmap)
         @sprites["arrow"] = PokemonBoxArrow.new(@arrowviewport)
         @sprites["arrow"].z += 1
-        if command != 2
-            pbSetArrow(@sprites["arrow"], @selection)
-            pbUpdateOverlay(@selection)
-            pbSetMosaic(@selection)
-        else
+        if command == 2
             pbPartySetArrow(@sprites["arrow"], @selection)
             pbUpdateOverlay(@selection, @storage.party)
+            pbSetMosaic(@selection)
+        else
+            pbSetArrow(@sprites["arrow"], @selection)
+            pbUpdateOverlay(@selection)
             pbSetMosaic(@selection)
         end
         pbSEPlay("PC access")
@@ -83,7 +83,7 @@ class PokemonStorageScene
 
     def pbDisplay(message)
         msgwindow = Window_UnformattedTextPokemon.newWithSize("", 180, 0, Graphics.width - 180, 32)
-        msgwindow.z       = @viewport.z + 1
+        msgwindow.z = @viewport.z + 1
         msgwindow.visible        = true
         msgwindow.letterbyletter = false
         msgwindow.resizeHeightToFit(message, Graphics.width - 180)
@@ -103,15 +103,15 @@ class PokemonStorageScene
     def pbShowCommands(message, commands, index = 0)
         ret = -1
         msgwindow = Window_UnformattedTextPokemon.newWithSize("", 180, 0, Graphics.width - 180, 32)
-        msgwindow.z = @viewport.z+1
+        msgwindow.z = @viewport.z + 1
         msgwindow.visible        = true
         msgwindow.letterbyletter = false
         msgwindow.text           = message
         msgwindow.resizeHeightToFit(message, Graphics.width - 180)
         pbBottomRight(msgwindow)
         cmdwindow = Window_CommandPokemon.new(commands)
-        cmdwindow.z = @viewport.z+1
-        cmdwindow.visible  = true
+        cmdwindow.z = @viewport.z + 1
+        cmdwindow.visible = true
         cmdwindow.resizeToFit(cmdwindow.commands)
         cmdwindow.height = Graphics.height - msgwindow.height if cmdwindow.height > Graphics.height - msgwindow.height
         pbBottomRight(cmdwindow)
@@ -153,8 +153,8 @@ class PokemonStorageScene
             arrow.x = 207 * 2
             arrow.y = 139 * 2
         else
-            arrow.x = (97 + 24 * (selection % PokemonBox::BOX_WIDTH)) * 2
-            arrow.y = (8 + 24 * (selection / PokemonBox::BOX_WIDTH)) * 2
+            arrow.x = (97 + (24 * (selection % PokemonBox::BOX_WIDTH))) * 2
+            arrow.y = (8 + (24 * (selection / PokemonBox::BOX_WIDTH))) * 2
         end
     end
 
@@ -164,9 +164,9 @@ class PokemonStorageScene
             if selection == -1 # Box name
                 selection = -2
             elsif selection == -2 # Party
-                selection = PokemonBox::BOX_SIZE - 1 - PokemonBox::BOX_WIDTH * 2 / 3 # 25
+                selection = PokemonBox::BOX_SIZE - 1 - (PokemonBox::BOX_WIDTH * 2 / 3) # 25
             elsif selection == -3 # Close Box
-                selection = PokemonBox::BOX_SIZE - PokemonBox::BOX_WIDTH / 3 # 28
+                selection = PokemonBox::BOX_SIZE - (PokemonBox::BOX_WIDTH / 3) # 28
             else
                 selection -= PokemonBox::BOX_WIDTH
                 selection = -1 if selection < 0
@@ -181,7 +181,7 @@ class PokemonStorageScene
             else
                 selection += PokemonBox::BOX_WIDTH
                 if selection >= PokemonBox::BOX_SIZE
-                    if selection < PokemonBox::BOX_SIZE + PokemonBox::BOX_WIDTH / 2
+                    if selection < PokemonBox::BOX_SIZE + (PokemonBox::BOX_WIDTH / 2)
                         selection = -2   # Party
                     else
                         selection = -3   # Close Box
@@ -221,8 +221,8 @@ class PokemonStorageScene
         xvalues = []   # [200, 272, 200, 272, 200, 272, 236]
         yvalues = []   # [2, 18, 66, 82, 130, 146, 220]
         for i in 0...Settings::MAX_PARTY_SIZE
-            xvalues.push(200 + 72 * (i % 2))
-            yvalues.push(2 + 16 * (i % 2) + 64 * (i / 2))
+            xvalues.push(200 + (72 * (i % 2)))
+            yvalues.push(2 + (16 * (i % 2)) + (64 * (i / 2)))
         end
         xvalues.push(236)
         yvalues.push(220)
@@ -335,15 +335,15 @@ class PokemonStorageScene
             end
 
             if @storage.currentBox != currentBox
-                donationBoxTutorialCheck  
+                donationBoxTutorialCheck
             end
         end
     end
 
     def tryIncrementCursorMode
         unless @command == 0 # Organize mode
-           pbPlayBuzzerSE
-           return
+            pbPlayBuzzerSE
+            return
         end
         case cursormode
         when :Default
@@ -890,8 +890,8 @@ class PokemonStorageScene
                 @sprites["markingoverlay"].bitmap.clear
                 for i in 0...6
                     markrect.x = i * 16
-                    markrect.y = (markings & (1 << i) != 0) ? 16 : 0
-                    @sprites["markingoverlay"].bitmap.blt(336 + 58 * (i % 3), 106 + 50 * (i / 3), @markingbitmap.bitmap,
+                    markrect.y = (markings & (1 << i) == 0) ? 0 : 16
+                    @sprites["markingoverlay"].bitmap.blt(336 + (58 * (i % 3)), 106 + (50 * (i / 3)), @markingbitmap.bitmap,
       markrect)
                 end
                 textpos = [
@@ -960,8 +960,8 @@ class PokemonStorageScene
         markrect = Rect.new(0, 0, 16, 16)
         for i in 0...8
             markrect.x = i * 16
-            markrect.y = (markings & (1 << i) != 0) ? 16 : 0
-            bitmap.blt(x + i * 16, y, @markingbitmap.bitmap, markrect)
+            markrect.y = (markings & (1 << i) == 0) ? 0 : 16
+            bitmap.blt(x + (i * 16), y, @markingbitmap.bitmap, markrect)
         end
     end
 
@@ -1020,7 +1020,7 @@ class PokemonStorageScene
                 textstrings.push([_INTL("No item"), 86, 336, 2, nonbase, nonshadow])
             end
             imagepos.push(["Graphics/Pictures/shiny", 156, 198]) if pokemon.shiny?
-            typebitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/types")))
+            typebitmap = AnimatedBitmap.new(addLanguageSuffix("Graphics/Pictures/types"))
             type1_number = GameData::Type.get(pokemon.type1).id_number
             type2_number = GameData::Type.get(pokemon.type2).id_number
             type1rect = Rect.new(0, type1_number * 28, 64, 28)
@@ -1047,7 +1047,7 @@ class PokemonStorageScene
             # Show status/fainted/Pokérus infected icon
             statusImageIndex = pokemon.getStatusImageIndex(true)
             imagepos.push([addLanguageSuffix("Graphics/Pictures/statuses"), 120, 68, 0, 16 * statusImageIndex, 44, 16]) if statusImageIndex >= 0
-            
+
             pbDrawImagePositions(overlay, imagepos)
         end
         pbDrawTextPositions(overlay, textstrings)

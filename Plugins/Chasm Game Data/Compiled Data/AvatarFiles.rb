@@ -1,18 +1,18 @@
 module GameData
     class Avatar
         def self.front_sprite_bitmap(species, version = 0, form = 0, type = nil)
-            filename = self.front_sprite_filename(species, version, form, type)
-            return (filename) ? AnimatedBitmap.new(filename) : nil
+            filename = front_sprite_filename(species, version, form, type)
+            return filename ? AnimatedBitmap.new(filename) : nil
         end
 
         def self.back_sprite_bitmap(species, version = 0, form = 0, type = nil)
-            filename = self.back_sprite_filename(species, version, form, type)
-            return (filename) ? AnimatedBitmap.new(filename) : nil
+            filename = back_sprite_filename(species, version, form, type)
+            return filename ? AnimatedBitmap.new(filename) : nil
         end
 
         def self.ow_sprite_bitmap(species, version = 0, form = 0)
-            filename = self.ow_sprite_filename(species, version, form)
-            return (filename) ? AnimatedBitmap.new(filename) : nil
+            filename = ow_sprite_filename(species, version, form)
+            return filename ? AnimatedBitmap.new(filename) : nil
         end
 
         def self.front_sprite_filename(species, version = 0, form = 0, type = nil)
@@ -22,11 +22,11 @@ module GameData
             if type
                 if type.is_a?(Array)
                     type.each do |typeElement|
-                        filePath += "_" + typeElement.to_s.downcase  
+                        filePath += "_" + typeElement.to_s.downcase
                     end
                 else
                     filePath += "_" + type.to_s.downcase
-                end  
+                end
             end
             filePath += ".png"
             return filePath
@@ -39,11 +39,11 @@ module GameData
             if type
                 if type.is_a?(Array)
                     type.each do |typeElement|
-                        filePath += "_" + typeElement.to_s.downcase  
+                        filePath += "_" + typeElement.to_s.downcase
                     end
                 else
                     filePath += "_" + type.to_s.downcase
-                end  
+                end
             end
             filePath += ".png"
             return filePath

@@ -1,7 +1,7 @@
 BattleHandlers::StatusImmunityAbilityNonIgnorable.add(:SHIELDSDOWN,
-    proc { |ability, battler, _status|
+    proc { |_ability, battler, _status|
         next true if battler.isSpecies?(:MINIOR) && battler.form < 7
     }
 )
 
-BattleHandlers::StatusImmunityAbilityNonIgnorable.copy(:SHIELDSDOWN,:DEBRISFIELD)
+BattleHandlers::StatusImmunityAbilityNonIgnorable.copy(:SHIELDSDOWN, :DEBRISFIELD)

@@ -35,10 +35,10 @@ class PokeBattle_Move_HitThreeTimesLowerTargetDef1DisablesSelf < PokeBattle_Targ
         super
         @statDown = [:DEFENSE, 1]
     end
-    
+
     def multiHitMove?; return true; end
     def pbNumHits(_user, _targets, _checkingForAI = false); return 3; end
-    
+
     def pbEffectAfterAllHits(user, _target)
         user.applyEffect(:Disable, 5)
     end
@@ -59,7 +59,7 @@ class PokeBattle_Move_HitsThreeTimesAsBeedrillFiveTimesAsWornet < PokeBattle_Mov
         end
         return false
     end
-    
+
     def pbNumHits(user, _targets, _checkingForAI = false)
         if user.countsAs?(:WORNET)
             return 5
@@ -101,7 +101,7 @@ end
 
 def getRandomMultihitNumberAI(user, _targets)
     if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("MaxRandomHits"))
-        score = 5 
+        score = 5
     elsif user.hasActiveItemAI?(:LOADEDDICE)
         score = 4.5
     else
@@ -165,12 +165,9 @@ class PokeBattle_Move_HitTwoToFiveTimesTwiceThenExhaust < PokeBattle_Move_HitTwo
     def consumesItem?(user)
         user.hasActiveItemAI?(:ENERGYHERB)
     end
-    
+
     def pbEffectAfterAllHits(user, target)
-        unless user.effectActive?(:SprayAndPray)
-            @battle.pbDisplay(_INTL("{1} sends another volley!", user.pbThis))
-            @battle.forceUseMove(user, :SPRAYANDPRAY, target.index, moveUsageEffect: :SprayAndPray)
-        else
+        if user.effectActive?(:SprayAndPray)
             if user.hasActiveItem?(:ENERGYHERB)
                 @battle.pbCommonAnimation("UseItem", user)
                 @battle.pbDisplay(_INTL("{1} skipped exhaustion due to its Energy Herb!", user.pbThis))
@@ -178,6 +175,9 @@ class PokeBattle_Move_HitTwoToFiveTimesTwiceThenExhaust < PokeBattle_Move_HitTwo
             else
                 user.applyEffect(@exhaustionTracker, 2)
             end
+        else
+            @battle.pbDisplay(_INTL("{1} sends another volley!", user.pbThis))
+            @battle.forceUseMove(user, :SPRAYANDPRAY, target.index, moveUsageEffect: :SprayAndPray)
         end
     end
 end

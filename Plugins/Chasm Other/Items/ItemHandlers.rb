@@ -25,4 +25,3 @@
 # there is no UseFromBag handler above.
 # If an item has this handler, it can be registered to the Ready Menu.
 #===============================================================================
-

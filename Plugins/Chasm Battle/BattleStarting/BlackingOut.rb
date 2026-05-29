@@ -37,7 +37,9 @@ def pbStartOver(_gameover = false)
                     end
                 end
             end
-            if !actualPoint.nil?
+            if actualPoint.nil?
+                pbMessage(_INTL("An error has occured. Unable to spawn player at Avatar Totem. Attempting backup spawn at healing spot."))
+            else
                 $game_temp.player_new_map_id    = targetMapId
                 $game_temp.player_new_x         = actualPoint[0]
                 $game_temp.player_new_y         = actualPoint[1]
@@ -52,8 +54,6 @@ def pbStartOver(_gameover = false)
                 $game_map.refresh
                 pbMapInterpreter.get_self.clear_starting
                 respawnedYet = true
-            else
-                pbMessage(_INTL("An error has occured. Unable to spawn player at Avatar Totem. Attempting backup spawn at healing spot."))
             end
         end
         $PokemonGlobal.respawnPoint = nil
@@ -61,7 +61,7 @@ def pbStartOver(_gameover = false)
     if !respawnedYet && $PokemonGlobal.pokecenterMapId && $PokemonGlobal.pokecenterMapId >= 0
         $PokemonGlobal.respawnPoint = nil
         mapName = pbGetMessage(MessageTypes::MapNames, $PokemonGlobal.pokecenterMapId)
-        mapName.gsub!(/\\PN/, $Trainer.name) if $Trainer
+        mapName.gsub!("\\PN", $Trainer.name) if $Trainer
         pbMessage(_INTL("\\w[]\\wm\\c[12]\\l[3]You scurry back to {1}, protecting your exhausted Pokémon from any further harm...", mapName))
         pbCancelVehicles
         pbRemoveDependenciesExceptFollower

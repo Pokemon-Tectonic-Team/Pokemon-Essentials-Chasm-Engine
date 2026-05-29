@@ -53,7 +53,7 @@ module GameData
                  _INTL("Map ID and X and Y coordinates of where the player goes if no Pokémon Center was entered after a loss."),],
                 ["WildBattleBGM",    			BGMProperty,             _INTL("Default BGM for wild Pokémon battles.")],
                 ["TrainerBattleBGM", 			BGMProperty,             _INTL("Default BGM for Trainer battles.")],
-                ["AvatarBattleBGM", 			BGMProperty, _INTL("Default BGM for Avatar battles.")],
+                ["AvatarBattleBGM",	BGMProperty, _INTL("Default BGM for Avatar battles.")],
                 ["LegendaryAvatarBattleBGM",	BGMProperty, _INTL("Default BGM for Legendary Avatar battles.")],
                 ["WildVictoryME",    			MEProperty,
                  _INTL("Default ME played after winning a wild Pokémon battle."),],
@@ -110,7 +110,7 @@ module GameData
             @wild_battle_BGM     			= hash[:wild_battle_BGM]
             @trainer_battle_BGM  			= hash[:trainer_battle_BGM]
             @avatar_battle_BGM   			= hash[:avatar_battle_BGM]
-            @legendary_avatar_battle_BGM    = hash[:legendary_avatar_battle_BGM]
+            @legendary_avatar_battle_BGM = hash[:legendary_avatar_battle_BGM]
             @wild_victory_ME     			= hash[:wild_victory_ME]
             @trainer_victory_ME  			= hash[:trainer_victory_ME]
             @wild_capture_ME     			= hash[:wild_capture_ME]
@@ -131,8 +131,8 @@ module GameData
             when "Home"             			then return @home
             when "WildBattleBGM"    			then return @wild_battle_BGM
             when "TrainerBattleBGM" 			then return @trainer_battle_BGM
-            when "AvatarBattleBGM"				then return @avatar_battle_BGM
-            when "LegendaryAvatarBattleBGM"		then return @legendary_avatar_battle_BGM
+            when "AvatarBattleBGM"	then return @avatar_battle_BGM
+            when "LegendaryAvatarBattleBGM"	then return @legendary_avatar_battle_BGM
             when "WildVictoryME"    			then return @wild_victory_ME
             when "TrainerVictoryME" 			then return @trainer_victory_ME
             when "WildCaptureME"    			then return @wild_capture_ME
@@ -192,9 +192,9 @@ module GameData
           "BicycleAlways"    => [4,  "b"],
           "HealingSpot"      => [5,  "vuu"],
           "Weather"          => [6,  "eu", :Weather],
-		  "Temperature"		 => [7,  "e", ["Hot", "Cold", "Stable"]],
-		  "Humidity"		 => [8,  "e", ["Wet", "Dry", "Stable"]],
-          "MapPosition"      => [9,  "uuu"],
+          "Temperature"		 => [7, "e", ["Hot", "Cold", "Stable"]],
+          "Humidity"		 => [8, "e", ["Wet", "Dry", "Stable"]],
+          "MapPosition"      => [9, "uuu"],
           "DiveMap"          => [10,  "v"],
           "DarkMap"          => [11,  "b"],
           "SafariMap"        => [12, "b"],
@@ -232,10 +232,12 @@ module GameData
                 ["Weather",          WeatherEffectProperty,
                  _INTL("Weather conditions in effect for this map."),],
                 ["Temperature",      EnumProperty.new([
-                    _INTL("Hot"), _INTL("Cold"), _INTL("Stable")]),
+                                                          _INTL("Hot"), _INTL("Cold"), _INTL("Stable")
+                                                      ]),
                  _INTL("If no specific weather is set, the average temperature of this map for the timed weather controller."),],
-                ["Humidity",        EnumProperty.new([
-                    _INTL("Wet"), _INTL("Dry"), _INTL("Stable")]),
+                ["Humidity", EnumProperty.new([
+                                                  _INTL("Wet"), _INTL("Dry"), _INTL("Stable")
+                                              ]),
                  _INTL("If no specific weather is set, the average humidity of this map for the timed weather controller."),],
                 ["MapPosition",      RegionMapCoordsProperty,
                  _INTL("Identifies the point on the regional map for this map."),],
@@ -272,7 +274,7 @@ module GameData
                 ["NoTeamEditing",    BooleanProperty,
                  _INTL("Whether the player is prevented from editing their team on this map."),],
                 ["ImportName",       StringProperty,
-                _INTL("The name to give the map if it's missing in MapInfos.rxdata.")]
+                 _INTL("The name to give the map if it's missing in MapInfos.rxdata.")]
             ]
         end
 
@@ -284,8 +286,8 @@ module GameData
             @always_bicycle       	= hash[:always_bicycle]
             @teleport_destination 	= hash[:teleport_destination]
             @weather              	= hash[:weather]
-			@temperature            = hash[:temperature]
-			@humidity            	= hash[:humidity]
+            @temperature = hash[:temperature]
+            @humidity	= hash[:humidity]
             @town_map_position    	= hash[:town_map_position]
             @dive_map_id          	= hash[:dive_map_id]
             @dark_map             	= hash[:dark_map]
@@ -297,12 +299,12 @@ module GameData
             @trainer_battle_BGM   	= hash[:trainer_battle_BGM]
             @wild_victory_ME      	= hash[:wild_victory_ME]
             @trainer_victory_ME   	= hash[:trainer_victory_ME]
-            @wild_capture_ME     	= hash[:wild_capture_ME]
+            @wild_capture_ME = hash[:wild_capture_ME]
             @town_map_size        	= hash[:town_map_size]
             @battle_environment   	= hash[:battle_environment]
-            @teleport_blocked		= hash[:teleport_blocked]
-            @saving_blocked		    = hash[:saving_blocked]
-            @no_team_editing 		= hash[:no_team_editing]
+            @teleport_blocked	= hash[:teleport_blocked]
+            @saving_blocked = hash[:saving_blocked]
+            @no_team_editing	= hash[:no_team_editing]
             @defined_in_extension   = hash[:defined_in_extension] || false
             @import_name            = hash[:import_name]
         end
@@ -437,7 +439,7 @@ module Compiler
                             :saving_blocked	      	=> contents["SavingBlocked"],
                             :no_team_editing	    => contents["NoTeamEditing"],
                             :defined_in_extension => !baseFile,
-                            :import_name            => contents["ImportName"]
+                            :import_name => contents["ImportName"]
                         }
                         # Add metadata's data to records
                         GameData::MapMetadata.register(metadata_hash)
@@ -458,7 +460,7 @@ module Compiler
         File.open("PBS/metadata.txt", "wb") do |f|
             add_PBS_header_to_file(f)
             # Write global metadata
-            f.write("\#-------------------------------\r\n")
+            f.write("#-------------------------------\r\n")
             f.write("[000]\r\n")
             metadata = GameData::Metadata.get
             schema = GameData::Metadata::SCHEMA
@@ -475,7 +477,7 @@ module Compiler
             schema = GameData::MapMetadata::SCHEMA
             keys = schema.keys.sort { |a, b| schema[a][0] <=> schema[b][0] }
             GameData::MapMetadata.each_base do |map_data|
-                f.write("\#-------------------------------\r\n")
+                f.write("#-------------------------------\r\n")
                 f.write(format("[%03d]\r\n", map_data.id))
                 f.write(format("# %s\r\n", map_infos[map_data.id].name)) if map_infos && map_infos[map_data.id]
                 for key in keys

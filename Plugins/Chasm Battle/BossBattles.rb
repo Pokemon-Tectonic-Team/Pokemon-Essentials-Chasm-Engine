@@ -42,7 +42,6 @@ def pbAvatarBattleCore(*args)
     Events.onStartBattle.trigger(nil)
     # Generate wild Pokémon based on the species and level
     foeParty = []
-    respawnFollower = false
     for arg in args
         next unless arg.is_a?(Array)
         species = arg[0]
@@ -60,7 +59,9 @@ def pbAvatarBattleCore(*args)
        !%w[single 1v1 1v2 1v3].include?($PokemonTemp.battleRules["size"])
         room_for_partner = true
     end
-    playerParty = loadPartnerTrainer(playerTrainers,playerParty,playerPartyStarts) if room_for_partner if room_for_partner
+    if room_for_partner && room_for_partner && room_for_partner
+        playerParty = loadPartnerTrainer(playerTrainers, playerParty, playerPartyStarts)
+    end
     # Create the battle scene (the visual side of it)
     scene = pbNewBattleScene
     # Create the battle class (the mechanics side of it)
@@ -132,7 +133,7 @@ def generateAvatarPokemon(species, level, version = 0, summon = false)
         elsif level <= SUMMON_MIN_HEALTH_LEVEL
             healthPercent = 0.4
         else
-            healthPercent = 0.4 + 0.6 * (level - SUMMON_MIN_HEALTH_LEVEL) / (SUMMON_MAX_HEALTH_LEVEL - SUMMON_MIN_HEALTH_LEVEL).to_f
+            healthPercent = 0.4 + (0.6 * (level - SUMMON_MIN_HEALTH_LEVEL) / (SUMMON_MAX_HEALTH_LEVEL - SUMMON_MIN_HEALTH_LEVEL).to_f)
             echoln("Summoning #{species} avatar at health fraction #{healthPercent}")
         end
         newPokemon.hp = (newPokemon.totalhp * healthPercent).ceil
@@ -231,7 +232,7 @@ def createBossGraphics(avatarData, overworldMult = 1.5, battleMult = 1.5, overwr
 
     # Create all in-battle sprites
     for form in 0..99
-        dataKey = form > 0 ? sprintf("%s_%d", avatarData.species.to_s, form).to_sym : avatarData.species
+        dataKey = form > 0 ? format("%s_%d", avatarData.species.to_s, form).to_sym : avatarData.species
         break unless GameData::Species::DATA.key?(dataKey)
 
         echoln("Checking the boss graphics for Avatar #{avatarData.species} (form #{form})") if SHOW_BOSSIFICATION_DEBUG
@@ -240,13 +241,13 @@ def createBossGraphics(avatarData, overworldMult = 1.5, battleMult = 1.5, overwr
         PBDebug.logonerr do
             baseSpeciesFrontFilePath = GameData::Species.front_sprite_filename(avatarData.species, form)
             baseSpeciesBackFilePath = GameData::Species.back_sprite_filename(avatarData.species, form)
-            
-            avatarData.getListOfPhaseTypes.each_with_index do |type, index|
+
+            avatarData.getListOfPhaseTypes.each_with_index do |type, _index|
                 if type.is_a?(Array)
                     bossifyBattleSprites(avatarData, form, baseSpeciesFrontFilePath, baseSpeciesBackFilePath, type[0], battleMult, overwriteExisting: overwriteExisting)
                     bossifyBattleSprites(avatarData, form, baseSpeciesFrontFilePath, baseSpeciesBackFilePath, type, battleMult, overwriteExisting: overwriteExisting)
                 else
-                    bossifyBattleSprites(avatarData, form, baseSpeciesFrontFilePath, baseSpeciesBackFilePath, type, battleMult, overwriteExisting: overwriteExisting)  
+                    bossifyBattleSprites(avatarData, form, baseSpeciesFrontFilePath, baseSpeciesBackFilePath, type, battleMult, overwriteExisting: overwriteExisting)
                 end
             end
         end
@@ -257,7 +258,7 @@ SHOW_BOSSIFICATION_DEBUG = false
 
 def bossifyBattleSprites(avatarData, form, baseSpeciesFrontFilePath, baseSpeciesBackFilePath, type, sizeMult, overwriteExisting: true)
     identifier = "Avatar #{avatarData.species} (form #{form})"
-    identifier = "#{identifier} -- #{type.to_s}" if type
+    identifier = "#{identifier} -- #{type}" if type
 
     # Front sprites
     bossFrontFilePath = GameData::Avatar.front_sprite_filename(avatarData.species, avatarData.version, form, type)
@@ -283,7 +284,7 @@ def bossifyBattleSprites(avatarData, form, baseSpeciesFrontFilePath, baseSpecies
         bossifiedBattle.to_file(bossBackFilePath)
     elsif SHOW_BOSSIFICATION_DEBUG
         echoln("Back sprite already exists for #{identifier}")
-    end  
+    end
 end
 
 BASE_RGB_ADD = [0, 0, 0]
@@ -304,7 +305,7 @@ def bossify(bitmap, scaleFactor = 1.5, type = nil, opacity: BASE_OPACITY_BATTLE)
     applyType = false
     if type
         typeHueWeight = BASE_TYPE_HUE_WEIGHTING
-        applyType = true if typeHueWeight > 0 
+        applyType = true if typeHueWeight > 0
         if type.is_a?(Array)
             type1Color = GameData::Type.get(type[0]).color
             type1H, type1S, type1L = rgb_to_hsl(type1Color.red, type1Color.green, type1Color.blue)
@@ -335,7 +336,7 @@ def bossify(bitmap, scaleFactor = 1.5, type = nil, opacity: BASE_OPACITY_BATTLE)
             # HSL shifts from typing coloration
             if applyType
                 if type2Color
-                    type1WeightAtPixel = 1.5 - (x + width / 2.0) / width.to_f
+                    type1WeightAtPixel = 1.5 - ((x + (width / 2.0)) / width.to_f)
                     type1WeightAtPixel.clamp(0, 1)
                     type2WeightatPixel = 1 - type1WeightAtPixel
 
@@ -344,21 +345,21 @@ def bossify(bitmap, scaleFactor = 1.5, type = nil, opacity: BASE_OPACITY_BATTLE)
                     h = averageOfHues(h, type2H, type2WeightatPixel * 1.1)
 
                     # Saturation
-                    s = s * (1.0 - TYPE_SATURATION_WEIGHTING)
+                    s *= (1.0 - TYPE_SATURATION_WEIGHTING)
                     s += type1S * TYPE_SATURATION_WEIGHTING * type1WeightAtPixel * 0.75
                     s += type2S * TYPE_SATURATION_WEIGHTING * type2WeightatPixel * 0.75
 
                     # Luminance
-                    l = l * (1.0 - TYPE_LUMINOSITY_WEIGHTING)
+                    l *= (1.0 - TYPE_LUMINOSITY_WEIGHTING)
                     l += type1L * TYPE_LUMINOSITY_WEIGHTING * type1WeightAtPixel * 0.75
                     l += type2L * TYPE_LUMINOSITY_WEIGHTING * type2WeightatPixel * 0.75
                 else
                     h = averageOfHues(h, typeH, typeHueWeight)
-                    s = s * (1.0 - TYPE_SATURATION_WEIGHTING) + typeS * TYPE_SATURATION_WEIGHTING 
-                    l = l * (1.0 - TYPE_LUMINOSITY_WEIGHTING) + typeL * TYPE_LUMINOSITY_WEIGHTING 
-                end  
+                    s = (s * (1.0 - TYPE_SATURATION_WEIGHTING)) + (typeS * TYPE_SATURATION_WEIGHTING)
+                    l = (l * (1.0 - TYPE_LUMINOSITY_WEIGHTING)) + (typeL * TYPE_LUMINOSITY_WEIGHTING)
+                end
             end
-            
+
             # Clamp values
             h += 360 if h < 0
             s = s.clamp(0, 100)
@@ -394,12 +395,12 @@ def averageOfHues(valueA, valueB, weightingTowardsB = 0.5)
     bx = Math.cos(radB)
     by = Math.sin(radB)
 
-    cx = (ax * (1 - weightingTowardsB) + bx * weightingTowardsB)
-    cy = (ay * (1 - weightingTowardsB) + by * weightingTowardsB)
+    cx = ((ax * (1 - weightingTowardsB)) + (bx * weightingTowardsB))
+    cy = ((ay * (1 - weightingTowardsB)) + (by * weightingTowardsB))
 
     radC = Math.atan2(cy, cx)
 
-    degC = radC / Math::PI * 180.0 + 180.0
+    degC = (radC / Math::PI * 180.0) + 180.0
 
     return degC
 end
@@ -422,11 +423,11 @@ def rgb_to_hsl(r, g, b)
         s = l >= 0.5 ? d / (2.0 - max - min) : d / (max + min)
         case max
         when r
-            h = (g - b) / d + (g < b ? 6.0 : 0)
+            h = ((g - b) / d) + (g < b ? 6.0 : 0)
         when g
-            h = (b - r) / d + 2.0
+            h = ((b - r) / d) + 2.0
         when b
-            h = (r - g) / d + 4.0
+            h = ((r - g) / d) + 4.0
         end
         h /= 6.0
     end
@@ -447,11 +448,11 @@ def hsl_to_rgb(h, s, l)
         g = l.to_f
         b = l.to_f # achromatic
     else
-        q = l < 0.5 ? l * (1 + s) : l + s - l * s
-        p = 2 * l - q
-        r = hue_to_rgb(p, q, h + 1 / 3.0)
+        q = l < 0.5 ? l * (1 + s) : l + s - (l * s)
+        p = (2 * l) - q
+        r = hue_to_rgb(p, q, h + (1 / 3.0))
         g = hue_to_rgb(p, q, h)
-        b = hue_to_rgb(p, q, h - 1 / 3.0)
+        b = hue_to_rgb(p, q, h - (1 / 3.0))
     end
 
     return [(r * 255), (g * 255), (b * 255)]
@@ -460,9 +461,9 @@ end
 def hue_to_rgb(p, q, t)
     t += 1 if t < 0
     t -= 1                                  if t > 1
-    return (p + (q - p) * 6 * t)            if t < 1 / 6.0
+    return p + ((q - p) * 6 * t)            if t < 1 / 6.0
     return q                                if t < 1 / 2.0
-    return (p + (q - p) * (2 / 3.0 - t) * 6) if t < 2 / 3.0
+    return p + ((q - p) * ((2 / 3.0) - t) * 6) if t < 2 / 3.0
     return p
 end
 
@@ -489,7 +490,7 @@ class PokeBattle_Battle
     end
 
     def roomToSummon?(sideIndex)
-        sideIndex = sideIndex % 2
+        sideIndex %= 2
         if sideIndex == 0
             return getLowestSummonableIndex(sideIndex) <= 4
         else
@@ -498,9 +499,9 @@ class PokeBattle_Battle
     end
 
     def getLowestSummonableIndex(sideIndex)
-        sideIndex = sideIndex % 2
+        sideIndex %= 2
         indexOnSide = @sideSizes[sideIndex]
-        maxNewBattlerIndex = indexOnSide * 2 + sideIndex
+        maxNewBattlerIndex = (indexOnSide * 2) + sideIndex
         battlerIndexNew = maxNewBattlerIndex
         0.upto(maxNewBattlerIndex) do |idxBattler|
             next unless idxBattler % 2 == sideIndex # Only check same side
@@ -512,9 +513,9 @@ class PokeBattle_Battle
         return battlerIndexNew
     end
 
-    def addBattlerSlot(newPokemon,sideIndex,partyIndex)
-        sideIndex = sideIndex % 2
-        
+    def addBattlerSlot(newPokemon, sideIndex, partyIndex)
+        sideIndex %= 2
+
         # Put the battler into the battle
         battlerIndexNew = getLowestSummonableIndex(sideIndex)
         if @battlers[battlerIndexNew].nil?
@@ -536,14 +537,14 @@ class PokeBattle_Battle
             next unless @battlers[idxBattler].nil?
             pbCreateBattler(idxBattler)
             scene.pbCreatePokemonSprite(idxBattler)
-            scene.createMoveOutcomePredictor(@battlers[idxBattler],idxBattler) if idxBattler.odd?
+            scene.createMoveOutcomePredictor(@battlers[idxBattler], idxBattler) if idxBattler.odd?
         end
 
         remakeDataBoxes
 
         # Create a dummy sprite for the avatar
         scene.pbCreatePokemonSprite(battlerIndexNew)
-        scene.createMoveOutcomePredictor(newBattler,battlerIndexNew) if battlerIndexNew.odd?
+        scene.createMoveOutcomePredictor(newBattler, battlerIndexNew) if battlerIndexNew.odd?
 
         # Recreate all the battle sprites on that side of the field
         remakeBattleSpritesOnSide(sideIndex)
@@ -580,7 +581,7 @@ class PokeBattle_Battle
         partyIndex = pbParty(sideIndex).length
         pbParty(sideIndex)[partyIndex] = newPokemon
 
-        addBattlerSlot(newPokemon,sideIndex,partyIndex)
+        addBattlerSlot(newPokemon, sideIndex, partyIndex)
 
         return true
     end

@@ -1,8 +1,8 @@
 class AbilitySplashBar < SpriteWrapper
     attr_reader :battler
 
-    TEXT_BASE_COLOR   = Color.new(0,0,0)
-    TEXT_SHADOW_COLOR = Color.new(248,248,248)
+    TEXT_BASE_COLOR   = Color.new(0, 0, 0)
+    TEXT_SHADOW_COLOR = Color.new(248, 248, 248)
 
     SPECIES_ICON_SRC_Y = 8
     SPECIES_ICON_SRC_HEIGHT = 76
@@ -11,39 +11,39 @@ class AbilitySplashBar < SpriteWrapper
     SPECIES_ICON_Y_POS = 0
     SPECIES_IRON_OPACITY_MULT = 0.6 # Between 0 and 1, 1 meaning fully opaque
 
-    def initialize(side,viewport=nil)
+    def initialize(side, viewport = nil)
         super(viewport)
         @side    = side
         @battler = nil
         @abilityName = nil
         # Create sprite wrapper that displays background graphic
-        @bgBitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Battle/ability_bar")))
-        @bgPrimevalBitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Battle/ability_bar_primeval")))
+        @bgBitmap = AnimatedBitmap.new(addLanguageSuffix("Graphics/Pictures/Battle/ability_bar"))
+        @bgPrimevalBitmap = AnimatedBitmap.new(addLanguageSuffix("Graphics/Pictures/Battle/ability_bar_primeval"))
         setBGSprite(@bgBitmap)
         # Create bitmap that displays the text
-        @contents = BitmapWrapper.new(@bgBitmap.width,@bgBitmap.height/2)
+        @contents = BitmapWrapper.new(@bgBitmap.width, @bgBitmap.height / 2)
         self.bitmap = @contents
-        pbSetSystemFont(self.bitmap)
+        pbSetSystemFont(bitmap)
         # Create bitmap that displays the icon
-        @speciesIcon = IconSprite.new(0,0,viewport)
-        
+        @speciesIcon = IconSprite.new(0, 0, viewport)
+
         positionBar
     end
 
     def setBGSprite(bgBitmap)
         @bgSprite = SpriteWrapper.new(viewport)
         @bgSprite.bitmap = bgBitmap.bitmap
-        @bgSprite.src_rect.y      = (@side==0) ? 0 : bgBitmap.height/2
-        @bgSprite.src_rect.height = bgBitmap.height/2
+        @bgSprite.src_rect.y      = (@side == 0) ? 0 : bgBitmap.height / 2
+        @bgSprite.src_rect.height = bgBitmap.height / 2
     end
 
     def positionBar
-        self.x       = (@side==0) ? -Graphics.width/2 : Graphics.width
-        self.y       = (@side==0) ? 180 : 80
+        self.x       = (@side == 0) ? -Graphics.width / 2 : Graphics.width
+        self.y       = (@side == 0) ? 180 : 80
         self.z       = 120
         self.visible = false
     end
-    
+
     def dispose
         @bgSprite.dispose
         @bgBitmap.dispose
@@ -72,7 +72,6 @@ class AbilitySplashBar < SpriteWrapper
     def mirrorSpeciesIcon(value)
         @speciesIcon.mirror = value
     end
-
 
     def ability=(value)
         abilityData = GameData::Ability.get(value)
@@ -104,7 +103,7 @@ class AbilitySplashBar < SpriteWrapper
 
     def z=(value)
         super
-        @bgSprite.z = value-1
+        @bgSprite.z = value - 1
         @speciesIcon.z = value
     end
 
@@ -127,17 +126,17 @@ class AbilitySplashBar < SpriteWrapper
     end
 
     def refresh
-        self.bitmap.clear
+        bitmap.clear
         return if !@battler || !@abilityName
         textPos = []
-        textX = (@side==0) ? 10 : self.bitmap.width-8
+        textX = (@side == 0) ? 10 : bitmap.width - 8
         # Draw Pokémon's name
-        textPos.push([_INTL("{1}'s",@battler.name),textX,-4,@side==1,
-           TEXT_BASE_COLOR,TEXT_SHADOW_COLOR,true])
+        textPos.push([_INTL("{1}'s", @battler.name), textX, -4, @side == 1,
+                      TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, true])
         # Draw Pokémon's ability
-        textPos.push([@abilityName,textX,26,@side==1,
-           TEXT_BASE_COLOR,TEXT_SHADOW_COLOR,true])
-        pbDrawTextPositions(self.bitmap,textPos)
+        textPos.push([@abilityName, textX, 26, @side == 1,
+                      TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, true])
+        pbDrawTextPositions(bitmap, textPos)
     end
 
     def update

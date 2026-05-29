@@ -57,7 +57,7 @@ class PokeBattle_Battle
             eachBattler { |b| b.pbCheckFormOnWeatherChange }
             pbEndPrimordialWeather
         end
-        
+
         if $Options.weather_messages == 0 && !noChange
             if @field.weatherDuration < 0
                 pbDisplay(_INTL("It'll last indefinitely!"))
@@ -111,7 +111,7 @@ class PokeBattle_Battle
         end
     end
 
-    def endWeather(affectAbilities=true)
+    def endWeather(affectAbilities = true)
         return if @field.weather == :None
         case @field.weather
         when :Sunshine      then pbDisplay(_INTL("The sunshine faded."))
@@ -195,14 +195,14 @@ class PokeBattle_Battle
         return if pbWeather == :None
         weatherName = GameData::BattleWeather.get(pbWeather).name
         if @field.weatherDuration < 0
-            pbDisplay(_INTL("The {1} would be extended, but it's already indefinite!",weatherName))
+            pbDisplay(_INTL("The {1} would be extended, but it's already indefinite!", weatherName))
             return
         end
         @field.weatherDuration += numTurns
         if numTurns == 1
-            pbDisplay(_INTL("The {1} extends by a turn!",weatherName))
+            pbDisplay(_INTL("The {1} extends by a turn!", weatherName))
         else
-            pbDisplay(_INTL("The {1} extends by {2} turns!",weatherName,numTurns))
+            pbDisplay(_INTL("The {1} extends by {2} turns!", weatherName, numTurns))
         end
     end
 
@@ -249,7 +249,7 @@ class PokeBattle_Battle
 
         if @field.specialTimer >= threshold
             case curWeather
-            when :Eclipse,:RingEclipse
+            when :Eclipse, :RingEclipse
                 primevalVariant = curWeather == :RingEclipse
                 if showWeatherMessages
                     if primevalVariant
@@ -306,7 +306,7 @@ class PokeBattle_Battle
                     pbDisplay(_INTL("{1} is moonstruck! It'll flinch this turn!", b.pbThis))
                     b.pbFlinch
                     if primevalVariant
-                        b.applyFractionalDamage(1.0/4.0)
+                        b.applyFractionalDamage(1.0 / 4.0)
                         pbDisplay(_INTL("{1} is afflicted by the nightmarish moon!", b.pbThis))
                     end
                     anyAffected = true
@@ -324,18 +324,16 @@ class PokeBattle_Battle
             @field.specialWeatherEffect = false
 
             # Special effect happening next turn
-            if @field.specialTimer + 1 == threshold && @field.weatherDuration > 1
-                if showWeatherMessages
-                    case curWeather
-                    when :Eclipse
-                        pbDisplay(_INTL("The Total Eclipse is approaching."))
-                    when :Moonglow
-                        pbDisplay(_INTL("The Full Moon is approaching."))
-                    when :RingEclipse
-                        pbDisplay(_INTL("The Total Ring Eclipse is approaching."))
-                    when :BloodMoon
-                        pbDisplay(_INTL("The Full Blood Moon is approaching."))
-                    end
+            if @field.specialTimer + 1 == threshold && @field.weatherDuration > 1 && showWeatherMessages
+                case curWeather
+                when :Eclipse
+                    pbDisplay(_INTL("The Total Eclipse is approaching."))
+                when :Moonglow
+                    pbDisplay(_INTL("The Full Moon is approaching."))
+                when :RingEclipse
+                    pbDisplay(_INTL("The Total Ring Eclipse is approaching."))
+                when :BloodMoon
+                    pbDisplay(_INTL("The Full Blood Moon is approaching."))
                 end
             end
         end
@@ -395,7 +393,7 @@ class PokeBattle_Battle
             sandstormDamage += applySandstormDamage(b, showWeatherMessages) if sandy?
             hailDamage += applyHailDamage(b, showWeatherMessages) if icy?
         end
-        
+
         # Winter's Wages
         if hailDamage > 0
             priority.each do |b|
@@ -428,26 +426,22 @@ class PokeBattle_Battle
                         pbDisplay(_INTL("{1} is shredded by gigantic particles of iron stardust!", battler.pbThis))
                     else
                         pbDisplay(_INTL("{1} is buffeted by gigantic particles of stardust!", battler.pbThis))
-                    end 
+                    end
                 elsif @field.specialTimer >= 3
                     if damageDoubled
                         pbDisplay(_INTL("{1} is shredded by large particles of iron stardust!", battler.pbThis))
                     else
                         pbDisplay(_INTL("{1} is buffeted by large particles of stardust!", battler.pbThis))
-                    end 
+                    end
+                elsif damageDoubled
+                    pbDisplay(_INTL("{1} is shredded by iron stardust!", battler.pbThis))
                 else
-                    if damageDoubled
-                        pbDisplay(_INTL("{1} is shredded by iron stardust!", battler.pbThis))
-                    else
-                        pbDisplay(_INTL("{1} is buffeted by stardust!", battler.pbThis))
-                    end  
+                    pbDisplay(_INTL("{1} is buffeted by stardust!", battler.pbThis))
                 end
+            elsif damageDoubled
+                pbDisplay(_INTL("{1} is shredded by the iron-infused sandstorm!", battler.pbThis))
             else
-                if damageDoubled
-                    pbDisplay(_INTL("{1} is shredded by the iron-infused sandstorm!", battler.pbThis))
-                else
-                    pbDisplay(_INTL("{1} is buffeted by the sandstorm!", battler.pbThis))
-                end  
+                pbDisplay(_INTL("{1} is buffeted by the sandstorm!", battler.pbThis))
             end
         end
         fraction = 1.0 / 16.0
@@ -467,12 +461,10 @@ class PokeBattle_Battle
                 else
                     pbDisplay(_INTL("{1} is buffeted by shards of ice!", battler.pbThis))
                 end
+            elsif damageDoubled
+                pbDisplay(_INTL("{1} is pummeled by the bitterly cold hail!", battler.pbThis))
             else
-                if damageDoubled
-                    pbDisplay(_INTL("{1} is pummeled by the bitterly cold hail!", battler.pbThis))
-                else
-                    pbDisplay(_INTL("{1} is buffeted by the hail!", battler.pbThis))
-                end
+                pbDisplay(_INTL("{1} is buffeted by the hail!", battler.pbThis))
             end
         end
         fraction = 1.0 / 16.0

@@ -49,7 +49,7 @@ class PokeBattle_Battle
                 requireds = []
                 # Find out how many Pokémon each trainer on side needs to have
                 for i in 0...@sideSizes[side]
-                    idxTrainer = pbGetOwnerIndexFromBattlerIndex(i * 2 + side)
+                    idxTrainer = pbGetOwnerIndexFromBattlerIndex((i * 2) + side)
                     requireds[idxTrainer] = 0 if requireds[idxTrainer].nil?
                     requireds[idxTrainer] += 1
                 end
@@ -119,10 +119,10 @@ class PokeBattle_Battle
             # Set up wild Pokémon
             if side == 1 && wildBattle?
                 pbParty(1).each_with_index do |pkmn, idxPkmn|
-                    pbCreateBattler(2 * idxPkmn + side, pkmn, idxPkmn)
+                    pbCreateBattler((2 * idxPkmn) + side, pkmn, idxPkmn)
                     # Changes the Pokémon's form upon entering battle (if it should)
                     @peer.pbOnEnteringBattle(self, pkmn, true)
-                    pbSetSeen(@battlers[2 * idxPkmn + side])
+                    pbSetSeen(@battlers[(2 * idxPkmn) + side])
                     @usedInBattle[side][idxPkmn] = true
                 end
                 next
@@ -132,7 +132,7 @@ class PokeBattle_Battle
             requireds = []
             # Find out how many Pokémon each trainer on side needs to have
             for i in 0...@sideSizes[side]
-                idxTrainer = pbGetOwnerIndexFromBattlerIndex(i * 2 + side)
+                idxTrainer = pbGetOwnerIndexFromBattlerIndex((i * 2) + side)
                 requireds[idxTrainer] = 0 if requireds[idxTrainer].nil?
                 requireds[idxTrainer] += 1
             end
@@ -143,7 +143,7 @@ class PokeBattle_Battle
                 ret[side][idxTrainer] = []
                 eachInTeam(side, idxTrainer) do |pkmn, idxPkmn|
                     next unless pkmn.able?(false, getAbleParameters(idxPkmn, side, idxTrainer))
-                    idxBattler = 2 * battlerNumber + side
+                    idxBattler = (2 * battlerNumber) + side
                     pbCreateBattler(idxBattler, pkmn, idxPkmn)
                     ret[side][idxTrainer].push(idxBattler)
                     battlerNumber += 1
@@ -210,7 +210,16 @@ class PokeBattle_Battle
                 next if side == 0 && i == 0 # The player's message is shown last
                 msg += "\r\n" if msg.length > 0
                 sent = sendOuts[side][i]
-                if !t.wild?
+                if t.wild?
+                    case sent.length
+                    when 1
+                        msg += _INTL("The {1} joined the battle!", @battlers[sent[0]].name)
+                    when 2
+                        msg += _INTL("{1} and {2} joined the battle!", @battlers[sent[0]].name, @battlers[sent[1]].name)
+                    when 3
+                        msg += _INTL("{1}, {2} and {3} joined the battle!", @battlers[sent[0]].name, @battlers[sent[1]].name, @battlers[sent[2]].name)
+                    end
+                else
                     case sent.length
                     when 1
                         msg += _INTL("{1} sent out {2}!", t.full_name, @battlers[sent[0]].name)
@@ -220,15 +229,6 @@ class PokeBattle_Battle
                     when 3
                         msg += _INTL("{1} sent out {2}, {3} and {4}!", t.full_name,
                           @battlers[sent[0]].name, @battlers[sent[1]].name, @battlers[sent[2]].name)
-                    end
-                else
-                    case sent.length
-                    when 1
-                        msg += _INTL("The {1} joined the battle!", @battlers[sent[0]].name)
-                    when 2
-                        msg += _INTL("{1} and {2} joined the battle!", @battlers[sent[0]].name, @battlers[sent[1]].name)
-                    when 3
-                        msg += _INTL("{1}, {2} and {3} joined the battle!",@battlers[sent[0]].name, @battlers[sent[1]].name, @battlers[sent[2]].name)
                     end
                 end
                 toSendOut.concat(sent)
@@ -356,7 +356,7 @@ class PokeBattle_Battle
     end
 
     def updateTribeCounts
-        playerTribalBonus().updateTribeCount
+        playerTribalBonus.updateTribeCount
         @opponent&.each do |opponentTrainer|
             opponentTrainer.tribalBonus.updateTribeCount
         end
@@ -365,7 +365,7 @@ class PokeBattle_Battle
     def updatePlayerStats
         $Trainer.party.each do |partyMember|
             partyMember.calc_stats
-        end  
+        end
     end
 
     def pbStartBattleCore
@@ -378,7 +378,7 @@ class PokeBattle_Battle
         # Coloration differences tutorial
         if $Options.color_shifts == 0 && !$PokemonGlobal.colorationDifferencesTutorialized
             eachOtherSideBattler do |b|
-                totalColorationDiff = b.pokemon.hueShift.abs + (b.pokemon.shadeShift.abs) / 4
+                totalColorationDiff = b.pokemon.hueShift.abs + (b.pokemon.shadeShift.abs / 4)
                 next unless totalColorationDiff >= 16
                 playColorationDifferencesTutorial
                 break
@@ -478,7 +478,7 @@ class PokeBattle_Battle
 
             # Extra phases after main phases
             if numExtraPhasesThisTurn > 0
-                for i in 1..numExtraPhasesThisTurn do
+                for _ in 1..numExtraPhasesThisTurn do
                     echoln("Extra phase begins")
                     @battlers.each do |b|
                         next unless b
@@ -486,7 +486,7 @@ class PokeBattle_Battle
                     end
 
                     resetMoveUsageState
-                    
+
                     # Command phase
                     PBDebug.logonerr { pbExtraCommandPhase }
                     break if @decision > 0
@@ -516,29 +516,27 @@ class PokeBattle_Battle
             timeStretcher = nil
             if stretchers.length > 0
                 stretchers.each do |stretcher|
-                    unless stretcher.effectActive?(:NoTimeSkip)
+                    if stretcher.effectActive?(:NoTimeSkip)
+                        stretcher.disableEffect(:NoTimeSkip)
+                    else
                         timeStretcher = stretcher
                         stretcher.applyEffect(:NoTimeSkip)
-                    else
-                        stretcher.disableEffect(:NoTimeSkip)
                     end
                 end
             end
 
-            unless timeStretcher.nil?
-                pbShowAbilitySplash(timeStretcher, :TIMESKIP)
-                pbDisplay(_INTL("Time is dancing to {1}'s tune! This turn is being skipped!", timeStretcher.pbThis))
-                pbHideAbilitySplash(timeStretcher)
-                # Start of round phase
-                PBDebug.logonerr { pbStartOfRoundPhase }
-                break if @decision > 0
-                # End of round phase
-                PBDebug.logonerr { pbEndOfRoundPhase }
-                break if @decision > 0
-                recordSkippedTurn
-                @turnCount += 1
-            end
-
+            next if timeStretcher.nil?
+            pbShowAbilitySplash(timeStretcher, :TIMESKIP)
+            pbDisplay(_INTL("Time is dancing to {1}'s tune! This turn is being skipped!", timeStretcher.pbThis))
+            pbHideAbilitySplash(timeStretcher)
+            # Start of round phase
+            PBDebug.logonerr { pbStartOfRoundPhase }
+            break if @decision > 0
+            # End of round phase
+            PBDebug.logonerr { pbEndOfRoundPhase }
+            break if @decision > 0
+            recordSkippedTurn
+            @turnCount += 1
         end
         pbEndOfBattle
     end
@@ -582,7 +580,7 @@ class PokeBattle_Battle
             allEffectHolders do |effectHolder|
                 effectHolder.processEffectsSOR
             end
-            
+
             pbSORWeather(priority)
 
             autoPilot
@@ -594,8 +592,8 @@ class PokeBattle_Battle
 
     def autoPilot
         autoPilots = []
-        [0,1].each do |sideIndex|
-            pbParty(sideIndex).each_with_index do |partyMember,partyIndex|
+        [0, 1].each do |sideIndex|
+            pbParty(sideIndex).each_with_index do |partyMember, partyIndex|
                 next unless partyMember
                 next if partyMember.fainted?
                 next unless partyMember.hasAbility?(:AUTOPILOT)
@@ -604,7 +602,7 @@ class PokeBattle_Battle
                 if @turnCount % 5 == 0
                     autoPilots.push(partyIndex)
                 elsif @turnCount % 5 == 4
-                    pbDisplayPaused(_INTL("{1} will arrive next turn!",pbThisEx(sideIndex,partyIndex)))
+                    pbDisplayPaused(_INTL("{1} will arrive next turn!", pbThisEx(sideIndex, partyIndex)))
                 end
             end
 
@@ -613,7 +611,7 @@ class PokeBattle_Battle
                 break if autoPilots.length == 0
                 autoPilotPartyIndex = autoPilots.pop
 
-                pbDisplayPaused(_INTL("{1} pilots into battle!",pbThisEx(sideIndex,autoPilotPartyIndex)))
+                pbDisplayPaused(_INTL("{1} pilots into battle!", pbThisEx(sideIndex, autoPilotPartyIndex)))
                 pbRecallAndReplace(activeBattler.index, autoPilotPartyIndex)
                 activeBattler.applyEffect(:AutoPilot)
 
@@ -651,7 +649,7 @@ class PokeBattle_Battle
             tMoney = 0
             @opponent.each_with_index do |t, i|
                 baseMoney = t.base_money
-                baseMoney = 10 + baseMoney / 2
+                baseMoney = 10 + (baseMoney / 2)
                 tMoney += pbMaxLevelInTeam(1, i) * baseMoney
             end
             tMoney = (tMoney * endOfBattleMoneyMult).floor
@@ -766,7 +764,7 @@ class PokeBattle_Battle
             elsif @decision == 2
                 if @opponent
                     @opponent.each_with_index do |_t, i|
-                        next unless (@endSpeechesWin[i] && @endSpeechesWin[i] != "" && @endSpeechesWin[i] != "...")
+                        next unless @endSpeechesWin[i] && @endSpeechesWin[i] != "" && @endSpeechesWin[i] != "..."
                         @scene.pbShowOpponent(i)
                         pbDisplayPaused(@endSpeechesWin[i].gsub(/\\[Pp][Nn]/, pbPlayer.name))
                     end
@@ -776,14 +774,14 @@ class PokeBattle_Battle
         when 4
             @scene.pbWildBattleSuccess unless Settings::GAIN_EXP_FOR_CAPTURE
         end
-        
+
         # Register captured Pokémon in the Pokédex, and store them
         pbRecordAndStoreCaughtPokemon
 
         # Collect Pay Day money in a wild battle that ended in a capture
         pbGainMoney if @decision == 4
         pbDisplayWithFormatting(_INTL("\\i[EXPEZDISPENSER]{1} exp was stored in the EXP-EZ Dispenser this battle.", separate_comma(@expStored))) if @expStored > 0
-        
+
         # Clean up battle stuff
         @scene.pbEndBattle(@decision)
         eachBattler do |b|
@@ -796,7 +794,9 @@ class PokeBattle_Battle
         # Reset some aspects of party pokemon
         pbParty(0).each_with_index do |pkmn, i|
             next unless pkmn
-            pkmn.removeFear if pkmn.afraid? unless @autoTesting
+            if !@autoTesting && !@autoTesting && pkmn.afraid?
+                pkmn.removeFear
+            end
             @peer.pbOnLeavingBattle(self, pkmn, @usedInBattle[0][i], true) # Reset form
         end
 
@@ -830,7 +830,7 @@ class PokeBattle_Battle
         counts   = [0, 0]
         hpTotals = [0, 0]
         for side in 0...2
-            pbParty(side).each_with_index do |pkmn, idxPkmn|
+            pbParty(side).each_with_index do |pkmn, _idxPkmn|
                 next if !pkmn || !pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
                 counts[side]   += 1
                 hpTotals[side] += pkmn.hp
@@ -862,7 +862,7 @@ class PokeBattle_Battle
         return 5 # Draw
     end
 
-    def pbDecisionOnDraw; return 5; end     # Draw
+    def pbDecisionOnDraw; return 5; end # Draw
 
     def pbJudge
         fainted1 = pbAllFainted?(0)

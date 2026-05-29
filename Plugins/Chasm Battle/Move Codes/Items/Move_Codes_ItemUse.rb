@@ -5,7 +5,7 @@ class PokeBattle_Move_GiftItem < PokeBattle_Move
     def consumesItem?(_user); return true; end
     def ignoresSubstitute?(_user); return true; end
 
-    def validItem(user,item)
+    def validItem(user, item)
         return !(user.unlosableItem?(item) || GameData::Item.get(item).is_mega_stone?)
     end
 
@@ -37,7 +37,7 @@ class PokeBattle_Move_GiftItem < PokeBattle_Move
         validItems = []
         validItemNames = []
         user.items.each do |item|
-            next unless validItem(user,item)
+            next unless validItem(user, item)
             validItems.push(item)
             validItemNames.push(getItemName(item))
         end
@@ -51,14 +51,14 @@ class PokeBattle_Move_GiftItem < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} give away?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} give away?", user.pbThis(true)), validItemNames, 0)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end
         end
     end
 
-    def pbFailsAgainstTarget?(user, target, show_message)
+    def pbFailsAgainstTarget?(_user, target, show_message)
         unless target.canAddItem?(@chosenItem)
             @battle.pbDisplay(_INTL("But it failed, since {1} doesn't have room for a new item!", target.pbThis(true))) if show_message
             return true
@@ -84,7 +84,7 @@ class PokeBattle_Move_GiftItem < PokeBattle_Move
 
     def getEffectScore(user, target)
         if user.hasActiveItemAI?(%i[FLAMEORB POISONORB FROSTORB STICKYBARB
-                                  IRONBALL]) || user.hasActiveItemAI?(GameData::Item.getByFlag("ChoiceLocking"))
+                                    IRONBALL]) || user.hasActiveItemAI?(GameData::Item.getByFlag("ChoiceLocking"))
             if user.opposes?(target)
                 return 100
             else
@@ -130,7 +130,7 @@ end
 class PokeBattle_Move_Fling < PokeBattle_Move
     def consumesItem?(_user); return true; end
 
-    def validItem(user,item)
+    def validItem(user, item)
         return !(user.unlosableItem?(item) || GameData::Item.get(item).is_mega_stone?)
     end
 
@@ -169,7 +169,7 @@ class PokeBattle_Move_Fling < PokeBattle_Move
         validItems = []
         validItemNames = []
         user.items.each do |item|
-            next unless validItem(user,item)
+            next unless validItem(user, item)
             validItems.push(item)
             validItemNames.push(getItemName(item))
         end
@@ -183,7 +183,7 @@ class PokeBattle_Move_Fling < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} fling?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} fling?", user.pbThis(true)), validItemNames, 0)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end
@@ -197,7 +197,7 @@ class PokeBattle_Move_Fling < PokeBattle_Move
 
     def pbNumHits(_user, _targets, _checkingForAI = false); return 1; end
 
-    def pbBaseDamage(_baseDmg, user, _target)
+    def pbBaseDamage(_baseDmg, _user, _target)
         if @chosenItem
             if @chosenItem == :PEARLOFWISDOM
                 return 300
@@ -207,8 +207,8 @@ class PokeBattle_Move_Fling < PokeBattle_Move
             end
             itemData = GameData::Item.get(@chosenItem)
             if itemData.is_choice_locking? ||
-                itemData.is_weather_rock? ||
-                itemData.is_attacker_recoil?
+               itemData.is_weather_rock? ||
+               itemData.is_attacker_recoil?
                 return 100
             end
         end
@@ -217,7 +217,7 @@ class PokeBattle_Move_Fling < PokeBattle_Move
 
     def pbEffectAgainstTarget(user, target)
         return if target.damageState.substitute
-        
+
         case @chosenItem
         when :POISONORB
             target.applyPoison(user) if target.canPoison?(user, false, self)
@@ -293,7 +293,7 @@ class PokeBattle_Move_NaturalGift < PokeBattle_Move
         @chosenItem = nil
     end
 
-    def validItem(user,item)
+    def validItem(user, item)
         return false if user.unlosableItem?(item)
         return GameData::Item.get(item).is_berry?
     end
@@ -326,7 +326,7 @@ class PokeBattle_Move_NaturalGift < PokeBattle_Move
         validItems = []
         validItemNames = []
         user.items.each do |item|
-            next unless validItem(user,item)
+            next unless validItem(user, item)
             validItems.push(item)
             validItemNames.push(getItemName(item))
         end
@@ -340,7 +340,7 @@ class PokeBattle_Move_NaturalGift < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} use?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} use?", user.pbThis(true)), validItemNames, 0)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end
@@ -359,7 +359,7 @@ class PokeBattle_Move_NaturalGift < PokeBattle_Move
     #       which here is assumed to be not nil (because item.id is called). Since
     #       the AI won't want to use it if the user has no item anyway, perhaps
     #       this is good enough.
-    def pbBaseType(user)
+    def pbBaseType(_user)
         item = @chosenItem
         ret = :NORMAL
         unless item.nil?
@@ -387,7 +387,7 @@ class PokeBattle_Move_NaturalGift < PokeBattle_Move
     def getDetailsForMoveDex(detailsList = [])
         @typeArray.each_pair do |typeID, berryList|
             lineText = "<u>#{GameData::Type.get(typeID).name}</u>: "
-            berryList.each_with_index do |berryID,index|
+            berryList.each_with_index do |berryID, index|
                 lineText += GameData::Item.get(berryID).name
                 lineText += ", " unless index == berryList.length - 1
             end
@@ -427,6 +427,7 @@ end
 #===============================================================================
 class PokeBattle_Move_EatBerryRaiseDefenses1 < PokeBattle_Move
     def consumesItem?(user); return user.hasAnyBerry?; end
+
     def pbMoveFailed?(user, _targets, show_message)
         unless user.hasAnyBerry?
             @battle.pbDisplay(_INTL("But it failed, because {1} has no berries!", user.pbThis(true))) if show_message

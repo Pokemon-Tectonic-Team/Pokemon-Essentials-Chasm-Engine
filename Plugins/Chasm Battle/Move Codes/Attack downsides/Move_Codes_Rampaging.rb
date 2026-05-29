@@ -42,7 +42,7 @@ class PokeBattle_Move_RampageKOsRaiseSpeed1 < PokeBattle_Move_Rampage
         user.tryRaiseStat(:SPEED, user, increment: 1, move: self) if target.damageState.fainted
     end
 
-    def getFaintEffectScore(user, target)
+    def getFaintEffectScore(user, _target)
         return getMultiStatUpEffectScore([:SPEED, 1], user, user)
     end
 end

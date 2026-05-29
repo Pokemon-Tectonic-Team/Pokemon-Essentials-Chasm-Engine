@@ -31,7 +31,7 @@ class MoveDex_Scene
                 typeIsReal = false
                 GameData::Type.each do |type_data|
                     next unless type_data.name.downcase == typeInput
-                    typeIsReal = true 
+                    typeIsReal = true
                     break
                 end
 
@@ -53,11 +53,11 @@ class MoveDex_Scene
     end
 
     def searchByMoveCategory
-        selections = [_INTL("Physical"),_INTL("Special"),_INTL("Adaptive"),_INTL("Status"),_INTL("Not Status"),_INTL("Cancel")]
+        selections = [_INTL("Physical"), _INTL("Special"), _INTL("Adaptive"), _INTL("Status"), _INTL("Not Status"), _INTL("Cancel")]
         moveCategorySelection = pbMessage(_INTL("Which category?"), selections, selections.length)
         return if moveCategorySelection == selections.length - 1
 
-        moveCategorySelection = [0,1,3,2,-1][moveCategorySelection] # Reorder values
+        moveCategorySelection = [0, 1, 3, 2, -1][moveCategorySelection] # Reorder values
 
         dexlist = searchStartingList
         dexlist = dexlist.find_all do |dex_item|
@@ -68,7 +68,7 @@ class MoveDex_Scene
             else
                 categoryMatches = moveCategory == moveCategorySelection
                 # Show adaptive moves in searches for physical or special
-                categoryMatches = true if moveCategory == 3 && [0,1].include?(moveCategorySelection)
+                categoryMatches = true if moveCategory == 3 && [0, 1].include?(moveCategorySelection)
             end
             next categoryMatches
         end
@@ -87,7 +87,7 @@ class MoveDex_Scene
             dexlist = dexlist.find_all do |dex_item|
                 next false if autoDisqualifyFromSearch(dex_item[:move])
                 moveDescription = dex_item[:data].description.downcase
-                textMatches =  moveDescription.include?(moveDescriptionInput)
+                textMatches = moveDescription.include?(moveDescriptionInput)
                 next textMatches ^ reversed # Boolean XOR
             end
             return dexlist
@@ -98,20 +98,6 @@ class MoveDex_Scene
 
     def searchByMoveMisc
         miscSearches = []
-        cmdTag          = -1
-        cmdBasePower	= -1
-        cmdAccuracy     = -1
-        cmdPriority     = -1
-        cmdPP           = -1
-        cmdTargeting    = -1
-        cmdSignature    = -1
-        cmdNotes        = -1
-        cmdLearnableOwned = -1
-        cmdUninvocable  = -1
-        cmdInvertList   = -1
-        cmdEffectChance = -1
-        cmdCustomAnimation = -1
-        cmdCanon        = -1
         miscSearches[cmdTag = miscSearches.length]              = _INTL("Tag")
         miscSearches[cmdBasePower = miscSearches.length]        = _INTL("Base Power")
         miscSearches[cmdAccuracy = miscSearches.length]         = _INTL("Accuracy")
@@ -185,9 +171,9 @@ class MoveDex_Scene
         end
         return dexlist
     end
-    
+
     def searchByStatComparison(&block)
-        comparisonSelection = pbMessage(_INTL("Which comparison?"), [_INTL("Equal to"),_INTL("Greater than"), _INTL("Less than"),_INTL("Cancel"),], 4)
+        comparisonSelection = pbMessage(_INTL("Which comparison?"), [_INTL("Equal to"), _INTL("Greater than"), _INTL("Less than"), _INTL("Cancel"),], 4)
         return if comparisonSelection == 3
 
         valueInput = pbEnterText(_INTL("Enter value."), 0, 3)
@@ -197,12 +183,12 @@ class MoveDex_Scene
             valueIntAttempt = nil
             begin
                 valueIntAttempt = Integer(valueInput)
-            rescue
+            rescue StandardError
                 return nil
             end
-            
+
             dexlist = searchStartingList
-            dexlist = dexlist.find_all do |dex_item|
+            dexlist.find_all do |dex_item|
                 next false if autoDisqualifyFromSearch(dex_item[:move])
                 value = block.call(dex_item[:data])
                 case comparisonSelection
@@ -255,7 +241,7 @@ class MoveDex_Scene
         selection = pbMessage(_INTL("Which targeting?"), [_INTL("Single Target"), _INTL("Multi Target"), _INTL("No Target"), _INTL("Cancel")], 4)
         if selection != 3
             if selection == 1
-                spread_selection = pbMessage(_INTL("Which multi-target?"), [_INTL("Foes Only"), _INTL("Targets Allies"), _INTL("Either"), _INTL("Cancel")], 4)  
+                spread_selection = pbMessage(_INTL("Which multi-target?"), [_INTL("Foes Only"), _INTL("Targets Allies"), _INTL("Either"), _INTL("Cancel")], 4)
                 return if spread_selection == 3
             end
 
@@ -283,11 +269,9 @@ class MoveDex_Scene
         end
     end
 
-    def searchByMoveAvailabilityByLevel
-    end
+    def searchByMoveAvailabilityByLevel; end
 
-    def searchByMoveTotalAvailability
-    end
+    def searchByMoveTotalAvailability; end
 
     def searchByMoveSignature
         selection = pbMessage(_INTL("Which search?"), [_INTL("Signature"), _INTL("Not Signature"), _INTL("Cancel")], 3)
@@ -307,34 +291,34 @@ class MoveDex_Scene
     end
 
     def searchByMoveLearnableOwned
-       selection = pbMessage(_INTL("Move learnable by?"), [_INTL("Party Pokemon"), _INTL("Caught Pokemon"), _INTL("Cancel")], 3)
-       partyLearnable = {}
-       caughtLearnable = {}
-       #precalc learnables to avoid lag
-       if selection == 0
+        selection = pbMessage(_INTL("Move learnable by?"), [_INTL("Party Pokemon"), _INTL("Caught Pokemon"), _INTL("Cancel")], 3)
+        partyLearnable = {}
+        caughtLearnable = {}
+        # precalc learnables to avoid lag
+        if selection == 0
             $Trainer.party.each do |partyMember|
                 partyMember.learnable_moves(false).each do |move|
                     partyLearnable[move] = true
                 end
             end
-       end
+        end
 
-       if selection == 1
-            eachPokemonInPartyOrStorage do |ownedPokemon| 
+        if selection == 1
+            eachPokemonInPartyOrStorage do |ownedPokemon|
                 ownedPokemon.learnable_moves(false).each do |move|
-                     caughtLearnable[move] = true
+                    caughtLearnable[move] = true
                 end
             end
         end
 
-       if selection != 2
+        if selection != 2
             dexlist = searchStartingList
             dexlist = dexlist.find_all do |dex_item|
-                if selection == 0 
-                     next partyLearnable.include?dex_item[:move]
+                if selection == 0
+                    next partyLearnable.include? dex_item[:move]
                 end
                 if selection == 1
-                     next caughtLearnable.include?dex_item[:move]
+                    next caughtLearnable.include? dex_item[:move]
                 end
             end
             puts "dexList " + dexlist.length.to_s
@@ -363,8 +347,7 @@ class MoveDex_Scene
         return dexlist
     end
 
-    def searchByMoveTypeMatchups
-    end
+    def searchByMoveTypeMatchups; end
 
     def searchByUninvocability
         dexlist = searchStartingList
@@ -417,16 +400,6 @@ class MoveDex_Scene
     ##################################################
     def sortByMoveMisc
         miscSorts = []
-        cmdName                     = -1
-        cmdType                     = -1
-        cmdCategory                 = -1
-        cmdBasePower                = -1
-        cmdAccuracy                 = -1
-        cmdEffectChance             = -1
-        cmdPriority                 = -1
-        cmdPP                       = -1
-        cmdSpeciesLevel             = -1
-        cmdSpeciesAny               = -1
         miscSorts[cmdName = miscSorts.length]                     = _INTL("Name")
         miscSorts[cmdType = miscSorts.length]                     = _INTL("Type")
         miscSorts[cmdCategory = miscSorts.length]                 = _INTL("Category")

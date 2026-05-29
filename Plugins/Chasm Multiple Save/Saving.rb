@@ -59,6 +59,6 @@ def setProperSavePath
     SaveData.changeFILEPATH($current_save_file_name.nil? ? FileSave.name : $current_save_file_name)
 end
 
-def pbCustomMessageForSave(message, commands, index, &block)
-    return pbMessage(message, commands, index, &block)
+def pbCustomMessageForSave(message, commands, index, &)
+    return pbMessage(message, commands, index, &)
 end

@@ -87,11 +87,9 @@ end
 #===============================================================================
 class PokeBattle_Move_FrostbiteAddIceType < PokeBattle_Move
     def pbFailsAgainstTarget?(_user, target, show_message)
-        if !target.canFrostbite?(_user, false, self) && !target.canChangeTypeTo?(:ICE)
-            if show_message
-                @battle.pbDisplay(_INTL("But it failed, since {1} can't be frostbitten or gain Ice-type!", target.pbThis(true)))
-            end
-        end 
+        if !target.canFrostbite?(_user, false, self) && !target.canChangeTypeTo?(:ICE) && show_message
+            @battle.pbDisplay(_INTL("But it failed, since {1} can't be frostbitten or gain Ice-type!", target.pbThis(true)))
+        end
         return false
     end
 

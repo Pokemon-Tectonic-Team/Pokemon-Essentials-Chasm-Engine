@@ -3,8 +3,8 @@
 # (Body Press)
 #===============================================================================
 class PokeBattle_Move_AttacksWithDefense < PokeBattle_Move
-    def aiAutoKnows?(pokemon); return true; end
-	
+    def aiAutoKnows?(_pokemon); return true; end
+
     def pbAttackingStat(user, _target)
         return user, :DEFENSE
     end
@@ -15,8 +15,8 @@ end
 # (Ward Press)
 #===============================================================================
 class PokeBattle_Move_AttacksWithSpDef < PokeBattle_Move
-    def aiAutoKnows?(pokemon); return true; end
-	
+    def aiAutoKnows?(_pokemon); return true; end
+
     def pbAttackingStat(user, _target)
         return user, :SPECIAL_DEFENSE
     end
@@ -27,8 +27,8 @@ end
 # (Foul Play, Short Circuit)
 #===============================================================================
 class PokeBattle_Move_AttacksWithTargetsStats < PokeBattle_Move
-    def aiAutoKnows?(pokemon); return true; end
-	
+    def aiAutoKnows?(_pokemon); return true; end
+
     def pbAttackingStat(_user, target)
         return target, :SPECIAL_ATTACK if specialMove?
         return target, :ATTACK

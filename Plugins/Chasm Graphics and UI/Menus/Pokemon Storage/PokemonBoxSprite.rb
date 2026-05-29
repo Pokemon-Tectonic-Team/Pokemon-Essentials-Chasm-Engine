@@ -132,11 +132,11 @@ class PokemonBoxSprite < SpriteWrapper
             end
             @refreshBox = false
         end
-        yval = self.y + 30
+        yval = y + 30
         for j in 0...PokemonBox::BOX_HEIGHT
-            xval = self.x + 10
+            xval = x + 10
             for k in 0...PokemonBox::BOX_WIDTH
-                arrayIndex = j * PokemonBox::BOX_WIDTH + k
+                arrayIndex = (j * PokemonBox::BOX_WIDTH) + k
                 sprite = @pokemonsprites[arrayIndex]
                 if sprite && !sprite.disposed?
                     sprite.viewport = viewport
@@ -144,7 +144,7 @@ class PokemonBoxSprite < SpriteWrapper
                     sprite.y = yval
                     sprite.z = 0
 
-                    sprite.multiselected = @multiSelectionProc && @multiSelectionProc.call(@boxnumber,arrayIndex)
+                    sprite.multiselected = @multiSelectionProc && @multiSelectionProc.call(@boxnumber, arrayIndex)
                 end
                 xval += 48
             end

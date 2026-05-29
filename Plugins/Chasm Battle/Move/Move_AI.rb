@@ -20,7 +20,7 @@ class PokeBattle_Move
     end
 
     # Scoring the effects that scale based on the damage dealt to the target (recoil, drain, etc.)
-    def getDamageBasedEffectScore(_user,_target,_damage)
+    def getDamageBasedEffectScore(_user, _target, _damage)
         return 0
     end
 

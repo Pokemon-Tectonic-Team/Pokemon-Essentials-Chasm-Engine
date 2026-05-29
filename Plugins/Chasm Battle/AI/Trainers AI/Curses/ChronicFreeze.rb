@@ -10,7 +10,7 @@ PokeBattle_Battle::BattleStartApplyCurse.add(:CURSE_NO_MOVING_CYCLICAL,
 )
 
 PokeBattle_Battle::BeginningOfTurnCurseEffect.add(:CURSE_NO_MOVING_CYCLICAL,
-    proc { |curse_policy, battle|
+    proc { |_curse_policy, battle|
         if battle.turnCount % 4 == 0
             battle.eachSameSideBattler do |b|
                 battle.pbAnimation(:SHEERCOLD, b, b)

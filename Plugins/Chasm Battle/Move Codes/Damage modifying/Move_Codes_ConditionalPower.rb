@@ -19,7 +19,7 @@ end
 # Deals double damage on the first turn out. (Play Bite)
 #===============================================================================
 class PokeBattle_Move_DoubleDamageFirstTurn < PokeBattle_Move
-    def pbBaseDamage(baseDmg, user, target)
+    def pbBaseDamage(baseDmg, user, _target)
         baseDmg *= 2 if user.firstTurn?
         return baseDmg
     end
@@ -136,7 +136,7 @@ end
 #===============================================================================
 class PokeBattle_Move_30DamageIfUserAsleep < PokeBattle_Move
     def usableWhenAsleep?; return true; end
-    
+
     def pbBaseDamage(baseDmg, user, _target)
         baseDmg *= 1.3 if user.asleep?
         return baseDmg
@@ -255,7 +255,7 @@ class PokeBattle_Move_ImpurityBlaze < PokeBattle_Move
         return baseDmg
     end
 
-    def pbEffectWhenDealingDamage(user, target)
+    def pbEffectWhenDealingDamage(_user, target)
         return unless target.pbHasAnyStatus?
         @battle.eachBattler do |b|
             healStatus(b)
@@ -298,6 +298,7 @@ class PokeBattle_Move_DoubleDamageTargetHitUser < PokeBattle_Move
         return baseDmg
     end
 end
+
 #===============================================================================
 # Power is increased by 50% if the user has lost HP due to the target's move this round.
 # (Pressure Burst)
@@ -313,6 +314,7 @@ class PokeBattle_Move_DamageBoost50PercentTargetHitUser < PokeBattle_Move
         return baseDmg
     end
 end
+
 #===============================================================================
 # Power is doubled if the target has already lost HP this round. (Assurance)
 #===============================================================================
@@ -322,7 +324,7 @@ class PokeBattle_Move_DoubleDamageTargetLostHP < PokeBattle_Move
         return baseDmg
     end
 
-    def pbBaseDamageAI(baseDmg, user, target)
+    def pbBaseDamageAI(baseDmg, user, _target)
         fastAllyAttacker = false
         user.eachAlly do |b|
             next unless b.hasDamagingAttack?
@@ -423,7 +425,7 @@ end
 # Double damage if a critical hit. (Axe to Grind)
 #===============================================================================
 class PokeBattle_Move_DoubleDamageOnCrit < PokeBattle_Move
-    def criticalHitMultiplier(user,target); return 3.0; end
+    def criticalHitMultiplier(_user, _target); return 3.0; end
 end
 
 #===============================================================================
@@ -498,7 +500,7 @@ end
 # Deals double damage if the user has consumed a berry at some point. (Belch)
 #===============================================================================
 class PokeBattle_Move_DoubleDamageBerryConsumed < PokeBattle_Move
-    def pbBaseDamage(baseDmg, user, target)
+    def pbBaseDamage(baseDmg, user, _target)
         baseDmg *= 2 if user.belched?
         return baseDmg
     end
@@ -508,7 +510,7 @@ end
 # Deals double damage if the user has consumed a gem at some point. (Glimmer Pulse)
 #===============================================================================
 class PokeBattle_Move_DoubleDamageGemConsumed < PokeBattle_Move
-    def pbBaseDamage(baseDmg, user, target)
+    def pbBaseDamage(baseDmg, user, _target)
         baseDmg *= 2 if user.lustered?
         return baseDmg
     end
@@ -588,12 +590,13 @@ class PokeBattle_Move_PowerDoublesTargetLastAlive < PokeBattle_Move
         return baseDmg
     end
 end
+
 #===============================================================================
 # Power is increased by 50% if this isnt the target's first turn.
 # (Volt Seekers)
 #===============================================================================
 class PokeBattle_Move_DamageBoost50PercentNotTargetFirstTurn < PokeBattle_Move
-    def pbBaseDamage(baseDmg, user, target)
+    def pbBaseDamage(baseDmg, _user, target)
         baseDmg *= 1.5 unless target.firstTurn?
         return baseDmg
     end
@@ -604,11 +607,11 @@ end
 # Power and Money is doubled if the target has a status problem. (Royal Tribute)
 #===============================================================================
 class PokeBattle_Move_DoubleDamageMoneyTargetStatused < PokeBattle_Move
-    def pbBaseDamage(baseDmg, user, target)
+    def pbBaseDamage(baseDmg, _user, target)
         baseDmg *= 2 if target.pbHasAnyStatus?
         return baseDmg
     end
-    
+
     def pbAdditionalEffect(user, target)
         money = 8
         money *= 2 if target.pbHasAnyStatus?
@@ -620,7 +623,7 @@ end
 # Power is increased by 30% if the move is super-effective or hyper-effective. (Atmospheric Burst)
 #===============================================================================
 class PokeBattle_Move_DamageBoost30PercentSuperOrHyperEffective < PokeBattle_Move
-    def pbBaseDamage(baseDmg, user, target)
+    def pbBaseDamage(baseDmg, _user, target)
         baseDmg *= 1.3 if target.damageState.typeMod == Effectiveness::SUPER_EFFECTIVE
         return baseDmg
     end
@@ -640,7 +643,7 @@ class PokeBattle_Move_CritsAgainstModifiedStatsResetsStats < PokeBattle_Move
         return 0
     end
 
-    def pbEffectAgainstTarget(user, target)
+    def pbEffectAgainstTarget(_user, target)
         return if target.damageState.hpLost <= 0
         battle.pbDisplay(_INTL("{1}'s stat changes were cleansed by fire!", target.pbThis))
         target.pbResetStatSteps

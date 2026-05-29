@@ -65,7 +65,7 @@ class PokeBattle_Battler
                 PBDebug.log("[Lingering effect] #{target.pbThis}'s Gulp Missile")
                 gulpform = target.form
                 transformationMessage = target.form == 2 ? _INTL("Cramorant ejects the Pikachu!") : _INTL("Cramorant ejects its meal!")
-                target.pbChangeForm(0,transformationMessage)
+                target.pbChangeForm(0, transformationMessage)
                 user.applyFractionalDamage(1.0 / 4.0) if user.takesIndirectDamage?(true)
                 if gulpform == 1
                     user.pbLowerMultipleStatSteps(DEFENDING_STATS_1, target)
@@ -232,10 +232,8 @@ user.pbThis(true)))
             user.disableEffect(:Blindness)
         end
         # Mending Feathers
-        unless switchedBattlers.include?(user.index)
-            if user.effectActive?(:FeatherForceSwitch)
-                trySwitchOutUser(user, targets, numHits, switchedBattlers)
-            end
+        if !switchedBattlers.include?(user.index) && user.effectActive?(:FeatherForceSwitch)
+            trySwitchOutUser(user, targets, numHits, switchedBattlers)
         end
         # Run unconditionally (not just when numHits > 0) so that White Herb and
         # similar EndOfMoveStatRestoreItems activate even after stat-only moves
@@ -245,41 +243,41 @@ user.pbThis(true)))
 
     def consumeMoveTriggeredItems(user)
         # Consume user's agility herb
-        if user.effectActive?(:AgilityHerb,true)
+        if user.effectActive?(:AgilityHerb, true)
             user.consumeItem(:AGILITYHERB)
-            user.disableEffect(:AgilityHerb,true)
+            user.disableEffect(:AgilityHerb, true)
         end
         # Consume user's Gem
-        if user.effectActive?(:GemConsumed,true)
+        if user.effectActive?(:GemConsumed, true)
             # NOTE: The consume animation and message for Gems are shown immediately
             #       after the move's animation, but the item is only consumed now.
             user.consumeItem(user.effects[:GemConsumed])
-            user.disableEffect(:GemConsumed,true)
+            user.disableEffect(:GemConsumed, true)
         end
 
         # NOTE: The consume animation and message for Herbs are shown immediately
         # after the move's animation, but the item is only consumed now.
 
         # Consume user's empowering Herb
-        if user.effectActive?(:EmpoweringHerbConsumed,true)
+        if user.effectActive?(:EmpoweringHerbConsumed, true)
             user.consumeItem(user.effects[:EmpoweringHerbConsumed])
-            user.disableEffect(:EmpoweringHerbConsumed,true)
+            user.disableEffect(:EmpoweringHerbConsumed, true)
         end
         # Consume user's skill Herb
-        if user.effectActive?(:SkillHerbConsumed,true)
+        if user.effectActive?(:SkillHerbConsumed, true)
             user.consumeItem(:SKILLHERB)
-            user.disableEffect(:SkillHerbConsumed,true)
+            user.disableEffect(:SkillHerbConsumed, true)
         end
         # Consume user's luck Herb
-        if user.effectActive?(:LuckHerbConsumed,true)
+        if user.effectActive?(:LuckHerbConsumed, true)
             user.consumeItem(:LUCKHERB)
-            user.disableEffect(:LuckHerbConsumed,true)
+            user.disableEffect(:LuckHerbConsumed, true)
         end
 
         # Herbs on opponents
         user.eachOpposing do |opp|
             # Consume opponent's mirror Herb
-            if opp.pointsAt?(:MirrorHerbConsumed,user)
+            if opp.pointsAt?(:MirrorHerbConsumed, user)
                 @battle.pbCommonAnimation("UseItem", opp)
                 @battle.pbDisplay(_INTL("{1} copies {2}'s stat increases with its {3}!", opp.pbThis, user.pbThis(false), getItemName(:MIRRORHERB)))
                 statsHash = opp.effects[:MirrorHerbCopiedStats]
@@ -295,7 +293,7 @@ user.pbThis(true)))
                 opp.disableEffect(:MirrorHerbConsumed)
             end
             # Consume opponent's paradox Herb
-            if opp.pointsAt?(:ParadoxHerbConsumed,user)
+            if opp.pointsAt?(:ParadoxHerbConsumed, user)
                 @battle.pbCommonAnimation("UseItem", opp)
                 @battle.pbDisplay(_INTL("{1} resets {2}'s stats with its {3}!", opp.pbThis, user.pbThis(false), getItemName(:PARADOXHERB)))
                 @battle.pbAnimation(:REFRESH, user, nil)
@@ -329,7 +327,7 @@ user.pbThis(true)))
 
     # Everything in this method is negated by Sheer Force.
     def pbEffectsAfterMove2(user, targets, move, numHits, switchedBattlers, originalUserPokemon = nil)
-        hpNow = user.hp # Intentionally determined now, before Shell Bell
+        user.hp # Intentionally determined now, before Shell Bell
         # originalUserPokemon is captured in pbUseMove before any hits begin, so it
         # correctly identifies the original attacker even if Eject Pack fired mid-hit
         # (e.g. user self-lowers stats via Close Combat) and replaced the battler before
@@ -345,10 +343,9 @@ user.pbThis(true)))
                 BattleHandlers.triggerTargetItemAfterMoveUse(item, b, user, move, switchByItem, @battle)
             end
             # Eject Pack
-            if b.effectActive?(:StatsDropped)
-                b.eachActiveItem do |item|
-                    BattleHandlers.triggerItemOnStatLoss(item, b, user, move, switchByItem, @battle)
-                end
+            next unless b.effectActive?(:StatsDropped)
+            b.eachActiveItem do |item|
+                BattleHandlers.triggerItemOnStatLoss(item, b, user, move, switchByItem, @battle)
             end
         end
         @battle.moldBreaker = false if switchByItem.include?(user.index)
@@ -373,7 +370,7 @@ user.pbThis(true)))
             next if b.damageState.unaffected || switchedBattlers.include?(b.index)
             b.eachActiveAbility do |ability|
                 BattleHandlers.triggerTargetAbilityAfterMoveUse(ability, b, user, move, switchedBattlers, @battle)
-                
+
                 if move.damagingMove? && b.knockedBelowHalf? && user.activatesTargetAbilities?
                     BattleHandlers.triggerTargetAbilityKnockedBelowHalf(ability, b, user, move, switchedBattlers, @battle)
                 end
@@ -408,10 +405,10 @@ user.pbThis(true)))
     #=============================================================================
     def pbEffectsOnMiss(user, target, move)
         user.eachActiveAbility do |abilityID|
-            BattleHandlers::triggerUserAbilityOnMiss(abilityID, user, target, move, @battle)
+            BattleHandlers.triggerUserAbilityOnMiss(abilityID, user, target, move, @battle)
         end
         target.eachActiveAbility do |abilityID|
-            BattleHandlers::triggerTargetAbilityOnMiss(abilityID, user, target, move, @battle)
+            BattleHandlers.triggerTargetAbilityOnMiss(abilityID, user, target, move, @battle)
         end
     end
 end

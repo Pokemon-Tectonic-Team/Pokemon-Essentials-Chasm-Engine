@@ -1,5 +1,5 @@
 BattleHandlers::UserAbilityEndOfTrappingMove.add(:DENTICLEDEBRIS,
-    proc { |ability, user, target, move, battle|
+    proc { |ability, user, _target, _move, battle|
         battle.pbShowAbilitySplash(user, ability)
         side = user.pbOpposingSide
         if side.effectAtMax?(:Spikes)

@@ -28,7 +28,7 @@ class PokeBattle_Move_FailsIfTargetActed < PokeBattle_Move
 
     def pbFailsAgainstTargetAI?(user, target)
         if user.ownersPolicies.include?(:PREDICTS_PLAYER)
-            return !@battle.aiPredictsAttack?(user,target.index)
+            return !@battle.aiPredictsAttack?(user, target.index)
         else
             return true unless target.hasDamagingAttack?
             return true if hasBeenUsed?(user)
@@ -36,11 +36,11 @@ class PokeBattle_Move_FailsIfTargetActed < PokeBattle_Move
         end
     end
 
-    def getEffectScore(user, target)
+    def getEffectScore(_user, _target)
         return -10
     end
 
-    def shouldShade?(user, target); return false; end
+    def shouldShade?(_user, _target); return false; end
 end
 
 #===============================================================================

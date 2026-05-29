@@ -40,7 +40,7 @@ class PokeBattle_AI_Boss
     end
 
     def scoreSetUp
-        @scoreMoves.push(proc { |move, user, target, _battle|
+        @scoreMoves.push(proc { |move, _user, _target, _battle|
             next nil if move.statUp.empty?
             next 50
         })
@@ -57,8 +57,8 @@ class PokeBattle_AI_Boss
     # Have the avatar use the move every other turn if possible
     # and otherwise never
     def everyOtherTurn(moveID)
-        @useMoveIFF.add(moveID, proc { |_move, user, _target, battle|
-            next battle.turnCount % 2 == 1
+        @useMoveIFF.add(moveID, proc { |_move, _user, _target, battle|
+            next battle.turnCount.odd?
         })
     end
 
@@ -66,7 +66,7 @@ class PokeBattle_AI_Boss
     # And otherwise never
     def firstMoveEveryOtherTurn(moveID)
         @useMoveIFF.add(moveID, proc { |_move, user, _target, battle|
-            next user.firstTurnThisRound? && battle.turnCount % 2 == 1
+            next user.firstTurnThisRound? && battle.turnCount.odd?
         })
     end
 
@@ -74,14 +74,14 @@ class PokeBattle_AI_Boss
     # And otherwise never
     def secondMoveEveryOtherTurn(moveID)
         @useMoveIFF.add(moveID, proc { |_move, user, _target, battle|
-            next !user.firstTurnThisRound? && battle.turnCount % 2 == 1
+            next !user.firstTurnThisRound? && battle.turnCount.odd?
         })
     end
 
     # Have the avatar use the move every three turns if possible
     # and otherwise never
     def everyThreeTurns(moveID)
-        @useMoveIFF.add(moveID, proc { |_move, user, _target, battle|
+        @useMoveIFF.add(moveID, proc { |_move, _user, _target, battle|
             next battle.turnCount % 3 == 1
         })
     end

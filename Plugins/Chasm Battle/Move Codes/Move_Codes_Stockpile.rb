@@ -15,7 +15,7 @@ class PokeBattle_Move_UserAddStockpile < PokeBattle_Move
         user.incrementEffect(:Stockpile)
     end
 
-    def getEffectScore(user, target)
+    def getEffectScore(user, _target)
         score = 50
         score += 100 if user.pbHasMoveFunction?("PowerDependsOnUserStockpile") || user.pbHasMoveFunction?("HealUserDependingOnUserStockpile")
         score /= 2 unless user.aboveHalfHealth?
@@ -88,7 +88,7 @@ class PokeBattle_Move_HealUserDependingOnUserStockpile < PokeBattle_HealingMove
         return 0.0
     end
 
-    def canOverheal?(user); return true; end
+    def canOverheal?(_user); return true; end
 
     def pbEffectGeneral(user)
         super

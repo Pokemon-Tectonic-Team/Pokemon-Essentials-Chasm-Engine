@@ -1,3 +1,1 @@
-def checkBattleStateAchievements(battle)
-
-end
+def checkBattleStateAchievements(battle); end

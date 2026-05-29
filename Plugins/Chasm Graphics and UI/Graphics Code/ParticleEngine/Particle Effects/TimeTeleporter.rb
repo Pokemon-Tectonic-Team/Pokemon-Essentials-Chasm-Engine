@@ -1,27 +1,27 @@
 class Particle_Engine::TimeTeleporter < ParticleEffect_Event
-    def initialize(event,viewport)
+    def initialize(event, viewport)
         super
         setParameters([
-            0, # Random hue
-            0, # fade
-            60, # max particles
-            -100, # hue
-            1, # slowdown
-            -Graphics.height, # ytop
-            Graphics.height, # ybottom
-            0, # xleft
-            Graphics.width, # xright
-            0, # xgravity
-            -0.05, # ygravity
-            8, # xoffset
-            0, # yoffset
-            2, # opacity var
-            0, # original opacity
-            ])
+                          0, # Random hue
+                          0, # fade
+                          60, # max particles
+                          -100, # hue
+                          1, # slowdown
+                          -Graphics.height, # ytop
+                          Graphics.height, # ybottom
+                          0, # xleft
+                          Graphics.width, # xright
+                          0, # xgravity
+                          -0.05, # ygravity
+                          8, # xoffset
+                          0, # yoffset
+                          2, # opacity var
+                          0, # original opacity
+                      ])
         @opacityMult = 0.2
         @radius = 50
 
-        initParticles("particle",255,-1)
+        initParticles("particle", 255, -1)
     end
 
     def initializeParticle(i)
@@ -74,7 +74,7 @@ class Particle_Engine::TimeTeleporter < ParticleEffect_Event
         when 3
             randVal = rand(TRIANGLE_SIDE_SIZE)
             xRand = -randVal
-            yRand = -TRIANGLE_SIDE_SIZE * 2 + randVal
+            yRand = (-TRIANGLE_SIDE_SIZE * 2) + randVal
         when 4
             randVal = rand(TRIANGLE_SIDE_SIZE)
             xRand = -TRIANGLE_SIDE_SIZE - randVal

@@ -1,11 +1,11 @@
 class PokemonPartyPanel_Healing < PokemonPartyPanel
-    def initialize(pokemon,index,initialHP,initialStatusIndex=nil,viewport=nil)
+    def initialize(pokemon, index, initialHP, initialStatusIndex = nil, viewport = nil)
         @currentHP = initialHP
         @currentStatusIndex = initialStatusIndex || 0
         @fainted = initialHP == 0
-        super(pokemon,index,viewport)
+        super(pokemon, index, viewport)
     end
-    
+
     def hp; return @currentHP; end
 
     def currentHP=(value)
@@ -37,18 +37,18 @@ end
 
 class PokemonPartyHealingDisplayScreen
     POKEMON_ICON_SIZE = 64
-    BASE_COLOR   = Color.new(248,248,248)
-    SHADOW_COLOR = Color.new(40,40,40)
+    BASE_COLOR   = Color.new(248, 248, 248)
+    SHADOW_COLOR = Color.new(40, 40, 40)
 
-    def initialize(party,previousHealthValues,previousStatusIndices=nil)
+    def initialize(party, previousHealthValues, previousStatusIndices = nil)
         @party = party
         @previousHealthValues = previousHealthValues
         @previousStatusIndices = previousStatusIndices
 
         @sprites = {}
-        @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
-        @viewport.z = 99999
-        
+        @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
+        @viewport.z = 99_999
+
         addBackgroundPlane(@sprites, "bg", "Party/background_fade_healing", @viewport)
 
         @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
@@ -59,9 +59,9 @@ class PokemonPartyHealingDisplayScreen
         for i in 0...Settings::MAX_PARTY_SIZE
             if @party[i]
                 startingStatusIndex = previousStatusIndices ? previousStatusIndices[i] : 0
-                @sprites["pokemon#{i}"] = PokemonPartyPanel_Healing.new(@party[i],i,previousHealthValues[i],startingStatusIndex,@viewport)
+                @sprites["pokemon#{i}"] = PokemonPartyPanel_Healing.new(@party[i], i, previousHealthValues[i], startingStatusIndex, @viewport)
             else
-                @sprites["pokemon#{i}"] = PokemonPartyBlankPanel.new(@party[i],i,@viewport)
+                @sprites["pokemon#{i}"] = PokemonPartyBlankPanel.new(@party[i], i, @viewport)
             end
             @sprites["pokemon#{i}"].y += 32
         end
@@ -95,11 +95,10 @@ class PokemonPartyHealingDisplayScreen
             pbWait(1)
 
             for i in 0...Settings::MAX_PARTY_SIZE
-                if @party[i]
-                    hpDifference = @sprites["pokemon#{i}"].pokemon.hp - @previousHealthValues[i]
-                    currentHPInAnimation = @previousHealthValues[i] + hpDifference * (animationFrame/healingAnimationDuration.to_f)
-                    @sprites["pokemon#{i}"].currentHP = currentHPInAnimation
-                end
+                next unless @party[i]
+                hpDifference = @sprites["pokemon#{i}"].pokemon.hp - @previousHealthValues[i]
+                currentHPInAnimation = @previousHealthValues[i] + (hpDifference * (animationFrame / healingAnimationDuration.to_f))
+                @sprites["pokemon#{i}"].currentHP = currentHPInAnimation
             end
         end
 
@@ -114,11 +113,10 @@ class PokemonPartyHealingDisplayScreen
             Graphics.update
             Input.update
             pbUpdate
-            if Input.trigger?(Input::BACK) || Input.trigger?(Input::USE)
-                pbEndScene
-                pbPlayCloseMenuSE
-                return
-            end
+            next unless Input.trigger?(Input::BACK) || Input.trigger?(Input::USE)
+            pbEndScene
+            pbPlayCloseMenuSE
+            return
         end
     end
 
@@ -133,7 +131,7 @@ class PokemonPartyHealingDisplayScreen
     end
 end
 
-def showPartyHealing(party,previousHealthValues,previousStatusIndices=nil)
-    scene = PokemonPartyHealingDisplayScreen.new(party,previousHealthValues,previousStatusIndices)
+def showPartyHealing(party, previousHealthValues, previousStatusIndices = nil)
+    scene = PokemonPartyHealingDisplayScreen.new(party, previousHealthValues, previousStatusIndices)
     scene.playHealingAnimation
 end

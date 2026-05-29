@@ -1,7 +1,7 @@
 #===============================================================================
 # Give an item to a Pokémon to hold from the bag, swapping out existing items if needed
 #===============================================================================
-def pbGiveItemToPokemon(item,pkmn,scene,fromBag=true)
+def pbGiveItemToPokemon(item, pkmn, scene, fromBag = true)
     newitemname = GameData::Item.get(item).name
 
     if pkmn.egg?
@@ -24,11 +24,11 @@ def pbGiveItemToPokemon(item,pkmn,scene,fromBag=true)
         end
     # Otherwise, allow the player to swap the one held item for another
     else
-        alreadyHoldingAlert(pkmn,pkmn.firstItem,scene)
+        alreadyHoldingAlert(pkmn, pkmn.firstItem, scene)
         if scene.pbConfirm(_INTL("Would you like to switch the two items?"))
             $PokemonBag.pbDeleteItem(item) if fromBag
             if $PokemonBag.pbStoreItem(pkmn.firstItem)
-                scene.pbDisplay(_INTL("Took the {1} from {2} and gave it the {3}.",getItemName(pkmn.firstItem),pkmn.name,newitemname))
+                scene.pbDisplay(_INTL("Took the {1} from {2} and gave it the {3}.", getItemName(pkmn.firstItem), pkmn.name, newitemname))
                 pocketAlert(pkmn.firstItem)
                 pkmn.setItems(item)
                 return true
@@ -45,7 +45,7 @@ def pbGiveItemToPokemon(item,pkmn,scene,fromBag=true)
     if giveItem
         $PokemonBag.pbDeleteItem(item) if fromBag
         pkmn.giveItem(item)
-        scene&.pbDisplay(_INTL("{1} is now holding the {2}.",pkmn.name,getItemName(item)))
+        scene&.pbDisplay(_INTL("{1} is now holding the {2}.", pkmn.name, getItemName(item)))
     end
 
     return giveItem
@@ -55,17 +55,17 @@ def pocketAlert(item)
     itemData = GameData::Item.get(item)
     return unless itemData.show_pocket_message?
     pbMessage(_INTL("You put the {1} away\\nin the <icon=bagPocket{2}>\\c[1]{3} Pocket\\c[0].",
-        itemData.name,itemData.pocket,PokemonBag.pocketNames[itemData.pocket]))
+        itemData.name, itemData.pocket, PokemonBag.pocketNames[itemData.pocket]))
 end
 
-def alreadyHoldingAlert(pkmn,itemID,scene)
+def alreadyHoldingAlert(pkmn, itemID, scene)
     itemName = getItemName(itemID)
     if itemID == :LEFTOVERS
-        scene.pbDisplay(_INTL("{1} is already holding some {2}.",pkmn.name,itemName))
+        scene.pbDisplay(_INTL("{1} is already holding some {2}.", pkmn.name, itemName))
     elsif itemName.starts_with_vowel?
-        scene.pbDisplay(_INTL("{1} is already holding an {2}.",pkmn.name,itemName))
+        scene.pbDisplay(_INTL("{1} is already holding an {2}.", pkmn.name, itemName))
     else
-        scene.pbDisplay(_INTL("{1} is already holding a {2}.",pkmn.name,itemName))
+        scene.pbDisplay(_INTL("{1} is already holding a {2}.", pkmn.name, itemName))
     end
 end
 
@@ -79,22 +79,22 @@ def pbTakeOneItemFromPokemon(pkmn)
     pkmn.items.each do |item|
         commands.push(getItemName(item))
     end
-    
+
     commands[commandCancel = commands.length] = _INTL("Cancel")
 
-    selection = pbMessage(_INTL("Take which item?"),commands,commandCancel+1)
+    selection = pbMessage(_INTL("Take which item?"), commands, commandCancel + 1)
 
     return false if selection == commandCancel
 
     selectedItem = pkmn.items[selection]
-    if !$PokemonBag.pbCanStore?(selectedItem)
-        pbMessage(_INTL("The Bag is full. The Pokémon's {1} could not be removed.",getItemName(item)))
-        return false
-    else
+    if $PokemonBag.pbCanStore?(selectedItem)
         $PokemonBag.pbStoreItem(selectedItem)
         pbMessage(_INTL("Received the {1} from {2}.", getItemName(selectedItem), pkmn.name))
         pkmn.removeItem(selectedItem)
         return true
+    else
+        pbMessage(_INTL("The Bag is full. The Pokémon's {1} could not be removed.", getItemName(item)))
+        return false
     end
 end
 
@@ -107,13 +107,13 @@ def pbTakeItemsFromPokemon(pkmn)
     itemsTaken = 0
     itemsToRemove = []
     pkmn.items.each do |item|
-        if !$PokemonBag.pbCanStore?(item)
-            pbMessage(_INTL("The Bag is full. The Pokémon's {1} could not be removed.",getItemName(item)))
-        else
+        if $PokemonBag.pbCanStore?(item)
             $PokemonBag.pbStoreItem(item)
             pbMessage(_INTL("Received the {1} from {2}.", getItemName(item), pkmn.name))
             itemsToRemove.push(item)
             itemsTaken += 1
+        else
+            pbMessage(_INTL("The Bag is full. The Pokémon's {1} could not be removed.", getItemName(item)))
         end
     end
     itemsToRemove.each do |itemToRemove|

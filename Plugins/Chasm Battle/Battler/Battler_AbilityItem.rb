@@ -30,14 +30,14 @@ class PokeBattle_Battler
                     itemData = GameData::Item.get(item)
                     if itemData.is_no_status_use? || itemData.is_choice_locking?
                         aiLearnsItem(item)
-                    end 
+                    end
                 end
             end
         end
         if @battle.field.effectActive?(:PokemonEntered)
             @battle.field.effects[:PokemonEntered].push(@species) unless @battle.field.effects[:PokemonEntered].include?(@species)
         else
-            @battle.field.applyEffect(:PokemonEntered,[@species])
+            @battle.field.applyEffect(:PokemonEntered, [@species])
         end
         # Berry check, status-curing ability check
         pbHeldItemTriggerCheck if switchIn
@@ -89,23 +89,22 @@ class PokeBattle_Battler
 
         trainerGroup&.each do |trainer|
             trainerName = trainer.name
-            if trainer.tribalBonus.hasTribeBonus?(:SCOURGE)
-                healingMessage = _INTL("{1}'s team takes joy in {2}'s pain!", trainerName, pbThis(true))
-                healingMessage = _INTL("The opposing {1}", healingMessage) if opposingIndex == 1
-                @battle.pbShowTribeSplash(opposingSide, :SCOURGE, trainerName: trainerName)
-                @battle.pbDisplay(healingMessage)
-                trainer.party.each_with_index do |partyMember, index|
-                    next if partyMember.fainted?
-                    next if partyMember.hp == partyMember.totalhp
-                    battler = @battle.pbFindBattler(index, opposingIndex)
-                    if battler
-                        battler.applyFractionalHealing(1/10.0)
-                    else
-                        partyMember.healByFraction(1/10.0)
-                    end
+            next unless trainer.tribalBonus.hasTribeBonus?(:SCOURGE)
+            healingMessage = _INTL("{1}'s team takes joy in {2}'s pain!", trainerName, pbThis(true))
+            healingMessage = _INTL("The opposing {1}", healingMessage) if opposingIndex == 1
+            @battle.pbShowTribeSplash(opposingSide, :SCOURGE, trainerName: trainerName)
+            @battle.pbDisplay(healingMessage)
+            trainer.party.each_with_index do |partyMember, index|
+                next if partyMember.fainted?
+                next if partyMember.hp == partyMember.totalhp
+                battler = @battle.pbFindBattler(index, opposingIndex)
+                if battler
+                    battler.applyFractionalHealing(1 / 10.0)
+                else
+                    partyMember.healByFraction(1 / 10.0)
                 end
-                @battle.pbHideTribeSplash(opposingSide)
             end
+            @battle.pbHideTribeSplash(opposingSide)
         end
     end
 
@@ -113,7 +112,7 @@ class PokeBattle_Battler
     def pbAbilitiesOnDamageTaken(oldHP, newHP = -1)
         newHP = @hp if newHP < 0
         eachActiveAbility(true) do |ability|
-            BattleHandlers.triggerAbilityOnHPDropped(ability, self, @battle, oldHP.to_f/@totalhp.to_f, newHP.to_f/@totalhp.to_f)
+            BattleHandlers.triggerAbilityOnHPDropped(ability, self, @battle, oldHP.to_f / @totalhp.to_f, newHP.to_f / @totalhp.to_f)
         end
         return false if oldHP < @totalhp / 2 || newHP >= @totalhp / 2 # Didn't drop below half
         ret = false
@@ -166,7 +165,7 @@ class PokeBattle_Battler
                 abilitiesCopying = choices[battlerCopying]
                 showMyAbilitySplash(:PLURIPOTENCE)
                 @battle.pbDisplay(_INTL("{2}? {1} can be that, if it wishes.", pbThis, GameData::Species.get(battlerCopying.species).name))
-                echoln("Abilities that Pluripotence is copying: #{abilitiesCopying.to_s}")
+                echoln("Abilities that Pluripotence is copying: #{abilitiesCopying}")
                 setAbility(abilitiesCopying)
                 abilitiesCopying.each do |legalAbility|
                     @battle.pbDisplay(_INTL("{1} imitated the Ability {2}!", pbThis, getAbilityName(legalAbility)))
@@ -214,13 +213,13 @@ class PokeBattle_Battler
         end
         disableEffect(:AbilitySupressed) if immutableAbility?
         disableEffect(:SlowStart) unless hasAbility?(:SLOWSTART)
-        
+
         # Revert form if Flower Gift/Forecast was lost
         pbCheckFormOnWeatherChange(true)
 
         # Check for end of primordial weather
         @battle.pbEndPrimordialWeather
-        
+
         if items.length > 1
             droppedItems = false
             GameData::Ability.getByFlag("MultipleItems").each do |doubleItemAbility|
@@ -238,13 +237,13 @@ class PokeBattle_Battler
     #=============================================================================
     # Held item adding or gifting
     #=============================================================================
-    def giveItem(item,stolen = false)
+    def giveItem(item, stolen = false)
         return if item.nil?
         return unless canAddItem?(item, stolen)
         item = GameData::Item.get(item).id
         disableEffect(:ItemLost)
         @pokemon.giveItem(item)
-        
+
         refreshDataBox
 
         @addedItems.push(item)
@@ -252,7 +251,7 @@ class PokeBattle_Battler
 
         @battle.updateTribeCounts
     end
-    
+
     def setItems(value)
         @pokemon.setItems(value)
 
@@ -313,12 +312,12 @@ class PokeBattle_Battler
             @battle.field.applyEffect(:RustedSwordDropped)
             @battle.field.applyEffect(:SlumberingSwordReady)
         end
-        
+
         if item == :RUSTEDSHIELD && !@battle.field.effectActive?(:SlumberingShieldReady) && @battle.anyMonSlumberingShield?
             @battle.field.applyEffect(:RustedShieldDropped)
             @battle.field.applyEffect(:SlumberingShieldReady)
         end
-        
+
         @battle.updateTribeCounts
     end
 
@@ -365,7 +364,7 @@ class PokeBattle_Battler
 
     # item_to_use is an item ID or GameData::Item object. ownitem is whether the
     # item is held by self. fling is for Fling only.
-    def pbHeldItemTriggered(item_to_use, ownitem = true, fling = false)
+    def pbHeldItemTriggered(item_to_use, ownitem = true, _fling = false)
         # Cheek Pouch and similar abilities
         if GameData::Item.get(item_to_use).is_berry?
             eachActiveAbility do |ability|
@@ -393,10 +392,8 @@ class PokeBattle_Battler
         pbItemEndOfMoveCheck(item_to_use, fling)
         # For Enigma Berry, Kee Berry and Maranga Berry, which have their effects
         # when forcibly consumed by Pluck/Fling.
-        if item_to_use
-            if BattleHandlers.triggerTargetItemOnHitPositiveBerry(item_to_use, self, @battle, true)
-                pbHeldItemTriggered(item_to_use, false, fling)
-            end
+        if item_to_use && BattleHandlers.triggerTargetItemOnHitPositiveBerry(item_to_use, self, @battle, true)
+            pbHeldItemTriggered(item_to_use, false, fling)
         end
     end
 
@@ -416,7 +413,7 @@ class PokeBattle_Battler
                     filcher = b
                     break
                 }
-    
+
                 # If the berry is being filched
                 if filcher && BattleHandlers.triggerHPHealItem(item, filcher, @battle, false, self, :EXTORTER, items_to_skip)
                     filcher.pbHeldItemTriggered(item, false)

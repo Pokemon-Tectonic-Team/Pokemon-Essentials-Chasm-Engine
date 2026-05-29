@@ -6,7 +6,7 @@ class MoveDex_Entry_Scene
     POKEMON_IN_BOX_COLOR_SHADOW = Color.new(57, 118, 191)
 
     MAX_LENGTH_SPECIES_LIST = 10
-	SPECIES_LIST_Y_INIT = 52
+    SPECIES_LIST_Y_INIT = 52
     SPECIES_LIST_COLUMN_1_X_LEFT = 20
     SPECIES_LIST_COLUMN_X_OFFSET = 260
 
@@ -23,7 +23,7 @@ class MoveDex_Entry_Scene
 
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
         @viewport.z = 99_999
-        @scroll   = -1
+        @scroll = -1
         @columnSelected = 0
         @sprites = {}
         @sprites["background"] = IconSprite.new(0, 0, @viewport)
@@ -36,15 +36,15 @@ class MoveDex_Entry_Scene
         @sprites["selectionarrow"].visible = false
         @sprites["selectionarrow"].x = SPECIES_LIST_COLUMN_1_X_LEFT - 16
 
-        @typebitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Pokedex/icon_types")))
+        @typebitmap = AnimatedBitmap.new(addLanguageSuffix("Graphics/Pictures/Pokedex/icon_types"))
 
         @detailLinesToShow = 9
-        @sprites["scroll_arrow_up"] = AnimatedSprite.new("Graphics/Pictures/uparrow",8,28,40,2,@viewport)
+        @sprites["scroll_arrow_up"] = AnimatedSprite.new("Graphics/Pictures/uparrow", 8, 28, 40, 2, @viewport)
         @sprites["scroll_arrow_up"].x = (Graphics.width - 28) / 2
         @sprites["scroll_arrow_up"].y = 38
         @sprites["scroll_arrow_up"].visible = false
         @sprites["scroll_arrow_up"].play
-        @sprites["scroll_arrow_down"] = AnimatedSprite.new("Graphics/Pictures/downarrow",8,28,40,2,@viewport)
+        @sprites["scroll_arrow_down"] = AnimatedSprite.new("Graphics/Pictures/downarrow", 8, 28, 40, 2, @viewport)
         @sprites["scroll_arrow_down"].x = (Graphics.width - 28) / 2
         @sprites["scroll_arrow_down"].y = (Graphics.height - 44)
         @sprites["scroll_arrow_down"].visible = false
@@ -61,11 +61,11 @@ class MoveDex_Entry_Scene
 
         @ownedPokemonSpecies = {}
         eachPokemonInPartyOrStorage do |pkmn|
-            @ownedPokemonSpecies[pkmn.species] = true;
+            @ownedPokemonSpecies[pkmn.species] = true
         end
         @partyPokemonSpecies = {}
         $Trainer.party.each do |pkmn|
-            @partyPokemonSpecies[pkmn.species] = true;
+            @partyPokemonSpecies[pkmn.species] = true
         end
 
         drawPage
@@ -91,7 +91,7 @@ class MoveDex_Entry_Scene
         @battleMoveObject.getDetailsForMoveDex(baseMoveDetails)
         @moveDetailsText = []
         baseMoveDetails.each do |baseMoveDetailLine|
-            break_string(baseMoveDetailLine, 40).each {|line|
+            break_string(baseMoveDetailLine, 40).each { |line|
                 @moveDetailsText << line
             }
         end
@@ -148,7 +148,7 @@ class MoveDex_Entry_Scene
             newSpeciesList = @otherLearnables
         end
 
-        @currentSpeciesList = [[],[]]
+        @currentSpeciesList = [[], []]
         if newSpeciesList
             newSpeciesList.each_with_index do |listEntry, index|
                 @currentSpeciesList[index % 2].push(listEntry)
@@ -164,13 +164,13 @@ class MoveDex_Entry_Scene
         overlay.clear
 
         # Draw page title
-        pageTitle = pageTitles[@page-1]
+        pageTitle = pageTitles[@page - 1]
         drawFormattedTextEx(overlay, 50, 4, Graphics.width, "<outln2>#{pageTitle}</outln2>", base, shadow, 18)
 
         drawFormattedTextEx(overlay, 212, 2, Graphics.width, "<outln2>[#{@page}/#{pageTitles.length}]</outln2>", base, shadow, 18)
 
-        # Draw move name on top right	
-        moveName = getFormattedMoveName(@moveData.name,148)
+        # Draw move name on top right
+        moveName = getFormattedMoveName(@moveData.name, 148)
         drawFormattedTextEx(overlay, 316, 4, Graphics.width, "<outln2>#{moveName}</outln2>", base, shadow, 18)
 
         @sprites["scroll_arrow_up"].visible = false
@@ -178,7 +178,7 @@ class MoveDex_Entry_Scene
         @sprites["pokemon_0"].visible = @page == 5
         @sprites["pokemon_1"].visible = @page == 5
         @sprites["animation_black_bars"].visible = @page == 5
-        
+
         case @page
         when 1
             drawLevelUpLearnablesPage
@@ -207,7 +207,7 @@ class MoveDex_Entry_Scene
                 charactersToShave += 1
             end
             shavedName = moveName[0..-charactersToShave]
-            shavedName = shavedName[0..-1] if shavedName[shavedName.length-1] == " "
+            shavedName = shavedName[0..-1] if shavedName[-1] == " "
             moveName = shavedName + "..."
         end
         return moveName
@@ -219,16 +219,16 @@ class MoveDex_Entry_Scene
         @sprites["background"].setBitmap(_INTL(bg_path))
 
         overlay = @sprites["overlay"].bitmap
-        base   = MessageConfig.pbDefaultTextMainColor
-        shadow = MessageConfig.pbDefaultTextShadowColor
+        MessageConfig.pbDefaultTextMainColor
+        MessageConfig.pbDefaultTextShadowColor
 
-		# render the moves lists
+        # render the moves lists
         @selected_species = nil
         if @currentSpeciesList[0].empty?
-            drawSpeciesColumn(overlay,[_INTL("None")], [],[], 0)
-		else
+            drawSpeciesColumn(overlay, [_INTL("None")], [], [], 0)
+        else
             count = 0
-            [0,1].each do |columnIndex|
+            [0, 1].each do |columnIndex|
                 speciesColumn = @currentSpeciesList[columnIndex]
                 next if speciesColumn.empty?
                 speciesLabelList = []
@@ -236,7 +236,6 @@ class MoveDex_Entry_Scene
                 levelLabelList = []
                 listIndex = -1
                 speciesColumn.each do |learnableEntry|
-
                     speciesID = learnableEntry[0]
                     speciesLabelList.push(GameData::Species.get(speciesID).name)
                     speciesDataList.push(GameData::Species.get(speciesID))
@@ -250,12 +249,12 @@ class MoveDex_Entry_Scene
                         @selected_species = speciesID
                     end
                 end
-                drawSpeciesColumn(overlay,speciesLabelList,speciesDataList,levelLabelList,columnIndex)
-                
+                drawSpeciesColumn(overlay, speciesLabelList, speciesDataList, levelLabelList, columnIndex)
+
                 count += speciesColumn.length
             end
             echoln("Level up learners count: #{count}")
-		end
+        end
 
         updateSpeciesPageScrollArrows
     end
@@ -266,16 +265,16 @@ class MoveDex_Entry_Scene
         @sprites["background"].setBitmap(_INTL(bg_path))
 
         overlay = @sprites["overlay"].bitmap
-        base   = MessageConfig.pbDefaultTextMainColor
-        shadow = MessageConfig.pbDefaultTextShadowColor
+        MessageConfig.pbDefaultTextMainColor
+        MessageConfig.pbDefaultTextShadowColor
 
-		# render the moves lists
+        # render the moves lists
         @selected_species = nil
         if @currentSpeciesList[0].empty?
-            drawSpeciesColumn(overlay,[_INTL("None")],[], [], 0)
-		else
+            drawSpeciesColumn(overlay, [_INTL("None")], [], [], 0)
+        else
             count = 0
-            [0,1].each do |columnIndex|
+            [0, 1].each do |columnIndex|
                 speciesColumn = @currentSpeciesList[columnIndex]
                 next if speciesColumn.empty?
                 speciesLabelList = []
@@ -290,44 +289,44 @@ class MoveDex_Entry_Scene
                         @selected_species = speciesID
                     end
                 end
-                drawSpeciesColumn(overlay,speciesLabelList,speciesDataList, [], columnIndex)
+                drawSpeciesColumn(overlay, speciesLabelList, speciesDataList, [], columnIndex)
 
                 count += speciesColumn.length
             end
 
             echoln("Other count: #{count}")
-		end
+        end
 
         updateSpeciesPageScrollArrows
     end
 
-    def drawSpeciesColumn(overlay,speciesLabelList,speciesDataList,levelLabelsList,columnIndex)
+    def drawSpeciesColumn(overlay, speciesLabelList, speciesDataList, levelLabelsList, columnIndex)
         base   = MessageConfig.pbDefaultTextMainColor
         shadow = MessageConfig.pbDefaultTextShadowColor
 
         ownedIconImagePositions = []
-        
+
         displayIndex = 0
-		listIndex = -1
+        listIndex = -1
         speciesLabelList.each_with_index do |speciesLabel, index|
             listIndex += 1
             next if listIndex < @scroll
 
-            speciesDrawX, speciesDrawY = getSpeciesDisplayCoordinates(displayIndex,columnIndex)
+            speciesDrawX, speciesDrawY = getSpeciesDisplayCoordinates(displayIndex, columnIndex)
 
             ownedIconXOffset = levelLabelsList[index] ? 160 : 208
 
             if index < speciesDataList.length
                 speciesID = speciesDataList[index].id
                 if @partyPokemonSpecies.include?(speciesID)
-                    icon = "Graphics/Pictures/Battle/icon_own_party"  
+                    icon = "Graphics/Pictures/Battle/icon_own_party"
                 elsif @ownedPokemonSpecies.include?(speciesID)
                     icon = "Graphics/Pictures/Battle/icon_own"
                 end
-                ownedIconImagePositions.push([icon,speciesDrawX+ownedIconXOffset,speciesDrawY+6]) if icon
+                ownedIconImagePositions.push([icon, speciesDrawX + ownedIconXOffset, speciesDrawY + 6]) if icon
             end
 
-            drawFormattedTextEx(overlay, speciesDrawX , speciesDrawY, 450, speciesLabel, base, shadow)
+            drawFormattedTextEx(overlay, speciesDrawX, speciesDrawY, 450, speciesLabel, base, shadow)
             if levelLabelsList[index]
                 levelDrawX = 212 + (columnIndex * 260)
                 levelLabel = levelLabelsList[index]
@@ -340,9 +339,9 @@ class MoveDex_Entry_Scene
         pbDrawImagePositions(@sprites["overlay"].bitmap, ownedIconImagePositions)
     end
 
-    def getSpeciesDisplayCoordinates(displayIndex,columnIndex)
-        speciesDrawX = SPECIES_LIST_COLUMN_1_X_LEFT + SPECIES_LIST_COLUMN_X_OFFSET * columnIndex
-        speciesDrawY = SPECIES_LIST_Y_INIT + 32 * displayIndex
+    def getSpeciesDisplayCoordinates(displayIndex, columnIndex)
+        speciesDrawX = SPECIES_LIST_COLUMN_1_X_LEFT + (SPECIES_LIST_COLUMN_X_OFFSET * columnIndex)
+        speciesDrawY = SPECIES_LIST_Y_INIT + (32 * displayIndex)
         return speciesDrawX, speciesDrawY
     end
 
@@ -350,7 +349,7 @@ class MoveDex_Entry_Scene
         @sprites["scroll_arrow_up"].visible = @scroll > 0
         @sprites["scroll_arrow_down"].visible = canScrollSpeciesList? && @scroll <= @currentSpeciesList[0].length - @speciesLinesToShow
     end
-    
+
     def drawTypeMatchupsPage
         bg_path = "Graphics/Pictures/Movedex/bg_move_matchups"
         bg_path += "_dark" if darkMode?
@@ -365,7 +364,7 @@ class MoveDex_Entry_Scene
         if @moveData.status?
             statusLabel = _INTL("Status")
             statusLabelWidth = @sprites["overlay"].bitmap.text_size(statusLabel).width
-            drawTextEx(overlay, Graphics.width / 2 - statusLabelWidth / 2, 80, 450, 1, statusLabel, base, shadow)
+            drawTextEx(overlay, (Graphics.width / 2) - (statusLabelWidth / 2), 80, 450, 1, statusLabel, base, shadow)
         else
             immuneTypes = []
             resistentTypes = []
@@ -374,7 +373,7 @@ class MoveDex_Entry_Scene
             GameData::Type.each do |t|
                 next if t.pseudo_type
 
-                effect = @battleMoveObject.pbCalcTypeModSingle(@moveData.type, t.id) ** 3
+                effect = @battleMoveObject.pbCalcTypeModSingle(@moveData.type, t.id)**3
 
                 if Effectiveness.ineffective?(effect)
                     immuneTypes.push(t)
@@ -393,7 +392,7 @@ class MoveDex_Entry_Scene
                 weakTypes.each_with_index do |t, index|
                     type_number = GameData::Type.get(t).id_number
                     typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + (index >= 7 ? 100 : 0), yBase + 30 + 36 * (index % 7), @typebitmap.bitmap,
+                    overlay.blt(xLeft + (index >= 7 ? 100 : 0), yBase + 30 + (36 * (index % 7)), @typebitmap.bitmap,
                 typerect)
                 end
             end
@@ -407,7 +406,7 @@ class MoveDex_Entry_Scene
                 resistentTypes.each_with_index do |t, index|
                     type_number = GameData::Type.get(t).id_number
                     typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + resistOffset, yBase + 30 + 36 * index, @typebitmap.bitmap, typerect)
+                    overlay.blt(xLeft + resistOffset, yBase + 30 + (36 * index), @typebitmap.bitmap, typerect)
                 end
             end
 
@@ -420,7 +419,7 @@ class MoveDex_Entry_Scene
                 immuneTypes.each_with_index do |t, index|
                     type_number = GameData::Type.get(t).id_number
                     typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + immuneOffset, yBase + 30 + 36 * index, @typebitmap.bitmap, typerect)
+                    overlay.blt(xLeft + immuneOffset, yBase + 30 + (36 * index), @typebitmap.bitmap, typerect)
                 end
             end
         end
@@ -441,13 +440,13 @@ class MoveDex_Entry_Scene
         if @moveDetailsText.empty?
             statusLabel = _INTL("None")
             statusLabelWidth = @sprites["overlay"].bitmap.text_size(statusLabel).width
-            drawTextEx(overlay, Graphics.width / 2 - statusLabelWidth / 2, 80, 450, 1, statusLabel, base, shadow)
+            drawTextEx(overlay, (Graphics.width / 2) - (statusLabelWidth / 2), 80, 450, 1, statusLabel, base, shadow)
         else
             xLeft = 36
             yBase = 60
             displayIndex = 0
-            @moveDetailsText[@scroll..@scroll+@detailLinesToShow].each do |moveDetailLine|
-                drawFormattedTextEx(overlay, xLeft, yBase + 30 * displayIndex, 800, moveDetailLine, base, shadow, 30)
+            @moveDetailsText[@scroll..@scroll + @detailLinesToShow].each do |moveDetailLine|
+                drawFormattedTextEx(overlay, xLeft, yBase + (30 * displayIndex), 800, moveDetailLine, base, shadow, 30)
                 displayIndex += 1
             end
         end
@@ -457,11 +456,11 @@ class MoveDex_Entry_Scene
         bg_path = "Graphics/Pictures/Movedex/bg_move_animation"
         @sprites["background"].setBitmap(_INTL(bg_path))
 
-        overlay = @sprites["overlay"].bitmap
-        base   = MessageConfig.pbDefaultTextMainColor
-        shadow = MessageConfig.pbDefaultTextShadowColor
+        @sprites["overlay"].bitmap
+        MessageConfig.pbDefaultTextMainColor
+        MessageConfig.pbDefaultTextShadowColor
 
-        animID = PokeBattle_Scene.pbFindMoveAnimation(@move,0,0)
+        animID = PokeBattle_Scene.pbFindMoveAnimation(@move, 0, 0)
         @animation = @animations[animID[0]]
 
         @player = nil
@@ -473,24 +472,24 @@ class MoveDex_Entry_Scene
 
         @sprites["pokemon_0"].bitmap = @user
         @sprites["pokemon_1"].bitmap = @target
-        userSpriteMetrics = GameData::SpeciesMetrics.get_species_form(@defaultMoveUser,0)
+        userSpriteMetrics = GameData::SpeciesMetrics.get_species_form(@defaultMoveUser, 0)
         userSpriteX = PokeBattle_SceneConstants::FOCUSUSER_X
         userSpriteY = PokeBattle_SceneConstants::FOCUSUSER_Y + battlerSpriteYOffset
         pbSpriteSetAnimFrame(@sprites["pokemon_0"],
-            pbCreateCel(userSpriteX,userSpriteY,-1,2),
-            @sprites["pokemon_0"],@sprites["pokemon_1"])
-        userSpriteMetrics.apply_metrics_to_sprite(@sprites["pokemon_0"],0)
+            pbCreateCel(userSpriteX, userSpriteY, -1, 2),
+            @sprites["pokemon_0"], @sprites["pokemon_1"])
+        userSpriteMetrics.apply_metrics_to_sprite(@sprites["pokemon_0"], 0)
 
-        targetSpeciesMetrics = GameData::SpeciesMetrics.get_species_form(@defaultMoveTarget,0)
+        targetSpeciesMetrics = GameData::SpeciesMetrics.get_species_form(@defaultMoveTarget, 0)
         targetSpriteX = PokeBattle_SceneConstants::FOCUSTARGET_X
         targetSpriteY = PokeBattle_SceneConstants::FOCUSTARGET_Y + battlerSpriteYOffset
         pbSpriteSetAnimFrame(@sprites["pokemon_1"],
-            pbCreateCel(targetSpriteX,targetSpriteY,-2,1),
-            @sprites["pokemon_0"],@sprites["pokemon_1"])
-        targetSpeciesMetrics.apply_metrics_to_sprite(@sprites["pokemon_1"],1)
+            pbCreateCel(targetSpriteX, targetSpriteY, -2, 1),
+            @sprites["pokemon_0"], @sprites["pokemon_1"])
+        targetSpeciesMetrics.apply_metrics_to_sprite(@sprites["pokemon_1"], 1)
     end
 
-    def playAnimation(oppmove = false,speedMult = 1.0)
+    def playAnimation(oppmove = false, speedMult = 1.0)
         userSprite = @sprites["pokemon_#{oppmove ? 1 : 0}"]
         targetSprite = @sprites["pokemon_#{oppmove ? 0 : 1}"]
         oldUserX = userSprite ? userSprite.x : 0
@@ -501,12 +500,12 @@ class MoveDex_Entry_Scene
         target = @battle.battlers[oppmove ? 0 : 1]
         target = nil unless @targetingData.targets_foe
         target = user if @targetingData.targets_user
-        @player = PBAnimationPlayerX.new(@animation,user,target,self,oppmove,false,speedMult)
+        @player = PBAnimationPlayerX.new(@animation, user, target, self, oppmove, false, speedMult)
         @player.setLineTransform(
-           PokeBattle_SceneConstants::FOCUSUSER_X,PokeBattle_SceneConstants::FOCUSUSER_Y,
-           PokeBattle_SceneConstants::FOCUSTARGET_X,PokeBattle_SceneConstants::FOCUSTARGET_Y,
-           oldUserX,oldUserY,
-           oldTargetX,oldTargetY)
+            PokeBattle_SceneConstants::FOCUSUSER_X, PokeBattle_SceneConstants::FOCUSUSER_Y,
+           PokeBattle_SceneConstants::FOCUSTARGET_X, PokeBattle_SceneConstants::FOCUSTARGET_Y,
+           oldUserX, oldUserY,
+           oldTargetX, oldTargetY)
         @player.start
         loop do
             Graphics.update
@@ -544,8 +543,6 @@ class MoveDex_Entry_Scene
     def pbScrollSpeciesList
         @scroll = 0
         @columnSelected = 0
-
-        linesShown = 7
 
         updateSelectionArrow
         @sprites["selectionarrow"].visible = true
@@ -626,7 +623,7 @@ class MoveDex_Entry_Scene
                 end
             elsif Input.repeat?(Input::LEFT)
                 if @columnSelected > 0
-                    if @currentSpeciesList[@columnSelected-1].length > 0
+                    if @currentSpeciesList[@columnSelected - 1].length > 0
                         pbPlayCursorSE
                         @columnSelected -= 1
                         fixScrollOnColumnChange
@@ -635,7 +632,7 @@ class MoveDex_Entry_Scene
                         pbPlayBuzzerSE
                     end
                 elsif Input.trigger?(Input::LEFT)
-                    if @currentSpeciesList[@currentSpeciesList.length - 1].length > 0
+                    if @currentSpeciesList[-1].length > 0
                         pbPlayCursorSE
                         @columnSelected = @currentSpeciesList.length - 1
                         fixScrollOnColumnChange
@@ -646,7 +643,7 @@ class MoveDex_Entry_Scene
                 end
             elsif Input.repeat?(Input::RIGHT)
                 if @columnSelected < @currentSpeciesList.length - 1
-                    if @currentSpeciesList[@columnSelected+1].length > 0
+                    if @currentSpeciesList[@columnSelected + 1].length > 0
                         pbPlayCursorSE
                         @columnSelected += 1
                         fixScrollOnColumnChange
@@ -684,8 +681,6 @@ class MoveDex_Entry_Scene
 
         length = @moveDetailsText.length
         offsetMax = length - @detailLinesToShow - 1
-
-        linesShown = 7
 
         loop do
             Graphics.update
@@ -749,13 +744,13 @@ class MoveDex_Entry_Scene
     end
 
     def updateSelectionArrow
-        speciesDrawX, speciesDrawY = getSpeciesDisplayCoordinates(0,@columnSelected)
+        speciesDrawX, speciesDrawY = getSpeciesDisplayCoordinates(0, @columnSelected)
         @sprites["selectionarrow"].x = speciesDrawX - 16
         @sprites["selectionarrow"].y = speciesDrawY - 4
     end
 
     def fixScrollOnColumnChange
-        @scroll = [@scroll,@currentSpeciesList[@columnSelected].length-1].min
+        @scroll = [@scroll, @currentSpeciesList[@columnSelected].length - 1].min
     end
 
     def canScrollSpeciesList?
@@ -784,27 +779,26 @@ class MoveDex_Entry_Scene
                     else
                         pbPlayBuzzerSE
                     end
-                elsif @page == 4 && 
-                    if canScrollDetailsList?
-                        pbPlayDecisionSE
-                        pbScrollDetailsList
-                    else
-                        pbPlayBuzzerSE
-                    end
+                elsif @page == 4 &&
+                      if canScrollDetailsList?
+                          pbPlayDecisionSE
+                          pbScrollDetailsList
+                      else
+                          pbPlayBuzzerSE
+                      end
                 elsif @page == 5
                     pbPlayDecisionSE
                     oppMove = Input.press?(Input::CTRL)
-                    playAnimation(oppMove,getBattleAnimationSpeedMult)
+                    playAnimation(oppMove, getBattleAnimationSpeedMult)
                 end
             elsif Input.trigger?(Input::BACK)
                 pbPlayCloseMenuSE
                 break
             elsif Input.repeat?(Input::LEFT)
                 highestRightRepeat = 0
-                repeats = 1 + Input.time?(Input::LEFT) / 100_000
+                repeats = 1 + (Input.time?(Input::LEFT) / 100_000)
                 if repeats > highestLeftRepeat
                     highestLeftRepeat = repeats
-                    oldpage = @page
                     @page -= 1
                     @page = pageTitles.length if @page < 1 # Wrap around
 
@@ -816,10 +810,9 @@ class MoveDex_Entry_Scene
                 end
             elsif Input.repeat?(Input::RIGHT)
                 highestLeftRepeat = 0
-                repeats = 1 + Input.time?(Input::RIGHT) / 100_000
+                repeats = 1 + (Input.time?(Input::RIGHT) / 100_000)
                 if repeats > highestRightRepeat
                     highestRightRepeat = repeats
-                    oldpage = @page
                     @page += 1
                     @page = 1 if @page > pageTitles.length # Wrap around
 
@@ -840,7 +833,7 @@ class MoveDex_Entry_Scene
             elsif Input.pressex?(:NUMBER_5)
                 dorefresh = true if moveToPage(5)
             elsif Input.repeat?(Input::UP)
-				oldindex = @index
+                oldindex = @index
                 pbGoToPrevious
                 if @index != oldindex
                     @scroll = 0
@@ -850,7 +843,7 @@ class MoveDex_Entry_Scene
                     dorefresh = true
                 end
             elsif Input.repeat?(Input::DOWN)
-				oldindex = @index
+                oldindex = @index
                 pbGoToNext
                 if @index != oldindex
                     @scroll = 0

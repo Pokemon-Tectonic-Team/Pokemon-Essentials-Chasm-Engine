@@ -90,7 +90,7 @@ class PokeBattle_Move_RaiseUserAndAlliesSpdAcc1 < PokeBattle_Move
         super
         @statUp = [:SPEED, 1, :ACCURACY, 1]
     end
-    
+
     def pbMoveFailed?(user, _targets, show_message)
         return false if damagingMove?
         failed = true
@@ -110,7 +110,7 @@ class PokeBattle_Move_RaiseUserAndAlliesSpdAcc1 < PokeBattle_Move
         buffUserAndAllies(user)
     end
 
-    def pbEffectAfterAllHits(user, target)
+    def pbEffectAfterAllHits(user, _target)
         return unless damagingMove?
         buffUserAndAllies(user)
     end
@@ -120,7 +120,7 @@ class PokeBattle_Move_RaiseUserAndAlliesSpdAcc1 < PokeBattle_Move
         @battle.eachSameSideBattler(user) do |b|
             next if b.index == user.index
             b.pbRaiseMultipleStatSteps(@statUp, user, move: self, showFailMsg: true)
-        end  
+        end
     end
 
     def getEffectScore(user, _target)

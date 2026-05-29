@@ -84,14 +84,14 @@ def getPoisonEffectScore(user, target, ignoreCheck: false)
             score += 20 if target.hp >= target.totalhp * 0.95
             score += 40 if target.hp >= target.totalhp / 2 || target.hp <= target.totalhp / 10
             score += 30 if target.trapped?
-			score += 60 if target.hasHealingMove?
+                     score += 60 if target.hasHealingMove?
             score += NON_ATTACKER_BONUS unless user&.hasDamagingAttack?
             if user
                 score *= target.getFractionalDamageModifier(aiCheck: true)
                 score *= 2 if user.ownersPolicies.include?(:PRIORITIZEDOTS) && user.opposes?(target)
             end
         end
-        score += STATUS_PUNISHMENT_BONUS if user && (user.hasStatusPunishMove? || user.pbHasMoveFunction?("DoubleDamageAgainstPoisoned","TripleDamageAgainstPoisoned")) # Venoshock/Vipershock
+        score += STATUS_PUNISHMENT_BONUS if user && (user.hasStatusPunishMove? || user.pbHasMoveFunction?("DoubleDamageAgainstPoisoned", "TripleDamageAgainstPoisoned")) # Venoshock/Vipershock
         score -= getNaturalCureScore(user, target, score) if target.hasActiveAbilityAI?(:NATURALCURE)
     else
         return 0
@@ -179,14 +179,14 @@ def getLeechEffectScore(user, target, ignoreCheck: false)
             score += NON_ATTACKER_BONUS * 2 unless user&.hasDamagingAttack?			
             score += 20 if target.hp >= target.totalhp * 0.95
             score += 40 if target.hp >= target.totalhp / 2 || target.hp <= target.totalhp / 10
-            score += 20 if target.totalhp > user&.totalhp * 1.5			
-            score += 20 if target.totalhp > user&.totalhp * 2
-            score -= 30 if target.totalhp < user&.totalhp / 2
-			score += 50 if target.hasHealingMove?
+            score += 20 if target.totalhp > user&.totalhp&. * 1.5			
+            score += 20 if target.totalhp > user&.totalhp&. * 2
+            score -= 30 if target.totalhp < user&.totalhp&. / 2
+                     score += 50 if target.hasHealingMove?
             score *= target.getFractionalDamageModifier(aiCheck: true)
             score *= 1.5 if user&.hasActiveAbilityAI?(:ROOTED)
             score *= 1.3 if user&.hasActiveItemAI?(:BIGROOT)
-            score *= 2 if user&.ownersPolicies.include?(:PRIORITIZEDOTS) && user&.opposes?(target)
+            score *= 2 if user&.ownersPolicies&.include?(:PRIORITIZEDOTS) && user&.opposes?(target)
         end
 
         score += STATUS_PUNISHMENT_BONUS if user&.hasStatusPunishMove?
@@ -205,7 +205,7 @@ def getSleepEffectScore(user, target, _policies = [])
     score += STATUS_PUNISHMENT_BONUS if user&.hasStatusPunishMove?
     score -= 60 if target.hasActiveAbilityAI?(%i[LOUDSLEEPER SNOOZEFEST])
     if target.hasActiveAbilityAI?(:DREAMWEAVER)
-        score -= getMultiStatUpEffectScore([:SPECIAL_ATTACK, 2],target,target)
+        score -= getMultiStatUpEffectScore([:SPECIAL_ATTACK, 2], target, target)
     end
     score -= getNaturalCureScore(user, target, score) if target.hasActiveAbilityAI?(:NATURALCURE)
     return score
@@ -216,7 +216,7 @@ def getFlinchingEffectScore(baseScore, user, target, move)
     return 0 if target.hasActiveAbilityAI?(GameData::Ability.getByFlag("FlinchImmunity"))
     return 0 if target.substituted? && !move.ignoresSubstitute?(user)
     return 0 if target.effectActive?(:FlinchImmunity)
-    return 0 if target.battle.pbCheckSameSideAbility(:EFFLORESCENT,target.index)
+    return 0 if target.battle.pbCheckSameSideAbility(:EFFLORESCENT, target.index)
     return 0 if target.hasActiveItemAI?(:COURAGEBADGE)
 
     score = baseScore
@@ -268,15 +268,15 @@ end
 
 def statusSpikesWeightOnSide(side, excludeEffects = [])
     hazardWeight = 0
-    hazardWeight += [0,50,150][side.countEffect(:PoisonSpikes)] unless excludeEffects.include?(:PoisonSpikes)
-    hazardWeight += [0,50,150][side.countEffect(:FlameSpikes)] unless excludeEffects.include?(:FlameSpikes)
-    hazardWeight += [0,50,150][side.countEffect(:FrostSpikes)] unless excludeEffects.include?(:FrostSpikes)
+    hazardWeight += [0, 50, 150][side.countEffect(:PoisonSpikes)] unless excludeEffects.include?(:PoisonSpikes)
+    hazardWeight += [0, 50, 150][side.countEffect(:FlameSpikes)] unless excludeEffects.include?(:FlameSpikes)
+    hazardWeight += [0, 50, 150][side.countEffect(:FrostSpikes)] unless excludeEffects.include?(:FrostSpikes)
     return hazardWeight
 end
 
 def hazardWeightOnSide(side, excludeEffects = []) # does not check for reserves, moves using this must do so
     hazardWeight = 0
-    hazardWeight += [0,80,110,140][side.countEffect(:Spikes)] unless excludeEffects.include?(:Spikes)
+    hazardWeight += [0, 80, 110, 140][side.countEffect(:Spikes)] unless excludeEffects.include?(:Spikes)
     hazardWeight += 95 if side.effectActive?(:StealthRock) && !excludeEffects.include?(:StealthRock)
     hazardWeight += 95 if side.effectActive?(:FeatherWard) && !excludeEffects.include?(:FeatherWard)
     if side.effectActive?(:LiveWire) && !excludeEffects.include?(:LiveWire)
@@ -294,7 +294,7 @@ end
 def getSwitchOutEffectScore(switcher, scoreStatSteps = true)
     return 0 unless switcher.battle.pbCanChooseNonActive?(switcher.index)
     return 0 if switcher.trapped?
-    score = 5 + switcher.alliesInReserveCount * 5
+    score = 5 + (switcher.alliesInReserveCount * 5)
     score *= 1.5 if switcher.ownersPolicies.include?(:PRIORITIZEUTURN)
     score -= hazardWeightOnSide(switcher.pbOwnSide)
     score -= statStepsValueScore(switcher) if scoreStatSteps
@@ -305,7 +305,7 @@ def getForceOutEffectScore(_user, target, random = true)
     return 0 if !target.battle.pbCanChooseNonActive?(target.index)
     return 0 if target.effectActive?(:Ingrain)
     score = random ? 10 : -15
-    score += 0.5 * hazardWeightOnSide(target.pbOwnSide,[:StickyWeb])
+    score += 0.5 * hazardWeightOnSide(target.pbOwnSide, [:StickyWeb])
     score += statStepsValueScore(target)	
     return score
 end
@@ -326,7 +326,7 @@ def statStepsValueScore(battler)
     return score
 end
 
-def getExchangeItemEffectScore(user, target)
+def getExchangeItemEffectScore(user, _target)
     if user.hasActiveItemAI?(%i[FLAMEORB FROSTORB POISONORB STICKYBARB IRONBALL])
         return 150
     elsif user.hasActiveItemAI?(GameData::Item.getByFlag("ChoiceLocking"))
@@ -336,25 +336,25 @@ def getExchangeItemEffectScore(user, target)
 end
 
 def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, evaluateThreat: true)
-    echoln("\t\t[EFFECT SCORING] Scoring the effect of raising stats #{statUpArray.to_s} on target #{target.pbThis(true)}")
+    echoln("\t\t[EFFECT SCORING] Scoring the effect of raising stats #{statUpArray} on target #{target.pbThis(true)}")
     
     if user.battle.field.effectActive?(:GreyMist)
         echoln("\t\t[EFFECT SCORING] Grey Mist is active, scoring 0.")
         return 0
     end
-	
-	if user.effects[:PerishSong] > 0
-		echoln("\t\t[EFFECT SCORING] #{user.pbThis} (#{user.index}) has heard the perish song, scoring 0")
-		return 0
-	end
-	
+    
+       if user.effects[:PerishSong] > 0
+              echoln("\t\t[EFFECT SCORING] #{user.pbThis} (#{user.index}) has heard the perish song, scoring 0")
+           return 0
+       end
+    
     score = 0
 
     for i in 0...statUpArray.length / 2
         statSymbol = statUpArray[i * 2]
-        statIncreaseAmount = statUpArray[i * 2 + 1]
+        statIncreaseAmount = statUpArray[(i * 2) + 1]
 
-        statIncreaseAmount = [PokeBattle_Battler::STAT_STEP_BOUND,statIncreaseAmount * 2].min if target.hasActiveAbilityAI?(:SIMPLE)
+        statIncreaseAmount = [PokeBattle_Battler::STAT_STEP_BOUND, statIncreaseAmount * 2].min if target.hasActiveAbilityAI?(:SIMPLE)
 
         # Give no extra points for stats you can't use
         if statSymbol == :ATTACK && !target.hasPhysicalAttack?
@@ -365,12 +365,10 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
             echoln("\t\t[EFFECT SCORING] Ignoring Sp. Atk changes, target has no special attacks")
             next
         end
-        if statSymbol == :ACCURACY
-            unless target.hasActiveAbilityAI?(:HUSTLE) || target.hasActiveAbilityAI?(:FREESTYLE) || target.hasInaccurateMove?
-            echoln("\t\t[EFFECT SCORING] Ignoring Accuracy changes, target is already accurate")
+        if (statSymbol == :ACCURACY) && !(target.hasActiveAbilityAI?(:HUSTLE) || target.hasActiveAbilityAI?(:FREESTYLE) || target.hasInaccurateMove?)
+                echoln("\t\t[EFFECT SCORING] Ignoring Accuracy changes, target is already accurate")
             next
             end
-        end
         
         # Increase the score more for boosting attacking stats
         if %i[ATTACK SPECIAL_ATTACK].include?(statSymbol)
@@ -384,11 +382,11 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
         else # Currently only Accuracy
             increase = 16
         end
-		
-		# Increase the score more if getting offense and defense from same stat
-		increase += 12 if statSymbol == :DEFENSE && target.pbHasMoveFunction?("AttacksWithDefense") # Body Press
-		increase += 12 if statSymbol == :SPECIAL_DEFENSE && target.pbHasMoveFunction?("AttacksWithSpDef") # Aura Trick
-		increase = 30 if %i[DEFENSE SPECIAL_DEFENSE].include?(statSymbol) && increase > 30 # Restrain the ai if it has defense move and took a hit
+        
+        # Increase the score more if getting offense and defense from same stat
+              increase += 12 if statSymbol == :DEFENSE && target.pbHasMoveFunction?("AttacksWithDefense") # Body Press
+              increase += 12 if statSymbol == :SPECIAL_DEFENSE && target.pbHasMoveFunction?("AttacksWithSpDef") # Aura Trick
+              increase = 30 if %i[DEFENSE SPECIAL_DEFENSE].include?(statSymbol) && increase > 30 # Restrain the ai if it has defense move and took a hit
 
         # Different stat steps have different values
         stepTotal = target.steps[statSymbol] + fakeStepModifier
@@ -400,7 +398,7 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
                 stepTotal += 1
                 stepTotal = 9 if stepTotal > 9
                 statIncreaseAmount -= 1
-                totalIncrease += increase.to_f * ([0,1,1,0.9,0.9,0.8,0.8,0.7,0.6,0.5][stepTotal] || 0)
+                totalIncrease += increase.to_f * ([0, 1, 1, 0.9, 0.9, 0.8, 0.8, 0.7, 0.6, 0.5][stepTotal] || 0)
             end
         end
         if %i[DEFENSE SPECIAL_DEFENSE].include?(statSymbol)
@@ -408,7 +406,7 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
                 stepTotal += 1
                 stepTotal = 7 if stepTotal > 7
                 statIncreaseAmount -= 1
-                totalIncrease += increase.to_f * ([0,1,1,0.9,0.9,0.6,0.4,0.3][stepTotal] || 0)
+                totalIncrease += increase.to_f * ([0, 1, 1, 0.9, 0.9, 0.6, 0.4, 0.3][stepTotal] || 0)
             end
         end
         if statSymbol == :SPEED
@@ -419,11 +417,11 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
                 stepTotal = 6 if stepTotal > 6
                 statIncreaseAmount -= 1
                 if sTier == 2
-                    totalIncrease += increase.to_f * ([0,1.1,0.9,0.5,0.4,0.1,0.1][stepTotal] || 0) # FAST, first 2 enable outspeeding all, rest unnneeded
+                    totalIncrease += increase.to_f * ([0, 1.1, 0.9, 0.5, 0.4, 0.1, 0.1][stepTotal] || 0) # FAST, first 2 enable outspeeding all, rest unnneeded
                 elsif sTier == 1
-                    totalIncrease += increase.to_f * ([0,1,1.1,1,1,0.5,0.2][stepTotal] || 0) # AVERAGE, first 2 are good, next 4 enable outspeeding all
+                    totalIncrease += increase.to_f * ([0, 1, 1.1, 1, 1, 0.5, 0.2][stepTotal] || 0) # AVERAGE, first 2 are good, next 4 enable outspeeding all
                 else
-                    totalIncrease += increase.to_f * ([0,0.3,0.3,0.5,0.7,1,0.5][stepTotal] || 0) # SLOW, speed low value unless in large quantity
+                    totalIncrease += increase.to_f * ([0, 0.3, 0.3, 0.5, 0.7, 1, 0.5][stepTotal] || 0) # SLOW, speed low value unless in large quantity
                 end
             end
         end
@@ -435,13 +433,13 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
                 stepTotal = 5 if stepTotal > 5
                 statIncreaseAmount -= 1
                 if target.hasLowAccuracyMove?
-                    totalIncrease += increase.to_f * [1,1,1,1,1,0][stepTotal] # This assumes no moves below 50% accuracy exist           
+                    totalIncrease += increase.to_f * [1, 1, 1, 1, 1, 0][stepTotal] # This assumes no moves below 50% accuracy exist           
                 elsif target.hasMediumAccuracyMove?
-                    totalIncrease += increase.to_f * [1,1,1,0,0,0][stepTotal]                  
+                    totalIncrease += increase.to_f * [1, 1, 1, 0, 0, 0][stepTotal]                  
                 elsif target.hasInaccurateMove?
-                    totalIncrease += increase.to_f * [1,1,0,0,0,0][stepTotal]                   
+                    totalIncrease += increase.to_f * [1, 1, 0, 0, 0, 0][stepTotal]                   
                 elsif target.hasActiveAbilityAI?(:HUSTLE) || target.hasActiveAbilityAI?(:FREESTYLE)
-                    totalIncrease += increase.to_f * [1,0,0,0,0,0][stepTotal]
+                    totalIncrease += increase.to_f * [1, 0, 0, 0, 0, 0][stepTotal]
                 end
             end
         end
@@ -450,20 +448,19 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
         damageStatus = 0
         if target.pbHasAnyStatus? && !target.hasActiveAbilityAI?(:VICTORYMOLT)
             if target.burned?
-                if statSymbol == :ATTACK
-                    totalIncrease *= 0.66 unless target.pbHasMoveFunction?("DoubleDamageUserStatused") # Facade / Hard Feelings
+                if (statSymbol == :ATTACK) && !target.pbHasMoveFunction?("DoubleDamageUserStatused")
+                    totalIncrease *= 0.66# Facade / Hard Feelings
                 end
                 damageStatus = 1
             elsif target.frostbitten?
-                if statSymbol == :SPECIAL_ATTACK
-                    totalIncrease *= 0.66 unless target.pbHasMoveFunction?("DoubleDamageUserStatused") # Facade / Hard Feelings
+                if (statSymbol == :SPECIAL_ATTACK) && !target.pbHasMoveFunction?("DoubleDamageUserStatused")
+                    totalIncrease *= 0.66# Facade / Hard Feelings
                 end
                 damageStatus = 1
             elsif target.numbed? || target.waterlogged?
                 if statSymbol == :SPEED
                     totalIncrease *= 0.4
-                elsif
-                    if target.getSpeedTier > 0
+                elsif if target.getSpeedTier > 0
                         totalIncrease *= 0.7
                     end
                 else
@@ -498,7 +495,7 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
     # Stats ups are stronger the less threat the user is under this turn
     # And worse the more threat
     if evaluateThreat
-        threatScore = (user.defensiveMatchupAI * 0.88 + 100.0) / 100.0
+        threatScore = ((user.defensiveMatchupAI * 0.88) + 100.0) / 100.0
         if threatScore > 1.0
             threatScore -= 1.0
             unkownScore = 4
@@ -551,7 +548,7 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
 end
 
 def getMultiStatDownEffectScore(statDownArray, user, target, fakeStepModifier: 0)
-    echoln("\t\t[EFFECT SCORING] Scoring the effect of lowering stats #{statDownArray.to_s} on target #{target.pbThis(true)}")
+    echoln("\t\t[EFFECT SCORING] Scoring the effect of lowering stats #{statDownArray} on target #{target.pbThis(true)}")
     
     if user.battle.field.effectActive?(:GreyMist)
         echoln("\t\t[EFFECT SCORING] Grey Mist is active, scoring 0.")
@@ -562,9 +559,9 @@ def getMultiStatDownEffectScore(statDownArray, user, target, fakeStepModifier: 0
 
     for i in 0...statDownArray.length / 2
         statSymbol = statDownArray[i * 2]
-        statDecreaseAmount = statDownArray[i * 2 + 1]
+        statDecreaseAmount = statDownArray[(i * 2) + 1]
 
-        statDecreaseAmount = [PokeBattle_Battler::STAT_STEP_BOUND,statDecreaseAmount * 2].min if target.hasActiveAbilityAI?(:SIMPLE)
+        statDecreaseAmount = [PokeBattle_Battler::STAT_STEP_BOUND, statDecreaseAmount * 2].min if target.hasActiveAbilityAI?(:SIMPLE)
 
         if statSymbol == :ACCURACY
             echoln("The AI will never use a move that reduces accuracy.")
@@ -666,39 +663,39 @@ def getWeatherSettingEffectScore(weatherType, user, battle, finalDuration = 4, c
         return 0
     end
 
-    finalScore = (10 * finalDuration**0.7).ceil
-    currentScore = (10 * currentDuration**0.7).ceil
+    finalScore = (10 * (finalDuration**0.7)).ceil
+    currentScore = (10 * (currentDuration**0.7)).ceil
     score = finalScore - currentScore
 
     echoln("\t\t[EFFECT SCORING] Base score for setting weather #{weatherType} calculated as #{score} from difference of #{finalDuration}-turn final duration score (#{finalScore}) and #{currentDuration}-turn current duration score (#{currentScore})")
 
     weatherMatchesPolicy = false
-    hasSynergyAbility = false
+    false
     hasSynergisticType = false
     case weatherType
     when :Sunshine
         weatherMatchesPolicy = true if user.ownersPolicies.include?(:SUN_TEAM)
-        hasSynergyAbility = true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("SunshineSynergy"))
+        true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("SunshineSynergy"))
         hasSynergisticType = true if user.pbHasAttackingType?(:FIRE)
     when :Rainstorm
         weatherMatchesPolicy = true if user.ownersPolicies.include?(:RAIN_TEAM)
-        hasSynergyAbility = true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("RainstormSynergy"))
+        true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("RainstormSynergy"))
         hasSynergisticType = true if user.pbHasAttackingType?(:WATER)
     when :Sandstorm
         weatherMatchesPolicy = true if user.ownersPolicies.include?(:SANDSTORM_TEAM)
-        hasSynergyAbility = true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("SandstormSynergy"))
+        true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("SandstormSynergy"))
         hasSynergisticType = true if user.pbHasTypeAI?(:ROCK)
     when :Hail
         weatherMatchesPolicy = true if user.ownersPolicies.include?(:HAIL_TEAM)
-        hasSynergyAbility = true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("HailSynergy"))
+        true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("HailSynergy"))
         hasSynergisticType = true if user.pbHasTypeAI?(:ICE)
     when :Moonglow
         weatherMatchesPolicy = true if user.ownersPolicies.include?(:MOONGLOW_TEAM)
-        hasSynergyAbility = true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("MoonglowSynergy"))
+        true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("MoonglowSynergy"))
         hasSynergisticType = true if user.pbHasAttackingType?(:FAIRY)
     when :Eclipse
         weatherMatchesPolicy = true if user.ownersPolicies.include?(:ECLIPSE_TEAM)
-        hasSynergyAbility = true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("EclipseSynergy"))
+        true if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("EclipseSynergy"))
         hasSynergisticType = true if user.pbHasAttackingType?(:PSYCHIC)
     end
     
@@ -749,12 +746,12 @@ end
 def getCurseEffectScore(user, target)
     score = 50
     score += 50 if target.aboveHalfHealth?
-	if user.battle.pbCanSwitch?(target.index)
-	    score += getForceOutEffectScore(user, target) # Encouraging target to switch might be benefical
-        score = score * 0.70
+       if user.battle.pbCanSwitch?(target.index)
+           score += getForceOutEffectScore(user, target) # Encouraging target to switch might be benefical
+           score = score * 0.70
     else
-        score += statStepsValueScore(target)
-	end
+           score += statStepsValueScore(target)
+       end
     score *= target.getFractionalDamageModifier(aiCheck: true)
     return score
 end
@@ -763,11 +760,11 @@ def getFractureEffectScore(user, target)
     return 0 unless target.hasDamagingAttack?
     score = 100
     if user.battle.pbCanSwitch?(target.index)
-	    score += getForceOutEffectScore(user, target) # Encouraging target to switch might be benefical
-        score = score * 0.70
+           score += getForceOutEffectScore(user, target) # Encouraging target to switch might be benefical
+     score = score * 0.70
     else
         score += statStepsValueScore(target)
-	end
+    end
     return score
 end
 
@@ -775,11 +772,11 @@ def getBlindnessEffectScore(user, target)
     return 0 unless target.hasDamagingAttack?
     score = 30
     if user.battle.pbCanSwitch?(target.index)
-	    score += getForceOutEffectScore(user, target) # Encouraging target to switch might be benefical
-        score = score * 0.70
+           score += getForceOutEffectScore(user, target) # Encouraging target to switch might be benefical
+     score = score * 0.70
     else
         score += statStepsValueScore(target)
-	end
+    end
     return score
 end
 
@@ -788,38 +785,38 @@ def getJinxEffectScore(user, target)
     score += 30 if user.hasDamagingAttack?
     score += 30 if user.canChooseProtect?
     if user.battle.pbCanSwitch?(target.index)
-	    score += getForceOutEffectScore(user, target) # Encouraging target to switch might be benefical
-        score = score * 0.70
+           score += getForceOutEffectScore(user, target) # Encouraging target to switch might be benefical
+     score = score * 0.70
     else
         score += statStepsValueScore(target)
-	end
+    end
     return score
 end
 
-def passingTurnSideEffectScore(battle,sideIndex = 1)
+def passingTurnSideEffectScore(battle, sideIndex = 1)
     score = 0
     battle.eachBattler do |b|
-        battlerScore = passingTurnBattlerEffectScore(b,battle)
+        battlerScore = passingTurnBattlerEffectScore(b, battle)
         battlerScore *= -1 if b.index % 2 != sideIndex
         score += battlerScore
     end
     return score
 end
 
-def passingTurnBattlerEffectScore(battler,battle)
-    healthChange,healthPercentageChange = passingTurnBattlerHealthChange(battler,battle)
+def passingTurnBattlerEffectScore(battler, battle)
+    _, healthPercentageChange = passingTurnBattlerHealthChange(battler, battle)
     return healthPercentageChange * 2
 end
 
-def passingTurnBattlerHealthChange(battler,battle)
-	healthChange = predictedEOTDamage(battle,battler)
-    healthChange -= predictedEOTHealing(battle,battler)
+def passingTurnBattlerHealthChange(battler, battle)
+       healthChange = predictedEOTDamage(battle, battler)
+ healthChange -= predictedEOTHealing(battle, battler)
 
-    healthPercentageChange = healthChange * 100 / battler.totalhp
-    return healthChange,healthPercentageChange
+ healthPercentageChange = healthChange * 100 / battler.totalhp
+ return healthChange, healthPercentageChange
 end
 
-def predictedEOTDamage(battle,battler)
+def predictedEOTDamage(battle, battler)
     return 0 unless battler.takesIndirectDamage?
     damage = 0
     
@@ -867,7 +864,7 @@ def predictedEOTDamage(battle,battler)
     return damage
 end
 
-def predictedEOTHealing(battle,battler)
+def predictedEOTHealing(battle, battler)
     healing = 0
 
     # Aqua Ring, Ingrain
@@ -918,7 +915,7 @@ def predictedEOTHealing(battle,battler)
     
     # Vital Rhythm
     if battle.pbCheckSameSideAbility(:VITALRHYTHM)
-        healing += battler.getFractionalHealingAmount(1.0/16.0, aiCheck: true)
+        healing += battler.getFractionalHealingAmount(1.0 / 16.0, aiCheck: true)
     end
 
     # Leftovers
@@ -939,11 +936,11 @@ end
 
 def getAquaRingEffectScore(user)
     return 0 if user.effectActive?(:AquaRing)
-	return 0 if user.effects[:PerishSong] > 0
+       return 0 if user.effects[:PerishSong] > 0
 
     score = 40
     score += 20 if user.hp > user.totalhp * 0.5
-	score += 20 if user.hp > user.totalhp * 0.75
+       score += 20 if user.hp > user.totalhp * 0.75
     return score
 end
 
@@ -958,7 +955,7 @@ def getSubstituteEffectScore(user)
             score += 40
         end
     end
-    score += user.getHealingEffectScore(predictedEOTHealing(user.battle,user)) / 2
+    score += user.getHealingEffectScore(predictedEOTHealing(user.battle, user)) / 2
     score += 20 if user.hasSetupMove?
     score += 20 if user.firstTurn?
     return score
@@ -972,7 +969,7 @@ def getWeatherResetEffectScore(user)
     end
 end
 
-def getGreyMistSettingEffectScore(user,duration)
+def getGreyMistSettingEffectScore(user, duration)
     score = 0
     user.battle.eachBattler do |b|
         if b.opposes?(user)
@@ -1025,7 +1022,7 @@ def getScreenEffectScore(user, effect, baseDuration = nil, move = nil)
         break
     end
     unless foeCanBreak
-        duration = baseDuration ? user.getScreenDuration(baseDuration,aiCheck: true) : user.getScreenDuration(aiCheck: true)
+        duration = baseDuration ? user.getScreenDuration(baseDuration, aiCheck: true) : user.getScreenDuration(aiCheck: true)
         duration -= user.pbOwnSide.countEffect(effect) if user.pbOwnSide.effectActive?(effect)
         if effect == :AuroraVeil
             score += 15 * duration
@@ -1067,7 +1064,7 @@ end
 def getLuckyChantEffectScore(user, duration)
     score = 0
     duration -= user.pbOwnSide.countEffect(:LuckyChant) if user.pbOwnSide.effectActive?(:LuckyChant)
-    user.battle.eachSameSideBattler(user.index) do |b|
+    user.battle.eachSameSideBattler(user.index) do |_b|
         score += duration * 5
     end
 
@@ -1087,7 +1084,7 @@ def getTailwindEffectScore(user, duration, move = nil)
 
     # Lingering Value
     duration -= user.pbOwnSide.countEffect(:Tailwind) if user.pbOwnSide.effectActive?(:Tailwind)
-    user.battle.eachSameSideBattler(user.index) do |b|
+    user.battle.eachSameSideBattler(user.index) do |_b|
         score += duration * 20
     end
 
@@ -1118,7 +1115,7 @@ def getDisableEffectScore(target, duration)
     return score
 end
 
-def randomMovesEffectScore(user,move)
+def randomMovesEffectScore(user, move)
     if user.ownersPolicies.include?(:ALLOW_RANDOM_MOVES)
         return 100
     else

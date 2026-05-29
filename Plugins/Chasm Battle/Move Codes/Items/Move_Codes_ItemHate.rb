@@ -26,7 +26,7 @@ class PokeBattle_Move_RemovesTargetItem < PokeBattle_Move
                 score += 50
             when :CRYSTALVEIL
                 score += 20
-            when :POWERLOCK,:ENERGYLOCK
+            when :POWERLOCK, :ENERGYLOCK
                 score += 20
             end
         end
@@ -84,16 +84,16 @@ class PokeBattle_Move_RemovesTargetItemDamageBoost50Percent < PokeBattle_Move
     def getTargetAffectingEffectScore(user, target)
         return 0 unless canKnockOffItems?(user, target, true)
         score = 0
-        target.eachItem do |itemID|
+        target.eachItem do |_itemID|
             score += 50
         end
         target.eachAIKnownItem do |itemID|
             case itemID
             when :EVIOLITE
                 score += 50
-            when :CRYSTALVEIL,:MEMORYSET,:PRISMATICPLATE
+            when :CRYSTALVEIL, :MEMORYSET, :PRISMATICPLATE
                 score += 20
-            when :POWERLOCK,:ENERGYLOCK
+            when :POWERLOCK, :ENERGYLOCK
                 score += 20
             end
         end
@@ -357,7 +357,7 @@ end
 
 #===============================================================================
 # The target cannnot use its held item, its held item has no
-# effect, and no items can be used on it. 
+# effect, and no items can be used on it.
 #===============================================================================
 class PokeBattle_Move_Embargo < PokeBattle_Move
     def pbFailsAgainstTarget?(_user, target, show_message)
@@ -422,7 +422,7 @@ class PokeBattle_Move_GiveExpCandy < PokeBattle_Move
     def getTargetAffectingEffectScore(user, target)
         score = 0
         if target.canAddItem?(:EXPCANDYM) && canRemoveItem?(user, target, target.firstItem, checkingForAI: true)
-        score += 50
+            score += 50
         end
         return score
     end

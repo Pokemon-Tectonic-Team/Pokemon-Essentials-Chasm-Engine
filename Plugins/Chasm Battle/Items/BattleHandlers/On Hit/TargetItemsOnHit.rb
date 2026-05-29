@@ -1,5 +1,5 @@
 BattleHandlers::TargetItemOnHit.add(:JABOCABERRY,
-  proc { |item, user, target, move, battle, aiCheck, aiNumHits|
+  proc { |item, user, target, move, battle, aiCheck, _aiNumHits|
       next unless target.canConsumeBerry?
       next unless move.physicalMove?
       next unless user.takesIndirectDamage?
@@ -15,7 +15,7 @@ BattleHandlers::TargetItemOnHit.add(:JABOCABERRY,
 )
 
 BattleHandlers::TargetItemOnHit.add(:ROWAPBERRY,
-  proc { |item, user, target, move, battle, aiCheck, aiNumHits|
+  proc { |item, user, target, move, battle, aiCheck, _aiNumHits|
       next unless target.canConsumeBerry?
       next unless move.specialMove?
       next unless user.takesIndirectDamage?
@@ -55,7 +55,7 @@ BattleHandlers::TargetItemOnHit.add(:HIVISJACKET,
 )
 
 BattleHandlers::TargetItemOnHit.add(:ENIGMABERRY,
-  proc { |item, user, target, move, battle, aiCheck, aiNumHits|
+  proc { |item, _user, target, _move, battle, aiCheck, _aiNumHits|
       next if aiCheck
       next if target.damageState.substitute
       next if target.damageState.disguise
@@ -68,7 +68,7 @@ BattleHandlers::TargetItemOnHit.add(:ENIGMABERRY,
 )
 
 BattleHandlers::TargetItemOnHit.add(:AIRBALLOON,
-  proc { |item, user, target, move, battle, aiCheck, aiNumHits|
+  proc { |item, _user, target, _move, battle, aiCheck, _aiNumHits|
       next 15 if aiCheck
       battle.pbDisplay(_INTL("{1}'s {2} popped!", target.pbThis, getItemName(item)))
       target.consumeItem(item, recoverable: false)
@@ -76,7 +76,7 @@ BattleHandlers::TargetItemOnHit.add(:AIRBALLOON,
 )
 
 BattleHandlers::TargetItemOnHit.add(:KEEBERRY,
-  proc { |item, user, target, move, battle, aiCheck, aiNumHits|
+  proc { |item, user, target, move, battle, aiCheck, _aiNumHits|
       next unless move.physicalMove?
       next getMultiStatUpEffectScore([:DEFENSE, target.hasActiveAbilityAI?(:RIPEN) ? 4 : 2], user, target, evaluateThreat: false) if aiCheck
       if BattleHandlers.triggerTargetItemOnHitPositiveBerry(item, target, battle, false)
@@ -86,7 +86,7 @@ BattleHandlers::TargetItemOnHit.add(:KEEBERRY,
 )
 
 BattleHandlers::TargetItemOnHit.add(:MARANGABERRY,
-  proc { |item, user, target, move, battle, aiCheck, aiNumHits|
+  proc { |item, user, target, move, battle, aiCheck, _aiNumHits|
       next unless move.specialMove?
       next getMultiStatUpEffectScore([:SPECIAL_DEFENSE, target.hasActiveAbilityAI?(:RIPEN) ? 4 : 2], user, target, evaluateThreat: false) if aiCheck
       if BattleHandlers.triggerTargetItemOnHitPositiveBerry(item, target, battle, false)
@@ -96,10 +96,10 @@ BattleHandlers::TargetItemOnHit.add(:MARANGABERRY,
 )
 
 BattleHandlers::TargetItemOnHit.add(:WEAKNESSPOLICY,
-  proc { |item, user, target, move, battle, aiCheck, aiNumHits|
+  proc { |item, _user, target, _move, _battle, aiCheck, _aiNumHits|
       statUp = [:ATTACK, 4, :SPECIAL_ATTACK, 4]
       next if aiCheck # aiCheck Disabled until AI item rework, also needs rework for type calculation
-      #next getMultiStatUpEffectScore(statUp, user, target, evaluateThreat: false) if aiCheck
+      # next getMultiStatUpEffectScore(statUp, user, target, evaluateThreat: false) if aiCheck
       next if target.damageState.disguise
       next if target.damageState.thiefsDiversion
       next unless Effectiveness.super_effective?(target.damageState.typeMod)
@@ -112,10 +112,10 @@ BattleHandlers::TargetItemOnHit.add(:WEAKNESSPOLICY,
 )
 
 BattleHandlers::TargetItemOnHit.add(:STICKYBARB,
-  proc { |item, user, target, move, battle, aiCheck, aiNumHits|
+  proc { |item, user, target, _move, battle, aiCheck, _aiNumHits|
       next if user.dummy
       next unless user.canAddItem?(item)
-      next -20 if aiCheck 
+      next -20 if aiCheck
       user.giveItem(item)
       target.removeItem(item)
       battle.pbDisplay(_INTL("{1}'s {2} was transferred to {3}!",

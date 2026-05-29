@@ -31,8 +31,8 @@ class PokeBattle_Move_ReplaceMoveWithTargetLastMoveUsed < PokeBattle_Move
             return true
         end
         if user.pbHasMove?(target.lastRegularMoveUsed)
-             @battle.pbDisplay(_INTL("But it failed, since {1} already knows {2}'s most recent move!", user.pbThis(true), target.pbThis(true))) if show_message
-             return true
+            @battle.pbDisplay(_INTL("But it failed, since {1} already knows {2}'s most recent move!", user.pbThis(true), target.pbThis(true))) if show_message
+            return true
         end
         if @moveBlacklist.include?(lastMoveData.function_code)
             @battle.pbDisplay(_INTL("But it failed, {1}'s most recent move can't be Sketched!", target.pbThis(true))) if show_message
@@ -161,7 +161,7 @@ class PokeBattle_Move_UseChoiceOf3LastUsedMoves < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenMoveID = replayed_choice
             else
-                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),moveNames)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)), moveNames)
                 @chosenMoveID = moveChoices[chosenIndex]
                 return @chosenMoveID
             end
@@ -185,7 +185,7 @@ class PokeBattle_Move_UseChoiceOf3LastUsedMoves < PokeBattle_Move
     end
 
     def pbEffectGeneral(user)
-        user.pbUseMoveSimple( @chosenMoveID)
+        user.pbUseMoveSimple(@chosenMoveID)
     end
 
     def resetMoveUsageState

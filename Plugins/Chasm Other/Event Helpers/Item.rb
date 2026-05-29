@@ -5,8 +5,8 @@ def pbItemBall(item, quantity = 1)
     item = GameData::Item.get(item)
     return false if !item || quantity < 1
     itemname = (quantity > 1) ? item.name_plural : item.name
-    pocket = item.pocket
-    move = item.move
+    item.pocket
+    item.move
     if $PokemonBag.pbStoreItem(item, quantity) # If item can be picked up
         meName = item.is_key_item? ? "Key item get" : "Item get"
         if item == :LEFTOVERS
@@ -36,7 +36,7 @@ def pbItemBall(item, quantity = 1)
     return false
 end
 
-def candyRock(level,multiplier = 2)
+def candyRock(level, multiplier = 2)
     if pbHasItem?(:SACCHARITEPICK)
         pbMessage(_INTL("\\i[SACCHARITEPICK]Using your pick-axe, you extract the saccharite."))
     else
@@ -44,22 +44,22 @@ def candyRock(level,multiplier = 2)
         command_end # Exit event processing
         return
     end
-    pbSEPlay('Mining pick')
+    pbSEPlay("Mining pick")
     pbWait(10)
-    pbSEPlay('Mining pick')
+    pbSEPlay("Mining pick")
     pbWait(10)
-    pbSEPlay('Mining pick')
+    pbSEPlay("Mining pick")
     pbWait(10)
-    pbSEPlay('Anim/PRSFX- Rock Throw2')
+    pbSEPlay("Anim/PRSFX- Rock Throw2")
     pbWait(20)
-    receiveCandyBatch(level,multiplier)
+    receiveCandyBatch(level, multiplier)
 end
 
-def receiveCandyBatch(level,multiplier = 1)
+def receiveCandyBatch(level, multiplier = 1)
     itemsGiven = candiesForLevel(level)
-    for i in 0...itemsGiven.length/2
-		pbReceiveItem(itemsGiven[i*2],itemsGiven[i*2 + 1] * multiplier)
-	end
+    for i in 0...itemsGiven.length / 2
+        pbReceiveItem(itemsGiven[i * 2], itemsGiven[(i * 2) + 1] * multiplier)
+    end
 end
 
 #===============================================================================
@@ -70,8 +70,8 @@ def pbReceiveItem(item, quantity = 1)
     return false if !item || quantity < 1
     raise _INTL("Player cannot receive a Super Item!") if item.super
     itemname = (quantity > 1) ? item.name_plural : item.name
-    pocket = item.pocket
-    move = item.move
+    item.pocket
+    item.move
     meName = item.is_key_item? ? "Key item get" : "Item get"
     if item.id == :LEFTOVERS
         pbMessage(_INTL("\\me[{1}]You obtained some \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))

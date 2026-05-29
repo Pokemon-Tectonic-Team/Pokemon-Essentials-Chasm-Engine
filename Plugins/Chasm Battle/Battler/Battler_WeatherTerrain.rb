@@ -1,6 +1,6 @@
 class PokeBattle_Battler
     def affectedByWeatherDownsides?(checkingForAI = false)
-        return false if inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderground", "TwoTurnAttackInvulnerableUnderwater")   # Dig, Dive
+        return false if inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderground", "TwoTurnAttackInvulnerableUnderwater") # Dig, Dive
         return false if shouldAbilityApply?(GameData::Ability.getByFlag("AllWeatherSynergy"), checkingForAI)
         return false if hasActiveItem?(:UTILITYUMBRELLA)
         return false if @battle.pbCheckAlliedAbility(:HIGHRISE, @index)
@@ -19,12 +19,12 @@ class PokeBattle_Battler
         return false if shouldTypeApply?(:WATER, checkingForAI) || shouldTypeApply?(:ELECTRIC, checkingForAI)
         return false if shouldAbilityApply?(GameData::Ability.getByFlag("RainstormSynergy"), checkingForAI)
         return true
-    end  
+    end
 
     def takesSandstormDamage?(checkingForAI = false)
         return false unless affectedByWeatherDownsides?(checkingForAI)
         return false unless takesIndirectDamage?
-        return false if shouldTypeApply?(:GROUND,checkingForAI) || shouldTypeApply?(:ROCK,checkingForAI)
+        return false if shouldTypeApply?(:GROUND, checkingForAI) || shouldTypeApply?(:ROCK, checkingForAI)
         return false if shouldAbilityApply?(GameData::Ability.getByFlag("SandstormSynergy"), checkingForAI)
         return true
     end
@@ -32,7 +32,7 @@ class PokeBattle_Battler
     def takesHailDamage?(checkingForAI = false)
         return false unless affectedByWeatherDownsides?(checkingForAI)
         return false unless takesIndirectDamage?
-        return false if shouldTypeApply?(:ICE,checkingForAI) || shouldTypeApply?(:GHOST,checkingForAI)
+        return false if shouldTypeApply?(:ICE, checkingForAI) || shouldTypeApply?(:GHOST, checkingForAI)
         return false if shouldAbilityApply?(GameData::Ability.getByFlag("HailSynergy"), checkingForAI)
         return true
     end

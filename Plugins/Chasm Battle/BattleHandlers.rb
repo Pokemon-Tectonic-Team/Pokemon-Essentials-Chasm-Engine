@@ -8,12 +8,12 @@ class MoveHandlerHash < HandlerHash2
 end
 
 module BattleHandlers
-    LoadDataDependentAbilityHandlers    = Event.new
-    LoadDataDependentItemHandlers    = Event.new
+    LoadDataDependentAbilityHandlers = Event.new
+    LoadDataDependentItemHandlers = Event.new
 
     def self.loadDataDependentHandlers
         BattleHandlers::LoadDataDependentAbilityHandlers.trigger
-        BattleHandlers::LoadDataDependentItemHandlers.trigger  
+        BattleHandlers::LoadDataDependentItemHandlers.trigger
     end
 
     # Battler's type calculation
@@ -90,11 +90,11 @@ module BattleHandlers
     SpecialDefenseCalcAllyAbility        = AbilityHandlerHash.new
     SpecialDefenseCalcUserItem           = ItemHandlerHash.new
     # Critical hit calculation
-    CriticalCalcUserAbility             = AbilityHandlerHash.new
-    GuaranteedCriticalUserAbility	    = AbilityHandlerHash.new
-    CriticalCalcUserAllyAbility             = AbilityHandlerHash.new
-    CriticalCalcTargetAbility           = AbilityHandlerHash.new
-    CriticalPreventTargetAbility	    = AbilityHandlerHash.new
+    CriticalCalcUserAbility = AbilityHandlerHash.new
+    GuaranteedCriticalUserAbility = AbilityHandlerHash.new
+    CriticalCalcUserAllyAbility = AbilityHandlerHash.new
+    CriticalCalcTargetAbility = AbilityHandlerHash.new
+    CriticalPreventTargetAbility = AbilityHandlerHash.new
     CriticalCalcUserItem                = ItemHandlerHash.new
     CriticalCalcTargetItem              = ItemHandlerHash.new # None!
     # Upon a move hitting a target
@@ -156,7 +156,7 @@ module BattleHandlers
     # Added effects
     CertainAddedEffectUserAbility           = AbilityHandlerHash.new
     AddedEffectChanceModifierUserAbility    = AbilityHandlerHash.new
-    AddedEffectChanceModifierUserAllyAbility    = AbilityHandlerHash.new
+    AddedEffectChanceModifierUserAllyAbility = AbilityHandlerHash.new
     PreventAddedEffectTargetAbility         = AbilityHandlerHash.new
     AddedEffectChanceModifierTargetAbility  = AbilityHandlerHash.new
     # Start of move
@@ -164,7 +164,7 @@ module BattleHandlers
     TargetAbilityStartOfMove            = AbilityHandlerHash.new
     # Multi-item interactions
     DisallowItemSetAbility              = AbilityHandlerHash.new
-    # Moves missing abilities  
+    # Moves missing abilities
     UserAbilityOnMiss                 = AbilityHandlerHash.new
     TargetAbilityOnMiss               = AbilityHandlerHash.new
     # Switch-in forbiddance abilities
@@ -174,51 +174,51 @@ module BattleHandlers
 
     def self.triggerTypeCalcAbility(ability, battler, types)
         ret = TypeCalcAbility.trigger(ability, battler, types)
-        return !ret.nil? ? ret : types
+        return ret.nil? ? types : ret
     end
 
     #=============================================================================
 
     def self.triggerSpeedCalcAbility(ability, battler, mult)
         ret = SpeedCalcAbility.trigger(ability, battler, mult)
-        return !ret.nil? ? ret : mult
+        return ret.nil? ? mult : ret
     end
 
     def self.triggerSpeedCalcItem(item, battler, mult)
         ret = SpeedCalcItem.trigger(item, battler, mult)
-        return !ret.nil? ? ret : mult
+        return ret.nil? ? mult : ret
     end
 
     def self.triggerMoveSpeedModifierAbility(ability, battler, move, battle, mult, aiCheck)
         ret = MoveSpeedModifierAbility.trigger(ability, battler, move, battle, mult, aiCheck)
-        return !ret.nil? ? ret : mult
+        return ret.nil? ? mult : ret
     end
 
     #=============================================================================
 
     def self.triggerWeightCalcAbility(ability, battler, w)
         ret = WeightCalcAbility.trigger(ability, battler, w)
-        return !ret.nil? ? ret : w
+        return ret.nil? ? w : ret
     end
 
     def self.triggerWeightCalcItem(item, battler, w)
         ret = WeightCalcItem.trigger(item, battler, w)
-        return !ret.nil? ? ret : w
+        return ret.nil? ? w : ret
     end
 
     #=============================================================================
 
     def self.triggerHPHealItem(item, battler, battle, forced, filchedFrom, filchingAbility, items_to_skip)
         ret = HPHealItem.trigger(item, battler, battle, forced, filchedFrom, filchingAbility, items_to_skip)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerAbilityOnHPDroppedBelowHalf(ability, user, battle)
         ret = AbilityOnHPDroppedBelowHalf.trigger(ability, user, battle)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
-    def self.triggerAbilityOnHPDropped(ability, user, battle, old_fraction, new_fraction)
+    def self.triggerAbilityOnHPDropped(ability, user, battle, _old_fraction, _new_fraction)
         AbilityOnHPDropped.trigger(ability, user, battle)
     end
 
@@ -226,22 +226,22 @@ module BattleHandlers
 
     def self.triggerStatusCheckAbilityNonIgnorable(ability, battler, status)
         ret = StatusCheckAbilityNonIgnorable.trigger(ability, battler, status)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerStatusImmunityAbility(ability, battler, status)
         ret = StatusImmunityAbility.trigger(ability, battler, status)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerStatusImmunityAbilityNonIgnorable(ability, battler, status)
         ret = StatusImmunityAbilityNonIgnorable.trigger(ability, battler, status)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerStatusImmunityAllyAbility(ability, battler, status)
         ret = StatusImmunityAllyAbility.trigger(ability, battler, status)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerAbilityOnStatusInflicted(ability, battler, user, status)
@@ -250,34 +250,34 @@ module BattleHandlers
 
     def self.triggerStatusCureItem(item, battler, battle, forced)
         ret = StatusCureItem.trigger(item, battler, battle, forced)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerStatusCureAbility(ability, battler)
         ret = StatusCureAbility.trigger(ability, battler)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     #=============================================================================
 
     def self.triggerStatLossImmunityAbility(ability, battler, stat, battle, showMessages)
         ret = StatLossImmunityAbility.trigger(ability, battler, stat, battle, showMessages)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerStatLossImmunityAbilityNonIgnorable(ability, battler, stat, battle, showMessages)
         ret = StatLossImmunityAbilityNonIgnorable.trigger(ability, battler, stat, battle, showMessages)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerStatLossImmunityAllyAbility(ability, bearer, battler, stat, battle, showMessages)
         ret = StatLossImmunityAllyAbility.trigger(ability, bearer, battler, stat, battle, showMessages)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerStatLossImmunitySelfAbility(ability, battler, stat, battle, showMessages)
         ret = StatLossImmunitySelfAbility.trigger(ability, battler, stat, battle, showMessages)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerAbilityOnStatGain(ability, battler, stat, user)
@@ -296,17 +296,17 @@ module BattleHandlers
 
     def self.triggerPriorityChangeAbility(ability, battler, move, pri, targets = [], aiCheck)
         ret = PriorityChangeAbility.trigger(ability, battler, move, pri, targets, aiCheck)
-        return !ret.nil? ? ret : 0
+        return ret.nil? ? 0 : ret
     end
 
     def self.triggerPriorityBracketChangeAbility(ability, battler, subPri, battle)
         ret = PriorityBracketChangeAbility.trigger(ability, battler, subPri, battle)
-        return !ret.nil? ? ret : subPri
+        return ret.nil? ? subPri : ret
     end
 
     def self.triggerPriorityBracketChangeItem(item, battler, subPri, battle)
         ret = PriorityBracketChangeItem.trigger(item, battler, subPri, battle)
-        return !ret.nil? ? ret : subPri
+        return ret.nil? ? subPri : ret
     end
 
     def self.triggerPriorityBracketUseAbility(ability, battler, battle)
@@ -332,24 +332,24 @@ module BattleHandlers
 
     def self.triggerMoveBlockingAbility(ability, bearer, user, targets, move, battle, aiCheck)
         ret = MoveBlockingAbility.trigger(ability, bearer, user, targets, move, battle, aiCheck)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerMoveImmunityTargetAbility(ability, user, target, move, type, battle, showMessages, aiCheck)
         ret = MoveImmunityTargetAbility.trigger(ability, user, target, move, type, battle, showMessages, aiCheck)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerMoveImmunityAllyAbility(ability, user, target, move, type, battle, ally, showMessages)
         ret = MoveImmunityAllyAbility.trigger(ability, user, target, move, type, battle, ally, showMessages)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     #=============================================================================
 
     def self.triggerMoveBaseTypeModifierAbility(ability, user, move, type)
         ret = MoveBaseTypeModifierAbility.trigger(ability, user, move, type)
-        return !ret.nil? ? ret : type
+        return ret.nil? ? type : ret
     end
 
     #=============================================================================
@@ -474,37 +474,37 @@ module BattleHandlers
 
     def self.triggerCriticalCalcUserAbility(ability, user, target, move, c)
         ret = CriticalCalcUserAbility.trigger(ability, user, target, move, c)
-        return !ret.nil? ? ret : c
+        return ret.nil? ? c : ret
     end
 
     def self.triggerGuaranteedCriticalUserAbility(ability, user, target, battle, move)
         ret = GuaranteedCriticalUserAbility.trigger(ability, user, target, battle, move)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerCriticalCalcUserAllyAbility(ability, user, target, move, c)
         ret = CriticalCalcUserAllyAbility.trigger(ability, user, target, move, c)
-        return !ret.nil? ? ret : c
+        return ret.nil? ? c : ret
     end
 
     def self.triggerCriticalCalcTargetAbility(ability, user, target, c)
         ret = CriticalCalcTargetAbility.trigger(ability, user, target, c)
-        return !ret.nil? ? ret : c
+        return ret.nil? ? c : ret
     end
 
     def self.triggerCriticalPreventTargetAbility(ability, user, target, battle)
         ret = CriticalPreventTargetAbility.trigger(ability, user, target, battle)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerCriticalCalcUserItem(item, user, target, c)
         ret = CriticalCalcUserItem.trigger(item, user, target, c)
-        return !ret.nil? ? ret : c
+        return ret.nil? ? c : ret
     end
 
     def self.triggerCriticalCalcTargetItem(item, user, target, c)
         ret = CriticalCalcTargetItem.trigger(item, user, target, c)
-        return !ret.nil? ? ret : c
+        return ret.nil? ? c : ret
     end
 
     #=============================================================================
@@ -535,7 +535,7 @@ module BattleHandlers
 
     def self.triggerTargetItemOnHitPositiveBerry(item, battler, battle, forced)
         ret = TargetItemOnHitPositiveBerry.trigger(item, battler, battle, forced)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     #=============================================================================
@@ -566,12 +566,12 @@ module BattleHandlers
 
     def self.triggerEndOfMoveItem(item, battler, battle, forced)
         ret = EndOfMoveItem.trigger(item, battler, battle, forced)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerEndOfMoveStatRestoreItem(item, battler, battle, forced)
         ret = EndOfMoveStatRestoreItem.trigger(item, battler, battle, forced)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerUserAbilityEndOfTrappingMove(ability, user, target, move, battle)
@@ -580,14 +580,14 @@ module BattleHandlers
 
     def self.triggerUserAbilityOnSemiInvulnerable(ability, user, move, battle, aiCheck)
         ret = UserAbilityOnSemiInvulnerable.trigger(ability, user, move, battle, aiCheck)
-        return !ret.nil? ? ret : 0
+        return ret.nil? ? 0 : ret
     end
 
     #=============================================================================
 
     def self.triggerExpGainModifierItem(item, battler, exp)
         ret = ExpGainModifierItem.trigger(item, battler, exp)
-        return !ret.nil? ? ret : -1
+        return ret.nil? ? -1 : ret
     end
 
     def self.triggerEVGainModifierItem(item, battler, evarray)
@@ -600,13 +600,13 @@ module BattleHandlers
 
     def self.triggerWeatherExtenderItem(item, weather, duration, battler, battle)
         ret = WeatherExtenderItem.trigger(item, weather, duration, battler, battle)
-        return !ret.nil? ? ret : duration
+        return ret.nil? ? duration : ret
     end
 
     def self.triggerWeatherChangedAbility(ability, oldWeather, battler, battle)
         WeatherChangedAbility.trigger(ability, oldWeather, battler, battle)
     end
-    
+
     #=============================================================================
 
     def self.triggerEORWeatherAbility(ability, weather, battler, battle)
@@ -637,22 +637,22 @@ module BattleHandlers
 
     def self.triggerCertainSwitchingUserAbility(ability, switcher, battle, trappingProc)
         ret = CertainSwitchingUserAbility.trigger(ability, switcher, battle, trappingProc)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerCertainSwitchingUserItem(item, switcher, battle, trappingProc)
         ret = CertainSwitchingUserItem.trigger(item, switcher, battle, trappingProc)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerTrappingTargetAbility(ability, switcher, bearer, battle)
         ret = TrappingTargetAbility.trigger(ability, switcher, bearer, battle)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerTrappingTargetItem(item, switcher, bearer, battle)
         ret = TrappingTargetItem.trigger(item, switcher, bearer, battle)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerAbilityOnSwitchIn(ability, battler, battle, aiCheck = false)
@@ -675,7 +675,7 @@ module BattleHandlers
 
     def self.triggerItemOnIntimidated(item, battler, battle)
         ret = ItemOnIntimidated.trigger(item, battler, battle)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerAbilityOnSwitchOut(ability, battler, battle, endOfBattle)
@@ -694,29 +694,29 @@ module BattleHandlers
 
     def self.triggerRunFromBattleAbility(ability, battler)
         ret = RunFromBattleAbility.trigger(ability, battler)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerRunFromBattleItem(item, battler)
         ret = RunFromBattleItem.trigger(item, battler)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     #=============================================================================
 
     def self.triggerOnBerryConsumedAbility(ability, user, berry, ownitem, battle)
         ret = OnBerryConsumedAbility.trigger(ability, user, berry, ownitem, battle)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerOnItemActivatedAbility(ability, user, item, battle)
         ret = OnItemActivatedAbility.trigger(ability, user, item, battle)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerOnAllyItemActivatedAbility(ability, user, consumer, item, battle)
         ret = OnAllyItemActivatedAbility.trigger(ability, user, consumer, item, battle)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     #=============================================================================
@@ -747,27 +747,27 @@ module BattleHandlers
 
     def self.triggerCertainAddedEffectUserAbility(ability, battle, user, target, move)
         ret = CertainAddedEffectUserAbility.trigger(ability, battle, target, user, move)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerAddedEffectChanceModifierUserAbility(ability, user, target, move, chance)
         ret = AddedEffectChanceModifierUserAbility.trigger(ability, user, target, move, chance)
-        return !ret.nil? ? ret : chance
+        return ret.nil? ? chance : ret
     end
 
     def self.triggerAddedEffectChanceModifierUserAllyAbility(ability, user, target, move, chance)
         ret = AddedEffectChanceModifierUserAllyAbility.trigger(ability, user, target, move, chance)
-        return !ret.nil? ? ret : chance
+        return ret.nil? ? chance : ret
     end
 
     def self.triggerPreventAddedEffectTargetAbility(ability, battle, user, target, move, showMessages)
         ret = PreventAddedEffectTargetAbility.trigger(ability, battle, user, target, move, showMessages)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.triggerAddedEffectChanceModifierTargetAbility(ability, user, target, move, chance)
         ret = AddedEffectChanceModifierTargetAbility.trigger(ability, user, target, move, chance)
-        return !ret.nil? ? ret : chance
+        return ret.nil? ? chance : ret
     end
 
     #=============================================================================
@@ -784,24 +784,23 @@ module BattleHandlers
 
     def self.triggerDisallowItemSetAbility(ability, pokemon, itemSet, showMessages)
         ret = DisallowItemSetAbility.trigger(ability, pokemon, itemSet, showMessages)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     #=============================================================================
-    
+
     def self.triggerUserAbilityOnMiss(ability, user, targets, move, battle)
         UserAbilityOnMiss.trigger(ability, user, targets, move, battle)
     end
-    
+
     def self.triggerTargetAbilityOnMiss(ability, user, target, move, battle)
         TargetAbilityOnMiss.trigger(ability, user, target, move, battle)
     end
-    
+
     #=============================================================================
 
     def self.triggerForbidsUserSwitchInAbility(ability, battle, partyMember, side, idxTrainer, idxParty, show_messages)
         ret = ForbidsUserSwitchInAbility.trigger(ability, battle, partyMember, side, idxTrainer, idxParty, show_messages)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
-
 end

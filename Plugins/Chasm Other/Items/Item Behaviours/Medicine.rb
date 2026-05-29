@@ -1,5 +1,5 @@
 ItemHandlers::UseOnPokemon.add(:POTION, proc { |_item, pkmn, scene|
-  next pbHPItem(pkmn, 40, scene, true)
+    next pbHPItem(pkmn, 40, scene, true)
 })
 
 ItemHandlers::UseOnPokemon.add(:SUPERPOTION, proc { |_item, pkmn, scene|
@@ -15,7 +15,7 @@ ItemHandlers::UseOnPokemon.add(:MAXPOTION, proc { |_item, pkmn, scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:BERRYJUICE, proc { |_item, pkmn, scene|
-  next pbHPItem(pkmn, 20, scene)
+    next pbHPItem(pkmn, 20, scene)
 })
 
 ItemHandlers::UseOnPokemon.add(:FRESHWATER, proc { |_item, pkmn, scene|
@@ -62,23 +62,23 @@ ItemHandlers::UseOnPokemon.add(:FULLRESTORE, proc { |_item, pkmn, scene|
 })
 
 ItemHandlers::UseOnPokemon.add(:MOOMOOMILK, proc { |_item, pkmn, scene|
-  if pkmn.fainted?
-    pbSceneDefaultDisplay(_INTL("It won't have any effect."), scene)
-    next false
-  end
-  if pkmn.hp == pkmn.totalhp && pkmn.status == :NONE
-      pbSceneDefaultDisplay(_INTL("It won't have any effect."), scene)
-      next false
-  end
-  hpgain = pbItemRestoreHP(pkmn, pkmn.totalhp - pkmn.hp)
-  pkmn.heal_status
-  scene&.pbRefresh
-  if hpgain > 0
-      pbSceneDefaultDisplay(_INTL("{1}'s HP was restored by {2} points.", pkmn.name, hpgain), scene)
-  else
-      pbSceneDefaultDisplay(_INTL("{1} became healthy.", pkmn.name), scene)
-  end
-  next true
+    if pkmn.fainted?
+        pbSceneDefaultDisplay(_INTL("It won't have any effect."), scene)
+        next false
+    end
+    if pkmn.hp == pkmn.totalhp && pkmn.status == :NONE
+        pbSceneDefaultDisplay(_INTL("It won't have any effect."), scene)
+        next false
+    end
+    hpgain = pbItemRestoreHP(pkmn, pkmn.totalhp - pkmn.hp)
+    pkmn.heal_status
+    scene&.pbRefresh
+    if hpgain > 0
+        pbSceneDefaultDisplay(_INTL("{1}'s HP was restored by {2} points.", pkmn.name, hpgain), scene)
+    else
+        pbSceneDefaultDisplay(_INTL("{1} became healthy.", pkmn.name), scene)
+    end
+    next true
 })
 
 ItemHandlers::UseOnPokemon.add(:REVIVE, proc { |_item, pkmn, scene|
@@ -158,7 +158,7 @@ ItemHandlers::UseOnPokemon.add(:VANILLATULUMBA, proc { |item, pkmn, scene|
         pbSceneDefaultDisplay(_INTL("It won't have any effect."), scene)
         next false
     end
-    
+
     if pkmn.hp < pkmn.totalhp
         hpGain = pbItemRestoreHP(pkmn, 100)
         scene&.pbRefresh
@@ -166,6 +166,6 @@ ItemHandlers::UseOnPokemon.add(:VANILLATULUMBA, proc { |item, pkmn, scene|
     end
 
     pbEXPAdditionItem(pkmn, 4000, item, scene, true) unless pkmn.level >= level_cap
-    
+
     next true
 })

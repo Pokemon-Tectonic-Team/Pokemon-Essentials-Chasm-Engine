@@ -1,6 +1,6 @@
-def legendaryFight(species, level, switch = 'A', form = 0)
+def legendaryFight(species, level, switch = "A", _form = 0)
     Pokemon.play_cry(species)
-    level = [level,getLevelCap].min
+    level = [level, getLevelCap].min
     pbWait(30)
     if pbWildBattleCore(species, level) == 4
         fadeSwitchOn(switch)

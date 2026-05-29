@@ -1,40 +1,40 @@
-def areaReward(routeID,reward)
+def areaReward(routeID, reward)
     routeName = pbGetMapNameFromId(routeID)
     return {
         reward: reward,
-        description: _INTL("all species in {1}",routeName),
+        description: _INTL("all species in {1}", routeName),
         page: 1,
         threshold: $Trainer.pokedex.routeEncounterCount(routeID),
         amount: $Trainer.pokedex.getOwnedOnRoute(routeID),
     }
 end
 
-def typeReward(type,threshold,reward)
+def typeReward(type, threshold, reward)
     typeName = GameData::Type.get(type).name
     return {
         reward: reward,
-        description: _INTL("{1} {2}-type species",threshold,typeName),
+        description: _INTL("{1} {2}-type species", threshold, typeName),
         page: 2,
         threshold: threshold,
         amount: $Trainer.pokedex.getOwnedOfType(type),
     }
 end
 
-def tribeReward(tribe,threshold,reward)
+def tribeReward(tribe, threshold, reward)
     tribeName = GameData::Tribe.get(tribe).name
     return {
         reward: reward,
-        description: _INTL("{1} species in the {2} tribe",threshold,tribeName),
+        description: _INTL("{1} species in the {2} tribe", threshold, tribeName),
         page: 3,
         threshold: threshold,
         amount: $Trainer.pokedex.getOwnedOfTribe(tribe),
     }
 end
 
-def generationReward(generation,threshold,reward)
+def generationReward(generation, threshold, reward)
     return {
         reward: reward,
-        description: _INTL("{1} species from Generation {2}",threshold,generation),
+        description: _INTL("{1} species from Generation {2}", threshold, generation),
         page: 4,
         threshold: threshold,
         amount: $Trainer.pokedex.getOwnedFromGeneration(generation),
@@ -48,7 +48,7 @@ class Player < Trainer
         attr_reader :ownedFromGeneration
         attr_reader :ownedOfTribe
 
-        def resetOwnershipCache()
+        def resetOwnershipCache
             @ownedFromGeneration = {}
             for generationNumber in 0..9 do
                 @ownedFromGeneration[generationNumber] = 0
@@ -68,9 +68,9 @@ class Player < Trainer
             GameData::Species.each do |speciesData|
                 next if speciesData.form != 0
                 next if !@owned[speciesData.species]
-                
+
                 @ownedFromGeneration[speciesData.generationNumber] += 1 if speciesData.generationNumber > 0
-                
+
                 @ownedOfType[speciesData.type1] += 1
                 @ownedOfType[speciesData.type2] += 1 if speciesData.type2 != speciesData.type1
 
@@ -80,9 +80,9 @@ class Player < Trainer
             end
         end
 
-        def eachEncounterOnRoute(routeMapID,ignoreSpecial = true)
-            encounterDataOnRoute = GameData::Encounter.get(routeMapID,$PokemonGlobal.encounter_version)
-            encounterDataOnRoute.types.each do |key,slots|
+        def eachEncounterOnRoute(routeMapID, ignoreSpecial = true)
+            encounterDataOnRoute = GameData::Encounter.get(routeMapID, $PokemonGlobal.encounter_version)
+            encounterDataOnRoute.types.each do |key, slots|
                 next if !slots
                 next if key == :Special && ignoreSpecial
                 slots.each { |slot|
@@ -93,17 +93,17 @@ class Player < Trainer
             end
         end
 
-        def routeEncounterCount(routeMapID,ignoreSpecial = true)
+        def routeEncounterCount(routeMapID, ignoreSpecial = true)
             count = 0
-            eachEncounterOnRoute(routeMapID,ignoreSpecial) do |speciesID|
+            eachEncounterOnRoute(routeMapID, ignoreSpecial) do |_speciesID|
                 count += 1
             end
             return count
         end
 
-        def getOwnedOnRoute(routeMapID,ignoreSpecial = true)
+        def getOwnedOnRoute(routeMapID, ignoreSpecial = true)
             count = 0
-            eachEncounterOnRoute(routeMapID,ignoreSpecial) do |speciesID|
+            eachEncounterOnRoute(routeMapID, ignoreSpecial) do |speciesID|
                 count += 1 if @owned[speciesID]
             end
             return count
@@ -115,7 +115,7 @@ class Player < Trainer
             GameData::Species.each do |speciesData|
                 next if speciesData.form != 0
                 next unless @owned[speciesData.species]
-                next if speciesData.generationNumber() != generationNumber
+                next if speciesData.generationNumber != generationNumber
                 count += 1
             end
             @ownedFromGeneration[generationNumber] = count

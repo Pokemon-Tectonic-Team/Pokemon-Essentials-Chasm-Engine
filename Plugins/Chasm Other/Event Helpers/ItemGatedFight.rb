@@ -1,4 +1,4 @@
-def itemGatedFight(itemID,regularBattleIntroText,itemGateIntroText,requestItemText,confirmGiveText,declineGiveText,lackingItemText)
+def itemGatedFight(itemID, regularBattleIntroText, itemGateIntroText, requestItemText, confirmGiveText, declineGiveText, lackingItemText)
     if getMySwitch("B")
         noticePlayer
         pbMessage(regularBattleIntroText)
@@ -9,7 +9,7 @@ def itemGatedFight(itemID,regularBattleIntroText,itemGateIntroText,requestItemTe
         if pbHasItem?(itemID)
             if pbConfirmMessageSerious(requestItemText)
                 pbDeleteItem(itemID)
-                pbMessage(_INTL("You hand over the {1}.",getItemName(itemID)))
+                pbMessage(_INTL("You hand over the {1}.", getItemName(itemID)))
                 pbMessage(confirmGiveText)
                 setMySwitch("B")
             else

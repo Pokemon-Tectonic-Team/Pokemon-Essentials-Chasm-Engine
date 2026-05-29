@@ -70,7 +70,7 @@ class PokeBattle_Battle
             incrementDexNavCounts(true)
 
             # Nickname the Pokémon
-            showPrompt = (!defined?($Options.nicknaming_prompt) || $Options.nicknaming_prompt == 0)
+            showPrompt = !defined?($Options.nicknaming_prompt) || $Options.nicknaming_prompt == 0
             if showPrompt && pbDisplayConfirm(_INTL("Would you like to give a nickname to {1}?", pkmn.name))
                 nickname = @scene.pbNameEntry(_INTL("{1}'s nickname?", pkmn.speciesName), pkmn)
                 pkmn.name = nickname
@@ -85,7 +85,10 @@ class PokeBattle_Battle
                     pbChoosePokemon(1, 3)
                     chosenIndex = $game_variables[1]
                     # Didn't cancel
-                    if chosenIndex != -1
+                    if chosenIndex == -1
+                        # Store caught Pokémon if cancelled
+                        pbStorePokemon(pkmn)
+                    else
                         chosenPokemon = $Trainer.party[chosenIndex]
                         @peer.pbOnLeavingBattle(self, chosenPokemon, @usedInBattle[0][chosenIndex], true) # Reset form
 
@@ -111,9 +114,6 @@ class PokeBattle_Battle
 
                         pbStorePokemon(chosenPokemon)
                         $Trainer.party[chosenIndex] = pkmn
-                    else
-                        # Store caught Pokémon if cancelled
-                        pbStorePokemon(pkmn)
                     end
                 else
                     # Store caught Pokémon
@@ -223,7 +223,7 @@ class PokeBattle_Battle
             # Save the Pokémon for storage at the end of battle
             @caughtPokemon.push(pkmn)
         end
-        
+
         if numShakes < 4 && !launching && pbHasItem?(:MAGNETICGAUNTLET) && @magneticGauntletBallsRecovered == 0
             pbDisplayWithFormatting(_INTL("\\i[MAGNETICGAUNTLET]You recovered the lost {1} with the {2}!", getItemName(ball), getItemName(:MAGNETICGAUNTLET)))
             @magneticGauntletBallsRecovered += 1
@@ -304,7 +304,7 @@ class PokeBattle_Battle
         if status == :SLEEP
             x *= 2.0
         elsif status == :POISON
-            x *= 1.25 + 0.5 * (statusCount / 2)
+            x *= 1.25 + (0.5 * (statusCount / 2))
         elsif status != :NONE
             x *= 1.25
         end
@@ -319,18 +319,18 @@ end
 
 def ballMimicActive?
     $Trainer.party.each do |partyMember|
-      next unless partyMember
-      return true if partyMember.hasAbility?(:BALLMIMIC)
+        next unless partyMember
+        return true if partyMember.hasAbility?(:BALLMIMIC)
     end
     return false
 end
 
-def runCaptureTest(species = :MEWTWO,level = 50,hpPercentile = 0.2,status = :SLEEP,ball=:ULTRABALL,trialCount = 500)
+def runCaptureTest(species = :MEWTWO, level = 50, hpPercentile = 0.2, status = :SLEEP, _ball = :ULTRABALL, trialCount = 500)
     scene = pbNewBattleScene
-    enemyTrainer = pbLoadTrainer(:BATTLEGIRL,"Tester")
+    enemyTrainer = pbLoadTrainer(:BATTLEGIRL, "Tester")
     fakeBattle = PokeBattle_Battle.new(scene, $Trainer.party, enemyTrainer.party, [$Trainer], [enemyTrainer])
     fakeBattler = PokeBattle_Battler.new(fakeBattle, 0, true)
-    pokemon = Pokemon.new(species,level)
+    pokemon = Pokemon.new(species, level)
     fakeBattler.pbInitializeFake(pokemon, 0)
     fakeBattler.status = status
     fakeBattler.hp = (fakeBattler.totalhp * hpPercentile).ceil

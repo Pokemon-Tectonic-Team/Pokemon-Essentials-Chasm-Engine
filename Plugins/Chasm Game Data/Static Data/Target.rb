@@ -6,94 +6,94 @@
 #         - def pbFirstTarget
 #         - def pbTargetsMultiple?
 module GameData
-  class Target
-      attr_reader :id
-      attr_reader :id_number
-      attr_reader :real_name
-      attr_reader :num_targets        # 0, 1 or 2 (meaning 2+)
-      attr_reader :targets_foe        # Is able to target one or more foes
-      attr_reader :targets_user       # Is able to target the user
-      attr_reader :targets_ally       # Is able to target the user's ally
-      attr_reader :targets_all        # Crafty Shield can't protect from these moves
-      attr_reader :affects_foe_side   # Pressure also affects these moves
-      attr_reader :long_range         # Hits non-adjacent targets
+    class Target
+        attr_reader :id
+        attr_reader :id_number
+        attr_reader :real_name
+        attr_reader :num_targets        # 0, 1 or 2 (meaning 2+)
+        attr_reader :targets_foe        # Is able to target one or more foes
+        attr_reader :targets_user       # Is able to target the user
+        attr_reader :targets_ally       # Is able to target the user's ally
+        attr_reader :targets_all        # Crafty Shield can't protect from these moves
+        attr_reader :affects_foe_side   # Pressure also affects these moves
+        attr_reader :long_range         # Hits non-adjacent targets
 
-      DATA = {}
+        DATA = {}
 
-      extend ClassMethods
-      include InstanceMethods
+        extend ClassMethods
+        include InstanceMethods
 
-      def self.load; end
-      def self.save; end
+        def self.load; end
+        def self.save; end
 
-      def initialize(hash)
-          @id                 = hash[:id]
-          @real_name          = hash[:name]               || "Unnamed"
-          @num_targets        = hash[:num_targets]        || 0
-          @targets_foe        = hash[:targets_foe]        || false
-          @targets_user       = hash[:targets_user]       || false
-          @targets_ally       = hash[:targets_ally]       || false
-          @targets_all        = hash[:targets_all]        || false
-          @affects_foe_side   = hash[:affects_foe_side]   || false
-          @affects_user_side  = hash[:affects_user_side]  || false
-          @long_range         = hash[:long_range]         || false
-          @targeting_label    = hash[:targeting_label]
-      end
+        def initialize(hash)
+            @id                 = hash[:id]
+            @real_name          = hash[:name]               || "Unnamed"
+            @num_targets        = hash[:num_targets]        || 0
+            @targets_foe        = hash[:targets_foe]        || false
+            @targets_user       = hash[:targets_user]       || false
+            @targets_ally       = hash[:targets_ally]       || false
+            @targets_all        = hash[:targets_all]        || false
+            @affects_foe_side   = hash[:affects_foe_side]   || false
+            @affects_user_side  = hash[:affects_user_side]  || false
+            @long_range         = hash[:long_range]         || false
+            @targeting_label    = hash[:targeting_label]
+        end
 
-      # @return [String] the translated name of this target
-      def name
-          return _INTL(@real_name)
-      end
+        # @return [String] the translated name of this target
+        def name
+            return _INTL(@real_name)
+        end
 
-      def can_choose_distant_target?
-          return @num_targets == 1 && @long_range
-      end
+        def can_choose_distant_target?
+            return @num_targets == 1 && @long_range
+        end
 
-      def can_target_one_foe?
-          return @num_targets == 1 && @targets_foe
-      end
-  
-      ###########################################################################################
-      # Methods to determine what to highlight in graphics that explain how a move targets
-      ###########################################################################################
-      def show_foe_targeting?
-          return @targets_foe || @affects_foe_side || @targets_all
-      end
+        def can_target_one_foe?
+            return @num_targets == 1 && @targets_foe
+        end
 
-      def show_user_targeting?
-          return @targets_user || @affects_user_side || @targets_all
-      end
+        ###########################################################################################
+        # Methods to determine what to highlight in graphics that explain how a move targets
+        ###########################################################################################
+        def show_foe_targeting?
+            return @targets_foe || @affects_foe_side || @targets_all
+        end
 
-      def show_ally_targeting?
-          return @targets_ally || @affects_user_side || @targets_all
-      end
+        def show_user_targeting?
+            return @targets_user || @affects_user_side || @targets_all
+        end
 
-      def get_targeting_label
-          return _INTL(@targeting_label) if @targeting_label
-          if targets_all
-            return _INTL("All")
-          elsif spread?
-            return _INTL("Each")
-          elsif single_target?
-            return _INTL("One")
-          elsif @targets_user
-            return _INTL("User")
-          end
-          return _INTL("Error")
-      end
+        def show_ally_targeting?
+            return @targets_ally || @affects_user_side || @targets_all
+        end
 
-      def single_target?
-        return @num_targets  == 1
-      end
+        def get_targeting_label
+            return _INTL(@targeting_label) if @targeting_label
+            if targets_all
+                return _INTL("All")
+            elsif spread?
+                return _INTL("Each")
+            elsif single_target?
+                return _INTL("One")
+            elsif @targets_user
+                return _INTL("User")
+            end
+            return _INTL("Error")
+        end
 
-      def spread?
-        return @num_targets > 1
-      end
+        def single_target?
+            return @num_targets == 1
+        end
 
-      def no_targets?
-        return @num_targets == 0
-      end
-  end
+        def spread?
+            return @num_targets > 1
+        end
+
+        def no_targets?
+            return @num_targets == 0
+        end
+    end
 end
 
 #===============================================================================

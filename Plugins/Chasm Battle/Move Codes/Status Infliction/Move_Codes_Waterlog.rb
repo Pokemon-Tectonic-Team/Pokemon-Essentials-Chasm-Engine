@@ -77,7 +77,7 @@ class PokeBattle_Move_WaterlogTargetStartHealUserEachTurn < PokeBattle_WaterlogM
         user.applyEffect(:AquaRing) unless user.effectActive?(:AquaRing)
     end
 
-    def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
+    def pbShowAnimation(_id, user, targets, _hitNum = 0, _showAnimation = true)
         targets.each do |b|
             @battle.pbAnimation(:SOAK, user, [b]) if b.canWaterlog?(user, false, self)
         end
@@ -90,7 +90,7 @@ class PokeBattle_Move_WaterlogTargetStartHealUserEachTurn < PokeBattle_WaterlogM
         user.applyEffect(:AquaRing) unless user.effectActive?(:AquaRing)
     end
 
-    def getEffectScore(user, target)
-        return getAquaRingEffectScore(user) 
+    def getEffectScore(user, _target)
+        return getAquaRingEffectScore(user)
     end
 end

@@ -14,7 +14,7 @@ class PokeBattle_Battle
         priority = pbPriority(true)   # in order of fastest -> slowest speeds only
 
         checkBattleStateAchievements(self)
-        
+
         pbEORWeather(priority)
 
         pbEORHealing(priority)
@@ -86,7 +86,7 @@ class PokeBattle_Battle
             b.modifyTrackersEOR
         end
 
-        #Slumbering Shield, Slumbering Sword
+        # Slumbering Shield, Slumbering Sword
         pbCheckSlumbering
 
         # Neutralizing Gas
@@ -114,7 +114,7 @@ class PokeBattle_Battle
 
     def damageFromDOTStatus(battler, status, aiCheck = false)
         if battler.takesIndirectDamage? && !battler.hasActiveAbility?(:PLACIDITY)
-            if status == :LEECHED || status == :POISON
+            if [:LEECHED, :POISON].include?(status)
                 fraction = 1.0 / 12.0
             else
                 fraction = 1.0 / 8.0
@@ -150,12 +150,12 @@ class PokeBattle_Battle
             battlersInOrder = []
             pbParty(0).each_with_index do |partyMember, partyIndex|
                 next unless partyMember
-                battlerToStatus = getBattlerFromFieldOrParty(0,partyIndex)
+                battlerToStatus = getBattlerFromFieldOrParty(0, partyIndex)
                 battlersInOrder.push(battlerToStatus)
             end
             pbParty(1).each_with_index do |partyMember, partyIndex|
                 next unless partyMember
-                battlerToStatus = getBattlerFromFieldOrParty(1,partyIndex)
+                battlerToStatus = getBattlerFromFieldOrParty(1, partyIndex)
                 battlersInOrder.push(battlerToStatus)
             end
         else
@@ -178,16 +178,15 @@ class PokeBattle_Battle
             end
 
             # Toxin Tax
-            if damageDealt > 0
-                priority.each do |tax_user|
-                    next unless tax_user.hasActiveAbility?(:TOXINTAX)
-                    next unless tax_user.canHeal?
-                    next if tax_user == b
-                    pbShowAbilitySplash(tax_user, :TOXINTAX)
-                    healingMessage = _INTL("{1} absorbs the damage from the poison.", tax_user.pbThis)
-                    tax_user.pbRecoverHP(damageDealt, true, true, true, healingMessage)
-                    pbHideAbilitySplash(tax_user)
-                end
+            next unless damageDealt > 0
+            priority.each do |tax_user|
+                next unless tax_user.hasActiveAbility?(:TOXINTAX)
+                next unless tax_user.canHeal?
+                next if tax_user == b
+                pbShowAbilitySplash(tax_user, :TOXINTAX)
+                healingMessage = _INTL("{1} absorbs the damage from the poison.", tax_user.pbThis)
+                tax_user.pbRecoverHP(damageDealt, true, true, true, healingMessage)
+                pbHideAbilitySplash(tax_user)
             end
         end
         # Damage from burn
@@ -207,7 +206,7 @@ class PokeBattle_Battle
             next if b.fainted?
             next unless b.leeched?
             enemyCount = 0
-            b.eachOpposing do |opposingBattler|
+            b.eachOpposing do |_opposingBattler|
                 enemyCount += 1
             end
             leechedHP = damageFromDOTStatus(b, :LEECHED)
@@ -224,7 +223,6 @@ class PokeBattle_Battle
 
     def countDownPerishSong(priority)
         # Perish Song
-        fainters = []
         priority.each do |b|
             next if b.fainted?
             next unless b.effectActive?(:PerishSong)
@@ -239,7 +237,7 @@ class PokeBattle_Battle
             next unless b.numbed? && b.getStatusCount(:NUMB) > 0
             b.tryLowerStat(b.highestStat, nil, increment: 1)
         end
-        
+
         # End of Round Effect Abilities
         priority.each do |b|
             next if b.fainted?

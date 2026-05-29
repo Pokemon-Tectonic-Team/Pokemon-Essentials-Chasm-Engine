@@ -6,7 +6,7 @@ class PokeBattle_Battle
     #=============================================================================
     def pbGainExp
         return if @autoTesting
-        hasExpJAR = (GameData::Item.exists?(:EXPEZDISPENSER) && $PokemonBag.pbHasItem?(:EXPEZDISPENSER))
+        hasExpJAR = GameData::Item.exists?(:EXPEZDISPENSER) && $PokemonBag.pbHasItem?(:EXPEZDISPENSER)
         # Play wild victory music if it's the end of the battle (has to be here)
         @scene.pbWildBattleSuccess if wildBattle? && pbAllFainted?(1) && !pbAllFainted?(0)
         return if !@internalBattle || !@expGain
@@ -36,7 +36,7 @@ class PokeBattle_Battle
         else
             # Go through each battler in turn to find the Pokémon that participated in
             # battle against it, and award those Pokémon Exp
-            expAll = (GameData::Item.exists?(:EXPALL) && $PokemonBag.pbHasItem?(:EXPALL))
+            expAll = GameData::Item.exists?(:EXPALL) && $PokemonBag.pbHasItem?(:EXPALL)
             p1 = pbParty(0)
             @battlers.each do |b|
                 next unless b && b.opposes? # Can only gain Exp from fainted foes
@@ -120,10 +120,10 @@ class PokeBattle_Battle
             exp *= 1.5
         end
         exp *= 1.1 if $PokemonBag.pbHasItem?(:PERFORMANCEANALYZER2)
-        exp = (exp/5.0).floor
+        exp = (exp / 5.0).floor
         # Scale the gained Exp based on the gainer's level (or not)
         if Settings::SCALED_EXP_FORMULA
-            levelAdjust = (2 * level + 10.0) / (pkmn.level + level + 10.0)
+            levelAdjust = ((2 * level) + 10.0) / (pkmn.level + level + 10.0)
             levelAdjust **= 5
             levelAdjust = Math.sqrt(levelAdjust)
             exp *= levelAdjust
@@ -137,7 +137,7 @@ class PokeBattle_Battle
         end
         exp = (exp * 1.1).floor if playerTribalBonus.hasTribeBonus?(:LOYAL)
         exp = (exp * 1.5).floor if @field.effectActive?(:Bliss)
-        exp = (exp * (1 + 0.1 * pbQuantity(:EXPCHARM))).floor # Extra 10 percent per EXP charm
+        exp = (exp * (1 + (0.1 * pbQuantity(:EXPCHARM)))).floor # Extra 10 percent per EXP charm
         exp = (exp * $PokemonGlobal.exp_multiplier).floor if $PokemonGlobal.exp_multiplier
         modifiedEXP = exp
         pkmn.items.each do |item|
@@ -260,7 +260,7 @@ class PokeBattle_Battle
             forgetMove = @scene.pbForgetMove(pkmn, newMove)
             if forgetMove >= 0
                 oldMoveName = pkmn.moves[forgetMove].name
-                pkmn.moves[forgetMove] = Pokemon::Move.new(newMove)   # Replaces current/total PP
+                pkmn.moves[forgetMove] = Pokemon::Move.new(newMove) # Replaces current/total PP
                 battler.moves[forgetMove] = PokeBattle_Move.from_pokemon_move(self, pkmn.moves[forgetMove]) if battler
                 pbDisplayPaused(_INTL("{1} forgot how to use {2}. And...", pkmnName, oldMoveName), no_highlighting: true)
                 pbDisplay(_INTL("{1} learned {2}!", pkmnName, moveName), no_highlighting: true) { pbSEPlay("Pkmn move learnt") }

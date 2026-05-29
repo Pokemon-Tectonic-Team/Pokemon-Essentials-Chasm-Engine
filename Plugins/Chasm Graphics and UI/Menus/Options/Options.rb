@@ -39,7 +39,7 @@ class Options
     attr_accessor :quick_evolution
     attr_accessor :name_on_showcases
     attr_accessor :flashing_weather
-    
+
     attr_accessor :bike_bgm
 
     def bgmvolume
@@ -68,7 +68,7 @@ class Options
     end
 
     def storeOptions
-        File.open(Options.optionsFilePath, 'wb') { |file| Marshal.dump($Options, file) }
+        File.open(Options.optionsFilePath, "wb") { |file| Marshal.dump($Options, file) }
         echoln("Wrote options data to file.")
     end
 
@@ -78,19 +78,19 @@ class Options
         @battle_transitions             = $DEBUG ? 1 : 0 # (0=standard, 1=fast)
         @battlestyle                    = 1 # Battle style (0=switch, 1=set)
         @frame                          = 0 # Default window frame (see also Settings::MENU_WINDOWSKINS)
-        @textskin    		            = 0 # Speech frame
-        @dark_mode                      = 1 # (0=true, 1=false)
+        @textskin = 0 # Speech frame
+        @dark_mode = 1 # (0=true, 1=false)
         @font        		            = 0 # Font (see also Settings::FONT_OPTIONS)
         @screensize  		            = (Settings::SCREEN_SCALE * 2).floor - 1 # 0=half size, 1=full size, 2=full-and-a-half size, 3=double size
         @language    		            = 0 # Language (see also Settings::LANGUAGES in script Options)
         @runstyle    		            = 0 # Default movement speed (0=walk, 1=run)
         @bgmvolume                      = 50 # Volume of background music
-        @mevolume                       = 50# Volume of music effects
-        @sevolume    		            = 50 # Volume of sound effects
-        @bike_bgm                       = 0 # (0=true, 1=false)
+        @mevolume                       = 50 # Volume of music effects
+        @sevolume = 50 # Volume of sound effects
+        @bike_bgm = 0 # (0=true, 1=false)
         @textinput   		            = System.platform.downcase[/android/] ? 0 : 1 # Text input mode (0=cursor, 1=keyboard)
         @followers   		            = 0	# Follower Pokemon enabled (0=true, 1=false)
-        @autosave	 		            = 0	# Autosave enabled (0=true, 1=false)
+        @autosave = 0	# Autosave enabled (0=true, 1=false)
         @color_shifts                   = 0 # (0=true, 1=false)
         @particle_effects               = 0 # (0=true, 1=false)
         @overworld_weather              = 0 # (0=true, 1=false)
@@ -158,4 +158,4 @@ else
 end
 
 # STUB
-class PokemonSystem; end;
+class PokemonSystem; end

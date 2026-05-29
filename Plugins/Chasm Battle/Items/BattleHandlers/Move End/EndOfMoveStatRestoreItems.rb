@@ -39,7 +39,7 @@ BattleHandlers::EndOfMoveStatRestoreItem.add(:BLACKHERB,
                battler.pbThis, itemName))
         end
         battler.eachOpposing do |oppBattler|
-            oppBattler.pbLowerMultipleStatSteps(statDown,battler,item: item)
+            oppBattler.pbLowerMultipleStatSteps(statDown, battler, item: item)
         end
         next true
     }

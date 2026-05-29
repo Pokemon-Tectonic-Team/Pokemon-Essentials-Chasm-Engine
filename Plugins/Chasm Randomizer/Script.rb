@@ -6,7 +6,7 @@
 module Randomizer
     @@randomizer = false
     @@rules = []
-    
+
     #-----------------------------------------------------------------------------
     #  check if randomizer is on
     #-----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ module Randomizer
             GameData::Species.each { |species|
                 next unless species.form == 0
                 next if species.isTest?
-                @@allSpeciesArray.push(species.id) 
+                @@allSpeciesArray.push(species.id)
             }
         end
         return @@allSpeciesArray
@@ -103,7 +103,7 @@ module Randomizer
         while newSpecies.nil?
             possibleSpecies = all_species.sample
             bstDiff = (effectiveBST(possibleSpecies) - effectiveBST(oldSpecies)).abs
-            acceptableDiff = [10 + attempts * 5, 60].min
+            acceptableDiff = [10 + (attempts * 5), 60].min
             acceptableDiff = 99_999 if attempts > 1000 # Failsafe
             if !@@rules.include?(:SIMILAR_BST)
                 newSpecies = possibleSpecies
@@ -150,7 +150,7 @@ module Randomizer
     end
 
     def self.trainersRandomized?
-        return false unless self.on?
+        return false unless on?
         return @@rules.include?(:TRAINERS)
     end
 
@@ -376,6 +376,6 @@ end
 def effectiveBST(species)
     return 500 if %i[SHEDINJA WISHIWASHI].include?(species)
     ret = pbBaseStatTotal(species)
-    ret -= 50 if %i[ARCHEN ARCHEOPS SLAKOTH SLAKING REGIGIGAS]
+    ret -= 50
     return ret
 end

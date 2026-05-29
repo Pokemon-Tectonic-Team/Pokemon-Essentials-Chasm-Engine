@@ -36,19 +36,19 @@ class PokeBattle_Battle
         %i[ILLUSION INCOGNITO].each do |illusionAbility|
             if battler.hasActiveAbility?(illusionAbility)
                 BattleHandlers.triggerTargetAbilityOnHit(illusionAbility, nil, battler, nil, self)
-            end     
+            end
         end
         # Mega Evolve
-        if !battler.boss
-            trainerName = pbGetOwnerName(idxBattler)
-            pbDisplay(_INTL("{1}'s fervent wish has reached {2}!", trainerName, battler.pbThis))
-        else
+        if battler.boss
             case battler.pokemon.megaMessage
             when 1 # Rayquaza
                 pbDisplay(_INTL("{1}'s is inspired by the echo of an ancient wish!", battler.pbThis))
             else
                 pbDisplay(_INTL("{1}'s reacts to an unknown power!", battler.pbThis))
             end
+        else
+            trainerName = pbGetOwnerName(idxBattler)
+            pbDisplay(_INTL("{1}'s fervent wish has reached {2}!", trainerName, battler.pbThis))
         end
         pbCommonAnimation("MegaEvolution", battler)
         battler.pokemon.makeMega
@@ -94,9 +94,9 @@ class PokeBattle_Battle
         end
         if battler.isSpecies?(:RAYQUAZA)
             pbDisplay(_INTL("{1} is inspired by the echo of an ancient wish!", battler.pbThis))
-        else 
+        else
             pbDisplay(_INTL("{1}'s Primal Reversion!\nIt reverted to its primal form!", battler.pbThis))
-        end 
+        end
         # Trigger ability
         battler.pbEffectsOnSwitchIn
     end

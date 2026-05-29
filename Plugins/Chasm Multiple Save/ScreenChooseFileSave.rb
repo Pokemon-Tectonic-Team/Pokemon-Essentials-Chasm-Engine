@@ -60,7 +60,7 @@ class ScreenChooseFileSave
             y = 444
             set_src_xy_sprite("panel #{i}", x, y)
             x = 24 * 2
-            y = 16 * 2 + 48 * i
+            y = (16 * 2) + (48 * i)
             set_xy_sprite("panel #{i}", x, y)
         end
         # Set choose bar
@@ -80,7 +80,7 @@ class ScreenChooseFileSave
 
     def choosePanel(pos = 0)
         x = 24 * 2
-        y = 16 * 2 + 48 * pos
+        y = (16 * 2) + (48 * pos)
         set_xy_sprite("choose panel", x, y)
     end
 
@@ -105,10 +105,10 @@ class ScreenChooseFileSave
             trainer = file[:player]
             mapid = file[:map_factory].map.map_id
             mapname = pbGetMapNameFromId(mapid)
-            mapname.gsub!(/\\PN/, trainer.name)
+            mapname.gsub!("\\PN", trainer.name)
             string = _INTL("#{saveIDThisSlot}: #{trainer.name} / #{mapname}")
-            x = 24 * 2 + 18
-            y = 16 * 2 + 5 + 48 * i
+            x = (24 * 2) + 18
+            y = (16 * 2) + 5 + (48 * i)
             textpos << [string, x, y, 0, BaseColor, ShadowColor]
         end
         font.nil? ? pbSetSystemFont(bitmap) : bitmap.font.name = font
@@ -125,110 +125,7 @@ class ScreenChooseFileSave
         @type = type
         loop do
             # Panel Page
-            if !loadmenu
-                if !infor
-                    if draw
-                        startPanel
-                        draw = false
-                    else
-                        # Update
-                        update_ingame
-                        if checkInput(Input::UP)
-                            @position -= 1
-                            @choose -= 1
-                            if @choose < 0
-                                if @position < 0
-                                    @choose = (@count < 7) ? @count - 1 : 6
-                                else
-                                    @choose = 0
-                                end
-                            end
-                            @position = @count - 1 if @position < 0
-                            # Move choose panel
-                            choosePanel(@choose)
-                            # Draw text
-                            textPanel
-                        end
-                        if checkInput(Input::DOWN)
-                            @position += 1
-                            @choose += 1 if @position > @count - 7
-                            if @position >= @count
-                                (@choose = 0
-                                 @position = 0)
-                            end
-                            # Move choose panel
-                            choosePanel(@choose)
-                            # Draw text
-                            textPanel
-                        end
-                        if checkInput(Input::USE)
-                            dispose
-                            draw = true
-                            if fileLoad.empty?
-                                @choose = 0
-                                @position = 0
-                                if FileSave.count == 0
-                                    pbMessage(_INTL("You don't have any save file. Restart game now."))
-                                    @staymenu = false
-                                    $scene = pbCallTitle if @type == 1
-                                    break
-                                end
-                            else
-                                infor = true
-                            end
-                        end
-                        if checkInput(Input::BACK)
-                            @staymenu = true if @type == 1
-                            break
-                        end
-                    end
-                # Information page
-                elsif draw
-                    fileLoad(true)
-                    startPanelInfor(@type)
-                    draw = false
-                else
-                    # Update
-                    update_ingame
-                    # Load file
-                    loadmenu = true if @type == 1
-                    if checkInput(Input::USE)
-                        # Save file
-                        case @type
-                        when 0
-                            SaveData.changeFILEPATH(FileSave.name(@position + 1))
-                            if Game.save
-                                pbMessage(_INTL("\\se[]{1} saved the game.\\me[GUI save game]\\wtnp[30]",
-$Trainer.name))
-                                ret = true
-                            else
-                                pbMessage(_INTL("\\se[]Save failed.\\wtnp[30]"))
-                                ret = false
-                            end
-                            $current_save_file_name = FileSave.name(@position + 1)
-                            setProperSavePath
-                            break
-                        # Delete file
-                        when 2
-                            if pbConfirmMessageSerious(_INTL("Delete all saved data?"))
-                                pbMessage(_INTL("Once data has been deleted, there is no way to recover it.\1"))
-                                if pbConfirmMessageSerious(_INTL("Delete the saved data anyway?"))
-                                    pbMessage(_INTL("Deleting all data. Don't turn off the power.\\wtnp[30]"))
-                                    # Delete
-                                    deleteFile
-                                    @deletefile = true
-                                end
-                            end
-                            break
-                        end
-                    end
-                    if checkInput(Input::BACK)
-                        dispose
-                        draw = true
-                        infor = false
-                    end
-                end
-            else
+            if loadmenu
                 # Update
                 update_ingame
                 # Start
@@ -289,6 +186,107 @@ $Trainer.name))
                     loadmenu = false
                     infor = false
                 end
+            elsif !infor
+                if draw
+                    startPanel
+                    draw = false
+                else
+                    # Update
+                    update_ingame
+                    if checkInput(Input::UP)
+                        @position -= 1
+                        @choose -= 1
+                        if @choose < 0
+                            if @position < 0
+                                @choose = (@count < 7) ? @count - 1 : 6
+                            else
+                                @choose = 0
+                            end
+                        end
+                        @position = @count - 1 if @position < 0
+                        # Move choose panel
+                        choosePanel(@choose)
+                        # Draw text
+                        textPanel
+                    end
+                    if checkInput(Input::DOWN)
+                        @position += 1
+                        @choose += 1 if @position > @count - 7
+                        if @position >= @count
+                            (@choose = 0
+                             @position = 0)
+                        end
+                        # Move choose panel
+                        choosePanel(@choose)
+                        # Draw text
+                        textPanel
+                    end
+                    if checkInput(Input::USE)
+                        dispose
+                        draw = true
+                        if fileLoad.empty?
+                            @choose = 0
+                            @position = 0
+                            if FileSave.count == 0
+                                pbMessage(_INTL("You don't have any save file. Restart game now."))
+                                @staymenu = false
+                                $scene = pbCallTitle if @type == 1
+                                break
+                            end
+                        else
+                            infor = true
+                        end
+                    end
+                    if checkInput(Input::BACK)
+                        @staymenu = true if @type == 1
+                        break
+                    end
+                end
+                # Information page
+            elsif draw
+                fileLoad(true)
+                startPanelInfor(@type)
+                draw = false
+            else
+                # Update
+                update_ingame
+                # Load file
+                loadmenu = true if @type == 1
+                if checkInput(Input::USE)
+                    # Save file
+                    case @type
+                    when 0
+                        SaveData.changeFILEPATH(FileSave.name(@position + 1))
+                        if Game.save
+                            pbMessage(_INTL("\\se[]{1} saved the game.\\me[GUI save game]\\wtnp[30]",
+$Trainer.name))
+                            true
+                        else
+                            pbMessage(_INTL("\\se[]Save failed.\\wtnp[30]"))
+                            false
+                        end
+                        $current_save_file_name = FileSave.name(@position + 1)
+                        setProperSavePath
+                        break
+                    # Delete file
+                    when 2
+                        if pbConfirmMessageSerious(_INTL("Delete all saved data?"))
+                            pbMessage(_INTL("Once data has been deleted, there is no way to recover it.\1"))
+                            if pbConfirmMessageSerious(_INTL("Delete the saved data anyway?"))
+                                pbMessage(_INTL("Deleting all data. Don't turn off the power.\\wtnp[30]"))
+                                # Delete
+                                deleteFile
+                                @deletefile = true
+                            end
+                        end
+                        break
+                    end
+                end
+                if checkInput(Input::BACK)
+                    dispose
+                    draw = true
+                    infor = false
+                end
             end
         end
     end
@@ -338,8 +336,8 @@ $Trainer.name))
                     x = 16
                     y = 444
                     set_src_xy_sprite("panel load #{i}", x, y)
-                    x = 24 * 2 + 8
-                    y = 16 * 2 + 48 * i + 112 * 2
+                    x = (24 * 2) + 8
+                    y = (16 * 2) + (48 * i) + (112 * 2)
                     set_xy_sprite("panel load #{i}", x, y)
                 end
             end
@@ -369,24 +367,24 @@ $Trainer.name))
                 else
                     (type == 1) ? "Load" : "Delete"
                 end
-        textpos << [_INTL("#{title}"), 16 * 2 + x, 5 * 2 + y, 0, TEXTCOLOR, TEXTSHADOWCOLOR]
-        textpos << [_INTL("Badges:"), 16 * 2 + x, 56 * 2 + y, 0, TEXTCOLOR, TEXTSHADOWCOLOR]
-        textpos << [trainer.badge_count.to_s, 103 * 2 + x, 56 * 2 + y, 1, TEXTCOLOR, TEXTSHADOWCOLOR]
-        textpos << [_INTL("Version:"), 16 * 2 + x, 72 * 2 + y, 0, TEXTCOLOR, TEXTSHADOWCOLOR]
-        textpos << [saveData[:game_version], 103 * 2 + x, 72 * 2 + y, 1, TEXTCOLOR, TEXTSHADOWCOLOR]
-        textpos << [_INTL("Time:"), 16 * 2 + x, 88 * 2 + y, 0, TEXTCOLOR, TEXTSHADOWCOLOR]
+        textpos << [_INTL("#{title}"), (16 * 2) + x, (5 * 2) + y, 0, TEXTCOLOR, TEXTSHADOWCOLOR]
+        textpos << [_INTL("Badges:"), (16 * 2) + x, (56 * 2) + y, 0, TEXTCOLOR, TEXTSHADOWCOLOR]
+        textpos << [trainer.badge_count.to_s, (103 * 2) + x, (56 * 2) + y, 1, TEXTCOLOR, TEXTSHADOWCOLOR]
+        textpos << [_INTL("Version:"), (16 * 2) + x, (72 * 2) + y, 0, TEXTCOLOR, TEXTSHADOWCOLOR]
+        textpos << [saveData[:game_version], (103 * 2) + x, (72 * 2) + y, 1, TEXTCOLOR, TEXTSHADOWCOLOR]
+        textpos << [_INTL("Time:"), (16 * 2) + x, (88 * 2) + y, 0, TEXTCOLOR, TEXTSHADOWCOLOR]
         hour = totalsec / 60 / 60
         min  = totalsec / 60 % 60
         if hour > 0
-            textpos << [_INTL("{1}h {2}m", hour, min), 103 * 2 + x, 88 * 2 + y, 1, TEXTCOLOR, TEXTSHADOWCOLOR]
+            textpos << [_INTL("{1}h {2}m", hour, min), (103 * 2) + x, (88 * 2) + y, 1, TEXTCOLOR, TEXTSHADOWCOLOR]
         else
-            textpos << [_INTL("{1}m", min), 103 * 2 + x, 88 * 2 + y, 1, TEXTCOLOR, TEXTSHADOWCOLOR]
+            textpos << [_INTL("{1}m", min), (103 * 2) + x, (88 * 2) + y, 1, TEXTCOLOR, TEXTSHADOWCOLOR]
         end
-        textpos << [trainer.name, 56 * 2 + x, 32 * 2 + y, 0, NAMETEXTCOLOR, NAMETEXTSHADOWCOLOR]
+        textpos << [trainer.name, (56 * 2) + x, (32 * 2) + y, 0, NAMETEXTCOLOR, NAMETEXTSHADOWCOLOR]
         mapid = saveData[:map_factory].map.map_id
         mapname = pbGetMapNameFromId(mapid)
-        mapname.gsub!(/\\PN/, trainer.name)
-        textpos << [mapname, 193 * 2 + x, 5 * 2 + y, 1, TEXTCOLOR, TEXTSHADOWCOLOR]
+        mapname.gsub!("\\PN", trainer.name)
+        textpos << [mapname, (193 * 2) + x, (5 * 2) + y, 1, TEXTCOLOR, TEXTSHADOWCOLOR]
         # Load menu
         if type == 1
             # Mystery gift / Language
@@ -397,7 +395,7 @@ $Trainer.name))
                 (0...@qinfor).each do |i|
                     str = string[i]
                     x1 = x + 36 + 8
-                    y1 = y + 5 + 112 * 2 + 48 * i
+                    y1 = y + 5 + (112 * 2) + (48 * i)
                     textpos << [str, x1, y1, 0, TEXTCOLOR, TEXTSHADOWCOLOR]
                 end
             end
@@ -422,15 +420,15 @@ $Trainer.name))
                 @sprites["player"] = TrainerWalkingCharSprite.new(filename, @viewport)
                 charwidth  = @sprites["player"].bitmap.width
                 charheight = @sprites["player"].bitmap.height
-                @sprites["player"].x        = 56 * 2 - charwidth / 8
-                @sprites["player"].y        = 56 * 2 - charheight / 8
+                @sprites["player"].x        = (56 * 2) - (charwidth / 8)
+                @sprites["player"].y        = (56 * 2) - (charheight / 8)
                 @sprites["player"].src_rect = Rect.new(0, 0, charwidth / 4, charheight / 4)
             end
             for i in 0...trainer.party.length
                 @sprites["party#{i}"] = PokemonIconSprite.new(trainer.party[i], @viewport)
                 @sprites["party#{i}"].setOffset(PictureOrigin::Center)
-                @sprites["party#{i}"].x = (167 + 33 * (i % 2)) * 2
-                @sprites["party#{i}"].y = (56 + 25 * (i / 2)) * 2
+                @sprites["party#{i}"].x = (167 + (33 * (i % 2))) * 2
+                @sprites["party#{i}"].y = (56 + (25 * (i / 2))) * 2
                 @sprites["party#{i}"].z = 99_999
             end
             # Fade
@@ -456,8 +454,8 @@ $Trainer.name))
             x = 16
             y = 490
             set_src_xy_sprite("infor panel 1", x, y)
-            x = 24 * 2 + 8
-            y = 16 * 2 + 48 * (@posinfor - 1) + 112 * 2
+            x = (24 * 2) + 8
+            y = (16 * 2) + (48 * (@posinfor - 1)) + (112 * 2)
             set_xy_sprite("infor panel 1", x, y)
         end
     end
@@ -490,7 +488,7 @@ $Trainer.name))
         pbMessage(_INTL("The save file is corrupt, or is incompatible with this game."))
         exit unless pbConfirmMessageSerious(_INTL("Do you want to delete this save file?"))
         deleteFile
-        $game_system   = Game_System.new
+        $game_system = Game_System.new
         $Options = Options.new
     end
 

@@ -3,8 +3,8 @@ module MessageConfig
     LIGHT_TEXT_SHADOW_COLOR     = Color.new(72, 80, 88)
     DARK_TEXT_MAIN_COLOR        = Color.new(80, 80, 88)
     DARK_TEXT_SHADOW_COLOR      = Color.new(160, 160, 168)
-    LIGHT_FADED_TEXT_COLOR      = Color.new(145,145,145)
-    DARK_FADED_TEXT_COLOR       = Color.new(110,110,110)
+    LIGHT_FADED_TEXT_COLOR      = Color.new(145, 145, 145)
+    DARK_FADED_TEXT_COLOR       = Color.new(110, 110, 110)
     FONT_NAME               = "Power Green"
     CHN_FONT_NAME           = "FusionPixelMonoPatched"
     FONT_SIZE               = 29
@@ -156,19 +156,19 @@ module MessageConfig
     end
 
     def self.pbGetSystemFontName
-        #@@systemFont ||= pbDefaultSystemFontName
+        # @@systemFont ||= pbDefaultSystemFontName
         @@systemFont = pbDefaultSystemFontName
         return @@systemFont
     end
 
     def self.pbGetSmallFontName
-        #@@smallFont ||= pbDefaultSmallFontName
+        # @@smallFont ||= pbDefaultSmallFontName
         @@smallFont = pbDefaultSmallFontName
         return @@smallFont
     end
 
     def self.pbGetNarrowFontName
-        #@@narrowFont ||= pbDefaultNarrowFontName
+        # @@narrowFont ||= pbDefaultNarrowFontName
         @@narrowFont = pbDefaultNarrowFontName
         return @@narrowFont
     end
@@ -224,7 +224,7 @@ def pbBottomLeftLines(window, lines, width = nil)
         window.borderY
     rescue StandardError
         32
-    end + lines * 32
+    end + (lines * 32)
     window.y = Graphics.height - window.height
 end
 
@@ -262,8 +262,8 @@ def pbPositionNearMsgWindow(cmdwindow, msgwindow, side)
         when :right
             cmdwindow.x = msgwindow.x + msgwindow.width - cmdwindow.width
         when :center
-            messageCenter = msgwindow.x + msgwindow.width / 2
-            cmdwindow.x = messageCenter - cmdwindow.width / 2
+            messageCenter = msgwindow.x + (msgwindow.width / 2)
+            cmdwindow.x = messageCenter - (cmdwindow.width / 2)
         else
             cmdwindow.x = msgwindow.x + msgwindow.width - cmdwindow.width
         end
@@ -276,7 +276,7 @@ end
 
 # internal function
 def pbRepositionMessageWindow(msgwindow, linecount = 2)
-    msgwindow.height = 32 * linecount + msgwindow.borderY
+    msgwindow.height = (32 * linecount) + msgwindow.borderY
     msgwindow.y = Graphics.height - msgwindow.height
     if $game_system && $game_system.respond_to?("message_position")
         case $game_system.message_position
@@ -320,10 +320,10 @@ def isDarkBackground(background, rect = nil)
     return true if rect.width <= 0 || rect.height <= 0
     xSeg = (rect.width / 16)
     xLoop = (xSeg == 0) ? 1 : 16
-    xStart = (xSeg == 0) ? rect.x + (rect.width / 2) : rect.x + xSeg / 2
+    xStart = (xSeg == 0) ? rect.x + (rect.width / 2) : rect.x + (xSeg / 2)
     ySeg = (rect.height / 16)
     yLoop = (ySeg == 0) ? 1 : 16
-    yStart = (ySeg == 0) ? rect.y + (rect.height / 2) : rect.y + ySeg / 2
+    yStart = (ySeg == 0) ? rect.y + (rect.height / 2) : rect.y + (ySeg / 2)
     count = 0
     y = yStart
     r = 0
@@ -347,7 +347,7 @@ def isDarkBackground(background, rect = nil)
     r /= count
     g /= count
     b /= count
-    return (r * 0.299 + g * 0.587 + b * 0.114) < 160
+    return ((r * 0.299) + (g * 0.587) + (b * 0.114)) < 160
 end
 
 def isDarkWindowskin(windowskin)
@@ -360,7 +360,7 @@ def isDarkWindowskin(windowskin)
         return isDarkBackground(windowskin, Rect.new(32, 16, 16, 16))
     else
         clr = windowskin.get_pixel(windowskin.width / 2, windowskin.height / 2)
-        return (clr.red * 0.299 + clr.green * 0.587 + clr.blue * 0.114) < 160
+        return ((clr.red * 0.299) + (clr.green * 0.587) + (clr.blue * 0.114)) < 160
     end
 end
 
@@ -372,8 +372,8 @@ def getSkinColor(windowskin, color, isDarkSkin, asTag = true)
         return getTextColorsFromIDNumber(color, isDarkSkin: isDarkSkin, asTag: asTag)
     else # VX windowskin
         color = 0 if color >= 32
-        x = 64 + (color % 8) * 8
-        y = 96 + (color / 8) * 8
+        x = 64 + ((color % 8) * 8)
+        y = 96 + ((color / 8) * 8)
         pixel = windowskin.get_pixel(x, y)
         if asTag
             return shadowctagFromColor(pixel)
@@ -421,8 +421,8 @@ def getTextColorsFromIDNumber(colorID, isDarkSkin: darkMode?, asTag: false)
         colorToRgb32(MessageConfig::DARK_TEXT_SHADOW_COLOR), # 11 Dark default
         colorToRgb32(MessageConfig::LIGHT_TEXT_MAIN_COLOR),
         colorToRgb32(MessageConfig::LIGHT_TEXT_SHADOW_COLOR), # 12 Light default
-        "3976BF", "96B4CA",    # 13 Faded blue
-        "B84940", "E6BAC3",   # 14 Faded red
+        "3976BF", "96B4CA", # 13 Faded blue
+        "B84940", "E6BAC3", # 14 Faded red
     ]
     # No special colour, use default
     if colorID == 0 || colorID > textcolors.length / 2
@@ -440,7 +440,7 @@ def getTextColorsFromIDNumber(colorID, isDarkSkin: darkMode?, asTag: false)
     else
         # Special colour as listed above
         if isDarkSkin && colorID != 12 # Dark background, light text
-            base = textcolors[2 * (colorID - 1) + 1]
+            base = textcolors[(2 * (colorID - 1)) + 1]
             shadow = textcolors[2 * (colorID - 1)]
             if asTag
                 return format("<c3=%s,%s>", base, shadow)
@@ -449,7 +449,7 @@ def getTextColorsFromIDNumber(colorID, isDarkSkin: darkMode?, asTag: false)
             end
         else # Light background, dark text
             base = textcolors[2 * (colorID - 1)]
-            shadow = textcolors[2 * (colorID - 1) + 1]
+            shadow = textcolors[(2 * (colorID - 1)) + 1]
             if asTag
                 return format("<c3=%s,%s>", base, shadow)
             else
@@ -514,10 +514,10 @@ def pbSrcOver(dstColor, srcColor)
     cg = dstColor.green * dstColor.alpha / 255
     cb = dstColor.blue * dstColor.alpha / 255
     ica = 255 - dstColor.alpha
-    a = 255 - (iea * ica) / 255
-    r = (iea * cr) / 255 + er
-    g = (iea * cg) / 255 + eg
-    b = (iea * cb) / 255 + eb
+    a = 255 - ((iea * ica) / 255)
+    r = ((iea * cr) / 255) + er
+    g = ((iea * cg) / 255) + eg
+    b = ((iea * cb) / 255) + eb
     r = (a == 0) ? 0 : r * 255 / a
     g = (a == 0) ? 0 : g * 255 / a
     b = (a == 0) ? 0 : b * 255 / a
@@ -721,7 +721,7 @@ def pbFadeInAndShow(sprites, visiblesprites = nil, duration: 0.4)
     alphaDiff = (255.0 / numFrames).ceil
     pbDeactivateWindows(sprites) do
         for j in 0..numFrames
-            pbSetSpritesToColor(sprites, Color.new(0, 0, 0, ((numFrames - j) * alphaDiff)))
+            pbSetSpritesToColor(sprites, Color.new(0, 0, 0, (numFrames - j) * alphaDiff))
             block_given? ? yield : pbUpdateSpriteHash(sprites)
         end
     end
@@ -740,9 +740,9 @@ end
 
 # Deactivates all windows. If a code block is given, deactivates all windows,
 # runs the code in the block, and reactivates them.
-def pbDeactivateWindows(sprites, &block)
+def pbDeactivateWindows(sprites, &)
     if block_given?
-        pbActivateWindow(sprites, nil, &block)
+        pbActivateWindow(sprites, nil, &)
     else
         pbActivateWindow(sprites, nil)
     end

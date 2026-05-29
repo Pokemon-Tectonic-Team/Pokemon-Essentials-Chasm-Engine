@@ -39,7 +39,7 @@ class PokeBattle_Move_EffectDependsOnEnvironment < PokeBattle_Move
         return if target.damageState.unaffected || target.damageState.substitute
         chance = pbAdditionalEffectChance(user, target, @calcType)
         return if @battle.pbRandom(100) >= chance
-        return unless canApplyRandomAddedEffects?(user,target,chance,true)
+        return unless canApplyRandomAddedEffects?(user, target, chance, true)
         case @secretPower
         when 2
             target.applySleep if target.canSleep?(user, false, self)
@@ -79,7 +79,7 @@ class PokeBattle_Move_EffectDependsOnEnvironment < PokeBattle_Move
         super
     end
 
-    def getTargetAffectingEffectScore(_user, target)
+    def getTargetAffectingEffectScore(_user, _target)
         return 20
     end
 
@@ -147,7 +147,7 @@ class PokeBattle_Move_UseMoveDependingOnEnvironment < PokeBattle_Move
         pseudoMove = calculateNaturePower
         return @battle.getBattleMoveInstanceFromID(pseudoMove).getTargetAffectingEffectScore(user, target)
     end
-	
+
     def getDetailsForMoveDex(detailsList = [])
         detailsList << _INTL("Turns into a different move depending on the environment.")
         detailsList << _INTL("<u>Grassy</u>: Energy Ball")
@@ -162,5 +162,4 @@ class PokeBattle_Move_UseMoveDependingOnEnvironment < PokeBattle_Move
         detailsList << _INTL("<u>Ultraspace</u>: Psycho Boost")
         detailsList << _INTL("<u>Everywhere Else</u>: Ruin")
     end
-
 end

@@ -2,18 +2,18 @@
 # TYPE REWARDS (18 of them)
 ##############################################
 typeThreshold = [50]
-typeRewards = [[:EXPCANDYXL,5]]
+typeRewards = [[:EXPCANDYXL, 5]]
 
 PokEstate::LoadDataDependentAwards += proc {
     # For every type, create three award event subscribers at different thresholds
     GameData::Type.each do |type|
         next if type.pseudo_type
         next if type.id == :MUTANT
-        typeThreshold.each_with_index do |threshold,thresholdIndex|
+        typeThreshold.each_with_index do |threshold, thresholdIndex|
             id = ("TYPE" + type.id.to_s + "AWARD" + thresholdIndex.to_s).to_sym
             PokEstate::GrantAwards.add(id,
-                proc { |pokedex|
-                    next typeReward(type.id,threshold,typeRewards[thresholdIndex])
+                proc { |_pokedex|
+                    next typeReward(type.id, threshold, typeRewards[thresholdIndex])
                 }
             )
         end
@@ -24,16 +24,16 @@ PokEstate::LoadDataDependentAwards += proc {
 # TRIBE REWARDS (22 of them)
 ##############################################
 tribeThreshold = [100]
-tribeRewards = [[:EXPCANDYXL,4]]
+tribeRewards = [[:EXPCANDYXL, 4]]
 
 PokEstate::LoadDataDependentAwards += proc {
     # For every type, create three award event subscribers at different thresholds
     GameData::Tribe.each_legal do |tribe|
-        tribeThreshold.each_with_index do |threshold,thresholdIndex|
+        tribeThreshold.each_with_index do |threshold, thresholdIndex|
             id = ("TRIBE" + tribe.id.to_s + "AWARD" + thresholdIndex.to_s).to_sym
             PokEstate::GrantAwards.add(id,
-                proc { |pokedex|
-                    next tribeReward(tribe.id,threshold,tribeRewards[thresholdIndex])
+                proc { |_pokedex|
+                    next tribeReward(tribe.id, threshold, tribeRewards[thresholdIndex])
                 }
             )
         end
@@ -76,7 +76,7 @@ SMALL_ROUTES_POST_SURF = [
     217, # Sweetrock Harbor
     316, # Sandstone Estuary
 ]
- 
+
 # 6
 MEDIUM_ROUTES_CASABA = [
     136, # Casaba Villa
@@ -89,14 +89,14 @@ MEDIUM_ROUTES_CASABA = [
 
 # 6
 MEDIUM_ROUTES_PRE_SURF =
-[
-    59, # Feebas' Fin
-    60, # Shipping Lane
-    3, # The Shelf
-    55, # Lingering Delta
-    11, # Eleig River Crossing
-    7, # Repora Forest
-]
+    [
+        59, # Feebas' Fin
+        60, # Shipping Lane
+        3, # The Shelf
+        55, # Lingering Delta
+        11, # Eleig River Crossing
+        7, # Repora Forest
+    ]
 
 # 7
 MEDIUM_ROUTES_POST_SURF = [
@@ -110,8 +110,7 @@ MEDIUM_ROUTES_POST_SURF = [
 ]
 
 # 0
-BIG_ROUTES_CASABA = [
-]
+BIG_ROUTES_CASABA = []
 
 # 2
 BIG_ROUTES_PRE_SURF = [
@@ -131,9 +130,9 @@ PokEstate::LoadDataDependentAwards += proc {
         routeName = pbGetMapNameFromId(routeID)
         id = ("ROUTE" + routeName + "AWARD").to_sym
         PokEstate::GrantAwards.add(id,
-            proc { |pokedex|
-                reward = [:EXPCANDYS,5]
-                next areaReward(routeID,reward)
+            proc { |_pokedex|
+                reward = [:EXPCANDYS, 5]
+                next areaReward(routeID, reward)
             }
         )
     end
@@ -142,9 +141,9 @@ PokEstate::LoadDataDependentAwards += proc {
         routeName = pbGetMapNameFromId(routeID)
         id = ("ROUTE" + routeName + "AWARD").to_sym
         PokEstate::GrantAwards.add(id,
-            proc { |pokedex|
-                reward = [:EXPCANDYS,10]
-                next areaReward(routeID,reward)
+            proc { |_pokedex|
+                reward = [:EXPCANDYS, 10]
+                next areaReward(routeID, reward)
             }
         )
     end
@@ -153,9 +152,9 @@ PokEstate::LoadDataDependentAwards += proc {
         routeName = pbGetMapNameFromId(routeID)
         id = ("ROUTE" + routeName + "AWARD").to_sym
         PokEstate::GrantAwards.add(id,
-            proc { |pokedex|
-                reward = [:EXPCANDYS,15]
-                next areaReward(routeID,reward)
+            proc { |_pokedex|
+                reward = [:EXPCANDYS, 15]
+                next areaReward(routeID, reward)
             }
         )
     end
@@ -166,9 +165,9 @@ PokEstate::LoadDataDependentAwards += proc {
         routeName = pbGetMapNameFromId(routeID)
         id = ("ROUTE" + routeName + "AWARD").to_sym
         PokEstate::GrantAwards.add(id,
-            proc { |pokedex|
-                reward = [:EXPCANDYM,3]
-                next areaReward(routeID,reward)
+            proc { |_pokedex|
+                reward = [:EXPCANDYM, 3]
+                next areaReward(routeID, reward)
             }
         )
     end
@@ -177,9 +176,9 @@ PokEstate::LoadDataDependentAwards += proc {
         routeName = pbGetMapNameFromId(routeID)
         id = ("ROUTE" + routeName + "AWARD").to_sym
         PokEstate::GrantAwards.add(id,
-            proc { |pokedex|
-                reward = [:EXPCANDYM,6]
-                next areaReward(routeID,reward)
+            proc { |_pokedex|
+                reward = [:EXPCANDYM, 6]
+                next areaReward(routeID, reward)
             }
         )
     end
@@ -188,9 +187,9 @@ PokEstate::LoadDataDependentAwards += proc {
         routeName = pbGetMapNameFromId(routeID)
         id = ("ROUTE" + routeName + "AWARD").to_sym
         PokEstate::GrantAwards.add(id,
-            proc { |pokedex|
-                reward = [:EXPCANDYM,9]
-                next areaReward(routeID,reward)
+            proc { |_pokedex|
+                reward = [:EXPCANDYM, 9]
+                next areaReward(routeID, reward)
             }
         )
     end
@@ -201,9 +200,9 @@ PokEstate::LoadDataDependentAwards += proc {
         routeName = pbGetMapNameFromId(routeID)
         id = ("ROUTE" + routeName + "AWARD").to_sym
         PokEstate::GrantAwards.add(id,
-            proc { |pokedex|
-                reward = [:EXPCANDYL,2]
-                next areaReward(routeID,reward)
+            proc { |_pokedex|
+                reward = [:EXPCANDYL, 2]
+                next areaReward(routeID, reward)
             }
         )
     end
@@ -212,9 +211,9 @@ PokEstate::LoadDataDependentAwards += proc {
         routeName = pbGetMapNameFromId(routeID)
         id = ("ROUTE" + routeName + "AWARD").to_sym
         PokEstate::GrantAwards.add(id,
-            proc { |pokedex|
-                reward = [:EXPCANDYL,4]
-                next areaReward(routeID,reward)
+            proc { |_pokedex|
+                reward = [:EXPCANDYL, 4]
+                next areaReward(routeID, reward)
             }
         )
     end
@@ -223,9 +222,9 @@ PokEstate::LoadDataDependentAwards += proc {
         routeName = pbGetMapNameFromId(routeID)
         id = ("ROUTE" + routeName + "AWARD").to_sym
         PokEstate::GrantAwards.add(id,
-            proc { |pokedex|
-                reward = [:EXPCANDYL,6]
-                next areaReward(routeID,reward)
+            proc { |_pokedex|
+                reward = [:EXPCANDYL, 6]
+                next areaReward(routeID, reward)
             }
         )
     end
@@ -233,16 +232,16 @@ PokEstate::LoadDataDependentAwards += proc {
     # HUGE ROUTES #
 
     PokEstate::GrantAwards.add("MENAGERIEREWARD",
-        proc { |pokedex|
-            reward = [:EXPCANDYXL,10]
-            next areaReward(213,reward)
+        proc { |_pokedex|
+            reward = [:EXPCANDYXL, 10]
+            next areaReward(213, reward)
         }
     )
 
     PokEstate::GrantAwards.add("OCEANFISHINGREWARD",
-        proc { |pokedex|
-            reward = [:EXPCANDYXL,15]
-            next areaReward(239,reward)
+        proc { |_pokedex|
+            reward = [:EXPCANDYXL, 15]
+            next areaReward(239, reward)
         }
     )
 }
@@ -251,17 +250,16 @@ PokEstate::LoadDataDependentAwards += proc {
 # OVERALL DEX COMPLETION
 ##############################################
 PokEstate::LoadDataDependentAwards += proc {
-
     threshold100Percent = nonLegendarySpeciesCount(false)
     threshold25Percent = (threshold100Percent / 4.0).floor
     threshold50Percent = (threshold100Percent / 2.0).floor
     threshold75Percent = (3.0 * threshold100Percent / 4.0).floor
 
     PokEstate::GrantAwards.add(:DEXCOMPLETION25PERCENT,
-        proc { |pokedex|
+        proc { |_pokedex|
             next {
-                reward: [:MASTERBALL,3],
-                description: _INTL("{1} non-legendary species (25%)",threshold25Percent),
+                reward: [:MASTERBALL, 3],
+                description: _INTL("{1} non-legendary species (25%)", threshold25Percent),
                 page: 4,
                 threshold: threshold25Percent,
                 amount: nonLegendarySpeciesCount(true),
@@ -270,10 +268,10 @@ PokEstate::LoadDataDependentAwards += proc {
     )
 
     PokEstate::GrantAwards.add(:DEXCOMPLETION50PERCENT,
-        proc { |pokedex|
+        proc { |_pokedex|
             next {
                 reward: [:BALLLAUNCHER],
-                description: _INTL("{1} non-legendary species (50%)",threshold50Percent),
+                description: _INTL("{1} non-legendary species (50%)", threshold50Percent),
                 page: 4,
                 threshold: threshold50Percent,
                 amount: nonLegendarySpeciesCount(true),
@@ -282,10 +280,10 @@ PokEstate::LoadDataDependentAwards += proc {
     )
 
     PokEstate::GrantAwards.add(:DEXCOMPLETION75PERCENT,
-        proc { |pokedex|
+        proc { |_pokedex|
             next {
                 reward: [:GLEAMPOWDER],
-                description: _INTL("{1} non-legendary species (75%)",threshold75Percent),
+                description: _INTL("{1} non-legendary species (75%)", threshold75Percent),
                 page: 4,
                 threshold: threshold75Percent,
                 amount: nonLegendarySpeciesCount(true),
@@ -294,10 +292,10 @@ PokEstate::LoadDataDependentAwards += proc {
     )
 
     PokEstate::GrantAwards.add(:DEXCOMPLETION100PERCENT,
-        proc { |pokedex|
+        proc { |_pokedex|
             next {
                 reward: [:SHINYCHARM],
-                description: _INTL("{1} non-legendary species (100%)",threshold100Percent),
+                description: _INTL("{1} non-legendary species (100%)", threshold100Percent),
                 page: 4,
                 threshold: threshold100Percent,
                 amount: nonLegendarySpeciesCount(true),
@@ -311,20 +309,20 @@ PokEstate::LoadDataDependentAwards += proc {
 ##############################################
 
 PokEstate::LoadDataDependentAwards += proc {
-    [15,20,25,30,35,40,45,50,55,60,65,70].each do |levelCap|
+    [15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70].each do |levelCap|
         id = ("LEVELCAP" + levelCap.to_s + "AWARD").to_sym
         PokEstate::GrantAwards.add(id,
-            proc { |pokedex|
+            proc { |_pokedex|
                 itemsGiven = candiesForLevel(levelCap)
-                for i in 0...itemsGiven.length/2
-                    itemsGiven[i*2 + 1] *= 4 # Worth four trainer perfects / two saccharite deposits
+                for i in 0...itemsGiven.length / 2
+                    itemsGiven[(i * 2) + 1] *= 4 # Worth four trainer perfects / two saccharite deposits
                 end
                 next {
                     reward: itemsGiven,
-                    description: _INTL("Level cap {1}",levelCap),
+                    description: _INTL("Level cap {1}", levelCap),
                     page: 5,
                     threshold: levelCap,
-                    amount: getLevelCap(),
+                    amount: getLevelCap,
                 }
             }
         )

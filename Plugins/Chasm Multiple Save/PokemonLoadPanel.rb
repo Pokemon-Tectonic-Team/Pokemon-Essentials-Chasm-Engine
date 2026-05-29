@@ -59,7 +59,7 @@ class PokemonLoadPanel < SpriteWrapper
                 bitmap.blt(0, 0, @bgbitmap.bitmap, Rect.new(0, @selected ? 111 * 2 : 0, @bgbitmap.width, 111 * 2))
             else
                 bitmap.blt(0, 0, @bgbitmap.bitmap,
-  Rect.new(0, 111 * 2 * 2 + (@selected ? 23 * 2 : 0), @bgbitmap.width, 23 * 2))
+  Rect.new(0, (111 * 2 * 2) + (@selected ? 23 * 2 : 0), @bgbitmap.width, 23 * 2))
             end
             textpos = []
             if @isContinue
@@ -84,7 +84,7 @@ class PokemonLoadPanel < SpriteWrapper
                     textpos.push([@trainer.name, 56 * 2, 29 * 2, 0, TEXTCOLOR, TEXTSHADOWCOLOR])
                 end
                 mapname = pbGetMapNameFromId(@mapid)
-                mapname.gsub!(/\\PN/, @trainer.name)
+                mapname.gsub!("\\PN", @trainer.name)
                 textpos.push([mapname, 193 * 2, 2 * 2, 1, TEXTCOLOR, TEXTSHADOWCOLOR])
             else
                 textpos.push([@title, 16 * 2, 1 * 2, 0, TEXTCOLOR, TEXTSHADOWCOLOR])

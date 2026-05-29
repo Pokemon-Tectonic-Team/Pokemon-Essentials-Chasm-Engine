@@ -27,7 +27,7 @@ class PokeBattle_Move_StartUserAirborne5 < PokeBattle_Move
     end
 
     def pbEffectGeneral(user)
-        user.applyEffect(:MagnetRise, applyEffectDurationModifiers(5,user))
+        user.applyEffect(:MagnetRise, applyEffectDurationModifiers(5, user))
     end
 
     def getEffectScore(user, _target)
@@ -84,7 +84,7 @@ class PokeBattle_Move_RaiseUserSpAtk3StartUserAttacksSpread < PokeBattle_Move
     end
 
     def getEffectScore(user, target)
-        score = getMultiStatUpEffectScore([:SPECIAL_ATTACK,3], user, target)
+        score = getMultiStatUpEffectScore([:SPECIAL_ATTACK, 3], user, target)
         score += 30 unless user.effectActive?(:FlareWitch)
         return score
     end
@@ -158,14 +158,14 @@ class PokeBattle_Move_WishingWellScalesWithMoney < PokeBattle_Move
         return false
     end
 
-    def pbOnStartUse(user, targets)
-        @coinsToConsume = [user.pbOwnSide.countEffect(:PayDay),1000].min
+    def pbOnStartUse(user, _targets)
+        @coinsToConsume = [user.pbOwnSide.countEffect(:PayDay), 1000].min
     end
 
     def getEffectScore(user, _target)
         if user.pbOwnSide.effectActive?(:WishingWell)
             remainingTurns = user.pbOwnSide.countEffect(:WishingWell)
-            if remainingTurns > (applyEffectDurationModifiers([user.pbOwnSide.countEffect(:PayDay),1000].min )/ 100).floor
+            if remainingTurns > (applyEffectDurationModifiers([user.pbOwnSide.countEffect(:PayDay), 1000].min) / 100).floor
                 return 0
             end
         end
@@ -175,7 +175,7 @@ class PokeBattle_Move_WishingWellScalesWithMoney < PokeBattle_Move
             worthRatioUser = 0
             b.eachAIKnownMove do |move|
                 if move.randomEffect?
-                    worthRatioUser = [worthRatioUser+5, 10].min
+                    worthRatioUser = [worthRatioUser + 5, 10].min
                 end
             end
             worthRatio += worthRatioUser
@@ -185,7 +185,7 @@ class PokeBattle_Move_WishingWellScalesWithMoney < PokeBattle_Move
             worthRatio += 5 unless b.healthCapped?
         end
 
-        return [worthRatio * (applyEffectDurationModifiers([user.pbOwnSide.countEffect(:PayDay),1000].min) / 100).floor, 200].min
+        return [worthRatio * (applyEffectDurationModifiers([user.pbOwnSide.countEffect(:PayDay), 1000].min) / 100).floor, 200].min
     end
 
     def pbEffectGeneral(user)
@@ -233,7 +233,7 @@ class PokeBattle_Move_GulpingDive < PokeBattle_Move
             if user.hp > (user.totalhp / 2)
                 user.pbChangeForm(1, "Cramorant is gulping!")
             else
-                user.pbChangeForm(2, "Cramorant is gorging!") 
+                user.pbChangeForm(2, "Cramorant is gorging!")
             end
             @battle.scene.pbChangePokemon(user, user.pokemon)
         end

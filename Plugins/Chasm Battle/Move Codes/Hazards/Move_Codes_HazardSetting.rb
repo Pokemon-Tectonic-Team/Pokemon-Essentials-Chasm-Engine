@@ -3,7 +3,7 @@
 #===============================================================================
 class PokeBattle_Move_Spikes < PokeBattle_Move
     def hazardMove?; return true; end
-    def aiAutoKnows?(pokemon); return true; end
+    def aiAutoKnows?(_pokemon); return true; end
 
     def pbMoveFailed?(user, _targets, show_message)
         return false if damagingMove?
@@ -80,8 +80,8 @@ class PokeBattle_Move_TwoSpikesLoseThirdOfTotalHP < PokeBattle_Move_Spikes
         return if damagingMove?
         if user.pbOpposingSide.countEffect(:Spikes) > 1
             user.pbOpposingSide.incrementEffect(:Spikes)
-        else 
-            user.pbOpposingSide.incrementEffect(:Spikes,2)
+        else
+            user.pbOpposingSide.incrementEffect(:Spikes, 2)
         end
         user.applyFractionalDamage(1.0 / 3.0)
     end
@@ -91,8 +91,8 @@ class PokeBattle_Move_TwoSpikesLoseThirdOfTotalHP < PokeBattle_Move_Spikes
         return if target.pbOwnSide.effectAtMax?(:Spikes)
         if target.pbOwnSide.countEffect(:Spikes) > 1
             target.pbOwnSide.incrementEffect(:Spikes)
-        else 
-            target.pbOwnSide.incrementEffect(:Spikes,2)
+        else
+            target.pbOwnSide.incrementEffect(:Spikes, 2)
         end
         user.applyFractionalDamage(1.0 / 3.0)
     end
@@ -208,6 +208,7 @@ end
 #===============================================================================
 class PokeBattle_Move_PoisonSpikes < PokeBattle_StatusSpikeMove
     def hazardMove?; return true; end
+
     def initialize(battle, move)
         @spikeEffect = :PoisonSpikes
         super
@@ -228,6 +229,7 @@ end
 #===============================================================================
 class PokeBattle_Move_FlameSpikes < PokeBattle_StatusSpikeMove
     def hazardMove?; return true; end
+
     def initialize(battle, move)
         @spikeEffect = :FlameSpikes
         super
@@ -248,6 +250,7 @@ end
 #===============================================================================
 class PokeBattle_Move_FrostSpikes < PokeBattle_StatusSpikeMove
     def hazardMove?; return true; end
+
     def initialize(battle, move)
         @spikeEffect = :FrostSpikes
         super
@@ -267,7 +270,7 @@ end
 #===============================================================================
 class PokeBattle_Move_StealthRock < PokeBattle_Move
     def hazardMove?; return true; end
-    def aiAutoKnows?(pokemon); return true; end
+    def aiAutoKnows?(_pokemon); return true; end
 
     def pbMoveFailed?(user, _targets, show_message)
         return false if damagingMove?
@@ -301,7 +304,7 @@ end
 # Sets stealth rock and sandstorm for 5 turns. (Megalith Rite)
 #===============================================================================
 class PokeBattle_Move_StealthRockStartSandstorm5 < PokeBattle_Move_StealthRock
-    def pbMoveFailed?(user, _targets, show_message)
+    def pbMoveFailed?(_user, _targets, _show_message)
         return false
     end
 
@@ -316,7 +319,7 @@ end
 #===============================================================================
 class PokeBattle_Move_FeatherWard < PokeBattle_Move
     def hazardMove?; return true; end
-    def aiAutoKnows?(pokemon); return true; end
+    def aiAutoKnows?(_pokemon); return true; end
 
     def pbMoveFailed?(user, _targets, show_message)
         if user.pbOpposingSide.effectActive?(:FeatherWard)
@@ -342,7 +345,7 @@ end
 #===============================================================================
 class PokeBattle_Move_StickyWeb < PokeBattle_Move
     def hazardMove?; return true; end
-    def aiAutoKnows?(pokemon); return true; end
+    def aiAutoKnows?(_pokemon); return true; end
 
     def pbMoveFailed?(user, _targets, show_message)
         if user.pbOpposingSide.effectActive?(:StickyWeb)
@@ -366,7 +369,7 @@ end
 #===============================================================================
 class PokeBattle_Move_LiveWire < PokeBattle_Move
     def hazardMove?; return true; end
-    def aiAutoKnows?(pokemon); return true; end
+    def aiAutoKnows?(_pokemon); return true; end
 
     def pbMoveFailed?(user, _targets, show_message)
         return false if damagingMove?

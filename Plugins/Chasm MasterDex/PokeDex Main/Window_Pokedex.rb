@@ -4,7 +4,7 @@
 class Window_Pokedex < Window_DrawableCommand
     def initialize(x, y, width, height, viewport)
         @commands = []
-        super(x, y, width, height, viewport)
+        super
         @selarrow     = AnimatedBitmap.new("Graphics/Pictures/Pokedex/cursor_list")
         @pokeballOwn  = AnimatedBitmap.new("Graphics/Pictures/Pokedex/icon_own")
         @pokeballSeen = AnimatedBitmap.new("Graphics/Pictures/Pokedex/icon_seen")

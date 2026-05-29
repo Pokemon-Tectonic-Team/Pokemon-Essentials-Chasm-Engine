@@ -9,7 +9,7 @@ OMINOUS_EGG_REWARDS = {
 }
 
 GlobalStateHandlers::GlobalVariableChanged.add(TRAINERS_PERFECTED_GLOBAL_VAR,
-    proc { |variableID, value|
+    proc { |_variableID, _value|
         if $PokemonBag && pbHasItem?(:OMINOUSEGG)
             checkForOminousEggRewards
         end
@@ -72,14 +72,13 @@ def checkOminousEggProgress
     anyShown = false
 
     perfectedCount = getGlobalVariable(TRAINERS_PERFECTED_GLOBAL_VAR)
-    OMINOUS_EGG_REWARDS.each_with_index do |kvp, index|
+    OMINOUS_EGG_REWARDS.each_with_index do |kvp, _index|
         key = kvp[0]
-        if perfectedCount < key
-            pbMessage(_INTL("\\i[OMINOUSEGG]...the next stage requires..."))
-            pbMessage(_INTL("\\i[OMINOUSEGG]...{1} feedings...",key - perfectedCount))
-            anyShown = true
-            break
-        end
+        next unless perfectedCount < key
+        pbMessage(_INTL("\\i[OMINOUSEGG]...the next stage requires..."))
+        pbMessage(_INTL("\\i[OMINOUSEGG]...{1} feedings...", key - perfectedCount))
+        anyShown = true
+        break
     end
 
     unless anyShown
@@ -88,7 +87,7 @@ def checkOminousEggProgress
     pbWait(20)
 end
 
-ItemHandlers::UseInField.add(:OMINOUSEGG,proc { |item|
+ItemHandlers::UseInField.add(:OMINOUSEGG, proc { |_item|
     checkOminousEggProgress
     next 1
 })

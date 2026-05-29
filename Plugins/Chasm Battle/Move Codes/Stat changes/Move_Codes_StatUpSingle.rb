@@ -119,7 +119,7 @@ class PokeBattle_Move_EmpoweredSpikyShield < PokeBattle_Move_RaiseUserDef2
 
     def pbEffectGeneral(user)
         super
-        user.addAbility(:IRONBARBS,true)
+        user.addAbility(:IRONBARBS, true)
         transformType(user, :GRASS)
     end
 end
@@ -150,7 +150,7 @@ class PokeBattle_Move_EmpoweredIronDefense < PokeBattle_Move_RaiseUserDef4
 
     def pbEffectGeneral(user)
         super
-        user.addAbility(:FILTER,true)
+        user.addAbility(:FILTER, true)
         transformType(user, :STEEL)
     end
 end
@@ -162,7 +162,7 @@ class PokeBattle_Move_RaiseUserDefense5 < PokeBattle_StatUpMove
     def initialize(battle, move)
         super
         @statUp = [:DEFENSE, 5]
-    end	
+    end
 end
 
 #===============================================================================
@@ -185,8 +185,8 @@ class PokeBattle_Move_RaiseUserSpd2 < PokeBattle_StatUpMove
     end
 end
 
-class PokeBattle_Move_EmpoweredBulletTrain < PokeBattle_Move_RaiseUserSpd2  
-    include EmpoweredMove  
+class PokeBattle_Move_EmpoweredBulletTrain < PokeBattle_Move_RaiseUserSpd2
+    include EmpoweredMove
 end
 
 #===============================================================================
@@ -226,7 +226,7 @@ class PokeBattle_Move_EmpoweredRockPolish < PokeBattle_StatUpMove
 
     def pbEffectGeneral(user)
         super
-        craftItem(user,:ROCKGEM)
+        craftItem(user, :ROCKGEM)
         transformType(user, :ROCK)
     end
 end
@@ -349,7 +349,7 @@ class PokeBattle_Move_EmpoweredMirrorShield < PokeBattle_Move_RaiseUserSpDef2
 
     def pbEffectGeneral(user)
         super
-        user.addAbility(:FEEDBACK,true)
+        user.addAbility(:FEEDBACK, true)
         transformType(user, :STEEL)
     end
 end
@@ -380,7 +380,7 @@ class PokeBattle_Move_EmpoweredAmnesia < PokeBattle_Move_RaiseUserSpDef4
 
     def pbEffectGeneral(user)
         super
-        user.addAbility(:UNAWARE,true)
+        user.addAbility(:UNAWARE, true)
         transformType(user, :PSYCHIC)
     end
 end
@@ -392,7 +392,7 @@ class PokeBattle_Move_RaiseUserSpDef5 < PokeBattle_StatUpMove
     def initialize(battle, move)
         super
         @statUp = [:SPECIAL_DEFENSE, 5]
-    end	
+    end
 end
 
 #===============================================================================
@@ -402,7 +402,7 @@ class PokeBattle_Move_RaiseCriticalHitRate1 < PokeBattle_Move_RaiseCriticalHitRa
     def initialize(battle, move)
         super
         @critStages = 1
-    end	
+    end
 end
 
 #===============================================================================
@@ -412,7 +412,7 @@ class PokeBattle_Move_RaiseCriticalHitRate2 < PokeBattle_Move_RaiseCriticalHitRa
     def initialize(battle, move)
         super
         @critStages = 2
-    end	
+    end
 end
 
 #===============================================================================
@@ -422,7 +422,7 @@ class PokeBattle_Move_RaiseCriticalHitRate3 < PokeBattle_Move_RaiseCriticalHitRa
     def initialize(battle, move)
         super
         @critStages = 3
-    end	
+    end
 end
 
 #===============================================================================
@@ -432,7 +432,7 @@ class PokeBattle_Move_RaiseCriticalHitRate4 < PokeBattle_Move_RaiseCriticalHitRa
     def initialize(battle, move)
         super
         @critStages = 4
-    end	
+    end
 end
 
 #===============================================================================

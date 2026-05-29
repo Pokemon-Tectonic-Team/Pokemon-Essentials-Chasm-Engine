@@ -138,7 +138,7 @@ end
 class PokeBattle_Move_TrapTargetUntilHitLowerTargetAtkSpAtk1 < PokeBattle_Move
     def pbFailsAgainstTarget?(user, target, show_message)
         if target.effectActive?(:IceDungeon) && target.pbCanLowerStatStep?(:ATTACK, user, self) &&
-                target.pbCanLowerStatStep?(:SPECIAL_ATTACK, user, self)
+           target.pbCanLowerStatStep?(:SPECIAL_ATTACK, user, self)
             if show_message
                 @battle.pbDisplay(_INTL("But it failed, since {1} is already imprisoned and its attacking stats can't be reduced!", target.pbThis(true)))
             end
@@ -236,7 +236,7 @@ end
 # The target cannot escape and takes 50% more damage from all attacks. (Death Mark)
 #===============================================================================
 class PokeBattle_Move_TrapTargetTargetTakes50PercentMoreDamage < PokeBattle_Move
-    def pbFailsAgainstTarget?(user, target, show_message)
+    def pbFailsAgainstTarget?(_user, target, show_message)
         if target.effectActive?(:DeathMark)
             @battle.pbDisplay(_INTL("But it failed, since the target is already marked for death!")) if show_message
             return true

@@ -2,7 +2,7 @@ class AvatarTargetReticle < IconSprite
     attr_reader   :battler
     attr_reader   :extraAggro
 
-    def initialize(battler,sideSize,viewport=nil)
+    def initialize(battler, sideSize, viewport = nil)
         super(viewport)
         @battler      = battler
         @sideSize     = sideSize
@@ -24,20 +24,20 @@ class AvatarTargetReticle < IconSprite
     end
 
     def refresh
-        battlerPos = PokeBattle_SceneConstants.pbBattlerPosition(@battler.index,@sideSize)
+        battlerPos = PokeBattle_SceneConstants.pbBattlerPosition(@battler.index, @sideSize)
         battlerSprite = @battler.battle.scene.sprites["pokemon_#{@battler.index}"]
-        @battlerX = battlerPos[0] - battlerSprite.width / 2 - 20
-        @battlerY = battlerPos[1] - battlerSprite.height / 2 - 100
+        @battlerX = battlerPos[0] - (battlerSprite.width / 2) - 20
+        @battlerY = battlerPos[1] - (battlerSprite.height / 2) - 100
         self.x = @battlerX
         self.y = @battlerY
         self.z = 100
     end
 
-    QUARTER_ANIM_PERIOD = Graphics.frame_rate*3/20
+    QUARTER_ANIM_PERIOD = Graphics.frame_rate * 3 / 20
 
-    def update(frameCounter=0)
+    def update(frameCounter = 0)
         @yOffset = 0
-        case (frameCounter/QUARTER_ANIM_PERIOD).floor
+        case (frameCounter / QUARTER_ANIM_PERIOD).floor
         when 1 then @yOffset = -2
         when 3 then @yOffset = +2
         end

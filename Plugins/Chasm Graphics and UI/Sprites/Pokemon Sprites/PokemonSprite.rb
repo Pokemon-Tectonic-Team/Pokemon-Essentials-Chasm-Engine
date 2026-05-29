@@ -5,7 +5,7 @@ class PokemonSprite < SpriteWrapper
     attr_reader :pokemon
 
     def initialize(viewport = nil)
-        super(viewport)
+        super
         @_iconbitmap = nil
     end
 

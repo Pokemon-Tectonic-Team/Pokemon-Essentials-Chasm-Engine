@@ -131,38 +131,38 @@ def pbTimeEventValid(variableNumber)
     return retval
 end
 
-def pbExclaim(event,id=Settings::EXCLAMATION_ANIMATION_ID,tinting=false)
+def pbExclaim(event, id = Settings::EXCLAMATION_ANIMATION_ID, tinting = false)
     if event.is_a?(Array)
-      sprite = nil
-      done = []
-      for i in event
-        if !done.include?(i.id)
-          pbExclaim(i,id,tinting)
-          done.push(i.id)
+        sprite = nil
+        done = []
+        for i in event
+            if !done.include?(i.id)
+                pbExclaim(i, id, tinting)
+                done.push(i.id)
+            end
         end
-      end
     else
-      xPos = event.x
-      xPos += (event.width-1)/2.0
-      yPos = event.y
-      yPos -= (event.height-1)/2.0
-      sprite = $scene.spriteset.addUserAnimation(id,xPos,yPos,tinting,2)
+        xPos = event.x
+        xPos += (event.width - 1) / 2.0
+        yPos = event.y
+        yPos -= (event.height - 1) / 2.0
+        sprite = $scene.spriteset.addUserAnimation(id, xPos, yPos, tinting, 2)
     end
-    while !sprite.disposed?
-      Graphics.update
-      Input.update
-      pbUpdateSceneMap
+    until sprite.disposed?
+        Graphics.update
+        Input.update
+        pbUpdateSceneMap
     end
 end
 
 def pbNoticePlayer(event)
-    if !pbFacingEachOther(event,$game_player)
-      pbExclaim(event)
+    if !pbFacingEachOther(event, $game_player)
+        pbExclaim(event)
     end
-    pbTurnTowardEvent($game_player,event)
+    pbTurnTowardEvent($game_player, event)
     pbMoveTowardPlayer(event)
-  end
-  
+end
+
 def noticePlayer
     pbNoticePlayer(get_self)
 end
@@ -189,23 +189,23 @@ def selectPlayerAppearance
     GameData::Metadata.get_players.each do |playerMetaData|
         trainerTypeID = playerMetaData[0]
         trainerTypeData = GameData::TrainerType.get(trainerTypeID)
-        commands.push(trainerTypeData.name)  
+        commands.push(trainerTypeData.name)
     end
     commands.push(_INTL("Cancel"))
 
-    appearanceSelection = pbMessage(_INTL("Which appearance would you like?"),commands,commands.length,nil,$Trainer.character_ID)
+    appearanceSelection = pbMessage(_INTL("Which appearance would you like?"), commands, commands.length, nil, $Trainer.character_ID)
     return if appearanceSelection >= commands.length
     pbChangePlayer(appearanceSelection, true)
 end
 
-def pbChangePlayer(id,showMessage = false)
+def pbChangePlayer(id, showMessage = false)
     return false if id < 0 || id >= 8
     meta = GameData::Metadata.get_player(id)
     return false if !meta
     $Trainer.character_ID = id
     $Trainer.trainer_type = meta[0]
     $game_player.character_name = meta[1]
-    pbMessage(_INTL("Appearance changed to {1}!",GameData::TrainerType.get(meta[0]).name)) if showMessage
+    pbMessage(_INTL("Appearance changed to {1}!", GameData::TrainerType.get(meta[0]).name)) if showMessage
 end
 
 def pbTrainerName(name = nil, outfit = 0)
@@ -418,7 +418,7 @@ def pbConvertItemToItem(variable, array)
     pbSet(variable, nil)
     for i in 0...(array.length / 2)
         next if item != array[2 * i]
-        pbSet(variable, array[2 * i + 1])
+        pbSet(variable, array[(2 * i) + 1])
         return
     end
 end
@@ -428,7 +428,7 @@ def pbConvertItemToPokemon(variable, array)
     pbSet(variable, nil)
     for i in 0...(array.length / 2)
         next if item != array[2 * i]
-        pbSet(variable, GameData::Species.get(array[2 * i + 1]).id)
+        pbSet(variable, GameData::Species.get(array[(2 * i) + 1]).id)
         return
     end
 end
@@ -536,16 +536,16 @@ DIR_SCREENSHOTS = "Screenshots"
 
 def pbScreenCapture(label = nil, show_message = false)
     if label
-        fileName = sprintf("%s %s", label, getCurrentTimeLabel)
+        fileName = format("%s %s", label, getCurrentTimeLabel)
     else
         fileName = getCurrentTimeLabel
     end
-  	Dir.mkdir(DIR_SCREENSHOTS) if !safeExists?(DIR_SCREENSHOTS)
-  	capturefile = sprintf("%s/%s.png", DIR_SCREENSHOTS, fileName)
-  	Graphics.screenshot(capturefile)
-  	pbSEPlay("Pkmn exp full") if FileTest.audio_exist?("Audio/SE/Pkmn exp full")
+    Dir.mkdir(DIR_SCREENSHOTS) if !safeExists?(DIR_SCREENSHOTS)
+    capturefile = format("%s/%s.png", DIR_SCREENSHOTS, fileName)
+    Graphics.screenshot(capturefile)
+    pbSEPlay("Pkmn exp full") if FileTest.audio_exist?("Audio/SE/Pkmn exp full")
 
-	pbMessage(_INTL("Screenshot saved to folder {1}\1",DIR_SCREENSHOTS)) if show_message
+    pbMessage(_INTL("Screenshot saved to folder {1}\1", DIR_SCREENSHOTS)) if show_message
 end
 
 def getCurrentTimeLabel

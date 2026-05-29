@@ -67,13 +67,13 @@ class PokeBattle_Battler
         super
     end
 
-    def eachEffectAlsoPosition(onlyActive = false, alsoPosition, &block)
-        super(onlyActive).each(&block)
-        @battle.positions[@index].eachEffect(onlyActive, &block) if alsoPosition
+    def eachEffectAlsoPosition(onlyActive = false, alsoPosition, &)
+        super(onlyActive).each(&)
+        @battle.positions[@index].eachEffect(onlyActive, &) if alsoPosition
     end
 
     def getReleventEffectHolders
-        holders = [self, @battle.positions[@index], pbOwnSide, @battle.field]
+        [self, @battle.positions[@index], pbOwnSide, @battle.field]
     end
 
     def eachEffectAllLocations(onlyActive = false, &block)
@@ -98,11 +98,11 @@ class PokeBattle_Battler
         @indicesTargetedThisRound.clear
         @empoweredTimer += 1 if boss?
 
-        @lastRoundMove 			= @lastMoveUsed
+        @lastRoundMove	= @lastMoveUsed
         @lastRoundMoveType	    = @lastMoveUsedType
         @lastRoundMoveCategory	= @lastMoveUsedCategory
 
-        @movesUsedLastTurn      = @movesUsedThisTurn.clone
+        @movesUsedLastTurn = @movesUsedThisTurn.clone
         @movesUsedThisTurn.clear
     end
 end

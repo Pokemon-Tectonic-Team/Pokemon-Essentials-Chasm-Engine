@@ -212,7 +212,7 @@ end
 # Target becomes Bug type. (Scale Scatter)
 #===============================================================================
 class PokeBattle_Move_SetTargetTypesToBug < PokeBattle_Move
-    def pbFailsAgainstTarget?(_user, target, show_message)
+    def pbFailsAgainstTarget?(_user, _target, show_message)
         unless GameData::Type.exists?(:BUG)
             @battle.pbDisplay(_INTL("But it failed, since the Bug-type doesn't exist!")) if show_message
             return true
@@ -348,7 +348,7 @@ class PokeBattle_Move_AddSteelTypeToTargetLowerTargetSpd4 < PokeBattle_Move
     def getTargetAffectingEffectScore(user, target)
         score = 0
         score += 60 unless target.pbHasTypeAI?(:STEEL)
-        score += getMultiStatDownEffectScore([:SPEED,4],user,target)
+        score += getMultiStatDownEffectScore([:SPEED, 4], user, target)
         return score
     end
 end
@@ -358,7 +358,8 @@ end
 # Additional effect changes depending on rotom's form. Only usable by rotom.
 #===============================================================================
 class PokeBattle_Move_TypeAndEffectDependsOnUserRotomForm < PokeBattle_Move
-    def aiAutoKnows?(pokemon); return true; end
+    def aiAutoKnows?(_pokemon); return true; end
+
     def pbMoveFailed?(user, _targets, show_message)
         unless user.countsAs?(:ROTOM)
             @battle.pbDisplay(_INTL("But {1} can't use the move!", user.pbThis(true))) if show_message
@@ -453,7 +454,7 @@ class PokeBattle_Move_SetTargetTypesToChoiceOfDragonFairySteel < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenType = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which type should {1} gift?", user.pbThis(true)),validTypeNames,0)
+                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which type should {1} gift?", user.pbThis(true)), validTypeNames, 0)
                 @chosenType = validTypes[chosenIndex]
                 return @chosenType
             end

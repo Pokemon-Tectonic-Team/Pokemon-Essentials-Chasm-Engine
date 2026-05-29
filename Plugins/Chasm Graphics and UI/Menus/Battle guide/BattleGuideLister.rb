@@ -10,19 +10,19 @@ class BattleGuideLister
         @commands = []
         @ids = []
     end
-    
+
     def dispose
         @explanationWindow.dispose
     end
-    
+
     def setViewport(viewport)
         @explanationWindow.viewport = viewport
     end
-    
+
     def startIndex
         return @index
     end
-    
+
     def commands
         @commands = @guideHash.keys
         @index = @selection
@@ -30,12 +30,12 @@ class BattleGuideLister
         @index = 0 if @index < 0
         return @commands
     end
-    
+
     def value(index)
         return nil if index < 0
         return @commands[index]
     end
-    
+
     def refresh(index)
         return if index < 0
         text = @guideHash[@commands[index]]

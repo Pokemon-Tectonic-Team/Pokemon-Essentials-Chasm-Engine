@@ -1,4 +1,3 @@
-
 #===============================================================================
 # Event movement
 #===============================================================================
@@ -49,45 +48,43 @@ module PBMoveRoute
     PlaySE             = 44 # 1 param
     Script             = 45 # 1 param
     ScriptAsync        = 101 # 1 param
-  end
-  
-  
-  
-  def pbMoveRoute(event, commands, waitComplete = true)
+end
+
+def pbMoveRoute(event, commands, waitComplete = true)
     route = RPG::MoveRoute.new
     route.repeat    = false
     route.skippable = true
     route.list.clear
     route.list.push(RPG::MoveCommand.new(PBMoveRoute::ThroughOn))
-    i=0
-    while i<commands.length
-      case commands[i]
-      when PBMoveRoute::Wait, PBMoveRoute::SwitchOn, PBMoveRoute::SwitchOff,
-         PBMoveRoute::ChangeSpeed, PBMoveRoute::ChangeFreq, PBMoveRoute::Opacity,
-         PBMoveRoute::Blending, PBMoveRoute::PlaySE, PBMoveRoute::Script
-        route.list.push(RPG::MoveCommand.new(commands[i],[commands[i+1]]))
+    i = 0
+    while i < commands.length
+        case commands[i]
+        when PBMoveRoute::Wait, PBMoveRoute::SwitchOn, PBMoveRoute::SwitchOff,
+           PBMoveRoute::ChangeSpeed, PBMoveRoute::ChangeFreq, PBMoveRoute::Opacity,
+           PBMoveRoute::Blending, PBMoveRoute::PlaySE, PBMoveRoute::Script
+            route.list.push(RPG::MoveCommand.new(commands[i], [commands[i + 1]]))
+            i += 1
+        when PBMoveRoute::ScriptAsync
+            route.list.push(RPG::MoveCommand.new(PBMoveRoute::Script, [commands[i + 1]]))
+            route.list.push(RPG::MoveCommand.new(PBMoveRoute::Wait, [0]))
+            i += 1
+        when PBMoveRoute::Jump
+            route.list.push(RPG::MoveCommand.new(commands[i], [commands[i + 1], commands[i + 2]]))
+            i += 2
+        when PBMoveRoute::Graphic
+            route.list.push(RPG::MoveCommand.new(commands[i],
+               [commands[i + 1], commands[i + 2], commands[i + 3], commands[i + 4]]))
+            i += 4
+        else
+            route.list.push(RPG::MoveCommand.new(commands[i]))
+        end
         i += 1
-      when PBMoveRoute::ScriptAsync
-        route.list.push(RPG::MoveCommand.new(PBMoveRoute::Script,[commands[i+1]]))
-        route.list.push(RPG::MoveCommand.new(PBMoveRoute::Wait,[0]))
-        i += 1
-      when PBMoveRoute::Jump
-        route.list.push(RPG::MoveCommand.new(commands[i],[commands[i+1],commands[i+2]]))
-        i += 2
-      when PBMoveRoute::Graphic
-        route.list.push(RPG::MoveCommand.new(commands[i],
-           [commands[i+1],commands[i+2],commands[i+3],commands[i+4]]))
-        i += 4
-      else
-        route.list.push(RPG::MoveCommand.new(commands[i]))
-      end
-      i += 1
     end
     route.list.push(RPG::MoveCommand.new(PBMoveRoute::ThroughOff))
     route.list.push(RPG::MoveCommand.new(0))
     if event
-      event.force_move_route(route)
+        event.force_move_route(route)
     end
     pbMapInterpreter.command_210 if waitComplete
     return route
-  end
+end

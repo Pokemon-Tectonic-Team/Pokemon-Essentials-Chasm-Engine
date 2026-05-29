@@ -2,7 +2,7 @@ class PokeBattle_ActiveField
     include EffectHolder
 
     attr_accessor :effects, :defaultWeather, :weather, :weatherDuration
-    attr_accessor :specialTimer,:specialWeatherEffect
+    attr_accessor :specialTimer, :specialWeatherEffect
 
     def initialize(battle)
         @defaultWeather  = :None
@@ -48,7 +48,7 @@ class PokeBattle_ActiveField
     end
 
     def applyEffect(effect, value = nil)
-        super(effect, value)
+        super
         echoln("[FIELD EFFECT] Effect #{getName(effect)} applied to whole field")
     end
 

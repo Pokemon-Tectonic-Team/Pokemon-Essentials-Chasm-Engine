@@ -1,98 +1,98 @@
 BattleHandlers::MoveSpeedModifierAbility.add(:MAESTRO,
-    proc { |ability, battler, move, battle, mult, aiCheck|
+    proc { |ability, battler, move, _battle, mult, aiCheck|
         next unless (aiCheck && move.nil?) || move.soundMove?
         if aiCheck
             next mult * 2.0
         else
-            battler.applyEffect(:MoveSpeedDoubled,ability)
+            battler.applyEffect(:MoveSpeedDoubled, ability)
         end
     }
 )
 
 BattleHandlers::MoveSpeedModifierAbility.add(:GALEWINGS,
-    proc { |ability, battler, move, battle, mult, aiCheck|
+    proc { |ability, battler, move, _battle, mult, aiCheck|
         next unless (aiCheck && move.nil?) || move.type == :FLYING
         if aiCheck
             next mult * 2.0
         else
-            battler.applyEffect(:MoveSpeedDoubled,ability)
+            battler.applyEffect(:MoveSpeedDoubled, ability)
         end
     }
 )
 
 BattleHandlers::MoveSpeedModifierAbility.add(:TRENCHCARVER,
-    proc { |ability, battler, move, battle, mult, aiCheck|
+    proc { |ability, battler, move, _battle, mult, aiCheck|
         next unless (aiCheck && move.nil?) || move.recoilMove?
         if aiCheck
             next mult * 2.0
         else
-            battler.applyEffect(:MoveSpeedDoubled,ability)
+            battler.applyEffect(:MoveSpeedDoubled, ability)
         end
     }
 )
 
 BattleHandlers::MoveSpeedModifierAbility.add(:SWIFTSTOMPS,
-    proc { |ability, battler, move, battle, mult, aiCheck|
+    proc { |ability, battler, move, _battle, mult, aiCheck|
         next unless (aiCheck && move.nil?) || move.kickingMove?
         if aiCheck
             next mult * 2.0
         else
-            battler.applyEffect(:MoveSpeedDoubled,ability)
+            battler.applyEffect(:MoveSpeedDoubled, ability)
         end
     }
 )
 
 BattleHandlers::MoveSpeedModifierAbility.add(:SHARPSHOOTER,
-    proc { |ability, battler, move, battle, mult, aiCheck|
+    proc { |ability, battler, move, _battle, mult, aiCheck|
         next unless (aiCheck && move.nil?) || move.canRandomCrit?
         if aiCheck
             next mult * 2.0
         else
-            battler.applyEffect(:MoveSpeedDoubled,ability)
+            battler.applyEffect(:MoveSpeedDoubled, ability)
         end
     }
 )
 
 BattleHandlers::MoveSpeedModifierAbility.add(:HOPPINGMAD,
-    proc { |ability, battler, move, battle, mult, aiCheck|
+    proc { |ability, battler, move, _battle, mult, aiCheck|
         next unless (aiCheck && move.nil?) || move.rampagingMove?
         if aiCheck
             next mult * 2.0
         else
-            battler.applyEffect(:MoveSpeedDoubled,ability)
+            battler.applyEffect(:MoveSpeedDoubled, ability)
         end
     }
 )
 
 BattleHandlers::MoveSpeedModifierAbility.add(:CELERITAS,
-    proc { |ability, battler, move, battle, mult, aiCheck|
+    proc { |ability, battler, move, _battle, mult, aiCheck|
         next unless (aiCheck && move.nil?) || move.lightMove?
         if aiCheck
             next mult * 2.0
         else
-            battler.applyEffect(:MoveSpeedDoubled,ability)
+            battler.applyEffect(:MoveSpeedDoubled, ability)
         end
     }
 )
 
 BattleHandlers::MoveSpeedModifierAbility.add(:GOSSAMERGALE,
-    proc { |ability, battler, move, battle, mult, aiCheck|
+    proc { |ability, battler, move, _battle, mult, aiCheck|
         next unless (aiCheck && move.nil?) || move.windMove?
         if aiCheck
             next mult * 2.0
         else
-            battler.applyEffect(:MoveSpeedDoubled,ability)
+            battler.applyEffect(:MoveSpeedDoubled, ability)
         end
     }
 )
 
 BattleHandlers::MoveSpeedModifierAbility.add(:LOOSECANNON,
-    proc { |ability, battler, move, battle, mult, aiCheck|
+    proc { |ability, battler, move, _battle, mult, aiCheck|
         next unless (aiCheck && move.nil?) || move.pulseMove?
         if aiCheck
             next mult * 2.0
         else
-            battler.applyEffect(:MoveSpeedDoubled,ability)
+            battler.applyEffect(:MoveSpeedDoubled, ability)
         end
     }
 )

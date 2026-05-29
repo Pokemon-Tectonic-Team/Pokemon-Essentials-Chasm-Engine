@@ -86,7 +86,7 @@ class PokeBattle_Move_RaiseAllySpd4OrDamageFoe < PokeBattle_Move
         @buffing = !user.opposes?(targets[0]) if targets.length > 0
     end
 
-    def pbFailsAgainstTarget?(user, target, show_message)
+    def pbFailsAgainstTarget?(user, target, _show_message)
         return false unless @buffing
         return !target.pbCanRaiseStatStep?(:SPEED, user, self, true)
     end

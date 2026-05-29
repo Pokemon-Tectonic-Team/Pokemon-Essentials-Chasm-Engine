@@ -10,7 +10,7 @@ PokeBattle_Battle::BattleStartApplyCurse.add(:CURSE_SPIKES,
 )
 
 PokeBattle_Battle::EndOfTurnCurseEffect.add(:CURSE_SPIKES,
-    proc { |curse_policy, battle|
+    proc { |_curse_policy, battle|
         if battle.sides[0].effectActive?(:SpikesRemovedThisTurn)
             battle.pbDisplay(_INTL("You were spared from spikes this turn!"))
         else

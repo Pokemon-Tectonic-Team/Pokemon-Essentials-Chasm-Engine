@@ -22,7 +22,7 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:INDESTRUCTIBLE,
       next if !move.calcType || GameData::Type.get(move.calcType).pseudo_type
       battle.pbShowAbilitySplash(target, ability)
       target.disableEffect(:Indestructible)
-      target.applyEffect(:Indestructible,move.calcType)
+      target.applyEffect(:Indestructible, move.calcType)
       battle.pbHideAbilitySplash(target)
   }
 )
@@ -32,7 +32,7 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:INDESTRUCTIBLE,
 #############################################################
 
 BattleHandlers::TargetAbilityAfterMoveUse.add(:MONKEYMISCHIEF,
-  proc { |ability, target, user, move, switched, battle|
+  proc { |ability, target, user, move, switched, _battle|
       next if switched.include?(user.index)
       next unless move.damagingMove?
       next unless user.activatesTargetAbilities?
@@ -49,10 +49,10 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:MOONLIGHTER,
       next if user.dummy
       next unless battle.moonGlowing?
       item = user.firstItem
-      if move.canStealItem?(user,target, item)
-        move.stealItem(target, user, item, ability: ability)
+      if move.canStealItem?(user, target, item)
+          move.stealItem(target, user, item, ability: ability)
       else
-        move.knockOffItems(target, user, ability: ability, firstItemOnly: true)
+          move.knockOffItems(target, user, ability: ability, firstItemOnly: true)
       end
   }
 )
@@ -68,8 +68,8 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:PLASMAGLOBE,
       next if target.damageState.totalHPLost <= 0
       battle.pbShowAbilitySplash(target, ability)
       unless user.takesIndirectDamage?(true)
-        battle.pbHideAbilitySplash(target)
-        next
+          battle.pbHideAbilitySplash(target)
+          next
       end
       user.pbReduceHP(target.damageState.totalHPLost, false)
       battle.pbDisplay(_INTL("{1} is damaged by recoil!", user.pbThis))
@@ -92,7 +92,7 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:PRMIVALSWORDBREAKER,
 )
 
 BattleHandlers::TargetAbilityAfterMoveUse.add(:ABOVEITALL,
-  proc { |ability, target, user, move, _switched, battle|
+  proc { |ability, target, user, _move, _switched, battle|
       next if target.fainted?
       next unless target.damageState.totalHPLost > 0
       battle.forceUseMove(target, :PARTINGSHOT, user.index, ability: ability)

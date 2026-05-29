@@ -536,10 +536,10 @@ GameData::BattleEffect.register_effect(:Side, {
         teamName = teamName.downcase
         battle.pbDisplay(_INTL("The cocoon enclosing {1}'s side dried up.", teamName))
     end,
-    :eor_proc => proc do |battle, side, _teamName, value|
+    :eor_proc => proc do |battle, side, _teamName, _value|
         battle.eachSameSideBattler(side.index) do |b|
             healingMessage = _INTL("{1} was healed by the cruel cocoon at the expense of its PP!", b.pbThis)
-            b.applyFractionalHealing(1.0/8.0, customMessage: healingMessage)
+            b.applyFractionalHealing(1.0 / 8.0, customMessage: healingMessage)
             b.eachMove do |m|
                 next if m.pp <= 0
                 b.pbSetPP(m, m.pp - 1)
@@ -617,7 +617,7 @@ GameData::BattleEffect.register_effect(:Side, {
     :expire_proc => proc do |battle, _side, teamName|
         battle.pbDisplay(_INTL("{1} completed their summer festivals!", teamName))
     end,
-    :sor_proc => proc do |battle, side, teamName, value|
+    :sor_proc => proc do |_battle, side, _teamName, value|
         side.applyEffect(:SummerFestivalsEnd) if value == 1
     end,
 })
@@ -626,7 +626,7 @@ GameData::BattleEffect.register_effect(:Side, {
     :id => :SummerFestivalsEnd,
     :real_name => "Festivals' End",
     :resets_eor => true,
-    :apply_proc => proc do |battle, _side, teamName, value|
+    :apply_proc => proc do |battle, _side, teamName, _value|
         battle.pbDisplay(_INTL("{1}'s summer festivals are finishing!", teamName))
         battle.pbDisplay(_INTL("They'll deal 50 percent more move damage this turn, but take 25 percent recoil!"))
     end,
@@ -674,7 +674,7 @@ GameData::BattleEffect.register_effect(:Side, {
     :expire_proc => proc do |battle, _side, teamName|
         battle.pbDisplay(_INTL("{1} completed their winter hunts!", teamName))
     end,
-    :sor_proc => proc do |battle, side, teamName, value|
+    :sor_proc => proc do |_battle, side, _teamName, value|
         if value == 1
             side.applyEffect(:WinterHuntsEnd)
         end
@@ -685,7 +685,7 @@ GameData::BattleEffect.register_effect(:Side, {
     :id => :WinterHuntsEnd,
     :real_name => "Hunts' End",
     :resets_eor => true,
-    :apply_proc => proc do |battle, _side, teamName, value|
+    :apply_proc => proc do |battle, _side, teamName, _value|
         battle.pbDisplay(_INTL("{1}'s winter hunts are finishing!", teamName))
         battle.pbDisplay(_INTL("They'll have +1 priority this turn!"))
     end,
@@ -906,7 +906,7 @@ GameData::BattleEffect.register_effect(:Side, {
     :real_name => "Eroded Rocks",
     :type => :Integer,
     :maximum => 4,
-    :increment_proc => proc do |battle, _side, teamName, _value, increment|
+    :increment_proc => proc do |battle, _side, teamName, _value, _increment|
         teamName[0] = teamName[0].downcase
         battle.pbDisplay(_INTL("A rock lands on the ground around {1}.", teamName))
     end,
@@ -945,7 +945,7 @@ GameData::BattleEffect.register_effect(:Side, {
     :real_name => "Traumatized",
     :info_displayed => false,
     :type => :Hash,
-    :entry_proc => proc do |battle, battlerIndex, side, battler, value|
+    :entry_proc => proc do |battle, _battlerIndex, _side, battler, value|
         echoln(value.to_s)
         if value.key?(battler.pokemonIndex)
             statHash = value[battler.pokemonIndex]
@@ -969,7 +969,7 @@ GameData::BattleEffect.register_effect(:Side, {
     :id => :PayDay,
     :real_name => "Money Dropped",
     :type => :Integer,
-    :increment_proc => proc do |battle, _side, teamName, _value, increment|
+    :increment_proc => proc do |battle, _side, _teamName, _value, increment|
         battle.pbDisplay(_INTL("{1} coins were scattered to the ground!", increment))
     end,
 })
@@ -983,10 +983,10 @@ GameData::BattleEffect.register_effect(:Side, {
         battle.pbDisplay(_INTL("{1} is blessed by the Wishing Well!", teamName))
         battle.pbDisplay(_INTL("It'll block random added effects for {1} turns !", _value - 1))
     end,
-    :eor_proc => proc do |battle, side, _teamName, value|
+    :eor_proc => proc do |battle, side, _teamName, _value|
         battle.eachSameSideBattler(side.index) do |b|
             next unless b.canHeal?
-            b.applyFractionalHealing(1.0/16.0, customMessage: _INTL("{1} was healed by the Wishing Well!",b.pbThis))
+            b.applyFractionalHealing(1.0 / 16.0, customMessage: _INTL("{1} was healed by the Wishing Well!", b.pbThis))
         end
     end,
     :expire_proc => proc do |battle, _side, teamName|

@@ -90,7 +90,7 @@ class PokeBattle_Battle
     def pbNumPositions(side, idxTrainer)
         ret = 0
         for i in 0...pbSideSize(side)
-            t = pbGetOwnerIndexFromBattlerIndex(i * 2 + side)
+            t = pbGetOwnerIndexFromBattlerIndex((i * 2) + side)
             next if t != idxTrainer
             ret += 1
         end
@@ -216,18 +216,18 @@ class PokeBattle_Battle
     def isLastMeetingConditionInTeam?(idxPokemon, side, idxTrainer)
         final_index = -1
         eachInTeam(side, idxTrainer) do |pkmn, i|
-            if (yield pkmn, i)
+            if yield pkmn, i
                 if final_index != -1 # If another mon was already registered as meeting the condition
                     return false # More than 1 battler is meeting the condition
                 end
                 final_index = i
             end
         end
-        return (final_index == idxPokemon)
+        return final_index == idxPokemon
     end
 
     def isLastAboveHalfHealthInTeam?(idxPokemon, side, idxTrainer)
-        return isLastMeetingConditionInTeam?(idxPokemon, side, idxTrainer) { |pkmn, i| pkmn.hp > pkmn.totalhp / 2}
+        return isLastMeetingConditionInTeam?(idxPokemon, side, idxTrainer) { |pkmn, _i| pkmn.hp > pkmn.totalhp / 2 }
     end
 
     def getAbleParameters(idxPokemon, side, idxTrainer)
@@ -328,7 +328,7 @@ class PokeBattle_Battle
         end
         return nil
     end
-    
+
     def pbCheckOtherAbility(abil, idxBattler = 0, nearOnly = false)
         eachOtherSideBattler(idxBattler) do |b|
             next if nearOnly && !b.near?(idxBattler)
@@ -471,7 +471,7 @@ class PokeBattle_Battle
     def pokemonIsActiveBattler?(pokemon)
         eachBattler do |b|
             next unless b.pokemon.personalID == pokemon.personalID
-            return true 
+            return true
         end
         return false
     end

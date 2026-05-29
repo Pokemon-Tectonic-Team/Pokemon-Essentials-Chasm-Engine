@@ -1,42 +1,42 @@
 class Particle_Engine::LatentSoil < ParticleEffect_Event
-    def initialize(event,viewport)
+    def initialize(event, viewport)
         super
         setParameters([
-            0, # Random hue
-            0, # fade
-            20, # max particles
-            -100, # hue
-            1, # slowdown
-            -Graphics.height, # ytop
-            Graphics.height, # ybottom
-            0, # xleft
-            Graphics.width, # xright
-            0, # xgravity
-            -0.2, # ygravity
-            0, # xoffset
-            -8, # yoffset
-            2, # opacity var
-            0, # original opacity
-            ])
+                          0, # Random hue
+                          0, # fade
+                          20, # max particles
+                          -100, # hue
+                          1, # slowdown
+                          -Graphics.height, # ytop
+                          Graphics.height, # ybottom
+                          0, # xleft
+                          Graphics.width, # xright
+                          0, # xgravity
+                          -0.2, # ygravity
+                          0, # xoffset
+                          -8, # yoffset
+                          2, # opacity var
+                          0, # original opacity
+                      ])
         @opacityMult = 0.2
         @radius = 8
         @rad2 = @radius * @radius
 
-        initParticles("particle",255,-1)
+        initParticles("particle", 255, -1)
     end
 
     def initializeParticle(i)
         particleSprite = @particles[i]
         particleSprite.ox = @bmwidth / 2
         particleSprite.oy = @bmheight / 2
-        #particleSprite.zoom_x = 0.6
-        #particleSprite.zoom_y = 0.6
+        # particleSprite.zoom_x = 0.6
+        # particleSprite.zoom_y = 0.6
 
         @opacity[i] = rand(255)
     end
 
     def particlesEnabled?
-        return super && !pbGetSelfSwitch(@event.id,'A')
+        return super && !pbGetSelfSwitch(@event.id, "A")
     end
 
     def resetOpacity(i)
@@ -54,7 +54,7 @@ class Particle_Engine::LatentSoil < ParticleEffect_Event
     end
 
     def yExtent
-        return @radius * 4 + 64
+        return (@radius * 4) + 64
     end
 
     def resetParticle(i)

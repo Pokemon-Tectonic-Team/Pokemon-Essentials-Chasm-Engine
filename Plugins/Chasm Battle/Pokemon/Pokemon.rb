@@ -271,7 +271,7 @@ class Pokemon
 
     def getStatusImageIndex(miniIcons = false)
         if afraid?
-            statusIndex = GameData::Status::DATA.keys.length / 2 + 1
+            statusIndex = (GameData::Status::DATA.keys.length / 2) + 1
         elsif fainted?
             statusIndex = GameData::Status::DATA.keys.length / 2
         elsif status != :NONE
@@ -294,7 +294,7 @@ class Pokemon
 
     # @return [Boolean] whether the Pokémon is fainted
     def fainted?
-        return !egg? && @hp <= 0 || @afraid
+        return (!egg? && @hp <= 0) || @afraid
     end
 
     # Heals all HP of this Pokémon.
@@ -583,7 +583,7 @@ class Pokemon
             return ability_id == check_ability
         elsif check_ability.is_a?(Array)
             check_ability.each do |abilityToCheck|
-                  return true if ability_id == abilityToCheck
+                return true if ability_id == abilityToCheck
             end
             return false
         else
@@ -1070,7 +1070,7 @@ class Pokemon
             end
         end
         first_ribbon_data = GameData::Ribbon.try_get(arg[0])
-        last_ribbon_data = GameData::Ribbon.try_get(arg[arg.length - 1])
+        last_ribbon_data = GameData::Ribbon.try_get(arg[-1])
         if first_ribbon_data && last_ribbon_data && !hasRibbon?(last_ribbon_data.id)
             giveRibbon(first_ribbon_data.id)
             return first_ribbon_data.id
@@ -1146,10 +1146,10 @@ class Pokemon
 
     # avoid problematic characters for online communication
     def safe_name
-      if !stringIsUnsafe(name)
-        return name
-      end
-      return speciesName
+        if !stringIsUnsafe(name)
+            return name
+        end
+        return speciesName
     end
 
     # @param value [String] the nickname of this Pokémon
@@ -1157,7 +1157,7 @@ class Pokemon
         if !value || value.empty? || value == speciesName
             value = nil
         else
-            value.gsub!("\%","")
+            value.gsub!("%", "")
         end
         @name = value
     end
@@ -1302,7 +1302,6 @@ class Pokemon
 
         prevHappiness = @happiness
         @happiness = (@happiness + gain).clamp(0, MAX_HAPPINESS)
-        actualGain = @happiness - prevHappiness
 
         # echoln("Changing #{name}'s happiness by #{actualGain}") if actualGain != 0
 
@@ -1359,7 +1358,7 @@ class Pokemon
     # Checks whether this Pokemon can evolve because of using an item on it.
     # @param item_used [Symbol, GameData::Item, nil] the item being used
     # @return [Symbol, nil] the ID of the species to evolve into
-    def check_evolution_on_use_item(item_used,finalCheck = true)
+    def check_evolution_on_use_item(item_used, finalCheck = true)
         return check_evolution_internal do |pkmn, new_species, method, parameter|
             success = GameData::Evolution.get(method).call_use_item(pkmn, parameter, item_used, finalCheck)
             next success ? new_species : nil
@@ -1417,12 +1416,12 @@ class Pokemon
     # @return [Integer] the maximum HP of this Pokémon
     def calcHP(base, level, iv, ev)
         return 1 if base == 1 # For Shedinja
-        return ((base * 2 + iv + (ev / 4)) * level / 100).floor + level + 10
+        return (((base * 2) + iv + (ev / 4)) * level / 100).floor + level + 10
     end
 
     # @return [Integer] the specified stat of this Pokémon (not used for total HP)
     def calcStat(base, level, iv, ev, nat)
-        return ((((base * 2 + iv + (ev / 4)) * level / 100).floor + 5) * nat / 100).floor
+        return (((((base * 2) + iv + (ev / 4)) * level / 100).floor + 5) * nat / 100).floor
     end
 
     # Recalculates this Pokémon's stats.
@@ -1612,7 +1611,7 @@ class Pokemon
     end
 
     def regeneratePersonalID
-        @personalID = rand(2**16) | rand(2**16) << 16
+        @personalID = rand(2**16) | (rand(2**16) << 16)
     end
 
     def poke_ball
@@ -1624,36 +1623,36 @@ class Pokemon
     end
 
     def switchBall
-        currentBallData = GameData::Item.get(@poke_ball)  
+        currentBallData = GameData::Item.get(@poke_ball)
         if currentBallData.no_ball_swap?
-            pbMessage(_INTL("If you switch {1}'s ball, its current {2} will be thrown away.",name,currentBallData.name))
-            return unless pbConfirmMessageSerious(_INTL("Are you okay with throwing away the {1}?",currentBallData.name))
+            pbMessage(_INTL("If you switch {1}'s ball, its current {2} will be thrown away.", name, currentBallData.name))
+            return unless pbConfirmMessageSerious(_INTL("Are you okay with throwing away the {1}?", currentBallData.name))
         end
-        pbMessage(_INTL("Choose the Poké Ball to put {1} into.",name))
+        pbMessage(_INTL("Choose the Poké Ball to put {1} into.", name))
         pbChoosePokeball(1)
         itemID = pbGet(1)
         currentBallName = getItemName(poke_ball)
-        unless itemID == :NONE
-            newBallData = GameData::Item.get(itemID)  
+        if itemID == :NONE
+            pbMessage(_INTL("You decide to keep {1} in its {2}.", name, currentBallName))
+        else
+            newBallData = GameData::Item.get(itemID)
             newBallName = newBallData.name
             if itemID == @poke_ball
-                pbMessage(_INTL("{1} is already inside of a {2}!",name,newBallName))
+                pbMessage(_INTL("{1} is already inside of a {2}!", name, newBallName))
                 return
             elsif newBallData.no_ball_swap?
-                pbMessage(_INTL("A {1} is too special to swap {2} into.",newBallName,name))
+                pbMessage(_INTL("A {1} is too special to swap {2} into.", newBallName, name))
             else
-                pbMessage(_INTL("You remove {1} from the {2}, and throw it away.",name,currentBallName))
+                pbMessage(_INTL("You remove {1} from the {2}, and throw it away.", name, currentBallName))
                 if itemID == :BALLLAUNCHER
-                    pbMessage(_INTL("You bring out the {1}, and launch a ball at {2}!",newBallName,name))
+                    pbMessage(_INTL("You bring out the {1}, and launch a ball at {2}!", newBallName, name))
                 else
-                    pbMessage(_INTL("You bring out a {1}, and put {2} into it!",newBallName,name))
+                    pbMessage(_INTL("You bring out a {1}, and put {2} into it!", newBallName, name))
                     pbDeleteItem(itemID)
                 end
                 pbSEPlay("Battle catch click")
                 @poke_ball = itemID
             end
-        else
-            pbMessage(_INTL("You decide to keep {1} in its {2}.",name,currentBallName))
         end
     end
 end

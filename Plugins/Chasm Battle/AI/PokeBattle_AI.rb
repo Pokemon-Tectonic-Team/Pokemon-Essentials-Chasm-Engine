@@ -10,7 +10,7 @@ class PokeBattle_AI
         @battle = battle
         @precalculatedChoices = {}
         @precalculatedDefensiveMatchup = {}
-        @justswitched = [false,false,false,false]
+        @justswitched = [false, false, false, false]
         @battleArena = false
         @battlePalace = false
     end
@@ -50,8 +50,8 @@ class PokeBattle_AI
             pbChooseMovesWild(idxBattler)
         else
             return if !battler.effectActive?(:AutoPilot) && pbEnemyShouldWithdraw?(idxBattler)
-            defensiveMatchupRating,killInfoArray = worstDefensiveMatchupAgainstActiveFoes(battler)
-            bestMoveChoices,killInfo = pbGetBestTrainerMoveChoices(battler, killInfoArray: killInfoArray)
+            _, killInfoArray = worstDefensiveMatchupAgainstActiveFoes(battler)
+            bestMoveChoices, = pbGetBestTrainerMoveChoices(battler, killInfoArray: killInfoArray)
             pbChooseMovesTrainer(idxBattler, bestMoveChoices)
         end
     end
@@ -75,13 +75,13 @@ class PokeBattle_AI
 
     def pbPredictChoiceByPlayer(idxBattler)
         user = @battle.battlers[idxBattler]
-        bestMoveChoices,killInfo = pbGetBestTrainerMoveChoices(user)
+        bestMoveChoices, = pbGetBestTrainerMoveChoices(user)
         return [:None, 0, nil, -1] if bestMoveChoices.empty?
         switchChoice = pbDetermineSwitch(idxBattler)
         return [:SwitchOut, switchChoice, -1] if switchChoice > -1
         bestMoveChoices.sort_by! { |choice| -choice[1] }
         moveChoice = bestMoveChoices[0]
         moveIndex = moveChoice[0]
-        return [:UseMove,moveIndex,user.getMoves[moveIndex],moveChoice[2]]
+        return [:UseMove, moveIndex, user.getMoves[moveIndex], moveChoice[2]]
     end
 end

@@ -1,8 +1,8 @@
 class MoveDex_Screen
     def initialize(scene)
-      @scene = scene
+        @scene = scene
     end
-  
+
     def pbStartScreen
         @scene.pbStartScene
         @scene.pbEndScene

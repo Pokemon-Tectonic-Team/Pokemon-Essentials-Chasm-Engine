@@ -2,11 +2,11 @@
 # Type changes depending on the weather. (Weather Burst)
 #===============================================================================
 class PokeBattle_Move_TypeDependsOnWeather < PokeBattle_Move
-    def aiAutoKnows?(pokemon); return true; end
+    def aiAutoKnows?(_pokemon); return true; end
 
     def immuneToRainDebuff?; return true; end
     def immuneToSunDebuff?; return true; end
-    
+
     def shouldHighlight?(_user, _target)
         return @battle.pbWeather != :None
     end
@@ -68,7 +68,7 @@ class PokeBattle_Move_TypeDependsOnUserSpecialItem < PokeBattle_Move
                 if user.form == 0
                     return :NORMAL
                 else
-                    return @itemTypes.values[user.form-1]
+                    return @itemTypes.values[user.form - 1]
                 end
             elsif @id == :MULTIATTACK && user.hasItem?(:MEMORYSET)
                 return user.itemTypeChosen
@@ -90,8 +90,8 @@ class PokeBattle_Move_TypeDependsOnUserSpecialItem < PokeBattle_Move
         end
         super
     end
-    
-    def pbEffectAfterAllHits(user, target)
+
+    def pbEffectAfterAllHits(user, _target)
         if @id == :TECHNOBLAST
             @itemTypes.keys.each do |driveItem|
                 user.aiLearnsItem(driveItem)
@@ -109,7 +109,7 @@ class PokeBattle_Move_TechnoBlast < PokeBattle_Move_TypeDependsOnUserSpecialItem
         @chosenDrive = nil
     end
 
-    def resolutionChoice(user, replayed_choice)
+    def resolutionChoice(user, _replayed_choice)
         return unless user.hasActiveAbility?(:MODUSSWITCH)
         return unless user.countsAs?(:GENESECT)
         drivesToChooseFrom = @itemTypes.keys
@@ -129,7 +129,6 @@ class PokeBattle_Move_TechnoBlast < PokeBattle_Move_TypeDependsOnUserSpecialItem
     def resetMoveUsageState
         @chosenDrive = nil
     end
-
 end
 
 #===============================================================================
@@ -144,8 +143,8 @@ class PokeBattle_Move_TypeDependsOnUserGemPlateVeil < PokeBattle_Move
             user.eachActiveItem do |itemID|
                 next unless GameData::Item.get(itemID).is_gem?
                 typeName = itemID.to_s
-                typeName.gsub!("GEM","")
-                typeName.gsub!("RING","")
+                typeName.gsub!("GEM", "")
+                typeName.gsub!("RING", "")
                 ret = typeName.to_sym
                 break
             end

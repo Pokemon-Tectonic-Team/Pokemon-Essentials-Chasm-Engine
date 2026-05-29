@@ -2,7 +2,7 @@ class MoveDex_Scene
     include MoveInfoDisplay
 
     MAX_LENGTH_MOVE_LIST = 7
-	MOVE_LIST_SUMMARY_MOVE_NAMES_Y_INIT = 56
+    MOVE_LIST_SUMMARY_MOVE_NAMES_Y_INIT = 56
     MOVE_LIST_X_LEFT = 32
     SIGNATURE_COLOR = Color.new(211, 175, 44)
     LEARNABLE_PARTY_COLOR = Color.new(175, 211, 44)
@@ -54,7 +54,7 @@ class MoveDex_Scene
         @sprites["selectionarrow"].visible = false
         @sprites["selectionarrow"].x = 6
 
-		# Create the move extra info display
+        # Create the move extra info display
         @moveInfoDisplay = SpriteWrapper.new(@viewport)
         @moveInfoDisplay.bitmap = @moveInfoDisplayBitmap.bitmap
         @sprites["moveInfoDisplay"] = @moveInfoDisplay
@@ -81,7 +81,7 @@ class MoveDex_Scene
 
         navigateMoveDex
     end
-    
+
     def searchResults=(value)
         @searchResults = value
         setBackground
@@ -105,7 +105,7 @@ class MoveDex_Scene
 
         textpos = [
             [_INTL("MoveDex"), Graphics.width / 8, -2, 2, zBase, zShadow],
-            ["(#{@moveList.length.to_s})", 160, -2, 2, base, shadow],
+            ["(#{@moveList.length})", 160, -2, 2, base, shadow],
         ]
         if @searchResults
             textpos.push([_INTL("ACTION/Z to search further."), Graphics.width - 5, -2, 1, zBase, zShadow])
@@ -114,22 +114,22 @@ class MoveDex_Scene
         end
         pbDrawTextPositions(overlay, textpos)
 
-        #drawFormattedTextEx(overlay, 164, 2, 450, _INTL("{1} Moves",@moveList.length), base, shadow)
+        # drawFormattedTextEx(overlay, 164, 2, 450, _INTL("{1} Moves",@moveList.length), base, shadow)
 
-		# render the moves lists
-		displayIndex = 0
-		listIndex = -1
+        # render the moves lists
+        displayIndex = 0
+        listIndex = -1
         @selected_move = nil
         if @moveList.empty?
             drawFormattedTextEx(overlay, MOVE_LIST_X_LEFT, 90, 450, _INTL("None"), base, shadow)
-		else
+        else
             @moveList.each_with_index do |dex_item, _index|
                 listIndex += 1
                 next if listIndex < @scroll
-                maxWidth = displayIndex == 0 ? 200 : 212
+                displayIndex == 0 ? 200 : 212
                 moveName, moveShadow = getFormattedMoveName(dex_item[:data], 200)
                 @selected_move = dex_item[:move] if listIndex == @scroll
-                moveDrawY = MOVE_LIST_SUMMARY_MOVE_NAMES_Y_INIT + 32 * displayIndex
+                moveDrawY = MOVE_LIST_SUMMARY_MOVE_NAMES_Y_INIT + (32 * displayIndex)
                 drawFormattedTextEx(overlay, MOVE_LIST_X_LEFT, moveDrawY, 450, moveName, base, moveShadow)
                 if listIndex == @scroll
                     @sprites["selectionarrow"].y = moveDrawY - 4
@@ -138,7 +138,7 @@ class MoveDex_Scene
                 displayIndex += 1
                 break if displayIndex > MAX_LENGTH_MOVE_LIST
             end
-		end
+        end
 
         drawMoveInfo(@selected_move) if @selected_move
     end
@@ -155,8 +155,8 @@ class MoveDex_Scene
         pbUpdateSpriteHash(@sprites)
     end
 
-	def drawMoveInfo(selected_move)
-        writeMoveInfoToInfoOverlayBackwardsL(@extraInfoOverlay.bitmap,selected_move) unless selected_move.nil?
+    def drawMoveInfo(selected_move)
+        writeMoveInfoToInfoOverlayBackwardsL(@extraInfoOverlay.bitmap, selected_move) unless selected_move.nil?
     end
 
     def getFormattedMoveName(move_data, maxWidth = 99_999)
@@ -176,7 +176,7 @@ class MoveDex_Scene
                 charactersToShave += 1
             end
             shavedName = moveName[0..-charactersToShave]
-            shavedName = shavedName[0..-1] if shavedName[shavedName.length-1] == " "
+            shavedName = shavedName[0..-1] if shavedName[-1] == " "
             moveName = shavedName + "..."
         end
         if move_data.is_signature?
@@ -199,8 +199,6 @@ class MoveDex_Scene
 
     def navigateMoveDex
         @scroll = 0
-
-        linesShown = 7
 
         loop do
             Graphics.update
@@ -268,7 +266,7 @@ class MoveDex_Scene
                     loop do
                         moveDexEntryScene = MoveDex_Entry_Scene.new
                         screen = MoveDex_Entry_Screen.new(moveDexEntryScene)
-                        @scroll = screen.pbStartScreen(@moveList,@scroll)
+                        @scroll = screen.pbStartScreen(@moveList, @scroll)
                         # Cross-dex link (e.g. clicked a species to open MasterDex)
                         if $dex_cross_link
                             link = $dex_cross_link
@@ -305,12 +303,11 @@ class MoveDex_Scene
                 exportDexListAsCSV
             else
                 for key_index in 1..6 do
-                    if Input.pressex?("NUMBER_#{key_index}".to_sym)
-                        searchIndex = key_index - 1
-                        searchIndex += 6 if Input.press?(Input::CTRL)
-                        acceptSearchResults do
-                            send SEARCH_METHODS_INDEX[searchIndex]
-                        end
+                    next unless Input.pressex?(:"NUMBER_#{key_index}")
+                    searchIndex = key_index - 1
+                    searchIndex += 6 if Input.press?(Input::CTRL)
+                    acceptSearchResults do
+                        send SEARCH_METHODS_INDEX[searchIndex]
                     end
                 end
             end
@@ -319,13 +316,13 @@ class MoveDex_Scene
     end
 
     SEARCH_METHODS_INDEX = [
-		:searchByMoveName,
-		:searchByMoveType,
-		:searchByMoveCategory,
-		:searchByMoveDescription,
+        :searchByMoveName,
+        :searchByMoveType,
+        :searchByMoveCategory,
+        :searchByMoveDescription,
         :searchByMoveMisc,
         :sortByMoveMisc,
-	]
+    ]
 
     def pbDexSearch
         # Prepare to start the search screen
@@ -337,7 +334,6 @@ class MoveDex_Scene
         overlay.clear
         index = 0
         updateSearchCursor(index)
-        oldindex = index
 
         # Write the button names onto the overlay
         base   = MessageConfig.pbDefaultTextMainColor
@@ -383,9 +379,9 @@ class MoveDex_Scene
                 pbPlayCloseMenuSE
                 break
             elsif Input.trigger?(Input::USE)
-				searchChanged = acceptSearchResults2 do
-					send SEARCH_METHODS_INDEX[index]
-				end
+                searchChanged = acceptSearchResults2 do
+                    send SEARCH_METHODS_INDEX[index]
+                end
                 if searchChanged
                     break
                 else
@@ -465,11 +461,11 @@ class MoveDex_Scene
 
     def updateSearchCursor(index)
         @sprites["searchCursor"].x = index.even? ? 72 : 296
-        @sprites["searchCursor"].y = 62 + index / 2 * 96
+        @sprites["searchCursor"].y = 62 + (index / 2 * 96)
     end
 
     def exportDexListAsCSV
-        File.open("Analysis/moves.csv","wb") { |file|
+        File.open("Analysis/moves.csv", "wb") { |file|
             file.write("MoveID,Move Name,Type,Category,Base Power,Accuracy,Priority,Target,Description\r\n")
             @moveList.each do |dex_item|
                 data = dex_item[:data]

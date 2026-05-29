@@ -1,4 +1,4 @@
-def setSpeaker(speakerName,viewport = nil)
+def setSpeaker(speakerName, viewport = nil)
     unless $SpeakerNameWindow
         $SpeakerNameWindow = Window_AdvancedTextPokemon.new
         $SpeakerNameWindow.setSkin(MessageConfig.pbGetSpeechFrame)
@@ -10,20 +10,18 @@ end
 
 def refreshSpeakerWindow
     return unless $SpeakerNameWindow
-    $SpeakerNameWindow.resizeToFit($SpeakerNameWindow.text,Graphics.width)
+    $SpeakerNameWindow.resizeToFit($SpeakerNameWindow.text, Graphics.width)
     $SpeakerNameWindow.width = 160 if $SpeakerNameWindow.width <= 160
     $SpeakerNameWindow.y = Graphics.height - $SpeakerNameWindow.height
     $SpeakerNameWindow.z = 99_999
     $SpeakerNameWindow.visible = false # Starts hidden
 end
 
-def setSpeakerTrainer(trainerClass,trainerName)
-    begin
-        trainerData = GameData::Trainer.get(trainerClass,trainerName)
-        setSpeaker(trainerData.to_trainer.full_name)
-    rescue ArgumentError
-        echoln("Unable to find dialogue label display name for trainer: #{trainerClass} #{trainerName}")
-    end
+def setSpeakerTrainer(trainerClass, trainerName)
+    trainerData = GameData::Trainer.get(trainerClass, trainerName)
+    setSpeaker(trainerData.to_trainer.full_name)
+rescue ArgumentError
+    echoln("Unable to find dialogue label display name for trainer: #{trainerClass} #{trainerName}")
 end
 
 def speakerNameWindowVisible?

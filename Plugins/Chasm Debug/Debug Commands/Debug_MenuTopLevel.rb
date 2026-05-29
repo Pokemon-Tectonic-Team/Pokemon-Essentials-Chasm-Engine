@@ -16,37 +16,37 @@ DebugMenuCommands.register("pokemonmenu", {
     "description" => _INTL("Give Pokémon, heal party, fill/empty PC storage, etc.")
   })
 
-  DebugMenuCommands.register("itemsmenu", {
-    "parent"      => "main",
-    "name"        => _INTL("Item options..."),
-    "description" => _INTL("Give and take items.")
-  })
+DebugMenuCommands.register("itemsmenu", {
+  "parent"      => "main",
+  "name"        => _INTL("Item options..."),
+  "description" => _INTL("Give and take items.")
+})
 
-  DebugMenuCommands.register("playermenu", {
-    "parent"      => "main",
-    "name"        => _INTL("Player options..."),
-    "description" => _INTL("Set money, badges, Pokédexes, player's appearance and name, etc.")
-  })
+DebugMenuCommands.register("playermenu", {
+  "parent"      => "main",
+  "name"        => _INTL("Player options..."),
+  "description" => _INTL("Set money, badges, Pokédexes, player's appearance and name, etc.")
+})
 
-  DebugMenuCommands.register("editorsmenu", {
-    "parent"      => "main",
-    "name"        => _INTL("Information editors..."),
-    "description" => _INTL("Edit information in the PBS files, terrain tags, etc."),
-    "always_show" => true
-  })
+DebugMenuCommands.register("editorsmenu", {
+  "parent"      => "main",
+  "name"        => _INTL("Information editors..."),
+  "description" => _INTL("Edit information in the PBS files, terrain tags, etc."),
+  "always_show" => true
+})
 
-  DebugMenuCommands.register("animationsmenu", {
-    "parent"      => "main",
-    "name"        => _INTL("Animation editors..."),
-    "description" => _INTL("Edit, organize, import, export, or compile move animations."),
-    "always_show" => true
-  })
+DebugMenuCommands.register("animationsmenu", {
+  "parent"      => "main",
+  "name"        => _INTL("Animation editors..."),
+  "description" => _INTL("Edit, organize, import, export, or compile move animations."),
+  "always_show" => true
+})
 
-  DebugMenuCommands.register("globalmetadata", {
-    "parent"      => "main",
-    "name"        => _INTL("Global Metadata..."),
-    "description" => _INTL("Edit and View Global Metadata entries."),
-  })
+DebugMenuCommands.register("globalmetadata", {
+  "parent"      => "main",
+  "name"        => _INTL("Global Metadata..."),
+  "description" => _INTL("Edit and View Global Metadata entries."),
+})
 
 DebugMenuCommands.register("analysis", {
     "parent"      => "main",

@@ -1,5 +1,5 @@
 def styleValueMult(level)
-    return (2.0 + level.to_f / 50.0)
+    return 2.0 + (level.to_f / 50.0)
 end
 
 # @return [Integer] the specified stat of this Pokémon (not used for total HP)
@@ -29,6 +29,6 @@ def rescaleLevelForStats(level, accumulation: false)
         pseudoLevel += level.to_f
     else
         pseudoLevel += (level.to_f / 2.0)
-    end 
+    end
     return pseudoLevel
 end

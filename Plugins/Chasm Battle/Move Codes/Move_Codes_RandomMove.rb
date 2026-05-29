@@ -70,7 +70,7 @@ class PokeBattle_Move_UseRandomMoveFromUserParty < PokeBattle_Move
             end
             return true
         end
-        
+
         return false
     end
 
@@ -103,8 +103,8 @@ class PokeBattle_Move_UseRandomNonSignatureMove < PokeBattle_Move
             next if move_data.empoweredMove?
             if battle
                 next unless battle.canInvokeMove?(move_id)
-            else
-                next if move_data.uninvocable?
+            elsif move_data.uninvocable?
+                next
             end
             @metronomeMoves.push(move_data.id)
         end
@@ -151,8 +151,8 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureStatusMoves < PokeBattle_Mov
             next unless move_data.learnable?
             if battle
                 next unless battle.canInvokeMove?(move_id)
-            else
-                next if move_data.uninvocable?
+            elsif move_data.uninvocable?
+                next
             end
             @discoverableMoves.push(move_data.id)
         end
@@ -176,7 +176,7 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureStatusMoves < PokeBattle_Mov
         elsif !replayed_choice.nil?
             @chosenMove = replayed_choice
         else
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)), validMoveNames)
             @chosenMove = validMoves[chosenIndex]
             return @chosenMove
         end
@@ -195,7 +195,7 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureStatusMoves < PokeBattle_Mov
     end
 
     def getDetailsForMoveDex(detailsList = [])
-        detailsList << _INTL("Can't call Signature moves, moves that affect the moveset, " + 
+        detailsList << _INTL("Can't call Signature moves, moves that affect the moveset, " +
             "Recharge moves, moves that counter, Focus moves, Protect moves, Helping Hand moves, " +
             "or moves that call another move.")
     end
@@ -303,7 +303,7 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureNonPsychicDamagingMoves < Po
         elsif !replayed_choice.nil?
             @chosenMove = replayed_choice
         else
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)), validMoveNames)
             @chosenMove = validMoves[chosenIndex]
             return @chosenMove
         end
@@ -320,7 +320,7 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureNonPsychicDamagingMoves < Po
     def getEffectScore(user, _target)
         return randomMovesEffectScore(user, self)
     end
-    
+
     def getDetailsForMoveDex(detailsList = [])
         detailsList << _INTL("Moves that can be rolled:")
         @selectableMoves.each do |moveID|

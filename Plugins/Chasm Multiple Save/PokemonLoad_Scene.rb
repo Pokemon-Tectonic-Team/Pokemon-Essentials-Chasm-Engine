@@ -50,7 +50,7 @@ class PokemonLoad_Scene
             @sprites["panel#{oldi}"].pbRefresh
             @sprites["panel#{newi}"].selected = true
             @sprites["panel#{newi}"].pbRefresh
-            while @sprites["panel#{newi}"].y > Graphics.height - 40 * 2
+            while @sprites["panel#{newi}"].y > Graphics.height - (40 * 2)
                 for i in 0...@commands.length
                     @sprites["panel#{i}"].y -= 24 * 2
                 end
@@ -81,15 +81,15 @@ class PokemonLoad_Scene
             @sprites["player"] = TrainerWalkingCharSprite.new(filename, @viewport)
             charwidth  = @sprites["player"].bitmap.width
             charheight = @sprites["player"].bitmap.height
-            @sprites["player"].x        = 56 * 2 - charwidth / 8
-            @sprites["player"].y        = 56 * 2 - charheight / 8
+            @sprites["player"].x        = (56 * 2) - (charwidth / 8)
+            @sprites["player"].y        = (56 * 2) - (charheight / 8)
             @sprites["player"].src_rect = Rect.new(0, 0, charwidth / 4, charheight / 4)
         end
         for i in 0...trainer.party.length
             @sprites["party#{i}"] = PokemonIconSprite.new(trainer.party[i], @viewport)
             @sprites["party#{i}"].setOffset(PictureOrigin::Center)
-            @sprites["party#{i}"].x = (167 + 33 * (i % 2)) * 2
-            @sprites["party#{i}"].y = (56 + 25 * (i / 2)) * 2
+            @sprites["party#{i}"].x = (167 + (33 * (i % 2))) * 2
+            @sprites["party#{i}"].y = (56 + (25 * (i / 2))) * 2
             @sprites["party#{i}"].z = 99_999
         end
     end

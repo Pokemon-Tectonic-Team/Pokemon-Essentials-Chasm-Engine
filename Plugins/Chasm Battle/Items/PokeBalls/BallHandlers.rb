@@ -4,17 +4,17 @@ module BallHandlers
     OnCatch         = ItemHandlerHash.new
     OnFailCatch     = ItemHandlerHash.new
 
-    OnPokemonCaught      = Event.new
+    OnPokemonCaught = Event.new
 
     def self.isUnconditional?(ball, battle, battler)
         ret = IsUnconditional.trigger(ball, battle, battler)
-        return !ret.nil? ? ret : false
+        return ret.nil? ? false : ret
     end
 
     def self.modifyCatchRate(ball, catchRate, battle, battler)
         ret = ModifyCatchRate.trigger(ball, catchRate, battle, battler)
         pseudoBonus = [1.0 + (0.1 * battle.ballsUsed), 4].min
-        return !ret.nil? ? (ret * pseudoBonus) : (catchRate * pseudoBonus)
+        return ret.nil? ? (catchRate * pseudoBonus) : (ret * pseudoBonus)
     end
 
     def self.onCatch(ball, battle, pkmn)

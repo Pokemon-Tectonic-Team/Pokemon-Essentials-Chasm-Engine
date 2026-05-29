@@ -1,13 +1,13 @@
-def displayTVProgram()
+def displayTVProgram
     # TODO: Add other sorts of TV programs here
-    displayNewsProgram()
+    displayNewsProgram
 end
 
-def displayNewsProgram(map_id = -1)   
-    if map_id != -1
-        displayWeatherReport(map_id)
+def displayNewsProgram(map_id = -1)
+    if map_id == -1
+        displayInterestingWeatherReport
     else
-        displayInterestingWeatherReport()
+        displayWeatherReport(map_id)
     end
 end
 
@@ -27,7 +27,7 @@ WEATHER_REPORT_MAPS = {
     53 => _INTL("The Shelf"),
 }
 
-def displayInterestingWeatherReport()
+def displayInterestingWeatherReport
     interestingReports = {} # Name, report
     boringReports = {} # Same
 
@@ -39,7 +39,7 @@ def displayInterestingWeatherReport()
             interestingReports[name] = weatherReport
         end
     end
-    
+
     mapName = nil
     report = nil
     echoln("There are #{interestingReports.length} maps experiencing interesting weather tomorrow.")
@@ -51,10 +51,10 @@ def displayInterestingWeatherReport()
         report = boringReports[mapName]
     end
 
-    displayWeatherReport(report,mapName) if report
+    displayWeatherReport(report, mapName) if report
 end
 
-def displayWeatherReport(weatherReport,mapName)
+def displayWeatherReport(weatherReport, mapName)
     morningWeather, morningStrength = weatherReport[0]
     morningDescriptor = getWeatherDescriptor(morningWeather, morningStrength)
 
@@ -65,12 +65,12 @@ def displayWeatherReport(weatherReport,mapName)
     eveningDescriptor = getWeatherDescriptor(eveningWeather, eveningStrength)
 
     pbMessage(_INTL("Tomorrow's weather forecast for {1}!", mapName))
-    if (morningWeather == :None) &&  (afternoonWeather == :None) && (eveningWeather == :None)
+    if (morningWeather == :None) && (afternoonWeather == :None) && (eveningWeather == :None)
         pbMessage(_INTL("The area will experience normal conditions all day."))
         pbMessage(_INTL("This means cloud cover at around 50 percent, with a very low chance for precipitation."))
         return
     end
-    
+
     pbMessage(_INTL("The morning will see {1}.", morningDescriptor))
     showWeatherWarnings(morningWeather, morningStrength)
     if afternoonDescriptor == morningDescriptor
@@ -87,31 +87,29 @@ def displayWeatherReport(weatherReport,mapName)
         showWeatherWarnings(afternoonWeather, afternoonStrength)
         if eveningDescriptor == afternoonDescriptor
             pbMessage(_INTL("The day will close out with the same conditions."))
+        elsif eveningDescriptor == morningDescriptor
+            pbMessage(_INTL("More {1} will return in the evening.", eveningDescriptor))
+            showWeatherWarnings(eveningWeather, eveningStrength)
         else
-            if eveningDescriptor == morningDescriptor
-                pbMessage(_INTL("More {1} will return in the evening.", eveningDescriptor))
-                showWeatherWarnings(eveningWeather, eveningStrength)
-            else
-                pbMessage(_INTL("Finally, in the evening we'll get {1}.", eveningDescriptor))
-                showWeatherWarnings(eveningWeather, eveningStrength)
-            end
+            pbMessage(_INTL("Finally, in the evening we'll get {1}.", eveningDescriptor))
+            showWeatherWarnings(eveningWeather, eveningStrength)
         end
     end
 end
 
 def showWeatherWarnings(weatherSymbol, strength)
     return if !isWeatherDangerous?(weatherSymbol, strength)
-    warningMessage = [_INTL("Please take caution!"),_INTL("We warn the viewer to be careful."),_INTL("We recommend citizens stay indoors.")].sample
+    warningMessage = [_INTL("Please take caution!"), _INTL("We warn the viewer to be careful."), _INTL("We recommend citizens stay indoors.")].sample
     pbMessage(warningMessage)
 end
 
 def isWeatherDangerous?(weatherSymbol, strength)
-    return true if [:Sandstorm,:Blizzard,:Storm].include?(weatherSymbol)
+    return true if [:Sandstorm, :Blizzard, :Storm].include?(weatherSymbol)
     return true if weatherSymbol == :Sun && strength >= 4
     return false
 end
 
-def getWeatherDescriptor(weatherSymbol, strength)
+def getWeatherDescriptor(weatherSymbol, _strength)
     case weatherSymbol
     when :Rain
         return _INTL("cloudy skies with light rain showers")
@@ -123,7 +121,7 @@ def getWeatherDescriptor(weatherSymbol, strength)
         return _INTL("sunny skies and hot temperatures")
     when :Overcast
         return _INTL("overcast skies with high ambient humidity")
-    when :Storm,:HeavyRain
+    when :Storm, :HeavyRain
         return _INTL("total cloud cover and heavy rain with thunder")
     when :Blizzard
         return _INTL("blizzard conditions with high winds and heavy snowfall")

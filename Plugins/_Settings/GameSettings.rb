@@ -11,18 +11,18 @@ module Settings
     # Host your own version file in the same format as the below file
     # And set this setting to the URL to that file
     VERSION_SERVER_FILE_URL = "https://tectonicstorage.blob.core.windows.net/tectonicstorage/version_order.txt"
-  
+
     #=============================================================================
-  
+
     # The default screen width (at a scale of 1.0).
     SCREEN_WIDTH  = 512
     # The default screen height (at a scale of 1.0).
     SCREEN_HEIGHT = 384
     # The default screen scale factor. Possible values are 0.5, 1.0, 1.5 and 2.0.
     SCREEN_SCALE  = 1.0
-  
+
     #=============================================================================
-  
+
     # The maximum level Pokémon can reach.
     MAXIMUM_LEVEL        = 70
     # The level of newly hatched Pokémon.
@@ -31,9 +31,9 @@ module Settings
     SHINY_POKEMON_CHANCE = 16
     # The chance that a wild battle will be a double battle (out of 100)
     DOUBLE_WILD_BATTLE_CHANCE = 20
-  
+
     #=============================================================================
-  
+
     # The amount of money the player starts the game with.
     INITIAL_MONEY        = 3000
     # The maximum amount of money the player can have.
@@ -48,21 +48,21 @@ module Settings
     MAX_PLAYER_NAME_SIZE = 15
     # The maximum number of Pokémon that can be in the party.
     MAX_PARTY_SIZE       = 6
-  
+
     #=============================================================================
-  
+
     # A set of arrays each containing a trainer type followed by a Global Variable
     # number. If the variable isn't set to 0, then all trainers with the
     # associated trainer type will be named as whatever is in that variable.
     RIVAL_NAMES = []
-  
+
     #=============================================================================
-  
+
     # Whether outdoor maps should be shaded according to the time of day.
     TIME_SHADING = true
-  
+
     #=============================================================================
-  
+
     # Whether poisoned Pokémon will lose HP while walking around in the field.
     POISON_IN_FIELD       = true
     # Whether poisoned Pokémon will faint while walking around in the field
@@ -80,16 +80,16 @@ module Settings
     # The ID of the common event that runs when the player stops fishing (runs
     # instead of showing the reeling in animation).
     FISHING_END_COMMON_EVENT   = -1
-  
+
     #=============================================================================
-  
+
     # The number of steps allowed before a Safari Zone game is over (0=infinite).
     SAFARI_STEPS     = 600
     # The number of seconds a Bug Catching Contest lasts for (0=infinite).
-    BUG_CONTEST_TIME = 20 * 60   # 20 minutes
-  
+    BUG_CONTEST_TIME = 20 * 60 # 20 minutes
+
     #=============================================================================
-  
+
     # Pairs of map IDs, where the location signpost isn't shown when moving from
     # one of the maps in a pair to the other (and vice versa). Useful for single
     # long routes/towns that are spread over multiple maps.
@@ -97,9 +97,9 @@ module Settings
     # Moving between two maps that have the exact same name won't show the
     # location signpost anyway, so you don't need to list those maps here.
     NO_SIGNPOSTS = []
-  
+
     #=============================================================================
-  
+
     # Whether you need at least a certain number of badges to use some hidden
     # moves in the field (true), or whether you need one specific badge to use
     # them (false). The amounts/specific badges are defined below.
@@ -118,9 +118,9 @@ module Settings
     BADGE_FOR_STRENGTH  = 6
     BADGE_FOR_DIVE      = 7
     BADGE_FOR_WATERFALL = 8
-  
+
     #=============================================================================
-  
+
     # If a move taught by a TM/HM/TR replaces another move, this setting is
     # whether the machine's move retains the replaced move's PP (true), or whether
     # the machine's move has full PP (false).
@@ -134,50 +134,49 @@ module Settings
     REPEL_COUNTS_FAINTED_POKEMON         = true
     # Whether Rage Candy Bar acts as a Full Heal (true) or a Potion (false).
     RAGE_CANDY_BAR_CURES_STATUS_PROBLEMS = true
-  
+
     #=============================================================================
-  
+
     # The name of the person who created the Pokémon storage system.
     def self.storage_creator_name
-      return _INTL("Bill")
+        return _INTL("Bill")
     end
     # The number of boxes in Pokémon storage.
     NUM_STORAGE_BOXES = 40
     NUM_DONATION_BOXES = 5
-  
+
     #=============================================================================
-  
+
     # The names of each pocket of the Bag. Ignore the first entry ("").
     def self.bag_pocket_names
-      return ["",
-        _INTL("Items"),
-        _INTL("Medicine"),
-        _INTL("Candy"),
-        _INTL("Evolution Items"),
-        _INTL("TMs"),
-        _INTL("Keys"),
-        _INTL("Passive Tools"),
-        _INTL("Active Tools"),
-        _INTL("Held Berries"),
-        _INTL("Held Gems"),
-        _INTL("Held Herbs"),
-        _INTL("Held Clothing"),
-        _INTL("Misc. Held Items"),
-        _INTL("Poké Balls"),
-        _INTL("Sell Items"),
-        _INTL("Trade Items"),
-      ]
+        return ["",
+                _INTL("Items"),
+                _INTL("Medicine"),
+                _INTL("Candy"),
+                _INTL("Evolution Items"),
+                _INTL("TMs"),
+                _INTL("Keys"),
+                _INTL("Passive Tools"),
+                _INTL("Active Tools"),
+                _INTL("Held Berries"),
+                _INTL("Held Gems"),
+                _INTL("Held Herbs"),
+                _INTL("Held Clothing"),
+                _INTL("Misc. Held Items"),
+                _INTL("Poké Balls"),
+                _INTL("Sell Items"),
+                _INTL("Trade Items"),]
     end
     # The maximum number of items each slot in the Bag can hold.
-    BAG_MAX_PER_SLOT     = 999
-  
+    BAG_MAX_PER_SLOT = 999
+
     #=============================================================================
-  
+
     # Whether the Pokédex list shown is the one for the player's current region
     # (true), or whether a menu pops up for the player to manually choose which
     # Dex list to view if more than one is available (false).
     USE_CURRENT_REGION_DEX = true
-    
+
     # The names of the Pokédex lists, in the order they are defined in the PBS
     # file "regionaldexes.txt". The last name is for the National Dex and is added
     # onto the end of this array (remember that you don't need to use it). This
@@ -190,24 +189,24 @@ module Settings
     # number. That region's map will appear in the Area page while viewing that
     # Dex list, no matter which region the player is currently in.
     def self.pokedex_names
-      return [
-        _INTL("National Pokédex")
-      ]
+        return [
+            _INTL("National Pokédex")
+        ]
     end
-    
+
     # Whether all forms of a given species will be immediately available to view
     # in the Pokédex so long as that species has been seen at all (true), or
     # whether each form needs to be seen specifically before that form appears in
     # the Pokédex (false).
     DEX_SHOWS_ALL_FORMS = true
-    
+
     # An array of numbers, where each number is that of a Dex list (in the same
     # order as above, except the National Dex is -1). All Dex lists included here
     # will begin their numbering at 0 rather than 1 (e.g. Victini in Unova's Dex).
     DEXES_WITH_OFFSETS  = []
-  
+
     #=============================================================================
-  
+
     # A set of arrays, each containing details of a graphic to be shown on the
     # region map if appropriate. The values for each array are as follows:
     #   * Region number.
@@ -219,14 +218,14 @@ module Settings
     def self.getRegionMapExtras
         return []
     end
-  
+
     #=============================================================================
-  
+
     # A list of maps used by roaming Pokémon. Each map has an array of other maps
     # it can lead to.
     ROAMING_AREAS = {
-      5  => [   21, 28, 31, 39, 41, 44, 47, 66, 69],
-      21 => [5,     28, 31, 39, 41, 44, 47, 66, 69],
+      5  => [21, 28, 31, 39, 41, 44, 47, 66, 69],
+      21 => [5, 28, 31, 39, 41, 44, 47, 66, 69],
       28 => [5, 21,     31, 39, 41, 44, 47, 66, 69],
       31 => [5, 21, 28,     39, 41, 44, 47, 66, 69],
       39 => [5, 21, 28, 31,     41, 44, 47, 66, 69],
@@ -234,7 +233,7 @@ module Settings
       44 => [5, 21, 28, 31, 39, 41,     47, 66, 69],
       47 => [5, 21, 28, 31, 39, 41, 44,     66, 69],
       66 => [5, 21, 28, 31, 39, 41, 44, 47,     69],
-      69 => [5, 21, 28, 31, 39, 41, 44, 47, 66    ]
+      69 => [5, 21, 28, 31, 39, 41, 44, 47, 66]
     }
     # A set of arrays, each containing the details of a roaming Pokémon. The
     # information within each array is as follows:
@@ -246,9 +245,9 @@ module Settings
     #   * Name of BGM to play for that encounter (optional).
     #   * Roaming areas specifically for this Pokémon (optional).
     ROAMING_SPECIES = []
-  
+
     #=============================================================================
-  
+
     # A set of arrays, each containing the details of a wild encounter that can
     # only occur via using the Poké Radar. The information within each array is as
     # follows:
@@ -258,9 +257,9 @@ module Settings
     #   * Minimum possible level.
     #   * Maximum possible level (optional).
     POKE_RADAR_ENCOUNTERS = []
-  
+
     #=============================================================================
-  
+
     # The Game Switch that is set to ON when the player blacks out.
     STARTING_OVER_SWITCH      = 1
     # The Game Switch which, while ON, makes all wild Pokémon created be shiny.
@@ -268,9 +267,9 @@ module Settings
     # The Game Switch which, while ON, makes all Pokémon created considered to be
     # met via a fateful encounter.
     FATEFUL_ENCOUNTER_SWITCH  = 32
-  
+
     #=============================================================================
-  
+
     # ID of the animation played when the player steps on grass (grass rustling).
     GRASS_ANIMATION_ID           = 1
     # ID of the animation played when the player lands on the ground after hopping
@@ -291,73 +290,73 @@ module Settings
     # ID of the animation played when a berry tree grows a stage while the player
     # is on the map (for new plant growth mechanics only).
     PLANT_SPARKLE_ANIMATION_ID   = 7
-  
+
     #=============================================================================
-  
+
     # An array of available languages in the game, and their corresponding message
     # file in the Data folder. Edit only if you have 2 or more languages to choose
     # from.
     LANGUAGES = [
-      ["English", "english.dat"],
+        ["English", "english.dat"],
     ]
-  
+
     #=============================================================================
-  
+
     # Available speech frames. These are graphic files in "Graphics/Windowskins/".
     SPEECH_WINDOWSKINS = [
-      "speech1",
-      "speech2",
-      "speech3",
-      "speech4",
-      "speech5",
-      "speech6",
-      "speech7",
-      "speech8",
-      "speech9",
-      "speech10",
-      "speech11",
-      "speech12",
-      "speech13",
-      "speech14",
-      "speech15",
-      "speech16",
-      "speech17",
-      "speech18",
-      "speech19",
-      "speech20",
-      "speech21"
+        "speech1",
+        "speech2",
+        "speech3",
+        "speech4",
+        "speech5",
+        "speech6",
+        "speech7",
+        "speech8",
+        "speech9",
+        "speech10",
+        "speech11",
+        "speech12",
+        "speech13",
+        "speech14",
+        "speech15",
+        "speech16",
+        "speech17",
+        "speech18",
+        "speech19",
+        "speech20",
+        "speech21"
     ]
-    
+
     # Available menu frames. These are graphic files in "Graphics/Windowskins/".
     MENU_WINDOWSKINS = [
-      "choice1",
-      "choice2",
-      "choice3",
-      "choice4",
-      "choice5",
-      "choice6",
-      "choice7",
-      "choice8",
-      "choice9",
-      "choice10",
-      "choice11",
-      "choice12",
-      "choice13",
-      "choice14",
-      "choice15",
-      "choice16",
-      "choice17",
-      "choice18",
-      "choice19",
-      "choice20",
-      "choice21",
-      "choice22",
-      "choice23",
-      "choice24",
-      "choice5",
-      "choice26",
-      "choice27",
-      "choice28"
+        "choice1",
+        "choice2",
+        "choice3",
+        "choice4",
+        "choice5",
+        "choice6",
+        "choice7",
+        "choice8",
+        "choice9",
+        "choice10",
+        "choice11",
+        "choice12",
+        "choice13",
+        "choice14",
+        "choice15",
+        "choice16",
+        "choice17",
+        "choice18",
+        "choice19",
+        "choice20",
+        "choice21",
+        "choice22",
+        "choice23",
+        "choice24",
+        "choice5",
+        "choice26",
+        "choice27",
+        "choice28"
     ]
 
     #=============================================================================
@@ -392,25 +391,23 @@ module Settings
 
     def self.achievement_page_names
         return ["",
-            _INTL("Main Story"),
-            _INTL("Gyms"),
-            _INTL("Avatars"),
-            _INTL("Collection"),
-            _INTL("Exploration"),
-            _INTL("Sidequests"),
-            _INTL("Battle Monument"),
-            _INTL("Battle"),
-            _INTL("Other"),
-        ]
+                _INTL("Main Story"),
+                _INTL("Gyms"),
+                _INTL("Avatars"),
+                _INTL("Collection"),
+                _INTL("Exploration"),
+                _INTL("Sidequests"),
+                _INTL("Battle Monument"),
+                _INTL("Battle"),
+                _INTL("Other"),]
     end
 
     def self.collection_reward_page_names
         return ["",
-            _INTL("Area"),
-            _INTL("Type"),
-            _INTL("Tribe"),
-            _INTL("Total"),
-            _INTL("Progression"),
-        ]
+                _INTL("Area"),
+                _INTL("Type"),
+                _INTL("Tribe"),
+                _INTL("Total"),
+                _INTL("Progression"),]
     end
 end

@@ -4,28 +4,28 @@
 
 BattleHandlers::DamageCalcUserItem.add(:ADAMANTORB,
     proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-      if user.isSpecies?(:DIALGA) && %i[DRAGON STEEL].include?(type)
-        mults[:base_damage_multiplier] *= 1.2
-        user.aiLearnsItem(item) unless aiCheck
-      end
+        if user.isSpecies?(:DIALGA) && %i[DRAGON STEEL].include?(type)
+            mults[:base_damage_multiplier] *= 1.2
+            user.aiLearnsItem(item) unless aiCheck
+        end
     }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:LUSTROUSORB,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    if user.isSpecies?(:PALKIA) && %i[DRAGON WATER].include?(type)
-      mults[:base_damage_multiplier] *= 1.2
-      user.aiLearnsItem(item) unless aiCheck
-    end
+      if user.isSpecies?(:PALKIA) && %i[DRAGON WATER].include?(type)
+          mults[:base_damage_multiplier] *= 1.2
+          user.aiLearnsItem(item) unless aiCheck
+      end
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:GRISEOUSORB,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    if user.isSpecies?(:GIRATINA) && %i[DRAGON GHOST].include?(type)
-      mults[:base_damage_multiplier] *= 1.2
-      user.aiLearnsItem(item) unless aiCheck
-    end
+      if user.isSpecies?(:GIRATINA) && %i[DRAGON GHOST].include?(type)
+          mults[:base_damage_multiplier] *= 1.2
+          user.aiLearnsItem(item) unless aiCheck
+      end
   }
 )
 
@@ -35,7 +35,7 @@ BattleHandlers::DamageCalcUserItem.add(:GRISEOUSORB,
 
 BattleHandlers::DamageCalcUserItem.add(:BLACKBELT,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :FIGHTING, mults, type, aiCheck)
+      typeBoostingItem(item, user, :FIGHTING, mults, type, aiCheck)
   }
 )
 
@@ -43,7 +43,7 @@ BattleHandlers::DamageCalcUserItem.copy(:BLACKBELT, :FISTPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:BLACKGLASSES,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :DARK, mults, type, aiCheck)
+      typeBoostingItem(item, user, :DARK, mults, type, aiCheck)
   }
 )
 
@@ -51,7 +51,7 @@ BattleHandlers::DamageCalcUserItem.copy(:BLACKGLASSES, :DREADPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:CHARCOAL,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :FIRE, mults, type, aiCheck)
+      typeBoostingItem(item, user, :FIRE, mults, type, aiCheck)
   }
 )
 
@@ -59,7 +59,7 @@ BattleHandlers::DamageCalcUserItem.copy(:CHARCOAL, :FLAMEPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:DRAGONFANG,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :DRAGON, mults, type, aiCheck)
+      typeBoostingItem(item, user, :DRAGON, mults, type, aiCheck)
   }
 )
 
@@ -67,7 +67,7 @@ BattleHandlers::DamageCalcUserItem.copy(:DRAGONFANG, :DRACOPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:HARDSTONE,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :ROCK, mults, type, aiCheck)
+      typeBoostingItem(item, user, :ROCK, mults, type, aiCheck)
   }
 )
 
@@ -75,7 +75,7 @@ BattleHandlers::DamageCalcUserItem.copy(:HARDSTONE, :STONEPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:MAGNET,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :ELECTRIC, mults, type, aiCheck)
+      typeBoostingItem(item, user, :ELECTRIC, mults, type, aiCheck)
   }
 )
 
@@ -83,7 +83,7 @@ BattleHandlers::DamageCalcUserItem.copy(:MAGNET, :ZAPPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:METALCOAT,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :STEEL, mults, type, aiCheck)
+      typeBoostingItem(item, user, :STEEL, mults, type, aiCheck)
   }
 )
 
@@ -91,7 +91,7 @@ BattleHandlers::DamageCalcUserItem.copy(:METALCOAT, :IRONPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:MIRACLESEED,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :GRASS, mults, type, aiCheck)
+      typeBoostingItem(item, user, :GRASS, mults, type, aiCheck)
   }
 )
 
@@ -99,7 +99,7 @@ BattleHandlers::DamageCalcUserItem.copy(:MIRACLESEED, :MEADOWPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:MYSTICWATER,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :WATER, mults, type, aiCheck)
+      typeBoostingItem(item, user, :WATER, mults, type, aiCheck)
   }
 )
 
@@ -107,7 +107,7 @@ BattleHandlers::DamageCalcUserItem.copy(:MYSTICWATER, :SPLASHPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:NEVERMELTICE,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :ICE, mults, type, aiCheck)
+      typeBoostingItem(item, user, :ICE, mults, type, aiCheck)
   }
 )
 
@@ -115,7 +115,7 @@ BattleHandlers::DamageCalcUserItem.copy(:NEVERMELTICE, :ICICLEPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:FAIRYFEATHER,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :FAIRY, mults, type, aiCheck)
+      typeBoostingItem(item, user, :FAIRY, mults, type, aiCheck)
   }
 )
 
@@ -123,7 +123,7 @@ BattleHandlers::DamageCalcUserItem.copy(:FAIRYFEATHER, :PIXIEPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:POISONBARB,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :POISON, mults, type, aiCheck)
+      typeBoostingItem(item, user, :POISON, mults, type, aiCheck)
   }
 )
 
@@ -131,7 +131,7 @@ BattleHandlers::DamageCalcUserItem.copy(:POISONBARB, :TOXICPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:SHARPBEAK,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :FLYING, mults, type, aiCheck)
+      typeBoostingItem(item, user, :FLYING, mults, type, aiCheck)
   }
 )
 
@@ -139,13 +139,13 @@ BattleHandlers::DamageCalcUserItem.copy(:SHARPBEAK, :SKYPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:SILKSCARF,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :NORMAL, mults, type, aiCheck)
+      typeBoostingItem(item, user, :NORMAL, mults, type, aiCheck)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:SILVERPOWDER,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :BUG, mults, type, aiCheck)
+      typeBoostingItem(item, user, :BUG, mults, type, aiCheck)
   }
 )
 
@@ -153,7 +153,7 @@ BattleHandlers::DamageCalcUserItem.copy(:SILVERPOWDER, :INSECTPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:SOFTSAND,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :GROUND, mults, type, aiCheck)
+      typeBoostingItem(item, user, :GROUND, mults, type, aiCheck)
   }
 )
 
@@ -161,7 +161,7 @@ BattleHandlers::DamageCalcUserItem.copy(:SOFTSAND, :EARTHPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:SPELLTAG,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :GHOST, mults, type, aiCheck)
+      typeBoostingItem(item, user, :GHOST, mults, type, aiCheck)
   }
 )
 
@@ -169,7 +169,7 @@ BattleHandlers::DamageCalcUserItem.copy(:SPELLTAG, :SPOOKYPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:TWISTEDSPOON,
   proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
-    typeBoostingItem(item, user, :PSYCHIC, mults, type, aiCheck)
+      typeBoostingItem(item, user, :PSYCHIC, mults, type, aiCheck)
   }
 )
 
@@ -292,11 +292,11 @@ BattleHandlers::DamageCalcUserItem.add(:STEELGEM,
 ######################################################################
 
 BattleHandlers::DamageCalcUserItem.add(:STRENGTHHERB,
-  proc { |item, user, target, move, mults, _baseDmg, type, aiCheck, aiContext|
+  proc { |item, user, _target, move, mults, _baseDmg, _type, aiCheck, aiContext|
       next unless move.category == 1 # Originally special, used instead of specialMove? because of adaptive moves and interloper abilities
       unless aiCheck
-        user.applyEffect(:EmpoweringHerbConsumed, item)
-        user.aiLearnsItem(item)
+          user.applyEffect(:EmpoweringHerbConsumed, item)
+          user.aiLearnsItem(item)
       end
       aiContext[:item_consumed] = true if aiContext
       mults[:final_damage_multiplier] *= 1.15
@@ -304,11 +304,11 @@ BattleHandlers::DamageCalcUserItem.add(:STRENGTHHERB,
 )
 
 BattleHandlers::DamageCalcUserItem.add(:INTELLECTHERB,
-  proc { |item, user, target, move, mults, _baseDmg, type, aiCheck, aiContext|
+  proc { |item, user, _target, move, mults, _baseDmg, _type, aiCheck, aiContext|
       next unless move.category == 0 # Originally physical, used instead of specialMove? because of adaptive moves and interloper abilities
       unless aiCheck
-        user.applyEffect(:EmpoweringHerbConsumed, item)
-        user.aiLearnsItem(item)
+          user.applyEffect(:EmpoweringHerbConsumed, item)
+          user.aiLearnsItem(item)
       end
       aiContext[:item_consumed] = true if aiContext
       mults[:final_damage_multiplier] *= 1.15
@@ -316,70 +316,70 @@ BattleHandlers::DamageCalcUserItem.add(:INTELLECTHERB,
 )
 
 BattleHandlers::DamageCalcUserItem.add(:LUMBERAXE,
-  proc { |item, user, target, move, mults, _baseDmg, type, aiCheck|
-    mults[:final_damage_multiplier] *= 1.25
-    user.aiLearnsItem(item) unless aiCheck
+  proc { |item, user, _target, _move, mults, _baseDmg, _type, aiCheck|
+      mults[:final_damage_multiplier] *= 1.25
+      user.aiLearnsItem(item) unless aiCheck
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:RUSTEDSWORD,
-  proc { |item, user, target, move, mults, _baseDmg, type, aiCheck|
-    mults[:final_damage_multiplier] *= 1.1
-    user.aiLearnsItem(item) unless aiCheck
+  proc { |item, user, _target, _move, mults, _baseDmg, _type, aiCheck|
+      mults[:final_damage_multiplier] *= 1.1
+      user.aiLearnsItem(item) unless aiCheck
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:LIFEORB,
   proc { |item, user, _target, move, mults, _baseDmg, _type, aiCheck|
-    unless move.is_a?(PokeBattle_SelfHit)
-      mults[:final_damage_multiplier] *= 1.3
-      user.aiLearnsItem(item) unless aiCheck
-    end
+      unless move.is_a?(PokeBattle_SelfHit)
+          mults[:final_damage_multiplier] *= 1.3
+          user.aiLearnsItem(item) unless aiCheck
+      end
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:EXPERTBELT,
   proc { |item, user, target, _move, mults, _baseDmg, _type, aiCheck|
-    if Effectiveness.super_effective?(target.damageState.typeMod)
-      mults[:final_damage_multiplier] *= 1.2
-      user.aiLearnsItem(item) unless aiCheck
-    end
+      if Effectiveness.super_effective?(target.damageState.typeMod)
+          mults[:final_damage_multiplier] *= 1.2
+          user.aiLearnsItem(item) unless aiCheck
+      end
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:METRONOME,
   proc { |item, user, _target, _move, mults, _baseDmg, _type, aiCheck|
-    if user.countEffect(:Metronome) >= 1
-      met = 1 + 0.2 * user.countEffect(:Metronome)
-      mults[:final_damage_multiplier] *= met
-      user.aiLearnsItem(item) unless aiCheck
-    end
+      if user.countEffect(:Metronome) >= 1
+          met = 1 + (0.2 * user.countEffect(:Metronome))
+          mults[:final_damage_multiplier] *= met
+          user.aiLearnsItem(item) unless aiCheck
+      end
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:PRISMATICPLATE,
-  proc { |item, user, target, _move, mults, _baseDmg, type, aiCheck|
-    if user.pbHasType?(type)
-      mults[:final_damage_multiplier] *= 1.2
-      user.aiLearnsItem(item) unless aiCheck
-    end
+  proc { |item, user, _target, _move, mults, _baseDmg, type, aiCheck|
+      if user.pbHasType?(type)
+          mults[:final_damage_multiplier] *= 1.2
+          user.aiLearnsItem(item) unless aiCheck
+      end
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:CRYSTALCALIBURN,
   proc { |item, user, _target, move, mults, _baseDmg, _type, aiCheck|
-    if move.sliceMove? || move.lightMove?
-      mults[:final_damage_multiplier] *= 1.5
-      user.aiLearnsItem(item) unless aiCheck
-    end
+      if move.sliceMove? || move.lightMove?
+          mults[:final_damage_multiplier] *= 1.5
+          user.aiLearnsItem(item) unless aiCheck
+      end
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:TECHNIQUEBOOSTER,
-  proc { |item, user, target, move, mults, _baseDmg, type, aiCheck|
-    if move.move_data.is_signature?
-      mults[:final_damage_multiplier] *= 1.4
-      user.aiLearnsItem(item) unless aiCheck
-    end
+  proc { |item, user, _target, move, mults, _baseDmg, _type, aiCheck|
+      if move.move_data.is_signature?
+          mults[:final_damage_multiplier] *= 1.4
+          user.aiLearnsItem(item) unless aiCheck
+      end
   }
 )

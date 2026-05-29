@@ -46,7 +46,7 @@ class PokemonPokedex_Scene
                         searchPokeAbilities = dex_item[:data].abilities
                         value = false
                         value = true if searchPokeAbilities.include?(actualAbility)
-                        value = value ^ reversed # Boolean XOR
+                        value ^= reversed # Boolean XOR
                         next value
                     end
                     return dexlist
@@ -71,7 +71,7 @@ class PokemonPokedex_Scene
                     if searchPokeAbilities[1] && GameData::Ability.get(searchPokeAbilities[1]).description.downcase.include?(abilityDescriptionInput.downcase)
                         value = true
                     end
-                    value = value ^ reversed # Boolean XOR
+                    value ^= reversed # Boolean XOR
                     next value
                 end
                 return dexlist
@@ -83,7 +83,7 @@ class PokemonPokedex_Scene
     end
 
     def searchByMoveLearned
-        learningMethodSelection = pbMessage(_INTL("Which method?"),[_INTL("Any"), _INTL("Level Up"), _INTL("By Specific Level"), _INTL("Other"), _INTL("Coverage Type"), _INTL("Cancel")], 6)
+        learningMethodSelection = pbMessage(_INTL("Which method?"), [_INTL("Any"), _INTL("Level Up"), _INTL("By Specific Level"), _INTL("Other"), _INTL("Coverage Type"), _INTL("Cancel")], 6)
         return if learningMethodSelection == 5
 
         if learningMethodSelection == 2
@@ -274,11 +274,12 @@ class PokemonPokedex_Scene
     end
 
     def searchByEvolutionMethod
-        selections = [_INTL("Can Evolve by Method"), _INTL("Evolved From Method"), _INTL("No Evolutions"), _INTL("No Prevolutions"),  _INTL("Has Prevo and Evo"), _INTL("Split Evo"), _INTL("Nth Stage of Line"), _INTL("Cancel")]
+        selections = [_INTL("Can Evolve by Method"), _INTL("Evolved From Method"), _INTL("No Evolutions"), _INTL("No Prevolutions"), _INTL("Has Prevo and Evo"), _INTL("Split Evo"),
+                      _INTL("Nth Stage of Line"), _INTL("Cancel")]
         relationSelection = pbMessage(_INTL("Which search?"), selections, selections.length)
         return if relationSelection == 7
 
-        if [0,1].include?(relationSelection)
+        if [0, 1].include?(relationSelection)
             evoMethodTextInput = pbEnterText(_INTL("Search method..."), 0, 12)
             if evoMethodTextInput && evoMethodTextInput != ""
                 reversed = evoMethodTextInput[0] == "-"
@@ -310,7 +311,7 @@ class PokemonPokedex_Scene
                 stageNumberIntAttempt = stageNumberTextInput.to_i
                 if stageNumberIntAttempt <= 0
                     pbMessage(_INTL("Invalid stage input."))
-                    return nil  
+                    return nil
                 end
 
                 dexlist = searchStartingList
@@ -342,7 +343,7 @@ class PokemonPokedex_Scene
             return dexlist
         end
 
-        
+
         return nil
     end
 
@@ -377,7 +378,7 @@ class PokemonPokedex_Scene
     end
 
     def searchByCollecting
-        selection = pbMessage(_INTL("Which search?"),[_INTL("Starred"), _INTL("Owned"), _INTL("Not Starred"), _INTL("Not Owned"), _INTL("Cancel")], 5)
+        selection = pbMessage(_INTL("Which search?"), [_INTL("Starred"), _INTL("Owned"), _INTL("Not Starred"), _INTL("Not Owned"), _INTL("Cancel")], 5)
         if selection != 4
             dexlist = searchStartingList
 
@@ -403,9 +404,11 @@ class PokemonPokedex_Scene
     end
 
     def searchByStatComparison
-        statSelection = pbMessage(_INTL("Which stat?"), [_INTL("HP"), _INTL("Attack"), _INTL("Defense"), _INTL("Sp. Atk"), _INTL("Sp. Def"), _INTL("Speed"), _INTL("Total"), _INTL("Phys. EHP"), _INTL("Spec. EHP"), _INTL("Cancel"),], 10)
+        statSelection = pbMessage(_INTL("Which stat?"),
+[_INTL("HP"), _INTL("Attack"), _INTL("Defense"), _INTL("Sp. Atk"), _INTL("Sp. Def"), _INTL("Speed"), _INTL("Total"), _INTL("Phys. EHP"), _INTL("Spec. EHP"), _INTL("Cancel"),], 10)
         return if statSelection == 9
-        comparisonSelection = pbMessage(_INTL("Which comparison?"), [_INTL("Equal to number"),_INTL("Greater than number"), _INTL("Less than number"), _INTL("Equal to stat"),_INTL("Greater than stat"), _INTL("Less than stat"), _INTL("Cancel"),], 7)
+        comparisonSelection = pbMessage(_INTL("Which comparison?"),
+[_INTL("Equal to number"), _INTL("Greater than number"), _INTL("Less than number"), _INTL("Equal to stat"), _INTL("Greater than stat"), _INTL("Less than stat"), _INTL("Cancel"),], 7)
         return if comparisonSelection == 6
 
         stats = %i[HP ATTACK DEFENSE SPECIAL_ATTACK SPECIAL_DEFENSE SPEED PEHP SEPH]
@@ -420,7 +423,8 @@ class PokemonPokedex_Scene
             else
                 return nil
             end
-        elsif statSelectionComparison = pbMessage(_INTL("Compare to which stat?"), [_INTL("HP"), _INTL("Attack"), _INTL("Defense"),_INTL("Sp. Atk"), _INTL("Sp. Def"), _INTL("Speed"), _INTL("Phys. EHP"), _INTL("Spec. EHP"), _INTL("Cancel"),], 9)
+        elsif statSelectionComparison = pbMessage(_INTL("Compare to which stat?"),
+[_INTL("HP"), _INTL("Attack"), _INTL("Defense"), _INTL("Sp. Atk"), _INTL("Sp. Def"), _INTL("Speed"), _INTL("Phys. EHP"), _INTL("Spec. EHP"), _INTL("Cancel"),], 9)
             return if statSelectionComparison == 8
 
             comparitorB = stats[statSelectionComparison]
@@ -439,7 +443,7 @@ class PokemonPokedex_Scene
             when 0..5
                 statToCompareA = species_data.base_stats[comparitorA]
             when 6
-                species_data.base_stats.each do |statName, statValue|
+                species_data.base_stats.each do |_statName, statValue|
                     statToCompareA += statValue
                 end
             when 7
@@ -476,22 +480,12 @@ class PokemonPokedex_Scene
 
     def searchByMisc
         miscSearches = []
-        cmdCollecting	= -1
-        cmdMapFound = -1
         cmdZooSection	= -1
-        cmdWildItem 			    = -1
-        cmdIsLegendary	= -1
         cmdMovesetConformance	= -1
         cmdNoMonumentUses = -1
-        cmdOneAbility	= -1
-        cmdHasSignatureMove = -1
-        cmdHasSignatureAbility	= -1
         cmdHasSignature = -1
         cmdAvatarData = -1
         cmdOneAbility	= -1
-        cmdHasCoverageType	= -1
-        cmdMultipleForms = -1
-        cmdInvertList = -1
         miscSearches[cmdCollecting = miscSearches.length] = _INTL("Collecting")
         miscSearches[cmdMapFound = miscSearches.length] = _INTL("Map Found")
         miscSearches[cmdWildItem = miscSearches.length] = _INTL("Wild Items")
@@ -666,7 +660,7 @@ class PokemonPokedex_Scene
                 dex_item[:data].abilities.each do |ability|
                     signatureAbilityCount += 1 if GameData::Ability.get(ability).is_signature?
                 end
-                
+
                 case selection
                 when 0
                     next signatureAbilityCount == 0
@@ -774,16 +768,6 @@ class PokemonPokedex_Scene
 
     def searchByMovesetConformance
         dexlist = searchStartingList
-
-        commandAny = -1
-        command4Tempo = -1
-        commandMaxLevelUp = -1
-        commandExcessiveLevel1s = -1
-        commandAbove70 = -1
-        commandNoEarlyStab = -1
-        commandNoProgressStab = -1
-        commandNoBBStab = -1
-        commandDuplicateMoves = -1
         commands = [_INTL("Cancel")]
         commands[commandAny = commands.length] = _INTL("Any")
         commands[command4Tempo = commands.length] = _INTL("Non-4-Tempo")
@@ -852,8 +836,6 @@ class PokemonPokedex_Scene
                         end
                     end
                 end
-
-                breaks4s = false
                 next true if anyNon4s && (selection == command4Tempo || selection == commandAny)
 
                 next true if maxLevel < checkedMaxLevel && (selection == commandMaxLevelUp || selection == commandAny)
@@ -881,7 +863,7 @@ class PokemonPokedex_Scene
 
     def searchByNoMonumentUses
         dexlist = searchStartingList
-        dexlist = dexlist.find_all do |dex_item|
+        dexlist = dexlist.find_all do |_dex_item|
             monumentTrainerUseCount = $SpeciesUseData[entry[:species]][1]
             next monumentTrainerUseCount == 0
         end
@@ -940,7 +922,8 @@ class PokemonPokedex_Scene
     end
 
     def searchByTypeMatchup
-        sectionSelection = pbMessage(_INTL("Which interaction?"), [_INTL("Weak To"), _INTL("Resists"),_INTL("Immune To"), _INTL("Neutral To"), _INTL("Has Immunity"), _INTL("Has Hyper Weakness"), _INTL("Cancel"),], 7)
+        sectionSelection = pbMessage(_INTL("Which interaction?"),
+[_INTL("Weak To"), _INTL("Resists"), _INTL("Immune To"), _INTL("Neutral To"), _INTL("Has Immunity"), _INTL("Has Hyper Weakness"), _INTL("Cancel"),], 7)
         return if sectionSelection == 6
 
         if sectionSelection <= 3
@@ -1032,7 +1015,7 @@ class PokemonPokedex_Scene
 
     def sortByStat
         statSelection = pbMessage(_INTL("Which stat?"), [_INTL("HP"), _INTL("Attack"), _INTL("Defense"),
-                                                  _INTL("Sp. Atk"), _INTL("Sp. Def"), _INTL("Speed"), _INTL("Total"), _INTL("Phys. EHP"), _INTL("Spec. EHP"), _INTL("Cancel"),], 10)
+                                                         _INTL("Sp. Atk"), _INTL("Sp. Def"), _INTL("Speed"), _INTL("Total"), _INTL("Phys. EHP"), _INTL("Spec. EHP"), _INTL("Cancel"),], 10)
         return if statSelection == 9
         sortDirection = pbMessage(_INTL("Which direction?"), [_INTL("Descending"), _INTL("Ascending"), _INTL("Cancel")], 3)
         return if sortDirection == 2
@@ -1070,13 +1053,6 @@ class PokemonPokedex_Scene
     end
 
     def sortByOther
-        cmdSortByName = -1
-        cmdSortByType = -1
-        cmdSortByGenderRate = -1
-        cmdSortByHeight = -1
-        cmdSortByWeight = -1
-        cmdSortByCatchDifficulty = -1
-        cmdSortByExperienceGrant = -1
         cmdSortByTrainerCount = -1
         cmdSortByNormalTrainerCount = -1
         cmdSortByMonumentTrainerCount = -1

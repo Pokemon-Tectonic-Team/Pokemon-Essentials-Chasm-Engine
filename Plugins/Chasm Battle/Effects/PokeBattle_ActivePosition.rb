@@ -43,7 +43,7 @@ class PokeBattle_ActivePosition
     end
 
     def applyEffect(effect, value = nil)
-        super(effect, value)
+        super
         echoln("[POSITION EFFECT] Effect #{getName(effect)} applied to position #{@index}, which houses #{@battle.battlers[@index].pbThis(true)}")
     end
 

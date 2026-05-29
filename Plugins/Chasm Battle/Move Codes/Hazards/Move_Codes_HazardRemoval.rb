@@ -6,7 +6,7 @@ class PokeBattle_Move_Defog < PokeBattle_Move
     def worksWithNoTargets?; return true; end
     def hazardRemovalMove?; return true; end
     def screenRemovalMove?; return true; end
-    def aiAutoKnows?(pokemon); return false; end
+    def aiAutoKnows?(_pokemon); return false; end
 
     def ignoresSubstitute?(_user); return true; end
 
@@ -25,7 +25,7 @@ class PokeBattle_Move_Defog < PokeBattle_Move
         end
     end
 
-    def pbFailsAgainstTarget?(user, target, show_message)
+    def pbFailsAgainstTarget?(_user, _target, _show_message)
         return false
     end
 
@@ -48,9 +48,9 @@ class PokeBattle_Move_Defog < PokeBattle_Move
         end
     end
 
-    def getEffectScore(user, target)
+    def getEffectScore(user, _target)
         score = 0
-        ourSide   = user.pbOwnSide
+        ourSide = user.pbOwnSide
         targetSide = user.pbOpposingSide
         # Dislike removing hazards that affect the enemy
         score -= 0.8 * hazardWeightOnSide(targetSide) if user.alliesInReserve?
@@ -58,14 +58,14 @@ class PokeBattle_Move_Defog < PokeBattle_Move
         score += hazardWeightOnSide(ourSide) if user.alliesInReserve?
         targetSide.eachEffect(true) do |effect, value, data|
             next unless data.is_screen? || @miscEffects.include?(effect)
-			case value
-				when 2
-					score += 30
-				when 3
-					score += 55
-				when 4..999
-					score += 140
-            end	
+            case value
+            when 2
+                score += 30
+            when 3
+                score += 55
+            when 4..999
+                score += 140
+            end
         end
         return score
     end
@@ -77,7 +77,7 @@ end
 #===============================================================================
 class PokeBattle_Move_RapidSpin < PokeBattle_StatUpMove
     def hazardRemovalMove?; return true; end
-    def aiAutoKnows?(pokemon); return false; end
+    def aiAutoKnows?(_pokemon); return false; end
 
     def initialize(battle, move)
         super
@@ -106,9 +106,9 @@ end
 #===============================================================================
 class PokeBattle_Move_RemovesHazardsBothSides < PokeBattle_Move
     def hazardRemovalMove?; return true; end
-    def aiAutoKnows?(pokemon); return false; end
+    def aiAutoKnows?(_pokemon); return false; end
 
-    def eachHazard(side, isOurSide)
+    def eachHazard(side, _isOurSide)
         side.eachEffect(true) do |effect, _value, data|
             next unless data.is_hazard?
             yield effect, data
@@ -151,7 +151,7 @@ end
 class PokeBattle_Move_Icebreaker < PokeBattle_RecoilMove
     def hazardRemovalMove?; return true; end
 
-    def recoilFactor;  return (1.0 / 3.0); end
+    def recoilFactor; return 1.0 / 3.0; end
 
     def pbEffectAfterAllHits(user, target)
         super
@@ -177,16 +177,16 @@ end
 class PokeBattle_Move_MovesHazardsToOpponentAndForcesSwitch < PokeBattle_Move
     def forceSwitchMove?; return true; end
     def hazardRemovalMove?; return true; end
-    def aiAutoKnows?(pokemon); return false; end
+    def aiAutoKnows?(_pokemon); return false; end
 
-    def eachHazard(side, isOurSide)
+    def eachHazard(side, _isOurSide)
         side.eachEffect(true) do |effect, _value, data|
             next unless data.is_hazard?
             yield effect, data
         end
     end
 
-    def removeEffect(user, side, effect, data)
+    def removeEffect(_user, side, effect, _data)
         side.disableEffect(effect)
     end
 
@@ -195,15 +195,15 @@ class PokeBattle_Move_MovesHazardsToOpponentAndForcesSwitch < PokeBattle_Move
         ourSide = user.pbOwnSide
         eachHazard(targetSide, false) do |effect, data|
             removeEffect(user, targetSide, effect, data)
-            if data.is_hazard?
-                @battle.pbDisplay(_INTL("{1} blew away the {2} on the other side of the field!", user.pbThis, data.name)) unless data.has_expire_proc?
+            if data.is_hazard? && !data.has_expire_proc?
+                @battle.pbDisplay(_INTL("{1} blew away the {2} on the other side of the field!", user.pbThis, data.name))
             end
         end
         eachHazard(ourSide, true) do |effect, data|
-            if data.is_hazard?
-                @battle.pbDisplay(_INTL("The {1} was blown to the other side of the field!", data.name)) unless data.has_expire_proc?
+            if data.is_hazard? && !data.has_expire_proc?
+                @battle.pbDisplay(_INTL("The {1} was blown to the other side of the field!", data.name))
             end
-            if data.type == (:Integer)
+            if data.type == :Integer
                 increment = user.pbOwnSide.countEffect(effect)
                 user.pbOpposingSide.applyEffect(effect, increment)
             else

@@ -173,12 +173,12 @@ class PokeBattle_Battler
         attackMult = 1.0
 
         eachActiveAbility do |ability|
-            next if ignoreAbilityInAI?(ability,aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
+            next if ignoreAbilityInAI?(ability, aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
             attackMult = BattleHandlers.triggerAttackCalcUserAbility(ability, self, @battle, attackMult)
         end
         eachAlly do |ally|
             ally.eachActiveAbility do |ability|
-                next if ally.ignoreAbilityInAI?(ability,aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
+                next if ally.ignoreAbilityInAI?(ability, aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
                 attackMult = BattleHandlers.triggerAttackCalcAllyAbility(ability, self, @battle, attackMult)
             end
         end
@@ -200,12 +200,12 @@ class PokeBattle_Battler
         spAtkMult = 1.0
 
         eachActiveAbility do |ability|
-            next if ignoreAbilityInAI?(ability,aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
+            next if ignoreAbilityInAI?(ability, aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
             spAtkMult = BattleHandlers.triggerSpecialAttackCalcUserAbility(ability, self, @battle, spAtkMult)
         end
         eachAlly do |ally|
             ally.eachActiveAbility do |ability|
-                next if ally.ignoreAbilityInAI?(ability,aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
+                next if ally.ignoreAbilityInAI?(ability, aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
                 spAtkMult = BattleHandlers.triggerSpecialAttackCalcAllyAbility(ability, self, @battle, spAtkMult)
             end
         end
@@ -224,12 +224,12 @@ class PokeBattle_Battler
         defenseMult = 1.0
 
         eachActiveAbility do |ability|
-            next if ignoreAbilityInAI?(ability,aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
+            next if ignoreAbilityInAI?(ability, aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
             defenseMult = BattleHandlers.triggerDefenseCalcUserAbility(ability, self, @battle, defenseMult)
         end
         eachAlly do |ally|
             ally.eachActiveAbility do |ability|
-                next if ally.ignoreAbilityInAI?(ability,aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
+                next if ally.ignoreAbilityInAI?(ability, aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
                 defenseMult = BattleHandlers.triggerDefenseCalcAllyAbility(ability, self, @battle, defenseMult)
             end
         end
@@ -237,7 +237,7 @@ class PokeBattle_Battler
         eachActiveItem do |item|
             defenseMult = BattleHandlers.triggerDefenseCalcUserItem(item, self, battle, defenseMult)
         end
-        
+
         defenseMult *= 1.3 if hasTribeBonus?(:SCRAPPER)
         defenseMult *= 1.5 if pbOwnSide.effectActive?(:AutumnHarvests)
 
@@ -259,7 +259,7 @@ class PokeBattle_Battler
         spDefMult = 1.0
 
         eachActiveAbility do |ability|
-            next if ignoreAbilityInAI?(ability,aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
+            next if ignoreAbilityInAI?(ability, aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
             spDefMult = BattleHandlers.triggerSpecialDefenseCalcUserAbility(ability, self, @battle, spDefMult)
         end
         eachAlly do |ally|
@@ -271,7 +271,7 @@ class PokeBattle_Battler
         eachActiveItem do |item|
             spDefMult = BattleHandlers.triggerSpecialDefenseCalcUserItem(item, self, battle, spDefMult)
         end
-        
+
         spDefMult *= 1.3 if hasTribeBonus?(:RADIANT)
         spDefMult *= 1.5 if pbOwnSide.effectActive?(:SpringPlantings)
 
@@ -293,7 +293,7 @@ class PokeBattle_Battler
         speedMult = 1.0
 
         eachActiveAbility do |ability|
-            next if ignoreAbilityInAI?(ability,aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
+            next if ignoreAbilityInAI?(ability, aiCheck) && !AI_CHEATS_FOR_STAT_ABILITIES
             speedMult = BattleHandlers.triggerSpeedCalcAbility(ability, self, speedMult)
         end
 
@@ -301,7 +301,7 @@ class PokeBattle_Battler
         eachActiveItem do |item|
             speedMult = BattleHandlers.triggerSpeedCalcItem(item, self, speedMult)
         end
-        
+
         # Other effects
         unless afterSwitching
             speedMult *= 2.0 if pbOwnSide.effectActive?(:Tailwind) || pbOwnSide.effectActive?(:EmpoweredTailwind)
@@ -312,7 +312,7 @@ class PokeBattle_Battler
                 speedMult *= 2.0 if ally.hasActiveAbility?(:SUPERCONDUCTOR)
             end
         end
-        
+
         # Numb
         numbRelevant = numbed?
         numbRelevant = false if afterSwitching && hasActiveAbilityAI?(:NATURALCURE)
@@ -331,7 +331,7 @@ class PokeBattle_Battler
             speedMult /= 2.0 if shouldAbilityApply?(:CLEANFREAK, aiCheck)
         end
 
-        speedMult *= applySpeedTriggers(move,true) if aiCheck
+        speedMult *= applySpeedTriggers(move, true) if aiCheck
 
         # Stampede tribe
         speedMult *= 1.15 if hasTribeBonus?(:STAMPEDE)
@@ -342,15 +342,15 @@ class PokeBattle_Battler
         return [(speed * speedMult).round, 1].max
     end
 
-    def applySpeedTriggers(move = nil,aiCheck = false)
+    def applySpeedTriggers(move = nil, aiCheck = false)
         aiSpeedMult = 1.0
 
-        if shouldItemApply?(:AGILITYHERB,aiCheck)
+        if shouldItemApply?(:AGILITYHERB, aiCheck)
             if aiCheck
                 aiSpeedMult *= 2.0
             else
                 applyEffect(:AgilityHerb)
-                @battle.pbCommonAnimation("UseItem",self)
+                @battle.pbCommonAnimation("UseItem", self)
                 @battle.pbDisplay(_INTL("{1} moves at doubled speed thanks to its {2}!", pbThis, getItemName(:AGILITYHERB)))
             end
         end

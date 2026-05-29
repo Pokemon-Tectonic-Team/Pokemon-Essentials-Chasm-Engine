@@ -31,7 +31,7 @@ class PokemonGlobalMetadata
     attr_accessor :safariState
     attr_accessor :bugContestState
     attr_accessor :challenge
-    attr_accessor :lastbattle      # Saved recording of a battle
+    attr_accessor :lastbattle # Saved recording of a battle
     # Events
     attr_accessor :eventvars
     # Affecting the map
@@ -113,8 +113,8 @@ class PokemonGlobalMetadata
     attr_writer :futureFilledHoles
     # Online connection data
     attr_accessor :last_partner_id
-	
-	def initialize
+
+    def initialize
         # Movement
         @bicycle              = false
         @surfing              = false
@@ -131,14 +131,14 @@ class PokemonGlobalMetadata
         @creditsPlayed        = false
         # Pokédex
         numRegions            = pbLoadRegionalDexes.length
-        @pokedexDex           = (numRegions==0) ? -1 : 0
+        @pokedexDex           = (numRegions == 0) ? -1 : 0
         @pokedexIndex         = []
         @pokedexMode          = 0
-        for i in 0...numRegions+1     # National Dex isn't a region, but is included
-            @pokedexIndex[i]    = 0
+        for i in 0...numRegions + 1 # National Dex isn't a region, but is included
+            @pokedexIndex[i] = 0
         end
         # Day Care
-        @daycare              = [[nil,0],[nil,0]]
+        @daycare              = [[nil, 0], [nil, 0]]
         @daycareEgg           = false
         @daycareEggSteps      = 0
         # Special battle modes
@@ -169,25 +169,25 @@ class PokemonGlobalMetadata
         # Save file
         @safesave             = false
         # EXP-EZ Dispenser
-        @expJAR				  = 0
+        @expJAR = 0
         # DexNav
         @caughtCountsPerMap	  = {}
         # Aid Kit
         @teamHealerUpgrades   = 0
-        @teamHealerMaxUses	  = 1
-        @teamHealerCurrentUses= 1
+        @teamHealerMaxUses = 1
+        @teamHealerCurrentUses = 1
         # Tarot Amulet
-        @tarot_amulet_active  = false
+        @tarot_amulet_active = false
         # Cell Booster
         @cell_booster_inactive = false
         # Ragged Journal
-        @ragged_journal_pages_collected  = []
+        @ragged_journal_pages_collected = []
         # Ominous egg
         @ominous_egg_stage = 0
         # Chroma Clarion
         @chroma_clarion_recharge_steps = 0
         # Masterdex
-        @stored_search		  = nil
+        @stored_search = nil
         @dex_forms_shows_shinies = false
         @dex_area_shows_map = false
         @dex_tutor_list_sort_mode = 0
@@ -215,14 +215,14 @@ class PokemonGlobalMetadata
     def pokedexStars
         @pokedexStars = {} if @pokedexStars.nil?
         return @pokedexStars
-	end
+    end
 
-	def speciesStarred?(species)
-		if !pokedexStars.has_key?(species)
-			pokedexStars[species] = false
-		end
-		return pokedexStars[species]
-	end
+    def speciesStarred?(species)
+        if !pokedexStars.has_key?(species)
+            pokedexStars[species] = false
+        end
+        return pokedexStars[species]
+    end
 
     def setStarred(species)
         pokedexStars[species] = true
@@ -232,13 +232,13 @@ class PokemonGlobalMetadata
         pokedexStars[species] = false
     end
 
-	def toggleStarred(species)
-		if !pokedexStars.has_key?(species)
-			pokedexStars[species] = true
-		else
-			pokedexStars[species] = !pokedexStars[species]
-		end
-	end
+    def toggleStarred(species)
+        if pokedexStars.has_key?(species)
+            pokedexStars[species] = !pokedexStars[species]
+        else
+            pokedexStars[species] = true
+        end
+    end
 
     ####################################################
     # Tutorials
@@ -257,7 +257,7 @@ class PokemonGlobalMetadata
         @traitsTutorialized = false if @traitsTutorialized.nil?
         return @traitsTutorialized
     end
-    
+
     attr_writer :statStepsTutorialized
 
     def statStepsTutorialized
@@ -278,38 +278,44 @@ class PokemonGlobalMetadata
         @moveInfoPanelTutorialized = false if @moveInfoPanelTutorialized.nil?
         return @moveInfoPanelTutorialized
     end
-    
+
     attr_writer :typeChartChangesTutorialized
+
     def typeChartChangesTutorialized
         @typeChartChangesTutorialized = false if @daycareEggSteps.nil?
         return @typeChartChangesTutorialized
     end
 
     attr_writer :evolutionButtonTutorialized
+
     def evolutionButtonTutorialized
         @evolutionButtonTutorialized = false if @evolutionButtonTutorialized.nil?
         return @evolutionButtonTutorialized
     end
 
     attr_writer :mentorMovesTutorialized
+
     def mentorMovesTutorialized
         @mentorMovesTutorialized = false if @mentorMovesTutorialized.nil?
         return @mentorMovesTutorialized
     end
 
     attr_writer :adaptiveMovesTutorialized
+
     def adaptiveMovesTutorialized
         @adaptiveMovesTutorialized = false if @adaptiveMovesTutorialized.nil?
         return @adaptiveMovesTutorialized
     end
 
     attr_writer :donationBoxesTutorialized
+
     def donationBoxesTutorialized
         @donationBoxesTutorialized = false if @donationBoxesTutorialized.nil?
         return @donationBoxesTutorialized
     end
 
     attr_writer :colorationDifferencesTutorialized
+
     def colorationDifferencesTutorialized
         @colorationDifferencesTutorialized = false if @colorationDifferencesTutorialized.nil?
         return @colorationDifferencesTutorialized
@@ -318,7 +324,7 @@ class PokemonGlobalMetadata
     ####################################################
     # Misc.
     ####################################################
-    
+
     def expJAR=(value)
         @expJAR = value
         unlockAchievement(:STORE_LOTS_OF_EXP) if @expJAR >= 1_000_000

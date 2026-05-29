@@ -9,10 +9,10 @@ class PokeBattle_Battle
         return true if battler.pbHasType?(:GHOST)
         battler.eachActiveAbility do |ability|
             return true if BattleHandlers.triggerRunFromBattleAbility(ability, battler)
-        end   
+        end
         battler.eachActiveItem do |item|
             return true if BattleHandlers.triggerRunFromBattleItem(item, battler)
-        end                       
+        end
         battler.eachEffectAllLocations(true) do |_effect, _value, data|
             return false if data.trapping?
         end
@@ -25,7 +25,7 @@ class PokeBattle_Battle
     #  1: Succeeded at fleeing, battle will end
     # duringBattle is true for replacing a fainted Pokémon during the End Of Round
     # phase, and false for choosing the Run command.
-    def pbRun(idxBattler, duringBattle = false)
+    def pbRun(idxBattler, _duringBattle = false)
         battler = @battlers[idxBattler]
         if battler.opposes?
             return 0 if trainerBattle?

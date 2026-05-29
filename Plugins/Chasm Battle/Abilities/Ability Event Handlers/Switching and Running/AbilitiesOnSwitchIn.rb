@@ -120,20 +120,20 @@ BattleHandlers::AbilityOnSwitchIn.add(:SCOUREDSILHOUETTE,
 #######################################################
 
 BattleHandlers::LoadDataDependentAbilityHandlers += proc {
-  GameData::Ability.getByFlag("MoldBreaking").each do |abilityID|
-      BattleHandlers::AbilityOnSwitchIn.add(abilityID,
-          proc { |ability, battler, battle, aiCheck|
-              next 0 if aiCheck
-              battle.pbShowAbilitySplash(battler, ability)
-              if ability == :UNBOUND
-                battle.pbDisplay(_INTL("{1} breaks the mold and overpowers type immunities!", battler.pbThis))
-              else
-                battle.pbDisplay(_INTL("{1} breaks the mold!", battler.pbThis))
-              end
-              battle.pbHideAbilitySplash(battler)
-          }
-      )
-  end
+    GameData::Ability.getByFlag("MoldBreaking").each do |abilityID|
+        BattleHandlers::AbilityOnSwitchIn.add(abilityID,
+            proc { |ability, battler, battle, aiCheck|
+                next 0 if aiCheck
+                battle.pbShowAbilitySplash(battler, ability)
+                if ability == :UNBOUND
+                    battle.pbDisplay(_INTL("{1} breaks the mold and overpowers type immunities!", battler.pbThis))
+                else
+                    battle.pbDisplay(_INTL("{1} breaks the mold!", battler.pbThis))
+                end
+                battle.pbHideAbilitySplash(battler)
+            }
+        )
+    end
 }
 
 BattleHandlers::AbilityOnSwitchIn.add(:PRESSURE,
@@ -857,11 +857,11 @@ BattleHandlers::AbilityOnSwitchIn.add(:ASSISTANT,
 # Only used to force the AI to use Sudden Turn somewhat properly
 BattleHandlers::AbilityOnSwitchIn.add(:SUDDENTURN,
   proc { |ability, battler, battle, aiCheck|
-    if aiCheck
-      next battle.forceUseMove(battler, :RAPIDSPIN, ability: ability, aiCheck: true) / 2
-    else
-      next 0
-    end
+      if aiCheck
+          next battle.forceUseMove(battler, :RAPIDSPIN, ability: ability, aiCheck: true) / 2
+      else
+          next 0
+      end
   }
 )
 
@@ -895,13 +895,13 @@ BattleHandlers::AbilityOnSwitchIn.add(:DAUNTLESSSHIELD,
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:DOWNLOAD,
-  proc { |ability, battler, battle, aiCheck|
+  proc { |ability, battler, _battle, aiCheck|
       oppTotalDef = oppTotalSpDef = 0
       anyFoes = false
       battler.eachOpposing do |b|
-        anyFoes = true
-        oppTotalDef += b.pbDefense
-        oppTotalSpDef += b.pbSpDef
+          anyFoes = true
+          oppTotalDef += b.pbDefense
+          oppTotalSpDef += b.pbSpDef
       end
       next 0 unless anyFoes
       stat = (oppTotalDef < oppTotalSpDef) ? :ATTACK : :SPECIAL_ATTACK
@@ -914,13 +914,13 @@ BattleHandlers::AbilityOnSwitchIn.add(:DOWNLOAD,
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:SELECTIVESCUTES,
-  proc { |ability, battler, battle, aiCheck|
+  proc { |ability, battler, _battle, aiCheck|
       oppTotalAttack = oppTotalSpAtk = 0
       anyFoes = false
       battler.eachOpposing do |b|
-        anyFoes = true
-        oppTotalAttack += b.pbAttack
-        oppTotalSpAtk += b.pbSpAtk
+          anyFoes = true
+          oppTotalAttack += b.pbAttack
+          oppTotalSpAtk += b.pbSpAtk
       end
       next 0 unless anyFoes
       stat = (oppTotalAttack > oppTotalSpAtk) ? :DEFENSE : :SPECIAL_DEFENSE
@@ -982,7 +982,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:PRIMEVALIMPOSTER,
       battler.boss = false
       battle.bossBattle = false
 
-      trainerClone = NPCTrainer.cloneFromPlayer($Trainer,true)
+      trainerClone = NPCTrainer.cloneFromPlayer($Trainer, true)
       battle.opponent = [trainerClone]
 
       party = battle.pbParty(battler.index)
@@ -990,13 +990,13 @@ BattleHandlers::AbilityOnSwitchIn.add(:PRIMEVALIMPOSTER,
 
       # Give each cloned pokemon a stat boost to each stat
       trainerClone.party.each do |partyMember|
-        next unless partyMember
-        next if partyMember.fainted?
-        party.push(partyMember)
-        partyMember.ev = partyMember.ev.each_with_object({}) do |(statID, evValue), evArray|
-            evArray[statID] = evValue + 10
-        end
-        partyMember.calc_stats
+          next unless partyMember
+          next if partyMember.fainted?
+          party.push(partyMember)
+          partyMember.ev = partyMember.ev.each_with_object({}) do |(statID, evValue), evArray|
+              evArray[statID] = evValue + 10
+          end
+          partyMember.calc_stats
       end
 
       partyOrder = battle.pbPartyOrder(battler.index)
@@ -1038,7 +1038,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:TOLLTHEBELLS,
 BattleHandlers::AbilityOnSwitchIn.add(:GYRESPINNER,
   proc { |ability, battler, battle, aiCheck|
       next entryTrappingAbility(ability, battler, battle, :WHIRLPOOL, aiCheck: aiCheck) { |trappedFoe|
-        _INTL("{1} became trapped in the vortex!", trappedFoe.pbThis)
+          _INTL("{1} became trapped in the vortex!", trappedFoe.pbThis)
       }
   }
 )
@@ -1261,7 +1261,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:SCREENCLEANER,
           side.eachEffect(true) do |effect, value, effectData|
               next unless effectData.is_screen?
               if aiCheck
-                  screenScore = 20 + value * 10
+                  screenScore = 20 + (value * 10)
                   if side.index == battler.index % 2
                       score -= screenScore
                   else
@@ -1290,7 +1290,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:CURIOUSMEDICINE,
               done = true
           end
       end
-	  battler.eachOpposing do |b|
+      battler.eachOpposing do |b|
           next unless b.hasAlteredStatSteps?
           if aiCheck
               score += statStepsValueScore(b)
@@ -1339,7 +1339,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:HOLIDAYCHEER,
       score = 0
       battle.pbShowAbilitySplash(battler, ability) unless aiCheck
       battle.eachSameSideBattler(battler.index) do |b|
-            score += b.applyFractionalHealing(0.25, aiCheck: aiCheck)
+          score += b.applyFractionalHealing(0.25, aiCheck: aiCheck)
       end
       battle.pbHideAbilitySplash(battler) unless aiCheck
       next score if aiCheck
@@ -1347,18 +1347,18 @@ BattleHandlers::AbilityOnSwitchIn.add(:HOLIDAYCHEER,
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:EXTRASCOOP,
-  proc { |ability, battler, battle, aiCheck|
-    next battler.applyFractionalHealing(1.0/4.0, ability: ability, canOverheal: true, aiCheck: aiCheck)
+  proc { |ability, battler, _battle, aiCheck|
+      next battler.applyFractionalHealing(1.0 / 4.0, ability: ability, canOverheal: true, aiCheck: aiCheck)
   }
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:LASTGASP,
-  proc { |ability, battler, battle, aiCheck|
-    next 0 if aiCheck
-    battler.showMyAbilitySplash(ability)
-    battler.applyEffect(:LastGasp)
-    battler.applyEffect(:PerishSong, 3)
-    battler.hideMyAbilitySplash
+  proc { |ability, battler, _battle, aiCheck|
+      next 0 if aiCheck
+      battler.showMyAbilitySplash(ability)
+      battler.applyEffect(:LastGasp)
+      battler.applyEffect(:PerishSong, 3)
+      battler.hideMyAbilitySplash
   }
 )
 
@@ -1384,19 +1384,19 @@ BattleHandlers::AbilityOnSwitchIn.add(:ROOMLOCK,
 CASHOUT_HEALING_DIVISOR = 10
 
 BattleHandlers::AbilityOnSwitchIn.add(:CASHOUT,
-  proc { |ability, battler, battle, aiCheck|
+  proc { |ability, battler, _battle, aiCheck|
       next unless battler.pbOwnSide.effectActive?(:PayDay)
       maxCoinsCanHealFrom = battler.maxOverhealingPossible * CASHOUT_HEALING_DIVISOR
-      coinsToConsume = [battler.pbOwnSide.countEffect(:PayDay),maxCoinsCanHealFrom].min
+      coinsToConsume = [battler.pbOwnSide.countEffect(:PayDay), maxCoinsCanHealFrom].min
       healingAmt = coinsToConsume / CASHOUT_HEALING_DIVISOR
       battler.showMyAbilitySplash(ability) unless aiCheck
-      healingMessage = _INTL("{1} gobbles up the scattered coins!",battler.pbThis)
+      healingMessage = _INTL("{1} gobbles up the scattered coins!", battler.pbThis)
       recoveredHP = battler.pbRecoverHP(healingAmt, true, true, true, healingMessage, canOverheal: true, aiCheck: aiCheck)
       if aiCheck
-        next battler.getHealingEffectScore(recoveredHP)
+          next battler.getHealingEffectScore(recoveredHP)
       else
-        battler.pbOwnSide.effects[:PayDay] -= coinsToConsume
-        battler.hideMyAbilitySplash
+          battler.pbOwnSide.effects[:PayDay] -= coinsToConsume
+          battler.hideMyAbilitySplash
       end
   }
 )
@@ -1418,15 +1418,15 @@ BattleHandlers::AbilityOnSwitchIn.add(:FALSEFRONT,
               chosenType = validTypes.sample
           elsif !battler.pbOwnedByPlayer? # Trainer AI
               validTypes.each do |type|
-                next unless battler.pbHasAttackingType?(type)
-                chosenType = type
+                  next unless battler.pbHasAttackingType?(type)
+                  chosenType = type
               end
-              chosenType = chosenType || validTypes[0]
+              chosenType ||= validTypes[0]
           else
-            chosenType = validTypes[battle.scene.pbChooseWithThinkingLoop(_INTL("Which type should {1} fake?", battler.pbThis(true)), validTypeNames)]
+              chosenType = validTypes[battle.scene.pbChooseWithThinkingLoop(_INTL("Which type should {1} fake?", battler.pbThis(true)), validTypeNames)]
           end
       end
-      battler.applyEffect(:Type3,chosenType)
+      battler.applyEffect(:Type3, chosenType)
       battler.hideMyAbilitySplash
   }
 )
@@ -1442,7 +1442,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:DISTORTEDGRAVITY,
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:RAINBOWTRAIL,
-  proc { |ability, battler, battle, aiCheck| 
+  proc { |ability, battler, battle, aiCheck|
       next unless battler.canChangeType?
       next unless battler.hasType?(:FIRE)
       next 0 if aiCheck
@@ -1457,76 +1457,76 @@ BattleHandlers::AbilityOnSwitchIn.add(:RAINBOWTRAIL,
 
 BattleHandlers::AbilityOnSwitchIn.add(:INKSPRAY,
   proc { |ability, battler, battle, aiCheck|
-    battle.pbShowAbilitySplash(battler, ability) unless aiCheck
-    score = 0
-    battler.eachOpposing do |b|
-      next if b.semiInvulnerable?
-      next if b.substituted?
-      next if b.effectActive?(:Blindness)
-      if aiCheck
-        score += getBlindnessEffectScore(battler,b)
-      else
-        b.applyEffect(:Blindness)
+      battle.pbShowAbilitySplash(battler, ability) unless aiCheck
+      score = 0
+      battler.eachOpposing do |b|
+          next if b.semiInvulnerable?
+          next if b.substituted?
+          next if b.effectActive?(:Blindness)
+          if aiCheck
+              score += getBlindnessEffectScore(battler, b)
+          else
+              b.applyEffect(:Blindness)
+          end
       end
-    end
-    next score if aiCheck
-    battle.pbHideAbilitySplash(battler)
+      next score if aiCheck
+      battle.pbHideAbilitySplash(battler)
   }
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:INSCRUTABLEORDERS,
-  proc { |ability, battler, battle, aiCheck|
-    battle.pbShowAbilitySplash(battler, ability)
-    battler.applyEffect(:Torment)
-    battle.pbHideAbilitySplash(battler)
+  proc { |ability, battler, battle, _aiCheck|
+      battle.pbShowAbilitySplash(battler, ability)
+      battler.applyEffect(:Torment)
+      battle.pbHideAbilitySplash(battler)
   }
 )
 
 
 BattleHandlers::AbilityOnSwitchIn.add(:EXOSPHERICDESCENT,
   proc { |ability, battler, battle, aiCheck|
-    next 0 unless battler.form == 0
-    next 100 if aiCheck
-    battle.pbShowAbilitySplash(battler, ability)
-    battle.pbCommonAnimation("MegaEvolutionRayquaza", battler)
-    battler.pbChangeForm(1, _INTL("{1} flies in like a comet!", battler.pbThis))
-    battle.pbHideAbilitySplash(battler)
+      next 0 unless battler.form == 0
+      next 100 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbCommonAnimation("MegaEvolutionRayquaza", battler)
+      battler.pbChangeForm(1, _INTL("{1} flies in like a comet!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
   }
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSWORD,
   proc { |ability, battler, battle, aiCheck|
-    next -100 unless battle.field.effectActive?(:SlumberingSwordReady)
-    next 0 unless battler.form == 0
-    next 100 if aiCheck
-    battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Sword!", battler.pbThis)) if battle.field.effectActive?(:RustedSwordDropped)
-    battle.pbShowAbilitySplash(battler, ability)
-    battle.pbCommonAnimation("StanceAttack", battler)
-    battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
-    battle.pbHideAbilitySplash(battler)
+      next -100 unless battle.field.effectActive?(:SlumberingSwordReady)
+      next 0 unless battler.form == 0
+      next 100 if aiCheck
+      battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Sword!", battler.pbThis)) if battle.field.effectActive?(:RustedSwordDropped)
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbCommonAnimation("StanceAttack", battler)
+      battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
   }
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSHIELD,
   proc { |ability, battler, battle, aiCheck|
-    next -100 unless battle.field.effectActive?(:SlumberingShieldReady)
-    next 0 unless battler.form == 0
-    next 100 if aiCheck
-    battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Shield!", battler.pbThis)) if battle.field.effectActive?(:RustedShieldDropped)
-    battle.pbShowAbilitySplash(battler, ability)
-    battle.pbAnimation(:OBSTRUCT, battler, nil, 0)
-    battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
-    battle.pbHideAbilitySplash(battler)
+      next -100 unless battle.field.effectActive?(:SlumberingShieldReady)
+      next 0 unless battler.form == 0
+      next 100 if aiCheck
+      battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Shield!", battler.pbThis)) if battle.field.effectActive?(:RustedShieldDropped)
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbAnimation(:OBSTRUCT, battler, nil, 0)
+      battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
   }
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:PRIMORDIALSEAL,
   proc { |ability, battler, battle, aiCheck|
-    next -100 unless battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
-    next 0 unless battler.form == 0
-    next 100 if aiCheck
-    battle.pbShowAbilitySplash(battler, ability)
-    battle.pbDisplay(_INTL("Eons course through {1}'s being!", battler.pbThis(true)))
-    battle.pbHideAbilitySplash(battler)
+      next -100 unless battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+      next 0 unless battler.form == 0
+      next 100 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("Eons course through {1}'s being!", battler.pbThis(true)))
+      battle.pbHideAbilitySplash(battler)
   }
 )

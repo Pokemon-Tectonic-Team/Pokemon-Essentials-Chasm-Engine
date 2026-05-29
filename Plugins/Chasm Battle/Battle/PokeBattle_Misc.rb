@@ -39,11 +39,11 @@ class PokeBattle_Battle
         # cable club messes with the order of battlers to ensure consistency
         # so we have to do the same here to get the sides right
         # doesn't matter in balanced matches but comes up with avatar summons
-        if (@client_id == 1)
+        if @client_id == 1
             player = 1
             opp = 0
         end
-        return (pbSideSize(player) > pbSideSize(opp)) ? (pbSideSize(player) - 1) * 2 : pbSideSize(opp) * 2 - 1
+        return (pbSideSize(player) > pbSideSize(opp)) ? (pbSideSize(player) - 1) * 2 : (pbSideSize(opp) * 2) - 1
     end
 
     def bossBattle?
@@ -51,7 +51,7 @@ class PokeBattle_Battle
     end
 
     def roomActive?
-        @field.eachEffect(true) do |effect, _value, effectData|
+        @field.eachEffect(true) do |_effect, _value, effectData|
             return true if effectData.is_room?
         end
         return false
@@ -106,7 +106,7 @@ class PokeBattle_Battle
         end
         return false
     end
-    
+
     def anyMonSlumberingShield?
         return anyMonHasAbility?(:SLUMBERINGSHIELD)
     end
@@ -117,7 +117,7 @@ class PokeBattle_Battle
 
     def pbCheckSlumbering
         if @turnCount == 10 && (
-            (anyMonSlumberingShield? && !@field.effectActive?(:SlumberingShieldReady)) || 
+            (anyMonSlumberingShield? && !@field.effectActive?(:SlumberingShieldReady)) ||
             (anyMonSlumberingSword? && !@field.effectActive?(:SlumberingSwordReady)))
             pbDisplay(_INTL("The battle reaches an apex!"))
             @field.applyEffect(:SlumberingShieldReady) if anyMonSlumberingShield?
@@ -144,12 +144,12 @@ class PokeBattle_Battle
             usedEmpoweredMove = false
 
             # Begin the phase change
-            b.bossAI.startPhaseChange(b,self)
+            b.bossAI.startPhaseChange(b, self)
             showMessages = $Options.avatar_mechanics_messages == 0
 
             # Reset debuffs
             if PRIMEVAL_MOVES_RESET_DEBUFFS
-                pbAnimation(:REFRESH,b,b)
+                pbAnimation(:REFRESH, b, b)
                 pbDisplaySlower(_INTL("{1} wiped the slate clean.", b.pbThis)) if showMessages
                 b.pbCureStatus
                 b.pbCureStatus # Duplicated intentionally
@@ -169,18 +169,18 @@ class PokeBattle_Battle
             b.phaseTransitioning = true
             b.eachEmpoweredStatusMove do |move, index|
                 if showMessages
-                  if usedEmpoweredMove
-                    pbDisplaySlower(_INTL("What?! Even more energy rises up from inside {1}!!", b.pbThis(true)))
-                  else
-                    pbDisplaySlower(_INTL("A great energy rises up from inside {1}!", b.pbThis(true)))
-                  end
+                    if usedEmpoweredMove
+                        pbDisplaySlower(_INTL("What?! Even more energy rises up from inside {1}!!", b.pbThis(true)))
+                    else
+                        pbDisplaySlower(_INTL("A great energy rises up from inside {1}!", b.pbThis(true)))
+                    end
                 end
 
                 b.pbUseMove([:UseMove, index, move, -1, 0])
                 usedEmpoweredMove = true
             end
             b.phaseTransitioning = false
-            
+
             next unless usedEmpoweredMove
 
             # Swap to post-empowerment moveset
@@ -192,7 +192,7 @@ class PokeBattle_Battle
             @scene.pbRefresh
 
             # Reset fear
-            pbParty(0).each_with_index do |pkmn, i|
+            pbParty(0).each_with_index do |pkmn, _i|
                 next unless pkmn
                 pkmn.removeFear(self) if pkmn.afraid?
             end
@@ -210,13 +210,12 @@ class PokeBattle_Battle
         else
             fakeMove = forcedMoveUser.moves[moveIDOrIndex]
         end
-        
+
         if aiCheck
-            moveScore = 0
             if target >= 0
-                moveScore = @battleAI.pbGetMoveScore(fakeMove, forcedMoveUser, @battlers[target], forcedMoveUser.ownersPolicies)
+                @battleAI.pbGetMoveScore(fakeMove, forcedMoveUser, @battlers[target], forcedMoveUser.ownersPolicies)
             else
-                newChoice,killInfo = @battleAI.pbEvaluateMoveTrainer(forcedMoveUser, fakeMove, random: true)
+                newChoice, = @battleAI.pbEvaluateMoveTrainer(forcedMoveUser, fakeMove, random: true)
                 if newChoice
                     return newChoice[0]
                 else
@@ -248,7 +247,7 @@ class PokeBattle_Battle
         if forcedMoveUser.asleep?
             forcedMoveUser.pbContinueStatus(:SLEEP)
             unless fakeMove.usableWhenAsleep? # Snore/Sleep Talk
-                forcedMoveUser.onMoveFailed(fakeMove,false)
+                forcedMoveUser.onMoveFailed(fakeMove, false)
                 cantForceMove = true
             end
         end
@@ -275,9 +274,9 @@ class PokeBattle_Battle
         return PokeBattle_Move.from_pokemon_move(self, Pokemon::Move.new(move_id))
     end
 
-    def allEffectHolders(&block)
+    def allEffectHolders(&)
         yield @field
-        @sides.each(&block)
+        @sides.each(&)
         @positions.each_with_index do |position, _index|
             yield position unless position.nil?
         end
@@ -315,7 +314,7 @@ class PokeBattle_Battle
     end
 
     # If given an array, returns true if the AI knows of ANY of the listed abilities
-    def aiKnowsAbility?(pokemon,checkAbility)
+    def aiKnowsAbility?(pokemon, checkAbility)
         knownAbilitiesOfMon = @knownAbilities[pokemon.personalID]
         return false if knownAbilitiesOfMon.nil?
         if checkAbility.is_a?(Array)
@@ -336,7 +335,7 @@ class PokeBattle_Battle
     end
 
     # If given an array, returns true if the AI knows of ANY of the listed abilities
-    def aiKnowsItem?(pokemon,checkItem)
+    def aiKnowsItem?(pokemon, checkItem)
         knownItemsOfMon = @knownItems[pokemon.personalID]
         return false if knownItemsOfMon.nil?
         if checkItem.is_a?(Array)
@@ -363,7 +362,7 @@ class PokeBattle_Battle
         return @knownMoves[pokemon.personalID]
     end
 
-    def actionTargets?(user,action,battler)
+    def actionTargets?(user, action, battler)
         return false if action[0] != :UseMove
         target_data = action[2].pbTarget(user)
         if target_data.num_targets > 1
@@ -375,37 +374,37 @@ class PokeBattle_Battle
         end
     end
 
-    def predictable?(predictor,idxBattler)
+    def predictable?(predictor, idxBattler)
         return false unless predictor.ownersPolicies.include?(:PREDICTS_PLAYER)
         return false unless @battlers[idxBattler].pbOwnedByPlayer?
         return false unless @predictedActions[idxBattler]
         return true
     end
 
-    def aiPredictsSwitch?(predictor,idxBattler,ignoreSwitchMoves = false)
-        return false unless predictable?(predictor,idxBattler)
+    def aiPredictsSwitch?(predictor, idxBattler, ignoreSwitchMoves = false)
+        return false unless predictable?(predictor, idxBattler)
         predictedAction = @predictedActions[idxBattler]
         return true if predictedAction[0] == :SwitchOut
         return true if !ignoreSwitchMoves && predictedAction[0] == :UseMove && predictedAction[2].switchOutMove?
         return false
     end
 
-    def aiPredictsAttack?(predictor,idxBattler,againstPredictor=false,categoryOnly = -1)
-        return true unless predictable?(predictor,idxBattler)
+    def aiPredictsAttack?(predictor, idxBattler, againstPredictor = false, categoryOnly = -1)
+        return true unless predictable?(predictor, idxBattler)
         predictedAction = @predictedActions[idxBattler]
         return false unless predictedAction[0] == :UseMove
         return false unless predictedAction[2].damagingMove?(true)
-        return false if againstPredictor && !actionTargets?(@battlers[idxBattler],predictedAction,predictor)
+        return false if againstPredictor && !actionTargets?(@battlers[idxBattler], predictedAction, predictor)
         return false if categoryOnly != -1 && predictedAction[2].category_override != categoryOnly
         return true
     end
 
-    def aiPredictsStatus?(predictor,idxBattler,againstPredictor=false)
-        return false unless predictable?(predictor,idxBattler)
+    def aiPredictsStatus?(predictor, idxBattler, againstPredictor = false)
+        return false unless predictable?(predictor, idxBattler)
         predictedAction = @predictedActions[idxBattler]
         return false unless predictedAction[0] == :UseMove
         return false if predictedAction[2].damagingMove?(true)
-        return false if againstPredictor && !actionTargets?(@battlers[idxBattler],predictedAction,predictor)
+        return false if againstPredictor && !actionTargets?(@battlers[idxBattler], predictedAction, predictor)
         return true
     end
 
@@ -419,7 +418,7 @@ class PokeBattle_Battle
         end
         return mult
     end
-    
+
     def gravityIntensified?
         return true if @field.effectActive?(:Gravity)
         return true if @field.effectActive?(:WarpingCore)

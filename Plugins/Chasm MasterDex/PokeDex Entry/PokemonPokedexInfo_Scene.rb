@@ -24,8 +24,8 @@ class PokemonPokedexInfo_Scene
         @page = battle ? 2 : 1
         @linksEnabled = linksEnabled
         @evolutionIndex = -1
-        @typebitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Pokedex/icon_types")))
-        @types_emphasized_bitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Pokedex/icon_types_emphasized")))
+        @typebitmap = AnimatedBitmap.new(addLanguageSuffix("Graphics/Pictures/Pokedex/icon_types"))
+        @types_emphasized_bitmap = AnimatedBitmap.new(addLanguageSuffix("Graphics/Pictures/Pokedex/icon_types_emphasized"))
         move_path = "Graphics/Pictures/move_info_display_backwards_l"
         move_path += "_dark" if darkMode?
         @moveInfoDisplayBitmap = AnimatedBitmap.new(_INTL(move_path))
@@ -37,7 +37,7 @@ class PokemonPokedexInfo_Scene
         @sprites["infosprite"].y = 136
         @mapdata = pbLoadTownMapData
         mappos = getDisplayedPositionOfGameMap($game_map.map_id)
-        if @region < 0                                 # Use player's current region
+        if @region < 0 # Use player's current region
             @region = mappos ? mappos[0] : 0 # Region 0 default
         end
         @sprites["areamap"] = IconSprite.new(0, 0, @viewport)
@@ -136,7 +136,7 @@ class PokemonPokedexInfo_Scene
 
     def pbUpdate
         if @page == AREA_PAGE_ID
-            intensity = (Graphics.frame_count % 40)*12
+            intensity = (Graphics.frame_count % 40) * 12
             intensity = 480 - intensity if intensity > 240
             @sprites["areahighlight"].opacity = intensity
         end
@@ -230,9 +230,9 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         # shift x position so that double digit page number does not overlap with the right facing arrow
         xPos -= 14 if @page >= 10
         drawFormattedTextEx(overlay, xPos, 2, Graphics.width, "<outln2>[#{page}/#{pageTitles.length - 1}]</outln2>", base, shadow, 18)
-        # Draw species name on top right	
+        # Draw species name on top right
         speciesName = GameData::Species.get(@species).name
-		speciesName = "#{speciesName} #{@form + 1}" if @multiple_forms
+        speciesName = "#{speciesName} #{@form + 1}" if @multiple_forms
         # shift x position so that species name does not overlap with the right facing arrow
         xPos += 14 if @page >= 10
         drawFormattedTextEx(overlay, xPos + 104, 2, Graphics.width, "<outln2>#{speciesName}</outln2>", base, shadow, 18)
@@ -260,7 +260,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         base   = MessageConfig.pbDefaultTextMainColor
         shadow = MessageConfig.pbDefaultTextShadowColor
         imagepos = []
-        imagepos.push([addLanguageSuffix(("Graphics/Pictures/Pokedex/overlay_info")), 0, 0]) if @brief
+        imagepos.push([addLanguageSuffix("Graphics/Pictures/Pokedex/overlay_info"), 0, 0]) if @brief
         species_data = GameData::Species.get_species_form(@species, @form)
         # Write various bits of text
         indexText = "???"
@@ -313,11 +313,10 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         bg_path += "_dark" if darkMode?
         @sprites["background"].setBitmap(_INTL(bg_path))
         overlay = @sprites["overlay"].bitmap
-        formname = ""
         base   = MessageConfig.pbDefaultTextMainColor
         shadow = MessageConfig.pbDefaultTextShadowColor
 
-        mutabilityLabelsX = Graphics.width/2 - 60
+        mutabilityLabelsX = (Graphics.width / 2) - 60
 
         for i in @available
             next unless i[2] == @form
@@ -343,7 +342,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
 
                 ability1Description = addBattleKeywordHighlighting(ability1.description, isAbility: true)
                 drawFormattedTextEx(overlay, abilityTextX, ability1Y + 34, 450, ability1Description, base, shadow)
-                
+
                 # add mutability labels
                 if ability1.is_immutable_ability?
                     drawFormattedTextEx(overlay, mutabilityLabelsX, ability1Y + 134, 450, "Immutable", base, shadow)
@@ -371,7 +370,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
 
                 ability2Description = addBattleKeywordHighlighting(ability2.description, isAbility: true)
                 drawFormattedTextEx(overlay, abilityTextX, ability2Y + 34, 450, ability2Description, base, shadow)
-                
+
                 # add mutability labels
                 if ability2.is_immutable_ability?
                     drawFormattedTextEx(overlay, mutabilityLabelsX, ability2Y + 134, 450, "Immutable", base, shadow)
@@ -414,7 +413,6 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         bg_path += "_dark" if darkMode?
         @sprites["background"].setBitmap(_INTL(bg_path))
         overlay = @sprites["overlay"].bitmap
-        formname = ""
         base   = MessageConfig.pbDefaultTextMainColor
         faded  = MessageConfig.pbDefaultFadedTextColor
         shadow = MessageConfig.pbDefaultTextShadowColor
@@ -423,16 +421,16 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
 
         # Everything else
 
-		# Only give me 1 element in the case where the 2 forms are only gender.
+        # Only give me 1 element in the case where the 2 forms are only gender.
         if @available.length >= 2 && @available[0][0] == "Male" && @available[1][0] == "Female"
-            available = [@available[0]]
+            [@available[0]]
         else
-            available = @available
+            @available
         end
 
         for i in @available
             next unless i[2] == @form
-            formname = i[0]
+            i[0]
             fSpecies = GameData::Species.get_species_form(@species, i[2])
 
             yBase = 62
@@ -442,7 +440,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
             baseStats = []
             total = 0
 
-            baseStatHash.each_with_index do |stat, index|
+            baseStatHash.each_with_index do |stat, _index|
                 next unless stat
                 statValue = stat[1]
                 total += statValue
@@ -459,11 +457,11 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 # Draw stat line
                 statNameX = 30
                 statNameX += 24 if [3, 6].include?(index)
-                drawTextEx(overlay, statNameX, yBase + 32 * index, 450, 1, baseStatNames[index], color, shadow)
-                drawTextEx(overlay, 136, yBase + 32 * index, 450, 1, statValue.to_s, color, shadow)
+                drawTextEx(overlay, statNameX, yBase + (32 * index), 450, 1, baseStatNames[index], color, shadow)
+                drawTextEx(overlay, 136, yBase + (32 * index), 450, 1, statValue.to_s, color, shadow)
             end
-            drawTextEx(overlay, 30, yBase + 32 * 8 + 16, 450, 1, _INTL("Total"), base, shadow)
-            drawTextEx(overlay, 136, yBase + 32 * 8 + 16, 450, 1, total.to_s, base, shadow)
+            drawTextEx(overlay, 30, yBase + (32 * 8) + 16, 450, 1, _INTL("Total"), base, shadow)
+            drawTextEx(overlay, 136, yBase + (32 * 8) + 16, 450, 1, total.to_s, base, shadow)
 
             # Other stats
             otherStats = []
@@ -491,22 +489,22 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
             otherStats.each_with_index do |stat, index|
                 next unless stat
                 # Draw stat line
-                drawTextEx(overlay, 230, yBase + 32 * index, 450, 1, otherStatNames[index], base, shadow)
-                drawTextEx(overlay, 378, yBase + 32 * index, 450, 1, stat.to_s, base, shadow)
+                drawTextEx(overlay, 230, yBase + (32 * index), 450, 1, otherStatNames[index], base, shadow)
+                drawTextEx(overlay, 378, yBase + (32 * index), 450, 1, stat.to_s, base, shadow)
             end
-            
+
             # Calculate wild item rarities
             itemsAndRarities = fSpecies.wildHeldItemsWithRarities
-            
-            unless itemsAndRarities.empty?
+
+            if itemsAndRarities.empty?
+                itemsString = _INTL("None")
+            else
                 itemsString = ""
-                itemsAndRarities.each_with_index do |(item, chance), index|
+                itemsAndRarities.each_with_index do |(item, chance), _index|
                     name = GameData::Item.get(item).name
-                    itemsString += _INTL("{1}: {2}%\n",name, chance)
+                    itemsString += _INTL("{1}: {2}%\n", name, chance)
                     # itemsString += ", " if index < itemsAndRarities.keys.length - 1
                 end
-            else
-                itemsString = _INTL("None")
             end
             wildItemsY = yBase + 142 + 32
             drawTextEx(overlay, 230, wildItemsY, 250, 1, _INTL("Wild Items"), base, shadow)
@@ -519,14 +517,13 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         bg_path += "_dark" if darkMode?
         @sprites["background"].setBitmap(_INTL(bg_path))
         overlay = @sprites["overlay"].bitmap
-        formname = ""
         base   = MessageConfig.pbDefaultTextMainColor
         shadow = MessageConfig.pbDefaultTextShadowColor
         xLeft = 36
         yBase = 60
         for i in @available
             next unless i[2] == @form
-            formname = i[0]
+            i[0]
             fSpecies = GameData::Species.get_species_form(@species, i[2])
 
             # type1 = GameData::Type.get(fSpecies.type1)
@@ -567,7 +564,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                     type_number = GameData::Type.get(t).id_number
                     typerect = Rect.new(0, type_number * 32, 96, 32)
                     bitmapUsed = hyperWeakTypes.include?(t) ? @types_emphasized_bitmap.bitmap : @typebitmap.bitmap
-                    overlay.blt(xLeft, yBase + 30 + 36 * index, bitmapUsed, typerect)
+                    overlay.blt(xLeft, yBase + 30 + (36 * index), bitmapUsed, typerect)
                 end
             end
 
@@ -581,7 +578,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                     type_number = GameData::Type.get(t).id_number
                     typerect = Rect.new(0, type_number * 32, 96, 32)
                     bitmapUsed = barelyEffectiveTypes.include?(t) ? @types_emphasized_bitmap.bitmap : @typebitmap.bitmap
-                    overlay.blt(xLeft + resistOffset + (index >= 7 ? 100 : 0), yBase + 30 + 36 * (index % 7),
+                    overlay.blt(xLeft + resistOffset + (index >= 7 ? 100 : 0), yBase + 30 + (36 * (index % 7)),
               bitmapUsed, typerect)
                 end
             end
@@ -595,7 +592,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 immuneTypes.each_with_index do |t, index|
                     type_number = GameData::Type.get(t).id_number
                     typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + immuneOffset, yBase + 30 + 36 * index, @typebitmap.bitmap, typerect)
+                    overlay.blt(xLeft + immuneOffset, yBase + 30 + (36 * index), @typebitmap.bitmap, typerect)
                 end
             end
         end
@@ -606,14 +603,13 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         bg_path += "_dark" if darkMode?
         @sprites["background"].setBitmap(_INTL(bg_path))
         overlay = @sprites["overlay"].bitmap
-        formname = ""
         base   = MessageConfig.pbDefaultTextMainColor
         shadow = MessageConfig.pbDefaultTextShadowColor
         xLeft = 36
         yBase = 60
         for i in @available
             next unless i[2] == @form
-            formname = i[0]
+            i[0]
             fSpecies = GameData::Species.get_species_form(@species, i[2])
 
             immuneTypes = []
@@ -644,7 +640,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 weakTypes.each_with_index do |t, index|
                     type_number = GameData::Type.get(t).id_number
                     typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + (index >= 7 ? 100 : 0), yBase + 30 + 36 * (index % 7), @typebitmap.bitmap,
+                    overlay.blt(xLeft + (index >= 7 ? 100 : 0), yBase + 30 + (36 * (index % 7)), @typebitmap.bitmap,
               typerect)
                 end
             end
@@ -658,7 +654,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 resistentTypes.each_with_index do |t, index|
                     type_number = GameData::Type.get(t).id_number
                     typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + resistOffset, yBase + 30 + 36 * index, @typebitmap.bitmap, typerect)
+                    overlay.blt(xLeft + resistOffset, yBase + 30 + (36 * index), @typebitmap.bitmap, typerect)
                 end
             end
 
@@ -671,7 +667,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 immuneTypes.each_with_index do |t, index|
                     type_number = GameData::Type.get(t).id_number
                     typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + immuneOffset, yBase + 30 + 36 * index, @typebitmap.bitmap, typerect)
+                    overlay.blt(xLeft + immuneOffset, yBase + 30 + (36 * index), @typebitmap.bitmap, typerect)
                 end
             end
         end
@@ -705,7 +701,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 charactersToShave += 1
             end
             shavedName = moveName[0..-charactersToShave]
-            shavedName = shavedName[0..-1] if shavedName[shavedName.length-1] == " "
+            shavedName = shavedName[0..-1] if shavedName[-1] == " "
             moveName = shavedName + "..."
         end
 
@@ -759,7 +755,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 maxWidth = 160
                 moveName, moveColor, moveShadow = getFormattedMoveName(move, maxWidth)
                 selected_move = move if listIndex == @scroll
-                moveDrawY = MOVE_LIST_SUMMARY_MOVE_NAMES_Y_INIT + 32 * displayIndex
+                moveDrawY = MOVE_LIST_SUMMARY_MOVE_NAMES_Y_INIT + (32 * displayIndex)
                 drawTextEx(overlay, MOVE_LIST_X_LEFT + offsetX, moveDrawY, 450, 1, levelLabel, moveColor, moveShadow)
                 drawFormattedTextEx(overlay, MOVE_LIST_X_LEFT + 40 + offsetX, moveDrawY, 450, moveName, moveColor, moveShadow)
                 if listIndex == @scroll
@@ -791,10 +787,10 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         selected_move = nil
         for i in @available
             next unless i[2] == @form
-            
+
             # render the moves lists
             @scrollableLists = [@compatiblePhysMoves, @compatibleSpecMoves, @compatibleStatusMoves]
-            categoryName = [_INTL("Physical"),_INTL("Special"),_INTL("Status")][@horizontalScroll]
+            categoryName = [_INTL("Physical"), _INTL("Special"), _INTL("Status")][@horizontalScroll]
             drawFormattedTextEx(overlay, MOVE_LIST_X_LEFT, 54, 192, "<ac><b>#{categoryName}</b></ac>", base, shadow)
             displayIndex = 0
             listIndex = -1
@@ -802,11 +798,11 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 @scrollableLists[@horizontalScroll].each_with_index do |move, _index|
                     listIndex += 1
                     next if listIndex < @scroll
-                    maxWidth = displayIndex == 0 ? 200 : 212
+                    displayIndex == 0 ? 200 : 212
                     moveName, moveColor, moveShadow = getFormattedMoveName(move, 200)
                     offsetX = 0
                     selected_move = move if listIndex == @scroll
-                    moveDrawY = MOVE_LIST_SUMMARY_MOVE_NAMES_Y_INIT + 34 + 32 * displayIndex
+                    moveDrawY = MOVE_LIST_SUMMARY_MOVE_NAMES_Y_INIT + 34 + (32 * displayIndex)
                     drawFormattedTextEx(overlay, MOVE_LIST_X_LEFT + offsetX, moveDrawY, 450, moveName, moveColor, moveShadow)
                     if listIndex == @scroll
                         @sprites["selectionarrow"].y = moveDrawY - 4
@@ -824,7 +820,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
     end
 
     def drawMoveInfo(selected_move)
-        writeMoveInfoToInfoOverlayBackwardsL(@extraInfoOverlay.bitmap,selected_move) unless selected_move.nil?
+        writeMoveInfoToInfoOverlayBackwardsL(@extraInfoOverlay.bitmap, selected_move) unless selected_move.nil?
     end
 
     def drawPageEvolution
@@ -832,13 +828,12 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         bg_path += "_dark" if darkMode?
         @sprites["background"].setBitmap(_INTL(bg_path))
         overlay = @sprites["overlay"].bitmap
-        formname = ""
         base   = MessageConfig.pbDefaultTextMainColor
         shadow = MessageConfig.pbDefaultTextShadowColor
         xLeft = 36
         for i in @available
             next unless i[2] == @form
-            formname = i[0]
+            i[0]
             fSpecies = GameData::Species.get_species_form(@species, i[2])
 
             prevolutions = fSpecies.get_prevolutions
@@ -864,7 +859,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                     methodDescription = describeEvolutionMethod(method, parameter)
                     # Draw preevolution description
                     color = index == @evolutionIndex ? Color.new(255, 100, 80) : base
-                    evolutionLineText = _INTL("<b>{1}</b> {2}",evolutionName,methodDescription)
+                    evolutionLineText = _INTL("<b>{1}</b> {2}", evolutionName, methodDescription)
                     drawFormattedTextEx(overlay, xLeft, coordinateY, 450, evolutionLineText, color, shadow)
                     coordinateY += 30
                     coordinateY += 30 if overlay.text_size(evolutionLineText).width > 450
@@ -894,9 +889,9 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                         # Draw evolution description
                         color = index == @evolutionIndex ? Color.new(255, 100, 80) : base
                         fromSpeciesName = GameData::Species.get(fromSpecies).name
-                        evolutionTextLine = _INTL("<b>{1}</b> {2}",evolutionName,methodDescription)
+                        evolutionTextLine = _INTL("<b>{1}</b> {2}", evolutionName, methodDescription)
                         if fromSpecies != fSpecies.species
-                            evolutionTextLine = evolutionTextLine + " " +  _INTL("(through {1})",fromSpeciesName)
+                            evolutionTextLine = evolutionTextLine + " " + _INTL("(through {1})", fromSpeciesName)
                         end
                         drawFormattedTextEx(overlay, xLeft, coordinateY, 450, evolutionTextLine, color, shadow)
                         coordinateY += 30
@@ -906,11 +901,10 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 end
             end
 
-            if @evolutionsArray.empty?
-                noneLabel = _INTL("None")
-                noneLabelWidth = @sprites["overlay"].bitmap.text_size(noneLabel).width
-                drawTextEx(overlay, Graphics.width / 2 - noneLabelWidth / 2, coordinateY + 30, 450, 1, noneLabel, base, shadow)
-            end
+            next unless @evolutionsArray.empty?
+            noneLabel = _INTL("None")
+            noneLabelWidth = @sprites["overlay"].bitmap.text_size(noneLabel).width
+            drawTextEx(overlay, (Graphics.width / 2) - (noneLabelWidth / 2), coordinateY + 30, 450, 1, noneLabel, base, shadow)
         end
     end
 
@@ -920,7 +914,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
             map_is_hidden = false
             if hidden_map_encounter_switch_hash.key?(enc_data.map)
                 switchID = hidden_map_encounter_switch_hash[enc_data.map]
-                if !$game_switches[switchID] then
+                if !$game_switches[switchID]
                     map_is_hidden = true
                 end
             end
@@ -941,11 +935,11 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                         nil
                     end || "???" # This line doesn't seem to work as intended but I don't want to mess with it unnecessarily
                     # Handle errors with missing maps
-                    if mapName == nil || mapName == "" then
+                    if [nil, ""].include?(mapName)
                         mapName = _INTL("Unknown Map")
                     end
                     # Obscure map name if secret map is undiscovered
-                    if map_is_hidden then
+                    if map_is_hidden
                         mapName = "???"
                     end
                     encounterTypeName = getNameForEncounterType(type)
@@ -955,7 +949,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                     if type == :Special
                         name = mapName
                     else
-                        name = _INTL("{1}: {2} ({3}\%)",mapName,encounterTypeName,encounterChance)
+                        name = _INTL("{1}: {2} ({3}%)", mapName, encounterTypeName, encounterChance)
                     end
 
                     areas.push(name)
@@ -1031,7 +1025,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
             if prevo_areas.length == 0
                 drawTextEx(overlay, xLeft, coordinateY, 450, 1, _INTL("None"), base, shadow)
             else
-                prevo_areas.each do |area_name, prevo_name|
+                prevo_areas.each do |area_name, _prevo_name|
                     drawTextEx(overlay, xLeft, coordinateY, 450, 1, area_name, base, shadow)
                     coordinateY += 30
                 end
@@ -1039,8 +1033,8 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         end
 
         textpos = []
-        textpos.push([_INTL("SPECIAL/D to show map"),Graphics.width/2,346,2,base,shadow])
-        pbDrawTextPositions(overlay,textpos)
+        textpos.push([_INTL("SPECIAL/D to show map"), Graphics.width / 2, 346, 2, base, shadow])
+        pbDrawTextPositions(overlay, textpos)
     end
 
     def drawAreaMapVisual
@@ -1064,63 +1058,62 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
             next if !mappos || mappos[0] != @region
             showpoint = true
             for loc in @mapdata[@region][2]
-                showpoint = false if loc[0]==mappos[1] && loc[1]==mappos[2] && loc[7] && !$game_switches[loc[7]]
+                showpoint = false if loc[0] == mappos[1] && loc[1] == mappos[2] && loc[7] && !$game_switches[loc[7]]
             end
             next if !showpoint
             mapsize = map_metadata.town_map_size
-            if mapsize && mapsize[0] && mapsize[0]>0
+            if mapsize && mapsize[0] && mapsize[0] > 0
                 sqwidth  = mapsize[0]
-                sqheight = (mapsize[1].length*1.0/mapsize[0]).ceil
+                sqheight = (mapsize[1].length * 1.0 / mapsize[0]).ceil
                 for i in 0...sqwidth
                     for j in 0...sqheight
-                        if mapsize[1][i+j*sqwidth,1].to_i>0
-                        points[mappos[1]+i+(mappos[2]+j)*mapwidth] = true
+                        if mapsize[1][i + (j * sqwidth), 1].to_i > 0
+                            points[mappos[1] + i + ((mappos[2] + j) * mapwidth)] = true
                         end
                     end
                 end
             else
-                points[mappos[1]+mappos[2]*mapwidth] = true
+                points[mappos[1] + (mappos[2] * mapwidth)] = true
             end
         end
         # Draw coloured squares on each square of the region map with a nest
-        pointcolor   = Color.new(0,248,248)
-        pointcolorhl = Color.new(192,248,248)
+        pointcolor   = Color.new(0, 248, 248)
+        pointcolorhl = Color.new(192, 248, 248)
         sqwidth = PokemonRegionMap_Scene::SQUAREWIDTH
         sqheight = PokemonRegionMap_Scene::SQUAREHEIGHT
         for j in 0...points.length
-            if points[j]
-                x = (j%mapwidth)*sqwidth
-                x += (Graphics.width-@sprites["areamap"].bitmap.width)/2
-                y = (j/mapwidth)*sqheight
-                y += (Graphics.height+32-@sprites["areamap"].bitmap.height)/2
-                @sprites["areahighlight"].bitmap.fill_rect(x,y,sqwidth,sqheight,pointcolor)
-                if j-mapwidth<0 || !points[j-mapwidth]
-                    @sprites["areahighlight"].bitmap.fill_rect(x,y-2,sqwidth,2,pointcolorhl)
-                end
-                if j+mapwidth>=points.length || !points[j+mapwidth]
-                    @sprites["areahighlight"].bitmap.fill_rect(x,y+sqheight,sqwidth,2,pointcolorhl)
-                end
-                if j%mapwidth==0 || !points[j-1]
-                    @sprites["areahighlight"].bitmap.fill_rect(x-2,y,2,sqheight,pointcolorhl)
-                end
-                if (j+1)%mapwidth==0 || !points[j+1]
-                    @sprites["areahighlight"].bitmap.fill_rect(x+sqwidth,y,2,sqheight,pointcolorhl)
-                end
+            next unless points[j]
+            x = (j % mapwidth) * sqwidth
+            x += (Graphics.width - @sprites["areamap"].bitmap.width) / 2
+            y = (j / mapwidth) * sqheight
+            y += (Graphics.height + 32 - @sprites["areamap"].bitmap.height) / 2
+            @sprites["areahighlight"].bitmap.fill_rect(x, y, sqwidth, sqheight, pointcolor)
+            if j - mapwidth < 0 || !points[j - mapwidth]
+                @sprites["areahighlight"].bitmap.fill_rect(x, y - 2, sqwidth, 2, pointcolorhl)
+            end
+            if j + mapwidth >= points.length || !points[j + mapwidth]
+                @sprites["areahighlight"].bitmap.fill_rect(x, y + sqheight, sqwidth, 2, pointcolorhl)
+            end
+            if j % mapwidth == 0 || !points[j - 1]
+                @sprites["areahighlight"].bitmap.fill_rect(x - 2, y, 2, sqheight, pointcolorhl)
+            end
+            if (j + 1) % mapwidth == 0 || !points[j + 1]
+                @sprites["areahighlight"].bitmap.fill_rect(x + sqwidth, y, 2, sqheight, pointcolorhl)
             end
         end
         # Set the text
         textpos = []
-        if points.length==0
+        if points.length == 0
             overlayAreaNonePath = "Graphics/Pictures/Pokedex/overlay_areanone"
             overlayAreaNonePath += "_dark" if darkMode?
-            pbDrawImagePositions(overlay,[
-                [sprintf(overlayAreaNonePath),108,188]
-            ])
-            textpos.push([_INTL("Area unknown"),Graphics.width/2,Graphics.height/2 - 6,2,base,shadow])
+            pbDrawImagePositions(overlay, [
+                                     [sprintf(overlayAreaNonePath), 108, 188]
+                                 ])
+            textpos.push([_INTL("Area unknown"), Graphics.width / 2, (Graphics.height / 2) - 6, 2, base, shadow])
         end
-        textpos.push([pbGetMessage(MessageTypes::RegionNames,@region),414,38,2,base,shadow])
-        textpos.push([_INTL("SPECIAL/D to hide map"),Graphics.width/2,346,2,base,shadow])
-        pbDrawTextPositions(overlay,textpos)
+        textpos.push([pbGetMessage(MessageTypes::RegionNames, @region), 414, 38, 2, base, shadow])
+        textpos.push([_INTL("SPECIAL/D to hide map"), Graphics.width / 2, 346, 2, base, shadow])
+        pbDrawTextPositions(overlay, textpos)
     end
 
     def drawPageForms
@@ -1140,8 +1133,8 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         end
         shinyFormTextLeftOffset = 160
         textpos = [
-            [GameData::Species.get(@species).name, Graphics.width / 2 - 68, Graphics.height - 94, 2, base, shadow],
-            [formname, Graphics.width / 2 - 68, Graphics.height - 62, 2, base, shadow],
+            [GameData::Species.get(@species).name, (Graphics.width / 2) - 68, Graphics.height - 94, 2, base, shadow],
+            [formname, (Graphics.width / 2) - 68, Graphics.height - 62, 2, base, shadow],
         ]
         if @showShinyForms
             textpos.push([_INTL("SPECIAL/D to"), Graphics.width - shinyFormTextLeftOffset, Graphics.height - 94, 0, base, shadow])
@@ -1342,13 +1335,13 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
     def calculate_other_moves_sorting_proc
         case $PokemonGlobal.dex_tutor_list_sort_mode
         when 0
-            @tutorMovesSorting = Proc.new { |moveA, moveB|
+            @tutorMovesSorting = proc { |moveA, moveB|
                 moveAData = GameData::Move.get(moveA)
                 moveBData = GameData::Move.get(moveB)
                 next moveAData.name <=> moveBData.name
             }
         when 1
-            @tutorMovesSorting = Proc.new { |moveA, moveB|
+            @tutorMovesSorting = proc { |moveA, moveB|
                 moveAData = GameData::Move.get(moveA)
                 moveBData = GameData::Move.get(moveB)
                 if moveAData.base_damage == moveBData.base_damage
@@ -1358,7 +1351,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 end
             }
         when 2
-            @tutorMovesSorting = Proc.new { |moveA, moveB|
+            @tutorMovesSorting = proc { |moveA, moveB|
                 moveAData = GameData::Move.get(moveA)
                 moveBData = GameData::Move.get(moveB)
                 if moveAData.type == moveBData.type
@@ -1377,11 +1370,11 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         compatibleMoves = species_data.learnable_moves
         @compatiblePhysMoves = compatibleMoves.select do |move|
             movaData = GameData::Move.get(move)
-            next movaData.category == 0 || movaData.category == 3
+            next [0, 3].include?(movaData.category)
         end
         @compatibleSpecMoves = compatibleMoves.select do |move|
             movaData = GameData::Move.get(move)
-            next movaData.category == 1 || movaData.category == 3
+            next [1, 3].include?(movaData.category)
         end
         @compatibleStatusMoves = compatibleMoves.select do |move|
             movaData = GameData::Move.get(move)
@@ -1389,13 +1382,13 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         end
 
         # sort the moves lists
-        @compatiblePhysMoves.sort!{ |moveA, moveB|
+        @compatiblePhysMoves.sort! { |moveA, moveB|
             @tutorMovesSorting.call(moveA, moveB)
         }
-        @compatibleSpecMoves.sort!{ |moveA, moveB|
+        @compatibleSpecMoves.sort! { |moveA, moveB|
             @tutorMovesSorting.call(moveA, moveB)
         }
-        @compatibleStatusMoves.sort!{ |moveA, moveB|
+        @compatibleStatusMoves.sort! { |moveA, moveB|
             @tutorMovesSorting.call(moveA, moveB)
         }
     end
@@ -1541,25 +1534,25 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
     end
 
     def pbScene
-		formIndex = 0
-		for i in 0...@available.length
-			if @available[i][1] == @gender && @available[i][2] == @form
-				formIndex = i
-				break
-			end
-		end
-		oldFormIndex = formIndex
+        formIndex = 0
+        for i in 0...@available.length
+            if @available[i][1] == @gender && @available[i][2] == @form
+                formIndex = i
+                break
+            end
+        end
+        oldFormIndex = formIndex
 
         GameData::Species.play_cry_from_species(@species, @form)
         highestLeftRepeat = 0
         highestRightRepeat = 0
         loop do
-			if oldFormIndex != formIndex
-				$Trainer.pokedex.set_last_form_seen(@species, @available[formIndex][1], @available[formIndex][2])
-				pbUpdateDummyPokemon
-				drawPage(@page)
-				oldFormIndex = formIndex
-			end
+            if oldFormIndex != formIndex
+                $Trainer.pokedex.set_last_form_seen(@species, @available[formIndex][1], @available[formIndex][2])
+                pbUpdateDummyPokemon
+                drawPage(@page)
+                oldFormIndex = formIndex
+            end
             Graphics.update
             Input.update
             pbUpdate
@@ -1578,7 +1571,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                     pbScroll
                     break if $dex_cross_link
                     dorefresh = true
-                elsif @page == 8 && @evolutionsArray.length > 0   # Evolutions
+                elsif @page == 8 && @evolutionsArray.length > 0 # Evolutions
                     if @linksEnabled
                         pbPlayDecisionSE
                         newSpecies = pbScrollEvolutions
@@ -1596,48 +1589,48 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                     end
                 end
             elsif Input.repeat?(Input::UP)
-				if Input.press?(Input::ACTION)
-        			formIndex = (formIndex + @available.length-1) % @available.length
-					if formIndex != oldFormIndex
-						pbPlayCursorSE
-					else
-						pbPlayBuzzerSE
-					end
-				else
-					oldindex = @index
-					pbGoToPrevious
-					if @index != oldindex
-						@scroll = -1
-						pbUpdateDummyPokemon
-						@available = pbGetAvailableForms
-						pbSEStop
-						(@page == 1) ? GameData::Species.play_cry_from_species(@species, @form) : pbPlayCursorSE
-						dorefresh = true
-					end
-				end
+                if Input.press?(Input::ACTION)
+                    formIndex = (formIndex + @available.length - 1) % @available.length
+                    if formIndex == oldFormIndex
+                        pbPlayBuzzerSE
+                    else
+                        pbPlayCursorSE
+                    end
+                else
+                    oldindex = @index
+                    pbGoToPrevious
+                    if @index != oldindex
+                        @scroll = -1
+                        pbUpdateDummyPokemon
+                        @available = pbGetAvailableForms
+                        pbSEStop
+                        (@page == 1) ? GameData::Species.play_cry_from_species(@species, @form) : pbPlayCursorSE
+                        dorefresh = true
+                    end
+                end
             elsif Input.repeat?(Input::DOWN)
-				if Input.press?(Input::ACTION)
-        			formIndex = (formIndex + 1) % @available.length
-					if formIndex != oldFormIndex
-						pbPlayCursorSE
-					else
-						pbPlayBuzzerSE
-					end
-				else
-					oldindex = @index
-					pbGoToNext
-					if @index != oldindex
-						@scroll = -1
-						pbUpdateDummyPokemon
-						@available = pbGetAvailableForms
-						pbSEStop
-						(@page == 1) ? GameData::Species.play_cry_from_species(@species, @form) : pbPlayCursorSE
-						dorefresh = true
-					end
-				end
+                if Input.press?(Input::ACTION)
+                    formIndex = (formIndex + 1) % @available.length
+                    if formIndex == oldFormIndex
+                        pbPlayBuzzerSE
+                    else
+                        pbPlayCursorSE
+                    end
+                else
+                    oldindex = @index
+                    pbGoToNext
+                    if @index != oldindex
+                        @scroll = -1
+                        pbUpdateDummyPokemon
+                        @available = pbGetAvailableForms
+                        pbSEStop
+                        (@page == 1) ? GameData::Species.play_cry_from_species(@species, @form) : pbPlayCursorSE
+                        dorefresh = true
+                    end
+                end
             elsif Input.repeat?(Input::LEFT)
                 highestRightRepeat = 0
-                repeats = 1 + Input.time?(Input::LEFT) / 100_000
+                repeats = 1 + (Input.time?(Input::LEFT) / 100_000)
                 if repeats > highestLeftRepeat
                     highestLeftRepeat = repeats
                     oldpage = @page
@@ -1652,7 +1645,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 end
             elsif Input.repeat?(Input::RIGHT)
                 highestLeftRepeat = 0
-                repeats = 1 + Input.time?(Input::RIGHT) / 100_000
+                repeats = 1 + (Input.time?(Input::RIGHT) / 100_000)
                 if repeats > highestRightRepeat
                     highestRightRepeat = repeats
                     oldpage = @page

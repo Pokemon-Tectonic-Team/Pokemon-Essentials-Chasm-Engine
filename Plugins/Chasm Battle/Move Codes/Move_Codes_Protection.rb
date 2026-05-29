@@ -227,7 +227,7 @@ class PokeBattle_Move_ProtectUserFromDamagingMovesLowerAttackerAtk1 < PokeBattle
         score = super
         # Check only physical attackers
         user.eachPredictedProtectHitter(0) do |b|
-            score += getMultiStatDownEffectScore([:ATTACK,1],user,b)
+            score += getMultiStatDownEffectScore([:ATTACK, 1], user, b)
         end
         return score
     end
@@ -247,7 +247,7 @@ class PokeBattle_Move_ProtectUserFromDamagingMovesLowerAttackerSpAtk1 < PokeBatt
         score = super
         # Check only special attackers
         user.eachPredictedProtectHitter(1) do |b|
-            score += getMultiStatDownEffectScore([:SPECIAL_ATTACK,1],user,b)
+            score += getMultiStatDownEffectScore([:SPECIAL_ATTACK, 1], user, b)
         end
         return score
     end
@@ -329,7 +329,7 @@ class PokeBattle_Move_ProtectUserFromDamagingMovesUseGraniteHeadAgainstAttackers
     def getEffectScore(user, target)
         score = super
         # Check only physical attackers
-        user.eachPredictedProtectHitter do |b|
+        user.eachPredictedProtectHitter do |_b|
             score += 100
         end
         return score
@@ -347,7 +347,7 @@ class PokeBattle_Move_UserTakesHalfDamageThisTurnNumbAttackers < PokeBattle_Half
         @effect = :StunningCurl
     end
 
-    def getOnHitEffectScore(user,target)
+    def getOnHitEffectScore(user, target)
         return getNumbEffectScore(user, target)
     end
 end
@@ -363,7 +363,7 @@ class PokeBattle_Move_UserTakesHalfDamageThisTurnLeechAttackers < PokeBattle_Hal
         @effect = :RootShelter
     end
 
-    def getOnHitEffectScore(user,target)
+    def getOnHitEffectScore(user, target)
         return getLeechEffectScore(user, target)
     end
 end
@@ -379,7 +379,7 @@ class PokeBattle_Move_UserTakesHalfDamageThisTurnPoisonAttackers < PokeBattle_Ha
         @effect = :VenomGuard
     end
 
-    def getOnHitEffectScore(user,target)
+    def getOnHitEffectScore(user, target)
         return getPoisonEffectScore(user, target)
     end
 end
@@ -395,7 +395,7 @@ class PokeBattle_Move_UserTakesHalfDamageThisTurnWaterlogAttackers < PokeBattle_
         @effect = :Floodgate
     end
 
-    def getOnHitEffectScore(user,target)
+    def getOnHitEffectScore(user, target)
         return getWaterlogEffectScore(user, target)
     end
 end
@@ -411,7 +411,7 @@ class PokeBattle_Move_UserTakesHalfDamageThisTurnBurnAttackers < PokeBattle_Half
         @effect = :RedHotRetreat
     end
 
-    def getOnHitEffectScore(user,target)
+    def getOnHitEffectScore(user, target)
         return getBurnEffectScore(user, target)
     end
 end
@@ -427,7 +427,7 @@ class PokeBattle_Move_UserTakesHalfDamageThisTurnFrostbiteAttackers < PokeBattle
         @effect = :IceNineWall
     end
 
-    def getOnHitEffectScore(user,target)
+    def getOnHitEffectScore(user, target)
         return getFrostbiteEffectScore(user, target)
     end
 end

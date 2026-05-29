@@ -47,7 +47,7 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:REAWAKENEDPOWER,
 BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:PRIMEVALDISGUISE,
     proc { |ability, battler, battle|
         next unless battler.illusion?
-        battle.pbShowAbilitySplash(battler,ability)
+        battle.pbShowAbilitySplash(battler, ability)
         battler.disableEffect(:Illusion)
         battle.scene.pbChangePokemon(battler, battler.pokemon)
         battle.pbSetSeen(battler)
@@ -79,33 +79,33 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:RATSNEST,
 )
 
 BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:VOIDWARRANTY,
-  proc { |ability, battler, battle, endOfBattle|
+  proc { |ability, battler, battle, _endOfBattle|
       next if battler.fainted?
       next unless battler.species == :ROTOM
-      
+
       formChoices = []
       choiceNames = []
 
       formIndex = -1
       loop do
-        formIndex += 1
-        data = GameData::Species.get_species_form(:ROTOM,formIndex)
-        break if data.nil? || data.form != formIndex
-        next if formIndex == battler.form
-        formChoices.push(formIndex)
-        choiceNames.push(data.form_name)
-        echoln("Adding form #{formIndex}")
+          formIndex += 1
+          data = GameData::Species.get_species_form(:ROTOM, formIndex)
+          break if data.nil? || data.form != formIndex
+          next if formIndex == battler.form
+          formChoices.push(formIndex)
+          choiceNames.push(data.form_name)
+          echoln("Adding form #{formIndex}")
       end
 
       next unless formChoices.length > 0
-      
+
       battle.pbShowAbilitySplash(battler, ability)
       if battle.autoTesting
-        choiceIndex = rand(formChoices.length)
+          choiceIndex = rand(formChoices.length)
       elsif !battler.pbOwnedByPlayer? # Trainer AI
-        choiceIndex = 0
+          choiceIndex = 0
       else
-        choiceIndex = battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", battler.name), choiceNames)
+          choiceIndex = battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", battler.name), choiceNames)
       end
       battler.pbChangeForm(formChoices[choiceIndex], _INTL("{1} takes on a new machine!", battler.pbThis))
       battler.refreshBattleMoves

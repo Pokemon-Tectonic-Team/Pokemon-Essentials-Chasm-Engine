@@ -46,7 +46,7 @@ end
 class PokeBattle_SelfHitPhysical < PokeBattle_SelfHit
     def initialize(battle, move, basePower = 50)
         super
-        @category   = 0
+        @category = 0
     end
 
     def physicalMove?(_thisType = nil);    return true;  end
@@ -308,12 +308,12 @@ end
 class PokeBattle_FlinchMove < PokeBattle_Move
     def flinchingMove?; return true; end
 
-    def pbEffectAgainstTarget(user, target)
+    def pbEffectAgainstTarget(_user, target)
         return if damagingMove?
         target.pbFlinch
     end
 
-    def pbAdditionalEffect(user, target)
+    def pbAdditionalEffect(_user, target)
         return if target.damageState.substitute
         target.pbFlinch
     end
@@ -346,7 +346,7 @@ class PokeBattle_StatUpMove < PokeBattle_Move
         user.tryRaiseStat(@statUp[0], user, increment: @statUp[1], move: self)
     end
 
-    def getEffectScore(user, target)
+    def getEffectScore(user, _target)
         return getMultiStatUpEffectScore(@statUp, user, user)
     end
 end
@@ -381,7 +381,7 @@ class PokeBattle_MultiStatUpMove < PokeBattle_Move
         user.pbRaiseMultipleStatSteps(@statUp, user, move: self)
     end
 
-    def getEffectScore(user, target)
+    def getEffectScore(user, _target)
         return getMultiStatUpEffectScore(@statUp, user, user)
     end
 end
@@ -405,8 +405,8 @@ class PokeBattle_StatDownMove < PokeBattle_Move
             statDownAI = []
             for i in 0...@statDown.length / 2
                 statSymbol = @statDown[i * 2]
-                statDecreaseAmount = @statDown[i * 2 + 1]
-                next unless user.pbCanLowerStatStep?(statSymbol,user,self)
+                statDecreaseAmount = @statDown[(i * 2) + 1]
+                next unless user.pbCanLowerStatStep?(statSymbol, user, self)
                 statDownAI.push(statSymbol)
                 statDownAI.push(statDecreaseAmount)
             end
@@ -504,7 +504,7 @@ end
 class PokeBattle_FixedDamageMove < PokeBattle_Move
     def pbFixedDamage(_user, _target); return 1; end
 
-    def pbCalcTypeModSingle(moveType, defType, user=nil, target=nil)
+    def pbCalcTypeModSingle(moveType, defType, user = nil, target = nil)
         ret = super
         ret = Effectiveness::NORMAL_EFFECTIVE unless Effectiveness.ineffective?(ret)
         return ret
@@ -601,7 +601,8 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
                     TwoTurnAttackInvulnerableInFoliage
                     TwoTurnAttackInvulnerableScalesFaster
                     TwoTurnAttackInvulnerableJinxFrostbite
-                    TwoTurnAttackInvulnerableRemoveProtections].include?(@function)
+                    TwoTurnAttackInvulnerableRemoveProtections
+                ].include?(@function)
                 @battle.pbDisplay(_INTL("{1} became fully charged due to its Power Herb!", user.pbThis))
                 user.consumeItem(:POWERHERB)
             end
@@ -616,8 +617,7 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
     def pbAttackingTurnMessage(user, targets); end
 
     # For effects that affect the target
-    def pbChargingTurnEffect(user, target)
-    end
+    def pbChargingTurnEffect(user, target); end
 
     def pbChargingTurnGeneralEffect(user); end
 
@@ -654,7 +654,7 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
         user.hasActiveItemAI?(:POWERHERB) && !skipChargingTurn?(user)
     end
 
-    def skipChargingTurn?(user); return false; end
+    def skipChargingTurn?(_user); return false; end
 
     def skipChargingTurn
         @powerHerb = false
@@ -674,7 +674,7 @@ class PokeBattle_HealingMove < PokeBattle_Move
     def healingMove?; return true; end
     def healRatio(_user); return 0.0; end # A float value representing the percent HP heal
 
-    def canOverheal?(user); return false; end
+    def canOverheal?(_user); return false; end
 
     def pbMoveFailed?(user, _targets, show_message)
         if user.healthCapped?
@@ -688,7 +688,7 @@ class PokeBattle_HealingMove < PokeBattle_Move
         user.applyFractionalHealing(healRatio(user), user: user, canOverheal: canOverheal?(user)) unless user.fainted?
     end
 
-    def getEffectScore(user, target)
+    def getEffectScore(user, _target)
         return user.applyFractionalHealing(healRatio(user), user: user, aiCheck: true)
     end
 end
@@ -726,7 +726,7 @@ module Recoilable
         user.applyRecoilDamage(recoilDamage, false, true)
     end
 
-    def getDamageBasedEffectScore(user,_target,damage)
+    def getDamageBasedEffectScore(user, _target, damage)
         return 0 unless user.takesIndirectDamage?
         recoilDamage = damage * finalRecoilFactor(user, true)
         score = (-recoilDamage * 2 / user.totalhp).floor
@@ -805,12 +805,12 @@ class PokeBattle_ProtectMove < PokeBattle_Move
 
     def getEffectScore(user, _target)
         score = 0
-        user.eachPredictedProtectHitter do |b|
+        user.eachPredictedProtectHitter do |_b|
             score += 30 if user.hasAlly?
         end
         score *= 2 if user.belowHalfHealth?
         # > DISABLED <
-        #score += passingTurnSideEffectScore(@battle,user.pbOwnSide.index)
+        # score += passingTurnSideEffectScore(@battle,user.pbOwnSide.index)
         return score
     end
 end
@@ -819,7 +819,7 @@ end
 # Moves that protect the user from half damage this turn.
 #===============================================================================
 class PokeBattle_HalfProtectMove < PokeBattle_ProtectMove
-    def getOnHitEffectScore(user,target)
+    def getOnHitEffectScore(_user, _target)
         return 0
     end
 
@@ -833,7 +833,7 @@ class PokeBattle_HalfProtectMove < PokeBattle_ProtectMove
             score += 15 if b.frostbitten?
 
             # Calculate the expected value of the on-hit effect
-            score += getOnHitEffectScore(user,b)
+            score += getOnHitEffectScore(user, b)
         end
         return score
     end
@@ -959,7 +959,7 @@ class PokeBattle_PledgeMove < PokeBattle_Move
         id = @overrideAnim if @overrideAnim
         return super
     end
-    
+
     def getEffectScore(user, _target)
         score = 0
         score += 60 if user.ownersPolicies.include?(:PRIORITIZEPLEDGES)
@@ -1082,7 +1082,7 @@ class PokeBattle_DrainMove < PokeBattle_Move
         user.pbRecoverHPFromDrain(hpGain, target, user: user, canOverheal: canOverheal)
     end
 
-    def getDamageBasedEffectScore(user,target,damage)
+    def getDamageBasedEffectScore(user, target, damage)
         drainAmount = damage * drainFactor(user, target)
         drainAmount *= 1.5 if user.hasActiveAbilityAI?(:ROOTED)
         drainAmount *= 1.3 if user.hasActiveItemAI?(:BIGROOT)
@@ -1130,7 +1130,7 @@ end
 #===============================================================================
 class PokeBattle_StatusSpikeMove < PokeBattle_Move
     def hazardMove?; return true; end
-    def aiAutoKnows?(pokemon); return true; end
+    def aiAutoKnows?(_pokemon); return true; end
 
     # Every subclass of this needs to assign something to @spikeEffect, and then call super
     def initialize(battle, move)
@@ -1423,7 +1423,7 @@ class PokeBattle_ForetoldMove < PokeBattle_Move
         return false
     end
 
-    def foretoldTurnCount(user, target, aiCheck = false)
+    def foretoldTurnCount(user, _target, aiCheck = false)
         count = @turnCount
         count -= 2 if user.shouldAbilityApply?(:BADOMEN, aiCheck)
         count += 1 if user.shouldAbilityApply?(:CREEPINGHORROR, aiCheck)
@@ -1491,7 +1491,7 @@ class PokeBattle_HelpingMove < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} is ready to help {2}!", user.pbThis, target.pbThis(true)))
     end
 
-    def getEffectScore(user, target)
+    def getEffectScore(_user, target)
         return 0 unless target.hasDamagingAttack?
         score = 100
         return score
@@ -1524,7 +1524,7 @@ class PokeBattle_StatDrainHealingMove < PokeBattle_Move
         return false
     end
 
-    def healingAmount(user,target)
+    def healingAmount(user, target)
         healAmount = target.getFinalStat(@statToReduce)
         healAmount *= 1.3 if user.hasActiveItem?(:BIGROOT)
         return healAmount
@@ -1533,8 +1533,8 @@ class PokeBattle_StatDrainHealingMove < PokeBattle_Move
     def pbEffectAgainstTarget(user, target)
         # Reduce target's stat
         target.tryLowerStat(@statToReduce, user, move: self)
-        
-        healAmount = healingAmount(user,target)
+
+        healAmount = healingAmount(user, target)
         # Heal user
         if target.hasActiveAbility?(:LIQUIDOOZE)
             @battle.pbShowAbilitySplash(target, :LIQUIDOOZE)
@@ -1548,7 +1548,7 @@ class PokeBattle_StatDrainHealingMove < PokeBattle_Move
     end
 
     def getEffectScore(user, target)
-        return user.pbRecoverHP(healingAmount(user,target), user: user, aiCheck: true)
+        return user.pbRecoverHP(healingAmount(user, target), user: user, aiCheck: true)
     end
 
     def getTargetAffectingEffectScore(user, target)
@@ -1558,7 +1558,7 @@ end
 
 # Each subclass must have an initialization method that defines the @typeHated variable
 class PokeBattle_TypeSuperMove < PokeBattle_Move
-    def pbCalcTypeModSingle(moveType, defType, user=nil, target=nil)
+    def pbCalcTypeModSingle(moveType, defType, user = nil, target = nil)
         effectiveness = super
         return Effectiveness::NORMAL_EFFECTIVE if defType == @typeNeutral
         return effectiveness if Effectiveness.ineffective?(effectiveness)
@@ -1580,7 +1580,7 @@ module EmpoweredMove
         typeName = GameData::Type.get(type).name
 
         addType = user.effectActive?(:AvatarTransformedTypeThisTurn) # This is the 2nd+ time this turn
-        
+
         type = addType ? user.pbTypes.push(newType) : newType
 
         user.pbChangeTypes(type)
@@ -1595,12 +1595,12 @@ module EmpoweredMove
         if addType
             @battle.pbDisplay(_INTL("{1} transformed further, gaining the {2} type!", user.pbThis, typeName))
         else
-            @battle.pbDisplay(_INTL("{1} transformed into the {2} type!", user.pbThis, typeName))  
+            @battle.pbDisplay(_INTL("{1} transformed into the {2} type!", user.pbThis, typeName))
         end
         user.applyEffect(:AvatarTransformedTypeThisTurn)
     end
 
-    def summonAvatar(user,species,summonMessage = nil)
+    def summonAvatar(user, species, summonMessage = nil)
         if @battle.autoTesting
             echoln("Skipping an Avatar summon")
             return
@@ -1612,11 +1612,11 @@ module EmpoweredMove
         end
     end
 
-    def craftItem(user,itemID)
+    def craftItem(user, itemID)
         itemName = GameData::Item.get(itemID).name
         if user.canAddItem?(itemID)
-          @battle.pbDisplay(_INTL("{1} crafts itself a {2}!", user.pbThis, itemName))
-          user.giveItem(itemID)
+            @battle.pbDisplay(_INTL("{1} crafts itself a {2}!", user.pbThis, itemName))
+            user.giveItem(itemID)
         end
     end
 end
@@ -1664,24 +1664,24 @@ class PokeBattle_Move_RaiseCriticalHitRate < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
         return if damagingMove?
         if user.effectAtMax?(:RaisedCritChance)
-            @battle.pbDisplay(_INTL("But it failed, since {1} can't raise its critical hit chance any further!",user.pbThis(true))) if show_message
+            @battle.pbDisplay(_INTL("But it failed, since {1} can't raise its critical hit chance any further!", user.pbThis(true))) if show_message
             return true
         end
         return false
     end
-    
+
     def pbEffectGeneral(user)
         return if damagingMove?
-        user.incrementEffect(:RaisedCritChance,@critStages)
+        user.incrementEffect(:RaisedCritChance, @critStages)
     end
 
-    def pbAdditionalEffect(user, target)
+    def pbAdditionalEffect(user, _target)
         return if user.effectAtMax?(:RaisedCritChance)
-        user.incrementEffect(:RaisedCritChance,@critStages)
+        user.incrementEffect(:RaisedCritChance, @critStages)
     end
 
     def getEffectScore(user, _target)
-        return getCriticalRateBuffEffectScore(user,@critStages)
+        return getCriticalRateBuffEffectScore(user, @critStages)
     end
 end
 
@@ -1700,18 +1700,18 @@ class PokeBattle_Move_StatusTargetLowerTargetDef2 < PokeBattle_Move
         return if target.damageState.substitute
         chance = pbAdditionalEffectChance(user, target, @calcType, @subEffectChance)
         return if chance == 0
-        if @battle.pbRandom(100) < chance && target.pbCanInflictStatus?(@statusToApply, user, false, self) && canApplyRandomAddedEffects?(user,target,chance,true)
+        if @battle.pbRandom(100) < chance && target.pbCanInflictStatus?(@statusToApply, user, false, self) && canApplyRandomAddedEffects?(user, target, chance, true)
             target.pbInflictStatus(@statusToApply, 0, nil, user)
-        end 
-        if @battle.pbRandom(100) < chance && canApplyRandomAddedEffects?(user,target,chance,true)
+        end
+        if @battle.pbRandom(100) < chance && canApplyRandomAddedEffects?(user, target, chance, true)
             target.tryLowerStat(:DEFENSE, user, move: self, increment: 2)
         end
     end
 
     def getTargetAffectingEffectScore(user, target)
         score = 0
-        score += ((@subEffectChance/100.0) * getStatusSettingEffectScore(@statusToApply, user, target)).floor
-        score += ((@subEffectChance/100.0) * getMultiStatDownEffectScore([:DEFENSE, 2], user, target)).floor
+        score += ((@subEffectChance / 100.0) * getStatusSettingEffectScore(@statusToApply, user, target)).floor
+        score += ((@subEffectChance / 100.0) * getMultiStatDownEffectScore([:DEFENSE, 2], user, target)).floor
         return score
     end
 end
