@@ -41,6 +41,12 @@ Naming/VariableName:
 Naming/MethodName:
   Enabled: false
 
+Naming/MethodParameterName:
+  Enabled: false
+
+Naming/BlockParameterName:
+  Enabled: false
+
 # Layout cops that produce noise without improving readability in game code
 Layout/ArgumentAlignment:
   Enabled: false
