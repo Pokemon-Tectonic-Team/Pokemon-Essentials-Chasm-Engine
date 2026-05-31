@@ -910,7 +910,7 @@ NamePlural = Focus Sashes
 Pocket = 12
 Price = 4000
 Flags = Clothing,Endure
-Description = A helditem. If it has full HP, the holder will endure one potential KO attack, leaving 1 HP.
+Description = A held item. If it has full HP, the holder will endure one potential KO attack, leaving 1 HP.
 #-------------------------------
 [FLAMEORB]
 Name = Flame Orb
