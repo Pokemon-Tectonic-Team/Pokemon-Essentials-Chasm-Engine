@@ -2365,7 +2365,7 @@ Pocket = 3
 Price = 60
 FieldUse = OnPokemon
 Flags = SkipPocketMessage
-Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 250 Exp. Points.
+Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 200 Exp. Points.
 #-------------------------------
 [EXPCANDYS]
 Name = Exp. Candy S
@@ -2374,7 +2374,7 @@ Pocket = 3
 Price = 225
 FieldUse = OnPokemon
 Flags = SkipPocketMessage
-Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 1000 Exp. Points.
+Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 800 Exp. Points.
 #-------------------------------
 [EXPCANDYM]
 Name = Exp. Candy M
@@ -2383,7 +2383,7 @@ Pocket = 3
 Price = 800
 FieldUse = OnPokemon
 Flags = SkipPocketMessage
-Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 4,000 Exp. Points.
+Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 3,200 Exp. Points.
 #-------------------------------
 [EXPCANDYL]
 Name = Exp. Candy L
@@ -2392,7 +2392,7 @@ Pocket = 3
 Price = 3200
 FieldUse = OnPokemon
 Flags = SkipPocketMessage
-Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 16,000 Exp. Points.
+Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 12,800 Exp. Points.
 #-------------------------------
 [EXPCANDYXL]
 Name = Exp. Candy XL
@@ -2401,7 +2401,7 @@ Pocket = 3
 Price = 12000
 FieldUse = OnPokemon
 Flags = SkipPocketMessage
-Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 64,000 Exp. Points.
+Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 51,200 Exp. Points.
 #-------------------------------
 [FOSSILIZEDBIRD]
 Name = Fossilized Bird
