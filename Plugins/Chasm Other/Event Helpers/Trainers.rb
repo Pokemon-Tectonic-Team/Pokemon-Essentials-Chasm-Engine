@@ -1,11 +1,23 @@
 PERFECTED_REGULAR_TRAINERS_DROP_ITEMS = true
 
-def perfectTrainer(maxTrainerLevel=15,giveDrop=PERFECTED_REGULAR_TRAINERS_DROP_ITEMS,extraDrop: nil)
+def determineTrainerMaxLevel(trainerClass, trainerName, version = 0)
+	begin
+		trainerData = GameData::Trainer.get(trainerClass, trainerName, version)
+		return trainerData.max_level
+	rescue
+		return STARTING_LEVEL_CAPS
+	end
+end
+
+def perfectTrainer(maxTrainerLevel,giveDrop=PERFECTED_REGULAR_TRAINERS_DROP_ITEMS,extraDrop: nil)
 	blackFadeOutIn() {
 		setMySwitch('D',true)
 		setFollowerGone
 	}
 	if giveDrop
+		# If passed in trainer details, derive max level from the trainer data
+		maxTrainerLevel = determineTrainerMaxLevel(*maxTrainerLevel) unless maxTrainerLevel.is_a?(Integer)
+
 		pbTrainerDropsItem(maxTrainerLevel)
 
 		if extraDrop
@@ -27,28 +39,36 @@ def perfectAncientTrainer(giveDrop=PERFECTED_REGULAR_TRAINERS_DROP_ITEMS)
 	incrementGlobalVar(TRAINERS_PERFECTED_GLOBAL_VAR)
 end
 
-def perfectDittoTrainer(maxTrainerLevel=15,giveDrop=PERFECTED_REGULAR_TRAINERS_DROP_ITEMS)
+def perfectDittoTrainer(maxTrainerLevel,giveDrop=PERFECTED_REGULAR_TRAINERS_DROP_ITEMS)
 	blackFadeOutIn() {
 		setMySwitch('D',true)
 		pbSEPlay("Cries/DITTO",50,50)
 		setFollowerGone
 	}
-	pbTrainerDropsItem(maxTrainerLevel) if giveDrop
+	if giveDrop
+		# If passed in trainer details, derive max level from the trainer data
+		maxTrainerLevel = determineTrainerMaxLevel(*maxTrainerLevel) unless maxTrainerLevel.is_a?(Integer)
+		pbTrainerDropsItem(maxTrainerLevel)
+	end
 	incrementGlobalVar(TRAINERS_PERFECTED_GLOBAL_VAR)
 end
 
-def perfectAceTrainer(maxTrainerLevel=15,giveDrop=true)
+def perfectAceTrainer(maxTrainerLevel,giveDrop=true)
 	blackFadeOutIn() {
 		setMySwitch('D',true)
 		setFollowerGone
 	}
-	pbTrainerDropsItem(maxTrainerLevel,4) if giveDrop
+	if giveDrop
+		# If passed in trainer details, derive max level from the trainer data
+		maxTrainerLevel = determineTrainerMaxLevel(*maxTrainerLevel) unless maxTrainerLevel.is_a?(Integer)
+		pbTrainerDropsItem(maxTrainerLevel,4)
+	end
 	incrementGlobalVar(TRAINERS_PERFECTED_GLOBAL_VAR)
 
 	postBattleTeamSnapshot(_INTL("Pro Trainer Level {1}",maxTrainerLevel),true)
 end
 
-def perfectDoubleTrainer(event1,event2,maxTrainerLevel = 15,giveDrop=PERFECTED_REGULAR_TRAINERS_DROP_ITEMS)
+def perfectDoubleTrainer(event1,event2,maxTrainerLevel,giveDrop=PERFECTED_REGULAR_TRAINERS_DROP_ITEMS)
 	blackFadeOutIn() {
 		setMySwitch('D',true)
 		pbSetSelfSwitch(event1,'D',true)
@@ -56,7 +76,18 @@ def perfectDoubleTrainer(event1,event2,maxTrainerLevel = 15,giveDrop=PERFECTED_R
 		setFollowerGone(event1)
 		setFollowerGone(event2)
 	}
-	pbTrainerDropsItem(maxTrainerLevel,2,true) if giveDrop
+	if giveDrop
+		if maxTrainerLevel.is_a?(Integer)
+			pbTrainerDropsItem(maxTrainerLevel,2,true)
+		else
+			maxTrainerLevel0 = determineTrainerMaxLevel(*maxTrainerLevel[0])
+			maxTrainerLevel1 = determineTrainerMaxLevel(*maxTrainerLevel[1])
+
+			maxTrainerLevel = (maxTrainerLevel0 + maxTrainerLevel1) / 2
+
+			pbTrainerDropsItem(maxTrainerLevel,2,true)
+		end
+	end
     incrementGlobalVar(TRAINERS_PERFECTED_GLOBAL_VAR)
 end
 
@@ -74,8 +105,8 @@ def perfectDoubleAncientTrainer(event1,event2,giveDrop=PERFECTED_REGULAR_TRAINER
     incrementGlobalVar(TRAINERS_PERFECTED_GLOBAL_VAR)
 end
 
-def pbTrainerDropsItem(maxTrainerLevel = 15,multiplier=1,plural=false)
-	itemsGiven = candiesForLevel(maxTrainerLevel)\
+def pbTrainerDropsItem(maxTrainerLevel,multiplier=1,plural=false)
+	itemsGiven = candiesForLevel(maxTrainerLevel)
 
 	pacifist, pacifistPartyIndex = pacifistPartyMember
 	multiplier *= 2 if pacifist

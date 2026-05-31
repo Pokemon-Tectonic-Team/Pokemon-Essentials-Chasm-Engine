@@ -381,6 +381,16 @@ module GameData
 
         return trainer
       end
+
+      def max_level
+        max = -1
+        trainer = to_trainer
+        trainer.party.each do |partyMember|
+          next unless partyMember.level > max
+          max = partyMember.level
+        end
+        return max
+      end
     end
 end
 
