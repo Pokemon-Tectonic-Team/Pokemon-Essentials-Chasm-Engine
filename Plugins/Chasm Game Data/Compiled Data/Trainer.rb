@@ -248,6 +248,7 @@ module GameData
         @pokemon.each do |pkmn_data|
             species = GameData::Species.get(pkmn_data[:species]).species
             level = pkmn_data[:level]
+            level -= 5
 
             nickname = nil
             nickname = pkmn_data[:name] if pkmn_data[:name] && !pkmn_data[:name].empty?
