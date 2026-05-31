@@ -562,7 +562,7 @@ Name = Lucky Egg
 NamePlural = Lucky Eggs
 Pocket = 13
 Price = 10000
-Description = A held item. It is an egg filled with happiness that earns extra Exp. Points in battle.
+Description = A held item. It is an egg filled with happiness that earns 50% extra Exp. Points in battle.
 #-------------------------------
 [AMULETCOIN]
 Name = Amulet Coin
