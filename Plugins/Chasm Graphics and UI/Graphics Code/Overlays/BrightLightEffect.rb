@@ -234,6 +234,7 @@ class LightEffect_Totem < LightEffect
       @activationFrameCount = 32
       @activationSprite = AnimatedSprite.new(["Graphics/Pictures/Waypoints/waypoint_activation", @activationFrameCount, 1])
       @activationSprite.viewport = viewport
+      pbSEPlay("Totem activation", 0) # silent preplay to cache it
 
       @event = event
       @map = (map) ? map : $game_map
