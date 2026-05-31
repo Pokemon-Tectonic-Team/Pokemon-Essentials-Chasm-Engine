@@ -1,4 +1,5 @@
 def candyMachine(candyAmount,level)
+    level -= 5
     if candyAmount == 0
         pbMessage(_INTL("A candy machine. It's out of candy."))
     else
