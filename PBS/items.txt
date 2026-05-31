@@ -460,7 +460,7 @@ NamePlural = Air Balloons
 Pocket = 13
 Price = 4000
 Flags = Levitation
-Description = An item to be held by a Pokémon. The holder will float in the air until hit. Once hit, this item will burst.
+Description = Held item that makes the holder immune to Ground-type moves. Bursts once hit with any attack.
 #-------------------------------
 [EVIOLITE]
 Name = Eviolite
@@ -488,7 +488,7 @@ Name = Float Stone
 NamePlural = Float Stones
 Pocket = 13
 Price = 4000
-Description = A very light stone. It reduces the weight of a Pokémon when held.
+Description = A very light stone. It halves the weight of a Pokémon when held.
 #-------------------------------
 [ASSAULTVEST]
 Name = Assault Vest
@@ -496,7 +496,7 @@ NamePlural = Assault Vests
 Pocket = 12
 Price = 8000
 Flags = Clothing,NoStatusUse
-Description = An item to be held by a Pokémon. It raises Sp. Def by 50% but prevents the use of status moves.
+Description = A held item. It raises Sp. Def by 50% but prevents the use of status moves.
 #-------------------------------
 [STRIKEVEST]
 Name = Strike Vest
@@ -504,14 +504,14 @@ NamePlural = Strike Vests
 Pocket = 12
 Price = 8000
 Flags = Clothing,NoStatusUse
-Description = An item to be held by a Pokémon. It raises Defense by 50% but prevents the use of status moves.
+Description = A held item. It raises Defense by 50% but prevents the use of status moves.
 #-------------------------------
 [WEAKNESSPOLICY]
 Name = Weakness Policy
 NamePlural = Weakness Policies
 Pocket = 13
 Price = 3000
-Description = An item to be held by a Pokémon. Its Attack and Sp. Atk raise by four steps if hit by a move it's weak to.
+Description = A held item. Its Attack and Sp. Atk raise by four steps if hit by a move it's weak to.
 #-------------------------------
 [ADRENALINEORB]
 Name = Adrenaline Orb
@@ -555,14 +555,14 @@ Name = Shed Shell
 NamePlural = Shed Shells
 Pocket = 13
 Price = 4000
-Description = An item to be held by a Pokémon. This discarded carapace lets the holder switch out of battle without fail.
+Description = A held item. This discarded carapace lets the holder switch out of battle without fail.
 #-------------------------------
 [LUCKYEGG]
 Name = Lucky Egg
 NamePlural = Lucky Eggs
 Pocket = 13
 Price = 10000
-Description = An item to be held by a Pokémon. It is an egg filled with happiness that earns extra Exp. Points in battle.
+Description = A held item. It is an egg filled with happiness that earns extra Exp. Points in battle.
 #-------------------------------
 [AMULETCOIN]
 Name = Amulet Coin
@@ -576,7 +576,7 @@ Name = Soothe Bell
 NamePlural = Soothe Bells
 Pocket = 13
 Price = 4000
-Description = An item to be held by a Pokémon. The comforting chime of this bell makes it gain happiness twice as fast.
+Description = A held item. The comforting chime of this bell makes it gain happiness twice as fast.
 #-------------------------------
 [CLEANSETAG]
 Name = Cleanse Tag
@@ -622,14 +622,14 @@ NamePlural = Heat Rocks
 Pocket = 13
 Price = 4000
 Flags = WeatherRock
-Description = A Pokémon held item. When the holder summons sunshine, it lasts twice as long.
+Description = A held item. When the holder summons sunshine, it lasts twice as long.
 #-------------------------------
 [DAMPROCK]
 Name = Damp Rock
 NamePlural = Damp Rocks
 Pocket = 13
 Price = 4000
-Description = A Pokémon held item. When the holder summons rainstorm, it lasts twice as long.
+Description = A held item. When the holder summons rainstorm, it lasts twice as long.
 #-------------------------------
 [SMOOTHROCK]
 Name = Smooth Rock
@@ -637,7 +637,7 @@ NamePlural = Smooth Rocks
 Pocket = 13
 Price = 4000
 Flags = WeatherRock
-Description = A Pokémon held item. When the holder summons a sandstorm, it lasts twice as long.
+Description = A held item. When the holder summons a sandstorm, it lasts twice as long.
 #-------------------------------
 [ICYROCK]
 Name = Icy Rock
@@ -645,7 +645,7 @@ NamePlural = Icy Rocks
 Pocket = 13
 Price = 4000
 Flags = WeatherRock
-Description = A Pokémon held item. When the holder summons hail, it lasts twice as long.
+Description = A held item. When the holder summons hail, it lasts twice as long.
 #-------------------------------
 [PINPOINTROCK]
 Name = Pin-Point Rock
@@ -653,7 +653,7 @@ NamePlural = Pin-Point Rocks
 Pocket = 13
 Price = 4000
 Flags = WeatherRock
-Description = A Pokémon held item. When the holder summons eclipse, it lasts twice as long.
+Description = A held item. When the holder summons eclipse, it lasts twice as long.
 #-------------------------------
 [MIRROREDROCK]
 Name = Mirrored Rock
@@ -661,7 +661,7 @@ NamePlural = Mirrored Rocks
 Pocket = 13
 Price = 4000
 Flags = WeatherRock
-Description = A Pokémon held item. When the holder summons moonglow, it lasts twice as long.
+Description = A held item. When the holder summons moonglow, it lasts twice as long.
 #-------------------------------
 [LIGHTCLAY]
 Name = Light Clay
@@ -682,7 +682,7 @@ Name = Grip Claw
 NamePlural = Grip Claws
 Pocket = 13
 Price = 4000
-Description = A Pokémon held item that doubles the duration of binding moves and abilities.
+Description = A held item that doubles the duration of binding moves and abilities.
 #-------------------------------
 [LOADEDDICE]
 Name = Loaded Dice
@@ -696,14 +696,14 @@ Name = Fragile Locket
 NamePlural = Fragile Lockets
 Pocket = 13
 Price = 12000
-Description = An item to be held by a Pokémon. The user gets both of its legal abilities, but its stats are cut by 10%.
+Description = A held item. The user gets both of its legal abilities, but its stats are cut by 10%.
 #-------------------------------
 [TECHNIQUEBOOSTER]
 Name = Technique Booster
 NamePlural = Technique Boosters
 Pocket = 13
 Price = 12000
-Description = An item to be held by a Pokémon. Signature attacks made by the holder are boosted by 40%.
+Description = A held item. Signature attacks made by the holder are boosted by 40%.
 #-------------------------------
 [BIGROOT]
 Name = Big Root
@@ -717,7 +717,7 @@ Name = Black Sludge
 NamePlural = Black Sludges
 Pocket = 13
 Price = 6000
-Description = A held item that gradually restores the HP of Poison-type Pokémon. It inflicts damage on all other types.
+Description = Item that restores the HP of Poison-types by 1/16th. Inflicts 1/8th damage on other types.
 #-------------------------------
 [LEFTOVERS]
 Name = Leftovers
@@ -732,7 +732,7 @@ Name = Shell Bell
 NamePlural = Shell Bells
 Pocket = 13
 Price = 6000
-Description = An item to be held by a Pokémon. The holder restores 1/5th HP of the damage it deals with moves.
+Description = A held item. The holder restores 1/5th HP of the damage it deals with moves.
 #-------------------------------
 [WATERBALLOON]
 Name = Water Balloon
@@ -747,7 +747,7 @@ NamePlural = Mental Herbs
 Pocket = 11
 Price = 4000
 Flags = Herb
-Description = An item to be held by a Pokémon. It snaps the holder out of a variety of mental warping effects.
+Description = A held item. It snaps the holder out of a variety of mental warping effects.
 #-------------------------------
 [WHITEHERB]
 Name = White Herb
@@ -755,7 +755,7 @@ NamePlural = White Herbs
 Pocket = 11
 Price = 4000
 Flags = Herb
-Description = An item to be held by a Pokémon. It restores any lowered stat in battle.
+Description = A held item. It restores any lowered stat in battle.
 #-------------------------------
 [BLACKHERB]
 Name = Black Herb
@@ -763,7 +763,7 @@ NamePlural = Black Herbs
 Pocket = 11
 Price = 4000
 Flags = Herb
-Description = An item to be held by a Pokémon. Lowered stats on the holder are also applied to foes.
+Description = A held item. Lowered stats on the holder are also applied to foes.
 #-------------------------------
 [AGILITYHERB]
 Name = Agility Herb
@@ -771,7 +771,7 @@ NamePlural = Agility Herbs
 Pocket = 11
 Price = 4000
 Flags = Herb
-Description = An item to be held by a Pokémon. Doubles the Speed of the holder's move once per battle.
+Description = A held item. Doubles the Speed of the holder's move once per battle.
 #-------------------------------
 [STRENGTHHERB]
 Name = Strength Herb
@@ -795,7 +795,7 @@ NamePlural = Power Herbs
 Pocket = 11
 Price = 4000
 Flags = Herb
-Description = An item to be held by a Pokémon. It allows the immediate use of a move that charges up first.
+Description = A held item. It allows the immediate use of a move that charges up first.
 #-------------------------------
 [ENERGYHERB]
 Name = Energy Herb
@@ -803,7 +803,7 @@ NamePlural = Energy Herbs
 Pocket = 11
 Price = 4000
 Flags = Herb
-Description = An item to be held by a Pokémon. It allows user to skip the recharging turn of an exhausting move.
+Description = A held item. It allows user to skip the recharging turn of an exhausting move.
 #-------------------------------
 [MIRRORHERB]
 Name = Mirror Herb
@@ -827,7 +827,7 @@ NamePlural = Luck Herbs
 Pocket = 11
 Price = 4000
 Flags = Herb
-Description = An item to be held by a Pokémon. Ensures a random additional effect activates once per battle.
+Description = A held item. Ensures a random additional effect activates once per battle.
 #-------------------------------
 [SKILLHERB]
 Name = Skill Herb
@@ -835,7 +835,7 @@ NamePlural = Skill Herbs
 Pocket = 11
 Price = 4000
 Flags = Herb
-Description = An item to be held by a Pokémon. Ensures a less than full accuracy move lands once per battle.
+Description = A held item. Ensures a less than full accuracy move lands once per battle.
 #-------------------------------
 [LIFEORB]
 Name = Life Orb
@@ -865,7 +865,7 @@ NamePlural = Muscle Bands
 Pocket = 12
 Price = 4000
 Flags = Clothing
-Description = An item to be held by a Pokémon. It is a headband that boosts the power of physical moves by 15%.
+Description = A held item. It is a headband that boosts the power of physical moves by 15%.
 #-------------------------------
 [WISEGLASSES]
 Name = Wise Glasses
@@ -873,7 +873,7 @@ NamePlural = Wise Glasses
 Pocket = 12
 Price = 4000
 Flags = Clothing
-Description = An item to be held by a Pokémon. It is a thick pair of glasses that boosts the power of special moves by 15%.
+Description = A held item. It is a thick pair of glasses that boosts the power of special moves by 15%.
 #-------------------------------
 [SEVENLEAGUEBOOTS]
 Name = 7-League Boots
@@ -881,7 +881,7 @@ NamePlural = 7-League Boots
 Pocket = 12
 Price = 4000
 Flags = Clothing
-Description = An item to be held by a Pokémon. They are boots that boost Speed by 10%.
+Description = A held item. They are boots that boost Speed by 10%.
 #-------------------------------
 [SCOPELENS]
 Name = Scope Lens
@@ -902,7 +902,7 @@ Name = Lagging Tail
 NamePlural = Lagging Tails
 Pocket = 13
 Price = 4000
-Description = An item to be held by a Pokémon. It is tremendously heavy and makes the holder move slower than usual.
+Description = Held item which forces the holder to move last in its priority bracket.
 #-------------------------------
 [FOCUSSASH]
 Name = Focus Sash
@@ -910,7 +910,7 @@ NamePlural = Focus Sashes
 Pocket = 12
 Price = 4000
 Flags = Clothing,Endure
-Description = An item to be held by a Pokémon. If it has full HP, the holder will endure one potential KO attack, leaving 1 HP.
+Description = A helditem. If it has full HP, the holder will endure one potential KO attack, leaving 1 HP.
 #-------------------------------
 [FLAMEORB]
 Name = Flame Orb
@@ -919,7 +919,7 @@ Pocket = 13
 Price = 4000
 FieldUse = OnPokemon
 Consumable = false
-Description = An item to be held by a Pokémon. A bizarre orb that inflicts burn on the holder at the end of a turn.
+Description = A held item. A bizarre orb that inflicts burn on the holder at the end of a turn.
 #-------------------------------
 [FROSTORB]
 Name = Frost Orb
@@ -928,7 +928,7 @@ Pocket = 13
 Price = 4000
 FieldUse = OnPokemon
 Consumable = false
-Description = An item to be held by a Pokémon. A bizarre orb that inflicts frostbite on the holder at the end of a turn.
+Description = A held item. A bizarre orb that inflicts frostbite on the holder at the end of a turn.
 #-------------------------------
 [POISONORB]
 Name = Poison Orb
@@ -937,7 +937,7 @@ Pocket = 13
 Price = 4000
 FieldUse = OnPokemon
 Consumable = false
-Description = An item to be held by a Pokémon. A bizarre orb that inflicts poison on the holder at the end of a turn.
+Description = A held item. A bizarre orb that inflicts poison on the holder at the end of a turn.
 #-------------------------------
 [STICKYBARB]
 Name = Sticky Barb
@@ -952,7 +952,7 @@ NamePlural = Eject Packs
 Pocket = 12
 Price = 4000
 Flags = Clothing
-Description = An item to be held by a Pokémon. When the holder's stats are lowered, it will be switched out of battle.
+Description = A held item. When the holder's stats are lowered, it will be switched out of battle.
 #-------------------------------
 [HEAVYDUTYBOOTS]
 Name = Heavy-Duty Boots
@@ -1148,14 +1148,14 @@ Name = Everstone
 NamePlural = Everstones
 Pocket = 13
 Price = 3000
-Description = An item to be held by a Pokémon. The Pokémon holding this peculiar stone is prevented from evolving.
+Description = A held item. The Pokémon holding this peculiar stone is prevented from evolving.
 #-------------------------------
 [IRONBALL]
 Name = Iron Ball
 NamePlural = Iron Balls
 Pocket = 13
 Price = 4000
-Description = A Pokémon held item that cuts Speed. It makes Flying-type and levitating holders susceptible to Ground moves.
+Description = Held item that halves Speed. It makes Flying-type and levitating holders susceptible to Ground moves.
 #-------------------------------
 [CHARCOAL]
 Name = Charcoal
@@ -1830,7 +1830,7 @@ NamePlural = Cheri Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = It may be held by a Pokémon to recover from numbing.
+Description = A held item that can cure numbing.
 #-------------------------------
 [CHESTOBERRY]
 Name = Chesto Berry
@@ -1838,7 +1838,7 @@ NamePlural = Chesto Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = It may be held by a Pokémon to recover from sleep.
+Description = A held item that can cure sleep.
 #-------------------------------
 [PECHABERRY]
 Name = Pecha Berry
@@ -1846,7 +1846,7 @@ NamePlural = Pecha Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = It may be held by a Pokémon to recover from poison.
+Description = A held item that can cure poison.
 #-------------------------------
 [RAWSTBERRY]
 Name = Rawst Berry
@@ -1854,7 +1854,7 @@ NamePlural = Rawst Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = It may be held by a Pokémon to recover from a burn.
+Description = A held item that can cure burn.
 #-------------------------------
 [ASPEARBERRY]
 Name = Aspear Berry
@@ -1862,7 +1862,7 @@ NamePlural = Aspear Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = It may be held by a Pokémon to recover from a frostbite.
+Description = A held item that can cure frostbite.
 #-------------------------------
 [PERSIMBERRY]
 Name = Persim Berry
@@ -1870,7 +1870,7 @@ NamePlural = Persim Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = It may be held by a Pokémon to recover from being dizzy.
+Description = A held item that can cure dizzy.
 #-------------------------------
 [SPELONBERRY]
 Name = Spelon Berry
@@ -1878,7 +1878,7 @@ NamePlural = Spelon Berries
 Pocket = 9
 Price = 500
 Flags = Berry
-Description = It may be held by a Pokémon to recover from being leeched.
+Description = A held item that can cure leeched.
 #-------------------------------
 [BELUEBERRY]
 Name = Belue Berry
@@ -1886,7 +1886,7 @@ NamePlural = Belue Berries
 Pocket = 9
 Price = 500
 Flags = Berry
-Description = It may be held by a Pokémon to recover from being waterlogged.
+Description = A held item that can cure waterlogged.
 #-------------------------------
 [LEPPABERRY]
 Name = Leppa Berry
@@ -1894,7 +1894,7 @@ NamePlural = Leppa Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = It may be held by a Pokémon to restore a move's PP by 10.
+Description = A held item that can restore a move's PP by 10.
 #-------------------------------
 [LUMBERRY]
 Name = Lum Berry
@@ -1902,7 +1902,7 @@ NamePlural = Lum Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = It may be held by a Pokémon to recover from any status problem.
+Description = A held item that can cure any status problem.
 #-------------------------------
 [SITRUSBERRY]
 Name = Sitrus Berry
@@ -1926,7 +1926,7 @@ NamePlural = Occa Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Fire-type attack against the holding Pokémon.
+Description = Weakens a supereffective Fire-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [PASSHOBERRY]
 Name = Passho Berry
@@ -1934,7 +1934,7 @@ NamePlural = Passho Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Water-type attack against the holding Pokémon.
+Description = Weakens a supereffective Water-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [WACANBERRY]
 Name = Wacan Berry
@@ -1942,7 +1942,7 @@ NamePlural = Wacan Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Electric-type attack against the holding Pokémon.
+Description = Weakens a supereffective Electric-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [RINDOBERRY]
 Name = Rindo Berry
@@ -1950,7 +1950,7 @@ NamePlural = Rindo Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Grass-type attack against the holding Pokémon.
+Description = Weakens a supereffective Grass-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [YACHEBERRY]
 Name = Yache Berry
@@ -1958,7 +1958,7 @@ NamePlural = Yache Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Ice-type attack against the holding Pokémon.
+Description = Weakens a supereffective Ice-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [CHOPLEBERRY]
 Name = Chople Berry
@@ -1966,7 +1966,7 @@ NamePlural = Chople Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Fighting-type attack against the holding Pokémon.
+Description = Weakens a supereffective Fighting-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [KEBIABERRY]
 Name = Kebia Berry
@@ -1974,7 +1974,7 @@ NamePlural = Kebia Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Poison-type attack against the holding Pokémon.
+Description = Weakens a supereffective Poison-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [SHUCABERRY]
 Name = Shuca Berry
@@ -1982,7 +1982,7 @@ NamePlural = Shuca Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Ground-type attack against the holding Pokémon.
+Description = Weakens a supereffective Ground-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [COBABERRY]
 Name = Coba Berry
@@ -1990,7 +1990,7 @@ NamePlural = Coba Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Flying-type attack against the holding Pokémon.
+Description = Weakens a supereffective Flying-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [PAYAPABERRY]
 Name = Payapa Berry
@@ -1998,7 +1998,7 @@ NamePlural = Payapa Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Psychic-type attack against the holding Pokémon.
+Description = Weakens a supereffective Psychic-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [TANGABERRY]
 Name = Tanga Berry
@@ -2006,7 +2006,7 @@ NamePlural = Tanga Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Bug-type attack against the holding Pokémon.
+Description = Weakens a supereffective Bug-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [CHARTIBERRY]
 Name = Charti Berry
@@ -2014,7 +2014,7 @@ NamePlural = Charti Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Rock-type attack against the holding Pokémon.
+Description = Weakens a supereffective Rock-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [KASIBBERRY]
 Name = Kasib Berry
@@ -2022,7 +2022,7 @@ NamePlural = Kasib Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Ghost-type attack against the holding Pokémon.
+Description = Weakens a supereffective Ghost-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [HABANBERRY]
 Name = Haban Berry
@@ -2030,7 +2030,7 @@ NamePlural = Haban Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Dragon-type attack against the holding Pokémon.
+Description = Weakens a supereffective Dragon-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [COLBURBERRY]
 Name = Colbur Berry
@@ -2038,7 +2038,7 @@ NamePlural = Colbur Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Dark-type attack against the holding Pokémon.
+Description = Weakens a supereffective Dark-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [BABIRIBERRY]
 Name = Babiri Berry
@@ -2046,7 +2046,7 @@ NamePlural = Babiri Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Steel-type attack against the holding Pokémon.
+Description = Weakens a supereffective Steel-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [ROSELIBERRY]
 Name = Roseli Berry
@@ -2054,7 +2054,7 @@ NamePlural = Roseli Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a supereffective Fairy-type attack against the holding Pokémon.
+Description = Weakens a supereffective Fairy-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [CHILANBERRY]
 Name = Chilan Berry
@@ -2062,7 +2062,7 @@ NamePlural = Chilan Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = Weakens a Normal-type attack against the holding Pokémon.
+Description = Weakens a Normal-type attack against the holding Pokémon by 50%.
 #-------------------------------
 [LIECHIBERRY]
 Name = Liechi Berry
@@ -2266,14 +2266,14 @@ Name = Light Stone
 NamePlural = Light Stones
 Pocket = 6
 Price = 0
-Description = Reshiram's body was destroyed and changed into this stone. It is said to be waiting for a hero.
+Description = Reshiram's body, in stone form. An expert in ancient relics may be able to transform it.
 #-------------------------------
 [DARKSTONE]
 Name = Dark Stone
 NamePlural = Dark Stones
 Pocket = 6
 Price = 0
-Description = Zekrom's body was destroyed and changed into this stone. It is said to be waiting for a hero.
+Description = Zekrom's body, in stone form. An expert in ancient relics may be able to transform it.
 #-------------------------------
 [LUMIOSEGALETTE]
 Name = Lumiose Galette
