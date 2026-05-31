@@ -3,7 +3,9 @@ PERFECTED_REGULAR_TRAINERS_DROP_ITEMS = true
 def determineTrainerMaxLevel(trainerClass, trainerName, version = 0)
 	begin
 		trainerData = GameData::Trainer.get(trainerClass, trainerName, version)
-		return trainerData.max_level
+		maxLevel = trainerData.max_level
+		echoln("#{trainerClass} #{trainerName}'s maximum party level is #{maxLevel}")
+		return maxLevel
 	rescue
 		return STARTING_LEVEL_CAPS
 	end
@@ -484,4 +486,76 @@ def createPokemonInteractionEventPage(pokemon,originalPage = nil)
 	push_end(newPage.list)
 
 	return newPage
+end
+
+
+def fixAllCallsToPerfectTrainer
+	mapData = Compiler::MapData.new
+
+	trainerEventsCount = 0
+	eventsModifiedCount = 1
+
+    for id in mapData.mapinfos.keys.sort
+        changed = false
+        map = mapData.getMap(id)
+        next if !map || !mapData.mapinfos[id]
+        mapName = mapData.mapinfos[id].name
+        for key in map.events.keys
+			event = map.events[key]
+			trainerDataString = getTrainerDataFromEvent(event)
+			next unless trainerDataString
+			trainerEventsCount += 1
+			if modifyPerfectTrainerCallsOnEvent(event, trainerDataString)
+				changed = true
+				eventsModifiedCount += 1
+			end
+        end
+        mapData.saveMap(id) if changed
+    end
+
+	echoln("{#{trainerEventsCount}} calls to pbTrainerBattle found!!")
+	echoln("{#{eventsModifiedCount}} events converted to new syntax!!")
+end
+
+def factpt
+	fixAllCallsToPerfectTrainer
+end
+
+def getTrainerDataFromEvent(event)
+	event.pages.each do |page|
+        page.list.each do |eventCommand|
+            eventCommand.parameters.each do |parameter|
+                next unless parameter.is_a?(String)
+                match = parameter.match(/pb(?:Double||Triple)?TrainerBattle\((:[A-Za-z_0-9]+,"[A-Za-z 0-9]+")\)/)
+                if match
+                    trainerDataString = match[1]
+					echoln(trainerDataString)
+					return trainerDataString
+                end
+            end
+        end
+    end
+	return nil
+end
+
+def modifyPerfectTrainerCallsOnEvent(event, trainerDataString)
+	modified = false
+	event.pages.each do |page|
+        page.list.each do |eventCommand|
+            eventCommand.parameters.each_with_index do |parameter, index|
+                next unless parameter.is_a?(String)
+                match = parameter.match(/(perfect(?:Ditto||Ace)?Trainer\()[1-9][0-9]*([^0-9].*)/)
+                if match
+                    beforeTrainerLevel = match[1]
+					afterTrainerLevel = match[2]
+					newString = "#{beforeTrainerLevel}[#{trainerDataString}]#{afterTrainerLevel}"
+					echoln("\tMethod call: #{parameter}")
+					echoln("\tConverted to: #{newString}")
+					eventCommand.parameters[index] = newString
+					modified = true
+                end
+            end
+        end
+    end
+	return modified
 end
