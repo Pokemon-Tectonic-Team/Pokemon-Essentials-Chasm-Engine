@@ -194,8 +194,7 @@ class WaypointsTracker
 
 			pbWait(10)
 			
-			# Disabled for testing purposes
-			#addWaypoint(waypointName,waypointEvent)
+			addWaypoint(waypointName,waypointEvent)
 
             checkForWaypointsAchievement
 		end
