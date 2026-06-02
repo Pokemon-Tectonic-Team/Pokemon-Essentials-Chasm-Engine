@@ -231,8 +231,8 @@ class PokemonTrade_Scene
     pbStartTradeGraphics(myPokemon,receivingPokemon,trainerName)
     if storageBox == -1
       $Trainer.party[boxIndex] = receivingPokemon
-      discoverPokemon(receivingPokemon)
       pbNickname(receivingPokemon) if $Options.nicknaming_prompt == 0
+      discoverPokemon(receivingPokemon)
       refreshFollow(false) if storageBox == -1
     else
       $PokemonStorage.pbDelete(storageBox, boxIndex)
@@ -256,7 +256,6 @@ class PokemonTrade_Scene
     receivingPokemon.obtain_method = 2   # traded
     receivingPokemon.record_first_moves
     $Trainer.pokedex.register(receivingPokemon)
-    $Trainer.pokedex.set_owned(receivingPokemon.species)
     return receivingPokemon
   end
   
