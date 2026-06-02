@@ -139,10 +139,12 @@ class PokemonLoadScreen
                 PokeBattle_BattleRecorder.createDir
                 return
             when cmd_options
+                optionScene = PokemonOption_Scene.new
+                optionScreen = PokemonOptionMenu.new(optionScene)
+                optionScreen.pbStartPokemonMenu
                 pbFadeOutIn {
-                    optionScene = PokemonOption_Scene.new
-					optionScreen = PokemonOptionMenu.new(optionScene)
-					optionScreen.pbStartPokemonMenu
+                    @scene.pbCloseScene
+                    @scene.pbStartScene(commands, false, nil, 0, 0)
                 }
             when cmd_achievements
                 pbFadeOutIn do
