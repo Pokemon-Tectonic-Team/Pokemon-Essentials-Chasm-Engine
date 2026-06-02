@@ -140,16 +140,16 @@ class PokemonLoadScreen
                 return
             when cmd_options
                 dark_mode_before = $Options.dark_mode
-                optionScene = PokemonOption_Scene.new
-                optionScreen = PokemonOptionMenu.new(optionScene)
-                optionScreen.pbStartPokemonMenu
-                # refresh menu to load new background
-                if $Options.dark_mode != dark_mode_before
-                    pbFadeOutIn {
+                pbFadeOutIn {
+                    optionScene = PokemonOption_Scene.new
+                    optionScreen = PokemonOptionMenu.new(optionScene)
+                    optionScreen.pbStartPokemonMenu
+                    # Refresh menu to load new background
+                    if $Options.dark_mode != dark_mode_before
                         @scene.pbCloseScene
                         @scene.pbStartScene(commands, false, nil, 0, 0)
-                    }
-                end
+                    end
+                }
             when cmd_achievements
                 pbFadeOutIn do
                     achievementsListScene = AchievementsListScene.new
