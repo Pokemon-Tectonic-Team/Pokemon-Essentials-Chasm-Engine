@@ -52,6 +52,7 @@ def candyRock(level,multiplier = 2)
     pbWait(10)
     pbSEPlay('Anim/PRSFX- Rock Throw2')
     pbWait(20)
+    level = level - 5
     receiveCandyBatch(level,multiplier)
 end
 
