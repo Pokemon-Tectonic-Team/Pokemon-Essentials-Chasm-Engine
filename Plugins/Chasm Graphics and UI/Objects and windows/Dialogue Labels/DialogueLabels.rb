@@ -17,7 +17,7 @@ def setSpeakerRuby(speakerName,viewport = nil)
     end
     $SpeakerNameWindowRuby.text = _INTL(speakerName)
     $SpeakerNameWindowRuby.viewport = viewport
-    refreshSpeakerWindow
+    refreshSpeakerWindowRuby
 end
 
 def refreshSpeakerWindow
@@ -27,6 +27,15 @@ def refreshSpeakerWindow
     $SpeakerNameWindow.y = Graphics.height - $SpeakerNameWindow.height
     $SpeakerNameWindow.z = 99_999
     $SpeakerNameWindow.visible = false # Starts hidden
+end
+
+def refreshSpeakerWindowRuby
+    return unless $SpeakerNameWindowRuby
+    $SpeakerNameWindowRuby.resizeToFit($SpeakerNameWindowRuby.text,Graphics.width)
+    $SpeakerNameWindowRuby.width = 160 if $SpeakerNameWindowRuby.width <= 160
+    $SpeakerNameWindowRuby.y = Graphics.height - $SpeakerNameWindowRuby.height
+    $SpeakerNameWindowRuby.z = 99_999
+    $SpeakerNameWindowRuby.visible = false # Starts hidden
 end
 
 def setSpeakerTrainer(trainerClass,trainerName)
