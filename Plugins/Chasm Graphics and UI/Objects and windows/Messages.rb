@@ -626,6 +626,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     ########## Show text #############################
     msgwindow.text = text
     Graphics.frame_reset if Graphics.frame_rate > 40
+    showSpeakerRuby # will show speaker labels defined in ruby functions, but not when called from an RPG Maker event which assumes the speaker will be disposed
     iconFadeInCount = iconFadeInTime
     loop do
         if $SpeakerNameWindow

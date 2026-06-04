@@ -276,18 +276,21 @@ class PokEstate
 		commands[commandReceiveUpdate = commands.length] = _INTL("Hear Story") if STORIES_FEATURE_AVAILABLE
 		commands[commandCancel = commands.length] = _INTL("Cancel")
 		
-		setSpeaker(CARETAKER)
+		setSpeakerRuby(CARETAKER)
 		command = pbMessage(_INTL("What would you like to do?"),commands,commandCancel+1)
 		
 		if commandLandscape > -1 && command == commandLandscape
+			removeSpeakerRuby
 			changeLandscape()
-        elsif commandCheckRewards > -1 && command == commandCheckRewards
+		elsif commandCheckRewards > -1 && command == commandCheckRewards
+            removeSpeakerRuby
             pbFadeOutIn do
                 collectionRewardsListScene = CollectionRewardsListScene.new
                 screen = CollectionRewardsListScreen.new(collectionRewardsListScene)
                 screen.pbStartScreen
             end
 		elsif commandReceiveUpdate > -1 && command == commandReceiveUpdate
+			# we don't remove speaker here because this dialogue is also the Caretaker's, I think
 			tryHearStory()
 		end
 	end
