@@ -219,6 +219,7 @@ class PokemonTrade_Scene
     pbStartTradeGraphics(myPokemon,receivingPokemon,trainerName)
     $Trainer.party[pokemonIndex] = receivingPokemon
     pbNickname(receivingPokemon) if $Options.nicknaming_prompt == 0
+    discoverPokemon(receivingPokemon)
     refreshFollow(false)
   end
 
