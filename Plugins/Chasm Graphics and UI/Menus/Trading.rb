@@ -234,7 +234,7 @@ class PokemonTrade_Scene
       $Trainer.party[boxIndex] = receivingPokemon
       pbNickname(receivingPokemon) if $Options.nicknaming_prompt == 0
       discoverPokemon(receivingPokemon)
-      refreshFollow(false) if storageBox == -1
+      refreshFollow(false)
     else
       $PokemonStorage.pbDelete(storageBox, boxIndex)
       pbAddPokemonFromTrade(receivingPokemon)
