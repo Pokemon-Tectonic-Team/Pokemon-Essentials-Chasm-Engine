@@ -246,6 +246,8 @@ class PokeBattle_Battler
         @tookPhysicalHitLastRound = false
         @tookSpecialHitLastRound = false
         @moveUsageHistory      = []
+        @movesUsedThisTurn     = []
+        @movesUsedLastTurn     = []
         @lastMoveUsed          = nil
         @lastMoveUsedType      = nil
         @lastMoveUsedCategory  = -1
@@ -263,6 +265,7 @@ class PokeBattle_Battler
 
         # Boss stuff
         @avatarPhase           = 1
+        @phaseTransitioning    = false
         @empoweredTimer		   = 0
         @extraMovesPerTurn = 0
         @indicesTargetedRoundBeforeLast = []

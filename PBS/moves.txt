@@ -289,12 +289,12 @@ Name = Follow Me
 Type = NORMAL
 Category = Status
 Accuracy = 0
-TotalPP = 5
+TotalPP = 3
 Target = User
 Priority = 2
 FunctionCode = RedirectAllMovesToUser
 Flags = Uninvocable
-Description = The user draws attention to itself, making all targets take aim only at the user this turn.
+Description = The user draws attention to itself, making all foes' moves get redirected to the user this turn.
 #-------------------------------
 [FURYSWIPES]
 Name = Fury Swipes
@@ -863,7 +863,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = UserMakesSubstitute25
-Flags = CanSnatch
+Flags = CanSnatch,Staple
 Description = The user spends 25% HP to create a doll to protect it from move damage, additional effects, and status moves.
 #-------------------------------
 [SUPERFANG]
@@ -1600,18 +1600,6 @@ FunctionCode = Defog
 Flags = CanProtect,CanMagicCoat,Wind
 Description = The user whips up a wind to blow away protective screens on the opponent's side. Also removes hazards on both sides.
 #-------------------------------
-[DRAGONASCENT]
-Name = Dragon Ascent
-Type = FLYING
-Category = Physical
-Power = 120
-Accuracy = 100
-TotalPP = 5
-Target = NearOther
-FunctionCode = LowerUserDefSpDef2
-Flags = CanProtect
-Description = The user soars upward and drops at high speeds. This lowers the user's Defense and Sp. Def by two steps.
-#-------------------------------
 [DRILLPECK]
 Name = Drill Peck
 Type = FLYING
@@ -1791,7 +1779,7 @@ TotalPP = 12
 Target = NearOther
 FunctionCode = ResetTargetStatSteps
 Flags = CanProtect,Wind
-Description = The user attacks with a cloud of white smoke. All of the target's stat step changes are returned to normal.
+Description = The user attacks with a cloud of white smoke. This resets the target's positive stat changes.
 #-------------------------------
 [COIL]
 Name = Coil
@@ -3102,7 +3090,7 @@ Target = None
 Priority = -5
 FunctionCode = CounterDamagePlusHalf
 Flags = CanProtect,Uninvocable
-Description = The user retaliates with much greater power against the target that last inflicted damage on it.
+Description = A retaliation move that counters any attack, inflicting 150% of the damage taken.
 #-------------------------------
 [METALCLAW]
 Name = Metal Claw
@@ -4918,17 +4906,6 @@ FunctionCode = UserTargetSwapAbilities
 Flags = CanProtect
 Description = The user employs its psychic power to exchange Abilities with the target.
 #-------------------------------
-[TRICKROOM]
-Name = Trick Room
-Type = PSYCHIC
-Category = Status
-Accuracy = 0
-TotalPP = 5
-Target = BothSides
-Priority = -7
-FunctionCode = StartSwapSpeedOrder4
-Description = The user creates a bizarre area in which slower Pokémon get to move first for four turns.
-#-------------------------------
 [ZENHEADBUTT]
 Name = Zen Headbutt
 Type = PSYCHIC
@@ -4981,19 +4958,6 @@ Flags = CanProtect,Wind
 EffectChance = 30
 Description = A blizzard strikes all near foes. Can't miss in hail. It has a 30% chance to frostbite.
 #-------------------------------
-[FREEZESHOCK]
-Name = Freeze Shock
-Type = ICE
-Category = Physical
-Power = 140
-Accuracy = 100
-TotalPP = 5
-Target = NearOther
-FunctionCode = TwoTurnAttackParalyzeTarget
-Flags = CanProtect,ForceSignature
-EffectChance = 30
-Description = Charges up, then on the second turn, the user strikes with electrified ice. It has a 30% chance to numb.
-#-------------------------------
 [FROSTBREATH]
 Name = Frost Breath
 Type = ICE
@@ -5018,19 +4982,6 @@ FunctionCode = Basic
 Flags = CanProtect,ForceSignature
 Description = The user attacks by hurling a blizzard-cloaked icicle lance at opposing Pokémon.
 #-------------------------------
-[GLACIATE]
-Name = Glaciate
-Type = ICE
-Category = Special
-Power = 65
-Accuracy = 100
-TotalPP = 10
-Target = AllNearFoes
-FunctionCode = LowerTargetSpd2
-Flags = CanProtect,Wind
-EffectChance = 100
-Description = The user attacks by blowing freezing cold air at all near foes. This attack reduces the targets' Speed by two steps.
-#-------------------------------
 [HAIL]
 Name = Hail
 Type = ICE
@@ -5053,19 +5004,6 @@ FunctionCode = Frostbite
 Flags = CanProtect
 EffectChance = 10
 Description = The target is struck with an icy-cold beam of energy. It has a 10% chance to frostbite.
-#-------------------------------
-[ICEBURN]
-Name = Ice Burn
-Type = ICE
-Category = Special
-Power = 140
-Accuracy = 100
-TotalPP = 5
-Target = NearOther
-FunctionCode = TwoTurnAttackBurnTarget
-Flags = CanProtect,ForceSignature
-EffectChance = 30
-Description = Charges up, then on the second turn, an ultracold, freezing wind surrounds the foe. It has a 30% chance to burn.
 #-------------------------------
 [ICEFANG]
 Name = Ice Fang

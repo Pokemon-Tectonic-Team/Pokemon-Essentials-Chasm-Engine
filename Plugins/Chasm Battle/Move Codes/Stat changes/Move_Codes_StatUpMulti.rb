@@ -677,6 +677,11 @@ end
 # Empowered Deep Breathing
 class PokeBattle_Move_EmpoweredDeepBreathing < PokeBattle_Move_RaiseUserSpd2CriticalHitRate2
     include EmpoweredMove
+
+    def pbEffectGeneral(user)
+        super
+        transformType(user, :FIGHTING)
+    end
 end
 
 #===============================================================================

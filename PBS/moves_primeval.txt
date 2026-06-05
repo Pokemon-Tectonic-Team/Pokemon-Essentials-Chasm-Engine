@@ -49,7 +49,7 @@ TotalPP = 1
 Target = AllNearFoes
 FunctionCode = EmpoweredGrowl
 Flags = CanProtect,Sound,Empowered
-Description = The user growls fiercly. This lowers each foe's Attack by two steps and raises its own Attack by two steps.
+Description = The user growls fiercely. This lowers each foe's Attack by two steps and raises its own Attack by two steps.
 Animation = GROWL
 #-------------------------------
 [PRIMEVALROLEPLAY]
@@ -151,6 +151,7 @@ Target = User
 FunctionCode = EmpoweredStandTogether
 Flags = Empowered
 Description = The user summons an allied Tyrogue. This raises its Defense by three steps, and its allies' by one. User becomes Fighting-type.
+Animation = DETECT
 #-------------------------------
 #		FLYING MOVES
 #-------------------------------
@@ -243,7 +244,8 @@ TotalPP = 1
 Target = User
 FunctionCode = EmpoweredCoil
 Flags = Empowered
-Description = The user raises its Attack, Defense, and Accuracy by two steps. Additionally, the user summons an ally Ekans. User becomes Poison-type.
+Description = The user raises its Attack, Defense, and Accuracy by two steps. This summons an allied Ekans. User becomes Poison-type.
+Animation = COIL
 #-------------------------------
 [PRIMEVALGREYMIST]
 Name = Primeval Grey Mist
@@ -317,7 +319,7 @@ TotalPP = 1
 Target = User
 FunctionCode = EmpoweredShoreUp
 Flags = Empowered
-Description = The user restores 1/8th of its HP. Raises its attacking-, but lowers defensive stats at the end of each turn. User becomes Ground-type.
+Description = The user restores 1/8th of its HP. Raises its offensive-, but lowers defensive stats at the end of each turn. User becomes Ground-type.
 Animation = SHOREUP
 #-------------------------------
 [PRIMEVALSPIKES]
@@ -342,6 +344,7 @@ Target = BothSides
 FunctionCode = GroudonStartGravityDoubleAllWeight
 Flags = AvatarSignature
 Description = A move that only the avatar of Groudon can use. Gravity is intensified for the rest of the battle.
+Animation = GRAVITY
 #-------------------------------
 #		ROCK MOVES
 #-------------------------------
@@ -408,7 +411,7 @@ TotalPP = 1
 Target = BothSides
 FunctionCode = EmpoweredSandstorm
 Flags = Empowered
-Description = The user summons sandstorm for five turns. This raises its Defense and Sp. Def. User becomes Rock-type.
+Description = The user summons sandstorm for six turns. This raises its Defense and Sp. Def. User becomes Rock-type.
 Animation = SANDSTORM
 #-------------------------------
 #		BUG MOVES
@@ -500,7 +503,7 @@ Accuracy = 100
 TotalPP = 1
 Target = NearOther
 FunctionCode = EmpoweredMetalClaw
-Flags = CanProtect,Empowered
+Flags = CanProtect,Empowered,Slice
 EffectChance = 100
 Description = The target is raked with steel claws twice. This raises the user's Attack after each hit.
 Animation = METALCLAW
@@ -643,7 +646,7 @@ TotalPP = 1
 Target = BothSides
 FunctionCode = EmpoweredSunshine
 Flags = Empowered
-Description = The user summons sunshine for five turns. This raises its Attack and Sp. Atk. User becomes Fire-type.
+Description = The user summons sunshine for six turns. This raises its Attack and Sp. Atk. User becomes Fire-type.
 Animation = SUNSHINE
 #-------------------------------
 #		WATER MOVES
@@ -697,7 +700,7 @@ TotalPP = 1
 Target = BothSides
 FunctionCode = EmpoweredRainstorm
 Flags = Empowered
-Description = The user summons rainstorm for five turns and surrounds itself with Aqua Ring. User becomes Water-type.
+Description = The user summons rainstorm for six turns and surrounds itself with Aqua Ring. User becomes Water-type.
 Animation = RAINSTORM
 #-------------------------------
 [PRIMEVALWATERLOG]
@@ -773,20 +776,8 @@ TotalPP = 1
 Target = UserAndAllies
 FunctionCode = EmpoweredAromatherapy
 Flags = Empowered
-Description = The user heals all non-volatile status conditions affecting their party, gains the ability Stability, and heals itself for 25% HP. User becomes Grass-type.
+Description = The user heals all non-volatile status conditions on their side, gains the ability Stability, heals itself for 25% HP and becomes Grass-type.
 Animation = AROMATHERAPY
-#-------------------------------
-[PRIMEVALINGRAIN]
-Name = Primeval Ingrain
-Type = GRASS
-Category = Status
-Accuracy = 0
-TotalPP = 1
-Target = BothSides
-FunctionCode = PrimevalIngrain
-Flags = Empowered
-Description = The user embeds its roots to heal by 1/4th every turn for four turns. User becomes Grass-type.
-Animation = INGRAIN
 #-------------------------------
 [PRIMEVALLEECHSEED]
 Name = Primeval Leech Seed
@@ -817,7 +808,7 @@ Animation = SPIKYSHIELD
 Name = Primeval Spore
 Type = GRASS
 Category = Status
-Accuracy = 100
+Accuracy = 0
 TotalPP = 1
 Target = AllNearFoes
 FunctionCode = EmpoweredSpore
@@ -923,7 +914,7 @@ TotalPP = 1
 Target = BothSides
 FunctionCode = EmpoweredEclipse
 Flags = Empowered
-Description = The user summons eclipse for five turns. This raises its Attack and Sp. Atk. User becomes Psychic-type.
+Description = The user summons eclipse for six turns. This raises its Attack and Sp. Atk. User becomes Psychic-type.
 Animation = ECLIPSE
 #-------------------------------
 [PRIMEVALMAGICCOAT]
@@ -1023,7 +1014,7 @@ TotalPP = 1
 Target = BothSides
 FunctionCode = EmpoweredHail
 Flags = Empowered
-Description = The user summons hail for five turns. This lowers every foe's Speed by two steps. User becomes Ice-type.
+Description = The user summons hail for six turns. This lowers every foe's Speed by two steps. User becomes Ice-type.
 Animation = HAIL
 #-------------------------------
 [PRIMEVALSHIVERDANCE]
@@ -1143,6 +1134,20 @@ Animation = TORMENT
 #-------------------------------
 #		FAIRY MOVES
 #-------------------------------
+[EMPOWEREDMOONBLAST]
+Name = Empowered Moonblast
+Type = FAIRY
+Category = Special
+Power = 180
+Accuracy = 100
+TotalPP = 1
+Target = AllNearFoes
+FunctionCode = EmpoweredMoonblast
+Flags = CanProtect,Empowered,Light
+EffectChance = 100
+Description = The user blasts all nearby foes with the moon's full power, lowering their Sp. Atk by three steps.
+Animation = MOONBLAST
+#-------------------------------
 [PRIMEVALDREAMDANCE]
 Name = Primeval Dream Dance
 Type = FAIRY
@@ -1153,6 +1158,7 @@ Target = User
 FunctionCode = EmpoweredDreamDance
 Flags = Dance,Empowered
 Description = The user raises its Sp. Atk by four steps. User becomes Fairy-type.
+Animation = DREAMDANCE
 #-------------------------------
 [PRIMEVALMOONGLOW]
 Name = Primeval Moonglow
@@ -1163,7 +1169,7 @@ TotalPP = 1
 Target = BothSides
 FunctionCode = EmpoweredMoonglow
 Flags = Empowered
-Description = The user summons moonglow for five turns. This raises the Defense and Sp. Def of all allies. User becomes Fairy-type.
+Description = The user summons moonglow for six turns. This raises the Defense and Sp. Def of all allies. User becomes Fairy-type.
 Animation = MOONGLOW
 #-------------------------------
 [PRIMEVALPUZZLEROOM]

@@ -101,5 +101,8 @@ class PokeBattle_Battler
         @lastRoundMove 			= @lastMoveUsed
         @lastRoundMoveType	    = @lastMoveUsedType
         @lastRoundMoveCategory	= @lastMoveUsedCategory
+
+        @movesUsedLastTurn      = @movesUsedThisTurn.clone
+        @movesUsedThisTurn.clear
     end
 end

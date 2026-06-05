@@ -318,7 +318,7 @@ class PokeBattle_Move
             return
         end
         # Disguise will take the damage
-        if !@battle.moldBreaker && target.isSpecies?(:MIMIKYU) && target.form == 0 && target.hasActiveAbility?(:DISGUISE)
+        if disguiseIntact?(target)
             target.damageState.disguise = true
             return
         end
@@ -327,6 +327,12 @@ class PokeBattle_Move
             target.damageState.thiefsDiversion = true
             return
         end 
+    end
+
+    def disguiseIntact?(target, aiCheck = false)
+        return false if @battle.moldBreaker
+        return false unless target.isSpecies?(:MIMIKYU) && target.form == 0
+        return aiCheck ? target.hasActiveAbilityAI?(:DISGUISE) : target.hasActiveAbility?(:DISGUISE)
     end
 
     def damageNegated?(user, target, aiCheck = false)

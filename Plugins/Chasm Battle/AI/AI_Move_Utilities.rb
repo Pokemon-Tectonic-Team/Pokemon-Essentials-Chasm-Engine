@@ -218,7 +218,7 @@ class PokeBattle_AI
             userSpeed = user.pbSpeed(true, move: move)
             opposingSpeed = killInfo&.speed || target.pbSpeed(true)
             movesFirst = userSpeed > opposingSpeed
-            movesFirst = !movesFirst if user.battle.field.effectActive?(:TrickRoom)
+            movesFirst = !movesFirst if user.battle.field.effectActive?(:TrickstersDomain)
             orderDescriptor = movesFirst ? "BEFORE" : "AFTER"
 
             message = "\t[ORDER CALC] #{user.pbThis}'s #{move.id} will have speed #{userSpeed}, so will move #{orderDescriptor} #{foeChecking.pbThis(true)}"

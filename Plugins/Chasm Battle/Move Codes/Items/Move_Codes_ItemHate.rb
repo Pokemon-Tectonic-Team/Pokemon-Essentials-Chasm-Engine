@@ -36,6 +36,33 @@ class PokeBattle_Move_RemovesTargetItem < PokeBattle_Move
 end
 
 #===============================================================================
+# Knocks off an opponents item and puts it on the user or a party member (Shared Spoils)
+#===============================================================================
+class PokeBattle_Move_StealsTargetItemForSelfOrPartyMember < PokeBattle_Move_RemovesTargetItem
+    def pbEffectAgainstTarget(user, target)
+        return if damagingMove?
+        sharedSpoilsEffect(user, target)
+    end
+
+    def pbEffectWhenDealingDamage(user, target)
+        sharedSpoilsEffect(user, target)
+    end
+
+    def sharedSpoilsEffect(user, target)
+        return unless canKnockOffItems?(user, target)
+
+        knockOffItems(user, target, firstItemOnly: true) do |item, itemName|
+            @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!", user.pbThis, target.pbThis(true), itemName))
+            if sharedspoilsAnyoneCanReceive?(user, item)
+                sharedspoilsChoosePartyMember(user, item, itemName)
+            else
+                @battle.pbDisplay(_INTL("But nobody could receive the item!"))
+            end
+        end
+    end
+end
+
+#===============================================================================
 # Target drops its item. It regains the item at the end of the battle.
 # If target has a losable item, damage is multiplied by 1.5.
 #===============================================================================

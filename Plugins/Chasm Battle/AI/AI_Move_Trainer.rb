@@ -163,14 +163,10 @@ class PokeBattle_AI
                     next if target_data.targets_foe && !user.opposes?(b)
                     score,targetKillInfo,isSlowerDead2,isFasterDead2 = pbGetMoveScore(move, user, b, policies, 1, ignoreGeneralEffectScores, killInfoArray)
                     if user.opposes?(b)
-                        totalScore = score
-                        battlerCount = 1
                         b.eachRedirectingAlly do |ally|
-                            allyScore,allyKillInfo = pbGetMoveScore(move, user, b, policies, 1, ignoreGeneralEffectScores, killInfoArray)
-                            totalScore += allyScore
-                            battlerCount += 1
+                            allyScore,allyKillInfo = pbGetMoveScore(move, user, ally, policies, 1, ignoreGeneralEffectScores, killInfoArray)
+                            score = [score, allyScore].min
                         end
-                        score = totalScore / battlerCount
                     end
                     scoresAndTargets.push([score, b.index, targetKillInfo]) if score > 0
                 end
@@ -249,6 +245,28 @@ class PokeBattle_AI
                 damageScore,damageDealt,willFaint = pbGetMoveScoreDamage(move, user, target, numTargets, aiContext)
             rescue StandardError => exception
                 pbPrintException($!) if $DEBUG
+            end
+
+            if move.disguiseIntact?(target, true) and damageScore > 0
+                # Move will break disguise, exact damage doesn't matter so treat as flat value
+                # However we can't score it as 0 because then it won't try to use the move
+                # Later logic should reduce score for downsides and so prioritise less costly moves
+                # Also mark that it won't faint
+                damageScore = 80
+                willFaint = false
+                echoln("\t[MOVE SCORING] #{target.pbThis(true)} has intact Disguise; scoring as a disguise-breaking move (base #{damageScore})")
+            end
+
+            if willFaint
+                # Check if the target has an endure-type protection that will prevent the KO
+                abilityEndures = !@battle.moldBreaker && target.fullHealth? &&
+                    (target.hasActiveAbilityAI?(:STURDY) || target.hasActiveAbilityAI?(:SURVIVALIST))
+                itemEndures = target.fullHealth? && target.hasActiveItemAI?(GameData::Item.getByFlag("Endure"))
+                clarityEndures = target.hasActiveItemAI?(:CLARITYSASH)
+                if abilityEndures || itemEndures || clarityEndures
+                    willFaint = false
+                    echoln("\t[MOVE SCORING] #{target.pbThis(true)} has endure protection; won't actually faint")
+                end
             end
 
             numHits = move.numberOfHits(user, [target], true).ceil
@@ -428,6 +446,14 @@ class PokeBattle_AI
     # Add to a move's score based on how much damage it will deal (as a percentage
     # of the target's current HP)
     #=============================================================================
+    def moveWillTriggerEmergencyExit?(target, damage)
+        return false unless target.aboveHalfHealth?
+        return false unless target.hp - damage <= target.totalhp / 2
+        return false unless target.hasActiveAbilityAI?(:EMERGENCYEXIT) || target.hasActiveAbilityAI?(:WIMPOUT)
+        return false unless @battle.pbCanSwitch?(target.index) && @battle.pbCanChooseNonActive?(target.index)
+        return true
+    end
+
     def pbGetMoveScoreDamage(move, user, target, numTargets = 1, aiContext = nil)
         realDamage,damagePercentage,subDestroyed = getDamageAnalysisAI(move, user, target, numTargets, aiContext)
 
@@ -437,6 +463,10 @@ class PokeBattle_AI
             realDamage = target.hp
             damageScore = 250
             willFaint = true
+        elsif moveWillTriggerEmergencyExit?(target, realDamage)
+            damageScore = 200 # A bit less valuable than a true faint
+            willFaint = true # Golisopod should treat getting outsped like a faint risk in this scenario, it won't get off an attack
+            echoln("\t[MOVE SCORING] #{target.pbThis(true)} has Emergency Exit/Wimp Out and will be forced out; treating as near-faint")
         else
             # Only care about KO thresholds
             if damagePercentage >= 50 || subDestroyed == true # Breaking a sub is as good as doing 50%

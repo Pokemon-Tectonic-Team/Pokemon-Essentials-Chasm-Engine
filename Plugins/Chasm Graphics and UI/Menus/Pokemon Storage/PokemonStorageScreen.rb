@@ -358,6 +358,13 @@ class PokemonStorageScreen
         @scene.pbRefresh
     end
 
+    def purgeNilSlotsFromMultiSelection
+        @multiSelectedSlots.reject! do |slot|
+            box, index = slot
+            (box == -1 ? @storage.party[index] : @storage.boxes[box][index]).nil?
+        end
+    end
+
     def toggleMultiSelection(slot)
         index = @multiSelectedSlots.index { |entry| entry[0] == slot[0] && entry[1] == slot[1] }
         if index
@@ -375,12 +382,14 @@ class PokemonStorageScreen
     end
 
     def massMoveMultiSelection(selection)
+        purgeNilSlotsFromMultiSelection
         boxNumber = selection[0]
         slotNumber = selection[1]
 
-        box = @storage.boxes[boxNumber]
+        box = @storage.boxes[boxNumber] unless boxNumber == -1
 
-        if box[slotNumber]
+        occupied = (boxNumber == -1) ? @storage.party[slotNumber] : box[slotNumber]
+        if occupied
             pbDisplay(_INTL("Cannot mass move into an occupied spot."))
             return
         end
@@ -403,7 +412,7 @@ class PokemonStorageScreen
         # Determine if there are enough open slots
         openSlots = 0
         if boxNumber == -1
-            for i in slotNumber...Settings::MAX_PARTY_SIZE
+            for i in 0...Settings::MAX_PARTY_SIZE
                 next unless @storage.party[i].nil?
                 openSlots += 1
             end
@@ -459,6 +468,7 @@ class PokemonStorageScreen
     end
     
     def takeItemsMultiSelection
+        purgeNilSlotsFromMultiSelection
         removedAnyItem = false
         @multiSelectedSlots.each do |nextSlot|
             selectedPokemonBox = nextSlot[0]
@@ -470,6 +480,7 @@ class PokemonStorageScreen
                 selectedPokemon = @storage.boxes[selectedPokemonBox][selectedPokemonSlot]
             end
 
+            next if selectedPokemon.nil?
             next if selectedPokemon.items.empty?
 
             pbTakeItemsFromPokemon(selectedPokemon)
@@ -512,6 +523,8 @@ class PokemonStorageScreen
 
         return 0 if allPokemonInValidBoxes.empty?
 
+        @multiSelectedSlots.clear
+
         # Sort the big pokemon list
         sortPokemonList(allPokemonInValidBoxes,sortingType)
 
@@ -536,6 +549,7 @@ class PokemonStorageScreen
         return false if @heldpkmn
         return false if box.isLocked?
         return false if box.empty?
+        @multiSelectedSlots.clear
         nitems = box.nitems - 1
         listOfPokemon = []
         for i in 0...PokemonBox::BOX_SIZE

@@ -87,7 +87,7 @@ def getPoisonEffectScore(user, target, ignoreCheck: false)
 			score += 60 if target.hasHealingMove?
             score += NON_ATTACKER_BONUS unless user&.hasDamagingAttack?
             if user
-                score *= 1.5 if user.hasActiveAbilityAI?(:AGGRAVATE)
+                score *= target.getFractionalDamageModifier(aiCheck: true)
                 score *= 2 if user.ownersPolicies.include?(:PRIORITIZEDOTS) && user.opposes?(target)
             end
         end
@@ -109,7 +109,7 @@ def getBurnEffectScore(user, target, ignoreCheck: false)
             score += 20 if target.hp >= target.totalhp / 2 || target.hp <= target.totalhp / 8
             score += NON_ATTACKER_BONUS unless user&.hasDamagingAttack?
             if user
-                score *= 1.5 if user.hasActiveAbilityAI?(:AGGRAVATE)
+                score *= target.getFractionalDamageModifier(aiCheck: true)
                 score *= 2 if user.ownersPolicies.include?(:PRIORITIZEDOTS) && user.opposes?(target)
             end
         end
@@ -137,7 +137,7 @@ def getFrostbiteEffectScore(user, target, ignoreCheck: false)
             score += 20 if target.hp >= target.totalhp / 2 || target.hp <= target.totalhp / 8
             score += NON_ATTACKER_BONUS unless user&.hasDamagingAttack?
             if user
-                score *= 1.5 if user.hasActiveAbilityAI?(:AGGRAVATE)
+                score *= target.getFractionalDamageModifier(aiCheck: true)
                 score *= 2 if user.ownersPolicies.include?(:PRIORITIZEDOTS) && user.opposes?(target)
             end
         end
@@ -183,7 +183,7 @@ def getLeechEffectScore(user, target, ignoreCheck: false)
             score += 20 if target.totalhp > user&.totalhp * 2
             score -= 30 if target.totalhp < user&.totalhp / 2
 			score += 50 if target.hasHealingMove?
-            score *= 2 if user&.hasActiveAbilityAI?(:AGGRAVATE)
+            score *= target.getFractionalDamageModifier(aiCheck: true)
             score *= 1.5 if user&.hasActiveAbilityAI?(:ROOTED)
             score *= 1.3 if user&.hasActiveItemAI?(:BIGROOT)
             score *= 2 if user&.ownersPolicies.include?(:PRIORITIZEDOTS) && user&.opposes?(target)
@@ -755,7 +755,7 @@ def getCurseEffectScore(user, target)
     else
         score += statStepsValueScore(target)
 	end
-    score *= 1.5 if user.hasActiveAbilityAI?(:AGGRAVATE)
+    score *= target.getFractionalDamageModifier(aiCheck: true)
     return score
 end
 
@@ -833,34 +833,31 @@ def predictedEOTDamage(battle,battler)
     damage += battle.damageFromDOTStatus(battler, :BURN, aiCheck: true) if battler.burned?
     damage += battle.damageFromDOTStatus(battler, :FROSTBITE, aiCheck: true) if battler.frostbitten?
 
-    # Check for aggravate
-    aggravate = battle.pbCheckOpposingAbility(:AGGRAVATE, battler.index)
-
     # Curse
-    damage += battler.getFractionalDamageAmount(CURSE_DAMAGE_FRACTION, aggravate: aggravate) if battler.effectActive?(:Curse)
-    damage += battler.getFractionalDamageAmount(PHARAOHS_CURSE_DAMAGE_FRACTION, aggravate: aggravate) if battler.effectActive?(:PharaohsCurse)
+    damage += battler.getFractionalDamageAmount(CURSE_DAMAGE_FRACTION, aiCheck: true) if battler.effectActive?(:Curse)
+    damage += battler.getFractionalDamageAmount(PHARAOHS_CURSE_DAMAGE_FRACTION, aiCheck: true) if battler.effectActive?(:PharaohsCurse)
 
     # Trapping DOT
-    damage += battler.getFractionalDamageAmount(trappingDamageFraction(battler), aggravate: aggravate) if battler.effectActive?(:Trapping)
+    damage += battler.getFractionalDamageAmount(trappingDamageFraction(battler), aiCheck: true) if battler.effectActive?(:Trapping)
 
     # Bad Dreams
     if battler.asleep? && battle.pbCheckOpposingAbility(:BADDREAMS, battler.index)
-        damage += battler.getFractionalDamageAmount(BAD_DREAMS_DAMAGE_FRACTION, aggravate: aggravate)
+        damage += battler.getFractionalDamageAmount(BAD_DREAMS_DAMAGE_FRACTION, aiCheck: true)
     end
     
     # Pain Presence
-    damage += battler.getFractionalDamageAmount(NOXIOUS_DAMAGE_FRACTION, aggravate: aggravate) if battle.pbCheckOtherAbility(:NOXIOUS, battler.index)
+    damage += battler.getFractionalDamageAmount(NOXIOUS_DAMAGE_FRACTION, aiCheck: true) if battle.pbCheckOtherAbility(:NOXIOUS, battler.index)
 
     # Extreme Energy, Extreme Power, Solar Power, Night Stalker
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:EXTREMEVOLTAGE)
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:EXTREMEPOWER)
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:SOLARPOWER) && battle.sunny?
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:NIGHTSTALKER) && battle.moonGlowing?
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:BURDENED)
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:LIVEFAST)
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:EXTREMEVOLTAGE)
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:EXTREMEPOWER)
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:SOLARPOWER) && battle.sunny?
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:NIGHTSTALKER) && battle.moonGlowing?
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:BURDENED)
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:LIVEFAST)
 
     # Sticky Barb
-    damage += battler.getFractionalDamageAmount(STICKY_BARB_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveItemAI?(:STICKYBARB)
+    damage += battler.getFractionalDamageAmount(STICKY_BARB_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveItemAI?(:STICKYBARB)
 
     # Black Sludge
     if battler.hasActiveItemAI?(:BLACKSLUDGE) && !battler.pbHasType?(:POISON)

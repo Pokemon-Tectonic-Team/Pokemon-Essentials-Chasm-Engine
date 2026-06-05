@@ -284,7 +284,7 @@ Description = Bounces back stat-lowering effects.
 #-------------------------------
 [MOTORDRIVE]
 Name = Motor Drive
-Description = Grants immunity to Electric-type moves and boosts Speed when hit by one.
+Description = Immune to Electric-type moves and boosts Speed when hit by one.
 #-------------------------------
 [MOXIE]
 Name = Moxie
@@ -414,7 +414,7 @@ Flags = SandstormSynergy
 #-------------------------------
 [SAPSIPPER]
 Name = Sap Sipper
-Description = Immune to Grass-type moves, and raises Attack and Sp. Atk when hit by one.
+Description = Immune to Grass-type moves and raises Attack and Sp. Atk when hit by one.
 #-------------------------------
 [SCHOOLING]
 Name = Schooling
@@ -544,10 +544,6 @@ Description = Takes half damage from Fire- and Ice-type moves.
 Name = Tinted Lens
 Description = Doubles the damage of "not very effective" moves.
 #-------------------------------
-[TOUGHCLAWS]
-Name = Tough Claws
-Description = Increases Attack by 30%.
-#-------------------------------
 [TRANSISTOR]
 Name = Transistor
 Description = Powers up Electric-type moves by 50%.
@@ -598,7 +594,7 @@ Description = Immune to Water-type moves and restores 25% of max HP when hit by 
 #-------------------------------
 [WATERBUBBLE]
 Name = Water Bubble
-Description = Weakens incoming Fire-type moves, and doubles Water-type damage.
+Description = Takes half from incoming Fire-type moves and doubles this Pokémon's Water-type move damage.
 #-------------------------------
 [WEAKARMOR]
 Name = Weak Armor

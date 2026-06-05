@@ -284,6 +284,16 @@ class PokeBattle_Move_TwoTurnAttackInvulnerableScalesFaster < PokeBattle_Move_Tw
     def pbChargingTurnMessage(user, _targets)
         @battle.pbDisplay(_INTL("{1} flew up high!", user.pbThis))
     end
+
+    def getDetailsForMoveDex(detailsList = [])
+        detailsList << _INTL("Does more damage the faster the user is compared to the target. Range 60-200")
+        detailsList << _INTL("<u>30% slower than target:</u> 60 BP")
+        detailsList << _INTL("<u>Same Speed as target:</u> 80 BP")
+        detailsList << _INTL("<u>1.5x faster than target:</u> 105 BP")
+        detailsList << _INTL("<u>2x faster than target:</u> 130 BP")
+        detailsList << _INTL("<u>3x faster than target:</u> 180 BP")
+        detailsList << _INTL("<u>3.4x faster than target:</u> 200 BP")
+    end
 end
 
 #===============================================================================
@@ -324,6 +334,22 @@ class PokeBattle_Move_TwoTurnAttackInvulnerableUnderground < PokeBattle_Move_Two
     def getEffectScore(user, _target)
         return 50 if canBecomeReaper?(user)
         return 0
+    end
+end
+
+#===============================================================================
+# Two turn attack. Skips first turn, attacks three times second turn. (Rotary Headbutt)
+# (Handled in Battler's pbSuccessCheckPerHit): Is semi-invulnerable during use.
+#===============================================================================
+class PokeBattle_Move_TwoTurnAttackInvulnerableUndergroundHitThreeTimes < PokeBattle_Move_TwoTurnAttackInvulnerable
+    def multiHitMove?; return @damagingTurn; end
+    def pbNumHits(_user, _targets, _checkingForAI = false)
+        return 1 if @chargingTurn && !@damagingTurn
+        return 3
+    end
+
+    def pbChargingTurnMessage(user, _targets)
+        @battle.pbDisplay(_INTL("{1} burrowed its way under the ground!", user.pbThis))
     end
 end
 

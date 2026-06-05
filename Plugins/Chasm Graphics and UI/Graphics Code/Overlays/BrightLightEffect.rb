@@ -182,60 +182,158 @@ class LightEffect_Crystal < LightEffect
   end
 end
 
+class LightEffect_GoldenGlow < LightEffect
+  def initialize(event,viewport=nil,map=nil)
+    @light = IconSprite.new(0,0,viewport)
+    @light.setBitmap("Graphics/Pictures/Light Effects/totem_light")
+    @light.z = 1000
+    @event = event
+    @map = (map) ? map : $game_map
+    @disposed = false
+    @opacityCounter = 0
+    @opacityWavelength = 8.0
+    @goldenglowDeactivated = false
+  end
+
+  def update
+    return if !@light || !@event || @goldenglowDeactivated
+    super
+
+    if pbGetSelfSwitch(@event.id,'D')
+      echoln("Turning this goldenglow off since the #{@event.name}'s D switch is on")
+      @light.opacity = 0
+      @goldenglowDeactivated = true
+      return
+    end
+
+    @opacityCounter += 1
+    @light.opacity = (80 + 40 * Math.sin(@opacityCounter.to_f / @opacityWavelength)).floor
+    @light.ox      = (@light.bitmap.width * 2) / 4
+    @light.oy      = (@light.bitmap.height * 3) / 4
+    if (Object.const_defined?(:ScreenPosHelper) rescue false)
+      @light.x      = ScreenPosHelper.pbScreenX(@event)
+      @light.y      = ScreenPosHelper.pbScreenY(@event)
+      @light.zoom_x = ScreenPosHelper.pbScreenZoomX(@event)
+    else
+      @light.x      = @event.screen_x
+      @light.y      = @event.screen_y
+      @light.zoom_x = 1.0
+    end
+    @light.zoom_y = @light.zoom_x
+    @light.tone   = $game_screen.tone
+  end
+end
+
 class LightEffect_Totem < LightEffect
     def initialize(event,viewport=nil,map=nil)
       @light = IconSprite.new(0,0,viewport)
       @light.setBitmap("Graphics/Pictures/Light Effects/totem_light")
-      @light.z = 1000
+      @light.ox      = (@light.bitmap.width * 2) / 4
+      @light.oy      = (@light.bitmap.height * 3) / 4
+
+      @activationFrameCount = 32
+      @activationSprite = AnimatedSprite.new(["Graphics/Pictures/Waypoints/waypoint_activation", @activationFrameCount, 1])
+      @activationSprite.viewport = viewport
+      pbSEPlay("Totem activation", 0) # silent preplay to cache it
+
       @event = event
       @map = (map) ? map : $game_map
       @disposed = false
       @opacityCounter = 0
       @opacityWavelength = 8.0
       @summonTotem = false
-      @goldenglowDeactivated = false
+
+      # 0 basic glowing
+      # 1 activation animation
+      # 2 golden glow fading away
+      @animationMode = 0
+    end
+    
+    def switchAnimationMode(mode)
+      @animationMode = mode
+      @opacityCounter = 0 if mode == 0
+      @animationComplete = false
+      @activationSprite.play if mode == 1
     end
 
     def update
-      return if !@light || !@event || @goldenglowDeactivated
+      return unless @event
       super
 
-      shouldBeBlue = pbGetSelfSwitch(@event.id,'A') || @event.name.include?("blue")
+      if @light
+        shouldBeBlue = pbGetSelfSwitch(@event.id,'A') || @event.name.include?("blue")
+        if !@summonTotem && shouldBeBlue
+          echoln("Setting this totem light to the summon version since the #{@event.name}'s A switch is on")
+          @light.setBitmap("Graphics/Pictures/Light Effects/totem_light_blue")
+          @summonTotem = true
+          @opacityCounter = 0
+          @opacifyWavelength = 4.0
+        elsif @summonTotem && !shouldBeBlue
+          echoln("Setting this totem light to the non-summon version since the #{@event.name}'s A switch is off")
+          @light.setBitmap("Graphics/Pictures/Light Effects/totem_light")
+          @summonTotem = false
+          @opacityCounter = 0
+          @opacifyWavelength = 8.0
+        end
 
-      if !@summonTotem && shouldBeBlue
-        echoln("Setting this totem light to the summon version since the #{@event.name}'s A switch is on")
-        @light.setBitmap("Graphics/Pictures/Light Effects/totem_light_blue")
-        @summonTotem = true
-        @opacityCounter = 0
-        @opacifyWavelength = 4.0
-      elsif @summonTotem && !shouldBeBlue
-        echoln("Setting this totem light to the non-summon version since the #{@event.name}'s A switch is off")
-        @light.setBitmap("Graphics/Pictures/Light Effects/totem_light")
-        @summonTotem = false
-        @opacityCounter = 0
-        @opacifyWavelength = 8.0
-      elsif pbGetSelfSwitch(@event.id,'D')
-        echoln("Turning this goldenglow off since the #{@event.name}'s D switch is on")
-        @light.opacity = 0
-        @goldenglowDeactivated = true
-        return
+        genericUpdate(@light)
+        @light.z      = @event.screen_z
+      end
+      
+      if @activationSprite
+        @activationSprite.visible = @animationMode == 1
+        genericUpdate(@activationSprite, -48, -64)
+
+        @activationSprite.z = @event.screen_z
       end
 
+      unless @animationComplete
+        case @animationMode
+        when 0
+          passiveGlowAnimation
+        when 1
+          activationAnimation
+        when 2
+          glowFadingAnimation
+        end
+      end
+    end
+
+    def genericUpdate(sprite,xOffset = 0,yOffset = 0)
+      if (Object.const_defined?(:ScreenPosHelper) rescue false)
+        sprite.x      = ScreenPosHelper.pbScreenX(@event) + xOffset
+        sprite.y      = ScreenPosHelper.pbScreenY(@event) + yOffset
+        sprite.zoom_x = ScreenPosHelper.pbScreenZoomX(@event)
+      else
+        sprite.x      = @event.screen_x + xOffset
+        sprite.y      = @event.screen_y + yOffset
+        sprite.zoom_x = 1.0
+      end
+      sprite.zoom_y = sprite.zoom_x
+      sprite.tone   = $game_screen.tone
+    end
+
+    def animationComplete?
+      return @animationComplete
+    end
+
+    def passiveGlowAnimation
       @opacityCounter += 1
       @light.opacity = (80 + 40 * Math.sin(@opacityCounter.to_f / @opacityWavelength)).floor
-      @light.ox      = (@light.bitmap.width * 2) / 4
-      @light.oy      = (@light.bitmap.height * 3) / 4
-      if (Object.const_defined?(:ScreenPosHelper) rescue false)
-        @light.x      = ScreenPosHelper.pbScreenX(@event)
-        @light.y      = ScreenPosHelper.pbScreenY(@event)
-        @light.zoom_x = ScreenPosHelper.pbScreenZoomX(@event)
-      else
-        @light.x      = @event.screen_x
-        @light.y      = @event.screen_y
-        @light.zoom_x = 1.0
+    end
+
+    def activationAnimation
+      @activationSprite.update
+      if @activationSprite.frame >= @activationFrameCount - 1
+        @animationComplete = true
+        @activationSprite.stop
+        @activationSprite.frame = 0
       end
-      @light.zoom_y = @light.zoom_x
-      @light.tone   = $game_screen.tone
+    end
+
+    def glowFadingAnimation
+      @light.opacity -= 3
+      @animationComplete = true if @light.opacity <= 0
     end
 end
 
@@ -393,8 +491,10 @@ Events.onSpritesetCreate += proc { |_sender,e|
     elsif event.name[/^light\((\w+)\)$/i]
       filename = $~[1].to_s
       spriteset.addUserSprite(LightEffect_Basic.new(event,viewport,map,filename))
-    elsif event.name[/AvatarTotem/i] || event.name.include?("goldenglow")
-      spriteset.addUserSprite(LightEffect_Totem.new(event,viewport,map))
+    elsif event.name[/AvatarTotem/i]
+      spriteset.addUserSprite(LightEffect_Totem.new(event,viewport,map),event.id)
+    elsif event.name.include?("goldenglow")
+      spriteset.addUserSprite(LightEffect_GoldenGlow.new(event,viewport,map))
     elsif event.name.include?("crystalglow")
       spriteset.addUserSprite(LightEffect_Crystal.new(event,viewport,map))
     elsif event.name[/^condensedlight$/i] || event.name.include?("condensedlight")

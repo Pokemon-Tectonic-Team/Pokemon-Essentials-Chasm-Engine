@@ -501,6 +501,15 @@ BattleHandlers::AbilityOnSwitchIn.add(:HARSHTRUTHS,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:AGGRAVATE,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} intensifies fractional damage!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
 ##########################################
 # Screen setting abilities
 ##########################################
@@ -565,16 +574,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:ODDITY,
       battle.pbShowAbilitySplash(battler, ability) unless aiCheck
       battle.pbAnimation(:MAGICROOM, battler, nil, 0) unless aiCheck
       score = battle.pbStartRoom(:OddRoom, battler, ability, aiCheck)
-      battle.pbHideAbilitySplash(battler) unless aiCheck
-      next score
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:SUBSPACESCHISM,
-  proc { |ability, battler, battle, aiCheck|
-      battle.pbShowAbilitySplash(battler, ability) unless aiCheck
-      battle.pbAnimation(:TRICKROOM, battler, nil, 0) unless aiCheck
-      score = battle.pbStartRoom(:TrickRoom, battler, ability, aiCheck)
       battle.pbHideAbilitySplash(battler) unless aiCheck
       next score
   }
@@ -1235,6 +1234,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:IMPOSTER,
       next 0 if choice.substituted?
       next 0 if choice.effectActive?(:SkyDrop)
       next 0 if choice.semiInvulnerable?
+      next 0 if GameData::Ability.getByFlag("UnableByDefault").include?(choice.pokemon.ability_id)
       next 40 if aiCheck
       battle.pbShowAbilitySplash(battler, ability, true)
       battle.pbHideAbilitySplash(battler)

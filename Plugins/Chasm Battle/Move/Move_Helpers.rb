@@ -84,17 +84,8 @@ class PokeBattle_Move
         victim.eachItemWithName do |item, itemName|
             next if victim.unlosableItem?(item)
             next unless validItemProc.nil? || validItemProc.call(item)
-            useSharedSpoils = remover.hasActiveAbility?(:SHAREDSPOILS) &&
-                              remover.opposes?(victim) &&
-                              sharedspoilsAnyoneCanReceive?(remover, item)
             victim.removeItem(item)
-            if useSharedSpoils
-                battle.pbDisplay(_INTL("{1} forced {2} to drop their {3}!", remover.pbThis,
-                    victim.pbThis(true), itemName))
-                battle.pbShowAbilitySplash(remover, :SHAREDSPOILS)
-                sharedspoilsChoosePartyMember(remover, item, itemName)
-                battle.pbHideAbilitySplash(remover)
-            elsif block_given?
+            if block_given?
                 yield item, itemName
             else
                 removeMessage = _INTL("{1} forced {2} to drop their {3}!", remover.pbThis,
@@ -119,22 +110,10 @@ class PokeBattle_Move
             return false
         end
         oldVictimItemName = getItemName(item)
-        useSharedSpoils = !@battle.stolenItemTurnsToDust?(item) &&
-                          stealer.hasActiveAbility?(:SHAREDSPOILS) &&
-                          stealer.opposes?(victim) &&
-                          sharedspoilsAnyoneCanReceive?(stealer, item)
         victim.removeItem(item)
         if @battle.stolenItemTurnsToDust?(item)
             @battle.pbDisplay(_INTL("{1}'s {2} turned to dust.", victim.pbThis, oldVictimItemName))
             @battle.pbHideAbilitySplash(stealer) if ability
-        elsif useSharedSpoils
-            @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!", stealer.pbThis,
-              victim.pbThis(true), oldVictimItemName))
-            @battle.pbHideAbilitySplash(stealer) if ability
-            @battle.pbShowAbilitySplash(stealer, :SHAREDSPOILS)
-            victim.setInitialItems(nil) if victim.shouldStoreStolenItem?(item)
-            sharedspoilsChoosePartyMember(stealer, item, oldVictimItemName)
-            @battle.pbHideAbilitySplash(stealer)
         else
             @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!", stealer.pbThis,
               victim.pbThis(true), oldVictimItemName))

@@ -226,6 +226,11 @@ class PokeBattle_Move_LowerTargetSpAtk3 < PokeBattle_TargetStatDownMove
     end
 end
 
+# Empowered Moonblast
+class PokeBattle_Move_EmpoweredMoonblast < PokeBattle_Move_LowerTargetSpAtk3
+    include EmpoweredMove
+end
+
 #===============================================================================
 # Decreases the target's Special Attack by 4 steps. (Eerie Impulse)
 #===============================================================================

@@ -652,7 +652,7 @@ class PokeBattle_Battler
             @lastMoveUsed     = move.id
             @lastMoveUsedType = move.calcType # For Conversion 2
             @lastMoveUsedCategory = move.calculatedCategory
-            
+            @movesUsedThisTurn.push(move.id)
             @usedDamagingMove = true if move.damagingMove?
             unless specialUsage
                 @lastRegularMoveUsed = move.id # For Disable, Encore, Instruct, Mimic, Mirror Move, Sketch, Spite

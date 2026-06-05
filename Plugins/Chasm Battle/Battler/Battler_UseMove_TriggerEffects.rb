@@ -196,6 +196,15 @@ user.pbThis(true)))
                 user.position.disableEffect(:Kickback)
             end
         end
+        # Hit and Run
+        if user.effectActive?(:HitAndRunSwitch) && !switchedBattlers.include?(user.index)
+            if @battle.triggeredSwitchOut(user.index, ability: :HITANDRUN)
+                user.pbEffectsOnSwitchIn(true)
+                switchedBattlers.push(user.index)
+            else
+                user.disableEffect(:HitAndRunSwitch)
+            end
+        end
         # Some move effects that need to happen here, i.e. U-turn/Volt Switch
         # switching, Baton Pass switching, Parting Shot switching, Relic Song's form
         # changing, Fling/Natural Gift consuming item.

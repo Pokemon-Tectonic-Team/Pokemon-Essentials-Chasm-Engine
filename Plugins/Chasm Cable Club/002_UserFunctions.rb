@@ -8,7 +8,7 @@ end
 def pbChangeOnlineTrainerType
   old_trainer_type = GameData::TrainerType.get($Trainer.online_trainer_type)
   if $Trainer.online_trainer_type!=$Trainer.trainer_type
-    trainername=old_trainer_type.real_name
+    trainername=old_trainer_type.cable_club_display_name
     pbMessage(_INTL("Your current online Trainer Class is {1}.",trainername))
   end
   pbMessage(_INTL("What Trainer Class do you want to present to your opponents?"))
@@ -17,7 +17,7 @@ def pbChangeOnlineTrainerType
     new_trainer_type_selection = pbListScreen(_INTL("Choose a class"), CCTrainerTypeLister.new(index)) || old_trainer_type
     new_trainer_type = GameData::TrainerType.get(new_trainer_type_selection)
     new_trainer_type_id = new_trainer_type.id
-    trainername=new_trainer_type.real_name
+    trainername=new_trainer_type.cable_club_display_name
     if ['a','e','i','o','u'].include?(trainername[0,1].downcase)
       msg=_INTL("An {1} is the kind of Trainer you want to be?",trainername)
       if pbConfirmMessage(msg)

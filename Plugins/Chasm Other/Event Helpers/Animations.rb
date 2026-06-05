@@ -15,6 +15,8 @@ def showNormal(eventID = 0)
 	showAnimation(FollowerSettings::Emo_Normal,eventID)
 end
 
+alias showThinking showNormal
+
 def showSad(eventID = 0)
 	showAnimation(FollowerSettings::Emo_Sad,eventID)
 end
@@ -39,7 +41,7 @@ def showPokeballEnter(eventID = 0)
 	showAnimation(FollowerSettings::Animation_Come_In,eventID)
 end
 
-def showPokeballExit(eventID = 0, animationID)
+def showPokeballExit(eventID = 0)
 	showAnimation(FollowerSettings::Animation_Come_Out,eventID)
 end
 

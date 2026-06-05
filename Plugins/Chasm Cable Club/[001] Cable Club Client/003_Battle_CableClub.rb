@@ -337,8 +337,12 @@ end
 class PokeBattle_CableClub_AI < PokeBattle_AI
   def pbDefaultChooseEnemyCommand(index)
     echoln("Cable Club: Start AI check")
-    # Hurray for default methods. have to reverse it to show the expected order.
-    our_indices = @battle.pbGetOpposingIndicesInOrder(1).reverse
+    # Sort ascending so both clients assign choices to matching battlers.
+    # In 2v1 (after avatar summoning), pbGetOpposingIndicesInOrder returns [0,2]
+    # and reversing it gives [2,0], but the receiver expects ascending order [0,2].
+    # Sorting is equivalent to .reverse for 2v2 ([2,0]→[0,2]) while also being
+    # correct for 2v1 ([0,2]→[0,2]).
+    our_indices = @battle.pbGetOpposingIndicesInOrder(1).sort
     their_indices = @battle.pbGetOpposingIndicesInOrder(0).reverse
     # Sends our choices after they have all been locked in.
     if index == their_indices.last

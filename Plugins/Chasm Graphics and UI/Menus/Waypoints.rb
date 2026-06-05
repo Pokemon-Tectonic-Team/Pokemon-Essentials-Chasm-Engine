@@ -12,6 +12,7 @@ class WaypointsTracker
 	def initialize()
 		@activeWayPoints = {}
 		@legendsMaterialized = []
+		resetMapPositionHash
 	end
 
 	def overwriteWaypoint(waypointName,event,newName=nil)
@@ -23,18 +24,26 @@ class WaypointsTracker
 
 	def setWaypoint(waypointName,mapID,wayPointInfo)
 		@activeWayPoints[waypointName] = [mapID,wayPointInfo]
+		resetMapPositionHash
 	end
 
 	def deleteWaypoint(waypointName)
 		@activeWayPoints.delete(waypointName)
+		resetMapPositionHash
 	end
 
 	def deleteAllWaypoints
 		@activeWayPoints = {}
+		resetMapPositionHash
+	end
+
+	def resetMapPositionHash
+		@positionHash = nil
 	end
 
 	def mapPositionHash
-		return generateMapPositionHash
+		generateMapPositionHash if @positionHash.nil?
+		return @positionHash
 	end
 
 	def generateMapPositionHash
@@ -43,10 +52,67 @@ class WaypointsTracker
 		activeWayPoints.each do |waypointName,waypointInfo|
 			mapID = waypointInfo[0]
 			next unless mapInfos[mapID] # Skip map if it somehow doesn't exist anymore
-			displayedPosition = getDisplayedPositionOfGameMap(mapID)
+			eventID = waypointInfo[1]
+			mapInfo = mapInfos[mapID]
+			event = getEventByID(eventID,mapID)
+			next if event.nil?
+			eventX = event.x
+			eventY = event.y
+			
+			# Get the most relevant map metadata
+			recursiveMapID = mapID
+			displayedPosition = nil
+			while recursiveMapID >= 1 && displayedPosition.nil?
+				map_metadata = GameData::MapMetadata.try_get(recursiveMapID)
+				if map_metadata.nil? || map_metadata.town_map_position.nil?
+					recursiveMapID = mapInfos[recursiveMapID].parent_id
+				else
+				  	displayedPosition = map_metadata.town_map_position.clone
+				end
+			end
+
+			if displayedPosition.nil?
+				echoln("ERROR: Cannot figure out where to place waypoint #{waypointName} on map.")
+				next
+			end
+
+			mapX    = displayedPosition[1]
+			mapY    = displayedPosition[2]
+
+			# Shift display position based on event position on map
+            unless map_metadata.nil?
+                mapsize = map_metadata.town_map_size
+                if !mapsize.nil? && mapsize[0] && mapsize[0] > 0
+                    sqwidth  = mapsize[0]
+                    sqheight = (mapsize[1].length * 1.0 / mapsize[0]).ceil
+
+					mapWidth, mapHeight = MapFactoryHelper.getMapDims(mapID)
+
+                    mapX += (eventX * sqwidth / mapWidth).floor if sqwidth > 1
+                    mapY += (eventY * sqheight / mapHeight).floor if sqheight > 1
+                end
+            end
+
+			displayedPosition[1] = mapX
+			displayedPosition[2] = mapY
+
 			mapPositionHash[waypointName] = displayedPosition 
 		end
-		return mapPositionHash
+
+		dupes = mapPositionHash.keys.group_by do |waypointName|
+			mapPositionHash[waypointName]
+		end.select do |k, v|
+			v.length > 1
+		end.map(&:last)
+
+		dupes.each do |dupeGroup|
+			echoln("Multiple waypoints are rendering on the same map tile!")
+			dupeGroup.each do |dupe|
+				echoln(dupe)
+			end
+		end
+
+		@positionHash = mapPositionHash
 	end
 	
 	def getWaypointAtMapPosition(x,y)
@@ -64,6 +130,7 @@ class WaypointsTracker
 		else
 			@activeWayPoints[waypointName] = [event.map_id,event.id]
 		end
+		resetMapPositionHash
 	end
 
 	def summonPokemonFromWaypoint(avatarSpecies,waypointEvent)
@@ -94,6 +161,39 @@ class WaypointsTracker
 		
 		unless @activeWayPoints.has_key?(waypointName)
 			pbMessage(waypointRegisterMessage)
+
+			totemGlowSprite = $scene.spriteset.getAnimationForEvent(waypointEvent.id)
+
+			totemGlowSprite.switchAnimationMode(2)
+
+			# Pause for fading
+			loop do
+				Graphics.update
+				Input.update
+				pbUpdateSceneMap
+				break if totemGlowSprite.animationComplete?
+			end
+
+			totemGlowSprite.switchAnimationMode(1)
+
+			# Pause for cool animation
+			framesWaited = 0
+			loop do
+				Graphics.update
+				Input.update
+				# Intentionally duplicated
+				Graphics.update
+				Input.update
+				pbUpdateSceneMap
+				pbSEPlay("Totem activation") if framesWaited == 2
+				framesWaited += 1
+				break if totemGlowSprite.animationComplete?
+			end
+
+			totemGlowSprite.switchAnimationMode(0)
+
+			pbWait(10)
+			
 			addWaypoint(waypointName,waypointEvent)
 
             checkForWaypointsAchievement
@@ -166,16 +266,21 @@ class WaypointsTracker
 		end
 	end
 
-    def checkForWaypointsAchievement
+    def checkForWaypointsAchievement(listMissing = false)
         unlockedAll = true
         $waypoints_tracker.eachWaypoint do |event, mapID, waypointName|
             next if @activeWayPoints.has_key?(waypointName)
             unlockedAll = false
-            break
+            break unless listMissing
+			echoln("Missing waypoint: #{waypointName}, #{event.name} (#{event.id}), #{mapID}")
         end
         return unless unlockedAll
         unlockAchievement(:UNLOCK_ALL_WAYPOINTS)
     end
+
+	def isWaypointUnlocked?(waypointName)
+		return @activeWayPoints.has_key?(waypointName)
+	end
 
     def eachWaypoint
         mapData = Compiler::MapData.new
@@ -260,6 +365,10 @@ def setWaypointSummonable(waypointEventID)
 	pbSetSelfSwitch(waypointEventID,'A',true)
 end
 
+def isWaypointUnlocked?(waypointName)
+	return $waypoints_tracker.isWaypointUnlocked?(waypointName)
+end
+
 def totemAuraSummon(species)
 	unless pbHasItem?(LEGEND_SUMMONING_KEY_ITEM) || pbHasItem?(LEGEND_SUMMONING_CONSUMABLE_ITEM)
 		pbMessage(_INTL("You sense an powerful presence trying to manifest on this spot."))
@@ -304,7 +413,7 @@ def waypointAccessMessageAlternative
 end
 
 def waypointRegisterMessage
-    return _INTL("\\i[SPANNINGBAND]The Spanning Bands glow in sync with the totem. You sense that some sort of connection has been created.")
+    return _INTL("\\i[SPANNINGBAND]The Spanning Bands glow in sync with the totem.")
 end
 
 def waypointUnableMessage

@@ -71,7 +71,7 @@ class PokeBattle_Move_CannotMakeTargetFaint < PokeBattle_Move
 end
 
 #===============================================================================
-# Swaps form if the user is Meloetta. (Relic Song)
+# Swaps form if the user is Meloetta.
 #===============================================================================
 class PokeBattle_Move_ChangeUserMeloettaForm < PokeBattle_Move
     def pbEndOfMoveUsageEffect(user, _targets, numHits, _switchedBattlers)
@@ -121,7 +121,7 @@ class PokeBattle_Move_ChangeUserMewtwoChoiceOfForm < PokeBattle_Move
             form1Name = GameData::Species.get_species_form(:MEWTWO,1).form_name
             form2Name = GameData::Species.get_species_form(:MEWTWO,2).form_name
             formNames = [form1Name,form2Name]
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which form should {1} take?", user.pbThis(true)),formNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)),formNames)
             @chosenForm = chosenIndex + 1
             return @chosenForm
         end
@@ -406,7 +406,7 @@ class PokeBattle_Move_ChangeUserDeoxusChoiceOfForm < PokeBattle_Move
             form2Name = GameData::Species.get_species_form(:DEOXYS,2).form_name
             form3Name = GameData::Species.get_species_form(:DEOXYS,3).form_name
             formNames = [form1Name,form2Name,form3Name]
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which form should {1} take?", user.pbThis(true)),formNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)),formNames)
             @chosenForm = chosenIndex + 1
             return @chosenForm
         end
@@ -697,7 +697,7 @@ class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
         elsif !user.pbOwnedByPlayer? # Trainer AI
             @chosenMove = @validMoves[0]
         else
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
             @chosenMove = @validMoves[chosenIndex]
         end
     end
@@ -744,7 +744,7 @@ class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
         elsif !replayed_choice.nil?
             @chosenMove = replayed_choice
         else
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
             @chosenMove = @validMoves[chosenIndex]
             return @chosenMove
         end

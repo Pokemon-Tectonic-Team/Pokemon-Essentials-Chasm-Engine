@@ -40,7 +40,7 @@ BattleHandlers::EORGainItemAbility.add(:GOURMAND,
 BattleHandlers::EORGainItemAbility.add(:STRATAGEM,
     proc { |ability, battler, battle|
         itemsCanAdd = []
-        attackingMoves = battler.moves.select { |m| m.category != :Status }
+        attackingMoves = battler.moves.select { |m| m.damagingMove? }
         GameData::Item.getByFlag("TypeGem").each do |gem|
             next unless GameData::Item.get(gem).legal?
             next unless battler.canAddItem?(gem)

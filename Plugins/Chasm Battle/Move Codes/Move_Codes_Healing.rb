@@ -236,7 +236,7 @@ end
 
 #===============================================================================
 # Ingrains the user. Ingrained Pokémon gain 1/16 of max HP at the end of each
-# round, and cannot flee or switch out. (Ingrain)
+# round, and cannot flee or switch out.
 #===============================================================================
 class PokeBattle_Move_StartHealUserEachTurnTrapUser < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)

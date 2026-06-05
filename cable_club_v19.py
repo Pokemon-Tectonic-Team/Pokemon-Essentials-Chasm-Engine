@@ -22,8 +22,8 @@ RULES_DIR = "./OnlinePresets"
 RULES_REFRESH_RATE = 60
 
 GAME_VERSION = Version("0.0.1")
-POKEMON_MAX_NAME_SIZE = 10
-PLAYER_MAX_NAME_SIZE = 10
+POKEMON_MAX_NAME_SIZE = 13
+PLAYER_MAX_NAME_SIZE = 15
 MAXIMUM_LEVEL = 70
 IV_STAT_LIMIT = 31
 EV_LIMIT = 50
@@ -151,7 +151,7 @@ class Server:
             st_ = self.clients[s_]
             logging.info("%s: connected to %s", st, st_)
 
-    def disconnect(self, s, reason="unknown error"):
+    def disconnect(self, s, reason="unknown error", details=None):
         try:
             st = self.clients.pop(s)
         except:
@@ -161,6 +161,9 @@ class Server:
                 writer = RecordWriter()
                 writer.str("disconnect")
                 writer.str(reason)
+                if details:
+                    for detail in details:
+                        writer.str(detail)
                 writer.send_now(s)
                 s.close()
             except Exception:
@@ -194,21 +197,26 @@ class Server:
                     hex(id),
                     peer_id,
                 )
-                if not self.valid_party(record):
-                    self.disconnect(s, "invalid party")
+                party_errors = self.valid_party(record)
+                if party_errors:
+                    self.disconnect(s, "invalid party", party_errors)
                 else:
                     st.state = Finding(
                         peer_id, name, id, ttype, party, win_text, lose_text
                     )
                     # Is the peer already waiting?
-                    for s_, st_ in self.clients.items():
-                        if (
-                            st is not st_
-                            and isinstance(st_.state, Finding)
-                            and public_id(st_.state.id) == peer_id
-                            and st_.state.peer_id == public_id(id)
-                        ):
-                            self.connect(s, s_)
+                    candidates = [
+                        s_
+                        for s_, st_ in self.clients.items()
+                        if st is not st_
+                        and isinstance(st_.state, Finding)
+                        and public_id(st_.state.id) == peer_id
+                        and st_.state.peer_id == public_id(id)
+                    ]
+                    if candidates:
+                        self.connect(s, candidates[0])
+                        for s_ in candidates[1:]:
+                            self.disconnect(s_, "peer already connected")
 
     # Finding, simply ignore messages until the peer connects.
     def handle_finding(self, s, st, message):
@@ -414,39 +422,39 @@ def make_party_validator(pbs_dir):
                     species_ = pokemon_by_name.get(species)
                     if species_ is None:
                         logging.debug("invalid species: %s", species)
-                        errors.append("invalid species")
+                        errors.append(f"Invalid species: {species}")
                     logging.debug("Species: %s", species)
                     level = record.int()
                     if not (1 <= level <= MAXIMUM_LEVEL):
                         logging.debug("invalid level: %d", level)
-                        errors.append("invalid level")
+                        errors.append(f"{species} | Invalid level: {level}")
                     personal_id = record.int()
                     owner_id = record.int()
                     if owner_id & ~0xFFFFFFFF:
                         logging.debug("invalid owner id: %d", owner_id)
-                        errors.append("invalid owner id")
+                        errors.append(f"{species} | Invalid owner id: {owner_id}")
                     owner_name = record.str()
                     if not (len(owner_name) <= PLAYER_MAX_NAME_SIZE):
                         logging.debug("invalid owner name: %s", owner_name)
-                        errors.append("invalid owner name")
+                        errors.append(f"{species} | Invalid owner name: {owner_name}")
                     owner_gender = record.int()
                     if owner_gender not in {0, 1, 2}:
                         logging.debug("invalid owner gender: %d", owner_gender)
-                        errors.append("invalid owner gender")
+                        errors.append(f"{species} | Invalid owner gender: {owner_gender}")
                     exp = record.int()
                     # TODO: validate exp.
                     form = record.int()
                     if form not in species_.forms:
                         logging.debug("invalid form: %d", form)
-                        errors.append("invalid form")
+                        errors.append(f"{species} | Invalid form: {form}")
                     item1 = record.str()
                     if item1 and item1 not in item_syms:
                         logging.debug("invalid item id: %s", item1)
-                        errors.append("invalid item")
+                        errors.append(f"{species} | Invalid item: {item1}")
                     item2 = record.str()
                     if item2 and item2 not in item_syms:
                         logging.debug("invalid item id: %s", item2)
-                        errors.append("invalid item")
+                        errors.append(f"{species} | Invalid item: {item2}")
                     item_type = (
                         record.str()
                     )  # don't need to validate but do need to read for data alignment
@@ -456,14 +464,14 @@ def make_party_validator(pbs_dir):
                         if move:
                             if can_use_sketch and move not in move_syms:
                                 logging.debug("invalid move id (Sketched): %s", move)
-                                errors.append("invalid move (Sketched)")
+                                errors.append(f"{species} | Invalid move (Sketched): {move}")
                             elif move not in species_.moves and not can_use_sketch:
                                 logging.debug("invalid move id: %s", move)
-                                errors.append("invalid move")
+                                errors.append(f"{species} | Invalid move: {move}")
                         ppup = record.int()
                         if not (0 <= ppup <= 3):
                             logging.debug("invalid ppup for move id %s: %d", move, ppup)
-                            errors.append("invalid ppup")
+                            errors.append(f"{species} | Invalid ppup for move {move}: {ppup}")
                     for _ in range(record.int()):
                         move = record.str()
                         # Skip checking initial moves, since as long as the current moveset is legal
@@ -481,16 +489,16 @@ def make_party_validator(pbs_dir):
                     gender = record.int()
                     if gender not in species_.genders:
                         logging.debug("invalid gender: %d", gender)
-                        errors.append("invalid gender")
+                        errors.append(f"{species} | Invalid gender: {gender}")
                     shiny = record.bool_or_none()
                     ability = record.str()
                     # stricter check
                     if ability and ability not in species_.abilities:
                         logging.debug("invalid ability strict: %s", ability)
-                        errors.append("invalid ability strict")
+                        errors.append(f"{species} | Invalid ability (strict): {ability}")
                     if ability and ability not in ability_syms:
                         logging.debug("invalid ability: %s", ability)
-                        errors.append("invalid ability")
+                        errors.append(f"{species} | Invalid ability: {ability}")
                     ability_index = (
                         record.int_or_none()
                     )  # so hidden abils are properly inherited
@@ -504,24 +512,24 @@ def make_party_validator(pbs_dir):
                             attack_ev = ev
                         if not (0 <= ev <= EV_STAT_LIMIT):
                             logging.debug("invalid EV: %d", ev)
-                            errors.append("invalid EV")
+                            errors.append(f"{species} | Invalid SP: {ev}")
                         ev_sum += ev
                     ev_sum -= attack_ev  # dedupe atk + spatk ev
                     if not (0 <= ev_sum <= EV_LIMIT):
                         logging.debug("invalid EV sum: %d", ev_sum)
-                        errors.append("invalid EV sum")
+                        errors.append(f"{species} | Invalid SP total: {ev_sum}")
                     happiness = record.int()
                     if not (0 <= happiness <= 255):
                         logging.debug("invalid happiness: %d", happiness)
-                        errors.append("invalid happiness")
+                        errors.append(f"{species} | Invalid happiness: {happiness}")
                     name = record.str()
                     # if not (len(name) <= POKEMON_MAX_NAME_SIZE):
                     #     logging.debug("invalid name: %s", name)
-                    #     errors.append("invalid name")
+                    #     errors.append("%s | Invalid name: %s", species, name)
                     poke_ball = record.str()
                     if poke_ball and poke_ball not in item_syms:
                         logging.debug("invalid pokeball: %s", poke_ball)
-                        errors.append("invalid pokeball")
+                        errors.append(f"{species} | Invalid pokeball: {poke_ball}")
                     steps_to_hatch = record.int()
                     # obtain data
                     obtain_mode = record.int()
@@ -571,12 +579,13 @@ def make_party_validator(pbs_dir):
                     # fused
                     if record.bool():
                         logging.debug("Fused Mon")
+                        errors.append(f"{species} | Fused Mon", species)
                         validate_pokemon()
                     if EBDX_INSTALLED:
                         superhue = record.str()
                         if shiny and (superhue == ""):
                             logging.debug("uninitialized supershiny")
-                            errors.append("uninitialized supershiny")
+                            errors.append(f"{species} | uninitialized supershiny")
                         supervarient = record.bool_or_none()
                     logging.debug("-------")
 
@@ -589,7 +598,7 @@ def make_party_validator(pbs_dir):
         if errors:
             logging.debug("Errors: %s", errors)
         logging.debug("--END PARTY VALIDATION--")
-        return not errors
+        return errors
 
     return validate_party
 

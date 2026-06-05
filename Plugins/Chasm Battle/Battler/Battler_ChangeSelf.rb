@@ -59,8 +59,7 @@ class PokeBattle_Battler
     def applyFractionalDamage(fraction, showDamageAnimation = true, basedOnCurrentHP = false, entryCheck = false, struggle: false, aiCheck: false)
         return 0 unless takesIndirectDamage? || struggle
 
-        aggravate = @battle.pbCheckOpposingAbility(:AGGRAVATE, @index) && !struggle
-        damageAmount = getFractionalDamageAmount(fraction,basedOnCurrentHP,aggravate: aggravate,struggle: struggle)
+        damageAmount = getFractionalDamageAmount(fraction, basedOnCurrentHP, aiCheck: false, struggle: struggle)
         
         if showDamageAnimation && !aiCheck && !@dummy
             @damageState.displayedDamage = damageAmount
@@ -87,21 +86,35 @@ class PokeBattle_Battler
         end
     end
 
-    def getFractionalDamageAmount(fraction,basedOnCurrentHP=false,aggravate: false,struggle: false)
+    def getFractionalDamageAmount(fraction, basedOnCurrentHP=false, aiCheck: false, struggle: false)
         return 0 unless takesIndirectDamage? || struggle
         fraction *= hpBasedEffectResistance if boss?
-        fraction *= 1.35 if aggravate
         if basedOnCurrentHP
             damageAmount = @hp * fraction
         else
             damageAmount = @totalhp * fraction
         end
-        unless struggle
-            damageAmount *= 0.66 if hasTribeBonus?(:ANIMATED)
-            damageAmount *= 0.5 if pbOwnSide.effectActive?(:NaturalProtection)
-        end
+        damageAmount *= getFractionalDamageModifier(aiCheck: false) unless struggle
         damageAmount = damageAmount.ceil
         return damageAmount
+    end
+
+    def getFractionalDamageModifier(aiCheck: false)
+        modifier = 1.0
+
+        # Check for Aggravate on foe's side
+        eachOpposing do |opp|
+            next unless opp.shouldAbilityApply?(:AGGRAVATE, aiCheck)
+            modifier *= 1.35
+            break
+        end
+
+        modifier *= 1.5 if takesSandstormDamage? && @battle.pbWeather == :StarStorm
+
+        modifier *= 0.66 if hasTribeBonus?(:ANIMATED)
+        modifier *= 0.5 if pbOwnSide.effectActive?(:NaturalProtection)
+
+        return modifier
     end
 
     def recoilDamageMult(checkingForAI = false)
@@ -196,7 +209,7 @@ class PokeBattle_Battler
             amt = 1 if amt < 1 && @hp < @totalhp
 
             # Cap boss healing at the next health boundary
-            if boss?
+            if boss? && !@phaseTransitioning
                 if @hp <= avatarPhaseLowerHealthBound && @hp + amt > avatarPhaseLowerHealthBound
                     amt = avatarPhaseLowerHealthBound - @hp
                 end
@@ -361,22 +374,22 @@ class PokeBattle_Battler
             end
 
             # On-faint effect items
-            if hasActiveItem?(:HOOHSASHES)
+            if hasItem?(:HOOHSASHES)
                 faintedPartyMembers = []
                 ownerParty.each do |partyPokemon|
                     next unless partyPokemon
-                    next if @battle.pbFindBattler(partyIndex, @index)
                     next unless partyPokemon.fainted?
+                    next if @battle.pbFindBattler(partyPokemon, @index)
+                    next if partyPokemon == @pokemon
                     faintedPartyMembers.push(partyPokemon)
                 end
-                pbDisplay(_INTL("{1}'s scattered its {2} when fainting.", pbThis, getItemName(:HOOHSASHES)))
-                if faintedPartyMembers.length == 0
-                    pbDisplay(_INTL("But there was no one to revive!"))
+                @battle.pbDisplay(_INTL("{1}'s scattered its {2} when fainting!", pbThis, getItemName(:HOOHSASHES)))
+                if faintedPartyMembers.empty?
+                    @battle.pbDisplay(_INTL("But there was no one to revive!"))
                 else
                     reviver = faintedPartyMembers.sample
-                    reviver.heal_HP
-                    reviver.heal_status
-                    pbDisplay(_INTL("Its allied {1} was revived to full health!", reviver.name))
+                    reviver.heal
+                    @battle.pbDisplay(_INTL("Its allied {1} was revived to full health!", reviver.name))
                 end
             end
 
@@ -690,6 +703,13 @@ class PokeBattle_Battler
         disableEffect(:Trapping)
         disableEffect(:Binding)
         applyEffect(:Substitute, subLife)
+    end
+
+    def refreshBattleMoves
+        @moves.clear
+        @pokemon.moves.each do |move|
+            @moves.push(PokeBattle_Move.from_pokemon_move(@battle, move))
+        end
     end
 
     #=============================================================================

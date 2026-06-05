@@ -375,6 +375,7 @@ BattleHandlers::TargetAbilityOnHit.add(:WIBBLEWOBBLE,
 
 BattleHandlers::TargetAbilityOnHit.add(:BOUNCEBACK,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next if user.boss?
         next unless user.hp > target.hp
         next if target.fainted?
         next -20 if aiCheck

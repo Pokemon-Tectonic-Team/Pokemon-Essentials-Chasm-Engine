@@ -51,7 +51,7 @@ class PokeBattle_Move_GiftItem < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} give away?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} give away?", user.pbThis(true)),validItemNames)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end
@@ -183,7 +183,7 @@ class PokeBattle_Move_Fling < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} fling?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} fling?", user.pbThis(true)),validItemNames)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end
@@ -340,7 +340,7 @@ class PokeBattle_Move_NaturalGift < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} use?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} use?", user.pbThis(true)),validItemNames)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end
