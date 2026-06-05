@@ -5,19 +5,23 @@ ItemHandlers::UseFromBag.add(:VSRECORDER, proc { |item|
 	end
 
 	save_file_name = $current_save_file_name.split("/")[1].delete_suffix(".rxdata")
-  records_path = "./VSRecorder/#{save_file_name}"
+  	records_path = "./VSRecorder/#{save_file_name}"
 	if getRecordedBattles.size < 1
 		pbMessage(_INTL("You don't have any battles recorded on your VS Recorder."))
 		next 0
 	end
 
-	choice = pbMessage(_INTL("What do you do?"), 
-    [
+	choice_options = [
       _INTL("Watch battle"), 
       _INTL("Save last battle"), 
       _INTL("Rename battle"), 
       _INTL("Delete battle")
-    ],-1)
+    ]
+
+	choice_options.push(_INTL("Write down battle (D)")) if $DEBUG
+
+	choice = pbMessage(_INTL("What do you do?"), choice_options, -1)
+	
   
 	case choice
 	when 0 # Watch battle
@@ -60,6 +64,13 @@ ItemHandlers::UseFromBag.add(:VSRECORDER, proc { |item|
     pbMessage("Battle successfully deleted.")
 		next 1
 	
+	when 4 # Write down battle (Debug mode exclusive)
+		battle_replay_choice = pbMessage(_INTL("Which battle ?"), getRecordedBattleNames, -1)
+		next 0 if battle_replay_choice == -1
+		file_name = getRecordedBattleNames[battle_replay_choice]
+		writeRecordedBattle(file_name, "./Analysis/#{file_name}_#{save_file_name}_log.txt")
+		pbMessage("Battle successfully written down.")
+		next 1
   else
 		next 0
 	end

@@ -18,8 +18,6 @@ module PokeBattle_BattleRecorder
 	attr_accessor :starting_weather
 	attr_accessor :starting_weather_duration
 
-	attr_accessor :held_items
-
 	attr_accessor :save_battle
 	attr_accessor :battle_rules
 
@@ -35,12 +33,12 @@ module PokeBattle_BattleRecorder
 	end
 
 	def self.createDir
-		Dir.mkdir("./VSRecorder") unless Dir.exists?("./VSRecorder")
+		Dir.mkdir("./VSRecorder") unless Dir.exist?("./VSRecorder")
 		if $current_save_file_name.nil?
 			return
 		end
 		save_file_name = $current_save_file_name.split("/")[1].delete_suffix(".rxdata")
-		Dir.mkdir("./VSRecorder/#{save_file_name}") unless Dir.exists?("./VSRecorder/#{save_file_name}")
+		Dir.mkdir("./VSRecorder/#{save_file_name}") unless Dir.exist?("./VSRecorder/#{save_file_name}")
 	end
 
 	def pbRandom(x)
@@ -81,7 +79,6 @@ module PokeBattle_BattleRecorder
 		@opponent_party_starts        = Marshal.dump(@party2starts)
 		@starting_weather             = @field.weather
 		@starting_weather_duration    = @field.weatherDuration
-		@held_items                   = Marshal.dump(@items)
 		super
 	end
 
@@ -139,7 +136,6 @@ module PokeBattle_BattleRecorder
 			:opponent_party_starts => @opponent_party_starts,
 			:starting_weather => @starting_weather,
 			:starting_weather_duration => @starting_weather_duration,
-			:held_items => @held_items,
 			:rules => Marshal.dump(@battle_rules),
 			:endSpeeches => (@endSpeeches) ? @endSpeeches.clone : "",
 			:endSpeechesWin => (@endSpeechesWin) ? @endSpeechesWin.clone : "",
@@ -206,7 +202,6 @@ module PokeBattle_BattleReplayer
 		
 		@player_party_starts       = Marshal.load(battle[:player_party_starts])
 		@opponent_party_starts     = Marshal.load(battle[:opponent_party_starts])
-		@held_items                = Marshal.load(battle[:held_items])
 		@starting_weather          = battle[:starting_weather]
 		@starting_weather_duration = battle[:starting_weather_duration]
 		@endSpeeches               = battle[:endSpeeches]
@@ -231,7 +226,6 @@ module PokeBattle_BattleReplayer
 		@party2starts              = @opponent_party_starts
 		@field.weather             = @starting_weather
 		@field.weatherDuration     = @starting_weather_duration
-		@items                     = @held_items
 		
 		@bossBattle = true if battle[:type] == 2
 
@@ -312,6 +306,141 @@ module PokeBattle_BattleReplayer
 
 end
 
+module PokeBattle_BattleLogger
+	include PokeBattle_BattleReplayer
+
+	attr_accessor :battle_log_path
+
+	def write_to_log(str)
+		File.open(@battle_log_path, "a+") do |f|
+			f.write(str)
+		end
+	end
+
+	def initialize(scene, file_name, log_path)
+		super(scene, file_name)
+		@battle_log_path = log_path
+		if File.exist?(@battle_log_path)
+			File.delete(@battle_log_path)
+		end
+		write_to_log("=== CHASM ENGINE - VS RECORDER DEBUG LOG ===\n\n")
+
+		write_to_log("Battle type : #{@type.to_s} (#{["wild", "trainer", "avatar"][@type]})\n\n")
+
+		write_to_log("Player info : #{@player_info.to_s}\n")
+		write_to_log("Player party : #{(@player_party.map { |pkmn| pkmn.nicknamed? ? "#{GameData::Species.try_get(pkmn.species).real_name} (#{pkmn.name})" : GameData::Species.try_get(pkmn.species).real_name}).to_s}\n")
+		write_to_log("Player party leads : #{@player_party_starts.to_s}\n\n")
+
+		write_to_log("Opponent info : #{@opponent_info.to_s}\n")
+		write_to_log("Opponent party : #{(@opponent_party.map { |pkmn| pkmn.nicknamed? ? "#{GameData::Species.try_get(pkmn.species).real_name} (#{pkmn.name})" : GameData::Species.try_get(pkmn.species).real_name}).to_s}\n")
+		write_to_log("Opponent party leads : #{@opponent_party_starts.to_s}\n\n")
+
+		write_to_log("Battle starts with #{@starting_weather.to_s} for #{@starting_weather_duration == -1 ? "infinite" : @starting_weather_duration.to_s} turns.\n\n")
+	end
+
+	def pbCommandPhase
+		super
+		write_to_log("\nTurn #{@turnCount} command phase :\n")
+		@battlers.each_with_index do |battler, i|
+			next if battler.nil?
+			battler_choice = @choices[i]
+			battler_recorded_choice = @recorded_choices[@turnCount][i][0]
+			if battler_choice[0] == :UseMove
+				chosen_move = battler_choice[2]
+				recorded_move = battler.moves[battler_recorded_choice[1]]
+				write_to_log("#{battler.pbThis} : #{chosen_move.name}")
+				write_to_log(" ===CHOICE-RECORD DESCREPANCY=== (recorded : #{recorded_move.name})") if chosen_move != recorded_move
+				write_to_log("\n")
+			elsif battler_choice[0] == :SwitchOut
+				chosen_switch = battler_choice[1]
+				recorded_switch = battler_recorded_choice[1]
+				write_to_log("#{battler.pbThis} : switch for #{battler.ownerParty[chosen_switch].name}")
+				write_to_log(" ===CHOICE-RECORD DESCREPANCY=== (recorded : #{battler.ownerParty[recorded_switch].name})") if chosen_switch != recorded_switch
+				write_to_log("\n")
+			elsif battler_choice[0] == :UseItem
+				chosen_item = battler_choice[1]
+				chosen_item_target = battler_choice[2]
+				recorded_item = battler_recorded_choice[1]
+				recorded_item_target = battler_recorded_choice[2]
+				write_to_log("#{GameData::Item.get(chosen_item).real_name} used on position #{chosen_item_target}")
+				write_to_log(" ===CHOICE-RECORD DESCREPANCY=== (recorded : #{GameData::Item.get(chosen_item).real_name} used on position #{chosen_item_target})") if chosen_item != recorded_item || chosen_item_target != recorded_item_target
+				write_to_log("\n")
+			end
+		end
+		write_to_log("\n")
+	end
+
+	def pbExtraCommandPhase
+		super
+		write_to_log("\nTurn #{@turnCount} extra command phase #{@commandPhasesThisRound} :\n")
+		@battlers.each_with_index do |battler, i|
+			battler_choice = @choices[i]
+			battler_recorded_choice = @recorded_choices[@turnCount][i][@commandPhasesThisRound]
+			if battler_choice[0] == :UseMove
+				chosen_move = battler_choice[2]
+				recorded_move = battler.moves[battler_recorded_choice[1]]
+				write_to_log("#{battler.pbThis} : #{chosen_move.name}")
+				write_to_log(" ===CHOICE-RECORD DESCREPANCY=== (recorded : #{recorded_move.name})") if chosen_move != recorded_move
+				write_to_log("\n")
+			elsif battler_choice[0] == :SwitchOut
+				chosen_switch = battler_choice[1]
+				recorded_switch = battler_recorded_choice[1]
+				write_to_log("#{battler.pbThis} : switch for #{battler.ownerParty[chosen_switch].name}")
+				write_to_log(" ===CHOICE-RECORD DESCREPANCY=== (recorded : #{battler.ownerParty[recorded_switch].name})") if chosen_switch != recorded_switch
+				write_to_log("\n")
+			elsif battler_choice[0] == :UseItem
+				chosen_item = battler_choice[1]
+				chosen_item_target = battler_choice[2]
+				recorded_item = battler_recorded_choice[1]
+				recorded_item_target = battler_recorded_choice[2]
+				write_to_log("#{GameData::Item.get(chosen_item).real_name} used on position #{chosen_item_target}")
+				write_to_log(" ===CHOICE-RECORD DESCREPANCY=== (recorded : #{GameData::Item.get(chosen_item).real_name} used on position #{chosen_item_target})") if chosen_item != recorded_item || chosen_item_target != recorded_item_target
+				write_to_log("\n")
+			end
+		end
+	end
+
+	def pbDisplay(msg, no_highlighting: false, &block)
+		super(msg, no_highlighting: no_highlighting, &block)
+		write_to_log("[MESSAGE] #{msg}\n")
+	end
+
+	def pbDisplayBrief(msg)
+		super(msg)
+		write_to_log("[BRIEF MESSAGE] #{msg}\n")
+	end
+
+	def pbDisplayPaused(msg, no_highlighting: false, &block)
+        super(msg, no_highlighting: no_highlighting, &block)
+		write_to_log("[PAUSED MESSAGE] #{msg}\n")
+    end
+
+    def pbDisplayConfirm(msg)
+        return super(msg)
+		write_to_log("[CONFIRM MESSAGE] #{msg}\n")
+    end
+
+    def pbDisplayConfirmSerious(msg)
+        return super(msg)
+		write_to_log("[SERIOUS CONFIRM MESSAGE] #{msg}\n")
+    end
+
+    def pbDisplayWithFormatting(msg)
+        super(msg)
+		write_to_log("[FORMATTED MESSAGE] #{msg}\n")
+    end
+
+    def pbDisplayBossNarration(msg)
+        super(msg)
+		write_to_log("[BOSS NARRATION] #{msg}\n")
+    end
+
+	def pbAttackPhase
+		super
+	end
+
+end
+
 class PokeBattle_Battle
 	def registerRecordedChoice(index); end
 	def registerReplayedChoice(index); end
@@ -326,6 +455,10 @@ class PokeBattle_TectonicReplayedBattle < PokeBattle_Battle
 	include PokeBattle_BattleReplayer
 end
 
+class PokeBattle_TectonicLoggedBattle < PokeBattle_Battle
+	include PokeBattle_BattleLogger
+end
+
 def playRecordedBattle(record_name)
 	original_level_cap = getLevelCap
 	scene = pbNewBattleScene
@@ -336,9 +469,10 @@ def playRecordedBattle(record_name)
 		return
 	end
 
+	setBattleRule("autotesting")
 	pbPrepareBattle(battle)
 	battle.registerRules
-  $PokemonTemp.clearBattleRules
+  	$PokemonTemp.clearBattleRules
 
 	setLevelCap(battle.level_cap, false)
 
@@ -368,6 +502,27 @@ def playRecordedBattle(record_name)
 	else
 		raise _INTL("Recorded battle has an invalid battle type. ({1})", battle.type)
 	end
+
+	setLevelCap(original_level_cap, false)
+end
+
+def writeRecordedBattle(record_name, path)
+	original_level_cap = getLevelCap
+	scene = pbNewBattleScene
+	begin
+		battle = PokeBattle_TectonicLoggedBattle.new(scene, record_name, path)
+	rescue LoadError => e
+		pbMessage(_INTL("This record cannot be opened ({1}).", e.message))
+		return
+	end
+
+	pbPrepareBattle(battle)
+	battle.registerRules
+  	$PokemonTemp.clearBattleRules
+
+	setLevelCap(battle.level_cap, false)
+
+	decision = battle.pbStartBattle
 
 	setLevelCap(original_level_cap, false)
 end
