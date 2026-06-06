@@ -123,6 +123,13 @@ class PokeBattle_AI
     def pbTotalDamageAI(move, user, target, numTargets = 1, aiContext = nil)
         return 0, false if move.damageNegated?(user, target, true)
 
+		# TODO: don't score 0, figure out a better way to go about this,
+		# maybe halve the score of how much damage it would do on the
+		# damaging turn?
+        if move.is_a?(PokeBattle_TwoTurnMove)
+            return 0, false unless move.dealsDamageThisTurnAI?(user)
+        end
+
         # Get the move's type
         type = pbRoughType(move, user)
 
