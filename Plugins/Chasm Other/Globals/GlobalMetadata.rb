@@ -321,7 +321,7 @@ class PokemonGlobalMetadata
     
     def expJAR=(value)
         @expJAR = value
-        unlockAchievement(:STORE_LOTS_OF_EXP) if @expJAR >= 1_000_000
+        unlockAchievement(:STORE_LOTS_OF_EXP) if @expJAR >= 3_000_000
     end
 
     def circuitPuzzleStateTracker
