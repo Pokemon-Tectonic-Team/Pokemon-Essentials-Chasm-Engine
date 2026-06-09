@@ -30,10 +30,16 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 	$PokemonGlobal.expJAR -= expAmount
 	pkmn.exp += expAmount
 	new_level = pkmn.level
-	if new_level == level_cap
-		pbSceneDefaultDisplay(_INTL("{1} gained only {3} Exp. Points due to the level cap at level {2}.", pkmn.name, level_cap, separate_comma(expAmount)),scene)
-	else
-		pbSceneDefaultDisplay(_INTL("{1} gained {2} Exp. Points!", pkmn.name, separate_comma(expAmount)),scene)
+	pbFadeOutInWithMusic do
+		evo = PokemonFeedCandyScene.new
+		evo.pbStartScreen(pkmn, expAmount)
+		evo.pbFeedCandy
+		if new_level == level_cap
+			pbSceneDefaultDisplay(_INTL("{1} gained only {3} Exp. Points due to the level cap at level {2}.", pkmn.name, level_cap, separate_comma(expAmount)),scene)
+		else
+			pbSceneDefaultDisplay(_INTL("{1} gained {2} Exp. Points!", pkmn.name, separate_comma(expAmount)),scene)
+		end
+		evo.pbEndScreen
 	end
 	scene&.pbRefresh
 
@@ -79,25 +85,16 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 	next true
 })
 
-def calculateCandySplitForEXP(expAmount, biggerSized = false)
+def calculateCandySplitForEXP(expAmount)
 	# Calculate how many of each candy size could be given
-	if !biggerSized
-		xsCandyTotal = expAmount / EXP_PER_EXTRA_SMALL
-		sCandyTotal = xsCandyTotal / 4
-		xsCandyTotal = xsCandyTotal % 4
-	else
-		xsCandyTotal = 0
-		sCandyTotal = expAmount / (EXP_PER_EXTRA_SMALL * 4)
+	candyTotals = []
+	EXP_CANDY_IDS.each do |expCandyID|
+		expPerCandy = getEXPAmountForCandy(expCandyID)
+		amountOfThisCandy = expAmount / expPerCandy
+		candyTotals.push(amountOfThisCandy)
+		expAmount = expAmount % expPerCandy
 	end
-	mCandyTotal = sCandyTotal / 4
-	sCandyTotal = sCandyTotal % 4
-	if biggerSized
-		lCandyTotal = mCandyTotal / 4
-		mCandyTotal = mCandyTotal % 4
-	else
-		lCandyTotal = 0
-	end
-	return xsCandyTotal,sCandyTotal,mCandyTotal,lCandyTotal
+	return candyTotals
 end
 
 def separate_comma(number)
