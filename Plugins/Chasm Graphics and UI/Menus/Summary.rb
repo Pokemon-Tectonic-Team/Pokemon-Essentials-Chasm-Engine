@@ -881,7 +881,7 @@ class PokemonSummary_Scene
         ability_shadow = MessageConfig.pbDefaultTextShadowColor
         if ability
             drawFormattedTextEx(overlay, 8, 250, 480, ability.name, base, shadow)
-            abilityDescription = addBattleKeywordHighlighting(ability.description)
+            abilityDescription = addBattleKeywordHighlighting(ability.description, isAbility: true)
             drawFormattedTextEx(overlay, 12, 286, 450, abilityDescription, ability_base, ability_shadow)
         end
 

@@ -357,6 +357,13 @@ BaseMoney = 64
 IntroBGM = POKEFAN
 CableClub = true
 #-------------------------------
+[COLLECTOR_F]
+Name = Collector
+Gender = Female
+BaseMoney = 64
+IntroBGM = POKEFAN
+CableClub = true
+#-------------------------------
 [COOLTRAINERSQUAD_2]
 Name = Cool Squad
 Gender = Unknown
@@ -395,7 +402,6 @@ CableClub = true
 Name = Pro Trainer
 Gender = Female
 BaseMoney = 60
-Policies = PROACTIVE_MATCHUP_SWAPPER
 IntroBGM = ELITETRAINER
 BattleBGM = Battle pro
 CableClub = true
@@ -432,7 +438,6 @@ CableClub = true
 Name = Pro Trainer
 Gender = Male
 BaseMoney = 60
-Policies = PROACTIVE_MATCHUP_SWAPPER
 IntroBGM = ELITETRAINER
 BattleBGM = Battle pro
 CableClub = true
@@ -540,6 +545,13 @@ CableClub = true
 [DRAGONTAMER2]
 Name = Dragon Tamer
 Gender = Male
+BaseMoney = 32
+IntroBGM = ACETRAINER
+CableClub = true
+#-------------------------------
+[DRAGONTAMER_F]
+Name = Dragon Tamer
+Gender = Female
 BaseMoney = 32
 IntroBGM = ACETRAINER
 CableClub = true
@@ -1083,16 +1095,19 @@ CableClub = true
 Name = Androgynous
 Gender = Unknown
 BaseMoney = 60
+CableClubName = Pokémon Trainer
 #-------------------------------
 [POKEMONTRAINER_Feminine]
 Name = Feminine
 Gender = Female
 BaseMoney = 60
+CableClubName = Pokémon Trainer
 #-------------------------------
 [POKEMONTRAINER_Masculine]
 Name = Masculine
 Gender = Male
 BaseMoney = 60
+CableClubName = Pokémon Trainer
 #-------------------------------
 [POKEMONTRAINER_RIVALF]
 Name = Pokémon Trainer
@@ -1439,14 +1454,14 @@ IntroBGM = SCIENTIST
 CableClub = true
 #-------------------------------
 [SIGHTSEER_F]
-Name = Swimmer
+Name = Sightseer
 Gender = Female
 BaseMoney = 16
 IntroBGM = CYCLING
 CableClub = true
 #-------------------------------
 [SIGHTSEER_M]
-Name = Swimmer
+Name = Sightseer
 Gender = Male
 BaseMoney = 16
 IntroBGM = CYCLING
@@ -1769,6 +1784,12 @@ Gender = Female
 BaseMoney = 32
 IntroBGM = AROMALADY
 CableClub = true
+#-------------------------------
+[WHIMSICALBOY]
+Name = Whimsical Boy
+Gender = Male
+BaseMoney = 8
+IntroBGM = TWINS
 #-------------------------------
 [WORKER]
 Name = Worker

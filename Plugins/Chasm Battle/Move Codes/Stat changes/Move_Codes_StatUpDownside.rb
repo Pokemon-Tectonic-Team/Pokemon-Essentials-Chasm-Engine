@@ -184,3 +184,35 @@ class PokeBattle_Move_RaiseUserSpAtk1Speed2LowerUserSpDef1 < PokeBattle_StatUpDo
         @statDown = [:SPECIAL_DEFENSE, 2]
     end
 end
+
+#===============================================================================
+# Increases each stat by 3 steps. Resets user's stat steps after 2 turns. (Fleeting Footwork)
+#===============================================================================
+class PokeBattle_Move_RaiseUserMainStats3ResetUserStatSteps2Turns < PokeBattle_MultiStatUpMove
+    def initialize(battle, move)
+        super
+        @statUp = ALL_STATS_3
+    end
+
+    def pbMoveFailed?(user, targets, show_message)
+        if user.effectActive?(:FleetingFootwork)
+            if show_message
+                @battle.pbDisplay(_INTL("But it failed, since {1} is already lost in the dance!", user.pbThis(true)))
+            end
+            return true
+        end
+        super
+    end
+
+    def pbEffectGeneral(user)
+        super
+        # expires after 2 full turns, set value to 3 to account for the current turn
+        user.applyEffect(:FleetingFootwork, 3)
+    end
+
+    def getEffectScore(user, _target)
+        score = super # start with the score for the stat boosts
+        score -= statStepsValueScore(user) # reduce score for any existing stat boosts that might be wiped
+        return score
+    end
+end

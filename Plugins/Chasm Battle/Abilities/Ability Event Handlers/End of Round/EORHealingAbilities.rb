@@ -19,6 +19,26 @@ BattleHandlers::EORHealingAbility.add(:SHEDSKIN,
     }
 )
 
+BattleHandlers::EORHealingAbility.add(:REJUVENATE,
+    proc { |ability, battler, battle|
+        hasAnyRelevantEffect = false
+        battler.eachEffect(true) do |effect, _value, data|
+            next unless data.avatars_purge || data.is_mental?
+            hasAnyRelevantEffect = true
+        end
+        next unless hasAnyRelevantEffect
+        battle.pbShowAbilitySplash(battler, ability)
+        battle.pbDisplay(_INTL("{1} rejuvenates itself!", battler.pbThis))
+        battler.eachEffect(true) do |effect, _value, data|
+            next unless data.avatars_purge || data.is_mental?
+            battler.disableEffect(effect)
+        end
+        battle.scene.pbRefresh
+        battle.pbHideAbilitySplash(battler)
+    }
+)
+
+
 BattleHandlers::EORHealingAbility.add(:HYDRATION,
     proc { |ability, battler, battle|
         next unless battler.hasAnyStatusNoTrigger
@@ -93,6 +113,12 @@ BattleHandlers::EORHealingAbility.add(:LIVINGARMOR,
   }
 )
 
+BattleHandlers::EORHealingAbility.add(:RAPIDREFRESH,
+  proc { |ability, battler, battle|
+      battler.applyFractionalHealing(1.0 / 8.0, ability: ability) unless battler.lastAttacker.empty?
+  }
+)
+
 BattleHandlers::EORHealingAbility.add(:PRIMEVALREGENERATOR,
   proc { |ability, battler, _battle|
       battler.applyFractionalHealing(1.0 / 4.0, ability: ability)
@@ -144,7 +170,7 @@ BattleHandlers::EORHealingAbility.add(:DIRECTCURRENT,
       elsif !battler.pbOwnedByPlayer? # Trainer AI
         choice = 0
       else
-        choice = battle.scene.pbShowCommands(_INTL("Where to direct power?"),choices,0)
+        choice = battle.scene.pbChooseWithThinkingLoop(_INTL("Where to direct power?"),choices)
       end
       if choice == 0
         battler.tryRaiseStat(:SPEED, battler)

@@ -348,6 +348,15 @@ class PokemonOption_Scene_UserInterface < PokemonOption_Scene_Base
 					$PokemonBag.sortItems if $scene.is_a?(Scene_Map)
 				}
 			),
+            EnumOption.new(
+                _INTL("Hide Unseen Species"),
+                _INTL("Which species should the MasterDex avoid spoiling?"),
+                [_INTL("All"), _INTL("Legends"), _INTL("None")],
+				proc { $Options.hide_unseen_species },
+				proc { |value|
+                    $Options.hide_unseen_species = value
+                }
+			),
             EnumOption.new(_INTL("Name on Showcase"),
                 _INTL("Whether or not to put your player name on Party Showcases."),
                 [_INTL("On"), _INTL("Off")],

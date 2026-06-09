@@ -46,7 +46,7 @@ class PokeBattle_Battler
             return false
         end
         # Disarming Shot
-        if effectActive?(:DisarmingShot) && move.bladeMove?
+        if effectActive?(:DisarmingShot) && move.sliceMove?
             if showMessages
                 msg = _INTL("{1} can't use {2} because of Disarming Shot!", pbThis, move.name)
                 commandPhase ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
@@ -155,7 +155,7 @@ class PokeBattle_Battler
                 echoln(msg)
                 return false
             end
-            statusPreventingAbility = hasActiveAbility?(%i[ASSAULTSPINES])
+            statusPreventingAbility = hasActiveAbility?(GameData::Ability.getByFlag("NoStatusUse"))
             if statusPreventingAbility
                 msg = _INTL("The effects of the {1} prevent status moves from being used!", getAbilityName(statusPreventingAbility))
                 if showMessages
@@ -203,6 +203,16 @@ class PokeBattle_Battler
         return false
     end
 
+    def tyrannicalPreventsFlinch?
+        return false unless hasTribeBonus?(:TYRANNICAL)
+        return false if pbOwnSide.effectActive?(:TyrannicalImmunity)
+        @battle.pbShowTribeSplash(self, :TYRANNICAL)
+        @battle.pbDisplay(_INTL("{1} refuses to flinch!", pbThis))
+        @battle.pbHideTribeSplash(self)
+        pbOwnSide.applyEffect(:TyrannicalImmunity)
+        return true
+    end
+
     #=============================================================================
     # Check whether the user (self) is able to take action at all.
     # If this returns true, and if PP isn't a problem, the move will be considered
@@ -228,7 +238,7 @@ class PokeBattle_Battler
             return false
         end
 
-        if effectActive?(:HyperBeam) # Intentionally before Truant
+        if effectActive?(:HyperBeam) && !effectActive?(:BypassExhaustion) # Intentionally before Truant
             if aiCheck
                 echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to exhaustion failure (Hyperbeam, etc.)")
             else
@@ -236,7 +246,7 @@ class PokeBattle_Battler
             end
             return false
         end
-        if effectActive?(:AttachedTo)
+        if effectActive?(:AttachedTo) && !effectActive?(:BypassExhaustion)
             if aiCheck
                 echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to attachment failure")
             else
@@ -281,6 +291,15 @@ class PokeBattle_Battler
                 hideMyAbilitySplash
                 return false
             end
+        elsif refusesToFight?
+            if aiCheck
+                echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Refuses to fight)")
+                return false
+            else
+                @battle.pbDisplay(_INTL("{1} refuses to battle!", pbThis))
+                onMoveFailed(move)
+                return false
+            end
         end
 
         # Truant
@@ -317,11 +336,7 @@ class PokeBattle_Battler
                 if effectActive?(:FlinchImmunity)
                     @battle.pbDisplay(_INTL("{1} would have flinched, but it's immune now!", pbThis))
                     disableEffect(:Flinch)
-                elsif hasTribeBonus?(:TYRANNICAL) && !pbOwnSide.effectActive?(:TyrannicalImmunity)
-                    @battle.pbShowTribeSplash(self,:TYRANNICAL)
-                    @battle.pbDisplay(_INTL("{1} refuses to flinch!", pbThis))
-                    @battle.pbHideTribeSplash(self)
-                    pbOwnSide.applyEffect(:TyrannicalImmunity)
+                elsif tyrannicalPreventsFlinch?
                 elsif hasActiveItem?(:COURAGEBADGE)
                     @battle.pbDisplay(_INTL("{1} would have flinched, but it holds a Courage Badge!", pbThis))
                     aiLearnsItem(:COURAGEBADGE)
@@ -369,7 +384,7 @@ class PokeBattle_Battler
                 @battle.pbDisplay(_INTL("{1} was ignored, and failed to protect {2}!", effectDisplayName,
 target.pbThis(true)))
             end
-            if protectionIgnoredByAbility && user.hasActiveAbility?(:PHANTASMAL)
+            if protectionIgnoredByAbility && user.hasActiveAbility?([:PHANTASMAL, :PRIMEVALBREAKTHROUGH])
                 target.damageState.partiallyProtected = true
             end
             return false
@@ -397,6 +412,7 @@ target.pbThis(true)))
         protectionIgnoredByAbility = false
         protectionIgnoredByAbility = true if user.shouldAbilityApply?(:UNSEENFIST, aiCheck) && move.physicalMove?
         protectionIgnoredByAbility = true if user.shouldAbilityApply?(:PHANTASMAL, aiCheck) && move.is_a?(PokeBattle_Move_TwoTurnAttackInvulnerable)
+        protectionIgnoredByAbility = true if user.shouldAbilityApply?(:PRIMEVALBREAKTHROUGH, aiCheck)
 
 
         # Only check the target's side if the target is not the self

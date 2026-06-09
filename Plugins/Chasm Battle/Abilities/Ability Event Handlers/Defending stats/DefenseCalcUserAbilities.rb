@@ -88,3 +88,10 @@ BattleHandlers::DefenseCalcUserAbility.add(:SOPPING,
         next defenseMult
     }
 )
+
+BattleHandlers::DefenseCalcUserAbility.add(:STRIKECORONA,
+    proc { |ability, _user, _battle, defenseMult|
+        defenseMult *= 2
+        next defenseMult
+    }
+)

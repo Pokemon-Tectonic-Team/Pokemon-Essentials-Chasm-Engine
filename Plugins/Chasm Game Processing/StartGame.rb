@@ -10,6 +10,7 @@ module Game
       $data_common_events = load_data('Data/CommonEvents.rxdata')
       $data_system        = load_data('Data/System.rxdata')
       pbLoadBattleAnimations
+      pbLoadMoveToAnim
       GameData.load_all
       map_file = format('Data/Map%03d.rxdata', $data_system.start_map_id)
       if $data_system.start_map_id == 0 || !pbRgssExists?(map_file)

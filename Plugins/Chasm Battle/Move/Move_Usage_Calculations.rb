@@ -56,7 +56,7 @@ class PokeBattle_Move
         # Inured
         ret /= 2 if target&.effectActive?(:Inured) && Effectiveness.super_effective_type?(moveType, defType)
         # Break Through
-        if user&.hasActiveAbility?([:BREAKTHROUGH, :UNBOUND]) && Effectiveness.ineffective_type?(moveType, defType)
+        if GameData::Ability.getByFlag("BypassTypeImmunity").any? { |abil| user&.hasActiveAbility?(abil)} && Effectiveness.ineffective_type?(moveType, defType)
             ret = Effectiveness::NORMAL_EFFECTIVE
         end
         return ret
@@ -154,7 +154,7 @@ class PokeBattle_Move
         return @battle.pbRandom(100) < modifiers[:base_accuracy] * calc
     end
 
-    def pbCalcAccuracyModifiers(user, target, modifiers, aiCheck = false, aiType = nil)
+    def pbCalcAccuracyModifiers(user, target, modifiers, aiCheck = false, aiType = nil, aiContext = nil)
         typeToUse = aiCheck ? aiType : @calcType
         # Ability effects that alter accuracy calculation
         user.eachAbilityShouldApply(aiCheck) do |ability|
@@ -172,7 +172,7 @@ class PokeBattle_Move
         end
         # Item effects that alter accuracy calculation
         user.eachActiveItem do |item|
-            BattleHandlers.triggerAccuracyCalcUserItem(item, modifiers, user, target, self, typeToUse, aiCheck)
+            BattleHandlers.triggerAccuracyCalcUserItem(item, modifiers, user, target, self, typeToUse, aiCheck, aiContext)
         end
         target.eachActiveItem do |item|
             BattleHandlers.triggerAccuracyCalcTargetItem(item, modifiers, user, target, self, typeToUse)
@@ -216,9 +216,7 @@ class PokeBattle_Move
             rate = criticalHitRate(user, target)
             random_crit = false
             random_crit = isRandomCrit?(user, target, rate) unless checkingForAI #Avoids needlessly calling pbRandom on AI checks
-            if random_crit
-                crit = true
-            end
+            crit = true if random_crit
         end
 
         if crit && critsPrevented?(user, target, checkingForAI)
@@ -227,18 +225,19 @@ class PokeBattle_Move
         end
 
         if checkingForAI
-            if forced
-                return crit
-            elsif allowedToRandomCrit
+            return crit if forced
+            if allowedToRandomCrit
                 # If the rate is high enough,
                 # A "random" crit is actually guaranteed
-                return rate >= CRITICAL_HIT_RATIOS.length - 1
-            else
-                return false
+                guaranteed_random_crit = (rate >= CRITICAL_HIT_RATIOS.length - 1)
+                if guaranteed_random_crit
+                    return false if critsPrevented?(user, target, true)
+                    return true
+                end
             end
-        else
-            return crit, forced
+            return false
         end
+        return crit, forced
     end
 
     def isRandomCrit?(user, target, rate)
@@ -330,7 +329,7 @@ class PokeBattle_Move
         return true if user.effectActive?(:LuckyCheer)
         return true if pbCriticalOverride(user, target) > 0
         user.eachActiveAbility do |ability|
-            return true if BattleHandlers.triggerGuaranteedCriticalUserAbility(ability, user, target, @battle)
+            return true if BattleHandlers.triggerGuaranteedCriticalUserAbility(ability, user, target, @battle, self)
         end
         return false
     end
@@ -397,7 +396,7 @@ showMessages)
         return true
     end
 
-    def pbAdditionalEffectChance(user, target, type, effectChance = 0, aiCheck = false)
+    def pbAdditionalEffectChance(user, target, type, effectChance = 0, aiCheck = false, aiContext = nil)
         return 100 if @battle.pbCheckGlobalAbility(:WISHMAKER)
         # Abilities ensure effect chance
         user.eachAbilityShouldApply(aiCheck) do |ability|
@@ -431,6 +430,7 @@ showMessages)
         if ret < 100 && user.shouldItemApply?(:LUCKHERB, aiCheck)
             ret = 100
             user.applyEffect(:LuckHerbConsumed) unless aiCheck
+            aiContext[:item_consumed] = true if aiContext
         end
         return ret
     end

@@ -7,6 +7,16 @@ class PokeBattle_Move_TwoTurnAttack < PokeBattle_Move
         @exhaustionTracker = :HyperBeam
     end
 
+    def exhaustionTracker
+        return @exhaustionTracker
+    end
+
+    def exhaustingMove?; return true; end
+
+    def consumesItem?(user)
+        user.hasActiveItemAI?(:ENERGYHERB)
+    end
+
     def pbEffectGeneral(user)
         if user.hasActiveItem?(:ENERGYHERB)
             @battle.pbCommonAnimation("UseItem", user)
@@ -114,7 +124,7 @@ class PokeBattle_Move_TwoTurnAttackBurnTarget < PokeBattle_TwoTurnMove
 end
 
 #===============================================================================
-# Cures NVSC and sleeps on 1st Turn and Attacks on 2nd (Wakeful Tide)
+# Cures NVSC and sleeps on 1st Turn and Attacks on 2nd
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackChargeSleep < PokeBattle_TwoTurnMove
     def usableWhenAsleep?; return true; end
@@ -251,8 +261,6 @@ end
 # (Handled in Battler's pbSuccessCheckPerHit): Is semi-invulnerable during use.
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackInvulnerableInSky < PokeBattle_Move_TwoTurnAttackInvulnerable
-    def unusableInGravity?; return true; end
-
     def pbChargingTurnMessage(user, _targets)
         @battle.pbDisplay(_INTL("{1} flew up high!", user.pbThis))
     end
@@ -273,6 +281,16 @@ class PokeBattle_Move_TwoTurnAttackInvulnerableScalesFaster < PokeBattle_Move_Tw
 
     def pbChargingTurnMessage(user, _targets)
         @battle.pbDisplay(_INTL("{1} flew up high!", user.pbThis))
+    end
+
+    def getDetailsForMoveDex(detailsList = [])
+        detailsList << _INTL("Does more damage the faster the user is compared to the target. Range 60-200")
+        detailsList << _INTL("<u>30% slower than target:</u> 60 BP")
+        detailsList << _INTL("<u>Same Speed as target:</u> 80 BP")
+        detailsList << _INTL("<u>1.5x faster than target:</u> 105 BP")
+        detailsList << _INTL("<u>2x faster than target:</u> 130 BP")
+        detailsList << _INTL("<u>3x faster than target:</u> 180 BP")
+        detailsList << _INTL("<u>3.4x faster than target:</u> 200 BP")
     end
 end
 
@@ -318,22 +336,28 @@ class PokeBattle_Move_TwoTurnAttackInvulnerableUnderground < PokeBattle_Move_Two
 end
 
 #===============================================================================
+# Two turn attack. Skips first turn, attacks three times second turn. (Rotary Headbutt)
+# (Handled in Battler's pbSuccessCheckPerHit): Is semi-invulnerable during use.
+#===============================================================================
+class PokeBattle_Move_TwoTurnAttackInvulnerableUndergroundHitThreeTimes < PokeBattle_Move_TwoTurnAttackInvulnerable
+    def multiHitMove?; return @damagingTurn; end
+    def pbNumHits(_user, _targets, _checkingForAI = false)
+        return 1 if @chargingTurn && !@damagingTurn
+        return 3
+    end
+
+    def pbChargingTurnMessage(user, _targets)
+        @battle.pbDisplay(_INTL("{1} burrowed its way under the ground!", user.pbThis))
+    end
+end
+
+#===============================================================================
 # Two turn attack. Skips first turn, attacks second turn. (Dive)
 # (Handled in Battler's pbSuccessCheckPerHit): Is semi-invulnerable during use.
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackInvulnerableUnderwater < PokeBattle_Move_TwoTurnAttackInvulnerable
     def pbChargingTurnMessage(user, _targets)
         @battle.pbDisplay(_INTL("{1} hid underwater!", user.pbThis))
-        if user.canGulpMissile?
-            user.form = 2
-            user.form = 1 if user.hp > (user.totalhp / 2)
-            @battle.scene.pbChangePokemon(user, user.pokemon)
-        end
-    end
-
-    def getEffectScore(user, _target)
-        return 40 if user.canGulpMissile?
-        return 0
     end
 end
 

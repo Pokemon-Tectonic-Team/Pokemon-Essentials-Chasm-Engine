@@ -38,7 +38,10 @@ class PokemonGlobalMetadata
 end
 
 def pbTestPass(follower, x, y, _direction = nil)
-    return $MapFactory.isPassableStrict?(follower.map.map_id, x, y, follower)
+	# removed line to fix follower jank:
+    # return $MapFactory.isPassableStrict?(follower.map.map_id, x, y, follower)
+	# added line to fix follower jank:
+	return true
 end
 
 # Same map only
@@ -296,7 +299,7 @@ class DependentEvents
             # Fall back on making current position into leader's position
             mapTile ||= [leader.map.map_id, leader.x, leader.y]
             follower = moveFollowerToDifferentMap(follower, leader, mapTile) if follower.map.map_id != mapTile[0]
-            moveFollowerToNearbySpot(follower, leader, mapTile)
+            moveFollowerToNearbySpot(follower, leader, mapTile, true)
         end
     end
 
@@ -340,7 +343,7 @@ class DependentEvents
         return [xDistance, yDistance].max
     end
 
-    def moveFollowerToNearbySpot(follower, leader, _mapTile)
+    def moveFollowerToNearbySpot(follower, leader, _mapTile, careAboutCollision = false)
         # Follower is on same map as leader
         newPosX = leader.x
         newPosY = leader.y
@@ -360,7 +363,12 @@ class DependentEvents
         end
 
         nearbySpotOffsets.each do |spot|
-            passable = $MapFactory.isPassable?(leader.map.map_id, leader.x + spot[0], leader.y + spot[1], follower)
+			passable = nil
+			if careAboutCollision
+				passable = $MapFactory.isPassable?(leader.map.map_id, leader.x + spot[0], leader.y + spot[1], follower)
+			else
+				passable = true
+			end
             next unless passable
             newPosX += spot[0]
             newPosY += spot[1]
@@ -620,6 +628,16 @@ class DependentEvents
         end
     end
 
+    def update_opacity
+        events = $PokemonGlobal.dependentEvents
+        for k in 0...events.length
+            if events[k] && events[k][8][/FollowerPkmn/i]
+                @realEvents[k].opacity = stealthSprayActive? ? STEALTH_SPRAY_OPACITY : 255
+            end
+            return
+        end 
+    end
+
     # Adds step animation for followers and update their speed
     def start_stepping
         follower_move_route([PBMoveRoute::StepAnimeOn])
@@ -667,6 +685,7 @@ class DependentEvents
                            first_pkmn.gender, first_pkmn.shiny?,
                            false,first_pkmn])
         end
+        update_opacity
         if ret
             $PokemonTemp.dependentEvents.start_stepping
         else
@@ -675,7 +694,7 @@ class DependentEvents
         return ret
     end
 
-    # Command to update follower/ make it reappear
+    # Command to set a move route for all follower pokemon
     def set_move_route(commands, waitComplete = true)
         events = $PokemonGlobal.dependentEvents
         for i in 0...events.length

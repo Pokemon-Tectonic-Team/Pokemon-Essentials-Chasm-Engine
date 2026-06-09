@@ -34,7 +34,16 @@ class PokeBattle_Battle
     end
 
     def maxBattlerIndex
-        return (pbSideSize(0) > pbSideSize(1)) ? (pbSideSize(0) - 1) * 2 : pbSideSize(1) * 2 - 1
+        player = 0
+        opp = 1
+        # cable club messes with the order of battlers to ensure consistency
+        # so we have to do the same here to get the sides right
+        # doesn't matter in balanced matches but comes up with avatar summons
+        if (@client_id == 1)
+            player = 1
+            opp = 0
+        end
+        return (pbSideSize(player) > pbSideSize(opp)) ? (pbSideSize(player) - 1) * 2 : pbSideSize(opp) * 2 - 1
     end
 
     def bossBattle?
@@ -89,6 +98,33 @@ class PokeBattle_Battle
         return @field.effectActive?(:NeutralizingGas)
     end
 
+    def anyMonHasAbility?(ability)
+        [@party1, @party2].each do |party|
+            party.each do |pkmn|
+                return true if pkmn.hasAbility?(ability)
+            end
+        end
+        return false
+    end
+    
+    def anyMonSlumberingShield?
+        return anyMonHasAbility?(:SLUMBERINGSHIELD)
+    end
+
+    def anyMonSlumberingSword?
+        return anyMonHasAbility?(:SLUMBERINGSWORD)
+    end
+
+    def pbCheckSlumbering
+        if @turnCount == 10 && (
+            (anyMonSlumberingShield? && !@field.effectActive?(:SlumberingShieldReady)) || 
+            (anyMonSlumberingSword? && !@field.effectActive?(:SlumberingSwordReady)))
+            pbDisplay(_INTL("The battle reaches an apex!"))
+            @field.applyEffect(:SlumberingShieldReady) if anyMonSlumberingShield?
+            @field.applyEffect(:SlumberingSwordReady) if anyMonSlumberingSword?
+        end
+    end
+
     def pbCheckAlliedAbility(abil, idxBattler = 0, nearOnly = false)
         eachSameSideBattler(idxBattler) do |b|
             next if nearOnly && !b.near?(idxBattler)
@@ -130,7 +166,8 @@ class PokeBattle_Battle
             b.pbCancelMoves # Cancels multi-turn moves
 
             # Use each empowered status move
-            b.eachEmpoweredStatusMove do |move, index|               
+            b.phaseTransitioning = true
+            b.eachEmpoweredStatusMove do |move, index|
                 if showMessages
                   if usedEmpoweredMove
                     pbDisplaySlower(_INTL("What?! Even more energy rises up from inside {1}!!", b.pbThis(true)))
@@ -138,10 +175,11 @@ class PokeBattle_Battle
                     pbDisplaySlower(_INTL("A great energy rises up from inside {1}!", b.pbThis(true)))
                   end
                 end
-                
+
                 b.pbUseMove([:UseMove, index, move, -1, 0])
                 usedEmpoweredMove = true
             end
+            b.phaseTransitioning = false
             
             next unless usedEmpoweredMove
 
@@ -267,6 +305,13 @@ class PokeBattle_Battle
         return if @knownAbilities[battler.pokemon.personalID].include?(ability)
         @knownAbilities[battler.pokemon.personalID].push(ability)
         echoln("[AI LEARNING] The AI is now aware of #{battler.pbThis(true)}'s ability #{ability}")
+    end
+
+    def aiLearnsPokemonAbility(pkmn, ownerIndex, ability)
+        return unless ownerIndex == 0
+        return if @knownAbilities[pkmn.personalID].include?(ability)
+        @knownAbilities[pkmn.personalID].push(ability)
+        echoln("[AI LEARNING] The AI is now aware of #{pkmn.name}'s ability #{ability}")
     end
 
     # If given an array, returns true if the AI knows of ANY of the listed abilities

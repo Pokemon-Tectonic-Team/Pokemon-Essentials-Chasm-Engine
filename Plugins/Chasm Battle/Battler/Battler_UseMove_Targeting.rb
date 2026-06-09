@@ -102,6 +102,8 @@ move, false, true)
             return true unless move.hitsFlyingTargets?
         elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderground") # Dig
             return true unless move.hitsDiggingTargets?
+        elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUndergroundHitThreeTimes") # Rotary Headbutt
+            return true unless move.hitsDiggingTargets?
         elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderwater") # Dive
             return true unless move.hitsDivingTargets?
         elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableHiding") # Lurk and Hidden Strike
@@ -172,10 +174,12 @@ move, false, true)
         if move.damagingMove? && move.baseDamage >= 100
             targets = pbChangeTargetByAbility(:WHITEKNIGHT, move, user, targets, priority, nearOnly)
         end
-        # Bait Fish
-        if move.damagingMove?
-            targets = pbChangeTargetByAbility(:BAITFISH, move, user, targets, priority, nearOnly)
+        # Luring Maw
+        if user.pbHasAnyStatus?
+            targets = pbChangeTargetByAbility(:LURINGMAW, move, user, targets, priority, nearOnly)
         end
+        # Bait Fish
+        targets = pbChangeTargetByAbility(:BAITFISH, move, user, targets, priority, nearOnly)
         return targets
     end
 

@@ -86,6 +86,9 @@ class PokeBattle_Battle
             b.modifyTrackersEOR
         end
 
+        #Slumbering Shield, Slumbering Sword
+        pbCheckSlumbering
+
         # Neutralizing Gas
         pbCheckNeutralizingGas
 
@@ -166,7 +169,7 @@ class PokeBattle_Battle
             damageDealt = damageFromDOTStatus(b, :POISON)
 
             # Venom Gorger
-            if b.getStatusCount(:POISON) % POISON_DOUBLING_TURNS == 0 && !b.fainted?
+            if damageDealt > 0 && b.getStatusCount(:POISON) % POISON_DOUBLING_TURNS == 0 && !b.fainted?
                 b.eachOpposing do |opposingB|
                     next unless opposingB.hasActiveAbility?(:VENOMGORGER)
                     healingMessage = _INTL("{1} slurped up venom leaking from {2}.", opposingB.pbThis, b.pbThis(true))

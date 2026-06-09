@@ -44,8 +44,8 @@ def drawSpot(bitmap,spotpattern,x,y,red,green,blue)
     spot = spotpattern[yy]
     for xx in 0...width
       if spot[xx]==1
-        xOrg = (x+xx)<<1
-        yOrg = (y+yy)<<1
+        xOrg = (x+xx) << 1
+        yOrg = (y+yy) << 1
         color = bitmap.get_pixel(xOrg,yOrg)
         r = color.red+red
         g = color.green+green
@@ -172,11 +172,10 @@ MultipleForms.register(:KYOGRE,{
   }
 })
 
-MultipleForms.register(:RAYQUAZA,{
-  "getPrimalForm" => proc { |pkmn|
-    next 1 if pkmn.hasMove?(:DRAGONASCENT)
-    next
-  }
+MultipleForms.register(:RAYQUAZA, {
+  "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, endBattle|
+      next 0 if pkmn.form == 1 && (pkmn.fainted? || endBattle)
+  },
 })
 
 MultipleForms.register(:CHERRIM,{
@@ -200,7 +199,7 @@ MultipleForms.register(:ROTOM,{
         move_name = pkmn.moves[move_index].name
         pkmn.forget_move_at_index(move_index)
         pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
-        pbLearnMove(:THUNDERSHOCK) if pkmn.numMoves == 0
+        pbLearnMove(pkmn, :PHANTOMGATE, true)
       end
     else
       # Turned into an alternate form; try learning that form's unique move
@@ -216,7 +215,7 @@ MultipleForms.register(:ROTOM,{
         else
           pkmn.forget_move_at_index(move_index)
           pbMessage(_INTL("{1} forgot {2}...", pkmn.name, old_move_name))
-          pbLearnMove(:THUNDERSHOCK) if pkmn.numMoves == 0
+          pbLearnMove(pkmn, :MACHINATE, true)
         end
       else
         # Just try to learn this form's unique move
@@ -249,26 +248,26 @@ MultipleForms.register(:KYUREM,{
     next pkmn.form-2 if pkmn.form>=3   # Fused forms stop glowing
   },
   "onSetForm" => proc { |pkmn, form, oldForm|
-    case form
-    when 0   # Normal
-      pkmn.moves.each do |move|
-        if [:ICEBURN, :FREEZESHOCK].include?(move.id)
-          move.id = :GLACIATE if GameData::Move.exists?(:GLACIATE)
-        end
-        if [:FUSIONFLARE, :FUSIONBOLT].include?(move.id)
-          move.id = :SCARYFACE if GameData::Move.exists?(:SCARYFACE)
-        end
+    next if form > 2 || oldForm > 2   # Glowing in-battle form changes don't affect moveset
+    form_moves = GameData::Species.get(:KYUREM).form_specific_moves
+    if form == 0
+      # Turned back into the base form; forget form-specific moves
+      move_index = -1
+      pkmn.moves.each_with_index do |move, i|
+        next if !form_moves.any? { |m| m == move.id }
+        move_index = i
+        break
       end
-    when 1   # White
-      pkmn.moves.each do |move|
-        move.id = :ICEBURN if move.id == :GLACIATE && GameData::Move.exists?(:ICEBURN)
-        move.id = :FUSIONFLARE if move.id == :SCARYFACE && GameData::Move.exists?(:FUSIONFLARE)
+      if move_index >= 0
+        move_name = pkmn.moves[move_index].name
+        pkmn.forget_move_at_index(move_index)
+        pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
+        pbLearnMove(pkmn, :ABSOLUTEZERO, true)
       end
-    when 2   # Black
-      pkmn.moves.each do |move|
-        move.id = :FREEZESHOCK if move.id == :GLACIATE && GameData::Move.exists?(:FREEZESHOCK)
-        move.id = :FUSIONBOLT if move.id == :SCARYFACE && GameData::Move.exists?(:FUSIONBOLT)
-      end
+    else
+      # Turned into an alternate form; try learning that form's unique move
+      new_move_id = form_moves[form]
+      pbLearnMove(pkmn, new_move_id, true)
     end
   }
 })
@@ -388,7 +387,7 @@ MultipleForms.register(:NECROZMA,{
         move_name = pkmn.moves[move_index].name
         pkmn.forget_move_at_index(move_index)
         pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
-        pbLearnMove(:CONFUSION) if pkmn.numMoves == 0
+        pbLearnMove(pkmn, :PHOTONGEYSER, true)
       end
     else
       # Turned into an alternate form; try learning that form's unique move
@@ -422,48 +421,6 @@ MultipleForms.register(:MEWTWO, {
   },
 })
 
-MultipleForms.register(:ZAMAZENTA,{
-  "getForm" => proc { |pkmn|
-    next 1 if pkmn.hasItem?(:RUSTEDSHIELD)
-    next 0
-  },
-  "onSetForm" => proc { |pkmn, form, oldForm|
-    case form
-    when 0   # Normal
-      pkmn.moves.each do |move|
-        if [:BEHEMOTHBASH].include?(move.id)
-          move.id = :IRONHEAD if GameData::Move.exists?(:IRONHEAD)
-        end
-      end
-    when 1   # Crowned
-      pkmn.moves.each do |move|
-        move.id = :BEHEMOTHBASH if move.id == :IRONHEAD && GameData::Move.exists?(:BEHEMOTHBASH)
-      end
-    end
-  }
-})
-
-MultipleForms.register(:ZACIAN,{
-  "getForm" => proc { |pkmn|
-    next 1 if pkmn.hasItem?(:RUSTEDSWORD)
-    next 0
-  },
-  "onSetForm" => proc { |pkmn, form, oldForm|
-    case form
-    when 0   # Normal
-      pkmn.moves.each do |move|
-        if [:BEHEMOTHBLADE].include?(move.id)
-          move.id = :IRONHEAD if GameData::Move.exists?(:IRONHEAD)
-        end
-      end
-    when 1   # Crowned
-      pkmn.moves.each do |move|
-        move.id = :BEHEMOTHBLADE if move.id == :IRONHEAD && GameData::Move.exists?(:BEHEMOTHBLADE)
-      end
-    end
-  }
-})
-
 MultipleForms.register(:PUMPKABOO, {
   "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, endBattle|
       next 0 if pkmn.fainted? || endBattle
@@ -483,6 +440,18 @@ MultipleForms.register(:GARDEVOIR, {
 })
 
 MultipleForms.register(:GALLADE, {
+  "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, endBattle|
+      next 0 if pkmn.form == 1 && (pkmn.fainted? || endBattle)
+  },
+})
+
+MultipleForms.register(:ZAMAZENTA, {
+  "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, endBattle|
+      next 0 if pkmn.form == 1 && (pkmn.fainted? || endBattle)
+  },
+})
+
+MultipleForms.register(:ZACIAN, {
   "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, endBattle|
       next 0 if pkmn.form == 1 && (pkmn.fainted? || endBattle)
   },

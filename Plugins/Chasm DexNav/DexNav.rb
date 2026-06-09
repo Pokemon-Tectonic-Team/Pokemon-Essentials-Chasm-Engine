@@ -221,6 +221,7 @@ class NewDexNav
 					end
 					cmdStartSearch = -1
 					cmdMasterDex = -1
+					cmdToggleStarring = -1
 					commands = []
 					if $Trainer.pokedex.owned?(highlightedSpecies)
 						if $PokemonTemp.currentDexSearch != nil && $PokemonTemp.currentDexSearch.is_a?(Array)
@@ -230,6 +231,11 @@ class NewDexNav
 						end
 					end
 					commands[cmdMasterDex = commands.length] = _INTL("MasterDex")
+					if $PokemonGlobal.speciesStarred?(highlightedSpecies)
+						commands[cmdToggleStarring = commands.length] = _INTL("Un-Star Species")
+					else
+						commands[cmdToggleStarring = commands.length] = _INTL("Star Species")
+					end
 					commands.push(_INTL("Cancel"))
 					command = pbMessage(_INTL("Do what with this species?"),commands,commands.length)
 					if command == cmdStartSearch && cmdStartSearch > -1
@@ -251,6 +257,10 @@ class NewDexNav
 						$Trainer.pokedex.set_last_form_seen(highlightedSpeciesData.species, 0, highlightedSpeciesData.form)
 						openSingleDexScreen(highlightedSpeciesData.species)
 						@sprites["nav_arrow"].visible = true
+					elsif command == cmdToggleStarring && cmdToggleStarring > -1
+						$PokemonGlobal.toggleStarred(highlightedSpecies)
+						pbPlayDecisionSE
+						drawSprites
 					end
 				elsif Input.trigger?(Input::BACK)
 					break
@@ -294,6 +304,7 @@ class NewDexNav
 
 		encounterGroupLabels = []
 		ownedIconImagePositions = []
+		starredIconImagePositions = []
 		encounterGroupCheckboxesImagePositions = []
 		horizontalLineImagePositions = []
 
@@ -331,6 +342,12 @@ class NewDexNav
 					ownedIconY = DEXNAV_LIST_START_Y + lineHeight - 32
 					ownedIconImagePositions.push(["Graphics/Pictures/Battle/icon_own",ownedIconX,ownedIconY])
 				end
+
+				if $PokemonGlobal.speciesStarred?(sprite.species)
+					starIconX = sprite.x + 40
+					starIconY = DEXNAV_LIST_START_Y + lineHeight - 32
+					starredIconImagePositions.push(["Graphics/Pictures/Pokedex/star",starIconX,starIconY])
+				end
 			end
 
 			lineHeight += DEXNAV_LINE_HEIGHT + 8
@@ -346,6 +363,7 @@ class NewDexNav
 		imagePos = []
 		adjustGraphicalArrayForVisualOffset(encounterGroupCheckboxesImagePositions, imagePos)
 		adjustGraphicalArrayForVisualOffset(ownedIconImagePositions, imagePos)
+		adjustGraphicalArrayForVisualOffset(starredIconImagePositions, imagePos)
 		adjustGraphicalArrayForVisualOffset(horizontalLineImagePositions, imagePos)
 
 		# Adjust the pokemon sprites

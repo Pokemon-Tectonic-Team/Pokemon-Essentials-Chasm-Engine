@@ -1,8 +1,14 @@
 LEVEL_CAPS_USED = true
 LEVEL_CAP_VAR = 26
+STARTING_LEVEL_CAP = 15
+LEVEL_CAP_INCREASE = 5
 MAX_LEVEL_CAP = 70
 
-def increaseLevelCap(increase)
+def setStartingLevelCap
+    setLevelCap(STARTING_LEVEL_CAP,false)
+end
+
+def increaseLevelCap(increase = LEVEL_CAP_INCREASE)
     return unless LEVEL_CAPS_USED
     setLevelCap($game_variables[LEVEL_CAP_VAR] + increase)
 end

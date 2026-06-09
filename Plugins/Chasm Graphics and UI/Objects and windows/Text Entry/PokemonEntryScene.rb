@@ -19,7 +19,7 @@ class PokemonEntryScene
           width = 400
         end
         @sprites["entry"]=Window_TextEntry_Keyboard.new(initialText,
-           0,0,width,96,helptext,true)
+           0,0,width,96,helptext,!darkMode?)
         Input.text_input = true
       else
         @sprites["entry"]=Window_TextEntry.new(initialText,0,0,400,96,helptext,true)
@@ -52,9 +52,10 @@ class PokemonEntryScene
       @sprites["helpwindow"].letterbyletter=false
       @sprites["helpwindow"].viewport=@viewport
       @sprites["helpwindow"].visible=USEKEYBOARD
-      @sprites["helpwindow"].baseColor=Color.new(16,24,32)
-      @sprites["helpwindow"].shadowColor=Color.new(168,184,184)
-      addBackgroundPlane(@sprites,"background","Naming/bg_2",@viewport)
+      @sprites["helpwindow"].baseColor = darkMode? ? MessageConfig::LIGHT_TEXT_MAIN_COLOR : Color.new(16,24,32)
+      @sprites["helpwindow"].shadowColor = darkMode? ? MessageConfig::LIGHT_TEXT_SHADOW_COLOR : Color.new(168,184,184)
+      bg_2_path = darkMode? ? "Naming/bg_2_dark" : "Naming/bg_2"
+      addBackgroundPlane(@sprites,"background",bg_2_path,@viewport)
       case subject
       when 1   # Player
         meta=GameData::Metadata.get_player($Trainer.character_ID)

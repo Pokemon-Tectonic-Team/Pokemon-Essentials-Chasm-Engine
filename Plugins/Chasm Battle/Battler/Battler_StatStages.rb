@@ -4,9 +4,11 @@ ALL_STATS_3 = [:ATTACK, 3, :SPECIAL_ATTACK, 3, :DEFENSE, 3, :SPECIAL_DEFENSE, 3,
 ATTACKING_STATS_1 = [:ATTACK, 1, :SPECIAL_ATTACK, 1].freeze
 ATTACKING_STATS_2 = [:ATTACK, 2, :SPECIAL_ATTACK, 2].freeze
 ATTACKING_STATS_3 = [:ATTACK, 3, :SPECIAL_ATTACK, 3].freeze
+ATTACKING_STATS_4 = [:ATTACK, 4, :SPECIAL_ATTACK, 4].freeze
 DEFENDING_STATS_1 = [:DEFENSE, 1, :SPECIAL_DEFENSE, 1].freeze
 DEFENDING_STATS_2 = [:DEFENSE, 2, :SPECIAL_DEFENSE, 2].freeze
 DEFENDING_STATS_3 = [:DEFENSE, 3, :SPECIAL_DEFENSE, 3].freeze
+DEFENDING_STATS_4 = [:DEFENSE, 4, :SPECIAL_DEFENSE, 4].freeze
 
 class PokeBattle_Battler
     def validateStat(stat)
@@ -208,8 +210,8 @@ class PokeBattle_Battler
             pbMinimizeStatStep(stat, user, move, true, ability: ability)
         elsif hasActiveAbility?(:INVERSION) && !ignoreContrary
             aiLearnsAbility(:INVERSION)
-            increment = ((STAT_STEP_BOUND + @steps[stat]) / 2.0).ceil
-            tryLowerStat(stat, user, move: move, increment: increment, ability: ability)
+            increment = ((STAT_STEP_BOUND - @steps[stat]) / 2.0).ceil
+            tryLowerStat(stat, user, move: move, increment: increment, ability: ability, ignoreContrary: true)
         elsif pbCanRaiseStatStep?(stat, user, move, true, ignoreContrary)
             @battle.pbShowAbilitySplash(user, ability) if ability
             increment = STAT_STEP_BOUND - @steps[stat]
@@ -553,7 +555,7 @@ class PokeBattle_Battler
         elsif hasActiveAbility?(:INVERSION) && !ignoreContrary
             aiLearnsAbility(:INVERSION)
             increment = ((STAT_STEP_BOUND + @steps[stat]) / 2.0).ceil
-            tryRaiseStat(stat, user, move: move, increment: increment, ability: ability)
+            tryRaiseStat(stat, user, move: move, increment: increment, ability: ability, ignoreContrary: true)
         elsif pbCanLowerStatStep?(stat, user, move, true, ignoreContrary)
             @battle.pbShowAbilitySplash(user, ability) if ability
             increment = @steps[stat] + STAT_STEP_BOUND
@@ -577,9 +579,21 @@ class PokeBattle_Battler
             BattleHandlers.triggerAbilityOnStatLoss(ability, self, user)
         end
 
-        # Trigger items upon stat loss
+        # Trigger White Herb / Black Herb immediately on stat loss. This covers
+        # entry-ability stat drops (e.g. Intimidate) that never reach the end-of-move
+        # pbItemEndOfMoveCheck. During moves the item is consumed here, so
+        # pbItemEndOfMoveCheck is a harmless no-op afterwards.
+        pbItemStatRestoreCheck
+
+        # Trigger items upon stat loss (e.g. Eject Pack)
+        # Track switches so pbEffectsOnSwitchIn is called exactly once per switch,
+        # matching the pattern used by pbEffectsAfterMove2 for Eject Button/Red Card.
+        switched = []
         eachActiveItem do |item|
-            BattleHandlers.triggerItemOnStatLoss(item, self, user, move, [], @battle)
+            BattleHandlers.triggerItemOnStatLoss(item, self, user, move, switched, @battle)
+        end
+        @battle.pbPriority(true).each do |b|
+            b.pbEffectsOnSwitchIn(true) if switched.include?(b.index)
         end
     end
 

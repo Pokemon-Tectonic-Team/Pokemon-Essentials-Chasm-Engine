@@ -50,7 +50,7 @@ class PokeBattle_Move_HealUserPositionNextTurn < PokeBattle_Move
     def getEffectScore(user, _target)
         score = (user.totalhp / user.level) * 40
         score -= wishTurns(user) * 10
-        score *= user.levelNerf(false,false,0.5) if user.level <= 30 && !user.pbOwnedByPlayer? # AI nerf
+        score *= user.levelNerfMisc(0.5)
         return score
     end
 end
@@ -236,7 +236,7 @@ end
 
 #===============================================================================
 # Ingrains the user. Ingrained Pokémon gain 1/16 of max HP at the end of each
-# round, and cannot flee or switch out. (Ingrain)
+# round, and cannot flee or switch out.
 #===============================================================================
 class PokeBattle_Move_StartHealUserEachTurnTrapUser < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
@@ -848,16 +848,16 @@ end
 class PokeBattle_Move_HealUserHalfOfTotalHPExtendScreens1 < PokeBattle_HalfHealingMove
     def pbEffectGeneral(user)
         super
-        pbOwnSide.eachEffect(true) do |effect, value, data|
+        user.pbOwnSide.eachEffect(true) do |effect, value, data|
             next unless data.is_screen?
-            pbOwnSide.effects[effect] += 1
-            @battle.pbDisplay(_INTL("{1}'s {2} was extended 1 turn!", pbTeam, data.name))
+            user.pbOwnSide.effects[effect] += 1
+            @battle.pbDisplay(_INTL("{1}'s {2} was extended 1 turn!", user.pbTeam, data.name))
         end
     end
 
     def getEffectScore(user, target)
         score = super
-        pbOwnSide.eachEffect(true) do |effect, value, data|
+        user.pbOwnSide.eachEffect(true) do |effect, value, data|
             next unless data.is_screen?
             score += 30
         end
@@ -905,7 +905,7 @@ class PokeBattle_Move_UserLosesQuarterHPPartyMembersHealQuarterHP < PokeBattle_M
     end
 
     def validPokemon(pkmn)
-        return pkmn&.able? && pkmn.hp < pkmn.totalhp
+        return pkmn&.able?(true, GameData::Ability.getByFlag("UnableByDefault")) && pkmn.hp < pkmn.totalhp
     end
 
     def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)

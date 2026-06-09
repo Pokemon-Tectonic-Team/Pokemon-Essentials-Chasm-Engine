@@ -568,7 +568,6 @@ class OverworldWeather
 
     def applyDefaultFog
         darknessOpacity = 0
-        darknessOpacity = 100 if DARK_MAPS.include?($game_map.map_id)
         applyFog('darkness', 0, darknessOpacity)
     end
 end

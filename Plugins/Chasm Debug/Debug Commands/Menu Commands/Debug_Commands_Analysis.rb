@@ -7,7 +7,7 @@ end
 DebugMenuCommands.register("findtextinevents", {
     "parent"      => "analysis",
     "name"        => _INTL("Find Text In Events"),
-    "description" => _INTL("Find events which have a peice of text in the params of their command list."),
+    "description" => _INTL("Find events which have a piece of text in the params of their command list."),
     "effect"      => proc { |sprites, viewport|
         textEntered = pbEnterText("Enter text...", 0, 32)
 
@@ -45,7 +45,7 @@ end
 DebugMenuCommands.register("replacetextinevents", {
     "parent"      => "analysis",
     "name"        => _INTL("Replace Text In Events"),
-    "description" => _INTL("Find events which have a peice of text in the params of their command list, and replace them with a new string."),
+    "description" => _INTL("Find events with a piece of text in their command params, replace with new string."),
     "effect"      => proc { |sprites, viewport|
         textEntered = pbEnterText("Enter text to replace...", 0, 32)
 
@@ -383,7 +383,7 @@ end
           file.write("Move, Type, Category, Level Up Count, Tutor Count, Same-Type Count, Off-type Count\r\n")
           move_counts.each do |move_id,counts|
               moveData = GameData::Move.get(move_id)
-              categoryLabel = ["PHYSICAL","SPECIAL","STATUS"][moveData.category]
+              categoryLabel = ["PHYSICAL","SPECIAL","STATUS","ADAPTIVE"][moveData.category]
               file.write("#{move_id},#{moveData.type},#{categoryLabel},#{counts[0]},#{counts[1]},#{counts[2]},#{counts[3]}\r\n")
           end
       }
@@ -774,7 +774,7 @@ end
   
   def checkTrainerPokemonLegality(pkmn,trainerInfo)
       species_data = GameData::Species.get_species_form(pkmn.species,pkmn.form)
-      if pkmn.species != :SMEARGLE
+      unless pkmn.species_data.can_learn_sketch?
           pkmn.moves.each do |move|
               next unless move
               next if pkmn.species_data.learnable_moves.include?(move.id)

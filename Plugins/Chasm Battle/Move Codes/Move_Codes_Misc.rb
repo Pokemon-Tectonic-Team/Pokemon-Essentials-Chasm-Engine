@@ -71,7 +71,7 @@ class PokeBattle_Move_CannotMakeTargetFaint < PokeBattle_Move
 end
 
 #===============================================================================
-# Swaps form if the user is Meloetta. (Relic Song)
+# Swaps form if the user is Meloetta.
 #===============================================================================
 class PokeBattle_Move_ChangeUserMeloettaForm < PokeBattle_Move
     def pbEndOfMoveUsageEffect(user, _targets, numHits, _switchedBattlers)
@@ -121,7 +121,7 @@ class PokeBattle_Move_ChangeUserMewtwoChoiceOfForm < PokeBattle_Move
             form1Name = GameData::Species.get_species_form(:MEWTWO,1).form_name
             form2Name = GameData::Species.get_species_form(:MEWTWO,2).form_name
             formNames = [form1Name,form2Name]
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which form should {1} take?", user.pbThis(true)),formNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)),formNames)
             @chosenForm = chosenIndex + 1
             return @chosenForm
         end
@@ -247,7 +247,7 @@ class PokeBattle_Move_UseHighestBasePowerMoveFromUserParty < PokeBattle_Move
         optimizedBP = -1
         @battle.pbParty(user.index).each_with_index do |pkmn, i|
             next if !pkmn || i == user.pokemonIndex
-            next unless pkmn.able?
+            next unless pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
             pkmn.moves.each do |move|
                 next if move.category == 2
                 next unless move.base_damage > optimizedBP
@@ -406,7 +406,7 @@ class PokeBattle_Move_ChangeUserDeoxusChoiceOfForm < PokeBattle_Move
             form2Name = GameData::Species.get_species_form(:DEOXYS,2).form_name
             form3Name = GameData::Species.get_species_form(:DEOXYS,3).form_name
             formNames = [form1Name,form2Name,form3Name]
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which form should {1} take?", user.pbThis(true)),formNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)),formNames)
             @chosenForm = chosenIndex + 1
             return @chosenForm
         end
@@ -469,16 +469,6 @@ class PokeBattle_Move_IgnoreTargetAbilityChangeUserNecrozmaForm < PokeBattle_Mov
 
     def pbDisplayUseMessage(user, _targets = [])
         @battle.pbDisplayBrief(_INTL("{1} used Light That Burns the Sky!", user.pbThis))
-    end
-
-    def pbDisplayChargeMessage(user)
-        if user.form == 1
-            @battle.pbCommonAnimation("UltraBurst", user)
-            user.pbChangeForm(3, _INTL("Bright lights bursts out of {1}!", user.pbThis))
-        elsif user.form == 2
-            @battle.pbCommonAnimation("UltraBurst", user)
-            user.pbChangeForm(4, _INTL("Bright lights bursts out of {1}", user.pbThis))
-        end 
     end
 
     def getEffectScore(user, _target)
@@ -579,8 +569,8 @@ class PokeBattle_Move_RaiseTargetAtkSpAtk3TargetHitsSelfAdaptive < PokeBattle_Mo
         return score
     end
 
-    def calculateDamageForHitAI(user,target,type,baseDmg,numTargets)
-        damage = calculateDamageForHit(user,target,type,baseDmg,numTargets,true)
+    def calculateDamageForHitAI(user,target,type,baseDmg,numTargets,aiContext=nil)
+        damage = calculateDamageForHit(user,target,type,baseDmg,numTargets,true,aiContext)
         damage *= 1.75 unless targetIsUnaware?(target, aiCheck: true)
         return damage
     end
@@ -643,6 +633,200 @@ class PokeBattle_Move_ChangeUserDeerlingSawsbuckForm < PokeBattle_Move
             formChangeMessage = _INTL("The season shifts!")
             user.pbChangeForm(newForm, formChangeMessage)
         end
+    end
+end
+
+#===============================================================================
+# All Normal-type moves become Electric-type for the rest of the round.
+# (Plasma Fists)
+#===============================================================================
+class PokeBattle_Move_NormalMovesBecomeElectric < PokeBattle_Move
+    def pbMoveFailed?(user, _targets, show_message)
+        return false if damagingMove?
+        if @battle.field.effectActive?(:IonDeluge)
+            @battle.pbDisplay(_INTL("But it failed, since ions already shower the field!")) if show_message
+            return true
+        end
+        return true if pbMoveFailedLastInRound?(user, show_message)
+        return false
+    end
+
+    def pbEffectGeneral(_user)
+        @battle.field.applyEffect(:IonDeluge)
+    end
+end
+
+#===============================================================================
+# Accuracy perfect in moonglow. (Nightfelling)
+#===============================================================================
+class PokeBattle_Move_CantMissIfInMoonglow < PokeBattle_Move
+    def pbBaseAccuracy(user, target)
+        return 0 if @battle.moonGlowing?
+        return super
+    end
+
+    def shouldHighlight?(_user, _target)
+        return @battle.moonGlowing?
+    end
+end
+
+#===============================================================================
+# The user chooses one of Fire Fang, Ice Fang, Hydro Fang, or Thunder Fang to use. (Elemental Fang)
+#===============================================================================
+class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
+    def callsAnotherMove?; return true; end
+
+    def initialize(battle, move)
+        super
+        @validMoves = %i[
+            FIREFANG
+            ICEFANG
+            HYDROFANG
+            THUNDERFANG
+        ]
+    end
+
+    def resolutionChoice(user, replayed_choice)
+        validMoveNames = []
+        @validMoves.each do |move|
+            validMoveNames.push(getMoveName(move))
+        end
+
+        if @battle.autoTesting
+            @chosenMove = @validMoves.sample
+        elsif !user.pbOwnedByPlayer? # Trainer AI
+            @chosenMove = @validMoves[0]
+        else
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
+            @chosenMove = @validMoves[chosenIndex]
+        end
+    end
+
+    def pbEffectAgainstTarget(user, target)
+        user.pbUseMoveSimple(@chosenMove, target.index) if @chosenMove
+    end
+
+    def resetMoveUsageState
+        @chosenMove = nil
+    end
+
+    def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
+        return # No animation
+    end
+end
+
+#===============================================================================
+# The user chooses one of Searing Crunch, Glacial Crunch, Aquatic Crunch, and Volt Crunch to use. (Elemental Crunch)
+#===============================================================================
+class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
+    def callsAnotherMove?; return true; end
+
+    def initialize(battle, move)
+        super
+        @validMoves = %i[
+            SEARINGCRUNCH
+            GLACIALCRUNCH
+            AQUATICCRUNCH
+            VOLTCRUNCH
+        ]
+    end
+
+    def resolutionChoice(user, replayed_choice)
+        validMoveNames = []
+        @validMoves.each do |move|
+            validMoveNames.push(getMoveName(move))
+        end
+
+        if @battle.autoTesting
+            @chosenMove = @validMoves.sample
+        elsif !user.pbOwnedByPlayer? # Trainer AI
+            @chosenMove = @validMoves[0]
+        elsif !replayed_choice.nil?
+            @chosenMove = replayed_choice
+        else
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
+            @chosenMove = @validMoves[chosenIndex]
+            return @chosenMove
+        end
+    end
+
+    def pbEffectAgainstTarget(user, target)
+        user.pbUseMoveSimple(@chosenMove, target.index) if @chosenMove
+    end
+
+    def resetMoveUsageState
+        @chosenMove = nil
+    end
+
+    def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
+        return # No animation
+    end
+end
+
+#===============================================================================
+# Fails if the user is not asleep. (Snore)
+#===============================================================================
+class PokeBattle_Move_FailsIfUserNotAsleep < PokeBattle_Move
+    def usableWhenAsleep?; return true; end
+
+    def pbMoveFailed?(user, _targets, show_message)
+        unless user.asleep?
+            @battle.pbDisplay(_INTL("But it failed, since {1} isn't asleep!", user.pbThis(true))) if show_message
+            return true
+        end
+        return false
+    end
+
+    def pbMoveFailedAI?(user, targets)
+        return true unless user.willStayAsleepAI?
+        return pbMoveFailed?(user, targets, false)
+    end
+end
+
+#===============================================================================
+# Fails if the user is not asleep and wakes up the user. (Wakeful Tide)
+#===============================================================================
+class PokeBattle_Move_FailsIfUserNotAsleepWakeUpUser < PokeBattle_Move_FailsIfUserNotAsleep
+    def pbEffectAfterAllHits(user, targets)
+        user.pbCureStatus(true, :SLEEP)
+    end
+end
+
+#===============================================================================
+# Uses each other Sound move the Pokemon knows. (Wall of Sound)
+#===============================================================================
+class PokeBattle_Move_UseAllOtherSoundMoves < PokeBattle_Move
+    def callsAnotherMove?; return true; end
+
+    def getAllOtherSoundMoves(user)
+        moves = []
+        user.getMoves.each do |m|
+            next unless m.soundMove?
+            next unless @battle.canInvokeMove?(m)
+            moves.push(m.id)
+        end
+        return moves
+    end
+
+    def pbMoveFailed?(user, _targets, show_message)
+        if getAllOtherSoundMoves(user).length == 0
+            if show_message
+                @battle.pbDisplay(_INTL("But it failed, since {1} knows no other sound-based moves!", user.pbThis(true)))
+            end
+            return true
+        end
+        return false
+    end
+
+    def pbEffectGeneral(user)
+        moves = getAllOtherSoundMoves(user)
+        moves.each do |sound_move|
+            user.pbUseMoveSimple(sound_move)
+        end
+    end
+
+    def getEffectScore(user, _target)
+        return getAllOtherSoundMoves(user).length * 100
     end
 end
 
@@ -724,186 +908,84 @@ class PokeBattle_Move_GroudonStartGravityDoubleAllWeight < PokeBattle_Move
 end
 
 #===============================================================================
-# All Normal-type moves become Electric-type for the rest of the round.
-# (Plasma Fists)
+# Targets gain Steel-type and have their stat steps reset. (Ideal World)
 #===============================================================================
-class PokeBattle_Move_NormalMovesBecomeElectric < PokeBattle_Move
+class PokeBattle_Move_AddSteelTypeToTargetResetTargetStats < PokeBattle_Move
+    def isValidTarget?(target)
+        canGainSteelType = !target.pbHasType?(:STEEL) && target.canChangeType?
+        return canGainSteelType || target.hasAlteredStatSteps?
+    end
+
     def pbMoveFailed?(user, _targets, show_message)
-        return false if damagingMove?
-        if @battle.field.effectActive?(:IonDeluge)
-            @battle.pbDisplay(_INTL("But it failed, since ions already shower the field!")) if show_message
+        # if !user.countsAs?(:ZEKROM) || !user.boss?
+        #     @battle.pbDisplay(_INTL("But {1} can't use the move!", user.pbThis(true))) if show_message
+        #     return true
+        # end
+        anyValidTargets = false
+        @battle.eachBattler do |b|
+            next unless isValidTarget?(b)
+            anyValidTargets = true
+            break
+        end
+        unless anyValidTargets
+            @battle.pbDisplay(_INTL("But {1} it failed! No battler can gain Steel-type or has any altered stat steps!", user.pbThis(true))) if show_message
             return true
         end
-        return true if pbMoveFailedLastInRound?(user, show_message)
         return false
     end
 
     def pbEffectGeneral(_user)
-        @battle.field.applyEffect(:IonDeluge)
+        @battle.pbDisplay(_INTL("The world has moved forward!"))
+    end
+
+    def pbFailsAgainstTarget?(_user, target, _show_message)
+        return !isValidTarget?(target)
+    end
+
+    def pbEffectAgainstTarget(_user, target)
+        target.applyEffect(:Type3, :STEEL) if !target.pbHasType?(:STEEL) && target.canChangeType?
+        if target.hasAlteredStatSteps?
+            @battle.pbDisplay(_INTL("{1}'s stat changes were eliminated!", target.pbThis))
+            target.pbResetStatSteps
+        end
     end
 end
 
 #===============================================================================
-# Accuracy perfect in moonglow. (Nightfelling)
+# Targets have all main battle stats raised by two steps. (True Glory)
 #===============================================================================
-class PokeBattle_Move_CantMissIfInMoonglow < PokeBattle_Move
-    def pbBaseAccuracy(user, target)
-        return 0 if @battle.moonGlowing?
-        return super
+class PokeBattle_Move_RaiseTargetAllMainStats2 < PokeBattle_Move
+    def isValidTarget?(target)
+        return target.pbCanRaiseAnyOfStats?(ALL_STATS_2, nil, move: self)
     end
-
-    def shouldHighlight?(_user, _target)
-        return @battle.moonGlowing?
-    end
-end
-
-#===============================================================================
-# The user chooses one of Fire Fang, Ice Fang, Hydro Fang, or Thunder Fang to use. (Elemental Fang)
-#===============================================================================
-class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
-    def callsAnotherMove?; return true; end
-
-    def initialize(battle, move)
-        super
-        @validMoves = %i[
-            FIREFANG
-            ICEFANG
-            HYDROFANG
-            THUNDERFANG
-        ]
-    end
-
-    def resolutionChoice(user)
-        validMoveNames = []
-        @validMoves.each do |move|
-            validMoveNames.push(getMoveName(move))
-        end
-
-        if @battle.autoTesting
-            @chosenMove = @validMoves.sample
-        elsif !user.pbOwnedByPlayer? # Trainer AI
-            @chosenMove = @validMoves[0]
-        else
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames,0)
-            @chosenMove = @validMoves[chosenIndex]
-        end
-    end
-
-    def pbEffectAgainstTarget(user, target)
-        user.pbUseMoveSimple(@chosenMove, target.index) if @chosenMove
-    end
-
-    def resetMoveUsageState
-        @chosenMove = nil
-    end
-
-    def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
-        return # No animation
-    end
-end
-
-#===============================================================================
-# The user chooses one of Searing Crunch, Glacial Crunch, Aquatic Crunch, and Volt Crunch to use. (Elemental Crunch)
-#===============================================================================
-class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
-    def callsAnotherMove?; return true; end
-
-    def initialize(battle, move)
-        super
-        @validMoves = %i[
-            SEARINGCRUNCH
-            GLACIALCRUNCH
-            AQUATICCRUNCH
-            VOLTCRUNCH
-        ]
-    end
-
-    def resolutionChoice(user, replayed_choice)
-        validMoveNames = []
-        @validMoves.each do |move|
-            validMoveNames.push(getMoveName(move))
-        end
-
-        if @battle.autoTesting
-            @chosenMove = @validMoves.sample
-        elsif !user.pbOwnedByPlayer? # Trainer AI
-            @chosenMove = @validMoves[0]
-        elsif !replayed_choice.nil?
-            @chosenMove = replayed_choice
-        else
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames,0)
-            @chosenMove = @validMoves[chosenIndex]
-            return @chosenMove
-        end
-    end
-
-    def pbEffectAgainstTarget(user, target)
-        user.pbUseMoveSimple(@chosenMove, target.index) if @chosenMove
-    end
-
-    def resetMoveUsageState
-        @chosenMove = nil
-    end
-
-    def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
-        return # No animation
-    end
-end
-
-#===============================================================================
-# Fails if the user is not asleep. (Snore)
-#===============================================================================
-class PokeBattle_Move_FailsIfUserNotAsleep < PokeBattle_Move
-    def usableWhenAsleep?; return true; end
 
     def pbMoveFailed?(user, _targets, show_message)
-        unless user.asleep?
-            @battle.pbDisplay(_INTL("But it failed, since {1} isn't asleep!", user.pbThis(true))) if show_message
+        # if !user.countsAs?(:ZEKROM) || !user.boss?
+        #     @battle.pbDisplay(_INTL("But {1} can't use the move!", user.pbThis(true))) if show_message
+        #     return true
+        # end
+        anyValidTargets = false
+        @battle.eachBattler do |b|
+            next unless isValidTarget?(b)
+            anyValidTargets = true
+            break
+        end
+        unless anyValidTargets
+            @battle.pbDisplay(_INTL("But {1} it failed! No battler can have any of its stats raised!", user.pbThis(true))) if show_message
             return true
         end
         return false
     end
 
-    def pbMoveFailedAI?(user, targets)
-        return true unless user.willStayAsleepAI?
-        return pbMoveFailed?(user, targets, false)
-    end
-end
-
-#===============================================================================
-# Uses each other Sound move the Pokemon knows. (Wall of Sound)
-#===============================================================================
-class PokeBattle_Move_UseAllOtherSoundMoves < PokeBattle_Move
-    def callsAnotherMove?; return true; end
-
-    def getAllOtherSoundMoves(user)
-        moves = []
-        user.getMoves.each do |m|
-            next unless m.soundMove?
-            next unless @battle.canInvokeMove?(m)
-            moves.push(m.id)
-        end
-        return moves
+    def pbEffectGeneral(_user)
+        @battle.pbDisplay(_INTL("Glory has been revealed!"))
     end
 
-    def pbMoveFailed?(user, _targets, show_message)
-        if getAllOtherSoundMoves(user).length == 0
-            if show_message
-                @battle.pbDisplay(_INTL("But it failed, since {1} knows no other sound-based moves!", user.pbThis(true)))
-            end
-            return true
-        end
-        return false
+    def pbFailsAgainstTarget?(_user, target, _show_message)
+        return !isValidTarget?(target)
     end
 
-    def pbEffectGeneral(user)
-        moves = getAllOtherSoundMoves(user)
-        moves.each do |sound_move|
-            user.pbUseMoveSimple(sound_move)
-        end
-    end
-
-    def getEffectScore(user, _target)
-        return getAllOtherSoundMoves(user).length * 100
+    def pbEffectAgainstTarget(user, target)
+        target.pbRaiseMultipleStatSteps(ALL_STATS_2, user, move: self)
     end
 end

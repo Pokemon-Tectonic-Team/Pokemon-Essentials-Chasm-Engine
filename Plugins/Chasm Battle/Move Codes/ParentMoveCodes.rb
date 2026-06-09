@@ -387,6 +387,10 @@ class PokeBattle_MultiStatUpMove < PokeBattle_Move
 end
 
 class PokeBattle_StatDownMove < PokeBattle_Move
+    def consumesItem?(user)
+        user.hasActiveItemAI?(:WHITEHERB)
+    end
+
     def pbEffectWhenDealingDamage(user, target)
         return if @battle.pbAllFainted?(target.idxOwnSide)
         user.pbLowerMultipleStatSteps(@statDown, user, move: self)
@@ -396,7 +400,7 @@ class PokeBattle_StatDownMove < PokeBattle_Move
         if user.hasActiveItemAI?(:EJECTPACK)
             return getSwitchOutEffectScore(user)
         elsif user.hasActiveItemAI?(:WHITEHERB)
-            return -5 # Uses up the white herb
+            return 0 # Item consumption penalty handled by consumesItem?
         else
             statDownAI = []
             for i in 0...@statDown.length / 2
@@ -517,7 +521,7 @@ class PokeBattle_FixedDamageMove < PokeBattle_Move
         end
     end
 
-    def calculateDamageForHit(user, target, type, baseDmg, numTargets, aiCheck = false)
+    def calculateDamageForHit(user, target, type, baseDmg, numTargets, aiCheck = false, aiContext = nil)
         fixedDamage = pbFixedDamage(user, target)
         return fixedDamage if fixedDamage
         super
@@ -532,6 +536,12 @@ end
 class PokeBattle_TwoTurnMove < PokeBattle_Move
     def chargingTurnMove?; return true; end
 
+    def worksWithNoTargets?(user = nil)
+        return false if user.nil?
+        return true if @chargingTurn && !@damagingTurn
+        return false
+    end
+
     # :TwoTurnAttack is set to the move's ID if this
     # method returns true, or nil if false.
     # Non-nil means the charging turn. nil means the attacking turn.
@@ -540,6 +550,11 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
         @chargingTurn = false # Assume damaging turn by default
         @damagingTurn = true
         # 0 at start of charging turn, move's ID at start of damaging turn
+        if user.hasActiveAbility?(:BIRDBRAINED) && user.effectActive?(:ExtraHidingTurn)
+            @powerHerb = user.hasActiveItem?(:POWERHERB)
+            @chargingTurn = true
+            @damagingTurn = @powerHerb
+        end
         unless user.effectActive?(:TwoTurnAttack)
             if skipChargingTurn?(user)
                 @powerHerb = false
@@ -550,6 +565,7 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
                 @chargingTurn = true
                 @damagingTurn = @powerHerb
             end
+            user.disableEffect(:ExtraHidingTurn)
         end
         return !@damagingTurn # Deliberately not "return @chargingTurn"
     end
@@ -580,6 +596,7 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
                 @battle.pbCommonAnimation("UseItem", user) unless %w[
                     TwoTurnAttackInvulnerableInSky
                     TwoTurnAttackInvulnerableUnderground
+					TwoTurnAttackInvulnerableUndergroundHitThreeTimes
                     TwoTurnAttackInvulnerableUnderwater
                     TwoTurnAttackInvulnerableHiding
                     TwoTurnAttackInvulnerableInFoliage
@@ -632,6 +649,10 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
             score -= 30 if user.belowHalfHealth?
         end
         return score
+    end
+
+    def consumesItem?(user)
+        user.hasActiveItemAI?(:POWERHERB) && !skipChargingTurn?(user)
     end
 
     def skipChargingTurn?(user); return false; end
@@ -1038,11 +1059,11 @@ class PokeBattle_RoomMove < PokeBattle_Move
     end
 
     def pbEffectGeneral(user)
-        @battle.pbStartRoom(@roomEffect, user, @short)
+        @battle.pbStartRoom(@roomEffect, user, @short, false, duration: @duration)
     end
 
     def getEffectScore(user, _target)
-        return @battle.pbStartRoom(@roomEffect, user, @short, true)
+        return @battle.pbStartRoom(@roomEffect, user, @short, true, duration: @duration)
     end
 end
 
@@ -1176,7 +1197,7 @@ class PokeBattle_StatUpDownMove < PokeBattle_Move
 
     def pbMoveFailed?(user, _targets, show_message)
         return false if user.pbCanRaiseAnyOfStats?(@statUp, user, move: self)
-        return false if user.pbCanRaiseAnyOfStats?(@statDown, user, move: self)
+        return false if user.pbCanLowerAnyOfStats?(@statDown, user, move: self)
         @battle.pbDisplay(_INTL("{1}'s stats can't be changed further!", user.pbThis)) if show_message
         return true
     end
@@ -1291,7 +1312,7 @@ class PokeBattle_PartyAttackMove < PokeBattle_Move
     def calculatePartyAttackerList(user)
         @partyAttackerList = []
         @battle.eachInTeamFromBattlerIndex(user.index) do |pkmn, i|
-            next if !pkmn.able? || pkmn.status != :NONE
+            next if !pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault")) || pkmn.status != :NONE
             @partyAttackerList.push(i)
         end
     end
@@ -1331,6 +1352,11 @@ class PokeBattle_PartyAttackMove < PokeBattle_Move
         end
         return baseDamageFromStat(totalBaseStat / @partyAttackerList.length)
     end
+
+    def getDetailsForMoveDex(detailsList = [])
+        detailsList << _INTL("<u>Base Power per Hit</u>:")
+        detailsList << _INTL("10 + (base Attack stat / 8)")
+    end
 end
 
 class PokeBattle_ForetoldMove < PokeBattle_Move
@@ -1343,6 +1369,7 @@ class PokeBattle_ForetoldMove < PokeBattle_Move
     end
 
     def pbOnStartUse(user, targets)
+        return if targets.any? { |t| t.position.effectActive?(:ForetoldMoveCounter) }
         if user.hasActiveAbility?(:FOREWARNING) && !@battle.foretoldMove
             user.showMyAbilitySplash(:FOREWARNING)
             @battle.pbDisplay(_INTL("{1} gives a taste of what's to come!", user.pbThis))
@@ -1418,7 +1445,7 @@ class PokeBattle_ForetoldMove < PokeBattle_Move
         elsif @id == :GHOSTLYTALE
             @battle.pbDisplay(_INTL("{1} weaves a tale of woe and horror!", user.pbThis))
         elsif @id == :STROKEOFMIDNIGHT
-            @battle.pbDisplay(_INTL("{1} knows when {1}'s time will run out!", user.pbThis, target.pbThis(true)))
+            @battle.pbDisplay(_INTL("{1} knows when {2}'s time will run out!", user.pbThis, target.pbThis(true)))
         elsif @id == :LOOMINGWINTER
             @battle.pbDisplay(_INTL("{1} feels a chill on the air... winter is coming!", user.pbThis))
         else # Default, for Future Sight

@@ -158,10 +158,16 @@ class Game_Event < Game_Character
       return if $game_system.map_interpreter.running? || @starting
       if @event.name[/trainer\((\d+)\)/i]
         distance = $~[1].to_i
-        if @trigger==2 && pbEventCanReachPlayer?(self,$game_player,distance)
+        if @trigger == 2 && canTrainerVisionTrigger? && pbEventCanReachPlayer?(self,$game_player,distance)
           start if !jumping? && !over_trigger?
         end
       end
+    end
+
+    def canTrainerVisionTrigger?
+      return true unless @event.name[/stinkable/i] # If not marked as stinkable, can't be blocked by Stealth Spray
+      return false if stealthSprayActive?
+      return true
     end
   
     def check_event_trigger_touch(dir)

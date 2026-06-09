@@ -87,7 +87,7 @@ def getPoisonEffectScore(user, target, ignoreCheck: false)
 			score += 60 if target.hasHealingMove?
             score += NON_ATTACKER_BONUS unless user&.hasDamagingAttack?
             if user
-                score *= 1.5 if user.hasActiveAbilityAI?(:AGGRAVATE)
+                score *= target.getFractionalDamageModifier(aiCheck: true)
                 score *= 2 if user.ownersPolicies.include?(:PRIORITIZEDOTS) && user.opposes?(target)
             end
         end
@@ -109,7 +109,7 @@ def getBurnEffectScore(user, target, ignoreCheck: false)
             score += 20 if target.hp >= target.totalhp / 2 || target.hp <= target.totalhp / 8
             score += NON_ATTACKER_BONUS unless user&.hasDamagingAttack?
             if user
-                score *= 1.5 if user.hasActiveAbilityAI?(:AGGRAVATE)
+                score *= target.getFractionalDamageModifier(aiCheck: true)
                 score *= 2 if user.ownersPolicies.include?(:PRIORITIZEDOTS) && user.opposes?(target)
             end
         end
@@ -137,7 +137,7 @@ def getFrostbiteEffectScore(user, target, ignoreCheck: false)
             score += 20 if target.hp >= target.totalhp / 2 || target.hp <= target.totalhp / 8
             score += NON_ATTACKER_BONUS unless user&.hasDamagingAttack?
             if user
-                score *= 1.5 if user.hasActiveAbilityAI?(:AGGRAVATE)
+                score *= target.getFractionalDamageModifier(aiCheck: true)
                 score *= 2 if user.ownersPolicies.include?(:PRIORITIZEDOTS) && user.opposes?(target)
             end
         end
@@ -183,7 +183,7 @@ def getLeechEffectScore(user, target, ignoreCheck: false)
             score += 20 if target.totalhp > user&.totalhp * 2
             score -= 30 if target.totalhp < user&.totalhp / 2
 			score += 50 if target.hasHealingMove?
-            score *= 2 if user&.hasActiveAbilityAI?(:AGGRAVATE)
+            score *= target.getFractionalDamageModifier(aiCheck: true)
             score *= 1.5 if user&.hasActiveAbilityAI?(:ROOTED)
             score *= 1.3 if user&.hasActiveItemAI?(:BIGROOT)
             score *= 2 if user&.ownersPolicies.include?(:PRIORITIZEDOTS) && user&.opposes?(target)
@@ -545,7 +545,7 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
 
     score = 0 if enemiesCanClearStats
     
-    score *= user.levelNerf(false,false,0.6) if user.level <= 30 && !user.pbOwnedByPlayer?
+    score *= user.levelNerfMisc(0.6)
     
     return score.ceil
 end
@@ -571,7 +571,7 @@ def getMultiStatDownEffectScore(statDownArray, user, target, fakeStepModifier: 0
             return -100
         end
 
-        # Give no extra points for attacking stats you can't use
+        # Give no extra points for attacking stats the target can't use
         if statSymbol == :ATTACK && !target.hasPhysicalAttack?
             echoln("\t\t[EFFECT SCORING] Ignoring Attack changes, the target has no physical attacks")
             next
@@ -581,7 +581,7 @@ def getMultiStatDownEffectScore(statDownArray, user, target, fakeStepModifier: 0
             next
         end
 
-        # Increase the score more for boosting attacking stats
+        # Increase the score more for decreasing attacking stats
         if %i[ATTACK SPECIAL_ATTACK].include?(statSymbol)
             scoreIncrease = 20
         else
@@ -602,14 +602,7 @@ def getMultiStatDownEffectScore(statDownArray, user, target, fakeStepModifier: 0
         echoln("\t\t[EFFECT SCORING] The change to #{statSymbol} by #{statDecreaseAmount} at step #{step} increases the score by #{scoreIncrease}")
     end
 
-    # Stat downs tend to be stronger when the target has HP to use
-    score *= 1.2 if target.firstTurn?
-
-    # Stat downs tend to be stronger when the target has HP to use
-    score *= 1.2 if target.hp > target.totalhp / 2
-
-    # Stat downs tend to be weaker when the target is able to swap out
-    score /= 2 if user.battle.pbCanSwitch?(target.index)
+    score = stepAgnosticStatReductionScoreMods(target, score)
 
     if target.hasActiveAbilityAI?(:CONTRARY)
         score *= -1
@@ -625,7 +618,33 @@ def getMultiStatDownEffectScore(statDownArray, user, target, fakeStepModifier: 0
     
     score *= 1.7 if user.ownersPolicies.include?(:PRIORITIZESTATDOWN) && user.opposes?(target)
     
+    if user.opposes?(target)
+        if target.hasActiveAbilityAI?(:DEFIANT)
+            echoln("\t\t[EFFECT SCORING] The target has Defiant! Applying large penalty.")
+            score -= 80
+        elsif target.hasActiveAbilityAI?(:COMPETITIVE)
+            echoln("\t\t[EFFECT SCORING] The target has Competitive! Applying large penalty.")
+            score -= 80
+        elsif target.hasActiveAbilityAI?(:IMPERIOUS)
+            echoln("\t\t[EFFECT SCORING] The target has Imperious! Applying moderate penalty.")
+            score -= 40
+        end
+    end
+
     return score.ceil
+end
+
+def stepAgnosticStatReductionScoreMods(target, score)
+    # Stat downs tend to be stronger when the target has HP to use
+    score *= 1.2 if target.firstTurn?
+
+    # Stat downs tend to be stronger when the target has HP to use
+    score *= 1.2 if target.hp > target.totalhp / 2
+
+    # Stat downs tend to be weaker when the target is able to swap out
+    score /= 2 if target.battle.pbCanSwitch?(target.index)
+
+    return score
 end
 
 def getWeatherSettingEffectScore(weatherType, user, battle, finalDuration = 4, checkExtensions = true)
@@ -636,6 +655,11 @@ def getWeatherSettingEffectScore(weatherType, user, battle, finalDuration = 4, c
 
     finalDuration = user.getWeatherSettingDuration(weatherType, finalDuration, true) if checkExtensions
     currentDuration = battle.field.weather == weatherType ? battle.field.weatherDuration : 0
+
+    if currentDuration < 0
+        echoln("\t\t[EFFECT SCORING] Score for setting weather #{weatherType} is 0 due to an infinite duration (#{currentDuration})")
+        return 0
+    end
 
     if currentDuration >= finalDuration
         echoln("\t\t[EFFECT SCORING] Score for setting weather #{weatherType} is 0 due to final duration #{finalDuration} being less than the current duration #{currentDuration}")
@@ -731,7 +755,7 @@ def getCurseEffectScore(user, target)
     else
         score += statStepsValueScore(target)
 	end
-    score *= 1.5 if user.hasActiveAbilityAI?(:AGGRAVATE)
+    score *= target.getFractionalDamageModifier(aiCheck: true)
     return score
 end
 
@@ -809,33 +833,31 @@ def predictedEOTDamage(battle,battler)
     damage += battle.damageFromDOTStatus(battler, :BURN, aiCheck: true) if battler.burned?
     damage += battle.damageFromDOTStatus(battler, :FROSTBITE, aiCheck: true) if battler.frostbitten?
 
-    # Check for aggravate
-    aggravate = battle.pbCheckOpposingAbility(:AGGRAVATE, battler.index)
-
     # Curse
-    damage += battler.getFractionalDamageAmount(CURSE_DAMAGE_FRACTION, aggravate: aggravate) if battler.effectActive?(:Curse)
+    damage += battler.getFractionalDamageAmount(CURSE_DAMAGE_FRACTION, aiCheck: true) if battler.effectActive?(:Curse)
+    damage += battler.getFractionalDamageAmount(PHARAOHS_CURSE_DAMAGE_FRACTION, aiCheck: true) if battler.effectActive?(:PharaohsCurse)
 
     # Trapping DOT
-    damage += battler.getFractionalDamageAmount(trappingDamageFraction(battler), aggravate: aggravate) if battler.effectActive?(:Trapping)
+    damage += battler.getFractionalDamageAmount(trappingDamageFraction(battler), aiCheck: true) if battler.effectActive?(:Trapping)
 
     # Bad Dreams
     if battler.asleep? && battle.pbCheckOpposingAbility(:BADDREAMS, battler.index)
-        damage += battler.getFractionalDamageAmount(BAD_DREAMS_DAMAGE_FRACTION, aggravate: aggravate)
+        damage += battler.getFractionalDamageAmount(BAD_DREAMS_DAMAGE_FRACTION, aiCheck: true)
     end
     
     # Pain Presence
-    damage += battler.getFractionalDamageAmount(NOXIOUS_DAMAGE_FRACTION, aggravate: aggravate) if battle.pbCheckOtherAbility(:NOXIOUS, battler.index)
+    damage += battler.getFractionalDamageAmount(NOXIOUS_DAMAGE_FRACTION, aiCheck: true) if battle.pbCheckOtherAbility(:NOXIOUS, battler.index)
 
     # Extreme Energy, Extreme Power, Solar Power, Night Stalker
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:EXTREMEVOLTAGE)
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:EXTREMEPOWER)
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:SOLARPOWER) && battle.sunny?
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:NIGHTSTALKER) && battle.moonGlowing?
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:BURDENED)
-    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveAbilityAI?(:LIVEFAST)
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:EXTREMEVOLTAGE)
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:EXTREMEPOWER)
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:SOLARPOWER) && battle.sunny?
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:NIGHTSTALKER) && battle.moonGlowing?
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:BURDENED)
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:LIVEFAST)
 
     # Sticky Barb
-    damage += battler.getFractionalDamageAmount(STICKY_BARB_DAMAGE_FRACTION, aggravate: aggravate) if battler.hasActiveItemAI?(:STICKYBARB)
+    damage += battler.getFractionalDamageAmount(STICKY_BARB_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveItemAI?(:STICKYBARB)
 
     # Black Sludge
     if battler.hasActiveItemAI?(:BLACKSLUDGE) && !battler.pbHasType?(:POISON)
@@ -1089,7 +1111,7 @@ def getGravityEffectScore(user, duration)
 end
 
 def getDisableEffectScore(target, duration)
-    return 0 if target.hasActiveAbilityAI?(:MENTALBLOCK)
+    return 0 if target.mentalBlockActiveAI?
     return 0 unless target.canBeDisabled?
     score = 15 * duration
     score *= 1.5 if target.trapped?

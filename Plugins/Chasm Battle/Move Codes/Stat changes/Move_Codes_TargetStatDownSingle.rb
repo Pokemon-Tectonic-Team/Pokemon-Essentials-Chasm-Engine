@@ -226,6 +226,11 @@ class PokeBattle_Move_LowerTargetSpAtk3 < PokeBattle_TargetStatDownMove
     end
 end
 
+# Empowered Moonblast
+class PokeBattle_Move_EmpoweredMoonblast < PokeBattle_Move_LowerTargetSpAtk3
+    include EmpoweredMove
+end
+
 #===============================================================================
 # Decreases the target's Special Attack by 4 steps. (Eerie Impulse)
 #===============================================================================
@@ -344,5 +349,15 @@ class PokeBattle_Move_LowerTargetHighestStat1 < PokeBattle_Move
             statDownArray = [:SPECIAL_ATTACK,1]
         end
         return getMultiStatDownEffectScore(statDownArray, user, target)
+    end
+end
+
+#===============================================================================
+# Decreases the target's Evasion by 4 steps.
+#===============================================================================
+class PokeBattle_Move_LowerTargetEvasion4 < PokeBattle_TargetStatDownMove
+    def initialize(battle, move)
+        super
+        @statDown = [:EVASION, 4]
     end
 end

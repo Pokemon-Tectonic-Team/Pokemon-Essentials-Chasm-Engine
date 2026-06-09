@@ -22,6 +22,9 @@ module GameData
         # Whether or not the effect should be displayed on the battle info menu
         attr_reader :info_displayed
 
+        # Sets a custom entry in the Info menu effects list
+        attr_reader :info_custom_description
+
         # An array of other effects to disable at the same time as it
         # Be careful not to create loops with this
         attr_reader :sub_effects
@@ -117,7 +120,7 @@ module GameData
             return @is_screen
         end
 
-        # Trick Room, etc
+        # Puzzle Room, etc
         def is_room?
             return @is_room
         end
@@ -200,6 +203,7 @@ module GameData
             @default                = hash[:default]
             @maximum	= hash[:maximum]
             @info_displayed	= hash.has_key?(:info_displayed) ? hash[:info_displayed] : true
+            @info_custom_description = hash[:info_custom_description]
             if @default.nil?
                 case @type
                 when :Boolean
@@ -321,7 +325,7 @@ module GameData
                 when :Boolean
                     active = value
                 when :Integer
-                    active = value > 0
+                    active = value != @default
                 when :Position, :PartyPosition
                     active = value >= 0
                 when :String

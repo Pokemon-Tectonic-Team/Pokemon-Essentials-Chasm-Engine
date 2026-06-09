@@ -94,6 +94,22 @@ class PokeBattle_CableClub < PokeBattle_Battle
     @battleAI  = PokeBattle_CableClub_AI.new(self)
     @battleRNG = Random.new(seed)
     @rngCalls = 0
+    # Diagnostic RNG logging for desync debugging (Debug mode only)
+    @rngLogFile = nil
+    if $DEBUG
+      Dir.mkdir("Analysis") unless Dir.exist?("Analysis")
+      timestamp = Time.now.strftime("%Y%m%d_%H%M%S")
+      filename = "Analysis/rng_log_client#{client_id}_#{timestamp}.txt"
+      @rngLogFile = File.open(filename, "w:UTF-8")
+      @rngLogFile.puts("=== Cable Club RNG Diagnostic Log ===")
+      @rngLogFile.puts("Client ID: #{client_id}")
+      @rngLogFile.puts("Seed: #{seed}")
+      @rngLogFile.puts("Player: #{$Trainer.name}")
+      @rngLogFile.puts("Opponent: #{opponent.name}")
+      @rngLogFile.puts("Started: #{Time.now}")
+      @rngLogFile.puts("=" * 40)
+      @rngLogFile.flush
+    end
   end
 
   # Override command phase to swap AI and player order
@@ -165,11 +181,38 @@ class PokeBattle_CableClub < PokeBattle_Battle
   
   def pbRandom(x)
     @rngCalls += 1
+    result = @battleRNG.rand(x)
+    if $DEBUG && @rngLogFile
+      # Capture the stack trace, filtering to only battle-relevant frames
+      trace = caller.select { |frame| frame.include?("Chasm") || frame.include?("Cable Club") }
+      @rngLogFile.puts("--- RNG Call ##{@rngCalls} ---")
+      @rngLogFile.puts("Turn: #{@turnCount || 'pre-battle'}")
+      @rngLogFile.puts("rand(#{x}) => #{result}")
+      # Battler state snapshot
+      @battlers.each_with_index do |b, i|
+        next unless b
+        name = b.pbThis.encode("UTF-8", invalid: :replace, undef: :replace, replace: "?")
+        @rngLogFile.puts("  Battler[#{i}]: #{name} (#{b.species}) HP=#{b.hp}/#{b.totalhp} Status=#{b.status} Fainted=#{b.fainted?}")
+      end
+      # Stack trace
+      @rngLogFile.puts("Stack:")
+      trace.each { |frame| @rngLogFile.puts("  #{frame}") }
+      @rngLogFile.puts("")
+      @rngLogFile.flush
+    end
     echoln("RNG calls this battle: #{rngCalls}")
-    return @battleRNG.rand(x)
+    return result
   end
 
   def dispose
+    if @rngLogFile
+      @rngLogFile.puts("=== Battle Ended ===")
+      @rngLogFile.puts("Total RNG calls: #{@rngCalls}")
+      @rngLogFile.puts("Decision: #{@decision}")
+      @rngLogFile.puts("Ended: #{Time.now}")
+      @rngLogFile.close
+      @rngLogFile = nil
+    end
     Thread.current[:current_cable_club_battle] = nil
     super
   end
@@ -294,8 +337,12 @@ end
 class PokeBattle_CableClub_AI < PokeBattle_AI
   def pbDefaultChooseEnemyCommand(index)
     echoln("Cable Club: Start AI check")
-    # Hurray for default methods. have to reverse it to show the expected order.
-    our_indices = @battle.pbGetOpposingIndicesInOrder(1).reverse
+    # Sort ascending so both clients assign choices to matching battlers.
+    # In 2v1 (after avatar summoning), pbGetOpposingIndicesInOrder returns [0,2]
+    # and reversing it gives [2,0], but the receiver expects ascending order [0,2].
+    # Sorting is equivalent to .reverse for 2v2 ([2,0]→[0,2]) while also being
+    # correct for 2v1 ([0,2]→[0,2]).
+    our_indices = @battle.pbGetOpposingIndicesInOrder(1).sort
     their_indices = @battle.pbGetOpposingIndicesInOrder(0).reverse
     # Sends our choices after they have all been locked in.
     if index == their_indices.last

@@ -30,7 +30,8 @@ M1ntyFr3shD4n<s>pechapanda
 zombygoast<s>elusivestowaway
 Kei<s>Atteathesilly
 noodleman<s>Manycrows
-Eseria
+Eseria<s>Reinhart Menken
+Badman<s>
 
 {INSERTS_PLUGIN_CREDITS_DO_NOT_REMOVE}
 
@@ -226,6 +227,11 @@ JWNutz
 Atsui
 John Willow
 Atteathesilly
+
+Curesola
+Jess Jackdaw (as Coralya)
+Pansygum (as Amacorala)
+Manycrows (as Curesola)
 
 Spanish PokeDex Translations
 Everson

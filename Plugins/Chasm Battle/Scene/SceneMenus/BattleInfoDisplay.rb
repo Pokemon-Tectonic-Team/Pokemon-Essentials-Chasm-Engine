@@ -388,9 +388,18 @@ class BattleInfoDisplay < SpriteWrapper
     def pushEffectDescriptorsToArray(effectHolder, descriptorsArray)
         effectHolder.eachEffect(!DEBUGGING_EFFECT_DISPLAY) do |_effect, value, effectData|
             next unless effectData.info_displayed
-            effectName = effectData.name
-            effectName = "#{effectName}: #{effectData.value_to_string(value, @battle)}" if effectData.type != :Boolean
-            descriptorsArray.push(effectName)
+            if effectData.info_custom_description
+                effectDescriptionArray = []
+                effectData.info_custom_description.call(value, effectData.value_to_string(value, @battle), effectDescriptionArray)
+                descriptorsArray.push("#{effectData.name}:")
+                effectDescriptionArray.each do |effectDescriptionLine|
+                    descriptorsArray.push("  #{effectDescriptionLine}") # offset slightly 
+                end
+            else
+                effectDescription = effectData.name
+                effectDescription = "#{effectDescription}: #{effectData.value_to_string(value, @battle)}" if effectData.type != :Boolean
+                descriptorsArray.push(effectDescription)  
+            end
         end
     end
 

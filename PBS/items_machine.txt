@@ -324,14 +324,14 @@ FieldUse = TM
 Flags = SkipPocketMessage
 Move = REST
 #-------------------------------
-[TMSLEEPTALK]
+[TMPLAYDEAD]
 Name = Unnamed
 NamePlural = Unnamed
 Pocket = 5
 Price = 4000
 FieldUse = TM
 Flags = SkipPocketMessage
-Move = SLEEPTALK
+Move = PLAYDEAD
 #-------------------------------
 [TMSTEALTHROCK]
 Name = Unnamed
@@ -828,14 +828,14 @@ FieldUse = TM
 Flags = SkipPocketMessage
 Move = PSYCHOSCISSION
 #-------------------------------
-[TMPSYCHIC]
+[TMNEURALPULSE]
 Name = Unnamed
 NamePlural = Unnamed
 Pocket = 5
 Price = 4000
 FieldUse = TM
 Flags = SkipPocketMessage
-Move = PSYCHIC
+Move = NEURALPULSE
 #-------------------------------
 [TMXSCISSOR]
 Name = Unnamed
@@ -891,14 +891,14 @@ FieldUse = TM
 Flags = SkipPocketMessage
 Move = SHADOWBALL
 #-------------------------------
-[TMREND]
+[TMDRAGONHAMMER]
 Name = Unnamed
 NamePlural = Unnamed
 Pocket = 5
 Price = 4000
 FieldUse = TM
 Flags = SkipPocketMessage
-Move = REND
+Move = DRAGONHAMMER
 #-------------------------------
 [TMDRAGONPULSE]
 Name = Unnamed

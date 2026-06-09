@@ -179,6 +179,10 @@ Description = Boosts all of the Pokémon's move damage by 25% during eclipse.
 Name = Cautionary
 Description = Raises Def and Sp. Def by three steps each when its HP is lowered below half.
 #-------------------------------
+[CLAUSTROPHOBIA]
+Name = Claustrophobia
+Description = If there is an active Room, enemies which swap in take Psychic-type damage equal to 1/6th their HP.
+#-------------------------------
 [CLEAVING]
 Name = Cleaving
 Description = Ignores screens, Substitute, and Abilities that would affect its moves.
@@ -242,6 +246,10 @@ Description = Prevents the use of self-destructing moves.
 [DANGERSENSE]
 Name = Danger Sense
 Description = It avoids hazards and can't be knocked out with one hit.
+#-------------------------------
+[DAUNTLESSSHIELD]
+Name = Dauntless Shield
+Description = Raises Defense upon entry.
 #-------------------------------
 [DAWNBURST]
 Name = Dawnfall
@@ -513,9 +521,17 @@ Flags = EclipseSynergy
 Name = Heliocentrism
 Description = Traps the foe during gravity.
 #-------------------------------
+[HERDING]
+Name = Herding
+Description = Wild Pokémon are more likely to appear in pairs and to be species you've never caught before.
+#-------------------------------
 [HONEYGATHER]
 Name = Honey Gather
 Description = The Pokémon may gather Honey from somewhere.
+#-------------------------------
+[HONORABLE]
+Name = Honorable
+Description = Lowers priority of status moves used by any Pokémon.
 #-------------------------------
 [HONORAURA]
 Name = Honorable
@@ -532,6 +548,11 @@ Description = Prevents other Pokémon from lowering its Attack or Sp. Atk stat.
 [IAIJUTSU]
 Name = Iaijutsu
 Description = Doubles the power of blade moves on the first turn.
+#-------------------------------
+[ICEBODY]
+Name = Ice Body
+Description = Heals 1/8th of its max HP each turn in a hail.
+Flags = HailSynergy
 #-------------------------------
 [ICEFACE]
 Name = Ice Face
@@ -564,6 +585,10 @@ Flags = SunshineSynergy
 Name = Insomnia
 Description = Prevents the Pokémon from falling asleep.
 #-------------------------------
+[INTREPIDSWORD]
+Name = Intrepid Sword
+Description = Raises Attack upon entry.
+#-------------------------------
 [JASPERCHARGE]
 Name = Jasper Charge
 Description = Boosts Sp. Atk by 30%, but lowers Sp. Atk after using a special move.
@@ -593,6 +618,10 @@ Name = Leaf Guard
 Description = Immune to non-volatile status conditions while in sunshine.
 Flags = SunshineSynergy
 #-------------------------------
+[LEAPFROMBELOW]
+Name = Leap from Below
+Description = This Pokémon's Speed is doubled while using charging moves.
+#-------------------------------
 [LEGSTRENGTH]
 Name = Leg Strength
 Description = Boosts the power of kicking moves by 30%.
@@ -600,6 +629,10 @@ Description = Boosts the power of kicking moves by 30%.
 [LIBERO]
 Name = Libero
 Description = The Pokémon changes type to that of the move it's about to use.
+#-------------------------------
+[LIFELINE]
+Name = Lifeline
+Description = At the end of each turn, heals self by 1/20th and a party member by the amount this Pokémon was healed.
 #-------------------------------
 [LIGHTMETAL]
 Name = Light Metal
@@ -715,6 +748,11 @@ Description = Sets Fairy Terrain for five turns when hit by an attack.
 Name = Misty Surge
 Description = Turns the ground into Fairy Terrain for 5 turns when entering battle.
 #-------------------------------
+[MODUSSWITCH]
+Name = Modus Switch
+Description = When using Techno Blast, the user can choose the move's type, switching to that form.
+Flags = Immutable
+#-------------------------------
 [MOLDBREAKER]
 Name = Mold Breaker
 Description = Ignores Abilities that would affect its moves.
@@ -758,6 +796,11 @@ Description = Raises Electric-type allies' Sp. Def by 50%.
 Name = Nesting
 Description = Heals 1/12th HP per turn if there's a weather. Immune to weather downsides.
 Flags = AllWeatherSynergy
+#-------------------------------
+[NEUTRALIZINGGAS]
+Name = Neutralizing Gas
+Description = Abilities will be nullified or will not be triggered.
+Flags = Immutable
 #-------------------------------
 [NIGHTLIGHT]
 Name = Night Light
@@ -815,6 +858,10 @@ Description = Protects it and ally Pokémon from being poisoned.
 Name = Pearl Seeker
 Description = Upon entry during eclipse, if it has no item, finds and equips the Pearl of Fate.
 Flags = EclipseSynergy
+#-------------------------------
+[PERSISTENTGROWTH]
+Name = Persistent Growth
+Description = At the end of each of its turns, Speed is lowered but every other stat is raised.
 #-------------------------------
 [PICKPOCKET]
 Name = Pickpocket
@@ -928,6 +975,10 @@ Description = Doubles the speed of recoil moves.
 [RATTLED]
 Name = Rattled
 Description = Bug-, Dark- and Ghost-type moves scare it and boost its Speed.
+#-------------------------------
+[RATTLEEM]
+Name = Rattle 'Em
+Description = Moves that can flinch are 50% more likely. Deals 50% more damage to Pokémon with flinch immunity.
 #-------------------------------
 [RECEIVER]
 Name = Receiver
@@ -1052,6 +1103,10 @@ Name = Shaky Code
 Description = During eclipse, changes the Pokémon's type to the type of the move it's using.
 Flags = EclipseSynergy
 #-------------------------------
+[SHAREDSPOILS]
+Name = Shared Spoils
+Description = When this Pokémon removes a foe's item, choose a party member to hold it.
+#-------------------------------
 [SHARPNESS]
 Name = Swordplay
 Description = Boosts the power of blade moves by 30%.
@@ -1072,6 +1127,10 @@ Flags = CritImmunity
 [SHIELDWALL]
 Name = Shield Wall
 Description = Takes 50% less damage from hyper-effective attacks.
+#-------------------------------
+[SHOCKSTYLE]
+Name = Shock Style
+Description = Powers up Fighting-type moves by 50%.
 #-------------------------------
 [SHOCKWINGS]
 Name = Shock Wings
@@ -1141,6 +1200,11 @@ Description = The Pokémon moves after all other Pokémon do.
 Name = Stalwart
 Description = Ignores effects changing the target of a move.
 Flags = RedirectionImmunity
+#-------------------------------
+[STAMPEDE]
+Name = Stampede
+Description = Doubles critical hit chance for each Speed step up. All moves can random critical hit.
+Flags = EnablesRandomCrits
 #-------------------------------
 [STEADFAST]
 Name = Steadfast
@@ -1258,6 +1322,10 @@ Description = Prevents foes whose Attack is less than its from fleeing.
 Name = Teravolt
 Description = Moves can be used regardless of Abilities.
 #-------------------------------
+[TERRORIZE]
+Name = Terrorize
+Description = Flinching moves always activate their random effects. However, this Pokémon deals 10% less move damage.
+#-------------------------------
 [TIMESTRETCH]
 Name = Time Stretch
 Description = Between each turn there's another turn where no one moves.
@@ -1278,6 +1346,10 @@ Description = Raises each stat by two steps when a Total Eclipse happens.
 [TOTALMIRROR]
 Name = Total Mirror
 Description = When hit with a special move, hits back instantly with that same move.
+#-------------------------------
+[TOUGHCLAWS]
+Name = Tough Claws
+Description = Increases Attack by 30%.
 #-------------------------------
 [TOXICBOOST]
 Name = Toxic Boost
@@ -1316,6 +1388,11 @@ Description = Upon entry, creates a Trick Room for five turns, inverting the eff
 [TURBOBLAZE]
 Name = Turboblaze
 Description = Moves can be used regardless of Abilities.
+#-------------------------------
+[UNBOUND]
+Name = Unbound
+Description = Moves ignore Abilities that would affect its moves or activate after hitting the target, and immunities due to typing.
+Flags = MoldBreaking,BypassTypeImmunity
 #-------------------------------
 [UNCANNYCOLD]
 Name = Uncanny Cold
@@ -1394,6 +1471,10 @@ Description = Boosts the power of wind-based moves by 30%.
 [WINTERWISDOM]
 Name = Summit Spirit
 Description = Boosts Sp. Atk by 30% in hail.
+#-------------------------------
+[WIRECUTTER]
+Name = Live Wire
+Description = Lays an electrical hazard around the opponent when its HP is lowered below half.
 #-------------------------------
 [WONDERSKIN]
 Name = Wonder Skin

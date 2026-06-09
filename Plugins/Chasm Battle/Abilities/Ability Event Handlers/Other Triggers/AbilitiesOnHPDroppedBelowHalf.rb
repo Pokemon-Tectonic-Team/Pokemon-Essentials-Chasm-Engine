@@ -63,13 +63,14 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BATTLEHARDENED,
   }
 )
 
-BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:WIRECUTTER,
+BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:RATSNEST,
   proc { |ability, battler, battle|
       battle.pbShowAbilitySplash(battler, ability)
       if battler.pbOpposingSide.effectActive?(:LiveWire)
           battle.pbDisplay(_INTL("But a live wire already sits near {1}!",
                 battler.pbOpposingTeam(true)))
       else
+          battle.pbAnimation(:THUNDERWAVE, battler, nil)
           battler.pbOpposingSide.applyEffect(:LiveWire)
       end
       battle.pbHideAbilitySplash(battler)
@@ -104,9 +105,10 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:VOIDWARRANTY,
       elsif !battler.pbOwnedByPlayer? # Trainer AI
         choiceIndex = 0
       else
-        choiceIndex = battle.scene.pbShowCommands(_INTL("Which form should {1} take?",battler.name),choiceNames,0)
+        choiceIndex = battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", battler.name), choiceNames)
       end
       battler.pbChangeForm(formChoices[choiceIndex], _INTL("{1} takes on a new machine!", battler.pbThis))
+      battler.refreshBattleMoves
       battle.pbHideAbilitySplash(battler)
   }
 )

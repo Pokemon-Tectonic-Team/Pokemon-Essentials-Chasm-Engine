@@ -284,7 +284,7 @@ dialogue)
     end
 
     def triggerImmunityDialogue(user, target, isImmunityAbility)
-        triggerDialogueOnBattlerAction(user) do |isTrainerOwned, policy, trainer_speaking, dialogue|
+        triggerDialogueOnBattlerAction(target) do |isTrainerOwned, policy, trainer_speaking, dialogue|
             if isTrainerOwned
                 PokeBattle_AI.triggerTrainerPokemonImmuneDialogue(policy, user, target, isImmunityAbility, trainer_speaking,
 dialogue)

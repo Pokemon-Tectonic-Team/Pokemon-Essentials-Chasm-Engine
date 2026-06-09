@@ -247,14 +247,6 @@ class PokeBattle_Battle
 
         showWeatherMessages = $Options.weather_messages == 0
 
-        if curWeather == :StarStorm && @field.specialTimer > 1 &&  @field.specialTimer % 3 == 1
-            if  @field.specialTimer == 4
-                pbDisplay(_INTL("The stardust expands! Its damage has doubled!"))
-            else
-                pbDisplay(_INTL("The stardust expands yet again!"))
-            end
-        end
-
         if @field.specialTimer >= threshold
             case curWeather
             when :Eclipse,:RingEclipse
@@ -266,7 +258,11 @@ class PokeBattle_Battle
                         pbDisplay(_INTL("The Total Eclipse arrives!"))
                     end
                 end
-                pbCommonAnimation("Eclipse")
+                if primevalVariant
+                    pbCommonAnimation("RingEclipse")
+                else
+                    pbCommonAnimation("Eclipse")
+                end
                 anyAffected = false
                 debuff = primevalVariant ? ALL_STATS_3 : ALL_STATS_2
                 priority.each do |b|
@@ -298,7 +294,11 @@ class PokeBattle_Battle
                         pbDisplay(_INTL("The Full Moon rises!"))
                     end
                 end
-                pbCommonAnimation("Moonglow")
+                if primevalVariant
+                    pbCommonAnimation("BloodMoon")
+                else
+                    pbCommonAnimation("Moonglow")
+                end
                 anyAffected = false
                 priority.each do |b|
                     next if b.fainted?
@@ -411,7 +411,7 @@ class PokeBattle_Battle
             priority.each do |b|
                 next unless b.hasActiveAbility?(:DESERTSCAVENGER)
                 pbShowAbilitySplash(b, :DESERTSCAVENGER)
-                healingMessage = _INTL("{1} absorbs the suffering from the sandstorm", b.pbThis)
+                healingMessage = _INTL("{1} absorbs the suffering from the sandstorm.", b.pbThis)
                 b.pbRecoverHP(sandstormDamage, true, true, true, healingMessage)
                 pbHideAbilitySplash(b)
             end
@@ -423,25 +423,11 @@ class PokeBattle_Battle
         damageDoubled = pbCheckGlobalAbility(:IRONSTORM)
         if showMessages && !aiCheck
             if pbWeather == :StarStorm
-                if @field.specialTimer >= 5
-                    if damageDoubled
-                        pbDisplay(_INTL("{1} is shredded by gigantic particles of iron stardust!", battler.pbThis))
-                    else
-                        pbDisplay(_INTL("{1} is buffeted by gigantic particles of stardust!", battler.pbThis))
-                    end 
-                elsif @field.specialTimer >= 3
-                    if damageDoubled
-                        pbDisplay(_INTL("{1} is shredded by large particles of iron stardust!", battler.pbThis))
-                    else
-                        pbDisplay(_INTL("{1} is buffeted by large particles of stardust!", battler.pbThis))
-                    end 
+                if damageDoubled
+                    pbDisplay(_INTL("{1} is shredded by iron stardust!", battler.pbThis))
                 else
-                    if damageDoubled
-                        pbDisplay(_INTL("{1} is shredded by iron stardust!", battler.pbThis))
-                    else
-                        pbDisplay(_INTL("{1} is buffeted by stardust!", battler.pbThis))
-                    end  
-                end
+                    pbDisplay(_INTL("{1} is buffeted by stardust!", battler.pbThis))
+                end  
             else
                 if damageDoubled
                     pbDisplay(_INTL("{1} is shredded by the iron-infused sandstorm!", battler.pbThis))
@@ -453,7 +439,6 @@ class PokeBattle_Battle
         fraction = 1.0 / 16.0
         fraction *= 2 if damageDoubled
         fraction *= 2 if curseActive?(:CURSE_BOOSTED_SAND)
-        fraction *= 2 * (@field.specialTimer - 1) / 3 if pbWeather == :StarStorm
         sandstormDamage = battler.applyFractionalDamage(fraction, aiCheck: aiCheck)
         return sandstormDamage
     end

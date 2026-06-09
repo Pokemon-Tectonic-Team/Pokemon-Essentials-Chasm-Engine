@@ -6,7 +6,7 @@ module CableClub
   LIVE_PORT = 9999
 
   # Change if testing locally or connecting to 3rd party server
-  HOST = PUBLIC_HOST
+  HOST = LOCAL_HOST
   PORT = Settings::DEV_VERSION ? DEV_PORT : LIVE_PORT
 
   UNSAFE_CHARACTERS = ["\\", ","]

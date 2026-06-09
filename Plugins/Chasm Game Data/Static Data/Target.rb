@@ -206,6 +206,7 @@ GameData::Target.register({
   :name             => _INTL("Near Other"),
   :num_targets      => 1,
   :targets_foe      => true,
+  :targets_ally     => true,
 })
 
 GameData::Target.register({

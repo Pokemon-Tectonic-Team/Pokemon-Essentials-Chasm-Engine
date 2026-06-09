@@ -137,41 +137,41 @@ BattleHandlers::LoadDataDependentAbilityHandlers += proc {
 }
 
 BattleHandlers::AbilityOnSwitchIn.add(:PRESSURE,
-proc { |ability, battler, battle, aiCheck|
-    next 0 if aiCheck
-    battle.pbShowAbilitySplash(battler, ability)
-    battle.pbDisplay(_INTL("{1} is exerting its pressure!", battler.pbThis))
-    battle.pbHideAbilitySplash(battler)
-}
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} is exerting its pressure!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:UNNERVE,
-proc { |ability, battler, battle, aiCheck|
-    next 0 if aiCheck
-    battle.pbShowAbilitySplash(battler, ability)
-    battle.pbDisplay(_INTL("{1} is too nervous to eat Berries or Leftovers!", battler.pbOpposingTeam))
-    battle.pbHideAbilitySplash(battler)
-}
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} is too nervous to eat Berries or Leftovers!", battler.pbOpposingTeam))
+      battle.pbHideAbilitySplash(battler)
+  }
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:STRESSFUL,
-proc { |ability, battler, battle, aiCheck|
-    next 0 if aiCheck
-    battle.pbShowAbilitySplash(battler, ability)
-    battle.pbDisplay(_INTL("{1} is too stressed to use their items!", battler.pbOpposingTeam))
-    battle.pbHideAbilitySplash(battler)
-}
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} is too stressed to use their items!", battler.pbOpposingTeam))
+      battle.pbHideAbilitySplash(battler)
+  }
 )
 
 BattleHandlers::AbilityOnSwitchIn.add(:ASONEICE,
-proc { |ability, battler, battle, aiCheck|
-    next 0 if aiCheck
-    battle.pbShowAbilitySplash(battler, ability)
-    battle.pbDisplay(_INTL("{1} has 2 Abilities!", battler.name))
-    battle.pbShowAbilitySplash(battler, :UNNERVE)
-    battle.pbDisplay(_INTL("{1} is too nervous to eat Berries or Leftovers!", battler.pbOpposingTeam))
-    battle.pbHideAbilitySplash(battler)
-}
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} has 2 Abilities!", battler.name))
+      battle.pbShowAbilitySplash(battler, :UNNERVE)
+      battle.pbDisplay(_INTL("{1} is too nervous to eat Berries or Leftovers!", battler.pbOpposingTeam))
+      battle.pbHideAbilitySplash(battler)
+  }
 )
 
 BattleHandlers::AbilityOnSwitchIn.copy(:ASONEICE, :ASONEGHOST)
@@ -338,6 +338,24 @@ BattleHandlers::AbilityOnSwitchIn.add(:TRIAGE,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:LEADDANCER,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} takes center stage!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:LEADSINGER,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} steals the show!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
 BattleHandlers::AbilityOnSwitchIn.add(:SWIFTSTOMPS,
   proc { |ability, battler, battle, aiCheck|
       next 0 if aiCheck
@@ -352,6 +370,15 @@ BattleHandlers::AbilityOnSwitchIn.add(:BREAKTHROUGH,
       next 0 if aiCheck
       battle.pbShowAbilitySplash(battler, ability)
       battle.pbDisplay(_INTL("{1} overpowers type immunities!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:PRIMEVALBREAKTHROUGH,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} overpowers type immunities and protections!", battler.pbThis))
       battle.pbHideAbilitySplash(battler)
   }
 )
@@ -456,6 +483,33 @@ BattleHandlers::AbilityOnSwitchIn.add(:PROTECTIVEINSTINCT,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:GRANDIDEALS,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} boosts all super effective or hyper effective attacks!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:HARSHTRUTHS,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} boosts all not very effective or barely effective attacks!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:AGGRAVATE,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} intensifies fractional damage!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
 ##########################################
 # Screen setting abilities
 ##########################################
@@ -520,16 +574,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:ODDITY,
       battle.pbShowAbilitySplash(battler, ability) unless aiCheck
       battle.pbAnimation(:MAGICROOM, battler, nil, 0) unless aiCheck
       score = battle.pbStartRoom(:OddRoom, battler, ability, aiCheck)
-      battle.pbHideAbilitySplash(battler) unless aiCheck
-      next score
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:SUBSPACESCHISM,
-  proc { |ability, battler, battle, aiCheck|
-      battle.pbShowAbilitySplash(battler, ability) unless aiCheck
-      battle.pbAnimation(:TRICKROOM, battler, nil, 0) unless aiCheck
-      score = battle.pbStartRoom(:TrickRoom, battler, ability, aiCheck)
       battle.pbHideAbilitySplash(battler) unless aiCheck
       next score
   }
@@ -784,7 +828,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:DRIFTINGMIST,
 BattleHandlers::AbilityOnSwitchIn.add(:FITTOSURVIVE,
   proc { |ability, battler, battle, aiCheck|
       if aiCheck
-          next getGravityEffectScore(battler, 4)
+          next getNaturalProtectionEffectScore(battler, 8)
       else
           battle.pbShowAbilitySplash(battler, ability)
           battle.pbAnimation(:NATURALPROTECTION, battler, nil, 0)
@@ -1089,6 +1133,24 @@ BattleHandlers::AbilityOnSwitchIn.add(:HAUNTED,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:MOLTENADAPTED,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} has fused with fire!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:PLASMAADAPTED,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} has fused with electricity!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
 BattleHandlers::AbilityOnSwitchIn.add(:IONIZEDALLOY,
   proc { |ability, battler, battle, aiCheck|
       next 0 if aiCheck
@@ -1172,6 +1234,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:IMPOSTER,
       next 0 if choice.substituted?
       next 0 if choice.effectActive?(:SkyDrop)
       next 0 if choice.semiInvulnerable?
+      next 0 if GameData::Ability.getByFlag("UnableByDefault").include?(choice.pokemon.ability_id)
       next 40 if aiCheck
       battle.pbShowAbilitySplash(battler, ability, true)
       battle.pbHideAbilitySplash(battler)
@@ -1313,6 +1376,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:ROOMLOCK,
   proc { |ability, battler, battle, aiCheck|
       next 0 if aiCheck
       battle.pbShowAbilitySplash(battler, ability)
+      battle.pbAnimation(:FAIRYLOCK, battler, nil, 0)
       battle.pbDisplay(_INTL("{1} prevents rooms from decaying!", battler.pbThis))
       battle.pbHideAbilitySplash(battler)
   }
@@ -1360,8 +1424,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:FALSEFRONT,
               end
               chosenType = chosenType || validTypes[0]
           else
-              chosenIndex = battle.scene.pbShowCommands(_INTL("Which type should {1} fake?", battler.pbThis(true)),validTypeNames,0)
-              chosenType = validTypes[chosenIndex]
+            chosenType = validTypes[battle.scene.pbChooseWithThinkingLoop(_INTL("Which type should {1} fake?", battler.pbThis(true)), validTypeNames)]
           end
       end
       battler.applyEffect(:Type3,chosenType)
@@ -1408,6 +1471,63 @@ BattleHandlers::AbilityOnSwitchIn.add(:INKSPRAY,
       end
     end
     next score if aiCheck
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:INSCRUTABLEORDERS,
+  proc { |ability, battler, battle, aiCheck|
+    battle.pbShowAbilitySplash(battler, ability)
+    battler.applyEffect(:Torment)
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+
+BattleHandlers::AbilityOnSwitchIn.add(:EXOSPHERICDESCENT,
+  proc { |ability, battler, battle, aiCheck|
+    next 0 unless battler.form == 0
+    next 100 if aiCheck
+    battle.pbShowAbilitySplash(battler, ability)
+    battle.pbCommonAnimation("MegaEvolutionRayquaza", battler)
+    battler.pbChangeForm(1, _INTL("{1} flies in like a comet!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSWORD,
+  proc { |ability, battler, battle, aiCheck|
+    next -100 unless battle.field.effectActive?(:SlumberingSwordReady)
+    next 0 unless battler.form == 0
+    next 100 if aiCheck
+    battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Sword!", battler.pbThis)) if battle.field.effectActive?(:RustedSwordDropped)
+    battle.pbShowAbilitySplash(battler, ability)
+    battle.pbCommonAnimation("StanceAttack", battler)
+    battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:SLUMBERINGSHIELD,
+  proc { |ability, battler, battle, aiCheck|
+    next -100 unless battle.field.effectActive?(:SlumberingShieldReady)
+    next 0 unless battler.form == 0
+    next 100 if aiCheck
+    battle.pbDisplay(_INTL("{1} absorbs metal from the Rusted Shield!", battler.pbThis)) if battle.field.effectActive?(:RustedShieldDropped)
+    battle.pbShowAbilitySplash(battler, ability)
+    battle.pbAnimation(:OBSTRUCT, battler, nil, 0)
+    battler.pbChangeForm(1, _INTL("{1} crowns itself in steel!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:PRIMORDIALSEAL,
+  proc { |ability, battler, battle, aiCheck|
+    next -100 unless battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
+    next 0 unless battler.form == 0
+    next 100 if aiCheck
+    battle.pbShowAbilitySplash(battler, ability)
+    battle.pbDisplay(_INTL("Eons course through {1}'s being!", battler.pbThis(true)))
     battle.pbHideAbilitySplash(battler)
   }
 )

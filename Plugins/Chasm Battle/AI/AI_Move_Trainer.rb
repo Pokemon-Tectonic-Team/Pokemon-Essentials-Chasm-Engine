@@ -53,12 +53,13 @@ class PokeBattle_AI
         urgency = user.getUrgency if !user.pbOwnedByPlayer?
         slowerDead = false
         fasterDead = false
+        killInfoPerChoice = []
         user.eachAIKnownMoveWithIndex do |move, i|
             next unless @battle.pbCanChooseMove?(user, i, false)
             targets = []
             targets.push(opposingBattler) if opposingBattler
             newChoice,killInfo,isSlowerDead,isFasterDead = pbEvaluateMoveTrainer(user, move, targets: targets, killInfoArray: killInfoArray)
-            
+
             # If the move would kill the opposing battler, mark as such
             # But only if its better than any kill seen thus far
             if killInfo && opposingBattler
@@ -76,10 +77,13 @@ class PokeBattle_AI
             end
             slowerDead = true if isSlowerDead
             fasterDead = true if isFasterDead
-            
+
             # Push a new array of [moveIndex,moveScore,targetIndex]
             # where targetIndex could be -1 for anything thats not single target
-            choices.push([i].concat(newChoice)) if newChoice
+            if newChoice
+                choices.push([i].concat(newChoice))
+                killInfoPerChoice.push(killInfo)
+            end
         end
         # Undo the 70 percent drop if urgency is required
         # TODO: Make this not a garbage system, 2nd round of moves is -70% still but this shouldn't matter
@@ -88,6 +92,28 @@ class PokeBattle_AI
                 c[1] = ((c[1].to_f / 30) * 100).round
             end
             echoln("\t[MOVE SCORING] Undoing move cut because Urgency (#{urgency}) might require sacrificing the battler")
+        end
+        # If multiple moves KO the target, prefer ones that don't waste an item
+        # Only penalize if a non-consuming KO move scores at least as high as the best consuming KO
+        bestConsumingKOScore = 0
+        bestNonConsumingKOScore = 0
+        choices.each_with_index do |c, idx|
+            ki = killInfoPerChoice[idx]
+            next unless ki
+            if ki.consumesItem
+                bestConsumingKOScore = c[1] if c[1] > bestConsumingKOScore
+            else
+                bestNonConsumingKOScore = c[1] if c[1] > bestNonConsumingKOScore
+            end
+        end
+        if bestNonConsumingKOScore >= bestConsumingKOScore && bestConsumingKOScore > 0
+            choices.each_with_index do |c, idx|
+                ki = killInfoPerChoice[idx]
+                if ki && ki.consumesItem
+                    echoln("\t[MOVE SCORING] Penalizing #{ki.move.id} score: would waste item on a KO that other moves can achieve")
+                    c[1] = (c[1] * 0.8).round
+                end
+            end
         end
         return choices,bestKillInfo
     end
@@ -137,16 +163,12 @@ class PokeBattle_AI
                     next if target_data.targets_foe && !user.opposes?(b)
                     score,targetKillInfo,isSlowerDead2,isFasterDead2 = pbGetMoveScore(move, user, b, policies, 1, ignoreGeneralEffectScores, killInfoArray)
                     if user.opposes?(b)
-                        totalScore = score
-                        battlerCount = 1
                         b.eachRedirectingAlly do |ally|
-                            allyScore,allyKillInfo = pbGetMoveScore(move, user, b, policies, 1, ignoreGeneralEffectScores, killInfoArray)
-                            totalScore += allyScore
-                            battlerCount += 1
+                            allyScore,allyKillInfo = pbGetMoveScore(move, user, ally, policies, 1, ignoreGeneralEffectScores, killInfoArray)
+                            score = [score, allyScore].min
                         end
-                        score = totalScore / battlerCount
                     end
-                    scoresAndTargets.push([score, b.index, nil]) if score > 0
+                    scoresAndTargets.push([score, b.index, targetKillInfo]) if score > 0
                 end
             else
                 targets.each do |b|
@@ -210,14 +232,41 @@ class PokeBattle_AI
         damageScore = 0
         triggersScore = 0
         willFaint = false
+        aiContext = { item_consumed: false }
+        # Check if the move itself consumes the user's item (Fling, Bestow, Power Herb, etc.)
+        if move.consumesItem?(user)
+            aiContext[:item_consumed] = true
+        end
         damagingMove = move.damagingMove?(true)
         if damagingMove
             # Adjust the score based on the move dealing damage
             # and perhaps a percent chance to actually benefit from its effect score
             begin
-                damageScore,damageDealt,willFaint = pbGetMoveScoreDamage(move, user, target, numTargets)
+                damageScore,damageDealt,willFaint = pbGetMoveScoreDamage(move, user, target, numTargets, aiContext)
             rescue StandardError => exception
                 pbPrintException($!) if $DEBUG
+            end
+
+            if move.disguiseIntact?(target, true) and damageScore > 0
+                # Move will break disguise, exact damage doesn't matter so treat as flat value
+                # However we can't score it as 0 because then it won't try to use the move
+                # Later logic should reduce score for downsides and so prioritise less costly moves
+                # Also mark that it won't faint
+                damageScore = 80
+                willFaint = false
+                echoln("\t[MOVE SCORING] #{target.pbThis(true)} has intact Disguise; scoring as a disguise-breaking move (base #{damageScore})")
+            end
+
+            if willFaint
+                # Check if the target has an endure-type protection that will prevent the KO
+                abilityEndures = !@battle.moldBreaker && target.fullHealth? &&
+                    (target.hasActiveAbilityAI?(:STURDY) || target.hasActiveAbilityAI?(:SURVIVALIST))
+                itemEndures = target.fullHealth? && target.hasActiveItemAI?(GameData::Item.getByFlag("Endure"))
+                clarityEndures = target.hasActiveItemAI?(:CLARITYSASH)
+                if abilityEndures || itemEndures || clarityEndures
+                    willFaint = false
+                    echoln("\t[MOVE SCORING] #{target.pbThis(true)} has endure protection; won't actually faint")
+                end
             end
 
             numHits = move.numberOfHits(user, [target], true).ceil
@@ -293,13 +342,19 @@ class PokeBattle_AI
         # Modify the effect score by the move's additional effect chance if it has one
         if move.randomEffect?
             type = pbRoughType(move, user)
-            realProcChance = move.pbAdditionalEffectChance(user, target, type, 0, true)
+            realProcChance = move.pbAdditionalEffectChance(user, target, type, 0, true, aiContext)
             realProcChance = 0 unless move.canApplyRandomAddedEffects?(user,target,realProcChance,false,true)
             factor = (realProcChance / 100.0)
             echoln("\t[MOVE SCORING] #{user.pbThis} multiplies #{move.id}'s effect score of #{effectScore} by #{factor} based on effect chance")
             effectScore *= factor
         end
         effectScore = effectScore.floor
+
+        # Small penalty for consuming a held item
+        if aiContext[:item_consumed]
+            effectScore -= 5
+            echoln("\t[MOVE SCORING] -5 to effect score: move would consume held item")
+        end
 
         # Combine
         score = damageScore + triggersScore + effectScore
@@ -318,7 +373,7 @@ class PokeBattle_AI
         end
 
         # Account for accuracy of move
-        accuracy = pbRoughAccuracy(move, user, target)
+        accuracy = pbRoughAccuracy(move, user, target, aiContext)
         score *= accuracy / 100.0
 
         if accuracy < 100
@@ -348,7 +403,7 @@ class PokeBattle_AI
         
         # Create kill info
         if willFaint
-            killInfo = KillInfo.new(user,move,user.pbSpeed(true, move: move),@battle.getMovePriority(move, user, [target], true), score)
+            killInfo = KillInfo.new(user,move,user.pbSpeed(true, move: move),@battle.getMovePriority(move, user, [target], true), score, aiContext[:item_consumed])
         else
             killInfo = nil
         end
@@ -391,8 +446,16 @@ class PokeBattle_AI
     # Add to a move's score based on how much damage it will deal (as a percentage
     # of the target's current HP)
     #=============================================================================
-    def pbGetMoveScoreDamage(move, user, target, numTargets = 1)
-        realDamage,damagePercentage,subDestroyed = getDamageAnalysisAI(move, user, target, numTargets)
+    def moveWillTriggerEmergencyExit?(target, damage)
+        return false unless target.aboveHalfHealth?
+        return false unless target.hp - damage <= target.totalhp / 2
+        return false unless target.hasActiveAbilityAI?(:EMERGENCYEXIT) || target.hasActiveAbilityAI?(:WIMPOUT)
+        return false unless @battle.pbCanSwitch?(target.index) && @battle.pbCanChooseNonActive?(target.index)
+        return true
+    end
+
+    def pbGetMoveScoreDamage(move, user, target, numTargets = 1, aiContext = nil)
+        realDamage,damagePercentage,subDestroyed = getDamageAnalysisAI(move, user, target, numTargets, aiContext)
 
         # Adjust score
         willFaint = false
@@ -400,17 +463,21 @@ class PokeBattle_AI
             realDamage = target.hp
             damageScore = 250
             willFaint = true
+        elsif moveWillTriggerEmergencyExit?(target, realDamage)
+            damageScore = 200 # A bit less valuable than a true faint
+            willFaint = true # Golisopod should treat getting outsped like a faint risk in this scenario, it won't get off an attack
+            echoln("\t[MOVE SCORING] #{target.pbThis(true)} has Emergency Exit/Wimp Out and will be forced out; treating as near-faint")
         else
             # Only care about KO thresholds
             if damagePercentage >= 50 || subDestroyed == true # Breaking a sub is as good as doing 50%
                 damageScore = 150 + (damagePercentage - 50)
-                damageScore *= user.levelNerf(false,true,0.5) if user.level <= 30 && !user.pbOwnedByPlayer? # AI nerf
+                damageScore *= user.levelNerfDamage(0.5) # AI nerf
             elsif damagePercentage >= 33
                 damageScore = 100 + (damagePercentage - 33)
-                damageScore *= user.levelNerf(false,true,1.1) if user.level <= 30 && !user.pbOwnedByPlayer? # AI nerf
+                damageScore *= user.levelNerfDamage(1.1) # AI nerf
             else
                 damageScore = 50 + damagePercentage
-                damageScore *= user.levelNerf(false,true,2) if user.level <= 30 && !user.pbOwnedByPlayer? # AI nerf
+                damageScore *= user.levelNerfDamage(2) # AI nerf
             end
         end
         damageScore = damageScore.floor
@@ -418,9 +485,9 @@ class PokeBattle_AI
         return damageScore,realDamage,willFaint
     end
 
-    def getDamageAnalysisAI(move, user, target, numTargets = 1)
+    def getDamageAnalysisAI(move, user, target, numTargets = 1, aiContext = nil)
         # Calculate how much damage the move will do (roughly)
-        realDamage,subDestroyed = pbTotalDamageAI(move, user, target, numTargets)
+        realDamage,subDestroyed = pbTotalDamageAI(move, user, target, numTargets, aiContext)
 
         # Convert damage to percentage of target's remaining HP
         damagePercentage = realDamage * 100.0 / target.totalhp

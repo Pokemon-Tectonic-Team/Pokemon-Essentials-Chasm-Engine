@@ -36,3 +36,24 @@ BattleHandlers::EORGainItemAbility.add(:GOURMAND,
         battler.pbHeldItemTriggerCheck
     }
 )
+
+BattleHandlers::EORGainItemAbility.add(:STRATAGEM,
+    proc { |ability, battler, battle|
+        itemsCanAdd = []
+        attackingMoves = battler.moves.select { |m| m.damagingMove? }
+        GameData::Item.getByFlag("TypeGem").each do |gem|
+            next unless GameData::Item.get(gem).legal?
+            next unless battler.canAddItem?(gem)
+            typeName = gem.to_s.chomp("GEM") # ROCKGEM -> ROCK
+            next unless attackingMoves.any? { |m| m.type == typeName.to_sym }
+            itemsCanAdd.push(gem) 
+        end
+        next if itemsCanAdd.length == 0
+        battle.pbShowAbilitySplash(battler, ability)
+        itemToAdd = itemsCanAdd.sample
+        battler.giveItem(itemToAdd)
+        battle.pbDisplay(_INTL("{1} found a {2} in its shell!", battler.pbThis, getItemName(itemToAdd)))
+        battle.pbHideAbilitySplash(battler)
+        battler.pbHeldItemTriggerCheck
+    }
+)

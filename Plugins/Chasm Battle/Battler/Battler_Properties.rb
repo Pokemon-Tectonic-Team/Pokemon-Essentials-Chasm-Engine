@@ -12,9 +12,10 @@ class PokeBattle_Battler
     attr_accessor  :lastRoundMoved, :lastMoveFailed, :lastRoundMoveFailed, :movesUsed, :currentMove
     attr_accessor  :tookDamage, :tookPhysicalHit, :tookSpecialHit, :tookPhysicalHitLastRound, :tookSpecialHitLastRound
     attr_accessor :damageState, :initialHP, :lastRoundHighestTypeModFromFoe
+    attr_accessor :movesUsedThisTurn, :movesUsedLastTurn
 
     # Avatar stuff
-    attr_accessor  :boss, :avatarPhase
+    attr_accessor  :boss, :avatarPhase, :phaseTransitioning
     attr_accessor  :indicesTargetedThisRound, :indicesTargetedLastRound, :indicesTargetedRoundBeforeLast
     attr_accessor  :empoweredTimer, :dmgMult, :dmgResist
 
@@ -56,9 +57,22 @@ class PokeBattle_Battler
     end
 
     def fainted?
-        return @hp <= 0 || afraid? || hasAbility?(:PACIFIST)
+        return @hp <= 0 || refusesToFight?
     end
     alias isFainted? fainted?
+
+    def refusesToFight?
+        return true if afraid?
+        # Wild Pokémon are already in the battle and should never refuse to fight.
+        return false if @battle.wildBattle? && pbOwnSide.index == 1
+        idxTrainer = @battle.pbGetOwnerIndexFromBattlerIndex(index)
+        eachActiveAbility(true, ignoreGas:true) do |ability|
+            return true if BattleHandlers.triggerForbidsUserSwitchInAbility(
+                ability, @battle, self.pokemon, pbOwnSide.index, idxTrainer, pokemonIndex, false
+            )
+        end
+        return false
+    end
 
     def afraid?
         return false unless @pokemon

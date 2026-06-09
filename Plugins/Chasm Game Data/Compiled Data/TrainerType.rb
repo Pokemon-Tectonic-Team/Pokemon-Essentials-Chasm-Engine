@@ -13,6 +13,7 @@ module GameData
       attr_reader :skill_code
       attr_reader :policies
       attr_reader :cable_club
+      attr_reader :cable_club_name
   
       DATA = {}
       BASE_DATA = {} # Data that hasn't been extended
@@ -27,12 +28,13 @@ module GameData
                                            "Wild" => 2, "wild" => 3, "W" => 3, "w" => 3, "3" => 3 }],
       "BaseMoney"  => [:base_money,  "u"],
       "SkillLevel" => [:skill_level, "u"],
-      "Policies"   => [:policies,    "*s"],
+      "Policies"   => [:policies,	   "*e",   :Policy],
       "IntroBGM"   => [:intro_ME,   "s"],
       "BattleBGM"  => [:battle_BGM,  "s"],
       "CursedBGM"  => [:cursed_battle_BGM,  "s"],
       "VictoryBGM" => [:victory_ME, "s"],
-      "CableClub" => [:cable_club, "b"]
+      "CableClub"     => [:cable_club,      "b"],
+      "CableClubName" => [:cable_club_name, "s"]
     }
   
       extend ClassMethodsSymbols
@@ -117,13 +119,18 @@ module GameData
         @skill_level = hash[:skill_level] || @base_money
         @skill_code  = hash[:skill_code]
         @policies	   = hash[:policies]	|| []
-        @cable_club  = hash[:cable_club] || false
+        @cable_club      = hash[:cable_club]      || false
+        @cable_club_name = hash[:cable_club_name]
         @defined_in_extension   = hash[:defined_in_extension] || false
       end
   
       # @return [String] the translated name of this trainer type
       def name
         return pbGetMessageFromHash(MessageTypes::TrainerTypes, @real_name)
+      end
+
+      def cable_club_display_name
+        return @cable_club_name || @real_name
       end
   
       def male?;   return @gender == 0; end
@@ -264,14 +271,15 @@ module Compiler
             f.write(sprintf("Name = %s\r\n", t_to_write.real_name))
             gender = GameData::TrainerType::SCHEMA["Gender"][2].key(t_to_write.gender)
             f.write(sprintf("Gender = %s\r\n", gender))
-            f.write(sprintf("BaseMoney = %d\r\n", t_to_write.base_money))
-            f.write(sprintf("SkillLevel = %d\r\n", t_to_write.skill_level)) if t_to_write.skill_level != t_to_write.base_money
-            f.write(sprintf("Policies = %s\r\n", t_to_write.policies.join(","))) if t_to_write.policies.length > 0
-            f.write(sprintf("IntroBGM = %s\r\n", t_to_write.intro_ME)) if !nil_or_empty?(t_to_write.intro_ME)
-            f.write(sprintf("BattleBGM = %s\r\n", t_to_write.battle_BGM)) if !nil_or_empty?(t_to_write.battle_BGM)
-            f.write(sprintf("CursedBGM = %s\r\n", t_to_write.cursed_battle_BGM)) if !nil_or_empty?(t_to_write.cursed_battle_BGM)
-            f.write(sprintf("VictoryME = %s\r\n", t_to_write.victory_ME)) if !nil_or_empty?(t_to_write.victory_ME)
-            f.write(sprintf("CableClub = true\r\n")) if t_to_write.cable_club
+            f.write(sprintf("BaseMoney = %d\r\n", t.base_money))
+            f.write(sprintf("SkillLevel = %d\r\n", t.skill_level)) if t.skill_level != t.base_money
+            f.write(sprintf("Policies = %s\r\n", t.policies.join(","))) if t.policies.length > 0
+            f.write(sprintf("IntroBGM = %s\r\n", t.intro_ME)) if !nil_or_empty?(t.intro_ME)
+            f.write(sprintf("BattleBGM = %s\r\n", t.battle_BGM)) if !nil_or_empty?(t.battle_BGM)
+            f.write(sprintf("CursedBGM = %s\r\n", t.cursed_battle_BGM)) if !nil_or_empty?(t.cursed_battle_BGM)
+            f.write(sprintf("VictoryME = %s\r\n", t.victory_ME)) if !nil_or_empty?(t.victory_ME)
+            f.write(sprintf("CableClub = true\r\n")) if t.cable_club
+            f.write(sprintf("CableClubName = %s\r\n", t.cable_club_name)) if t.cable_club_name
           end
         }
         Graphics.update

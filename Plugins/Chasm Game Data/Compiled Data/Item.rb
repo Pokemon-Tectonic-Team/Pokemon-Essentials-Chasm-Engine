@@ -62,8 +62,6 @@ module GameData
           prefix = "machine"
           if item_data.is_HM?
             prefix = "machine_hm"
-          elsif item_data.is_TR?
-            prefix = "machine_tr"
           end
           move_type = GameData::Move.get(item_data.move).type
           type_data = GameData::Type.get(move_type)
@@ -133,8 +131,6 @@ module GameData
       def name
         if is_TM?
           return _INTL("TM {1}",GameData::Move.get(@move).name)
-        elsif is_TR?
-          return _INTL("TR {1}",GameData::Move.get(@move).name)
         elsif is_HM?
           return _INTL("HM {1}",GameData::Move.get(@move).name)
         elsif @id == :AIDKIT && $PokemonGlobal && $PokemonGlobal.teamHealerUpgrades && $PokemonGlobal.teamHealerUpgrades > 0
@@ -149,8 +145,6 @@ module GameData
       def name_plural
         if is_machine?
           return _INTL("{1} TMs",GameData::Move.get(@move).name_plural)
-        elsif is_TR?
-          return _INTL("{1} TRs",GameData::Move.get(@move).name_plural)
         elsif is_HM?
           return _INTL("{1} HMs",GameData::Move.get(@move).name_plural)
         else
@@ -169,8 +163,7 @@ module GameData
   
       def is_TM?;                   return @field_use == 3; end
       def is_HM?;                   return @field_use == 4; end
-      def is_TR?;                   return @field_use == 6; end
-      def is_machine?;              return is_TM? || is_HM? || is_TR?; end
+      def is_machine?;              return is_TM? || is_HM?; end
       def machine_index
         return GameData::Item.getMachineIndex(@id)
       end
@@ -273,6 +266,10 @@ module GameData
 
       def is_mulch?
         return @flags.include?("Mulch")
+      end
+
+      def is_exp_candy?
+        return @flags.include?("EXPCandy")
       end
 
       def is_type_setting?
@@ -541,46 +538,13 @@ module Compiler
     # Use backed-up base data if it exists (i.e., if an extension modified this item)
     item_to_write = GameData::Item::BASE_DATA[item.id] || item
     f.write("\#-------------------------------\r\n")
-    f.write(sprintf("[%s]\r\n", item_to_write.id))
-    f.write(sprintf("Name = %s\r\n", item_to_write.real_name))
-    f.write(sprintf("NamePlural = %s\r\n", item_to_write.real_name_plural))
-    modifiedPocket = item_to_write.pocket
-    # case item_to_write.pocket
-    # when 1
-    #   if item_to_write.is_evolution_item?
-    #     modifiedPocket = 4
-    #   elsif item_to_write.name.downcase.include?("fossil") || item_to_write.name.downcase.include?("token") || item_to_write.name.downcase.include?("ore") || item_to_write.name.downcase.include?("egg")
-    #     modifiedPocket = 16
-    #   end
-    # when 2
-    #   if item_to_write.name.downcase.include?("candy")
-    #     modifiedPocket = 3
-    #   end
-    # when 3
-    #   modifiedPocket = 14
-    # when 4
-    #   modifiedPocket = 5
-    # when 5
-    #   if item_to_write.is_berry?
-    #     modifiedPocket = 9
-    #   elsif item_to_write.is_gem?
-    #     modifiedPocket = 10
-    #   elsif item_to_write.is_herb?
-    #     modifiedPocket = 11
-    #   elsif item_to_write.is_clothing?
-    #     modifiedPocket = 12
-    #   else
-    #     modifiedPocket = 13
-    #   end
-    # when 6
-    #   modifiedPocket = 15
-    # when 7
-    #   modifiedPocket = 6
-    # end
-    f.write(sprintf("Pocket = %d\r\n", modifiedPocket))
-    f.write(sprintf("Price = %d\r\n", item_to_write.price))
-    f.write(sprintf("SellPrice = %d\r\n", item_to_write.sell_price)) if item_to_write.sell_price != item_to_write.price / 2
-    field_use = GameData::Item::SCHEMA["FieldUse"][2].key(item_to_write.field_use)
+    f.write(sprintf("[%s]\r\n", item.id))
+    f.write(sprintf("Name = %s\r\n", item.real_name))
+    f.write(sprintf("NamePlural = %s\r\n", item.real_name_plural))
+    f.write(sprintf("Pocket = %d\r\n", item.pocket))
+    f.write(sprintf("Price = %d\r\n", item.price))
+    f.write(sprintf("SellPrice = %d\r\n", item.sell_price)) if item.sell_price != item.price / 2
+    field_use = GameData::Item::SCHEMA["FieldUse"][2].key(item.field_use)
     f.write(sprintf("FieldUse = %s\r\n", field_use)) if field_use
     battle_use = GameData::Item::SCHEMA["BattleUse"][2].key(item_to_write.battle_use)
     f.write(sprintf("BattleUse = %s\r\n", battle_use)) if battle_use

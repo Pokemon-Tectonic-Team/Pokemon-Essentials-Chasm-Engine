@@ -40,12 +40,41 @@ class PokemonTemp
     attr_accessor :currentDexSearch
   
     def initialize
+      reset_session_data
+    end
+
+    # Resets only session-specific state. Called on save load to avoid carrying
+    # transient state (e.g. follower sprites, encounter flags) across saves while
+    # preserving loaded GameData caches so they don't have to be deserialized again.
+    def reset_session_data
       @menuLastChoice         = 0
       @keyItemCalling         = false
       @hiddenMoveEventCalling = false
+      @bicycleCalling         = nil
       @begunNewGame           = false
       @miniupdate             = false
+      @waitingTrainer         = nil
+      @darknessSprite         = nil
+      @lastbattle             = nil
+      @flydata                = nil
+      @surfJump               = nil
+      @endSurf                = nil
       @forceSingleBattle      = false
+      @encounterTriggered     = nil
+      @encounterType          = nil
+      @evolutionLevels        = nil
+      @dependentEvents        = nil  # follower data; lazy-reinitialised on next access
+      @batterywarning         = nil
+      @cueBGM                 = nil
+      @cueFrames              = nil
+      @navigationRow          = nil
+      @navigationColumn       = nil
+      @currentDexSearch       = nil
+      @battleRules            = nil
+      @dragonFlames           = nil
+      # GameData caches (battleAnims, moveToAnim, mapInfos, townMapData,
+      # phoneData, speciesShadowMovesets, regionalDexes) are intentionally
+      # preserved so they don't need to be reloaded on every save load.
     end
 
     def dependentEvents

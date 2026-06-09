@@ -1,21 +1,23 @@
 def battleGuideMainDirectory
     return {
-        _INTL("Basic Strategy")    => [_INTL("How do I win battles?"),:battleGuideBasicsHash],
-        _INTL("Acquiring Pokémon") => [_INTL("How do I get more Pokémon?"),:battleGuideAquiringPokemonHash],
-        _INTL("Moves")             => [_INTL("What are moves and what are the differences between them?"),:battleGuideMovesHash],
-        _INTL("Type Matchups")     => [_INTL("When and how are types better or worse against one another?"),:battleGuideTypeMatchupsHash],
-        _INTL("Type Chart")        => [_INTL("How were type matchups changes compared to canon?"),:battleGuideTypeChartHash],
-        _INTL("Stats")             => [_INTL("What are stats, and how do they affect battles?"),:battleGuideStatsHash],
-        _INTL("Abilities")         => [_INTL("How do abilities work?"),:battleGuideAbilitiesHash],
-        _INTL("Held Items")        => [_INTL("What are held items and how to use them?"),:battleGuideHeldItemsHash],
-        _INTL("Status Conditions") => [_INTL("What are the Conditions a Pokémon can be afflicted with?"),:battleGuideStatusConditionsHash],
-        _INTL("Volatile Statuses") => [_INTL("What are the Volatile Statuses a Pokémon can be afflicted with?"),:battleGuideVolatileStatusesHash],
-        _INTL("Critical Hits")     => [_INTL("What are critical hits and when do they happen?"),:battleGuideCriticalHitsHash],
-        _INTL("Trainers")          => [_INTL("How do enemy Trainers work?"),:battleGuideTrainersHash],
-        _INTL("Avatars")           => [_INTL("What are avatars and what do they do?"),:battleGuideAvatarsHash],
-        _INTL("MasterDex")         => [_INTL("What does the MasterDex do and how should I use it?"),:battleGuideMasterdexHash],
-        _INTL("Weathers")          => [_INTL("What are weathers, and what does each do?"),:battleGuideWeathersHash],
-        _INTL("Tribes")            => [_INTL("What are Tribes and what do they do?"),:battleGuideTribesHash],
+        _INTL("Basic Strategy")      => [_INTL("How do I win battles?"),:battleGuideBasicsHash],
+        _INTL("Acquiring Pokémon")   => [_INTL("How do I get more Pokémon?"),:battleGuideAquiringPokemonHash],
+        _INTL("Moves")               => [_INTL("What are moves and what are the differences between them?"),:battleGuideMovesHash],
+        _INTL("Type Matchups")       => [_INTL("When and how are types better or worse against one another?"),:battleGuideTypeMatchupsHash],
+        _INTL("Type Chart")          => [_INTL("How were type matchups changes compared to canon?"),:battleGuideTypeChartHash],
+        _INTL("Stats")               => [_INTL("What are stats, and how do they affect battles?"),:battleGuideStatsHash],
+        _INTL("Abilities")           => [_INTL("How do abilities work?"),:battleGuideAbilitiesHash],
+        _INTL("Held Items")          => [_INTL("What are held items and how to use them?"),:battleGuideHeldItemsHash],
+        _INTL("Status Conditions")   => [_INTL("What are the Conditions a Pokémon can be afflicted with?"),:battleGuideStatusConditionsHash],
+        _INTL("Volatile Statuses")   => [_INTL("What are the Volatile Statuses a Pokémon can be afflicted with?"),:battleGuideVolatileStatusesHash],
+        _INTL("Critical Hits")       => [_INTL("What are critical hits and when do they happen?"),:battleGuideCriticalHitsHash],
+        _INTL("Trainers")            => [_INTL("How do enemy Trainers work?"),:battleGuideTrainersHash],
+        _INTL("Avatars")             => [_INTL("What are avatars and what do they do?"),:battleGuideAvatarsHash],
+        _INTL("MasterDex")           => [_INTL("What does the MasterDex do and how should I use it?"),:battleGuideMasterdexHash],
+        _INTL("Weathers")            => [_INTL("What are weathers, and what does each do?"),:battleGuideWeathersHash],
+        _INTL("Field Effects")       => [_INTL("What field effects are there and what are their effects?"),:battleGuideFieldEffectsHash],
+        _INTL("Side Effects")        => [_INTL("What side effects are there and what are their effects?"),:battleGuideSideEffectsHash],
+        _INTL("Tribes")              => [_INTL("What are Tribes and what do they do?"),:battleGuideTribesHash],
         _INTL("Legendary Abilities") => [_INTL("What do these legendary abilities do?"),:battleGuideLegendaryAbilitiesHash],
 }
 end
@@ -48,7 +50,7 @@ def battleGuideMovesHash
         _INTL("Special Moves") => _INTL("Special moves are notated by the symbol of a splash. Their damage is based on the Special Attack (Sp. Atk) of the attacker and the Special Defense (Sp. Def) of the target."),
         _INTL("Targeting") => _INTL("Most moves target only a single Pokémon, but many can target multiple Pokémon at once. Some moves differ in how far they can target in the bigger battle styles (doubles, triples)."),
         _INTL("Move Types") => _INTL("Every move has a type. Attacking moves deal different amounts of damage to different Pokémon based on those Pokémon's types. This is called 'type effectiveness'."),
-        _INTL("Same-Type Bonus") => _INTL("Pokémon deal 50% more damage with moves the share a type with them. For example, a Raichu deals 50% more damage with an Electric move than a Normal move."),
+        _INTL("Same-Type Bonus") => _INTL("Pokémon deal 50% more damage with moves they share a type with. For example, a Raichu deals 50% more damage with an Electric move than a Normal move."),
         _INTL("Learning Moves") => _INTL("Pokémon learn new moves as they level up. They can also learn moves from the 'Move Tutors' who sit in the left side of every PokéCenter."),
         _INTL("Base Power") => _INTL("Moves with higher Base Power deal more damage. Some moves deal variable Base Power depending on the situation. Status moves have no base power."),
         _INTL("Accuracy") => _INTL("Accuracy is a move's chance of hitting. Most moves have 100% accuracy. Some effects can raise accuracy to let you use low-accuracy moves consistently."),
@@ -72,12 +74,12 @@ end
 
 def battleGuideTypeChartHash
     return {
-        _INTL("Psychic vs Steel") => _INTL("Psychic is now Super-Effective vs Steel. Think of magicians bending spoons."),
+        _INTL("Psychic vs Steel") => _INTL("Psychic is now Super-Effective vs Steel. Psychic also resists Steel. Think of magicians bending spoons."),
         _INTL("Poison vs Water") => _INTL("Poison is now Super-Effective vs Water. Think of chemicals polluting a river."),
         _INTL("Bug vs Fairy") => _INTL("Bug is now Super-Effective vs Fairy. Think of insects scaring children."),
         _INTL("Grass resistances") => _INTL("Grass now resists Fairy and Ghost. Think of incense warding off magic."),
         _INTL("Ice resistances") => _INTL("Ice now resists Flying and Ground. Ice is Super-Effective against those types, so it's only natural!"),
-        _INTL("Other changes") => _INTL("Rock resists Ice. Fairy resists Dragon. Fairy is neutral against Fire. Bug resists Psychic. Psychic resists Steel."),
+        _INTL("Other changes") => _INTL("Rock resists Ice. Fairy resists Dragon. Fairy is neutral against Fire. Bug resists Psychic. Steel can be poisoned."),
     }
 end
 
@@ -116,7 +118,7 @@ def battleGuideAbilitiesHash
         _INTL("Choosing Abilities") => _INTL("A Pokémon's ability is one of the two its species can have, randomly chosen when you get it. You can use Ability Capsules to swap to the other."),
         _INTL("Conditional Abilities") => _INTL("Many abilities only do things under certain circumstances. Building around Weather and Room-synergy abilities is a common strategy."),
         _INTL("Effect Of Evolution") => _INTL("A Pokémon's ability tends to stay the same when evolving, but can change. When this happens, the game will alert you."),
-        _INTL("Defeating Abilities") => _INTL("An enemy Trainer's ability too much? Abilities like Neutralizing Gas, and moves like Gastro Acid, can suppress abilities in battle."),
+        _INTL("Defeating Abilities") => _INTL("An enemy Trainer's ability too much? The Dizzy status can suppress abilities in battle."),
         _INTL("Swapping Abilities") => _INTL("Moves like Skill Swap can be used to give a new ability to Pokémon during battle, enabling unique and creative team synergies."),
     }
 end
@@ -155,17 +157,24 @@ def battleGuideVolatileStatusesHash
         _INTL("Jinx") => _INTL("When jinxed, a Pokémon cannot Protect itself, and all attacks against it are guaranteed critical hits. Jinx wears off after 3 turns. Fairy-types do the most jinxing."),
         _INTL("Fractured") => _INTL("When fractured, a Pokémon deals 33% less damage with its moves. Fracture wears off after 3 turns. Rock-types do the most fracturing."),
         _INTL("Curse") => _INTL("When cursed, a Pokémon loses 25% of its HP every turn. Ghost-types do the most cursing."),
-        _INTL("Blindness") => _INTL("When blinded, a Pokemon deals 50% damage with its next attacking move. Blindness persists until a damaging move is used by the blinded Pokemon."),
+        _INTL("Blindness") => _INTL("When blinded, a Pokémon deals 50% damage with its next attacking move. Blindness persists until a damaging move is used by the blinded Pokémon."),
         _INTL("Torment") => _INTL("When tormented, a Pokémon cannot use the same move twice in a row. If something prevents it from moving for a turn, it can choose the same move the following turn."),
         _INTL("Taunt") => _INTL("When taunted, a Pokémon is prevented from using status moves."),
         _INTL("Disable") => _INTL("When disabled, a Pokémon cannot use the move it last selected."),
         _INTL("Bar") => _INTL("When barred, a Pokémon cannot use moves that don't share a type with themselves."),
-        _INTL("Trapping") => _INTL("When trapped, a  Pokémon cannot switch out of battle. Includes manually switching, being forced out, or using a move like U-Turn."),
+        _INTL("Encore") => _INTL("When encored, a Pokémon is forced to use the last used move again."),
+        _INTL("Heal Block") => _INTL("When heal blocked, a Pokémon cannot use healing or draining moves."),
+        _INTL("Mental") => _INTL("Torment, Taunt, Disable, Bar, Encore and Heal Block are mental effects."),
+        _INTL("Trapping") => _INTL("When trapped, a Pokémon cannot switch out of battle. Includes manually switching, being forced out, or using a move like U-Turn."),
         _INTL("Substitute") => _INTL("A substitute blocks attacks and status effects. It has HP equal to the amount of HP it took to create it. Sound tag moves ignore substitute."),
+        _INTL("Stockpile") => _INTL("Can be stacked 2 times. Reduces damage taken by 30% for 1 stack or 51% for 2 stacks."),
+        _INTL("Aqua Ring") => _INTL("A Pokémon affected by Aqua Ring restores 10% HP at the end of each turn."),
+        _INTL("Energized") => _INTL("When Energized, a Pokémon's next used Electric-type move does double damage."),
         _INTL("Transformed") => _INTL("A transformed Pokémon becomes a copy of another. It gains their ability, moves, stats (except HP), and step boosts."),
         _INTL("Perish Song") => _INTL("A Pokémon affected by Perish Song will faint when the timer ends. Avatars will be damaged for half of an HP bar."),
         _INTL("Grounded") => _INTL("A grounded Pokémon loses their immunity to ground moves (from being Flying-type or having a Levitate ability)."),
-        _INTL("Sticky") => _INTL("The affected Pokémon's highest stat becomes reduced by 2 steps for each turn of the effect."),
+        _INTL("Shrinking") => _INTL("The affected Pokémon's highest stat becomes reduced by 2 steps for each turn of the effect."),
+        _INTL("Sugar Rush") => _INTL("The affected Pokémon's speed is doubled, but they also take double damage from attacks."),
     }
 end
 
@@ -174,7 +183,7 @@ def battleGuideCriticalHitsHash
         _INTL("What are Critical Hits?") => _INTL("A critical hit deals 50% more damage than a regular hit. Certain moves are able to randomly critical hit."),
         _INTL("How common are Critical Hits?") => _INTL("For moves that can random crit, the chance is 1/8. This chance can be raised by abilities, items, or special effects."),
         _INTL("Other Effects") => _INTL("Critical hits ignore stat steps (on the user or the target) that would lower their damage. They also ignore protective screens like Reflect and Light Screen."),
-        _INTL("Preventing Criticals") => _INTL("Certain abilities prevent critical hits against that Pokemon. The Lucky Chant effect protects their side from critical hits."),
+        _INTL("Preventing Criticals") => _INTL("Certain abilities prevent critical hits against that Pokémon. The Sanctuary effect protects their side from critical hits."),
         _INTL("Guaranteed Criticals") => _INTL("Some moves or abilities are not random, but guarantee a critical hit under certain conditions. Otherwise, these act the same as random critical hits."),
     }
 end
@@ -235,7 +244,7 @@ end
 
 def battleGuideWeathersHash
     return {
-        _INTL("What are weathers?") => _INTL("Weathers are special states that effect the entire battlefield and help or hinder the Pokémon battling. Only one weather can be active at once."),
+        _INTL("What are weathers?") => _INTL("Weathers are special states that affect the entire battlefield and help or hinder the Pokémon battling. Only one weather can be active at once."),
         _INTL("Weather Duration") => _INTL("Weathers last a certain number of turns. The length differs depending on what move or ability summoned the weather. The duration can be extended by certain items."),
         _INTL("Sunshine") => _INTL("Sunshine lowers attack damage by 15%. Fire and Grass-type moves/Pokémon are immune to this. Fire-type attacks are boosted by 30%."),
         _INTL("Rain") => _INTL("Rainstorm lowers attack damage by 15%. Water and Electric-type moves/Pokémon are immune to this. Water-type attacks are boosted by 30%."),
@@ -249,12 +258,47 @@ def battleGuideWeathersHash
     }
 end
 
+def battleGuideFieldEffectsHash
+    return {
+        _INTL("What are field effects?") => _INTL("Field effects are special effects that affect the entire battlefield. Multiple field effects can be active at the same time."),
+        _INTL("Field Effect Duration") => _INTL("Field effects last a certain number of turns. The length differs depending on what move or ability summoned the field effect. Some durations can be enhanced by certain items."),
+        _INTL("Room Effects") => _INTL("Puzzle Room, Odd Room and Polarized Room are rooms. Multiple can be active at the same time. Their duration can be doubled with the Reinforcing Rod item."),
+        _INTL("Puzzle Room") => _INTL("Puzzle Room swaps each Pokémon's Attack and Sp. Attack stats."),
+        _INTL("Odd Room") => _INTL("Odd Room swaps each Pokémon's Attack and Defense and Sp. Attack and Sp. Defense."),
+        _INTL("Polarized Room") => _INTL("Polarized Room raises super- and hyper-effective damage by 25% and lowers not-very and barely-effective damage by 25% of all Pokémon."),
+        _INTL("Gravity") => _INTL("Gravity grounds all Pokémon, doubles their weight, and doubles all move Accuracy."),
+        _INTL("Grey Mist") => _INTL("Grey Mist resets all positive and negative stat changes back to neutral at the end of every turn."),
+        _INTL("Floral Gramarye") => _INTL("Floral Gramarye heals every Pokémon on the field for 1/8th HP at the end of every turn."),
+    }
+end
+
+def battleGuideSideEffectsHash
+    return {
+        _INTL("What are field effects?") => _INTL("Side effects are special effects that affect only one side. Multiple side effects can be active at the same time."),
+        _INTL("Field Effect Duration") => _INTL("Side effects last a certain number of turns. The length differs depending on what move or ability summoned the field effect. Some durations can be enhanced by certain items."),
+        _INTL("Screen Effects") => _INTL("Reflect, Light Screen, Aurora Veil, Sanctuary and Repulsion Field are screens. These effects do not stack with one another. Their duration can be enhanced with the Light Clay item."),
+        _INTL("Reflect") => _INTL("Reflect lowers damage from incoming physical moves by 50% in a Singles battle or 33% in a Doubles/Triples battle."),
+        _INTL("Light Screen") => _INTL("Light Screen lowers damage from incoming special moves by 50% in a Singles battle or 33% in a Doubles/Triples battle."),
+        _INTL("Aurora Veil") => _INTL("Aurora Veil lowers damage from incoming moves by 50% in a Singles battle or 33% in a Doubles/Triples battle. It can only be used during Hail."),
+        _INTL("Sanctuary") => _INTL("Sanctuary lowers damage from incoming moves by 25% in a Singles battle or 20% in a Doubles/Triples battle. It also prevents incoming critical hits."),
+        _INTL("Repulsion Field") => _INTL("Repulsion Field lowers damage from incoming moves with 100 BP or more by 50% in a Singles battle or 33% in a Doubles/Triples battle."),
+        _INTL("Pledge Effects") => _INTL("Sea of Fire, Swamp and Rainbow are Pledge effects. They are acquired by using 2 different Pledge moves in the same turn."),
+        _INTL("Sea of Fire") => _INTL("Sea of Fire is created on the opposing side by combining Fire- and Grass Pledge. Non-Fire-type Pokémon take 1/8th HP damage at the end of each turn."),
+        _INTL("Swamp") => _INTL("Swamp is created on the opposing side by combining Water- and Grass Pledge. Halves the Speed stat of all Pokémon on the active side."),
+        _INTL("Rainbow") => _INTL("Rainbow is created on the opposing side by combining Fire- and Water Pledge. Doubles the chance of random added effects against all Pokémon on the active side."),
+        _INTL("Tailwind") => _INTL("Tailwind doubles the Speed stat of all Pokémon on the active side."),
+        _INTL("Natural Protection") => _INTL("Natural Protection halves recoil damage and other passive damage like burn or sandstorm on the active side."),
+        _INTL("Coral Overgrowth") => _INTL("Coral Overgrowth causes attacks against the opponent to heal the user for 33% of the damage dealt. This can also overheal."),
+        _INTL("Wishing Well") => _INTL("Wishing Well consumes up to 1000 scattered coins to block random added effects and heal the active side for 1/16th HP each turn. 100 coins per turn for a max. of 10 turns."),
+    }
+end
+
 def battleGuideLegendaryAbilitiesHash
     return {
         _INTL("Tapu Koko: Storm Totem") => _INTL("Pokémon on this side get a 30% move damage boost, but they are prevented from using moves that are the same type as the move they most recently used."),
-        _INTL("Tapu Fini: Fog Totem") => _INTL("Whenever a foe finishes attacking a Pokemon on this side, the attacker is forced to switch out of battle. They are able to choose the replacement."),
-        _INTL("Tapu Bulu: Wild Totem") => _INTL("Whenever a Pokemon on this side is hit, its defending stats are both lowered by 1 step and its attacking stats are both raised by 1 step."),
-        _INTL("Tapu Lele: Flutter Totem") => _INTL("At the end of each turn, the Pokemon on this side are all healed by 1/8th of their max HP, but each one of their moves has their PP reduced by 1."),
+        _INTL("Tapu Fini: Fog Totem") => _INTL("Whenever a foe finishes attacking a Pokémon on this side, the attacker is forced to switch out of battle. They are able to choose the replacement."),
+        _INTL("Tapu Bulu: Wild Totem") => _INTL("Whenever a Pokémon on this side is hit, its defending stats are both lowered by 1 step and its attacking stats are both raised by 1 step."),
+        _INTL("Tapu Lele: Flutter Totem") => _INTL("At the end of each turn, the Pokémon on this side are all healed by 1/8th of their max HP, but each one of their moves has their PP reduced by 1."),
         _INTL("Zeraora: Hybrid Fighter") => _INTL("You gain effects for using moves in an order.\nKick -> Bite: Healed by 25%.\nPunch -> Kick: You switch out.\nBite -> Punch: The target's Attack and Sp. Atk lowers by 2 steps."),
         _INTL("Hybrid Fighter Part 2") => _INTL("Bite -> Kick: Your speed raises by 2 steps.\nKick -> Punch: Opponent is Numbed.\nPunch -> Bite: You gain Energy Charged."),
         _INTL("Articuno: Glacial Wings") => _INTL("Severe Frostbite: The same as Frostbite, but its end-of-turn chip deals double damage if the afflicted Pokémon is below half health."),
@@ -262,13 +306,13 @@ def battleGuideLegendaryAbilitiesHash
         _INTL("Zapdos: Galvanic Wings") => _INTL("Severe Numb: The same as Numb, but the afflicted Pokémon's highest stat is reduced at the end of each turn."),
         _INTL("Kyogre: Primordial Sea") => _INTL("Boosts the damage of Water- and Electric-type attacks by 50%. Prevents Pokémon not immune to Rain from activating moves' random added effects."),
         _INTL("Groudon: Desolate Land") => _INTL("Boosts the damage of Fire- and Grass-type attacks by 50%. Prevents Pokémon not immune to Sun from activating critical hits."),
-        _INTL("Necrozma: Event Horizon") => _INTL("Rock- and Ground-types gain a 50% boost to Special Defense. Pokémon not immune to Sandstorm take increasing damage from end of round, doubling every two rounds."),
-        _INTL("Kyurem: Heat Death") => _INTL("Ice- and Ghost-types gain a 50% boost to Defense. Healing is prevented from Pokémon not immune to Hail while active."),
+        _INTL("Necrozma: Event Horizon") => _INTL("Rock- and Ground-types gain a 50% boost to Special Defense. Deals sandstorm damage at end of turn. Pokémon not immune to Sandstorm take 50% more HP-fraction-based damage."),
+        _INTL("Kyurem: Heat Death") => _INTL("Ice- and Ghost-types gain a 50% boost to Defense. Deals hail damage at end of turn. Pokémon struck by the hail become unable to heal."),
         _INTL("Cresselia: Saturnal Sky") => _INTL("Boosts the damage of Psychic- and Dragon-type attacks by 50%. When the debuff applies from the Ring Eclipse effect, it lowers stats by 3 steps instead of 2."),
         _INTL("Darkrai: Stygian Night") => _INTL("Boosts the damage of Fairy- and Dark-type attacks by 50%. When the flinch happens from Blood Moon, it also damages targets by 25% of their Max HP."),
         _INTL("Giratina: Distorted Gravity") => _INTL("All foes take 1/16th damage at the end of the round. While the user is on the field, gravity does not decay."),
         _INTL("Tornadus: Wish of Winter") => _INTL("Raises the side's Accuracy by 50%. On the final turn, that side has +1 priority."),
-        _INTL("Thundurus: Wish of Summer") => _INTL("Raises the side's Speed by 50%. On the final turn, that side deals 50% more move damage, but takes 25% recoil.."),
+        _INTL("Thundurus: Wish of Summer") => _INTL("Raises the side's Speed by 50%. On the final turn, that side deals 50% more move damage, but takes 25% recoil."),
         _INTL("Landorus: Wish of Autumn") => _INTL("Raises the side's Defense by 50%. On the final turn, that side is healed for 33% max HP. This can overheal."),
         _INTL("Enamorus: Wish of Spring") => _INTL("Raises the side's Sp. Def by 50%. On the final turn, that side is cured of non-volatile status conditions and mental conditions."),
     }

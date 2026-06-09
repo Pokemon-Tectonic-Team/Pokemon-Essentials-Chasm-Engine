@@ -42,8 +42,7 @@ def takeSelfie
     pbWait(30)
 
     # Take the screenshot
-    timeLabel = Time.now.strftime("[%Y-%m-%d] %H_%M_%S.%L")
-    pbScreenCapture(_INTL("Selfie_{1}_{2}",$game_map.name,timeLabel))
+    pbScreenCapture(_INTL("Selfie_{1}_{2}", $game_map.name, getCurrentTimeLabel))
 
     pbWait(80)
 

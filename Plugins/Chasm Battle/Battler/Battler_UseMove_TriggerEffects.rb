@@ -35,12 +35,6 @@ class PokeBattle_Battler
                 target.tookPhysicalHit = true if move.physicalMove?
                 target.tookSpecialHit = true if move.specialMove?
             end
-
-            # Learn the target's damage affecting abilities
-            target.eachActiveAbility do |abilityID|
-                next unless BattleHandlers::DamageCalcTargetAbility.hasKey?(abilityID)
-                target.aiLearnsAbility(abilityID)
-            end
         end
         if target.opposes?(user) && user.activatesTargetEffects?
             # Primal Forest
@@ -64,6 +58,19 @@ class PokeBattle_Battler
                 PBDebug.log("[Lingering effect] #{target.pbThis}'s Shard Surge")
                 if move.specialMove? && !user.pbOpposingSide.effectAtMax?(:Spikes)
                     target.pbOpposingSide.incrementEffect(:Spikes)
+                end
+            end
+            # Cramorant special on-hit effects
+            if target.species == :CRAMORANT && target.form != 0
+                PBDebug.log("[Lingering effect] #{target.pbThis}'s Gulp Missile")
+                gulpform = target.form
+                transformationMessage = target.form == 2 ? _INTL("Cramorant ejects the Pikachu!") : _INTL("Cramorant ejects its meal!")
+                target.pbChangeForm(0,transformationMessage)
+                user.applyFractionalDamage(1.0 / 4.0) if user.takesIndirectDamage?(true)
+                if gulpform == 1
+                    user.pbLowerMultipleStatSteps(DEFENDING_STATS_1, target)
+                elsif gulpform == 2
+                    user.applyNumb(target)
                 end
             end
             # Are set to move, but haven't yet
@@ -144,7 +151,10 @@ user.pbThis(true)))
     #=============================================================================
     # Effects after all hits (i.e. at end of move usage)
     #=============================================================================
-    def pbEffectsAfterMove(user, targets, move, numHits)
+    def pbEffectsAfterMove(user, targets, move, numHits, originalUserPokemon = nil)
+        # Snapshot Blindness state before any switch-in effects (e.g. Eject Button →
+        # Ink Spray) can apply a fresh Blindness that should persist to the next turn.
+        userWasBlindBeforeEffects = user.effectActive?(:Blindness)
         # Destiny Bond
         # NOTE: Although Destiny Bond is similar to Grudge, they don't apply at
         #       the same time (although Destiny Bond does check whether it's going
@@ -160,9 +170,6 @@ user.pbThis(true)))
         switchedBattlers = []
         user.eachActiveAbility do |ability|
             BattleHandlers.triggerUserAbilityEndOfMove(ability, user, targets, move, @battle, switchedBattlers)
-            if user.effectActive?(:HyperBeam)
-                BattleHandlers.triggerUserAbilityEndOfExhaustingMove(ability, user, targets, move, @battle)
-            end
         end
 
         # Consume gems, etc.
@@ -177,7 +184,7 @@ user.pbThis(true)))
         if user.hasActiveAbility?(:SHEERFORCE) && move.randomEffect?
             # Skip other additional effects too if sheer force is being applied to the move
         else
-            pbEffectsAfterMove2(user, targets, move, numHits, switchedBattlers)
+            pbEffectsAfterMove2(user, targets, move, numHits, switchedBattlers, originalUserPokemon)
         end
         # Ally Cushion
         if user.effectActive?(:KickbackSwap) && !switchedBattlers.include?(user.index)
@@ -189,6 +196,15 @@ user.pbThis(true)))
                 user.position.disableEffect(:Kickback)
             end
         end
+        # Hit and Run
+        if user.effectActive?(:HitAndRunSwitch) && !switchedBattlers.include?(user.index)
+            if @battle.triggeredSwitchOut(user.index, ability: :HITANDRUN)
+                user.pbEffectsOnSwitchIn(true)
+                switchedBattlers.push(user.index)
+            else
+                user.disableEffect(:HitAndRunSwitch)
+            end
+        end
         # Some move effects that need to happen here, i.e. U-turn/Volt Switch
         # switching, Baton Pass switching, Parting Shot switching, Relic Song's form
         # changing, Fling/Natural Gift consuming item.
@@ -196,7 +212,7 @@ user.pbThis(true)))
             move.pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
         end
         # Misdirecting Fog
-        unless switchedBattlers.include?(user.index)
+        unless switchedBattlers.include?(user.index) || user.effectActive?(:MisdirectingFogSelected)
             fogSending = false
             targets.each do |target|
                 next unless target.pbOwnSide.effectActive?(:MisdirectingFog)
@@ -204,11 +220,15 @@ user.pbThis(true)))
                 fogSending = true
                 break
             end
-
-            trySwitchOutUser(user, targets, numHits, switchedBattlers) if fogSending
+            if fogSending
+                user.applyEffect(:MisdirectingFogSelected)
+                trySwitchOutUser(user, targets, numHits, switchedBattlers)
+            end
         end
-        #Blindness
-        if user.effectActive?(:Blindness) && move.damagingMove?
+        # Blindness is a one-move debuff: clear it only if the user was already blind
+        # when this move started. Blindness applied by switch-in abilities mid-effects
+        # (e.g. Ink Spray after Eject Button) should persist to the next turn.
+        if userWasBlindBeforeEffects && move.damagingMove?
             user.disableEffect(:Blindness)
         end
         # Mending Feathers
@@ -217,7 +237,10 @@ user.pbThis(true)))
                 trySwitchOutUser(user, targets, numHits, switchedBattlers)
             end
         end
-        @battle.eachBattler { |b| b.pbItemEndOfMoveCheck } if numHits > 0
+        # Run unconditionally (not just when numHits > 0) so that White Herb and
+        # similar EndOfMoveStatRestoreItems activate even after stat-only moves
+        # (e.g. Growl, Screech) that deal no damage hits.
+        @battle.eachBattler { |b| b.pbItemEndOfMoveCheck }
     end
 
     def consumeMoveTriggeredItems(user)
@@ -305,8 +328,13 @@ user.pbThis(true)))
     end
 
     # Everything in this method is negated by Sheer Force.
-    def pbEffectsAfterMove2(user, targets, move, numHits, switchedBattlers)
+    def pbEffectsAfterMove2(user, targets, move, numHits, switchedBattlers, originalUserPokemon = nil)
         hpNow = user.hp # Intentionally determined now, before Shell Bell
+        # originalUserPokemon is captured in pbUseMove before any hits begin, so it
+        # correctly identifies the original attacker even if Eject Pack fired mid-hit
+        # (e.g. user self-lowers stats via Close Combat) and replaced the battler before
+        # pbEffectsAfterMove2 runs. Fall back to user.pokemon if not provided.
+        originalUserPokemon ||= user.pokemon
         # Target's held item (Eject Button, Red Card)
         switchByItem = []
         @battle.pbPriority(true).each do |b|
@@ -329,7 +357,11 @@ user.pbThis(true)))
         end
         switchByItem.each { |idxB| switchedBattlers.push(idxB) }
         # User's held item (Life Orb, Shell Bell)
-        if !switchedBattlers.include?(user.index)
+        # Also guard against the case where the user's Eject Pack fired during
+        # triggersOnStatLoss (replacing the user mid-move without updating switchedBattlers),
+        # which would otherwise cause the replacement's items to trigger with the
+        # original user's damage data.
+        if !switchedBattlers.include?(user.index) && user.pokemon.equal?(originalUserPokemon)
             user.eachActiveItem do |item|
                 BattleHandlers.triggerUserItemAfterMoveUse(item, user, targets, move, numHits, @battle)
             end

@@ -18,14 +18,28 @@ def pbStartOver(_gameover = false)
             $game_temp.player_new_map_id = $game_map.map_id
 
             actualPoint = nil
+            targetMapId = $game_map.map_id
+            # Respawn Format same Map: $PokemonGlobal.respawnPoint = (eventID)
             if $PokemonGlobal.respawnPoint.is_a?(Integer)
                 respawnEvent = pbMapInterpreter.get_event($PokemonGlobal.respawnPoint)
                 actualPoint = [respawnEvent.x, respawnEvent.y + 1, Down]
+            # Respawn Format different Map: $PokemonGlobal.respawnPoint = [mapID, eventID]
             elsif $PokemonGlobal.respawnPoint.is_a?(Array)
-                actualPoint = $PokemonGlobal.respawnPoint
+                rp = $PokemonGlobal.respawnPoint
+                if rp.length == 2
+                    targetMapId = rp[0]
+                    eventId = rp[1]
+                    map = Game_Map.new
+                    map.setup(targetMapId)
+                    if map.events[eventId]
+                        ev = map.events[eventId]
+                        actualPoint = [ev.x, ev.y + 1, Down]
+                    end
+                end
             end
             if !actualPoint.nil?
-                $game_temp.player_new_x = actualPoint[0]
+                $game_temp.player_new_map_id    = targetMapId
+                $game_temp.player_new_x         = actualPoint[0]
                 $game_temp.player_new_y         = actualPoint[1]
                 $game_temp.player_new_direction = actualPoint[2] || Down
                 $scene.transfer_player if $scene.is_a?(Scene_Map)

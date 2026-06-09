@@ -163,7 +163,7 @@ class PokemonEncounters
     return false if $PokemonTemp.currentDexSearch
     return true if $game_player.pbTerrainTag.double_wild_encounters
     chance = Settings::DOUBLE_WILD_BATTLE_CHANCE
-    chance *= 2 if herdingActive?
+    chance *= 2 if pokemonLureActive?
     return true if rand(100) < chance
     return false
   end
@@ -253,11 +253,30 @@ class PokemonEncounters
       raise ArgumentError.new(_INTL("Encounter type {1} does not exist", enc_type))
     end
     enc_list = @encounter_tables[enc_type].clone
+    return choose_wild_pokemon_from_enc_list(enc_list, chance_rolls)
+  end
+
+# For the given map, randomly chooses a species and level from the encounter
+  # list for the given encounter type. Returns nil if there are none defined.
+  # Used by the Bug Catching Contest to choose what the other participants
+  # caught.
+  def choose_wild_pokemon_for_map(map_ID, enc_type, chance_rolls = 1)
+    if !enc_type || !GameData::EncounterType.exists?(enc_type)
+      raise ArgumentError.new(_INTL("Encounter type {1} does not exist", enc_type))
+    end
+    # Get the encounter table
+    encounter_data = GameData::Encounter.get(map_ID, $PokemonGlobal.encounter_version)
+    return nil if !encounter_data
+    enc_list = encounter_data.types[enc_type]
+    return choose_wild_pokemon_from_enc_list(enc_list, chance_rolls)
+  end
+
+  # Unify the largely-duplicated functionality of the above two functions
+  def choose_wild_pokemon_from_enc_list(enc_list, chance_rolls = 1)
     return nil if !enc_list || enc_list.length == 0
-	
     # 25% chance to only roll on Pokemon not yet caught
     uncaught_enc_list = enc_list.clone.delete_if{|e| $Trainer.owned?(e[1])}
-    uncaughtChance = herdingActive? ? 50 : 25
+    uncaughtChance = pokemonLureActive? ? 50 : 25
     if uncaught_enc_list.length > 0 && rand(100) < uncaughtChance
       echoln("Only rolling encounters for uncaught Pokemon!\n")
       enc_list = uncaught_enc_list
@@ -293,48 +312,6 @@ class PokemonEncounters
 	
 	  @lastEncounter = encounter[1]
     # Return [species, level]
-    return [encounter[1], level]
-  end
-
-# For the given map, randomly chooses a species and level from the encounter
-  # list for the given encounter type. Returns nil if there are none defined.
-  # Used by the Bug Catching Contest to choose what the other participants
-  # caught.
-  def choose_wild_pokemon_for_map(map_ID, enc_type)
-    if !enc_type || !GameData::EncounterType.exists?(enc_type)
-      raise ArgumentError.new(_INTL("Encounter type {1} does not exist", enc_type))
-    end
-    # Get the encounter table
-    encounter_data = GameData::Encounter.get(map_ID, $PokemonGlobal.encounter_version)
-    return nil if !encounter_data
-    enc_list = encounter_data.types[enc_type]
-    return nil if !enc_list || enc_list.length == 0
-	
-    # 25% chance to only roll on Pokemon not yet caught
-    uncaught_enc_list = enc_list.delete_if{|e| $Trainer.owned?(e[1])}
-    if uncaught_enc_list.length > 0 && rand(100) < 25
-      echoln("Only rolling encounters for uncaught Pokemon!\n")
-      enc_list = uncaught_enc_list
-    end
-	
-    # Calculate the total probability value
-    chance_total = 0
-    enc_list.each { |a| chance_total += a[0] }
-    # Choose a random entry in the encounter table based on entry probabilities
-    rnd = 0
-    chance_rolls.times do
-      r = rand(chance_total)
-      rnd = r if r > rnd   # Prefer rarer entries if rolling repeatedly
-    end
-    encounter = nil
-    enc_list.each do |enc|
-      rnd -= enc[0]
-      next if rnd >= 0
-      encounter = enc
-      break
-    end
-    # Return [species, level]
-    level = rand(encounter[2]..encounter[3])
     return [encounter[1], level]
   end
 
