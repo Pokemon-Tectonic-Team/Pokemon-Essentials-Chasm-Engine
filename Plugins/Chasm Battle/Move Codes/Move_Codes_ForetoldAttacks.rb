@@ -36,7 +36,7 @@ class PokeBattle_Move_AttackOneTurnLaterChooseIceFireElectricType < PokeBattle_F
             elsif !replayed_choice.nil?
                 @chosenType = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which type should {1} launch?", user.pbThis(true)),validTypeNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which type should {1} launch?", user.pbThis(true)),validTypeNames)
                 @chosenType = validTypes[chosenIndex]
                 return @chosenType
             end

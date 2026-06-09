@@ -23,6 +23,12 @@ BattleHandlers::MoveImmunityTargetAbility.add(:FLYTRAP,
   }
 )
 
+BattleHandlers::MoveImmunityTargetAbility.add(:DEBUGGER,
+  proc { |ability, user, target, move, type, battle, showMessages, aiCheck|
+      next pbBattleMoveImmunityStatAbility(ability, user, target, move, type, :BUG, :SPEED, 1, battle, showMessages, aiCheck)
+  }
+)
+
 BattleHandlers::MoveImmunityTargetAbility.add(:COLDRECEPTION,
   proc { |ability, user, target, move, type, battle, showMessages, aiCheck|
       next pbBattleMoveImmunityStatAbility(ability, user, target, move, type, :ICE, ATTACKING_STATS_1, nil, battle, showMessages, aiCheck)

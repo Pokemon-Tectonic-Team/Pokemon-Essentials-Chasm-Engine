@@ -7,7 +7,10 @@ class PokemonLoad_Scene
         @sprites = {}
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
         @viewport.z = 99_998
-        addBackgroundOrColoredPlane(@sprites, "background", "loadbg", Color.new(248, 248, 248), @viewport)
+        bg_path = darkMode? ? "loadbg_dark" : "loadbg"
+        bg_color = darkMode? ? Color.new(24, 24, 24) : Color.new(248, 248, 248)
+        addBackgroundOrColoredPlane(@sprites, "background", bg_path, bg_color, @viewport)
+        @sprites["background"].update
         y = 16 * 2
         for i in 0...commands.length
             @sprites["panel#{i}"] = PokemonLoadPanel.new(i, commands[i],
@@ -26,11 +29,15 @@ class PokemonLoad_Scene
         pbFadeInAndShow(@sprites) { pbUpdate }
     end
 
+
     def pbStartDeleteScene
         @sprites = {}
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
         @viewport.z = 99_998
-        addBackgroundOrColoredPlane(@sprites, "background", "loadbg", Color.new(248, 248, 248), @viewport)
+        bg_path = darkMode? ? "loadbg_dark" : "loadbg"
+        bg_color = darkMode? ? Color.new(24, 24, 24) : Color.new(248, 248, 248)
+        addBackgroundOrColoredPlane(@sprites, "background", bg_path, bg_color, @viewport)
+        @sprites["background"].update
     end
 
     def pbUpdate

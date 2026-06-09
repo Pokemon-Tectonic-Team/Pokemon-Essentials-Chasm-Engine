@@ -125,7 +125,7 @@ class PokeBattle_Battle
         @moneyGain         = true
         @rules             = {}
         @priority          = []
-        @priorityTrickRoom = false
+        @priorityTrickstersDomain = false
         @choices           = []
         @megaEvolution     = [
             [-1] * (@player ? @player.length : 1),

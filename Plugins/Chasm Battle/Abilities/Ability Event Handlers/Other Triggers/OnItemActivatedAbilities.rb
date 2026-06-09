@@ -2,6 +2,7 @@
 # If multiple valid allies exist and the user is player-controlled, the player chooses.
 BattleHandlers::OnItemActivatedAbility.add(:JUGGLING,
     proc { |ability, user, item, battle|
+        next if user.effectActive?(:JugglingThrown)
         valid_allies = []
         user.eachAlly { |b| valid_allies << b if b.canAddItem?(item) }
         next if valid_allies.empty?
@@ -17,6 +18,7 @@ BattleHandlers::OnItemActivatedAbility.add(:JUGGLING,
         else
             ally = valid_allies.sample
         end
+        user.applyEffect(:JugglingThrown)
         ally.giveItem(item)
         battle.pbDisplay(_INTL("{1} juggled its {2} to {3}!", user.pbThis, getItemName(item), ally.pbThis(true)))
         battle.pbHideAbilitySplash(user)
@@ -29,11 +31,13 @@ BattleHandlers::OnAllyItemActivatedAbility.add(:JUGGLING,
     proc { |ability, user, consumer, item, battle|
         # Skip if the consumer also has JUGGLING — already handled by OnItemActivatedAbility
         next if consumer.hasActiveAbility?(:JUGGLING)
+        next if user.effectActive?(:JugglingCaught)
         next unless user.canAddItem?(item)
         # Prevent multiple Juggling users from each catching the same item.
         # The flag is reset at the call site before each activation's ally loop.
         next if battle.jugglingItemTaken
         battle.jugglingItemTaken = true
+        user.applyEffect(:JugglingCaught)
         battle.pbShowAbilitySplash(user, ability)
         user.giveItem(item)
         battle.pbDisplay(_INTL("{1} caught {2}'s {3}!", user.pbThis, consumer.pbThis(true), getItemName(item)))

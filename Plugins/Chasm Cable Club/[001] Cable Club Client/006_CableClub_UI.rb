@@ -402,12 +402,19 @@ class CableClubScreen
       when "disconnected"
         pbDisplay(_INTL("Thank you for using the Cable Club. We hope to see you again soon."))
         return true
-      when "invalid party"
-        pbDisplay(_INTL("I'm sorry, your party contains Pokémon not allowed in the Cable Club."))
+      when /\Ainvalid party/
+        msg = _INTL("I'm sorry, your party contains Pokémon not allowed in the Cable Club.")
+        details = e.message.split("\n")[1..-1]
+        issuesMsg = "Issues:\n" + details.map { |d| "- #{d}" }.join("\n") unless details.empty?
+        pbDisplay(msg)
+        pbMessage(issuesMsg) # cable club's own pbDisplay override doesn't support multiple lines
         return false
       when "peer disconnected"
         pbDisplay(_INTL("I'm sorry, the other trainer has disconnected."))
         return true
+      when "peer already connected"
+        pbDisplay(_INTL("I'm sorry, that trainer connected to someone else with the same ID as you."))
+        return false
       when "invalid version"
         pbDisplay(_INTL("I'm sorry, your game version is out of date compared to the Cable Club."))
         return false

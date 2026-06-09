@@ -216,9 +216,7 @@ class PokeBattle_Move
             rate = criticalHitRate(user, target)
             random_crit = false
             random_crit = isRandomCrit?(user, target, rate) unless checkingForAI #Avoids needlessly calling pbRandom on AI checks
-            if random_crit
-                crit = true
-            end
+            crit = true if random_crit
         end
 
         if crit && critsPrevented?(user, target, checkingForAI)
@@ -227,18 +225,19 @@ class PokeBattle_Move
         end
 
         if checkingForAI
-            if forced
-                return crit
-            elsif allowedToRandomCrit
+            return crit if forced
+            if allowedToRandomCrit
                 # If the rate is high enough,
                 # A "random" crit is actually guaranteed
-                return rate >= CRITICAL_HIT_RATIOS.length - 1
-            else
-                return false
+                guaranteed_random_crit = (rate >= CRITICAL_HIT_RATIOS.length - 1)
+                if guaranteed_random_crit
+                    return false if critsPrevented?(user, target, true)
+                    return true
+                end
             end
-        else
-            return crit, forced
+            return false
         end
+        return crit, forced
     end
 
     def isRandomCrit?(user, target, rate)

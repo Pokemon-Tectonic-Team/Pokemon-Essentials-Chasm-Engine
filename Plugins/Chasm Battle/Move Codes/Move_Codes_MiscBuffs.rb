@@ -2,8 +2,6 @@
 # For 5 rounds, user becomes airborne. (Magnet Rise)
 #===============================================================================
 class PokeBattle_Move_StartUserAirborne5 < PokeBattle_Move
-    def unusableInGravity?; return true; end
-
     def pbMoveFailed?(user, _targets, show_message)
         if user.effectActive?(:Ingrain) || user.effectActive?(:EvilRoots)
             if show_message

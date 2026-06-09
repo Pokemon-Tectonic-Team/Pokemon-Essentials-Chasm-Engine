@@ -738,33 +738,6 @@ BattleHandlers::DamageCalcUserAbility.add(:TIMEINTERLOPER,
   }
 )
 
-BattleHandlers::DamageCalcUserAbility.add(:MARINEMENACE,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if move.function == "TwoTurnAttackInvulnerableUnderwater" # Dive, # Depth Charge
-      mults[:base_damage_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
-
-BattleHandlers::DamageCalcUserAbility.add(:EXCAVATOR,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if move.function == "TwoTurnAttackInvulnerableUnderground" # Dig, Undermine
-      mults[:base_damage_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
-
-BattleHandlers::DamageCalcUserAbility.add(:STEEPFLYING,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if move.function == "TwoTurnAttackInvulnerableInSky" # Fly, Divebomb
-      mults[:base_damage_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
-
 BattleHandlers::DamageCalcUserAbility.add(:GRIPSTRENGTH,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.function == "BindTarget3" # 3-turn DOT trapping moves

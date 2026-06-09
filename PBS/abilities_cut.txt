@@ -529,6 +529,10 @@ Description = Wild Pokémon are more likely to appear in pairs and to be species
 Name = Honey Gather
 Description = The Pokémon may gather Honey from somewhere.
 #-------------------------------
+[HONORABLE]
+Name = Honorable
+Description = Lowers priority of status moves used by any Pokémon.
+#-------------------------------
 [HONORAURA]
 Name = Honorable
 Description = Lowers priority of status moves used by any Pokémon.
@@ -625,6 +629,10 @@ Description = Boosts the power of kicking moves by 30%.
 [LIBERO]
 Name = Libero
 Description = The Pokémon changes type to that of the move it's about to use.
+#-------------------------------
+[LIFELINE]
+Name = Lifeline
+Description = At the end of each turn, heals self by 1/20th and a party member by the amount this Pokémon was healed.
 #-------------------------------
 [LIGHTMETAL]
 Name = Light Metal
@@ -739,6 +747,11 @@ Description = Sets Fairy Terrain for five turns when hit by an attack.
 [MISTYSURGE]
 Name = Misty Surge
 Description = Turns the ground into Fairy Terrain for 5 turns when entering battle.
+#-------------------------------
+[MODUSSWITCH]
+Name = Modus Switch
+Description = When using Techno Blast, the user can choose the move's type, switching to that form.
+Flags = Immutable
 #-------------------------------
 [MOLDBREAKER]
 Name = Mold Breaker
@@ -963,6 +976,10 @@ Description = Doubles the speed of recoil moves.
 Name = Rattled
 Description = Bug-, Dark- and Ghost-type moves scare it and boost its Speed.
 #-------------------------------
+[RATTLEEM]
+Name = Rattle 'Em
+Description = Moves that can flinch are 50% more likely. Deals 50% more damage to Pokémon with flinch immunity.
+#-------------------------------
 [RECEIVER]
 Name = Receiver
 Description = Copies the Ability of a defeated ally.
@@ -1086,6 +1103,10 @@ Name = Shaky Code
 Description = During eclipse, changes the Pokémon's type to the type of the move it's using.
 Flags = EclipseSynergy
 #-------------------------------
+[SHAREDSPOILS]
+Name = Shared Spoils
+Description = When this Pokémon removes a foe's item, choose a party member to hold it.
+#-------------------------------
 [SHARPNESS]
 Name = Swordplay
 Description = Boosts the power of blade moves by 30%.
@@ -1106,6 +1127,10 @@ Flags = CritImmunity
 [SHIELDWALL]
 Name = Shield Wall
 Description = Takes 50% less damage from hyper-effective attacks.
+#-------------------------------
+[SHOCKSTYLE]
+Name = Shock Style
+Description = Powers up Fighting-type moves by 50%.
 #-------------------------------
 [SHOCKWINGS]
 Name = Shock Wings
@@ -1175,6 +1200,11 @@ Description = The Pokémon moves after all other Pokémon do.
 Name = Stalwart
 Description = Ignores effects changing the target of a move.
 Flags = RedirectionImmunity
+#-------------------------------
+[STAMPEDE]
+Name = Stampede
+Description = Doubles critical hit chance for each Speed step up. All moves can random critical hit.
+Flags = EnablesRandomCrits
 #-------------------------------
 [STEADFAST]
 Name = Steadfast
@@ -1317,6 +1347,10 @@ Description = Raises each stat by two steps when a Total Eclipse happens.
 Name = Total Mirror
 Description = When hit with a special move, hits back instantly with that same move.
 #-------------------------------
+[TOUGHCLAWS]
+Name = Tough Claws
+Description = Increases Attack by 30%.
+#-------------------------------
 [TOXICBOOST]
 Name = Toxic Boost
 Description = Boosts Attack by 50% when poisoned.
@@ -1354,6 +1388,11 @@ Description = Upon entry, creates a Trick Room for five turns, inverting the eff
 [TURBOBLAZE]
 Name = Turboblaze
 Description = Moves can be used regardless of Abilities.
+#-------------------------------
+[UNBOUND]
+Name = Unbound
+Description = Moves ignore Abilities that would affect its moves or activate after hitting the target, and immunities due to typing.
+Flags = MoldBreaking,BypassTypeImmunity
 #-------------------------------
 [UNCANNYCOLD]
 Name = Uncanny Cold

@@ -119,14 +119,10 @@ GameData::BattleEffect.register_effect(:Field, {
 })
 
 GameData::BattleEffect.register_effect(:Field, {
-    :id => :TrickRoom,
-    :real_name => "Trick Room",
+    :id => :TrickstersDomain,
+    :real_name => "Trickster's Domain",
     :type => :Integer,
     :ticks_down_eor => true,
-    :ticks_down_proc => proc do |battle, value|
-        next !battle.pbCheckGlobalAbility(:ROOMLOCK)
-    end,
-    :is_room => true,
     :apply_proc => proc do |battle, _value|
         battle.pbDisplay(_INTL("A tricky area appeared! Speed functions in reverse!"))
     end,

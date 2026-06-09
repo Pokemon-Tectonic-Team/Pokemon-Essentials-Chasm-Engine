@@ -546,6 +546,7 @@ class PokeBattle_Battler
     def semiInvulnerable?
         return inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
         "TwoTurnAttackInvulnerableUnderground",
+        "TwoTurnAttackInvulnerableUndergroundHitThreeTimes",
         "TwoTurnAttackInvulnerableUnderwater",
         "TwoTurnAttackInvulnerableHiding",
         "TwoTurnAttackInvulnerableInFoliage",
@@ -742,7 +743,8 @@ class PokeBattle_Battler
 
     # Only to be called during hit or post-most-use triggers
     def knockedBelowHalf?
-        return @damageState.initialHP >= @totalhp / 2 && @hp < @totalhp / 2
+        half = @totalhp / 2.0
+        return @damageState.initialHP >= half && @hp < half
     end
     
     def avatarData

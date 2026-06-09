@@ -238,7 +238,7 @@ GameData::Weather.register({
 	:tile_delta_x     => 0,
 	:tile_delta_y     => 8,
 	:tile_name        => "toxic_fog_tile",
-	:default_strength => 1,
+	:default_strength => 2,
 	:clouds_proc => proc { |strength|
 		next strength * -4
 	},

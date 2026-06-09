@@ -101,7 +101,7 @@ class Pokemon
     # Max EVs that a single stat can have
     EV_STAT_LIMIT = 20
     # Maximum length a Pokémon's nickname can be
-    MAX_NAME_SIZE = 10
+    MAX_NAME_SIZE = 13
     # Maximum number of moves a Pokémon can know at once
     MAX_MOVES     = 4
     # How much the pokemon's hue can vary (+/- half of this value)

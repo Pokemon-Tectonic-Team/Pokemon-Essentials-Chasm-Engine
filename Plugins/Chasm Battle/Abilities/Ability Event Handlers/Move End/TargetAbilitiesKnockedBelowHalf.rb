@@ -96,6 +96,12 @@ BattleHandlers::TargetAbilityKnockedBelowHalf.add(:DREAMYHAZE,
     }
 )
 
+BattleHandlers::TargetAbilityKnockedBelowHalf.add(:AROMATIC,
+    proc { |ability, target, user, move, _switched, battle|
+        battle.forceUseMove(target, :AROMATHERAPY, ability: ability)
+    }
+)
+
 BattleHandlers::TargetAbilityKnockedBelowHalf.add(:SUDDENTURN,
     proc { |ability, target, user, move, _switched, battle|
         battle.forceUseMove(target, :RAPIDSPIN, ability: ability)

@@ -6,3 +6,27 @@ Moves1 = BODYSLAM,PRIMEVALCALMMIND
 Moves2 = ZENHEADBUTT
 Turns = 1
 HPMult = 10.0
+#-------------------------------
+[GOSSIFLEUR]
+Ability = COTTONDOWN
+Moves1 = FOLLOWME
+Turns = 1
+HPMult = 3.0
+#-------------------------------
+[TYROGUE]
+Ability = VITALSPIRIT
+Moves1 = POWERUPPUNCH
+Turns = 1
+HPMult = 3.0
+#-------------------------------
+[POOCHYENA]
+Ability = NIGHTSTALKER
+Moves1 = BITE
+Turns = 1
+HPMult = 3.0
+#-------------------------------
+[COMBEE]
+Ability = STRESSFUL
+Moves1 = HELPINGHAND
+Turns = 1
+HPMult = 3.0

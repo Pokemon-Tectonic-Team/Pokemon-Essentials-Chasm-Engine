@@ -391,7 +391,7 @@ Events.OnTalkToFollower += proc {|pkmn,event,random_val|
 
 # Sunny Weather specific message for multiple types
 Events.OnTalkToFollower += proc {|pkmn,event,random_val|
-  if :Sun == $game_screen.weather_type
+  if :Sun == $game_screen.weather_type && PBDayNight.isDay?
     if pkmn.hasType?(:GRASS)
       $scene.spriteset.addUserAnimation(FollowerSettings::Emo_Happy,event.x,event.y)
       pbWait(72)
@@ -400,7 +400,7 @@ Events.OnTalkToFollower += proc {|pkmn,event,random_val|
         _INTL("{1} is soaking up the sunshine."),
         _INTL("The bright sunlight doesn't seem to bother {1} at all."),
         _INTL("{1} sent a ring-shaped cloud of spores into the air!"),
-        _INTL("{1} is stretched out its body and is relaxing in the sunshine."),
+        _INTL("{1} is stretching out its body and is relaxing in the sunshine."),
         _INTL("{1} is giving off a floral scent.")
       ]
     elsif pkmn.hasType?(:FIRE)

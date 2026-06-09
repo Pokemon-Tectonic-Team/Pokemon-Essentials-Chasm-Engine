@@ -5,6 +5,20 @@ def aquaRingHealingFraction(battler)
 end
 
 GameData::BattleEffect.register_effect(:Battler, {
+    :id => :JugglingThrown,
+    :real_name => "Juggling Thrown",
+    :resets_battlers_eot => true,
+    :resets_battlers_sot => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :JugglingCaught,
+    :real_name => "Juggling Caught",
+    :resets_battlers_eot => true,
+    :resets_battlers_sot => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
     :id => :AquaRing,
     :real_name => "Aqua Ring",
     :baton_passed => true,
@@ -175,7 +189,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Numb-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will numb.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will numb.", battler.pbThis(true)))
     end,
 })
 
@@ -184,7 +198,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Numb-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will numb.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will numb.", battler.pbThis(true)))
     end,
 })
 
@@ -193,7 +207,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Poison-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will poison.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will poison.", battler.pbThis(true)))
     end,
 })
 
@@ -202,7 +216,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Poison-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will poison.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will poison.", battler.pbThis(true)))
     end,
 })
 
@@ -211,7 +225,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Burn-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will burn.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will burn.", battler.pbThis(true)))
     end,
 })
 
@@ -220,7 +234,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Burn-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will burn.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will burn.", battler.pbThis(true)))
     end,
 })
 
@@ -229,7 +243,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Frost-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will frostbite.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will frostbite.", battler.pbThis(true)))
     end,
 })
 
@@ -238,7 +252,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Frost-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will frostbite.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will frostbite.", battler.pbThis(true)))
     end,
 })
 
@@ -247,7 +261,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Dizzy-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will dizzy.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will dizzy.", battler.pbThis(true)))
     end,
 })
 
@@ -256,7 +270,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Dizzy-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will dizzy.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will dizzy.", battler.pbThis(true)))
     end,
 })
 
@@ -265,7 +279,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Leech-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will leech.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will leech.", battler.pbThis(true)))
     end,
 })
 
@@ -274,7 +288,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Leech-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will leech.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will leech.", battler.pbThis(true)))
     end,
 })
 
@@ -283,7 +297,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Waterlog-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will waterlog.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will waterlog.", battler.pbThis(true)))
     end,
 })
 
@@ -292,7 +306,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Waterlog-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will waterlog.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will waterlog.", battler.pbThis(true)))
     end,
 })
 
@@ -2190,6 +2204,13 @@ GameData::BattleEffect.register_effect(:Battler, {
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
+    :id => :HitAndRunSwitch,
+    :real_name => "Hit and Run Switch",
+    :info_displayed => false,
+    :resets_eor => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
     :id => :MisdirectingFogSelected,
     :real_name => "Selected for Misdirecting Fog Switch",
 })
@@ -2725,9 +2746,9 @@ GameData::BattleEffect.register_effect(:Battler, {
 def checkHerosJourney(battle, battler)
     return unless battler.hasActiveAbility?(:HEROSJOURNEY)
     return unless battler.countsAs?(:KELDEO)
-    return unless battler.effectActive?(:HerosJourneyKO)
-    return unless battler.effectActive?(:HerosJourneyStatus)
-    return unless battler.effectActive?(:HerosJourneyRevenge)
+    return unless battler.pbOwnSide.effectActive?(:HerosJourneyKO)
+    return unless battler.pbOwnSide.effectActive?(:HerosJourneyStatus)
+    return unless battler.pbOwnSide.effectActive?(:HerosJourneyRevenge)
     battler.showMyAbilitySplash(:HEROSJOURNEY)
     battle.pbDisplay(_INTL("A fierce resolution gathers around {1}!", battler.pbThis))
     battler.applyFractionalHealing(1.0)

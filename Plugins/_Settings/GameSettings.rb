@@ -45,7 +45,7 @@ module Settings
     # The maximum amount of soot the player can have.
     MAX_SOOT             = 9_999
     # The maximum length, in characters, that the player's name can be.
-    MAX_PLAYER_NAME_SIZE = 10
+    MAX_PLAYER_NAME_SIZE = 15
     # The maximum number of Pokémon that can be in the party.
     MAX_PARTY_SIZE       = 6
   

@@ -48,7 +48,7 @@ class PokeBattle_Move_HealUserByHalfOfDamageDoneDoubleDamageIfTargetAsleepCanOve
 end
 
 #===============================================================================
-# Drains 2/3s if target hurt the user this turn (Trap Jaw)
+# Drains 2/3s if target hurt the user this turn (Sapping Jaw)
 #===============================================================================
 class PokeBattle_Move_HealUserByTwoThirdsOfDamageDoneIfTargetHurtUserThisTurn < PokeBattle_Move
     def healingMove?; return true; end

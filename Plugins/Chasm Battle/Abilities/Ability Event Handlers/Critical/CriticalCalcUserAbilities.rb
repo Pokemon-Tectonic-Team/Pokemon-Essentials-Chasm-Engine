@@ -16,7 +16,7 @@ BattleHandlers::CriticalCalcUserAbility.add(:SHARPSHOOTER,
   }
 )
 
-BattleHandlers::CriticalCalcUserAbility.add(:STAMPEDE,
+BattleHandlers::CriticalCalcUserAbility.add(:RUNTHROUGH,
   proc { |ability, user, _target, _move, c|
       next 0 if user.steps[:SPEED] <= 0
       next c + user.steps[:SPEED]

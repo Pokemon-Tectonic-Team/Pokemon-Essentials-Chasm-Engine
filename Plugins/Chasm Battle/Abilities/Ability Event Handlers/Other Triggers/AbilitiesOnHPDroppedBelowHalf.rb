@@ -108,6 +108,7 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:VOIDWARRANTY,
         choiceIndex = battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", battler.name), choiceNames)
       end
       battler.pbChangeForm(formChoices[choiceIndex], _INTL("{1} takes on a new machine!", battler.pbThis))
+      battler.refreshBattleMoves
       battle.pbHideAbilitySplash(battler)
   }
 )

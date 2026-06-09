@@ -203,6 +203,16 @@ class PokeBattle_Battler
         return false
     end
 
+    def tyrannicalPreventsFlinch?
+        return false unless hasTribeBonus?(:TYRANNICAL)
+        return false if pbOwnSide.effectActive?(:TyrannicalImmunity)
+        @battle.pbShowTribeSplash(self, :TYRANNICAL)
+        @battle.pbDisplay(_INTL("{1} refuses to flinch!", pbThis))
+        @battle.pbHideTribeSplash(self)
+        pbOwnSide.applyEffect(:TyrannicalImmunity)
+        return true
+    end
+
     #=============================================================================
     # Check whether the user (self) is able to take action at all.
     # If this returns true, and if PP isn't a problem, the move will be considered
@@ -326,11 +336,7 @@ class PokeBattle_Battler
                 if effectActive?(:FlinchImmunity)
                     @battle.pbDisplay(_INTL("{1} would have flinched, but it's immune now!", pbThis))
                     disableEffect(:Flinch)
-                elsif hasTribeBonus?(:TYRANNICAL) && !pbOwnSide.effectActive?(:TyrannicalImmunity)
-                    @battle.pbShowTribeSplash(self,:TYRANNICAL)
-                    @battle.pbDisplay(_INTL("{1} refuses to flinch!", pbThis))
-                    @battle.pbHideTribeSplash(self)
-                    pbOwnSide.applyEffect(:TyrannicalImmunity)
+                elsif tyrannicalPreventsFlinch?
                 elsif hasActiveItem?(:COURAGEBADGE)
                     @battle.pbDisplay(_INTL("{1} would have flinched, but it holds a Courage Badge!", pbThis))
                     aiLearnsItem(:COURAGEBADGE)
