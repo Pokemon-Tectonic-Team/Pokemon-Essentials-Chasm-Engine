@@ -107,7 +107,7 @@ end
 
 
 def pbCanRegisterItem?(item)
-  return ItemHandlers.hasUseInFieldHandler(item)
+  return ItemHandlers.hasUseInFieldHandler(item) || ItemHandlers.hasUseOnPokemon(item)
 end
 
 def pbCanUseOnPokemon?(item)
@@ -454,7 +454,11 @@ end
 def pbUseKeyItemInField(item)
   ret = ItemHandlers.triggerUseInField(item)
   if ret==-1   # Item effect not found
-    pbMessage(_INTL("Can't use that here."))
+    if ItemHandlers.hasUseOnPokemon(item)
+      pbUseItem($PokemonBag,item)
+    else
+      pbMessage(_INTL("Can't use that here."))
+    end
   elsif ret==3   # Item was used and consumed
     $PokemonBag.pbDeleteItem(item)
   end
