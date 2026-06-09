@@ -607,8 +607,8 @@ def pbEXPAdditionItem(pkmn, exp, item, scene = nil, oneAtATime = false)
     scene&.pbRefresh
 
     # Apply the new EXP, accounting for the level cap
-    expAmount = exp * quantity
-    expAmount = (expAmount * 1.15).floor if pbHasItem?(:SWEETTOOTH)
+    expAmount = applyEXPCandyMultipliers(exp * quantity)
+    
     pkmn.exp += expAmount
     pkmn.exp = [pkmn.exp, maxxp].min
     display_exp = pkmn.exp - current_exp
@@ -670,6 +670,11 @@ def pbEXPAdditionItem(pkmn, exp, item, scene = nil, oneAtATime = false)
     end
 
     return true
+end
+
+def applyEXPCandyMultipliers(expAmount)
+  expAmount = (expAmount * 1.15).floor if pbHasItem?(:SWEETTOOTH)
+  return expAmount
 end
 
 class PokemonParty_Scene
