@@ -85,6 +85,24 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 	next true
 })
 
+def addEXPCandyToDispenser(item, quantity = 1)
+    expAmount = getEXPAmountForCandy(item) * quantity
+    expAmount = applyEXPCandyMultipliers(expAmount)
+    $PokemonGlobal.expJAR += expAmount
+end
+
+def moveAllBagEXPCandyToDispenser
+	storedAny = false
+	GameData::Item.getByFlag("EXPCandy").each do |candyID|
+		next unless pbHasItem?(candyID)
+		amountOfThisCandy = pbQuantity(candyID)
+		addEXPCandyToDispenser(candyID, amountOfThisCandy)
+		pbDeleteItem(candyID, amountOfThisCandy)
+		storedAny = true
+	end
+	pbMessage(_INTL("\\i[EXPEZDISPENSER]You put all of your EXP Candy into the \\c[1]{1}\\c[0]!\\wtnp[30]", getItemName(:EXPEZDISPENSER))) if storedAny
+end
+
 def calculateCandySplitForEXP(expAmount)
 	# Calculate how many of each candy size could be given
 	candyTotals = []
