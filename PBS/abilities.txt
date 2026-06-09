@@ -427,7 +427,7 @@ Description = Doubles the likelihood of the user's random added effects activati
 #-------------------------------
 [SHADOWSHIELD]
 Name = Shadow Shield
-Description = Resists damage while its HP is full.
+Description = Reduces move damage taken by 50% when HP is full.
 #-------------------------------
 [SHEDSKIN]
 Name = Shed Skin

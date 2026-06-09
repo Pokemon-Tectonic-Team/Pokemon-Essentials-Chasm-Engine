@@ -66,12 +66,12 @@ class PokemonDocumentationMenu < PokemonPauseMenu
 		cmdBattleGuide = -1
 		cmdPokeXRay = -1
 		infoCommands = []
-		infoCommands[cmdMasterDex = infoCommands.length] = _INTL("MasterDex")
-		infoCommands[cmdMoveDex = infoCommands.length] = _INTL("MoveDex")
-		infoCommands[cmdBattleGuide = infoCommands.length] = _INTL("Battle Guide")
 		if pbHasItem?(:POKEXRAY) && @battle && @battle.trainerBattle? && !@battle.is_online?
 			infoCommands[cmdPokeXRay = infoCommands.length] = getItemName(:POKEXRAY)
 		end
+		infoCommands[cmdMasterDex = infoCommands.length] = _INTL("MasterDex")
+		infoCommands[cmdMoveDex = infoCommands.length] = _INTL("MoveDex")
+		infoCommands[cmdBattleGuide = infoCommands.length] = _INTL("Battle Guide")
 		infoCommands.push(_INTL("Cancel"))
 		loop do
 			infoCommand = @scene.pbShowCommands(infoCommands)

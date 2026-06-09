@@ -2,27 +2,28 @@
 #
 #===============================================================================
 class PokemonTrainerCard_Scene
+  GENDER_CARD_SUFFIXES = [nil, "_f", "_a"]
+
   def pbUpdate
     pbUpdateSpriteHash(@sprites)
+  end
+
+  def pbGetGenderedSuffix(base_path)
+    suffix = GENDER_CARD_SUFFIXES[$Trainer.gender]
+    return "" if suffix.nil? # if masc or out of bounds
+    return suffix if pbResolveBitmap("#{base_path}#{suffix}")
+    return ""
   end
 
   def pbStartScene
     @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z = 99999
     @sprites = {}
-    background = pbResolveBitmap(sprintf("Graphics/Pictures/Trainer Card/bg_f"))
-    if $Trainer.female? && background
-      addBackgroundPlane(@sprites,"bg","Trainer Card/bg_f",@viewport)
-    else
-      addBackgroundPlane(@sprites,"bg","Trainer Card/bg",@viewport)
-    end
-    cardexists = pbResolveBitmap(sprintf("Graphics/Pictures/Trainer Card/card_f"))
+    bg_suffix = pbGetGenderedSuffix("Graphics/Pictures/Trainer Card/bg")
+    addBackgroundPlane(@sprites,"bg","Trainer Card/bg#{bg_suffix}",@viewport)
     @sprites["card"] = IconSprite.new(0,0,@viewport)
-    if $Trainer.female? && cardexists
-      @sprites["card"].setBitmap("Graphics/Pictures/Trainer Card/card_f")
-    else
-      @sprites["card"].setBitmap("Graphics/Pictures/Trainer Card/card")
-    end
+    card_suffix = pbGetGenderedSuffix("Graphics/Pictures/Trainer Card/card")
+    @sprites["card"].setBitmap("Graphics/Pictures/Trainer Card/card#{card_suffix}")
     @sprites["overlay"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport)
     pbSetSystemFont(@sprites["overlay"].bitmap)
     @sprites["trainer"] = IconSprite.new(336,112,@viewport)

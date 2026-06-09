@@ -1,4 +1,5 @@
 EXP_PER_EXTRA_SMALL = 200
+
 EXP_JAR_BASE_EFFICIENCY = 1.0
 
 class PokemonGlobalMetadata

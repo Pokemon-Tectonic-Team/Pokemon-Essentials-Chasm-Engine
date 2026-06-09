@@ -102,7 +102,7 @@ Description = Deals double damage against Pokémon that have raised defenses or 
 #-------------------------------
 [AROMATIC]
 Name = Aromatic
-Description = Uses Aromatherapy if an attack lowers its HP to half or below.
+Description = Uses Aromatherapy if an attack lowers its HP below half.
 #-------------------------------
 [ASSAULTSPINES]
 Name = Assault Spines
@@ -362,6 +362,7 @@ Description = Boosts Sp. Atk by 75%, but this Pokémon becomes frostbitten after
 [COLDFUSION]
 Name = Cold Fusion
 Description = Immune to Fire- and Electric-type moves and raises Attack and Sp. Atk by two steps if hit by one.
+Flags = ForceSignature
 #-------------------------------
 [COLDRECEPTION]
 Name = Cold Reception
@@ -621,7 +622,7 @@ Description = This Pokémon's Fighting-type attacks become spread and deal 35% m
 #-------------------------------
 [EVENTHORIZON]
 Name = Event Horizon
-Description = Changes the weather to Star Storm, which increases its damage over time. Lingers for three turns after leaving.
+Description = Changes weather to Star Storm. Damages and increases HP-fraction damage by 50%. Lingers for three turns after leaving.
 Flags = SandstormSynergy
 #-------------------------------
 [EXORCIST]
@@ -1441,7 +1442,7 @@ Description = If an attack lowers its HP below half, waterlogs the attacker.
 [MOLTENADAPTED]
 Name = Molten Adapted
 Description = This Pokémon is also Fire-type. Powers up moves of the same type by 33%.
-Flags = STABBoosting
+Flags = STABBoosting,ForceSignature
 #-------------------------------
 [MONKEYMISCHIEF]
 Name = Monkey Mischief
@@ -1677,7 +1678,7 @@ Description = Sets screens for two more turns.
 [PLASMAADAPTED]
 Name = Plasma Adapted
 Description = This Pokémon is also Electric-type. Powers up moves of the same type by 33%.
-Flags = STABBoosting
+Flags = STABBoosting,ForceSignature
 #-------------------------------
 [PLASMAGLOBE]
 Name = Plasma Globe
@@ -1729,7 +1730,7 @@ Flags = SetupCounterAI
 [PRIMORDIALSEAL]
 Name = Primordial Seal
 Description = This Pokémon cannot enter the battle before Regidrago, Regice, Regirock, Registeel and Regieleki have.
-Flags = Immutable,UnableByDefault
+Flags = Immutable,UnableByDefault,BattleEndReviver
 #-------------------------------
 [PROTECTIVEINSTINCT]
 Name = Protective Instinct
@@ -2132,12 +2133,12 @@ Description = Falls asleep upon entry, but raises all of its stats by two steps.
 [SLUMBERINGSHIELD]
 Name = Slumbering Shield
 Description = Cannot enter battle until a Rusted Shield is dropped on the field or after ten turns. Upon entry, transforms into Crowned form.
-Flags = Immutable,UnableByDefault
+Flags = Immutable,UnableByDefault,BattleEndReviver
 #-------------------------------
 [SLUMBERINGSWORD]
 Name = Slumbering Sword
 Description = Cannot enter battle until a Rusted Sword is dropped on the field or after ten turns. Upon entry, transforms into Crowned form.
-Flags = Immutable,UnableByDefault
+Flags = Immutable,UnableByDefault,BattleEndReviver
 #-------------------------------
 [SNOOZEFEST]
 Name = Snoozefest

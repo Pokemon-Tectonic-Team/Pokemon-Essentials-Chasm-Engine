@@ -1,7 +1,7 @@
 def blockPlayerViaBlizzard
     weather(:Blizzard,10,20)
     pbWait(20)
-    pbMessage(_INTL("The blizzard is too strong! You cannot go this way!"))
+    pbMessage(_INTL("...The blizzard pushes you back."))
     
     # Move player backwards
     new_move_route = getNewMoveRoute()

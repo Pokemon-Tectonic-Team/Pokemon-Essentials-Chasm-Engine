@@ -1177,6 +1177,11 @@ BaseMoney = 48
 IntroBGM = PARASOL
 CableClub = true
 #-------------------------------
+[ODDISH]
+Name = Oddish
+Gender = wild
+BaseMoney = 100
+#-------------------------------
 [OFFICEWORKER_F]
 Name = Office Worker
 Gender = Female

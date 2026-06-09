@@ -141,10 +141,16 @@ class PokemonLoadScreen
                 PokeBattle_BattleRecorder.createDir
                 return
             when cmd_options
+                dark_mode_before = $Options.dark_mode
                 pbFadeOutIn {
                     optionScene = PokemonOption_Scene.new
-					optionScreen = PokemonOptionMenu.new(optionScene)
-					optionScreen.pbStartPokemonMenu
+                    optionScreen = PokemonOptionMenu.new(optionScene)
+                    optionScreen.pbStartPokemonMenu
+                    # Refresh menu to load new background
+                    if $Options.dark_mode != dark_mode_before
+                        @scene.pbCloseScene
+                        @scene.pbStartScene(commands, false, nil, 0, 0)
+                    end
                 }
             when cmd_achievements
                 pbFadeOutIn do

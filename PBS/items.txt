@@ -2271,14 +2271,14 @@ Description = A shiny blue orb that is said to have a legend tied to it. It's kn
 [LIGHTSTONE]
 Name = Light Stone
 NamePlural = Light Stones
-Pocket = 6
+Pocket = 16
 Price = 0
 Description = Reshiram's body, in stone form. An expert in ancient relics may be able to transform it.
 #-------------------------------
 [DARKSTONE]
 Name = Dark Stone
 NamePlural = Dark Stones
-Pocket = 6
+Pocket = 16
 Price = 0
 Description = Zekrom's body, in stone form. An expert in ancient relics may be able to transform it.
 #-------------------------------
@@ -2364,7 +2364,7 @@ NamePlural = Exp. Candies XS
 Pocket = 3
 Price = 60
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = EXPCandy,SkipPocketMessage
 Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 200 Exp. Points.
 #-------------------------------
 [EXPCANDYS]
@@ -2373,7 +2373,7 @@ NamePlural = Exp. Candies S
 Pocket = 3
 Price = 225
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = EXPCandy,SkipPocketMessage
 Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 800 Exp. Points.
 #-------------------------------
 [EXPCANDYM]
@@ -2382,7 +2382,7 @@ NamePlural = Exp. Candies M
 Pocket = 3
 Price = 800
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = EXPCandy,SkipPocketMessage
 Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 3,200 Exp. Points.
 #-------------------------------
 [EXPCANDYL]
@@ -2391,7 +2391,7 @@ NamePlural = Exp. Candies L
 Pocket = 3
 Price = 3200
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = EXPCandy,SkipPocketMessage
 Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 12,800 Exp. Points.
 #-------------------------------
 [EXPCANDYXL]
@@ -2400,7 +2400,7 @@ NamePlural = Exp. Candies XL
 Pocket = 3
 Price = 12000
 FieldUse = OnPokemon
-Flags = SkipPocketMessage
+Flags = EXPCandy,SkipPocketMessage
 Description = A candy that is packed with energy. When consumed, it will grant a single Pokémon 51,200 Exp. Points.
 #-------------------------------
 [FOSSILIZEDBIRD]

@@ -318,7 +318,7 @@ class PokeBattle_AI_CALYREX < PokeBattle_AI_Boss
                 next battle.rainy?
             },
             :warning => proc { |_move, user, _targets, _battle|
-                _INTL("{1} raises a hand towards the thunderclouds.",user.pbThis(true))
+                _INTL("{1} raises a hand towards the thunderclouds.",user.pbThis)
             },
         })
         secondMoveEveryOtherTurn(:WORKUP)
@@ -333,7 +333,7 @@ class PokeBattle_AI_CALYREX_1 < PokeBattle_AI_Boss
                 next battle.sunny?
             },
             :warning => proc { |_move, user, _targets, _battle|
-                _INTL("{1} opens its bulb towards the shining sun.",user.pbThis(true))
+                _INTL("{1} opens its bulb towards the shining sun.",user.pbThis)
             },
         })
         secondMoveEveryOtherTurn(:SLACKOFF)

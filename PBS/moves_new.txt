@@ -544,7 +544,7 @@ TotalPP = 15
 Target = UserSide
 FunctionCode = StartPreventCriticalHitsAndReduceDamageAgainstUserSide5
 Flags = CanSnatch,Light
-Description = A blessed wall of light protects the user's side from critical hits for five turns, and slightly reduces move damage taken.
+Description = A blessed screen protects the user's side from critical hits for five turns, reducing move damage taken by 25%, or 20% in multi battles.
 Animation = LUCKYCHANT
 #-------------------------------
 [SEASONSEND]
@@ -655,7 +655,7 @@ Category = Physical
 Power = 90
 Accuracy = 100
 TotalPP = 10
-Target = AllNearFoes
+Target = NearOther
 FunctionCode = UserTakesThirdLessDamageThisTurn
 Flags = CanProtect
 Description = The user strikes the target, then slinks into the water. The user takes 33% less damage this turn.
@@ -3182,7 +3182,7 @@ TotalPP = 10
 Target = UserOrNearOther
 FunctionCode = UserOrTargetMakesSubstitute25
 Flags = CanProtect,CanMagicCoat
-Description = The user forces itself or the target to make a Substitute by turning it into a doll.
+Description = The user forces itself or the target to spend 25% HP to make a Substitute by turning it into a doll.
 #-------------------------------
 [DRIFTOFF]
 Name = Drift Off
@@ -3694,7 +3694,7 @@ Power = 40
 Accuracy = 100
 TotalPP = 30
 Target = NearOther
-FunctionCode = LowerTargetSpd1
+FunctionCode = LowerTargetSpDef1
 Flags = CanProtect,Light
 EffectChance = 20
 Description = The user attacks with reflected light. It has a 20% chance to lower Sp. Def.
@@ -4341,7 +4341,7 @@ Name = Red-Hot Retreat
 Type = FIRE
 Category = Status
 Accuracy = 0
-TotalPP = 3
+TotalPP = 10
 Target = User
 Priority = 4
 FunctionCode = UserTakesHalfDamageThisTurnBurnAttackers
@@ -5701,17 +5701,6 @@ Flags = CanProtect
 Description = Deals 50% more damage if faster than the target. This lowers the user's Speed.
 Animation = VOLTTACKLE
 #-------------------------------
-[IONEXCHANGE]
-Name = Ion Exchange
-Type = ELECTRIC
-Category = Status
-Accuracy = 0
-TotalPP = 10
-Target = NearOther
-FunctionCode = SwitchUserTargetSpeedsItems
-Flags = CanProtect
-Description = The user swaps the target's held item with its own. It also switches its unmodified Speed with the target's Speed.
-#-------------------------------
 [JOKEJOLT]
 Name = Joke Jolt
 Type = ELECTRIC
@@ -6866,7 +6855,7 @@ Name = Ice-Nine Wall
 Type = ICE
 Category = Status
 Accuracy = 0
-TotalPP = 3
+TotalPP = 10
 Target = User
 Priority = 4
 FunctionCode = UserTakesHalfDamageThisTurnFrostbiteAttackers
@@ -7882,9 +7871,9 @@ Power = 40
 Accuracy = 100
 TotalPP = 25
 Target = NearOther
-FunctionCode = StealsBerryGem
+FunctionCode = StealsItem
 Flags = CanProtect
-Description = The user attacks and steals the foe's held Berry or Gem. It can't steal if the user holds an item.
+Description = The user attacks and steals the foe's held item. It can't steal if the user holds an item.
 Animation = THIEF
 #-------------------------------
 [PLANTDOUBT]
@@ -8625,6 +8614,18 @@ FunctionCode = Rampage
 Flags = CanProtect
 Description = The user goes on a wild tantrum, going on a rampage for two turns.
 Animation = THRASH
+#-------------------------------
+[TITFORTAT]
+Name = Tit for Tat
+Type = FAIRY
+Category = Status
+Accuracy = 0
+TotalPP = 10
+Target = NearOther
+FunctionCode = SwitchUserTargetSpeedsItems
+Flags = CanProtect
+Description = The user swaps the target's held item with its own. It also switches its unmodified Speed with the target's Speed.
+Animation = SWITCHEROO
 #-------------------------------
 [TRUENAME]
 Name = True Name

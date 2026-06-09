@@ -1,37 +1,90 @@
 CHASM_CREDITs = <<_END_
 
-Major Contributors
-Brickbat<s>Zinnia
-Divock<s>Agentbla
-Wakarimasensei<s>Drawingbox
-IgnitedxSoul<s>LucaSantosSims
-Darlvon<s>Jaggedthorn
-Splitmoon<s>TikiShades
-Valrex<s>Steeb
-Tirankin<s>Ci
-Yufeng<s>Riptidecord
-LunaFlare
+Leadership
+Zinnia<s>jessica gaylord
+LunaFlare<s>Riptidecord
+ShadowKirbae
+
+Past Leadership
+Agentbla<s>Brickbat
+Darlvon<s>Drawingbox
+LucaSantosSims<s>Pria
+Steeb<s>Valrex
+Wakarimasensei
+
+Design
+Zinnia<s>jessica gaylord
+Atteathesilly<s>Aurora
+Azeler<s>Bella
+Chus<s>Darlvon
+Emmi<s>EnterSP
+envygender<s>Errata
+Eseria<s>IgnitedxSoul
+Lilypad<s>Miss Zesty
+oddium wanderus<s>Pria
+Riptidecord<s>ShadowKirbae
+Steeb<s>TikiShades
+Tirankin
+
+Technical Design
+Zinnia<s>Agentbla
+Brickbat<s>Emmi
+envygender<s>Lilypad
+Riptidecord<s>ShadowKirbae
+
+Programming
+Zinnia<s>LunaFlare
+Ardub<s>Azeler
+Darlvon<s>Eseria
+JBSundown<s>ShadowKirbae
+
+Writing
+Zinnia<s>elusivestowaway
+Errata<s>Nora
+ValourDyke<s>Wakarimasensei
+
+Art
+Atteathesilly<s>DestinyGreatness
+Drawingbox<s>Jaggedthorn
+lichenprincess<s>Lodestar195
+M1ntyFr3shD4n<s>Manycrows
+Miss Zesty<s>noodleman
+papper<s>Pechapanda
+
+Music
+LucaSantosSims<s>LunaFlare
+Pria<s>Zufaix
+
+Quality Assurance
+ShadowKirbae<s>Chus
+Emmi<s>EnterSP
+envygender<s>Errata
+Lilypad<s>Splitmoon
+TikiShades<s>ValourDyke
+
+Publicity
+Atteathesilly<s>Emmi
+IgnitedxSoul<s>Lilypad
+Mary<s>Pepper
+Pria<s>Valrex
+
+Translation
+Fanfan<s>Valrex
+Yufeng
 
 Other Contributors
-Arenastellez<s>Zufaix
-Fbarbarosa<s>ctWizard
-Slaynoir<s>Maddie
-FurretKnight<s>Dtp81390
-Gabs<s>derrondad
+Arenastellez<s>Badman
 BlueObelisk<s>SimplyDark
 MrPanda1<s>Angelcake
-Mikomii<s>Jbsundown
-Valrex<s>Avery
-Destinygreatness<s>Gary Oak
-ali760<s>papper
-lichenprincess<s>Enigma
+Mikomii<s>Gary Oak
+ali760<s>Enigma
 princessroxie<s>Joaquín Arellano
-M1ntyFr3shD4n<s>pechapanda
-zombygoast<s>elusivestowaway
-Kei<s>Atteathesilly
-noodleman<s>Manycrows
-Eseria<s>Reinhart Menken
-Badman<s>
+Kei<s>Reinhart Menken
+Ci<s>ctWizard
+derrondad<s>Dtp81390
+Fbarbarosa<s>FurretKnight
+Gabs<s>Maddie
+Slaynoir
 
 {INSERTS_PLUGIN_CREDITS_DO_NOT_REMOVE}
 
@@ -280,7 +333,7 @@ _END_
 class Scene_Credits
 	  # Backgrounds to show in credits. Found in Graphics/Titles/ folder
 	  BACKGROUNDS_LIST       = ["credits1", "credits2", "credits3", "credits4", "credits5"]
-	  BGM                    = "Credits"
+	  BGM                    = "Tectonic_Intro"
 	  SCROLL_SPEED           = 40   # Pixels per second
 	  SECONDS_PER_BACKGROUND = 11
 	  TEXT_OUTLINE_COLOR     = Color.new(0, 0, 128, 255)

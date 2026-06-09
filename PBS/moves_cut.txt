@@ -3234,6 +3234,17 @@ Priority = 1
 FunctionCode = Invalid
 Description = The user disperses electrically charged particles. Normal-type moves become Electric-type.
 #-------------------------------
+[IONEXCHANGE]
+Name = Ion Exchange
+Type = ELECTRIC
+Category = Status
+Accuracy = 0
+TotalPP = 10
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user swaps the target's held item with its own. It also switches its unmodified Speed with the target's Speed.
+#-------------------------------
 [LIGHTNINGSPEAR]
 Name = Lightning Spear
 Type = ELECTRIC

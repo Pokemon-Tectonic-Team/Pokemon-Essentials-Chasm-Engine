@@ -62,10 +62,14 @@ class PokeBattle_Battler
         return asleep? && getStatusCount(:SLEEP) > 1
     end
 
+    OVERHEAL_AI_WEIGHT = 0.25
+
     def getHealingEffectScore(healingAmount)
-        healingScore = 0
-        healingScore += healingAmount * pbDefense
-        healingScore += healingAmount * pbSpDef
+        normalMissing = [@totalhp - @hp, 0].max
+        normalHeal = [healingAmount, normalMissing].min
+        overhealHeal = [healingAmount - normalHeal, 0].max
+        effectiveHealing = normalHeal + overhealHeal * OVERHEAL_AI_WEIGHT
+        healingScore = effectiveHealing * (pbDefense + pbSpDef)
         healingScore /= (3 * level)
         healingPercentage = (100 * healingAmount / @totalhp.to_f).round(1)
         echoln("\t\t[EFFECT SCORING] #{pbThis} scores the value of healing #{healingAmount} HP (#{healingPercentage} percent) at #{healingScore}")

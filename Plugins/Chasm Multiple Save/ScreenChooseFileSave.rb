@@ -36,8 +36,9 @@ class ScreenChooseFileSave
 
     # Set background (used "loadbg")
     def drawBg
-        color = Color.new(248, 248, 248)
-        addBackgroundOrColoredPlane(@sprites, "background", "loadbg", color, @viewport)
+        bg_path = darkMode? ? "loadbg_dark" : "loadbg"
+        bg_color = darkMode? ? Color.new(24, 24, 24) : Color.new(248, 248, 248)
+        addBackgroundOrColoredPlane(@sprites, "background", bg_path, bg_color, @viewport)
     end
 
     #-------------------------------------------------------------------------------
