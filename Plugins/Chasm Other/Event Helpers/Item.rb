@@ -83,7 +83,9 @@ def pbReceiveItem(item, quantity = 1)
         else
             pbMessage(_INTL("\\i[EXPEZDISPENSER]\\me[{1}]You got a \\c[1]{2}\\c[0], and put it into the \\c[1]{3}\\c[0]!\\wtnp[30]", meName, itemname, getItemName(:EXPEZDISPENSER)))
         end
-        addEXPCandyToDispenser(item, quantity)
+        expAmount = getEXPAmountForCandy(item.id) * quantity
+        expAmount = applyEXPCandyMultipliers(expAmount)
+        $PokemonGlobal.expJAR += expAmount
     else
         if item.id == :LEFTOVERS
             pbMessage(_INTL("\\me[{1}]You obtained some \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
