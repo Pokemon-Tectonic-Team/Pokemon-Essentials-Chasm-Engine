@@ -30,6 +30,12 @@ end
 # The global pbLearnMove (used by form-change handlers) shows UI and waits for
 # input when a pokemon is at max moves. Silence it during benchmark battles by
 # auto-replacing slot 0 instead.
+alias :showPartyHealing_preBenchmark :showPartyHealing
+def showPartyHealing(party, previousHealthValues, previousStatusIndices = nil)
+    return if $aiBenchmarkRunning
+    showPartyHealing_preBenchmark(party, previousHealthValues, previousStatusIndices)
+end
+
 alias :pbLearnMove_preBenchmark :pbLearnMove
 def pbLearnMove(pkmn, move, ignoreifknown = false, bymachine = false, addfirstmove = false, &block)
     return pbLearnMove_preBenchmark(pkmn, move, ignoreifknown, bymachine, addfirstmove, &block) unless $aiBenchmarkRunning
