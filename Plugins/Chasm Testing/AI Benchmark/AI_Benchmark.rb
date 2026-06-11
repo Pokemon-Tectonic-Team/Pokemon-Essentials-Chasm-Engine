@@ -15,6 +15,46 @@
 #==============================================================================
 
 #==============================================================================
+# AI profiling accumulator
+# Enabled via pbRunAIBenchmark(..., profile: true).
+# Timing is recorded by instrumented call sites in AI_Move_Trainer.rb and
+# PokeBattle_AI.rb; this module aggregates and reports.
+#==============================================================================
+$aiProfileEnabled = false
+
+module AIProfile
+    @data = Hash.new { |h, k| h[k] = [0, 0.0] }
+
+    def self.reset
+        @data = Hash.new { |h, k| h[k] = [0, 0.0] }
+    end
+
+    def self.record(key, elapsed)
+        @data[key][0] += 1
+        @data[key][1] += elapsed
+    end
+
+    def self.report
+        return if @data.empty?
+        total_s = @data.values.sum { |v| v[1] }
+        sorted = @data.sort_by { |_, v| -v[1] }
+        bar = "=" * 68
+        lines = [bar, "  AI PROFILE REPORT", bar]
+        sorted.each do |key, (count, elapsed)|
+            pct    = total_s > 0 ? (elapsed / total_s * 100).round(1) : 0.0
+            avg_ms = count   > 0 ? (elapsed / count  * 1000).round(3) : 0.0
+            lines << format("  %-38s %7d calls  %8.3fs  %5.1f%%  avg %.3fms",
+                            key.to_s, count, elapsed, pct, avg_ms)
+        end
+        lines << bar
+        lines.each { |l| echoln_preBenchmark(l) }
+        path = "Analysis/ai_profile.txt"
+        File.open(path, "w") { |f| f.puts(lines) }
+        echoln_preBenchmark("Profile written to #{path}")
+    end
+end
+
+#==============================================================================
 # Suppress debug output during benchmark battles
 # echoln is a built-in that triggers screen refreshes; silencing it is
 # essential for benchmark speed.
@@ -252,9 +292,15 @@ module AIBenchmark
     # compared to an unpaired design.
     # n_battles is rounded down to the nearest even number.
     #--------------------------------------------------------------------------
-    def self.run(test_key, baseline_key, n_battles: 100, seed: 0)
+    def self.run(test_key, baseline_key, n_battles: 100, seed: 0, profile: false)
         test_heuristic     = HEURISTICS[test_key]     or raise "Unknown heuristic: #{test_key}"
         baseline_heuristic = HEURISTICS[baseline_key] or raise "Unknown heuristic: #{baseline_key}"
+
+        if profile
+            $aiProfileEnabled = true
+            AIProfile.reset
+            echoln_preBenchmark("[BENCHMARK] Profiling enabled.")
+        end
 
         echoln("[BENCHMARK] Building trainer pool...")
         pool = buildTrainerPool
@@ -313,6 +359,10 @@ module AIBenchmark
             total_time, (total_rounds.to_f / actual_battles).round(1), seed
         )
         printResults(result)
+        if profile
+            $aiProfileEnabled = false
+            AIProfile.report
+        end
         result
     end
 
@@ -347,6 +397,6 @@ end
 #==============================================================================
 # Global entry point
 #==============================================================================
-def pbRunAIBenchmark(test = :current, baseline = :baseline, n_battles: 100, seed: 0)
-    AIBenchmark.run(test, baseline, n_battles: n_battles, seed: seed)
+def pbRunAIBenchmark(test = :current, baseline = :baseline, n_battles: 100, seed: 0, profile: false)
+    AIBenchmark.run(test, baseline, n_battles: n_battles, seed: seed, profile: profile)
 end

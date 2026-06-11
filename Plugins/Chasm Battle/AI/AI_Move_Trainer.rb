@@ -249,6 +249,7 @@ class PokeBattle_AI
         isSlowerDead3 = false
         isFasterDead3 = false
         if @precalculatedChoices.key?(scoringKey)
+            AIProfile.record(:score_cache_hit, 0.0) if $aiProfileEnabled
             precalcedScore,precalcedKillInfo = @precalculatedChoices[scoringKey]
             if precalcedKillInfo
                 echoln("[MOVE SCORING] Score for #{user.pbThis(true)}'s #{move.id} against target #{target.pbThis(true)} already calced this round: #{precalcedScore} (will faint the target)")
@@ -257,14 +258,18 @@ class PokeBattle_AI
             end
             return precalcedScore,precalcedKillInfo
         end
+        AIProfile.record(:score_full_calc, 0.0) if $aiProfileEnabled
 
         echoln("[MOVE SCORING] Scoring #{user.pbThis(true)}'s #{move.id} against target #{target.pbThis(true)}:")
         
         move.calculateUsageOverrides(user, [target])
 
-        if aiPredictsFailure?(move, user, target, false)
+        _profile_t = Time.now.to_f if $aiProfileEnabled
+        _predicts_failure = aiPredictsFailure?(move, user, target, false)
+        AIProfile.record(:aiPredictsFailure, Time.now.to_f - _profile_t) if $aiProfileEnabled
+        if _predicts_failure
             @precalculatedChoices[scoringKey] = 0
-            return 0,nil
+            return 0, nil
         end
         
         switchPredicted = @battle.aiPredictsSwitch?(user,target.index,true)
@@ -284,7 +289,9 @@ class PokeBattle_AI
             # Adjust the score based on the move dealing damage
             # and perhaps a percent chance to actually benefit from its effect score
             begin
+                _profile_t = Time.now.to_f if $aiProfileEnabled
                 damageScore,damageDealt,willFaint = pbGetMoveScoreDamage(move, user, target, numTargets, aiContext)
+                AIProfile.record(:pbGetMoveScoreDamage, Time.now.to_f - _profile_t) if $aiProfileEnabled
             rescue StandardError => exception
                 pbPrintException($!) if $DEBUG
             end
@@ -361,6 +368,7 @@ class PokeBattle_AI
         # EFFECT SCORING
         effectScore = 0
         begin
+            _profile_effect_t = Time.now.to_f if $aiProfileEnabled
             regularEffectScore = 0
             regularEffectScore += move.getEffectScore(user, target) unless ignoreGeneralEffectScores
             faintEffectScore = 0
@@ -371,6 +379,7 @@ class PokeBattle_AI
                 targetAffectingEffectScore = move.getTargetAffectingEffectScore(user, target)
             end
             damageBasedEffectScore = move.getDamageBasedEffectScore(user, target, damageDealt)
+            AIProfile.record("effect:#{move.function}", Time.now.to_f - _profile_effect_t) if $aiProfileEnabled
             effectScore += regularEffectScore
             effectScore += faintEffectScore
             effectScore += targetAffectingEffectScore

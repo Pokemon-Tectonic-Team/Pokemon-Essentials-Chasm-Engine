@@ -50,8 +50,12 @@ class PokeBattle_AI
             pbChooseMovesWild(idxBattler)
         else
             return if !battler.effectActive?(:AutoPilot) && pbEnemyShouldWithdraw?(idxBattler)
+            _profile_t = Time.now.to_f if $aiProfileEnabled
             defensiveMatchupRating,killInfoArray = worstDefensiveMatchupAgainstActiveFoes(battler)
+            AIProfile.record(:worstDefensiveMatchup, Time.now.to_f - _profile_t) if $aiProfileEnabled
+            _profile_t = Time.now.to_f if $aiProfileEnabled
             bestMoveChoices,killInfo = pbGetBestTrainerMoveChoices(battler, killInfoArray: killInfoArray)
+            AIProfile.record(:pbGetBestTrainerMoveChoices, Time.now.to_f - _profile_t) if $aiProfileEnabled
             pbChooseMovesTrainer(idxBattler, bestMoveChoices)
         end
     end
