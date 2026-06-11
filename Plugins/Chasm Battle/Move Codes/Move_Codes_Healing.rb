@@ -951,7 +951,7 @@ class PokeBattle_Move_UserLosesQuarterHPPartyMembersHealQuarterHP < PokeBattle_M
     end
 
     def getEffectScore(user, _target)
-        score += getHPLossEffectScore(user, @hpFraction * 1.5) # intentionally higher than it looks like it should be
+        score = getHPLossEffectScore(user, @hpFraction * 1.5) # intentionally higher than it looks like it should be
         healableMembers = healableMembers(user)
         if healableMembers > 0
             score += 30 + healableMembers * 50
