@@ -46,6 +46,7 @@ class PokeBattle_DebugSceneNoLogging < PokeBattle_Scene
     def pbResetMoveIndex(idxBattler); end
   
     def pbHPChanged(battler,oldHP,showAnim=false); end
+    def pbHitAndHPLossAnimation(targets,fastHitAnimation=false); end
     def pbFaintBattler(battler); end
     def pbEXPBar(battler,startExp,endExp,tempExp1,tempExp2); end
     def pbForgetMove(pkmn,moveToLearn); return 0; end   # Always forget first move

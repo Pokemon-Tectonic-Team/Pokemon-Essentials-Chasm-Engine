@@ -27,6 +27,24 @@ def echoln(msg)
     echoln_preBenchmark(msg)
 end
 
+# The global pbLearnMove (used by form-change handlers) shows UI and waits for
+# input when a pokemon is at max moves. Silence it during benchmark battles by
+# auto-replacing slot 0 instead.
+alias :pbLearnMove_preBenchmark :pbLearnMove
+def pbLearnMove(pkmn, move, ignoreifknown = false, bymachine = false, addfirstmove = false, &block)
+    return pbLearnMove_preBenchmark(pkmn, move, ignoreifknown, bymachine, addfirstmove, &block) unless $aiBenchmarkRunning
+    return false unless pkmn
+    move = GameData::Move.get(move).id
+    return false if pkmn.egg?
+    return false if pkmn.hasMove?(move)
+    if pkmn.numMoves < Pokemon::MAX_MOVES
+        pkmn.learn_move(move)
+    else
+        pkmn.moves[0] = Pokemon::Move.new(move)
+    end
+    true
+end
+
 #==============================================================================
 # PokeBattle_Battle extensions for benchmark mode
 #==============================================================================
@@ -161,9 +179,9 @@ module AIBenchmark
         pool = []
         GameData::Trainer.each do |td|
             trainer = td.to_trainer
-            # Require at least 2 usable pokemon; skip obviously empty parties
-            next if trainer.party.length < 2
-            pool.push(trainer)
+            next if trainer.able_party.length < 2
+            next if trainer.policies.any? { |p| p.to_s.start_with?("CURSE_") }
+            pool.push(td)
         end
         pool
     end
@@ -175,7 +193,9 @@ module AIBenchmark
     # result: 1 = test side (party1) wins, 2 = baseline side (party2) wins,
     #         0 = draw / timeout
     #--------------------------------------------------------------------------
-    def self.runBattle(trainer1, trainer2, heuristic1, heuristic2)
+    def self.runBattle(trainerData1, trainerData2, heuristic1, heuristic2)
+        trainer1 = trainerData1.to_trainer
+        trainer2 = trainerData2.to_trainer
         party1 = trainer1.party
         party2 = trainer2.party
 
@@ -248,9 +268,11 @@ module AIBenchmark
             else        draws         += 1
             end
 
-            if (i + 1) % 25 == 0 || (i + 1) == n_battles
+            interval = [1, n_battles / 10].max
+            if (i + 1) % interval == 0 || (i + 1) == n_battles
                 echoln("[BENCHMARK] #{i + 1}/#{n_battles} battles done " \
                        "(#{test_key}: #{test_wins}, #{baseline_key}: #{baseline_wins}, draws: #{draws})")
+                $stdout.flush
             end
         end
 
@@ -269,19 +291,24 @@ module AIBenchmark
     def self.printResults(r)
         bar = "=" * 52
         pct = ->(n) { "#{n} (#{(n * 100.0 / r.total).round(1)}%)" }
-        echoln(bar)
-        echoln("  AI BENCHMARK RESULTS")
-        echoln("  Test:     #{r.test_heuristic}")
-        echoln("  Baseline: #{r.baseline_heuristic}")
-        echoln(bar)
-        echoln("  Battles run:        #{r.total}")
-        echoln("  Test wins:          #{pct.(r.test_wins)}")
-        echoln("  Baseline wins:      #{pct.(r.baseline_wins)}")
-        echoln("  Draws / timeouts:   #{pct.(r.draws)}")
-        echoln("  Avg rounds/battle:  #{r.avg_rounds}")
-        echoln("  Total time:         #{r.total_time_s.round(1)}s")
-        echoln("  Avg ms/battle:      #{(r.total_time_s / r.total * 1000).round(1)}")
-        echoln(bar)
+        lines = [
+            bar,
+            "  AI BENCHMARK RESULTS",
+            "  Test:     #{r.test_heuristic}",
+            "  Baseline: #{r.baseline_heuristic}",
+            bar,
+            "  Battles run:        #{r.total}",
+            "  Test wins:          #{pct.(r.test_wins)}",
+            "  Baseline wins:      #{pct.(r.baseline_wins)}",
+            "  Draws / timeouts:   #{pct.(r.draws)}",
+            "  Avg rounds/battle:  #{r.avg_rounds}",
+            "  Total time:         #{r.total_time_s.round(1)}s",
+            "  Avg ms/battle:      #{(r.total_time_s / r.total * 1000).round(1)}",
+            bar,
+        ]
+        lines.each { |line| echoln(line.gsub("%", "%%")) }
+        path = "Analysis/benchmark_#{r.test_heuristic}_#{r.baseline_heuristic}.txt"
+        File.open(path, "w") { |f| f.puts(lines) }
     end
 end
 
