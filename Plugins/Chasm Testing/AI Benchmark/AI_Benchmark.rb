@@ -181,7 +181,7 @@ module AIBenchmark
     BenchmarkResult = Struct.new(
         :test_heuristic, :baseline_heuristic,
         :test_wins, :baseline_wins, :draws, :total,
-        :total_time_s, :avg_rounds
+        :total_time_s, :avg_rounds, :seed
     )
 
     #--------------------------------------------------------------------------
@@ -245,8 +245,14 @@ module AIBenchmark
 
     #--------------------------------------------------------------------------
     # Full benchmark run
+    #
+    # Uses a paired design: each trainer matchup is run twice with heuristics
+    # swapped across sides. This cancels both positional bias and matchup
+    # variance, making the results roughly twice as informative per battle
+    # compared to an unpaired design.
+    # n_battles is rounded down to the nearest even number.
     #--------------------------------------------------------------------------
-    def self.run(test_key, baseline_key, n_battles: 100)
+    def self.run(test_key, baseline_key, n_battles: 100, seed: 0)
         test_heuristic     = HEURISTICS[test_key]     or raise "Unknown heuristic: #{test_key}"
         baseline_heuristic = HEURISTICS[baseline_key] or raise "Unknown heuristic: #{baseline_key}"
 
@@ -256,8 +262,12 @@ module AIBenchmark
             echoln("[BENCHMARK] Not enough trainers in pool (need >= 2). Aborting.")
             return nil
         end
-        echoln("[BENCHMARK] Pool has #{pool.length} trainers.")
-        echoln("[BENCHMARK] Starting #{n_battles} battles: #{test_key} vs #{baseline_key}")
+
+        n_pairs        = n_battles / 2
+        actual_battles = n_pairs * 2
+        rng            = Random.new(seed)
+        echoln("[BENCHMARK] Pool has #{pool.length} trainers. Seed: #{seed}")
+        echoln("[BENCHMARK] Starting #{n_pairs} paired matchups (#{actual_battles} battles): #{test_key} vs #{baseline_key}")
 
         test_wins     = 0
         baseline_wins = 0
@@ -265,24 +275,33 @@ module AIBenchmark
         total_time    = 0.0
         total_rounds  = 0
 
-        n_battles.times do |i|
-            # Sample two distinct trainers for this battle
-            t1, t2 = pool.sample(2)
+        n_pairs.times do |i|
+            t1, t2 = pool.sample(2, random: rng)
 
-            outcome = runBattle(t1, t2, test_heuristic, baseline_heuristic)
+            # Battle A: test on side 0, baseline on side 1
+            a = runBattle(t1, t2, test_heuristic, baseline_heuristic)
+            # Battle B: same trainers, sides swapped — cancels positional bias
+            b = runBattle(t1, t2, baseline_heuristic, test_heuristic)
 
-            total_time   += outcome[:time_s]
-            total_rounds += outcome[:rounds]
+            total_time   += a[:time_s]   + b[:time_s]
+            total_rounds += a[:rounds]   + b[:rounds]
 
-            case outcome[:result]
+            case a[:result]
             when 1 then test_wins     += 1
             when 2 then baseline_wins += 1
             else        draws         += 1
             end
+            # In battle B the sides are inverted, so result 1 = baseline wins
+            case b[:result]
+            when 1 then baseline_wins += 1
+            when 2 then test_wins     += 1
+            else        draws         += 1
+            end
 
-            interval = [1, n_battles / 10].max
-            if (i + 1) % interval == 0 || (i + 1) == n_battles
-                echoln("[BENCHMARK] #{i + 1}/#{n_battles} battles done " \
+            battles_done = (i + 1) * 2
+            interval = [2, (actual_battles / 10.0).ceil].max
+            if battles_done % interval == 0 || battles_done == actual_battles
+                echoln("[BENCHMARK] #{battles_done}/#{actual_battles} battles done " \
                        "(#{test_key}: #{test_wins}, #{baseline_key}: #{baseline_wins}, draws: #{draws})")
                 $stdout.flush
             end
@@ -290,8 +309,8 @@ module AIBenchmark
 
         result = BenchmarkResult.new(
             test_key, baseline_key,
-            test_wins, baseline_wins, draws, n_battles,
-            total_time, (total_rounds.to_f / n_battles).round(1)
+            test_wins, baseline_wins, draws, actual_battles,
+            total_time, (total_rounds.to_f / actual_battles).round(1), seed
         )
         printResults(result)
         result
@@ -308,6 +327,7 @@ module AIBenchmark
             "  AI BENCHMARK RESULTS",
             "  Test:     #{r.test_heuristic}",
             "  Baseline: #{r.baseline_heuristic}",
+            "  Seed:     #{r.seed}",
             bar,
             "  Battles run:        #{r.total}",
             "  Test wins:          #{pct.(r.test_wins)}",
@@ -327,6 +347,6 @@ end
 #==============================================================================
 # Global entry point
 #==============================================================================
-def pbRunAIBenchmark(test = :current, baseline = :baseline, n_battles: 100)
-    AIBenchmark.run(test, baseline, n_battles: n_battles)
+def pbRunAIBenchmark(test = :current, baseline = :baseline, n_battles: 100, seed: 0)
+    AIBenchmark.run(test, baseline, n_battles: n_battles, seed: seed)
 end
