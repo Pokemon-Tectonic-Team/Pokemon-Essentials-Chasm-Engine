@@ -249,7 +249,7 @@ class PokeBattle_Move
     end
 
     def sharedspoilsChoosePartyMember(user, item, itemName)
-        if @battle.pbOwnedByPlayer?(user.index)
+        if user.humanControlled?
             sharedspoilsPlayerChoose(user, item, itemName)
         else
             sharedspoilsAIChoose(user, item, itemName)
