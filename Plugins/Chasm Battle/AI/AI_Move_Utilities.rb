@@ -47,10 +47,13 @@ class PokeBattle_AI
         # in the midst of performing the move (turnCount is incremented as the attack phase begins)
         user.turnCount += 1
 
+        _pt = Time.now.to_f if $aiProfileEnabled
         fails = !(boss || user.pbTryUseMove(move, false, false, true))
+        AIProfile.record(:apf_tryUseMove, Time.now.to_f - _pt) if $aiProfileEnabled
 
         # Move blocking abilities make the move fail here
         unless fails
+            _pt = Time.now.to_f if $aiProfileEnabled
             @battle.pbPriority(true).each do |b|
                 next unless b
                 abilityBlocked = false
@@ -64,20 +67,25 @@ class PokeBattle_AI
                 echoln("\t\t[AI FAILURE CHECK] #{user.pbThis} rejects #{move.id} -- thinks will be blocked by an ability.")
                 break
             end
+            AIProfile.record(:apf_abilityBlock, Time.now.to_f - _pt) if $aiProfileEnabled
         end
 
+        _pt = Time.now.to_f if $aiProfileEnabled
         if !fails && move.pbMoveFailedAI?(user, [target])
             fails = true
             echoln("\t\t[AI FAILURE CHECK] #{user.pbThis} rejects #{move.id} -- thinks will fail for move specific reasons")
         end
+        AIProfile.record(:apf_moveFailedAI, Time.now.to_f - _pt) if $aiProfileEnabled
 
         # Check for failure because of forced missing
-        if !fails && user.index != target.index && !user.pbSuccessCheckPerHit(move, user, target, true)
+        _pt = Time.now.to_f if $aiProfileEnabled
             echoln("\t\t[AI FAILURE CHECK] #{user.pbThis} rejects #{move.id} -- thinks will fail against #{target.pbThis(false)} due to the target being semi-invulnerable.")
             fails = true
         end
+        AIProfile.record(:apf_successCheckPerHit, Time.now.to_f - _pt) if $aiProfileEnabled
 
         # Check for ineffective because of abilities or effects on the target
+        _pt = Time.now.to_f if $aiProfileEnabled
         if !fails && user.index != target.index
             type = pbRoughType(move, user)
             typeMod = pbCalcTypeModAI(type, user, target, move)
@@ -86,8 +94,10 @@ class PokeBattle_AI
                 echoln("\t\t[AI FAILURE CHECK] #{user.pbThis} rejects #{move.id} -- thinks will fail against #{target.pbThis(false)} due to abilities, effects, or typemod.")
             end
         end
+        AIProfile.record(:apf_successCheckAgainstTarget, Time.now.to_f - _pt) if $aiProfileEnabled
 
         # Magic Bounce/Magic Shield checks for moves which don't target
+        _pt = Time.now.to_f if $aiProfileEnabled
         if !fails && user.index == target.index && move.canMagicCoat?
             @battle.eachBattler do |b|
                 next unless b.opposes?(user)
@@ -98,6 +108,7 @@ class PokeBattle_AI
                 break
             end
         end
+        AIProfile.record(:apf_magicBounce, Time.now.to_f - _pt) if $aiProfileEnabled
 
         user.turnCount -= 1
 
@@ -129,7 +140,9 @@ class PokeBattle_AI
         baseDmg = pbMoveBaseDamageAI(move, user, target)
 
         # Calculate the damage for one hit
+        _pt = Time.now.to_f if $aiProfileEnabled
         damage = move.calculateDamageForHitAI(user, target, type, baseDmg, numTargets, aiContext)
+        AIProfile.record(:calculateDamageForHitAI, Time.now.to_f - _pt) if $aiProfileEnabled
 
         # Estimate how many hits the move will do
         numHits = move.numberOfHits(user, [target], true)

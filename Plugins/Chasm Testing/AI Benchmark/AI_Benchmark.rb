@@ -47,7 +47,7 @@ module AIProfile
                             key.to_s, count, elapsed, pct, avg_ms)
         end
         lines << bar
-        lines.each { |l| echoln_preBenchmark(l) }
+        lines.each { |l| echoln_preBenchmark(l.gsub("%", "%%")) }
         path = "Analysis/ai_profile.txt"
         File.open(path, "w") { |f| f.puts(lines) }
         echoln_preBenchmark("Profile written to #{path}")

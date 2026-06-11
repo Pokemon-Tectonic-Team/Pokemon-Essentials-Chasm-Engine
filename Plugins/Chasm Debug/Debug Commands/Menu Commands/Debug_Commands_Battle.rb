@@ -267,6 +267,16 @@ DebugMenuCommands.register("testwildbattle", {
     }
   })
 
+DebugMenuCommands.register("aibenchmarkprofile", {
+    "parent"      => "battlemenu",
+    "name"        => _INTL("AI Benchmark (profile)"),
+    "description" => _INTL("Run 20 baseline-vs-baseline battles with profiling. Results written to Analysis/ai_profile.txt."),
+    "effect"      => proc {
+        pbRunAIBenchmark(:baseline, :baseline, n_battles: 20, profile: true)
+        next false
+    }
+})
+
 DebugMenuCommands.register("encounterversion", {
     "parent"      => "battlemenu",
     "name"        => _INTL("Set Encounters Version"),
