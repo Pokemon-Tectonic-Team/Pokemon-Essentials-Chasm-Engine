@@ -1,16 +1,17 @@
 #===============================================================================
 # Used when generating new trainers for battle challenges
 #===============================================================================
-class PokeBattle_DebugSceneNoLogging
+class PokeBattle_DebugSceneNoLogging < PokeBattle_Scene
     def initialize
       @battle   = nil
       @lastCmd  = [0,0,0,0]
       @lastMove = [0,0,0,0]
     end
-  
+
     # Called whenever the battle begins.
     def pbStartBattle(battle)
       @battle   = battle
+      @sprites  = {}   # Empty hash so sprite lookups return nil rather than crashing
       @lastCmd  = [0,0,0,0]
       @lastMove = [0,0,0,0]
     end
@@ -23,7 +24,7 @@ class PokeBattle_DebugSceneNoLogging
     def pbBeginCommandPhase; end
     def pbBeginAttackPhase; end
     def pbShowOpponent(idxTrainer); end
-    def pbDamageAnimation(battler,effectiveness=0); end
+    def pbDamageAnimation(battler,effectiveness=0,fastAnimation=false); end
     def pbCommonAnimation(animName,user=nil,target=nil); end
     def pbAnimation(moveID,user,targets,hitNum=0); end
     def pbEndBattle(result); end
@@ -45,10 +46,14 @@ class PokeBattle_DebugSceneNoLogging
     def pbResetMoveIndex(idxBattler); end
   
     def pbHPChanged(battler,oldHP,showAnim=false); end
+    def pbHitAndHPLossAnimation(targets,fastHitAnimation=false); end
     def pbFaintBattler(battler); end
     def pbEXPBar(battler,startExp,endExp,tempExp1,tempExp2); end
     def pbForgetMove(pkmn,moveToLearn); return 0; end   # Always forget first move
+    def pbChangePokemon(idxBattler,pkmn,species=nil); end
   
+    def showTrainerDialogue(idxTrainer); end
+
     def pbCommandMenu(idxBattler,firstAction)
       return 1 if rand(15)==0   # Bag
       return 4 if rand(10)==0   # Call
