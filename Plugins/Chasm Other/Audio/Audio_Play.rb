@@ -55,8 +55,8 @@ def pbStringToAudioFile(str)
   def pbBGMPlay(param,volume=nil,pitch=nil)
     return if !param
     param=pbResolveAudioFile(param,volume,pitch)
-    pbMarkTrackHeard(param.name) if param.name && param.name != ""
     if param.name && param.name!=""
+      pbMarkTrackHeard(param.name)
       if $game_system && $game_system.respond_to?("bgm_play")
         $game_system.bgm_play(param)
         return
