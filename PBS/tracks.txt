@@ -1,0 +1,12 @@
+# See the documentation on the wiki to learn how to edit this file.
+# Each section defines one track entry for the Jukebox.
+#
+# Fields:
+#   Filename     - Audio filename (without extension), as used by pbBGMPlay etc.
+#   Index        - Display order in the Jukebox list (lower = earlier)
+#   DisplayName  - Player-facing track name shown in the Jukebox
+#   OfficialName - (Optional) Official/original track name if reusing an existing track
+#   SourceGame   - (Optional) Game the track originates from, if not original
+#   Composer     - Composer credit
+#   Category     - (Optional) Grouping label, e.g. Field, Battle, Town
+#

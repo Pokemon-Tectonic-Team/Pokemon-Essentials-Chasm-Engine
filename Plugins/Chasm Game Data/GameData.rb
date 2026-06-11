@@ -252,6 +252,7 @@ module GameData
         Like.load
         Dislike.load
         Achievement.load
+        Track.load
     end
 end
 
