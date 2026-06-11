@@ -272,6 +272,7 @@ class PokeBattle_Move_HitTwoTimesTargetThenTargetAlly < PokeBattle_Move_HitTwoTi
             end
         end
         return [valid_targets[1]] if indexThisHit == 1 && valid_targets[1]
+        return [] if valid_targets.empty?
         return [valid_targets[0]]
     end
 end
