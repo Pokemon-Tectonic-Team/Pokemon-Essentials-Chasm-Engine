@@ -41,6 +41,7 @@ class PokeBattle_Move
     #=============================================================================
     # Type effectiveness calculation
     #=============================================================================
+
     def pbCalcTypeModSingle(moveType, defType, user = nil, target = nil)
         ret = Effectiveness.calculate_one(moveType, defType)
         # Ring Target
@@ -55,8 +56,8 @@ class PokeBattle_Move
         ret = Effectiveness::NORMAL_EFFECTIVE if !target&.airborne? && (defType == :FLYING && moveType == :GROUND)
         # Inured
         ret /= 2 if target&.effectActive?(:Inured) && Effectiveness.super_effective_type?(moveType, defType)
-        # Break Through
-        if GameData::Ability.getByFlag("BypassTypeImmunity").any? { |abil| user&.hasActiveAbility?(abil)} && Effectiveness.ineffective_type?(moveType, defType)
+        # Break Through — check immunity first (cheap) before iterating the ability list.
+        if Effectiveness.ineffective_type?(moveType, defType) && GameData::Ability.getByFlag("BypassTypeImmunity").any? { |abil| user&.hasActiveAbility?(abil) }
             ret = Effectiveness::NORMAL_EFFECTIVE
         end
         return ret

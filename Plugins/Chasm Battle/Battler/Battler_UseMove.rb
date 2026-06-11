@@ -248,12 +248,12 @@ class PokeBattle_Battler
             if move.damagingMove?
                 if @form != 1
                     @battle.pbCommonAnimation("StanceAttack", self)
-                    pbChangeForm(1, _INTL("{1} changed to Blade Forme!", pbThis))
+                    pbChangeForm(1, _INTL("{1} changed to Blade Form!", pbThis))
                 end
             elsif move.id == :KINGSSHIELD
                 if @form != 0
                     @battle.pbCommonAnimation("StanceProtect", self)
-                    pbChangeForm(0, _INTL("{1} changed to Shield Forme!", pbThis))
+                    pbChangeForm(0, _INTL("{1} changed to Shield Form!", pbThis))
                 end
             end
         end

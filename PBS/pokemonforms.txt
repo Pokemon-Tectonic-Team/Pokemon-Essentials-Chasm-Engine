@@ -130,22 +130,22 @@ BaseStats = 50,95,90,180,95,90
 Moves = 1,GRAVITY,1,LEER,5,RETREAT,10,PULSAR,15,KNOCKOFF,20,PURSUIT,25,NEURALPULSE,30,SWIFT,35,PSYCHESWITCH,40,ZENHEADBUTT,45,AGILITY,50,RECOVER,55,PSYCHOBOOST,60,EXTREMESPEED
 #-------------------------------
 [BURMY,1]
-FormName = Sand
+FormName = Sand Cloak
 Type1 = BUG
 Type2 = GROUND
 #-------------------------------
 [BURMY,2]
-FormName = Trash
+FormName = Trash Cloak
 Type1 = BUG
 Type2 = STEEL
 #-------------------------------
 [WORMADAM,1]
-FormName = Sand
+FormName = Sand Cloak
 Type1 = BUG
 Type2 = GROUND
 #-------------------------------
 [WORMADAM,2]
-FormName = Trash
+FormName = Trash Cloak
 Type1 = BUG
 Type2 = STEEL
 #-------------------------------
@@ -906,7 +906,7 @@ FormMove = SURGINGSTRIKES
 Pokedex = This form of Urshifu is a strong believer in defeating foes by raining many blows down on them. Its strikes are nonstop, flowing like a river.
 #-------------------------------
 [CALYREX,1]
-FormName = Ice
+FormName = Ice Rider
 Type1 = PSYCHIC
 Type2 = ICE
 BaseStats = 90,150,135,45,80,120
@@ -917,7 +917,7 @@ Kind = High King
 Pokedex = It's said that this Pokémon once moved a large forest—and all the Pokémon living there—to a new location overnight.
 #-------------------------------
 [CALYREX,2]
-FormName = Shadow
+FormName = Shadow Rider
 Type1 = PSYCHIC
 Type2 = GHOST
 BaseStats = 90,80,75,135,150,90

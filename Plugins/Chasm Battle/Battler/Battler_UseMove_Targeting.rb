@@ -96,6 +96,9 @@ move, false, true)
         return false if @battle.foretoldMove
         return false if move.hitsInvulnerable?
 
+        # Skip the expensive speed/priority check when the target is not semi-invulnerable at all.
+        return false if !target.effectActive?(:TwoTurnAttack) && !target.effectActive?(:SkyDrop)
+
         return false if aiCheck && !user.boss? && !@battle.battleAI.userMovesFirst?(move, user, target)
 
         if target.inTwoTurnSkyAttack?

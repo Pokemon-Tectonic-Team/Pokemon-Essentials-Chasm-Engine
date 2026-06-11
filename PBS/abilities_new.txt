@@ -1156,6 +1156,10 @@ Description = This Pokémon is also Grass-type. When hit by an attack, the attac
 Name = Ink Spray
 Description = Upon entry, blinds all foes.
 #-------------------------------
+[INNARDSPUNCH]
+Name = Innards Punch
+Description = When hit with a move, hits back instantly with Mega Punch.
+#-------------------------------
 [INNERHEAT]
 Name = Inner Heat
 Description = Summons sunshine for four turns when hit by an attack.
@@ -1991,7 +1995,7 @@ Flags = EclipseSynergy
 #-------------------------------
 [SCENECHANGE]
 Name = Scene Change
-Description = When using a physical move, switch to Pirouette Forme. When using a special move, switch to Aria Forme.
+Description = When using a physical move, switch to Pirouette Form. When using a special move, switch to Aria Form.
 Flags = Uncopyable
 #-------------------------------
 [SCHADENFREUDE]
