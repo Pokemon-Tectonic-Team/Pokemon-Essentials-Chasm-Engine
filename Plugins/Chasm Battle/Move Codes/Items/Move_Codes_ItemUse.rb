@@ -227,8 +227,6 @@ class PokeBattle_Move_Fling < PokeBattle_Move
             target.applyFrostbite(user) if target.canFrostbite?(user, false, self)
         when :BIGROOT
             target.applyLeeched(user) if target.canLeech?(user, false, self)
-        when :BINDINGBAND
-            target.applyLeeched(user) if target.canLeech?(user, false, self)
         when :WATERBALLOON
             target.applyWaterlog(user) if target.canWaterlog?(user, false, self)
         else
@@ -256,7 +254,7 @@ class PokeBattle_Move_Fling < PokeBattle_Move
         detailsList << _INTL("<u>Poison</u>: Poison Orb")
         detailsList << _INTL("<u>Burn</u>: Flame Orb")
         detailsList << _INTL("<u>Frostbite</u>: Frost Orb")
-        detailsList << _INTL("<u>Leech</u>: Big Root, Binding Band")
+        detailsList << _INTL("<u>Leech</u>: Big Root")
         detailsList << _INTL("<u>Waterlog</u>: Water Balloon")
     end
 end

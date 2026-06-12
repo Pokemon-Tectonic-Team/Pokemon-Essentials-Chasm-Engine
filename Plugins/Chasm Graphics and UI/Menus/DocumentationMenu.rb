@@ -64,6 +64,7 @@ class PokemonDocumentationMenu < PokemonPauseMenu
 		cmdMasterDex = -1
 		cmdMoveDex = -1
 		cmdBattleGuide = -1
+		cmdTribesMenu = -1
 		cmdPokeXRay = -1
 		infoCommands = []
 		if pbHasItem?(:POKEXRAY) && @battle && @battle.trainerBattle? && !@battle.is_online?
@@ -72,6 +73,9 @@ class PokemonDocumentationMenu < PokemonPauseMenu
 		infoCommands[cmdMasterDex = infoCommands.length] = _INTL("MasterDex")
 		infoCommands[cmdMoveDex = infoCommands.length] = _INTL("MoveDex")
 		infoCommands[cmdBattleGuide = infoCommands.length] = _INTL("Battle Guide")
+		if @battle && @battle.trainerBattle?
+			infoCommands[cmdTribesMenu = infoCommands.length] = _INTL("Tribes")
+		end
 		infoCommands.push(_INTL("Cancel"))
 		loop do
 			infoCommand = @scene.pbShowCommands(infoCommands)
@@ -85,6 +89,12 @@ class PokemonDocumentationMenu < PokemonPauseMenu
 					openMoveDex
 			elsif cmdBattleGuide > -1 && infoCommand == cmdBattleGuide
 					showBattleGuide
+			elsif cmdTribesMenu > -1 && infoCommand == cmdTribesMenu
+					pbFadeOutIn {
+						tribalBonusScene = TribalBonusScene.new
+						screen = TribalBonusScreen.new(tribalBonusScene)
+						screen.pbStartScreen
+					}
 			elsif cmdPokeXRay > -1 && infoCommand == cmdPokeXRay
 				if @battle.opponent.length == 1
 					showPokeXRayForTrainer(@battle.opponent[0])

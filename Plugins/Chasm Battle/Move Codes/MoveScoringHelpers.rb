@@ -147,7 +147,7 @@ def getFrostbiteEffectScore(user, target, ignoreCheck: false)
             score += 30 unless target.hasPhysicalAttack?
         end
 
-        score += STATUS_PUNISHMENT_BONUS if user && (user.hasStatusPunishMove? || user.pbHasMoveFunction?("DoubleDamageAgainstFrostbitten")) # Ice Impact
+        score += STATUS_PUNISHMENT_BONUS if user && (user.hasStatusPunishMove? || user.pbHasMoveFunction?("DoubleDamageAgainstFrostbitten")) # Ice Pick
         score -= getNaturalCureScore(user, target, score) if target.hasActiveAbilityAI?(:NATURALCURE)
     else
         return 0
@@ -202,7 +202,7 @@ def getSleepEffectScore(user, target, _policies = [])
     return 0 if target.hasActiveAbilityAI?(:OXYGENATION) && target.battle.sunny?
     score = 150
     score -= 100 if target.hasSleepAttack?
-    score += STATUS_PUNISHMENT_BONUS if user&.hasStatusPunishMove?
+    score += STATUS_PUNISHMENT_BONUS if user && (user.hasStatusPunishMove? || user.pbHasMoveFunction?("HealUserByHalfOfDamageDoneDoubleDamageIfTargetAsleep","50DamageIfTargetAsleep")) # Dream Absorb/Possession
     score -= 60 if target.hasActiveAbilityAI?(%i[LOUDSLEEPER SNOOZEFEST])
     if target.hasActiveAbilityAI?(:DREAMWEAVER)
         score -= getMultiStatUpEffectScore([:SPECIAL_ATTACK, 2],target,target)
@@ -451,12 +451,12 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
         if target.pbHasAnyStatus? && !target.hasActiveAbilityAI?(:VICTORYMOLT)
             if target.burned?
                 if statSymbol == :ATTACK
-                    totalIncrease *= 0.66 unless target.pbHasMoveFunction?("DoubleDamageUserStatused") # Facade / Hard Feelings
+                    totalIncrease *= 0.66 unless target.pbHasMoveFunction?("DoubleDamageUserStatused") # Facade
                 end
                 damageStatus = 1
             elsif target.frostbitten?
                 if statSymbol == :SPECIAL_ATTACK
-                    totalIncrease *= 0.66 unless target.pbHasMoveFunction?("DoubleDamageUserStatused") # Facade / Hard Feelings
+                    totalIncrease *= 0.66 unless target.pbHasMoveFunction?("DoubleDamageUserStatused") # Facade
                 end
                 damageStatus = 1
             elsif target.numbed? || target.waterlogged?

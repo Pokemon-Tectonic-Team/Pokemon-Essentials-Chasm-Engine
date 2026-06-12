@@ -2269,7 +2269,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = HardPlace
 Flags = CanProtect
-Description = The user slams the target into a nearby hard object. Increases power the higher the Defense of any ally.
+Description = The user slams the target into a nearby hard object. Increases in power the higher the Defense of any ally.
 Animation = HEADSMASH
 #-------------------------------
 [HEADBANG]

@@ -23,6 +23,7 @@ def battleKeywordsImportant
         "severe burn",
         "burning",
         "burned",
+        "Light That Burns the Sky",
         "burns",
         "burn",
         "frozen spikes",
@@ -158,6 +159,7 @@ def battleKeywordsImportant
         "shrinking",
         "sugar rush",
         "self-destructing",
+        "judgment",
     ]
 end
 
