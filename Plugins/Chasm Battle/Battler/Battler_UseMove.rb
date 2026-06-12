@@ -387,7 +387,8 @@ class PokeBattle_Battler
         #---------------------------------------------------------------------------
         magicCoater  = -1
         magicBouncer = -1
-        warder = -1
+        warder       = -1
+        realNumHits  = 0
         if targets.length == 0 && move.pbTarget(user).num_targets > 0 && !move.worksWithNoTargets?
             # def pbFindTargets should have found a target(s), but it didn't because
             # they were all fainted
@@ -455,7 +456,6 @@ class PokeBattle_Battler
             user.applyEffect(:Diffraction, 3) if move.canDiffract?(user, targets)
             # Process each hit in turn
             # Skip all hits if the move is being magic coated, magic bounced, or magic shielded
-            realNumHits = 0
             # Capture original user before any hit effects that might trigger Eject Pack
             # (e.g. user self-lowers stats via Close Combat). Used to suppress end-of-move
             # item/ability effects that should not fire on the replacement Pokemon.
