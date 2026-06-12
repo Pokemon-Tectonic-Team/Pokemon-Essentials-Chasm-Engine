@@ -5,15 +5,15 @@ class PokemonGlobalMetadata
 end
 
 ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
-	current_lvl = pkmn.level
-	current_exp = pkmn.exp
-	level_cap = LEVEL_CAPS_USED ? getLevelCap : growth_rate.max_level
-
 	# Do nothing if the EXP-EZ Dispenser is empty
 	if $PokemonGlobal.expJAR == 0
 		pbSceneDefaultDisplay(_INTL("There is no EXP stored!"),scene)
 		next false
 	end
+
+	current_lvl = pkmn.level
+	current_exp = pkmn.exp
+	level_cap = LEVEL_CAPS_USED ? getLevelCap : growth_rate.max_level
 
 	# Do nothing if the pokemon's already at the level cap
 	if pkmn.level >= level_cap
@@ -21,8 +21,27 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 		next false
 	end
 
+	expAfterAllFed = pkmn.growth_rate.add_exp(current_exp, $PokemonGlobal.expJAR)
+	highestLevelForStoredEXP = pkmn.growth_rate.level_from_exp(expAfterAllFed)
+
+	# Do nothing if the EXP-EZ Dispenser is empty
+	if highestLevelForStoredEXP == current_lvl
+		pbSceneDefaultDisplay(_INTL("There is not enough EXP stored to level up!"),scene)
+		next false
+	end
+
+	# Player chooses the target level
+	params = ChooseNumberParams.new
+	choiceMaximum = [level_cap,highestLevelForStoredEXP].min
+	params.setRange(current_lvl+1, choiceMaximum)
+	params.setInitialValue(level_cap)
+	params.setCancelValue(0)
+	question = _INTL("Feed candy till {1} reaches which level?", pkmn.name)
+	targetLevel = pbMessageChooseNumber(question, params)
+	next true if targetLevel == 0
+
 	# Max XP and level
-	maxxp = pkmn.growth_rate.minimum_exp_for_level(level_cap)
+	maxxp = pkmn.growth_rate.minimum_exp_for_level(targetLevel)
 	
 	expAmount = [maxxp - current_exp, $PokemonGlobal.expJAR].min
 
