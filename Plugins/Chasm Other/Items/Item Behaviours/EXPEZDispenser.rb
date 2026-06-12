@@ -30,16 +30,24 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 	$PokemonGlobal.expJAR -= expAmount
 	pkmn.exp += expAmount
 	new_level = pkmn.level
-	pbFadeOutInWithMusic do
-		evo = PokemonFeedCandyScene.new
-		evo.pbStartScreen(pkmn, expAmount)
-		evo.pbFeedCandy
+	if $Options.expez_dispenser_animation == 1
 		if new_level == level_cap
 			pbSceneDefaultDisplay(_INTL("{1} gained only {3} Exp. Points due to the level cap at level {2}.", pkmn.name, level_cap, separate_comma(expAmount)),scene)
 		else
 			pbSceneDefaultDisplay(_INTL("{1} gained {2} Exp. Points!", pkmn.name, separate_comma(expAmount)),scene)
 		end
-		evo.pbEndScreen
+	else
+		pbFadeOutInWithMusic do
+			evo = PokemonFeedCandyScene.new
+			evo.pbStartScreen(pkmn, expAmount)
+			evo.pbFeedCandy
+			if new_level == level_cap
+				pbSceneDefaultDisplay(_INTL("{1} gained only {3} Exp. Points due to the level cap at level {2}.", pkmn.name, level_cap, separate_comma(expAmount)),scene)
+			else
+				pbSceneDefaultDisplay(_INTL("{1} gained {2} Exp. Points!", pkmn.name, separate_comma(expAmount)),scene)
+			end
+			evo.pbEndScreen
+		end
 	end
 	scene&.pbRefresh
 
