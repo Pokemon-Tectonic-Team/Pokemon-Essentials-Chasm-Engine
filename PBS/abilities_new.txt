@@ -1695,7 +1695,7 @@ Flags = EclipseSynergy
 #-------------------------------
 [PLURIPOTENCE]
 Name = Pluripotence
-Description = At the first chance, copies an opponent's species' legal Abilities.
+Description = At the first chance, copies the legal Abilities of the Pokémon it is facing.
 Flags = Uncopyable
 #-------------------------------
 [POISONABSORB]

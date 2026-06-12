@@ -152,24 +152,20 @@ class PokeBattle_Battler
         end
         # Pluripotence
         if hasActiveAbility?(:PLURIPOTENCE)
-            choices = {}
-            @battle.eachOtherSideBattler(@index) do |b|
+            battlerCopying = pbDirectOpposing
+            if battlerCopying
                 copiableAbilities = []
-                b.eachLegalAbility do |abilityID|
+                battlerCopying.eachLegalAbility do |abilityID|
                     next if GameData::Ability.get(abilityID).is_uncopyable_ability?
                     copiableAbilities.push(abilityID)
                 end
-                next if copiableAbilities.empty?
-                choices[b] = copiableAbilities
             end
-            unless choices.empty?
-                battlerCopying = choices.keys.sample
-                abilitiesCopying = choices[battlerCopying]
+            unless copiableAbilities.empty?
                 showMyAbilitySplash(:PLURIPOTENCE)
                 @battle.pbDisplay(_INTL("{2}? {1} can be that, if it wishes.", pbThis, GameData::Species.get(battlerCopying.species).name))
-                echoln("Abilities that Pluripotence is copying: #{abilitiesCopying.to_s}")
-                setAbility(abilitiesCopying)
-                abilitiesCopying.each do |legalAbility|
+                echoln("Abilities that Pluripotence is copying: #{copiableAbilities.to_s}")
+                setAbility(copiableAbilities)
+                copiableAbilities.each do |legalAbility|
                     @battle.pbDisplay(_INTL("{1} imitated the Ability {2}!", pbThis, getAbilityName(legalAbility)))
                 end
                 hideMyAbilitySplash

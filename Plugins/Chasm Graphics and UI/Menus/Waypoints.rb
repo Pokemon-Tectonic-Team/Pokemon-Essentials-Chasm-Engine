@@ -291,6 +291,7 @@ class WaypointsTracker
             for key in map.events.keys
                 event = map.events[key]
                 next if !event || event.pages.length == 0
+				next if event.name == "AvatarTotem_NoAchievement"
                 next if event.name != WAYPOINT_EVENT_NAME
                 event.pages.each do |page|
                     page.list.each do |eventCommand|
