@@ -173,17 +173,23 @@ class PokeBattle_Battler
     AI_CHEATS_FOR_STAT_ITEMS = false
 
     # Held items whose stat contribution is hidden from the AI's stat/damage
-    # estimates until revealed. Split by how the item becomes evident in battle,
-    # which drives WHEN each is revealed (see revealActedHiddenStatItems /
-    # revealHitHiddenStatItems and their call sites). The reveal is event-driven,
-    # never triggered by a stat read.
-    #   offensive -> revealed when the holder takes its action (inflated damage)
-    #   speed     -> revealed when the holder takes its action (turn order seen)
-    #   defensive -> revealed when the holder is hit by a real damaging move
-    AI_HIDDEN_OFFENSIVE_ITEMS = %i[CHOICEBAND CHOICESPECS POWERLOCK ENERGYLOCK]
-    AI_HIDDEN_SPEED_ITEMS     = %i[CHOICESCARF SEVENLEAGUEBOOTS]
-    AI_HIDDEN_DEFENSIVE_ITEMS = %i[ASSAULTVEST STRIKEVEST]
-    AI_HIDDEN_STAT_ITEMS = (AI_HIDDEN_OFFENSIVE_ITEMS + AI_HIDDEN_SPEED_ITEMS + AI_HIDDEN_DEFENSIVE_ITEMS).freeze
+    # estimates until revealed. Reveal is event-driven (never triggered by a stat
+    # read) and category-specific, so an item only reveals on evidence that could
+    # actually expose it:
+    #   physical-atk -> holder deals damage with a PHYSICAL move
+    #   special-atk  -> holder deals damage with a SPECIAL move
+    #   physical-def -> holder takes damage from a PHYSICAL move
+    #   special-def  -> holder takes damage from a SPECIAL move
+    #   speed        -> holder moves in an unexpected turn order (item flipped it
+    #                   past an opponent its no-item speed would not outspeed)
+    AI_HIDDEN_PHYSICAL_ATK_ITEMS = %i[CHOICEBAND POWERLOCK]
+    AI_HIDDEN_SPECIAL_ATK_ITEMS  = %i[CHOICESPECS ENERGYLOCK]
+    AI_HIDDEN_PHYSICAL_DEF_ITEMS = %i[STRIKEVEST]
+    AI_HIDDEN_SPECIAL_DEF_ITEMS  = %i[ASSAULTVEST]
+    AI_HIDDEN_SPEED_ITEMS        = %i[CHOICESCARF SEVENLEAGUEBOOTS]
+    AI_HIDDEN_STAT_ITEMS = (AI_HIDDEN_PHYSICAL_ATK_ITEMS + AI_HIDDEN_SPECIAL_ATK_ITEMS +
+                            AI_HIDDEN_PHYSICAL_DEF_ITEMS + AI_HIDDEN_SPECIAL_DEF_ITEMS +
+                            AI_HIDDEN_SPEED_ITEMS).freeze
 
     # True when the AI should not yet see this held item's stat contribution: it
     # is a hidden stat item on a player-owned battler that the AI has not learned,
@@ -215,16 +221,45 @@ class PokeBattle_Battler
         end
     end
 
-    # Call when this battler takes its action (uses a move): its offensive and
-    # speed disguising items become evident (inflated damage / observed turn order).
-    def revealActedHiddenStatItems
-        revealHiddenStatItems(*AI_HIDDEN_OFFENSIVE_ITEMS, *AI_HIDDEN_SPEED_ITEMS)
+    # Call when this battler DEALS damage with a damaging move: its disguising
+    # offensive item for that move's category becomes evident (inflated damage).
+    def revealDealtDamageHiddenStatItems(physical)
+        revealHiddenStatItems(*(physical ? AI_HIDDEN_PHYSICAL_ATK_ITEMS : AI_HIDDEN_SPECIAL_ATK_ITEMS))
     end
 
-    # Call when this battler is hit by a real damaging move: its defensive
-    # disguising items become evident (the attacker's damage came up short).
-    def revealHitHiddenStatItems
-        revealHiddenStatItems(*AI_HIDDEN_DEFENSIVE_ITEMS)
+    # Call when this battler TAKES damage from a damaging move: its disguising
+    # defensive item for that move's category becomes evident (damage came short).
+    def revealTookDamageHiddenStatItems(physical)
+        revealHiddenStatItems(*(physical ? AI_HIDDEN_PHYSICAL_DEF_ITEMS : AI_HIDDEN_SPECIAL_DEF_ITEMS))
+    end
+
+    # Call when this battler takes its action: reveal a disguising speed item only
+    # if it produced an unexpected turn order (the item raised this battler past an
+    # opponent that its no-item, AI-estimated speed would not have outsped).
+    def revealSpeedHiddenStatItemsIfAnomalous
+        return unless pbOwnedByPlayer?
+        return if AI_CHEATS_FOR_STAT_ITEMS
+        AI_HIDDEN_SPEED_ITEMS.each do |item|
+            next unless hasActiveItem?(item)
+            next if aiKnowsItem?(item)
+            next unless speedItemCausedOrderAnomaly?
+            aiLearnsItem(item)
+        end
+    end
+
+    def speedItemCausedOrderAnomaly?
+        realSpeed = pbSpeed          # true speed, hidden item applied
+        hiddenSpeed = pbSpeed(true)  # speed as the AI estimates it (item hidden)
+        return false if realSpeed <= hiddenSpeed
+        anomalous = false
+        eachOpposing do |b|
+            next if b.fainted?
+            bSpeed = b.pbSpeed
+            # The item flips the matchup vs b: without it b is at least as fast;
+            # with it this battler is faster.
+            anomalous = true if bSpeed >= hiddenSpeed && bSpeed < realSpeed
+        end
+        return anomalous
     end
 
     def pbAttack(aiCheck = false, step = nil)

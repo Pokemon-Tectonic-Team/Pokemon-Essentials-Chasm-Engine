@@ -37,9 +37,14 @@ class PokeBattle_Move
         # Get the relevant attacking and defending stat values (after steps)
         attack, defense = damageCalcStats(user,target,aiCheck)
 
-        # On a real (non-AI) hit, the target's disguising defensive items become
-        # evident to the AI: incoming damage came up short of the no-item estimate.
-        target.revealHitHiddenStatItems unless aiCheck
+        # On a real (non-AI) damaging hit, disguising items matching this move's
+        # category become evident: the user's offensive item (inflated damage) and
+        # the target's defensive item (damage came up short of the no-item estimate).
+        unless aiCheck
+            physical = physicalMove?
+            user.revealDealtDamageHiddenStatItems(physical)
+            target.revealTookDamageHiddenStatItems(physical)
+        end
 
         # Calculate all multiplier effects
         multipliers = initializeMultipliers

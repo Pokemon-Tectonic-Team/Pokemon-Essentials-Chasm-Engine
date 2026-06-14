@@ -289,7 +289,7 @@ class PokeBattle_Battler
 
         # Record move as having been used
         aiSeesMove(move) if pbOwnedByPlayer? && !boss? # Enemy trainers now know of this move's existence
-        revealActedHiddenStatItems if pbOwnedByPlayer? && !boss? # Acting reveals disguising offensive/speed items
+        revealSpeedHiddenStatItemsIfAnomalous if pbOwnedByPlayer? && !boss? # Reveal a speed item only if it caused an unexpected turn order
         aiLearnsAbility(:ILLUSION) if hasActiveAbility?(:ILLUSION) && effectActive?(:Illusion)
         aiLearnsAbility(:INCOGNITO) if hasActiveAbility?(:INCOGNITO) && effectActive?(:Illusion)
         increaseMoveUsageCount(move.id)
