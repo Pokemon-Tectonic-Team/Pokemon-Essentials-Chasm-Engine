@@ -181,7 +181,8 @@ class PokeBattle_Battler
     #   physical-def -> holder takes damage from a PHYSICAL move
     #   special-def  -> holder takes damage from a SPECIAL move
     #   speed        -> holder moves in an unexpected turn order (item flipped it
-    #                   past an opponent its no-item speed would not outspeed)
+    #                   past another battler -- ally or opponent -- in the same
+    #                   priority bracket that its no-item speed would not outspeed)
     AI_HIDDEN_PHYSICAL_ATK_ITEMS = %i[CHOICEBAND POWERLOCK]
     AI_HIDDEN_SPECIAL_ATK_ITEMS  = %i[CHOICESPECS ENERGYLOCK]
     AI_HIDDEN_PHYSICAL_DEF_ITEMS = %i[STRIKEVEST]
@@ -247,19 +248,13 @@ class PokeBattle_Battler
         end
     end
 
+    # Anomaly is judged against this round's realized priority order, so it covers
+    # both opponents and this battler's own ally, and respects priority brackets
+    # and Tricksters Domain.
     def speedItemCausedOrderAnomaly?
         realSpeed = pbSpeed          # true speed, hidden item applied
         hiddenSpeed = pbSpeed(true)  # speed as the AI estimates it (item hidden)
-        return false if realSpeed <= hiddenSpeed
-        anomalous = false
-        eachOpposing do |b|
-            next if b.fainted?
-            bSpeed = b.pbSpeed
-            # The item flips the matchup vs b: without it b is at least as fast;
-            # with it this battler is faster.
-            anomalous = true if bSpeed >= hiddenSpeed && bSpeed < realSpeed
-        end
-        return anomalous
+        return @battle.speedItemOrderAnomaly?(self, realSpeed, hiddenSpeed)
     end
 
     def pbAttack(aiCheck = false, step = nil)

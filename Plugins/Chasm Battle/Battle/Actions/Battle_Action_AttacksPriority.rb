@@ -292,6 +292,36 @@ class PokeBattle_Battle
         return ret
     end
 
+    # True if `battler`'s real speed orders it differently than `hiddenSpeed`
+    # would, against any co-bracket move-user this round (ally OR opponent). Used
+    # to decide whether a disguising speed item produced an observably unexpected
+    # turn order. Only battlers sharing this round's priority and sub-priority
+    # bracket are compared, since across brackets speed does not decide order;
+    # Tricksters Domain (reversed speed order) is respected.
+    def speedItemOrderAnomaly?(battler, realSpeed, hiddenSpeed)
+        return false if realSpeed == hiddenSpeed
+        return false if @priority.nil? || @priority.empty?
+        myEntry = @priority.find { |e| e && e[0] == battler }
+        return false if myEntry.nil?
+        myPriority, mySubPriority = myEntry[3], myEntry[2]
+        reversed = @priorityTrickstersDomain
+        @priority.each do |e|
+            next unless e
+            other = e[0]
+            next if other.nil? || other == battler || other.fainted?
+            # Only battlers actually taking a move action this round are ordered by speed
+            otherChoice = @choices[other.index][0]
+            next unless otherChoice == :UseMove || otherChoice == :Shift
+            # Different priority/sub-priority bracket: speed never decides their order
+            next unless e[3] == myPriority && e[2] == mySubPriority
+            otherSpeed = e[1]
+            realFaster   = reversed ? (realSpeed   < otherSpeed) : (realSpeed   > otherSpeed)
+            hiddenFaster = reversed ? (hiddenSpeed < otherSpeed) : (hiddenSpeed > otherSpeed)
+            return true if realFaster != hiddenFaster
+        end
+        return false
+    end
+
     # Returns a hash assigning each unfainted battler a number which explains in what order the battlers
     # are expected to move this turn, accounting for only speed and trickster's domain
     # Pokemon with speed ties are assigned the same number
