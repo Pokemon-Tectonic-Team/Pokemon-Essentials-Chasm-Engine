@@ -349,7 +349,7 @@ BattleHandlers::DamageCalcTargetAbility.add(:RUSTWRACK,
 BattleHandlers::DamageCalcTargetAbility.add(:APRICORNARMOR,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if user.pbHasAnyStatus?
-      mults[:final_damage_multiplier] *= 0.6
+      mults[:final_damage_multiplier] *= 0.65
       target.aiLearnsAbility(ability) unless aiCheck
     end
   }

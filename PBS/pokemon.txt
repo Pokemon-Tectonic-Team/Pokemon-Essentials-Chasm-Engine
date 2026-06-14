@@ -2989,7 +2989,7 @@ Name = H. Voltorb
 Type1 = ELECTRIC
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 40,65,55,110,65,60
+BaseStats = 75,65,55,80,90,75
 # Total = 395
 GenderRate = Genderless
 BaseEXP = 66
@@ -3011,7 +3011,7 @@ Name = H. Electrode
 Type1 = ELECTRIC
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,90,70,150,90,80
+BaseStats = 90,80,70,100,110,90
 # Total = 540
 GenderRate = Genderless
 BaseEXP = 172
