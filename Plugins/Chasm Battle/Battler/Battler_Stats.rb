@@ -1,16 +1,16 @@
 class PokeBattle_Battler
-    def getPlainStat(stat)
+    def getPlainStat(stat, aiCheck = false)
         case stat
         when :ATTACK
-            return attack
+            return attack(aiCheck)
         when :DEFENSE
-            return defense
+            return defense(aiCheck)
         when :SPECIAL_ATTACK
-            return spatk
+            return spatk(aiCheck)
         when :SPECIAL_DEFENSE
-            return spdef
+            return spdef(aiCheck)
         when :SPEED
-            return speed
+            return speed(aiCheck)
         end
         return -1
     end
@@ -46,51 +46,51 @@ class PokeBattle_Battler
         return false
     end
 
-    def attack
+    def attack(aiCheck = false)
         if puzzleRoom? && oddRoom?
-            return base_special_defense
+            return base_special_defense(aiCheck)
         elsif puzzleRoom? && !oddRoom?
-            return base_special_attack
+            return base_special_attack(aiCheck)
         elsif oddRoom? && !puzzleRoom?
-            return base_defense
+            return base_defense(aiCheck)
         else
-            return base_attack
+            return base_attack(aiCheck)
         end
     end
 
-    def defense
+    def defense(aiCheck = false)
         if wonderRoom? && oddRoom?
-            return base_special_attack
+            return base_special_attack(aiCheck)
         elsif wonderRoom? && !oddRoom?
-            return base_special_defense
+            return base_special_defense(aiCheck)
         elsif oddRoom? && !wonderRoom?
-            return base_attack
+            return base_attack(aiCheck)
         else
-            return base_defense
+            return base_defense(aiCheck)
         end
     end
 
-    def spatk
+    def spatk(aiCheck = false)
         if puzzleRoom? && oddRoom?
-            return base_defense
+            return base_defense(aiCheck)
         elsif puzzleRoom? && !oddRoom?
-            return base_attack
+            return base_attack(aiCheck)
         elsif oddRoom? && !puzzleRoom?
-            return base_special_defense
+            return base_special_defense(aiCheck)
         else
-            return base_special_attack
+            return base_special_attack(aiCheck)
         end
     end
 
-    def spdef
+    def spdef(aiCheck = false)
         if wonderRoom? && oddRoom?
-            return base_attack
+            return base_attack(aiCheck)
         elsif wonderRoom? && !oddRoom?
-            return base_defense
+            return base_defense(aiCheck)
         elsif oddRoom? && !wonderRoom?
-            return base_special_attack
+            return base_special_attack(aiCheck)
         else
-            return base_special_defense
+            return base_special_defense(aiCheck)
         end
     end
 
@@ -98,7 +98,7 @@ class PokeBattle_Battler
 
     DEFENSIVE_LOCK_STAT = 95
 
-    def speed
+    def speed(aiCheck = false)
         return base_speed
     end
 
@@ -107,18 +107,19 @@ class PokeBattle_Battler
         return calcStatGlobal(base, @level, @pokemon.ev[stat], stylish: hasActiveAbility?(:STYLISH), accumulation: hasActiveAbility?(:ACCUMULATION))
     end
 
-    def base_attack
+    def base_attack(aiCheck = false)
         return @effects[:BaseAttack] if effectActive?(:BaseAttack)
         attack_bonus = tribalBonusForStat(:ATTACK)
         attack_bonus += allStatBonus
-        if hasActiveItem?(%i[POWERLOCK POWERKEY])
+        if hasActiveItem?(%i[POWERLOCK POWERKEY]) && !aiHidesStatItem?(:POWERLOCK, aiCheck)
+            revealHiddenStatItems(:POWERLOCK) unless aiCheck
             return recalcStat(:ATTACK, OFFENSIVE_LOCK_STAT) + attack_bonus
         else
             return @attack + attack_bonus
         end
     end
 
-    def base_defense
+    def base_defense(aiCheck = false)
         return @effects[:BaseDefense] if effectActive?(:BaseDefense)
         defense_bonus = tribalBonusForStat(:DEFENSE)
         defense_bonus += allStatBonus
@@ -131,18 +132,19 @@ class PokeBattle_Battler
         end
     end
 
-    def base_special_attack
+    def base_special_attack(aiCheck = false)
         return @effects[:BaseSpecialAttack] if effectActive?(:BaseSpecialAttack)
         spatk_bonus = tribalBonusForStat(:SPECIAL_ATTACK)
         spatk_bonus += allStatBonus
-        if hasActiveItem?(%i[ENERGYLOCK ENERGYKEY])
+        if hasActiveItem?(%i[ENERGYLOCK ENERGYKEY]) && !aiHidesStatItem?(:ENERGYLOCK, aiCheck)
+            revealHiddenStatItems(:ENERGYLOCK) unless aiCheck
             return recalcStat(:SPECIAL_ATTACK, OFFENSIVE_LOCK_STAT) + spatk_bonus
         else
             return @spatk + spatk_bonus
         end
     end
 
-    def base_special_defense
+    def base_special_defense(aiCheck = false)
         return @effects[:BaseSpecialDefense] if effectActive?(:BaseSpecialDefense)
         spdef_bonus = tribalBonusForStat(:SPECIAL_DEFENSE)
         spdef_bonus += allStatBonus
@@ -167,9 +169,54 @@ class PokeBattle_Battler
     #=============================================================================
     AI_CHEATS_FOR_STAT_ABILITIES = true
 
+    # When false, the AI estimates an opposing player-owned battler's stats as if
+    # it were not holding certain disguising stat items, until the item reveals
+    # itself through real (non-AI) use. Set true to let the AI always see them.
+    AI_CHEATS_FOR_STAT_ITEMS = false
+
+    # Held items whose stat contribution is hidden from the AI's stat/damage
+    # estimates until revealed. Covers the multiplier items applied in the
+    # pbAttack/pbSpAtk/pbDefense/pbSpDef/pbSpeed item loops, plus the offensive
+    # base-stat "lock" items applied in base_attack / base_special_attack.
+    AI_HIDDEN_STAT_ITEMS = %i[
+        CHOICEBAND CHOICESPECS CHOICESCARF
+        SEVENLEAGUEBOOTS
+        ASSAULTVEST STRIKEVEST
+        POWERLOCK ENERGYLOCK
+    ]
+
+    # True when the AI should not yet see this held item's stat contribution: it
+    # is a hidden stat item on a player-owned battler that the AI has not learned,
+    # and this is an AI estimate (aiCheck) with the item cheat disabled. Accepts a
+    # single item id or an array (any matching held item triggers hiding).
+    def aiHidesStatItem?(item, aiCheck)
+        return false unless aiCheck
+        return false if AI_CHEATS_FOR_STAT_ITEMS
+        return false unless pbOwnedByPlayer?
+        return Array(item).any? do |singleItem|
+            AI_HIDDEN_STAT_ITEMS.include?(singleItem) &&
+                hasActiveItem?(singleItem) &&
+                !aiKnowsItem?(singleItem)
+        end
+    end
+
+    # Reveal any of the given hidden stat items this player-owned battler actually
+    # holds. Called on real (non-AI) stat application so the AI learns the item
+    # once it has demonstrably affected a real action (attacking, being hit, or
+    # turn-order resolution, depending on the item).
+    def revealHiddenStatItems(*items)
+        return unless pbOwnedByPlayer?
+        items.flatten.each do |singleItem|
+            next unless AI_HIDDEN_STAT_ITEMS.include?(singleItem)
+            next unless hasActiveItem?(singleItem)
+            next if aiKnowsItem?(singleItem)
+            aiLearnsItem(singleItem)
+        end
+    end
+
     def pbAttack(aiCheck = false, step = nil)
         return 1 if fainted? && !dummy?
-        attack = statAfterStep(:ATTACK, step)
+        attack = statAfterStep(:ATTACK, step, aiCheck)
         attackMult = 1.0
 
         eachActiveAbility do |ability|
@@ -184,7 +231,9 @@ class PokeBattle_Battler
         end
 
         eachActiveItem do |item|
+            next if aiHidesStatItem?(item, aiCheck)
             attackMult = BattleHandlers.triggerAttackCalcUserItem(item, self, battle, attackMult)
+            revealHiddenStatItems(item) unless aiCheck
         end
 
         # Dragon Ride
@@ -196,7 +245,7 @@ class PokeBattle_Battler
 
     def pbSpAtk(aiCheck = false, step = nil)
         return 1 if fainted? && !dummy?
-        special_attack = statAfterStep(:SPECIAL_ATTACK, step)
+        special_attack = statAfterStep(:SPECIAL_ATTACK, step, aiCheck)
         spAtkMult = 1.0
 
         eachActiveAbility do |ability|
@@ -211,7 +260,9 @@ class PokeBattle_Battler
         end
 
         eachActiveItem do |item|
+            next if aiHidesStatItem?(item, aiCheck)
             spAtkMult = BattleHandlers.triggerSpecialAttackCalcUserItem(item, self, battle, spAtkMult)
+            revealHiddenStatItems(item) unless aiCheck
         end
 
         # Calculation
@@ -220,7 +271,7 @@ class PokeBattle_Battler
 
     def pbDefense(aiCheck = false, step = nil)
         return 1 if fainted? && !dummy?
-        defense = statAfterStep(:DEFENSE, step)
+        defense = statAfterStep(:DEFENSE, step, aiCheck)
         defenseMult = 1.0
 
         eachActiveAbility do |ability|
@@ -235,9 +286,11 @@ class PokeBattle_Battler
         end
 
         eachActiveItem do |item|
+            next if aiHidesStatItem?(item, aiCheck)
             defenseMult = BattleHandlers.triggerDefenseCalcUserItem(item, self, battle, defenseMult)
+            revealHiddenStatItems(item) unless aiCheck
         end
-        
+
         defenseMult *= 1.3 if hasTribeBonus?(:SCRAPPER)
         defenseMult *= 1.5 if pbOwnSide.effectActive?(:AutumnHarvests)
 
@@ -255,7 +308,7 @@ class PokeBattle_Battler
 
     def pbSpDef(aiCheck = false, step = nil)
         return 1 if fainted? && !dummy?
-        special_defense = statAfterStep(:SPECIAL_DEFENSE, step)
+        special_defense = statAfterStep(:SPECIAL_DEFENSE, step, aiCheck)
         spDefMult = 1.0
 
         eachActiveAbility do |ability|
@@ -269,9 +322,11 @@ class PokeBattle_Battler
         end
 
         eachActiveItem do |item|
+            next if aiHidesStatItem?(item, aiCheck)
             spDefMult = BattleHandlers.triggerSpecialDefenseCalcUserItem(item, self, battle, spDefMult)
+            revealHiddenStatItems(item) unless aiCheck
         end
-        
+
         spDefMult *= 1.3 if hasTribeBonus?(:RADIANT)
         spDefMult *= 1.5 if pbOwnSide.effectActive?(:SpringPlantings)
 
@@ -289,7 +344,7 @@ class PokeBattle_Battler
 
     def pbSpeed(aiCheck = false, step = nil, afterSwitching: false, move: nil)
         return 1 if fainted? && !dummy?
-        speed = statAfterStep(:SPEED, step)
+        speed = statAfterStep(:SPEED, step, aiCheck)
         speedMult = 1.0
 
         eachActiveAbility do |ability|
@@ -299,7 +354,9 @@ class PokeBattle_Battler
 
         # Item effects that alter calculated Speed
         eachActiveItem do |item|
+            next if aiHidesStatItem?(item, aiCheck)
             speedMult = BattleHandlers.triggerSpeedCalcItem(item, self, speedMult)
+            revealHiddenStatItems(item) unless aiCheck
         end
         
         # Other effects
