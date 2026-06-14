@@ -315,7 +315,7 @@ class PokeBattle_Battle
             # Different priority/sub-priority bracket: speed never decides their order
             next unless e[3] == myPriority && e[2] == mySubPriority
             otherSpeed = e[1]
-            realFaster   = reversed ? (realSpeed   < otherSpeed) : (realSpeed   > otherSpeed)
+            realFaster = reversed ? (realSpeed < otherSpeed) : (realSpeed > otherSpeed)
             hiddenFaster = reversed ? (hiddenSpeed < otherSpeed) : (hiddenSpeed > otherSpeed)
             return true if realFaster != hiddenFaster
         end

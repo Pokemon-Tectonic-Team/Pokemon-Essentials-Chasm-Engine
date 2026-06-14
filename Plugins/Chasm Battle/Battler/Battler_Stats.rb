@@ -235,8 +235,9 @@ class PokeBattle_Battler
     end
 
     # Call when this battler takes its action: reveal a disguising speed item only
-    # if it produced an unexpected turn order (the item raised this battler past an
-    # opponent that its no-item, AI-estimated speed would not have outsped).
+    # if it produced an unexpected turn order (the item raised this battler past
+    # another battler -- ally or opponent -- that its no-item, AI-estimated speed
+    # would not have outsped). See @battle.speedItemOrderAnomaly? for the check.
     def revealSpeedHiddenStatItemsIfAnomalous
         return unless pbOwnedByPlayer?
         return if AI_CHEATS_FOR_STAT_ITEMS
