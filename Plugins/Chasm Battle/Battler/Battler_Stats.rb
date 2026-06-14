@@ -112,7 +112,6 @@ class PokeBattle_Battler
         attack_bonus = tribalBonusForStat(:ATTACK)
         attack_bonus += allStatBonus
         if hasActiveItem?(%i[POWERLOCK POWERKEY]) && !aiHidesStatItem?(:POWERLOCK, aiCheck)
-            revealHiddenStatItems(:POWERLOCK) unless aiCheck
             return recalcStat(:ATTACK, OFFENSIVE_LOCK_STAT) + attack_bonus
         else
             return @attack + attack_bonus
@@ -137,7 +136,6 @@ class PokeBattle_Battler
         spatk_bonus = tribalBonusForStat(:SPECIAL_ATTACK)
         spatk_bonus += allStatBonus
         if hasActiveItem?(%i[ENERGYLOCK ENERGYKEY]) && !aiHidesStatItem?(:ENERGYLOCK, aiCheck)
-            revealHiddenStatItems(:ENERGYLOCK) unless aiCheck
             return recalcStat(:SPECIAL_ATTACK, OFFENSIVE_LOCK_STAT) + spatk_bonus
         else
             return @spatk + spatk_bonus
@@ -175,15 +173,17 @@ class PokeBattle_Battler
     AI_CHEATS_FOR_STAT_ITEMS = false
 
     # Held items whose stat contribution is hidden from the AI's stat/damage
-    # estimates until revealed. Covers the multiplier items applied in the
-    # pbAttack/pbSpAtk/pbDefense/pbSpDef/pbSpeed item loops, plus the offensive
-    # base-stat "lock" items applied in base_attack / base_special_attack.
-    AI_HIDDEN_STAT_ITEMS = %i[
-        CHOICEBAND CHOICESPECS CHOICESCARF
-        SEVENLEAGUEBOOTS
-        ASSAULTVEST STRIKEVEST
-        POWERLOCK ENERGYLOCK
-    ]
+    # estimates until revealed. Split by how the item becomes evident in battle,
+    # which drives WHEN each is revealed (see revealActedHiddenStatItems /
+    # revealHitHiddenStatItems and their call sites). The reveal is event-driven,
+    # never triggered by a stat read.
+    #   offensive -> revealed when the holder takes its action (inflated damage)
+    #   speed     -> revealed when the holder takes its action (turn order seen)
+    #   defensive -> revealed when the holder is hit by a real damaging move
+    AI_HIDDEN_OFFENSIVE_ITEMS = %i[CHOICEBAND CHOICESPECS POWERLOCK ENERGYLOCK]
+    AI_HIDDEN_SPEED_ITEMS     = %i[CHOICESCARF SEVENLEAGUEBOOTS]
+    AI_HIDDEN_DEFENSIVE_ITEMS = %i[ASSAULTVEST STRIKEVEST]
+    AI_HIDDEN_STAT_ITEMS = (AI_HIDDEN_OFFENSIVE_ITEMS + AI_HIDDEN_SPEED_ITEMS + AI_HIDDEN_DEFENSIVE_ITEMS).freeze
 
     # True when the AI should not yet see this held item's stat contribution: it
     # is a hidden stat item on a player-owned battler that the AI has not learned,
@@ -201,9 +201,10 @@ class PokeBattle_Battler
     end
 
     # Reveal any of the given hidden stat items this player-owned battler actually
-    # holds. Called on real (non-AI) stat application so the AI learns the item
-    # once it has demonstrably affected a real action (attacking, being hit, or
-    # turn-order resolution, depending on the item).
+    # holds. Reveal is driven by observable battle EVENTS (the call sites below),
+    # never by a stat-calc method -- a stat read must never reveal an item, or
+    # routine real stat computations (turn-order priority, finalStats inside move
+    # effects, etc.) would mark items known before the AI ever estimates.
     def revealHiddenStatItems(*items)
         return unless pbOwnedByPlayer?
         items.flatten.each do |singleItem|
@@ -212,6 +213,18 @@ class PokeBattle_Battler
             next if aiKnowsItem?(singleItem)
             aiLearnsItem(singleItem)
         end
+    end
+
+    # Call when this battler takes its action (uses a move): its offensive and
+    # speed disguising items become evident (inflated damage / observed turn order).
+    def revealActedHiddenStatItems
+        revealHiddenStatItems(*AI_HIDDEN_OFFENSIVE_ITEMS, *AI_HIDDEN_SPEED_ITEMS)
+    end
+
+    # Call when this battler is hit by a real damaging move: its defensive
+    # disguising items become evident (the attacker's damage came up short).
+    def revealHitHiddenStatItems
+        revealHiddenStatItems(*AI_HIDDEN_DEFENSIVE_ITEMS)
     end
 
     def pbAttack(aiCheck = false, step = nil)
@@ -233,7 +246,6 @@ class PokeBattle_Battler
         eachActiveItem do |item|
             next if aiHidesStatItem?(item, aiCheck)
             attackMult = BattleHandlers.triggerAttackCalcUserItem(item, self, battle, attackMult)
-            revealHiddenStatItems(item) unless aiCheck
         end
 
         # Dragon Ride
@@ -262,7 +274,6 @@ class PokeBattle_Battler
         eachActiveItem do |item|
             next if aiHidesStatItem?(item, aiCheck)
             spAtkMult = BattleHandlers.triggerSpecialAttackCalcUserItem(item, self, battle, spAtkMult)
-            revealHiddenStatItems(item) unless aiCheck
         end
 
         # Calculation
@@ -288,7 +299,6 @@ class PokeBattle_Battler
         eachActiveItem do |item|
             next if aiHidesStatItem?(item, aiCheck)
             defenseMult = BattleHandlers.triggerDefenseCalcUserItem(item, self, battle, defenseMult)
-            revealHiddenStatItems(item) unless aiCheck
         end
 
         defenseMult *= 1.3 if hasTribeBonus?(:SCRAPPER)
@@ -324,7 +334,6 @@ class PokeBattle_Battler
         eachActiveItem do |item|
             next if aiHidesStatItem?(item, aiCheck)
             spDefMult = BattleHandlers.triggerSpecialDefenseCalcUserItem(item, self, battle, spDefMult)
-            revealHiddenStatItems(item) unless aiCheck
         end
 
         spDefMult *= 1.3 if hasTribeBonus?(:RADIANT)
@@ -356,7 +365,6 @@ class PokeBattle_Battler
         eachActiveItem do |item|
             next if aiHidesStatItem?(item, aiCheck)
             speedMult = BattleHandlers.triggerSpeedCalcItem(item, self, speedMult)
-            revealHiddenStatItems(item) unless aiCheck
         end
         
         # Other effects
