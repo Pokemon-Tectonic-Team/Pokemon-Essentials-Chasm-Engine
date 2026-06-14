@@ -27,8 +27,7 @@ class PokemonFeedCandyScene
 
       # Calculate how many candy sprites there should be
       candyAmounts = calculateCandySplitForEXP(@expAmount)
-      candySum = 0
-      candyAmounts.each { |candyTypeAmount| candySum += candyTypeAmount}
+      candySum = candyAmounts.sum
       spriteIndex = 0
       radius = 100
       @candySprites = []

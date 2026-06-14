@@ -731,8 +731,7 @@ class PokemonStorageScreen
         lifetimeEXP = (lifetimeEXP * CANDY_EXCHANGE_EFFICIENCY).floor
         if lifetimeEXP > 0
             candyAmounts = calculateCandySplitForEXP(lifetimeEXP)
-            candySum = 0
-            candyAmounts.each { |candyTypeAmount| candySum += candyTypeAmount}
+            candySum = candyAmounts.sum
             if candySum == 0
                 pbDisplay(_INTL("It didn't earn enough XP for you to earn any candies back."))
             else

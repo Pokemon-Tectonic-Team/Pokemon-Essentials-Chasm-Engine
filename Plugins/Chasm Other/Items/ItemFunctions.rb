@@ -456,6 +456,7 @@ def pbUseKeyItemInField(item)
   if ret==-1   # Item effect not found
     if ItemHandlers.hasUseOnPokemon(item)
       pbUseItem($PokemonBag,item)
+      return true
     else
       pbMessage(_INTL("Can't use that here."))
     end

@@ -36,7 +36,7 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 	params.setRange(current_lvl+1, choiceMaximum)
 	params.setInitialValue(level_cap)
 	params.setCancelValue(0)
-	question = _INTL("Feed candy till {1} reaches which level?", pkmn.name)
+	question = _INTL("Feed candy to reach which level?", pkmn.name)
 	targetLevel = pbMessageChooseNumber(question, params)
 	next true if targetLevel == 0
 
@@ -50,21 +50,13 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 	pkmn.exp += expAmount
 	new_level = pkmn.level
 	if $Options.expez_dispenser_animation == 1
-		if new_level == level_cap
-			pbSceneDefaultDisplay(_INTL("{1} gained only {3} Exp. Points due to the level cap at level {2}.", pkmn.name, level_cap, separate_comma(expAmount)),scene)
-		else
-			pbSceneDefaultDisplay(_INTL("{1} gained {2} Exp. Points!", pkmn.name, separate_comma(expAmount)),scene)
-		end
+		printDispenserEXPGrantMessage(pkmn, expAmount, level_cap: level_cap, scene: scene)
 	else
 		pbFadeOutInWithMusic do
 			evo = PokemonFeedCandyScene.new
 			evo.pbStartScreen(pkmn, expAmount)
 			evo.pbFeedCandy
-			if new_level == level_cap
-				pbSceneDefaultDisplay(_INTL("{1} gained only {3} Exp. Points due to the level cap at level {2}.", pkmn.name, level_cap, separate_comma(expAmount)),scene)
-			else
-				pbSceneDefaultDisplay(_INTL("{1} gained {2} Exp. Points!", pkmn.name, separate_comma(expAmount)),scene)
-			end
+			printDispenserEXPGrantMessage(pkmn, expAmount, level_cap: level_cap, scene: scene)
 			evo.pbEndScreen
 		end
 	end
@@ -111,6 +103,14 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 
 	next true
 })
+
+def printDispenserEXPGrantMessage(pkmn, expAmount, level_cap: nil, scene: nil)
+	if pkmn.level == level_cap
+		pbSceneDefaultDisplay(_INTL("{1} gained only {3} Exp. Points due to the level cap at level {2}.", pkmn.name, level_cap, separate_comma(expAmount)),scene)
+	else
+		pbSceneDefaultDisplay(_INTL("{1} gained {2} Exp. Points!", pkmn.name, separate_comma(expAmount)),scene)
+	end
+end
 
 def addEXPCandyToDispenser(item, quantity = 1)
     expAmount = getEXPAmountForCandy(item) * quantity
