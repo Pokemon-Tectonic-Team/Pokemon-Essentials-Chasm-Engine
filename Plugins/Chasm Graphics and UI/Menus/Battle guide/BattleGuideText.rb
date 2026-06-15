@@ -51,7 +51,7 @@ def battleGuideMovesHash
         _INTL("Adaptive Moves") => _INTL("Adaptive moves are notated by the symbol split between physical and special. Their damage is based on whichever Attacking stat is higher of the attacker. If both are the same, the default is Attack."),
         _INTL("Targeting") => _INTL("Most moves target only a single Pokémon, but many can target multiple Pokémon at once. Some moves differ in how far they can target in the bigger battle styles (doubles, triples)."),
         _INTL("Move Types") => _INTL("Every move has a type. Attacking moves deal different amounts of damage to different Pokémon based on those Pokémon's types. This is called 'type effectiveness'."),
-        _INTL("Flex-type Moves") => _INTL("Flex-type moves when used, change type to be the first type of the Pokémon the uses them. So a Fire/Ground Pokémon using a Flex move will become a Fire-type move."),
+        _INTL("Flex-type Moves") => _INTL("Flex-type moves when used, change type to be the first type of the Pokémon the uses them. So a Flex move used by a Fire/Ground Pokémon will become a Fire-type move."),
         _INTL("Same-Type Bonus") => _INTL("Pokémon deal 50% more damage with moves they share a type with. For example, a Raichu deals 50% more damage with an Electric move than a Normal move."),
         _INTL("Learning Moves") => _INTL("Pokémon learn new moves as they level up. They can also learn moves from the 'Move Tutors' who sit in the left side of every PokéCenter."),
         _INTL("Base Power") => _INTL("Moves with higher Base Power deal more damage. Some moves deal variable Base Power depending on the situation. Status moves have no base power."),
