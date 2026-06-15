@@ -261,8 +261,6 @@ end
 # (Handled in Battler's pbSuccessCheckPerHit): Is semi-invulnerable during use.
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackInvulnerableInSky < PokeBattle_Move_TwoTurnAttackInvulnerable
-    def unusableInGravity?; return true; end
-
     def pbChargingTurnMessage(user, _targets)
         @battle.pbDisplay(_INTL("{1} flew up high!", user.pbThis))
     end

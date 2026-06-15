@@ -99,6 +99,22 @@ def combineSigil
     end
 end
 
+def useKitExpansionAuto
+    if pbHasItem?(:AIDKIT) && pbHasItem?(:KITEXPANSION)
+        if pbConfirmMessage(_INTL("\\i[KITEXPANSION]Use the Kit Expansion immediately?"))
+		    pbUseItem($PokemonBag,:KITEXPANSION)
+        end
+    end
+end
+
+def useMedicalUpgradeAuto
+    if pbHasItem?(:AIDKIT) && pbHasItem?(:MEDICALUPGRADE)
+        if pbConfirmMessage(_INTL("\\i[MEDICALUPGRADE]Use the Medical Upgrade immediately?"))
+		    pbUseItem($PokemonBag,:MEDICALUPGRADE)
+        end
+    end
+end
+
 class PokemonGlobalMetadata
     attr_accessor :hadItemYet
 end

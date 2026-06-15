@@ -544,7 +544,7 @@ TotalPP = 15
 Target = UserSide
 FunctionCode = StartPreventCriticalHitsAndReduceDamageAgainstUserSide5
 Flags = CanSnatch,Light
-Description = A blessed wall of light protects the user's side from critical hits for five turns, and slightly reduces move damage taken.
+Description = A blessed screen protects the user's side from critical hits for five turns, reducing move damage taken by 25%, or 20% in multi battles.
 Animation = LUCKYCHANT
 #-------------------------------
 [SEASONSEND]
@@ -2269,7 +2269,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = HardPlace
 Flags = CanProtect
-Description = The user slams the target into a nearby hard object. Increases power the higher the Defense of any ally.
+Description = The user slams the target into a nearby hard object. Increases in power the higher the Defense of any ally.
 Animation = HEADSMASH
 #-------------------------------
 [HEADBANG]
@@ -3182,7 +3182,7 @@ TotalPP = 10
 Target = UserOrNearOther
 FunctionCode = UserOrTargetMakesSubstitute25
 Flags = CanProtect,CanMagicCoat
-Description = The user forces itself or the target to make a Substitute by turning it into a doll.
+Description = The user forces itself or the target to spend 25% HP to make a Substitute by turning it into a doll.
 #-------------------------------
 [DRIFTOFF]
 Name = Drift Off
@@ -3694,7 +3694,7 @@ Power = 40
 Accuracy = 100
 TotalPP = 30
 Target = NearOther
-FunctionCode = LowerTargetSpd1
+FunctionCode = LowerTargetSpDef1
 Flags = CanProtect,Light
 EffectChance = 20
 Description = The user attacks with reflected light. It has a 20% chance to lower Sp. Def.
@@ -3745,8 +3745,8 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = BothSides
-FunctionCode = StartPolarizeTypeMatchups8
-Description = The user creates a high quality area for eight turns in which super-effective deals 25% more, and not very effective deals 25% less.
+FunctionCode = StartPolarizeTypeMatchups6
+Description = The user creates a high quality area for six turns in which super-effective deals 25% more, and not very effective deals 25% less.
 Animation = WONDERROOM
 #-------------------------------
 [POWDERBOMB]
@@ -4341,7 +4341,7 @@ Name = Red-Hot Retreat
 Type = FIRE
 Category = Status
 Accuracy = 0
-TotalPP = 3
+TotalPP = 10
 Target = User
 Priority = 4
 FunctionCode = UserTakesHalfDamageThisTurnBurnAttackers
@@ -6307,8 +6307,8 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = BothSides
-FunctionCode = StartSwapOffensiveAndDefensiveStats8
-Description = The user creates an odd area for eight turns in which Pokémon's offensive and defensive stats are swapped.
+FunctionCode = StartSwapOffensiveAndDefensiveStats6
+Description = The user creates an odd area for six turns in which Pokémon's offensive and defensive stats are swapped.
 Animation = MAGICROOM
 #-------------------------------
 [OMNISCIENTBLOW]
@@ -6855,7 +6855,7 @@ Name = Ice-Nine Wall
 Type = ICE
 Category = Status
 Accuracy = 0
-TotalPP = 3
+TotalPP = 10
 Target = User
 Priority = 4
 FunctionCode = UserTakesHalfDamageThisTurnFrostbiteAttackers
@@ -8548,8 +8548,8 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = BothSides
-FunctionCode = StartSwapAttackingStats8
-Description = The user creates a puzzling area for eight turns in which Pokémon's unmodified Attack and Sp. Atk are swapped.
+FunctionCode = StartSwapAttackingStats6
+Description = The user creates a puzzling area for six turns in which Pokémon's unmodified Attack and Sp. Atk are swapped.
 Animation = MAGICROOM
 #-------------------------------
 [STROKEOFMIDNIGHT]

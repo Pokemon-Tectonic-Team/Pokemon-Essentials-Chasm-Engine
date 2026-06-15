@@ -86,7 +86,7 @@ class PokeBattle_Battle
 
     def amuletActivates(curseName, explanation = nil)
         echoln("Amulet actives!")
-        pbDisplaySlower(_INTL("\\i[TAROTAMULET]The Tarot Amulet glows with power!"))
+        pbDisplaySlower(_INTL("\\i[TAROTAMULET_ACTIVE]The Tarot Amulet glows with power!"))
 
         curseBG = scene.pbAddSprite("curseBG",0,0,"Graphics/Pictures/Battle/cursebg",@viewport)
         curseBG.visible = true

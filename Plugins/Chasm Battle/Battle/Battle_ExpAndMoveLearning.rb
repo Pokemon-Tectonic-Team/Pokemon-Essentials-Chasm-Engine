@@ -94,7 +94,7 @@ class PokeBattle_Battle
         end
         isPartic    = defeatedBattler.participants.include?(idxParty)
         hasExpShare = expShare.include?(idxParty)
-        level = rescaleLevelForStats(defeatedBattler.level)
+        level = defeatedBattler.level
         # Main Exp calculation
         exp = 0
         a = level * defeatedBattler.pokemon.base_exp

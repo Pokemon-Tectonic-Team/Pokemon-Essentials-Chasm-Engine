@@ -2349,7 +2349,7 @@ Pocket = 8
 Price = 0
 FieldUse = OnPokemon
 Flags = KeyItem
-Description = An item holding Zygarde's Cores and Cells. You can use it to change Zygarde's forme.
+Description = An item holding Zygarde's Cores and Cells. You can use it to change Zygarde's form.
 #-------------------------------
 [EXPCANDYXS]
 Name = Exp. Candy XS
@@ -2691,6 +2691,15 @@ Flags = KeyItem
 Description = A suite of training tools which allows you to modify your Pokémon's style points.
 #-------------------------------
 [TAROTAMULET]
+Name = Tarot Amulet
+NamePlural = Tarot Amulets
+Pocket = 7
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = If reversed, gym leaders and story fights will become harder through unique curses.
+#-------------------------------
+[TAROTAMULET_ACTIVE]
 Name = Tarot Amulet
 NamePlural = Tarot Amulets
 Pocket = 7

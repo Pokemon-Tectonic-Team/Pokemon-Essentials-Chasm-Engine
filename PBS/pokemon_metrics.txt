@@ -2238,30 +2238,6 @@ FrontSprite = -1,19
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
-[GENESECT,1]
-BackSprite = 0,14
-FrontSprite = 0,19
-ShadowX = 0
-ShadowSize = 2
-#-------------------------------
-[GENESECT,2]
-BackSprite = 0,14
-FrontSprite = 0,19
-ShadowX = 0
-ShadowSize = 2
-#-------------------------------
-[GENESECT,3]
-BackSprite = 0,14
-FrontSprite = 0,19
-ShadowX = 0
-ShadowSize = 2
-#-------------------------------
-[GENESECT,4]
-BackSprite = 0,14
-FrontSprite = 0,19
-ShadowX = 0
-ShadowSize = 2
-#-------------------------------
 [GENGAR]
 BackSprite = 0,17
 FrontSprite = -2,14

@@ -685,8 +685,7 @@ class PokeBattle_Move_EmpoweredDeepBreathing < PokeBattle_Move_RaiseUserSpd2Crit
 end
 
 #===============================================================================
-# Increases Atk and Sp. Def by 2 steps, and applies Magnet Rise unless in Gravity.
-# (Magnetic Coil)
+# Increases Atk and Sp. Def by 2 steps, and applies Magnet Rise. (Magnetic Coil)
 #===============================================================================
 class PokeBattle_Move_RaiseUserAtkSpDef2MagnetRise < PokeBattle_MultiStatUpMove
     def initialize(battle, move)

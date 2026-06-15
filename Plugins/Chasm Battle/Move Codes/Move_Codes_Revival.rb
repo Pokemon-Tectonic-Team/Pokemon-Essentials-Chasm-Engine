@@ -2,6 +2,14 @@
 # Revives a fainted Grass-type party member back to 100% HP. (Breathe Life)
 #===============================================================================
 class PokeBattle_Move_ReviveGrassTypePartyMemberToFullHP < PokeBattle_PartyMemberEffectMove
+    def pbMoveFailed?(user, _targets, show_message)
+        if @battle.wildBattle? && user.opposes? && !user.boss
+            @battle.pbDisplay(_INTL("But it failed, since this is a wild battle!")) if show_message
+            return true
+        end
+        return false
+    end
+    
     def legalChoice(pokemon)
         return false unless super
         return false unless pokemon.fainted?
@@ -23,6 +31,14 @@ end
 # Revives a fainted party member back to 1 HP. (Defibrillate)
 #===============================================================================
 class PokeBattle_Move_RevivePartyMemberTo1HP < PokeBattle_PartyMemberEffectMove
+    def pbMoveFailed?(user, _targets, show_message)
+        if @battle.wildBattle? && user.opposes? && !user.boss
+            @battle.pbDisplay(_INTL("But it failed, since this is a wild battle!")) if show_message
+            return true
+        end
+        return false
+    end
+
     def legalChoice(pokemon)
         return false unless super
         return false unless pokemon.fainted?

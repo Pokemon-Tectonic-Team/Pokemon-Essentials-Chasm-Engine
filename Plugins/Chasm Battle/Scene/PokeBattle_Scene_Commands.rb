@@ -26,7 +26,7 @@ class PokeBattle_Scene
       end
       ret = pbCommandMenuEx(idxBattler,cmds,mode)
       ret = -1 if ret == 5 && !firstAction   # Convert "Run" to "Cancel"
-      ret = 6 if ret == 2 && !wildBattle
+      ret = 6 if ret == 2 && (!wildBattle || !firstAction)
       return ret
     end
   

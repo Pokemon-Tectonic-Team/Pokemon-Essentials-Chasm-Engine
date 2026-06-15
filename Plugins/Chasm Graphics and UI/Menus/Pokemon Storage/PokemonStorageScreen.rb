@@ -709,6 +709,7 @@ class PokemonStorageScreen
         if command == 1
             command = pbShowCommands(_INTL("They will be gone forever. Are you sure?"), [_INTL("No"), _INTL("Yes")])
             if command == 1
+                pbTakeItemsFromPokemon(pokemon) if pokemon.hasItem?
                 pkmnname = pokemon.name
                 @scene.pbRelease(selected, heldpoke)
                 if heldpoke

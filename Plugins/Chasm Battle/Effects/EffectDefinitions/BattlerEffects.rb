@@ -1714,6 +1714,12 @@ GameData::BattleEffect.register_effect(:Battler, {
     end,
     :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
         stay_in_rating -= 25
+        battler.eachOpposing do |opponent|
+            if opponent.canChooseProtect?
+                stay_in_rating -= 25
+                PBDebug.log("[STAY-IN RATING] #{battler.pbThis} expects a Protect/Yawn trap (-25)")
+            end
+        end
         next stay_in_rating
     end
 })

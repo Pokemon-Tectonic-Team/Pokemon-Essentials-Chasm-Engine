@@ -711,9 +711,9 @@ class PokeBattle_Battler
         return shouldAbilityApply?(:BUNKERDOWN, checkingForAI) && @hp == @totalhp
     end
 
-    def getRoomDuration(baseDuration = 8, aiCheck: false)
+    def getRoomDuration(baseDuration = 6, aiCheck: false)
         ret = baseDuration
-        ret *= 2 if shouldItemApply?(:REINFORCINGROD,aiCheck)
+        ret = (ret * 3) / 2 if shouldItemApply?(:REINFORCINGROD,aiCheck)
         ret = applyEffectDurationModifiers(ret, self)
         return ret
     end
@@ -743,7 +743,8 @@ class PokeBattle_Battler
 
     # Only to be called during hit or post-most-use triggers
     def knockedBelowHalf?
-        return @damageState.initialHP >= @totalhp / 2 && @hp < @totalhp / 2
+        half = @totalhp / 2.0
+        return @damageState.initialHP >= half && @hp < half
     end
     
     def avatarData

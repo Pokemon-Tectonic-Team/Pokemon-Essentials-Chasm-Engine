@@ -167,6 +167,7 @@ class PokeBattle_Move_HitTwoToFiveTimesTwiceThenExhaust < PokeBattle_Move_HitTwo
     end
     
     def pbEffectAfterAllHits(user, target)
+        return if user.fainted?
         unless user.effectActive?(:SprayAndPray)
             @battle.pbDisplay(_INTL("{1} sends another volley!", user.pbThis))
             @battle.forceUseMove(user, :SPRAYANDPRAY, target.index, moveUsageEffect: :SprayAndPray)
@@ -272,6 +273,7 @@ class PokeBattle_Move_HitTwoTimesTargetThenTargetAlly < PokeBattle_Move_HitTwoTi
             end
         end
         return [valid_targets[1]] if indexThisHit == 1 && valid_targets[1]
+        return [] if valid_targets.empty?
         return [valid_targets[0]]
     end
 end

@@ -576,6 +576,10 @@ Flags = IgnoreScreens,IgnoreSubstitute
 Name = Infinite Source
 Description = Pokémon that swap in for this have their Speed raised and their PP fully restored.
 #-------------------------------
+[INNARDSOUT]
+Name = Innards Out
+Description = When this Pokémon is knocked out by an attack, the attacker takes damage equal to this Pokémon's previous HP.
+#-------------------------------
 [INNERLIGHT]
 Name = Inner Light
 Description = Summons sunshine for four turns when hit by an attack.

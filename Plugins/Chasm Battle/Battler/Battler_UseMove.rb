@@ -248,12 +248,12 @@ class PokeBattle_Battler
             if move.damagingMove?
                 if @form != 1
                     @battle.pbCommonAnimation("StanceAttack", self)
-                    pbChangeForm(1, _INTL("{1} changed to Blade Forme!", pbThis))
+                    pbChangeForm(1, _INTL("{1} changed to Blade Form!", pbThis))
                 end
             elsif move.id == :KINGSSHIELD
                 if @form != 0
                     @battle.pbCommonAnimation("StanceProtect", self)
-                    pbChangeForm(0, _INTL("{1} changed to Shield Forme!", pbThis))
+                    pbChangeForm(0, _INTL("{1} changed to Shield Form!", pbThis))
                 end
             end
         end
@@ -387,7 +387,8 @@ class PokeBattle_Battler
         #---------------------------------------------------------------------------
         magicCoater  = -1
         magicBouncer = -1
-        warder = -1
+        warder       = -1
+        realNumHits  = 0
         if targets.length == 0 && move.pbTarget(user).num_targets > 0 && !move.worksWithNoTargets?
             # def pbFindTargets should have found a target(s), but it didn't because
             # they were all fainted
@@ -455,7 +456,6 @@ class PokeBattle_Battler
             user.applyEffect(:Diffraction, 3) if move.canDiffract?(user, targets)
             # Process each hit in turn
             # Skip all hits if the move is being magic coated, magic bounced, or magic shielded
-            realNumHits = 0
             # Capture original user before any hit effects that might trigger Eject Pack
             # (e.g. user self-lowers stats via Close Combat). Used to suppress end-of-move
             # item/ability effects that should not fire on the replacement Pokemon.

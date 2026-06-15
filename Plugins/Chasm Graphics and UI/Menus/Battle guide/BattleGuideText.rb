@@ -175,6 +175,7 @@ def battleGuideVolatileStatusesHash
         _INTL("Grounded") => _INTL("A grounded Pokémon loses their immunity to ground moves (from being Flying-type or having a Levitate ability)."),
         _INTL("Shrinking") => _INTL("The affected Pokémon's highest stat becomes reduced by 2 steps for each turn of the effect."),
         _INTL("Sugar Rush") => _INTL("The affected Pokémon's speed is doubled, but they also take double damage from attacks."),
+        _INTL("Overhealing") => _INTL("Certain abilities, moves or items can cause overhealing. A Pokémon can get up to double of its max HP via overhealing."),
     }
 end
 
@@ -248,8 +249,8 @@ def battleGuideWeathersHash
         _INTL("Weather Duration") => _INTL("Weathers last a certain number of turns. The length differs depending on what move or ability summoned the weather. The duration can be extended by certain items."),
         _INTL("Sunshine") => _INTL("Sunshine lowers attack damage by 15%. Fire and Grass-type moves/Pokémon are immune to this. Fire-type attacks are boosted by 30%."),
         _INTL("Rain") => _INTL("Rainstorm lowers attack damage by 15%. Water and Electric-type moves/Pokémon are immune to this. Water-type attacks are boosted by 30%."),
-        _INTL("Sandstorm") => _INTL("Sandstorm deals damage to all Pokémon at the end of each turn. Rock and Ground-types are immune to this. Additionally, Rock-types get +50% Special Defense."),
-        _INTL("Hail") => _INTL("Hail deals damage to all Pokémon at the end of each turn. Ice and Ghost-types are immune to this. Additionally, Ice-types get +50% Defense."),
+        _INTL("Sandstorm") => _INTL("Sandstorm deals 1/16th max HP damage to all Pokémon at the end of each turn. Rock and Ground-types are immune to this. Additionally, Rock-types get +50% Special Defense."),
+        _INTL("Hail") => _INTL("Hail deals 1/16th max HP damage to all Pokémon at the end of each turn. Ice and Ghost-types are immune to this. Additionally, Ice-types get +50% Defense."),
         _INTL("Eclipse") => _INTL("Eclipse lowers all stats of all Pokémon every 4 turns (by 2 steps). Psychic and Dragon-types are immune to this. Additionally, Psychic-type attacks are boosted by 30%."),
         _INTL("Moonglow") => _INTL("Moonglow flinches all Pokémon every 4 turns. Fairy and Dark-types are immune to this. Additionally, Fairy-type attacks are boosted by 30%."),
         _INTL("Weather Downsides") => _INTL("Each weather has both an upside and a downside. There are items and abilities that make your Pokémon immune to these downsides regardless of type."),
@@ -309,7 +310,7 @@ def battleGuideLegendaryAbilitiesHash
         _INTL("Necrozma: Event Horizon") => _INTL("Rock- and Ground-types gain a 50% boost to Special Defense. Deals sandstorm damage at end of turn. Pokémon not immune to Sandstorm take 50% more HP-fraction-based damage."),
         _INTL("Kyurem: Heat Death") => _INTL("Ice- and Ghost-types gain a 50% boost to Defense. Deals hail damage at end of turn. Pokémon struck by the hail become unable to heal."),
         _INTL("Cresselia: Saturnal Sky") => _INTL("Boosts the damage of Psychic- and Dragon-type attacks by 50%. When the debuff applies from the Ring Eclipse effect, it lowers stats by 3 steps instead of 2."),
-        _INTL("Darkrai: Stygian Night") => _INTL("Boosts the damage of Fairy- and Dark-type attacks by 50%. When the flinch happens from Blood Moon, it also damages targets by 25% of their Max HP."),
+        _INTL("Darkrai: Stygian Night") => _INTL("Boosts the damage of Fairy- and Dark-type attacks by 50%. When the flinch happens from Blood Moon, it also damages targets by 25% of their max HP."),
         _INTL("Giratina: Distorted Gravity") => _INTL("All foes take 1/16th damage at the end of the round. While the user is on the field, gravity does not decay."),
         _INTL("Tornadus: Wish of Winter") => _INTL("Raises the side's Accuracy by 50%. On the final turn, that side has +1 priority."),
         _INTL("Thundurus: Wish of Summer") => _INTL("Raises the side's Speed by 50%. On the final turn, that side deals 50% more move damage, but takes 25% recoil."),

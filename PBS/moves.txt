@@ -1297,7 +1297,7 @@ Power = 130
 Accuracy = 80
 TotalPP = 10
 Target = NearOther
-FunctionCode = CrashDamageIfFailsUnusableInGravity
+FunctionCode = CrashDamageIfFails
 Flags = CanProtect,Kick
 Description = The target is attacked with a knee kick from a jump. If it misses, the user is hurt instead.
 Animation = JUMPKICK
@@ -3031,7 +3031,7 @@ TotalPP = 10
 Target = AllNearFoes
 FunctionCode = ScalesHeavierThanTarget
 Flags = CanProtect
-Description = The user slams into the opposing side with its heavy body. The heavier the user, the greater the damage.
+Description = The user slams into the opposing side with its heavy body. The heavier the user is compared to the target, the greater the damage.
 #-------------------------------
 [IRONDEFENSE]
 Name = Iron Defense
@@ -3429,7 +3429,7 @@ TotalPP = 10
 Target = AllNearFoes
 FunctionCode = ScalesHeavierThanTarget
 Flags = CanProtect
-Description = The user slams the opposing side with its flaming body. The heavier the user is, the greater the damage.
+Description = The user slams the opposing side with its flaming body. The heavier the user is compared to the target, the greater the damage.
 #-------------------------------
 [HEATWAVE]
 Name = Heat Wave
@@ -4612,7 +4612,7 @@ Type = PSYCHIC
 Category = Special
 Power = 70
 Accuracy = 100
-TotalPP = 10
+TotalPP = 15
 Target = NearOther
 FunctionCode = LowerPPOfTargetLastMoveBy4
 Flags = CanProtect,Sound
@@ -4730,7 +4730,7 @@ TotalPP = 15
 Target = UserSide
 FunctionCode = StartWeakenSpecialDamageAgainstUserSide5
 Flags = CanSnatch,Light
-Description = A wondrous wall of light is put up to suppress damage from special attacks for five turns.
+Description = A wondrous screen is put up to halve special attacks for five turns, or reduce it by 33% in multi battles.
 #-------------------------------
 [LUNARDANCE]
 Name = Lunar Dance
@@ -4872,7 +4872,7 @@ TotalPP = 15
 Target = UserSide
 FunctionCode = StartWeakenPhysicalDamageAgainstUserSide5
 Flags = CanSnatch,Light
-Description = A wondrous wall of light is put up to suppress damage from physical attacks for five turns.
+Description = A wondrous screen is put up to halve physical attacks for five turns, or reduce it by 33% in multi battles.
 #-------------------------------
 [REST]
 Name = Rest
@@ -4943,7 +4943,7 @@ TotalPP = 15
 Target = UserSide
 FunctionCode = StartWeakenDamageAgainstUserSideIfInHail5
 Flags = CanSnatch,Light
-Description = The user puts up a rainbow-colored veil to reduce move damage for five turns. This can only be used in hail.
+Description = The user puts up a rainbow-colored screen to halve move damage for five turns, or reduce it by 33% in multi battles. Only usable in hail.
 #-------------------------------
 [BLIZZARD]
 Name = Blizzard

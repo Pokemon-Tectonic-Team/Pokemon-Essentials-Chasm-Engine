@@ -232,10 +232,6 @@ Name = Imposter
 Description = It transforms itself into the Pokémon it is facing.
 Flags = Immutable
 #-------------------------------
-[INNARDSOUT]
-Name = Innards Out
-Description = When this Pokémon is knocked out by an attack, the attacker takes damage equal to this Pokémon's previous HP.
-#-------------------------------
 [INNERFOCUS]
 Name = Inner Focus
 Description = This Pokémon is protected from flinching, Intimidate, Fascinate, and Frustrate.
@@ -427,7 +423,7 @@ Description = Doubles the likelihood of the user's random added effects activati
 #-------------------------------
 [SHADOWSHIELD]
 Name = Shadow Shield
-Description = Resists damage while its HP is full.
+Description = Reduces move damage taken by 50% when HP is full.
 #-------------------------------
 [SHEDSKIN]
 Name = Shed Skin
@@ -492,7 +488,7 @@ Description = Raises Defense when hit by an attack.
 #-------------------------------
 [STANCECHANGE]
 Name = Stance Change
-Description = Changes between Blade and Shield Forme with attacks and King's Shield.
+Description = Changes between Blade and Shield Form with attacks and King's Shield.
 Flags = Immutable
 #-------------------------------
 [STATIC]

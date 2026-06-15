@@ -419,8 +419,7 @@ target.pbThis(true)))
         holdersToCheck = [target]
         holdersToCheck.push(target.pbOwnSide) if target.index != user.index
         holdersToCheck.each do |effectHolder|
-            effectHolder.eachEffect(true) do |effect, _value, data|
-                next unless data.is_protection?
+            effectHolder.eachActiveProtectionEffect do |effect, _value, data|
                 if data.protection_info&.has_key?(:does_negate_proc) && !data.protection_info[:does_negate_proc].call(
                     user, target, move, @battle)
                     next

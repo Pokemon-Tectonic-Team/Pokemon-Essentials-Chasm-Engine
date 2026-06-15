@@ -365,6 +365,14 @@ BattleHandlers::TargetAbilityOnHit.add(:COUNTERFLOW,
   }
 )
 
+BattleHandlers::TargetAbilityOnHit.add(:INNARDSPUNCH,
+  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next if target.fainted?
+        next -30 * aiNumHits if aiCheck
+        battle.forceUseMove(target, :MEGAPUNCH, user.index, ability: ability)
+  }
+)
+
 BattleHandlers::TargetAbilityOnHit.add(:WIBBLEWOBBLE,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
         next if target.fainted?
