@@ -180,7 +180,6 @@ class PokeBattle_Battler
             end
         end
         choice[3] = target     # Target (-1 means no target yet)
-        choice[4] = 0
         PBDebug.log("[Move usage] #{pbThis} started using the called/simple move #{choice[2].name}")
         pbUseMove(choice, specialUsage)
     end
@@ -230,8 +229,9 @@ class PokeBattle_Battler
 
         return unless move # if move was not chosen somehow
 
+        echoln(choice)
         # Make extra move choices
-        @recorded_choice = move.resolutionChoice(self, @replayed_choice)
+        choice[4] = move.resolutionChoice(self, choice[4])
 
         # Subtract PP
         if !specialUsage && !pbReducePP(move)

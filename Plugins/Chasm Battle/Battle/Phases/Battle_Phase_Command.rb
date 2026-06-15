@@ -8,6 +8,7 @@ class PokeBattle_Battle
         @choices[idxBattler][1] = 0
         @choices[idxBattler][2] = nil
         @choices[idxBattler][3] = -1
+        @choices[idxBattler][4] = nil
     end
 
     def pbCancelChoice(idxBattler)

@@ -53,14 +53,13 @@ module PokeBattle_BattleRecorder
 
 	def recordChoices
 		@choices.each_with_index do |c, i|
-			c_clone = c.clone
-			c_clone[2] = nil unless c_clone.nil? #Remove move object (not parsable)
-			@recorded_choices[@turnCount][i].push(c_clone)
+			next if c.nil?
+			@recorded_choices[@turnCount][i].push(c)
 		end
 	end
 
 	def pbCommandPhase
-		@recorded_choices.push(Array.new(maxBattlerIndex + 1, []))
+		@recorded_choices.push(Array.new(maxBattlerIndex + 1) { Array.new(0) })
 		super
 		recordChoices
   end
@@ -68,6 +67,20 @@ module PokeBattle_BattleRecorder
 	def pbExtraCommandPhase
 		super
 		recordChoices
+	end
+
+  def pbEndOfRoundPhase
+		super
+		sealChoices
+	end
+
+	def sealChoices
+		@recorded_choices[@turnCount].each_with_index do |choices, i|
+			choices.each_with_index do |choice, j|
+				choice[2] = nil
+				@recorded_choices[turnCount][i][j] = choice.clone
+			end
+		end
 	end
 
 	def recordSkippedTurn
@@ -87,6 +100,7 @@ module PokeBattle_BattleRecorder
 	end
 
 	def pbEndOfBattle
+		sealChoices
 		saveBattle("Last battle") if @save_battle
 		save_random_log = true
 		saveRandomLog(@save_battle ? "random_record.txt" : "random_replay.txt") if save_random_log
@@ -101,12 +115,6 @@ module PokeBattle_BattleRecorder
 		else
 			return @battleAI.pbDefaultChooseNewEnemy(idxBattler, safeSwitch)
 		end
-	end
-
-	def registerRecordedChoice(index)
-    	return if @recorded_choices[@turnCount][index].length < @commandPhasesThisRound
-    	@recorded_choices[@turnCount][index][@commandPhasesThisRound-1] ||= []
-    	@recorded_choices[@turnCount][index][@commandPhasesThisRound-1].push(@recorded_choice)
 	end
 
 	def registerRules
@@ -249,56 +257,39 @@ module PokeBattle_BattleReplayer
 
 	def pbCommandPhase
 		pbCommandPhaseLoop(false)
-		@choices = []
-		@recorded_choices[@turnCount].each do |c|
-			if c.length == 0 # If choice is empty
-				@choices.push([])
-				next
+		@choices = Array.new(maxBattlerIndex + 1)
+
+		eachBattler do |battler|
+			next if @recorded_choices[@turnCount][battler.index][0].nil?
+			recorded_move = @recorded_choices[@turnCount][battler.index][0].clone
+
+			case recorded_move[0]
+			when :UseMove
+				recorded_move[2] = (recorded_move[1] == -1) ? @struggle : battler.moves[recorded_move[1]]
+			when :None
+				pbRun(battler.index)
 			end
-			@choices.push(c[0])
-			next if @choices[-1].nil?
-			currentBattlerIndex = @choices.length - 1
-			if @choices[-1][0] == :UseMove
-				if @choices[-1][1] == -1
-					@choices[-1][2] = @struggle
-				else
-					@choices[-1][2] = @battlers[currentBattlerIndex].moves[@choices[-1][1]] #Restore move from index
-				end
-			elsif @choices[-1][0] == :None && !@battlers[currentBattlerIndex].fainted? #If no action was taken and the battler is able (run/forfeit)
-				pbRun(currentBattlerIndex)
-			end
+
+			@choices[battler.index] = recorded_move
 		end
   end
 
 	def pbExtraCommandPhase
 		pbCommandPhaseLoop(false)
-		@choices = []
-		@recorded_choices[@turnCount].each do |c|
-			if c.length < @commandPhasesThisRound + 1 # If there is no choice for this command phase
-				@choices.push([])
-				next
-			end
-			@choices.push(c[@commandPhasesThisRound]) # Not decremented since commandPhasesThisRound is incremented AFTER the command phase
-			next if @choices[-1].nil?
-			currentBattlerIndex = @choices.length - 1
-			if @choices[-1][0] == :UseMove
-				if @choices[-1][1] == -1
-					@choices[-1][2] = @struggle
-				else
-					@choices[-1][2] = @battlers[currentBattlerIndex].moves[@choices[-1][1]] #Restore move from index
-				end
-			end
-		end
-	end
+		@choices = Array.new(maxBattlerIndex + 1)
 
-	def registerReplayedChoice(index)
-		choice = @recorded_choices[@turnCount][index]
-		if choice.nil?
-			@replayed_choice = nil
-		elsif choice.length < 5
-			@replayed_choice = @recorded_choices[@turnCount][index][4]
-		else
-			@replayed_choice = nil
+		eachBattler do |battler|
+			next if @recorded_choices[@turnCount][battler.index][@commandPhasesThisRound].nil?
+			recorded_move = @recorded_choices[@turnCount][battler.index][@commandPhasesThisRound].clone
+
+			case recorded_move[0]
+			when :UseMove
+				recorded_move[2] = (recorded_move[1] == -1) ? @struggle : battler.moves[recorded_move[1]]
+			when :None
+				pbRun(battler.index)
+			end
+
+			@choices[battler.index] = recorded_move
 		end
 	end
 
@@ -448,8 +439,6 @@ module PokeBattle_BattleLogger
 end
 
 class PokeBattle_Battle
-	def registerRecordedChoice(index); end
-	def registerReplayedChoice(index); end
 	def registerRules; end
 	def recordSkippedTurn; end
 end
@@ -476,10 +465,9 @@ def playRecordedBattle(record_name)
 		return
 	end
 
-	setBattleRule("autotesting")
 	pbPrepareBattle(battle)
 	battle.registerRules
-  	$PokemonTemp.clearBattleRules
+  $PokemonTemp.clearBattleRules
 
 	setLevelCap(battle.level_cap, false)
 

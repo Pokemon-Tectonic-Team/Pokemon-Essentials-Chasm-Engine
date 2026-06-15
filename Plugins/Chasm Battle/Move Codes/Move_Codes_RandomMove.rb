@@ -227,8 +227,8 @@ class PokeBattle_Move_UseTwoRandomDragonThemedMoves < PokeBattle_Move
     end
 
     def pbEffectGeneral(user)
-        user.pbUseMoveSimple(@invocationMovesSpecial.sample)
-        user.pbUseMoveSimple(@invocationMovesPhysical.sample)
+        user.pbUseMoveSimple(@invocationMovesSpecial[@battle.pbRandom(@invocationMovesSpecial.size)])
+        user.pbUseMoveSimple(@invocationMovesPhysical[@battle.pbRandom(@invocationMovesPhysical.size)])
     end
 
     def getEffectScore(user, _target)
@@ -300,7 +300,7 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureNonPsychicDamagingMoves < Po
             @chosenMove = validMoves.sample
         elsif !user.pbOwnedByPlayer? # Trainer AI
             @chosenMove = validMoves[0]
-        elsif !replayed_choice.nil?
+        elsif !(replayed_choice.nil?)
             @chosenMove = replayed_choice
         else
             chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
