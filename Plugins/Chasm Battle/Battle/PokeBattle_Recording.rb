@@ -108,13 +108,14 @@ module PokeBattle_BattleRecorder
 	end
 
 	def pbSwitchInBetween(idxBattler, checkLaxOnly: false, canCancel: false, safeSwitch: nil)
+		ret = nil
 		if pbOwnedByPlayer?(idxBattler) && !@autoTesting && !@controlPlayer
 			ret = pbPartyScreen(idxBattler, checkLaxOnly, canCancel) 
-			@recorded_switches.push(ret)
-			return ret
 		else
-			return @battleAI.pbDefaultChooseNewEnemy(idxBattler, safeSwitch)
+			ret = @battleAI.pbDefaultChooseNewEnemy(idxBattler, safeSwitch)
 		end
+		@recorded_switches.push(ret)
+		return ret
 	end
 
 	def registerRules
@@ -297,7 +298,8 @@ module PokeBattle_BattleReplayer
 		if pbOwnedByPlayer?(idxBattler) && !@autoTesting && !@controlPlayer
 			return @recorded_switches.shift
 		else
-			return @battleAI.pbDefaultChooseNewEnemy(idxBattler, safeSwitch)
+			@battleAI.pbDefaultChooseNewEnemy(idxBattler, safeSwitch)
+			return @recorded_switches.shift
 		end
 	end
 
