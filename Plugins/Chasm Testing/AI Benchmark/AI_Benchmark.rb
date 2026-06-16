@@ -26,40 +26,48 @@
 #==============================================================================
 $aiBenchmarkRunning = false
 
-alias :echoln_preBenchmark :echoln
-def echoln(msg)
-    return if $aiBenchmarkRunning
-    echoln_preBenchmark(msg)
+unless respond_to?(:echoln_preBenchmark, true)
+    alias :echoln_preBenchmark :echoln
+    def echoln(msg)
+        return if $aiBenchmarkRunning
+        echoln_preBenchmark(msg)
+    end
 end
 
 # The global pbLearnMove (used by form-change handlers) shows UI and waits for
 # input when a pokemon is at max moves. Silence it during benchmark battles by
 # auto-replacing slot 0 instead.
-alias :pbMessage_preBenchmark :pbMessage
-def pbMessage(msg, commands = nil, cmdIfCancel = 0, skin = nil, defaultCmd = 0, &block)
-    return cmdIfCancel if $aiBenchmarkRunning
-    pbMessage_preBenchmark(msg, commands, cmdIfCancel, skin, defaultCmd, &block)
-end
-
-alias :showPartyHealing_preBenchmark :showPartyHealing
-def showPartyHealing(party, previousHealthValues, previousStatusIndices = nil)
-    return if $aiBenchmarkRunning
-    showPartyHealing_preBenchmark(party, previousHealthValues, previousStatusIndices)
-end
-
-alias :pbLearnMove_preBenchmark :pbLearnMove
-def pbLearnMove(pkmn, move, ignoreifknown = false, bymachine = false, addfirstmove = false, &block)
-    return pbLearnMove_preBenchmark(pkmn, move, ignoreifknown, bymachine, addfirstmove, &block) unless $aiBenchmarkRunning
-    return false unless pkmn
-    move = GameData::Move.get(move).id
-    return false if pkmn.egg?
-    return false if pkmn.hasMove?(move)
-    if pkmn.numMoves < Pokemon::MAX_MOVES
-        pkmn.learn_move(move)
-    else
-        pkmn.moves[0] = Pokemon::Move.new(move)
+unless respond_to?(:pbMessage_preBenchmark, true)
+    alias :pbMessage_preBenchmark :pbMessage
+    def pbMessage(msg, commands = nil, cmdIfCancel = 0, skin = nil, defaultCmd = 0, &block)
+        return cmdIfCancel if $aiBenchmarkRunning
+        pbMessage_preBenchmark(msg, commands, cmdIfCancel, skin, defaultCmd, &block)
     end
-    true
+end
+
+unless respond_to?(:showPartyHealing_preBenchmark, true)
+    alias :showPartyHealing_preBenchmark :showPartyHealing
+    def showPartyHealing(party, previousHealthValues, previousStatusIndices = nil)
+        return if $aiBenchmarkRunning
+        showPartyHealing_preBenchmark(party, previousHealthValues, previousStatusIndices)
+    end
+end
+
+unless respond_to?(:pbLearnMove_preBenchmark, true)
+    alias :pbLearnMove_preBenchmark :pbLearnMove
+    def pbLearnMove(pkmn, move, ignoreifknown = false, bymachine = false, addfirstmove = false, &block)
+        return pbLearnMove_preBenchmark(pkmn, move, ignoreifknown, bymachine, addfirstmove, &block) unless $aiBenchmarkRunning
+        return false unless pkmn
+        move = GameData::Move.get(move).id
+        return false if pkmn.egg?
+        return false if pkmn.hasMove?(move)
+        if pkmn.numMoves < Pokemon::MAX_MOVES
+            pkmn.learn_move(move)
+        else
+            pkmn.moves[0] = Pokemon::Move.new(move)
+        end
+        true
+    end
 end
 
 #==============================================================================
