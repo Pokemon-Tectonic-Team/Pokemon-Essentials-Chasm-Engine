@@ -612,7 +612,7 @@ class Window_InputNumberPokemon < SpriteWindow_Base
 
     def initialize(digits_max, min = nil, max = nil)
         @digits_max = digits_max
-        @minumum = min
+        @minimum = min
         @maximum = max
         @number = 0
         @frame = 0

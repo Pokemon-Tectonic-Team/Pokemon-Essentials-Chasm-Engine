@@ -568,7 +568,7 @@ TotalPP = 1
 Target = User
 FunctionCode = EmpoweredPolarizedRoom
 Flags = Empowered
-Description = The user creates a Polarized Room for eight turns. This raises its Defense and Sp. Def. User becomes Steel-type.
+Description = The user creates a Polarized Room for six turns. This raises its Defense and Sp. Def. User becomes Steel-type.
 Animation = WONDERROOM
 #-------------------------------
 [PRIMEVALSWORDSDANCE]
@@ -950,7 +950,7 @@ TotalPP = 1
 Target = User
 FunctionCode = EmpoweredOddRoom
 Flags = Empowered
-Description = The user creates an Odd Room for eight turns. This raises its Speed. User becomes Psychic-type.
+Description = The user creates an Odd Room for six turns. This raises its Speed. User becomes Psychic-type.
 Animation = MAGICROOM
 #-------------------------------
 [PRIMEVALPACIFY]
@@ -1181,5 +1181,5 @@ TotalPP = 1
 Target = User
 FunctionCode = EmpoweredPuzzleRoom
 Flags = Empowered
-Description = The user creates a Puzzle Room for eight turns. This raises its Attack and Sp. Atk. User becomes Fairy-type.
+Description = The user creates a Puzzle Room for six turns. This raises its Attack and Sp. Atk. User becomes Fairy-type.
 Animation = MAGICROOM

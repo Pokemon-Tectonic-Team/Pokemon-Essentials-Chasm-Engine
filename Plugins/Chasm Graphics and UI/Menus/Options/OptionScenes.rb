@@ -264,6 +264,13 @@ class PokemonOption_Scene_Speed < PokemonOption_Scene_Base
 				proc { |value| $Options.aid_kit_animation = value }
 			),
             EnumOption.new(
+                _INTL("EXP-EZ Dispenser Animation"),
+                _INTL("Whether to play an animation showing the Pokemon being fed candy by the EXP-EZ Dispenser."),
+                [_INTL("On"), _INTL("Off")],
+				proc { $Options.expez_dispenser_animation },
+				proc { |value| $Options.expez_dispenser_animation = value }
+			),
+            EnumOption.new(
                 _INTL("Quick Evolution"),
                 _INTL("Whether to shorten the cutscene that plays when a Pokémon evolves."),
                 [_INTL("On"), _INTL("Off")],

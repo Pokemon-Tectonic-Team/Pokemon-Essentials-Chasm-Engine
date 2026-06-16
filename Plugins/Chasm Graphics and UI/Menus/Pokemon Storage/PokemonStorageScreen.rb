@@ -709,6 +709,7 @@ class PokemonStorageScreen
         if command == 1
             command = pbShowCommands(_INTL("They will be gone forever. Are you sure?"), [_INTL("No"), _INTL("Yes")])
             if command == 1
+                pbTakeItemsFromPokemon(pokemon) if pokemon.hasItem?
                 pkmnname = pokemon.name
                 @scene.pbRelease(selected, heldpoke)
                 if heldpoke
@@ -730,15 +731,16 @@ class PokemonStorageScreen
     def candiesFromDonating(lifetimeEXP)
         lifetimeEXP = (lifetimeEXP * CANDY_EXCHANGE_EFFICIENCY).floor
         if lifetimeEXP > 0
-            xsCandyTotal, sCandyTotal, mCandyTotal, _lCandyTotal = calculateCandySplitForEXP(lifetimeEXP)
-            if (xsCandyTotal + sCandyTotal + mCandyTotal) == 0
+            candyAmounts = calculateCandySplitForEXP(lifetimeEXP)
+            candySum = candyAmounts.sum
+            if candySum == 0
                 pbDisplay(_INTL("It didn't earn enough XP for you to earn any candies back."))
             else
                 percentile = (CANDY_EXCHANGE_EFFICIENCY * 100).to_i
                 pbDisplay(_INTL("You are reimbursed for {1} percent of the EXP it earned.", percentile))
-                pbReceiveItem(:EXPCANDYM, mCandyTotal) if mCandyTotal > 0
-                pbReceiveItem(:EXPCANDYS, sCandyTotal) if sCandyTotal > 0
-                pbReceiveItem(:EXPCANDYXS, xsCandyTotal) if xsCandyTotal > 0
+                EXP_CANDY_IDS.each_with_index do |expCandyID, index|
+                    pbReceiveItem(expCandyID, candyAmounts[index]) if candyAmounts[index] > 0
+                end                
             end
         else
             pbDisplay(_INTL("It never gained any EXP, so no candies are awarded."))

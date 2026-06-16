@@ -58,7 +58,7 @@ class PokeBattle_Battle
             partyScene.pbDisplay(_INTL("Avatars can't be switched out!")) if partyScene
             return false
         end
-        if @battlers[idxBattler].effectActive?(:RampageLocked)
+        if @battlers[idxBattler].effectActive?(:RampageLocked)  && @battlers[idxBattler].effectActive?(:Rampaging)
             partyScene.pbDisplay(_INTL("Rampaging Pokémon can't be switched out!")) if partyScene
             return false
         end

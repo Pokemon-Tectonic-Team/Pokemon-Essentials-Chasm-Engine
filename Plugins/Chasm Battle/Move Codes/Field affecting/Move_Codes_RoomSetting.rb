@@ -10,7 +10,7 @@ class PokeBattle_Move_StartPolarizeTypeMatchups5 < PokeBattle_RoomMove
     end
 end
 
-class PokeBattle_Move_StartPolarizeTypeMatchups8 < PokeBattle_RoomMove
+class PokeBattle_Move_StartPolarizeTypeMatchups6 < PokeBattle_RoomMove
     def initialize(battle, move)
         super
         @roomEffect = :PolarizedRoom
@@ -18,7 +18,7 @@ class PokeBattle_Move_StartPolarizeTypeMatchups8 < PokeBattle_RoomMove
 end
 
 # Empowered Polarized Room
-class PokeBattle_Move_EmpoweredPolarizedRoom < PokeBattle_Move_StartPolarizeTypeMatchups8
+class PokeBattle_Move_EmpoweredPolarizedRoom < PokeBattle_Move_StartPolarizeTypeMatchups6
     include EmpoweredMove
 
     def pbEffectGeneral(user)
@@ -39,7 +39,7 @@ class PokeBattle_Move_StartSwapAttackingStats5 < PokeBattle_RoomMove
     end
 end
 
-class PokeBattle_Move_StartSwapAttackingStats8 < PokeBattle_RoomMove
+class PokeBattle_Move_StartSwapAttackingStats6 < PokeBattle_RoomMove
     def initialize(battle, move)
         super
         @roomEffect = :PuzzleRoom
@@ -47,7 +47,7 @@ class PokeBattle_Move_StartSwapAttackingStats8 < PokeBattle_RoomMove
 end
 
 # Empowered Puzzle Room
-class PokeBattle_Move_EmpoweredPuzzleRoom < PokeBattle_Move_StartSwapAttackingStats8
+class PokeBattle_Move_EmpoweredPuzzleRoom < PokeBattle_Move_StartSwapAttackingStats6
     include EmpoweredMove
 
     def pbEffectGeneral(user)
@@ -69,7 +69,7 @@ class PokeBattle_Move_StartSwapOffensiveAndDefensiveStats5 < PokeBattle_RoomMove
     end
 end
 
-class PokeBattle_Move_StartSwapOffensiveAndDefensiveStats8 < PokeBattle_RoomMove
+class PokeBattle_Move_StartSwapOffensiveAndDefensiveStats6 < PokeBattle_RoomMove
     def initialize(battle, move)
         super
         @roomEffect = :OddRoom
@@ -77,7 +77,7 @@ class PokeBattle_Move_StartSwapOffensiveAndDefensiveStats8 < PokeBattle_RoomMove
 end
 
 # Empowered Odd Room
-class PokeBattle_Move_EmpoweredOddRoom < PokeBattle_Move_StartSwapOffensiveAndDefensiveStats8
+class PokeBattle_Move_EmpoweredOddRoom < PokeBattle_Move_StartSwapOffensiveAndDefensiveStats6
     include EmpoweredMove
 
     def pbEffectGeneral(user)

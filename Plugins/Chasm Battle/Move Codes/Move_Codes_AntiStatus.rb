@@ -240,6 +240,8 @@ class PokeBattle_Move_GiveUserStatusToTargetDamagingMove < PokeBattle_Move
                     target.applyDizzy(user)
                 when :LEECHED
                     target.applyLeeched(user)
+                when :WATERLOG
+                    target.applyWaterlog(user)
                 end
             else
                 statusData = GameData::Status.get(status)

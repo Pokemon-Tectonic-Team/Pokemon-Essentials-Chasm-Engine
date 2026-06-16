@@ -186,7 +186,7 @@ class PokeBattle_Battler
             return false
         end
         # Rampage Locked
-        if effectActive?(:RampageLocked) && !move.rampagingMove?
+        if effectActive?(:RampageLocked) && effectActive?(:Rampaging) && !move.rampagingMove?
             msg = _INTL("{1} can't use this attack while rampaging!", pbThis)
             if showMessages
                 commandPhase ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)

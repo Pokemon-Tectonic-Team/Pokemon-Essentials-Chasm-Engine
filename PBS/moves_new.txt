@@ -3745,8 +3745,8 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = BothSides
-FunctionCode = StartPolarizeTypeMatchups8
-Description = The user creates a high quality area for eight turns in which super-effective deals 25% more, and not very effective deals 25% less.
+FunctionCode = StartPolarizeTypeMatchups6
+Description = The user creates a high quality area for six turns in which super-effective deals 25% more, and not very effective deals 25% less.
 Animation = WONDERROOM
 #-------------------------------
 [POWDERBOMB]
@@ -6307,8 +6307,8 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = BothSides
-FunctionCode = StartSwapOffensiveAndDefensiveStats8
-Description = The user creates an odd area for eight turns in which Pokémon's offensive and defensive stats are swapped.
+FunctionCode = StartSwapOffensiveAndDefensiveStats6
+Description = The user creates an odd area for six turns in which Pokémon's offensive and defensive stats are swapped.
 Animation = MAGICROOM
 #-------------------------------
 [OMNISCIENTBLOW]
@@ -8548,8 +8548,8 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = BothSides
-FunctionCode = StartSwapAttackingStats8
-Description = The user creates a puzzling area for eight turns in which Pokémon's unmodified Attack and Sp. Atk are swapped.
+FunctionCode = StartSwapAttackingStats6
+Description = The user creates a puzzling area for six turns in which Pokémon's unmodified Attack and Sp. Atk are swapped.
 Animation = MAGICROOM
 #-------------------------------
 [STROKEOFMIDNIGHT]

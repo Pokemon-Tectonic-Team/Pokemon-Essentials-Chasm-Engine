@@ -56,7 +56,6 @@ class PokeBattle_Move
             return false
         end
         return false unless target.hasAnyItem?
-        return false if target.shouldAbilityApply?(:STICKYHOLD, checkingForAI) && !@battle.moldBreaker
         return true
     end
 
@@ -73,14 +72,15 @@ class PokeBattle_Move
     # Can pass a block to overwrite the removal message and do other effects at the same time
     def knockOffItems(remover, victim, ability: nil, firstItemOnly: false, validItemProc: nil)
         return false unless canKnockOffItems?(remover, victim)
-        battle.pbShowAbilitySplash(remover, ability) if ability
-        if victim.hasActiveAbility?(:STICKYHOLD)
-            battle.pbShowAbilitySplash(victim, :STICKYHOLD) if remover.opposes?(victim)
-            battle.pbDisplay(_INTL("{1}'s {2} cannot be removed!", victim.pbThis, user.itemCountD))
-            battle.pbHideAbilitySplash(victim) if remover.opposes?(victim)
-            battle.pbHideAbilitySplash(remover) if ability
-            return false
+        hasValidItem = false
+        victim.eachItemWithName do |item, _itemName|
+            next if victim.unlosableItem?(item)
+            next unless validItemProc.nil? || validItemProc.call(item)
+            hasValidItem = true
+            break
         end
+        return false unless hasValidItem
+        battle.pbShowAbilitySplash(remover, ability) if ability
         victim.eachItemWithName do |item, itemName|
             next if victim.unlosableItem?(item)
             next unless validItemProc.nil? || validItemProc.call(item)
@@ -102,13 +102,6 @@ class PokeBattle_Move
     def stealItem(stealer, victim, item, ability: nil)
         return false unless canStealItem?(stealer, victim, item)
         @battle.pbShowAbilitySplash(stealer, ability) if ability
-        if victim.hasActiveAbility?(:STICKYHOLD)
-            @battle.pbShowAbilitySplash(victim, :STICKYHOLD) if stealer.opposes?(victim)
-            @battle.pbDisplay(_INTL("{1}'s item cannot be stolen!", victim.pbThis))
-            @battle.pbHideAbilitySplash(victim) if stealer.opposes?(victim)
-            @battle.pbHideAbilitySplash(stealer) if ability
-            return false
-        end
         oldVictimItemName = getItemName(item)
         victim.removeItem(item)
         if @battle.stolenItemTurnsToDust?(item)
@@ -460,14 +453,6 @@ class PokeBattle_Move
         end
         if user.firstItem == :PEARLOFWISDOM
              @battle.pbDisplay(_INTL("But it failed, since the Pearl of Fate cannot be exchanged!")) if show_message
-            return false
-        end
-        if target.hasActiveAbility?(:STICKYHOLD) && !@battle.moldBreaker
-            if show_message
-                @battle.pbShowAbilitySplash(target, ability)
-                @battle.pbDisplay(_INTL("But it failed to affect {1}!", target.pbThis(true)))
-                @battle.pbHideAbilitySplash(target)
-            end
             return false
         end
         return true

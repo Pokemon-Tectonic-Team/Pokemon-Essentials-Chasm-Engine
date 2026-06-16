@@ -107,7 +107,7 @@ end
 
 
 def pbCanRegisterItem?(item)
-  return ItemHandlers.hasUseInFieldHandler(item)
+  return ItemHandlers.hasUseInFieldHandler(item) || ItemHandlers.hasUseOnPokemon(item)
 end
 
 def pbCanUseOnPokemon?(item)
@@ -454,7 +454,12 @@ end
 def pbUseKeyItemInField(item)
   ret = ItemHandlers.triggerUseInField(item)
   if ret==-1   # Item effect not found
-    pbMessage(_INTL("Can't use that here."))
+    if ItemHandlers.hasUseOnPokemon(item)
+      pbUseItem($PokemonBag,item)
+      return true
+    else
+      pbMessage(_INTL("Can't use that here."))
+    end
   elsif ret==3   # Item was used and consumed
     $PokemonBag.pbDeleteItem(item)
   end
@@ -607,8 +612,8 @@ def pbEXPAdditionItem(pkmn, exp, item, scene = nil, oneAtATime = false)
     scene&.pbRefresh
 
     # Apply the new EXP, accounting for the level cap
-    expAmount = exp * quantity
-    expAmount = (expAmount * 1.15).floor if pbHasItem?(:SWEETTOOTH)
+    expAmount = applyEXPCandyMultipliers(exp * quantity)
+    
     pkmn.exp += expAmount
     pkmn.exp = [pkmn.exp, maxxp].min
     display_exp = pkmn.exp - current_exp
@@ -670,6 +675,11 @@ def pbEXPAdditionItem(pkmn, exp, item, scene = nil, oneAtATime = false)
     end
 
     return true
+end
+
+def applyEXPCandyMultipliers(expAmount)
+  expAmount = (expAmount * 1.15).floor if pbHasItem?(:SWEETTOOTH)
+  return expAmount
 end
 
 class PokemonParty_Scene

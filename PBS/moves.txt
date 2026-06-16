@@ -3031,7 +3031,7 @@ TotalPP = 10
 Target = AllNearFoes
 FunctionCode = ScalesHeavierThanTarget
 Flags = CanProtect
-Description = The user slams into the opposing side with its heavy body. The heavier the user, the greater the damage.
+Description = The user slams into the opposing side with its heavy body. The heavier the user is compared to the target, the greater the damage.
 #-------------------------------
 [IRONDEFENSE]
 Name = Iron Defense
@@ -3429,7 +3429,7 @@ TotalPP = 10
 Target = AllNearFoes
 FunctionCode = ScalesHeavierThanTarget
 Flags = CanProtect
-Description = The user slams the opposing side with its flaming body. The heavier the user is, the greater the damage.
+Description = The user slams the opposing side with its flaming body. The heavier the user is compared to the target, the greater the damage.
 #-------------------------------
 [HEATWAVE]
 Name = Heat Wave
