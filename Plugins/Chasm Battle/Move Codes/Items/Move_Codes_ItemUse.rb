@@ -239,7 +239,9 @@ class PokeBattle_Move_Fling < PokeBattle_Move
         #       missed. The item is not consumed if the target was switched out by
         #       an effect like a target's Red Card.
         # NOTE: There is no item consumption animation.
-        user.consumeItem(@chosenItem, belch: false) if user.hasItem?(@chosenItem)
+        consumed = user.hasItem?(@chosenItem)
+        user.consumeItem(@chosenItem, belch: false) if consumed
+        @battle.triggerThrownIn(user) if consumed
     end
 
     def resetMoveUsageState

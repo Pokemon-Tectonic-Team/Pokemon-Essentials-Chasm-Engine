@@ -4,18 +4,28 @@
 class Window_PokemonOption < Window_DrawableCommand
   attr_reader :mustUpdateOptions
 
+  def setColors()
+      @nameBaseColor   = darkMode? ? Color.new(31 * 8, 22 * 8, 10 * 8) : Color.new(24 * 8, 15 * 8, 0)
+      @nameShadowColor = darkMode? ? PokeBattle_SceneConstants::MESSAGE_SHADOW_COLOR_DARK : Color.new(31 * 8, 22 * 8, 10 * 8)
+      @selBaseColor    = darkMode? ? Color.new(31 * 8, 17 * 8, 16 * 8) : Color.new(31 * 8, 6 * 8, 3 * 8)
+      @selShadowColor  = darkMode? ? PokeBattle_SceneConstants::MESSAGE_SHADOW_COLOR_DARK : Color.new(31 * 8, 17 * 8, 16 * 8)
+  end
+
   def initialize(options, x, y, width, height)
       @options = options
-      @nameBaseColor   = Color.new(24 * 8, 15 * 8, 0)
-      @nameShadowColor = Color.new(31 * 8, 22 * 8, 10 * 8)
-      @selBaseColor    = Color.new(31 * 8, 6 * 8, 3 * 8)
-      @selShadowColor  = Color.new(31 * 8, 17 * 8, 16 * 8)
+      setColors
       @optvalues = []
       @mustUpdateOptions = false
       for i in 0...@options.length
           @optvalues[i] = 0
       end
       super(x, y, width, height)
+  end
+
+  # makes sure the special text colours update when toggling Dark Mode
+  def setSkin(skin)
+      super(skin)
+      setColors
   end
 
   def [](i)

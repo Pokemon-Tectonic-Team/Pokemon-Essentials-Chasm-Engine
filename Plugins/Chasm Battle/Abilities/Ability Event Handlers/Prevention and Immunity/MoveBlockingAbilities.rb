@@ -3,7 +3,14 @@ BattleHandlers::MoveBlockingAbility.add(:ROYALMAJESTY,
         priority = battle.getMovePriority(move, user, targets, aiCheck)
         next false unless priority && priority > 0
         next false unless bearer.opposes?(user)
-        next true
+        # Check all targets and return true if any are on the ability bearer's side
+        ret = false
+        targets.each do |b|
+          next if b.opposes?(bearer)
+          ret = true
+          break
+        end
+        next ret
   }
 )
 

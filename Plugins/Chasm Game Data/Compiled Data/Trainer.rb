@@ -36,6 +36,7 @@ module GameData
         "Ability"      		  => [:ability,           "s"],
         "AbilityIndex" 		  => [:ability_index,     "u"],
         "ExtraAbilities" 	  => [:extra_abilities,   "*s"],
+        "ExtraMoves" 		  => [:extra_moves,       "*s"],
         "Item"         		  => [:item,              "*e",   :Item],
         "ItemType"          => [:item_type,         "e",    :Type],
         "ExtraItems" 	      => [:extra_items,       "*e",   :Item],
@@ -312,6 +313,12 @@ module GameData
               end
             end
 
+            if pkmn_data[:extra_moves]
+              pkmn_data[:extra_moves].each do |extraMoveID|
+                pkmn.addExtraMove(extraMoveID)
+              end
+            end
+
             if pkmn_data[:extra_types]
               pkmn_data[:extra_types].each do |extraTypeID|
                 pkmn.addExtraType(extraTypeID)
@@ -556,6 +563,17 @@ module Compiler
                 end
               end
               current_pkmn[line_schema[0]] = extraAbilityArray
+            when "ExtraMoves"
+              extraMoveArray = []
+              property_value.each do |extraMoveText|
+                extraMoveSymbol = extraMoveText.to_sym
+                if !GameData::Move.exists?(extraMoveSymbol)
+                  raise _INTL("Value {1} isn't a defined Move.\r\n{2}", extraMoveSymbol, FileLineData.linereport)
+                else
+                  extraMoveArray.push(extraMoveSymbol)
+                end
+              end
+              current_pkmn[line_schema[0]] = extraMoveArray
             when "EV"
               value_hash = {}
               GameData::Stat.each_main do |s|
@@ -706,7 +724,10 @@ module Compiler
     end
     if pkmn[:extra_abilities] && pkmn[:extra_abilities].length > 0 && (inheritingPkmn.nil? || pkmn[:extra_abilities] != inheritingPkmn[:extra_abilities])
       f.write(sprintf("    ExtraAbilities = %s\r\n", pkmn[:extra_abilities].join(",")))
-    end 
+    end
+    if pkmn[:extra_moves] && pkmn[:extra_moves].length > 0 && (inheritingPkmn.nil? || pkmn[:extra_moves] != inheritingPkmn[:extra_moves])
+      f.write(sprintf("    ExtraMoves = %s\r\n", pkmn[:extra_moves].join(",")))
+    end
     if pkmn[:item] && (inheritingPkmn.nil? || pkmn[:item] != inheritingPkmn[:item])
       if pkmn[:item].is_a?(Array)
         f.write(sprintf("    Item = %s\r\n", pkmn[:item].join(","))) 

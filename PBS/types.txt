@@ -77,13 +77,6 @@ Resistances = NORMAL,FLYING,ROCK,BUG,STEEL,GRASS,ICE,DRAGON,FAIRY
 Immunities = POISON
 #-------------------------------
 [9]
-Name = ???
-InternalName = QMARKS
-Color = 104,160,144
-DarkColor = 32,104,96
-IsPseudoType = true
-#-------------------------------
-[10]
 Name = Fire
 InternalName = FIRE
 Color = 240,128,48
@@ -92,7 +85,7 @@ IsSpecialType = true
 Weaknesses = GROUND,ROCK,WATER
 Resistances = BUG,STEEL,FIRE,GRASS,ICE
 #-------------------------------
-[11]
+[10]
 Name = Water
 InternalName = WATER
 Color = 104,144,240
@@ -101,7 +94,7 @@ IsSpecialType = true
 Weaknesses = GRASS,ELECTRIC,POISON
 Resistances = STEEL,FIRE,WATER,ICE
 #-------------------------------
-[12]
+[11]
 Name = Grass
 InternalName = GRASS
 Color = 120,200,80
@@ -110,7 +103,7 @@ IsSpecialType = true
 Weaknesses = FLYING,POISON,BUG,FIRE,ICE
 Resistances = GROUND,WATER,GRASS,ELECTRIC,FAIRY,GHOST
 #-------------------------------
-[13]
+[12]
 Name = Electric
 InternalName = ELECTRIC
 Color = 248,208,48
@@ -119,7 +112,7 @@ IsSpecialType = true
 Weaknesses = GROUND
 Resistances = FLYING,STEEL,ELECTRIC
 #-------------------------------
-[14]
+[13]
 Name = Psychic
 InternalName = PSYCHIC
 Color = 248,88,136
@@ -128,7 +121,7 @@ IsSpecialType = true
 Weaknesses = BUG,GHOST,DARK
 Resistances = FIGHTING,PSYCHIC,STEEL
 #-------------------------------
-[15]
+[14]
 Name = Ice
 InternalName = ICE
 Color = 152,216,216
@@ -137,7 +130,7 @@ IsSpecialType = true
 Weaknesses = FIGHTING,ROCK,STEEL,FIRE
 Resistances = ICE,GROUND,FLYING
 #-------------------------------
-[16]
+[15]
 Name = Dragon
 InternalName = DRAGON
 Color = 112,56,248
@@ -146,7 +139,7 @@ IsSpecialType = true
 Weaknesses = ICE,DRAGON,FAIRY
 Resistances = FIRE,WATER,GRASS,ELECTRIC
 #-------------------------------
-[17]
+[16]
 Name = Dark
 InternalName = DARK
 Color = 112,88,72
@@ -156,7 +149,7 @@ Weaknesses = FIGHTING,BUG,FAIRY
 Resistances = GHOST,DARK
 Immunities = PSYCHIC
 #-------------------------------
-[18]
+[17]
 Name = Fairy
 InternalName = FAIRY
 Color = 240,182,188
@@ -164,6 +157,13 @@ DarkColor = 208,96,184
 IsSpecialType = true
 Weaknesses = POISON,STEEL,BUG
 Resistances = FIGHTING,DARK,DRAGON
+#-------------------------------
+[18]
+Name = ???
+InternalName = QMARKS
+Color = 104,160,144
+DarkColor = 32,104,96
+IsPseudoType = true
 #-------------------------------
 [19]
 Name = Mutant

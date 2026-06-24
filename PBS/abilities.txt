@@ -314,7 +314,7 @@ Description = Attacks by or against this Pok√©mon can't miss and hit hidden Pok√
 #-------------------------------
 [NORMALIZE]
 Name = Normalize
-Description = Non-Normal moves become Normal-type and are powered up by 50%.
+Description = Non-Normal moves become Normal-type. All moves are powered up by 50%.
 #-------------------------------
 [PARENTALBOND]
 Name = Parental Bond

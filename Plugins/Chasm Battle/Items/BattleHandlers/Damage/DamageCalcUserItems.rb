@@ -377,6 +377,7 @@ BattleHandlers::DamageCalcUserItem.add(:CRYSTALCALIBURN,
 
 BattleHandlers::DamageCalcUserItem.add(:TECHNIQUEBOOSTER,
   proc { |item, user, target, move, mults, _baseDmg, type, aiCheck|
+    next if move.is_a?(PokeBattle_SelfHit)
     if move.move_data.is_signature?
       mults[:final_damage_multiplier] *= 1.4
       user.aiLearnsItem(item) unless aiCheck

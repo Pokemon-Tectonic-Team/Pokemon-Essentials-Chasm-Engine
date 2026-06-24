@@ -13,7 +13,7 @@ def pbLevelGivingItem(pkmn, item, scene)
   end
 
   # Ask the player how many they'd like to apply
-  level_cap = LEVEL_CAPS_USED ? getLevelCap : growth_rate.max_level
+  level_cap = LEVEL_CAPS_USED ? getLevelCap : GameData::GrowthRate.max_level
   maxLevelIncrease = level_cap - pkmn.level
   maximum = [maxLevelIncrease, $PokemonBag.pbQuantity(item)].min # Max items which can be used
   if maximum > 1

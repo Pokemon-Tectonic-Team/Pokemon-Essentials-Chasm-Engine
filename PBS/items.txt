@@ -2127,7 +2127,7 @@ NamePlural = Enigma Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = If held by a Pokémon, it restores its HP if it is hit by any supereffective attack.
+Description = If held by a Pokémon, it heals its HP by 33% if it is hit by any supereffective attack.
 #-------------------------------
 [MICLEBERRY]
 Name = Micle Berry
@@ -2653,7 +2653,7 @@ NamePlural = EXP-EZ Dispensers
 Pocket = 3
 Price = 0
 FieldUse = OnPokemon
-Flags = KeyItem
+Flags = EXPCandy,KeyItem
 Description = A machine that stores EXP Candy and excess EXP. Use it on your Pokémon to feed them candy.
 #-------------------------------
 [UNIVERSALFORMALIZER]

@@ -714,7 +714,7 @@ BattleHandlers::TargetAbilityOnHit.add(:CURSEDTAIL,
         next if user.effectActive?(:Curse)
         if aiCheck
             if user.effectActive?(:CurseWarned) || aiNumHits > 1
-                next -30
+                next -(getCurseEffectScore(target, user) * 0.25)
             else
                 next -10
             end

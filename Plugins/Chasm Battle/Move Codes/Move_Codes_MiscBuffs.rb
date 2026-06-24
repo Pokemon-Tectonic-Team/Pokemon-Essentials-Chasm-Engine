@@ -213,7 +213,7 @@ class PokeBattle_Move_EmpoweredWorkUp < PokeBattle_Move
 end
 
 #===============================================================================
-# User transforms into Gulping or Gorging form (Gulp Missile)
+# User transforms into Gulping or Gorging form (Gulping Dive)
 #===============================================================================
 
 class PokeBattle_Move_GulpingDive < PokeBattle_Move
@@ -235,5 +235,15 @@ class PokeBattle_Move_GulpingDive < PokeBattle_Move
             end
             @battle.scene.pbChangePokemon(user, user.pokemon)
         end
+    end
+
+    def getDetailsForMoveDex(detailsList = [])
+        detailsList << _INTL("<u>Gulping Form:</u> HP above 50%.")
+        detailsList << _INTL("<u>Gorging Form:</u> HP 50% or below.")
+        detailsList << _INTL("If Cramorant is attacked while in the Gulping- or Gorging Form, the attacker")
+        detailsList << _INTL("will lose 25% max HP and:")
+        detailsList << _INTL("<u>Gulping Form:</u> get their Defense/Sp. Defense lowered.")
+        detailsList << _INTL("<u>Gorging Form:</u> get numbed.")
+        detailsList << _INTL("Afterwards, Cramorant will return to its base Form.")
     end
 end

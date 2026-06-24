@@ -9,10 +9,21 @@ BattleHandlers::DamageCalcUserAbility.add(:ARCTICARIETTE,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:GALVANIZE,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+      if aiCheck
+          mults[:base_damage_multiplier] *= 1.3 if type == :ELECTRIC
+      elsif move.powerBoost
+          mults[:base_damage_multiplier] *= 1.3
+          user.aiLearnsAbility(ability) unless aiCheck
+      end
+  }
+)
+
 BattleHandlers::DamageCalcUserAbility.add(:NORMALIZE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
       if aiCheck
-          mults[:base_damage_multiplier] *= 1.5 if type != :NORMAL
+          mults[:base_damage_multiplier] *= 1.5 if type == :NORMAL
       elsif move.powerBoost
           mults[:base_damage_multiplier] *= 1.5
           user.aiLearnsAbility(ability) unless aiCheck

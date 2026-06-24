@@ -272,42 +272,38 @@ FormName = Steel Type
 Type1 = STEEL
 #-------------------------------
 [ARCEUS,9]
-FormName = Unknown Type
-Type1 = QMARKS
-#-------------------------------
-[ARCEUS,10]
 FormName = Fire Type
 Type1 = FIRE
 #-------------------------------
-[ARCEUS,11]
+[ARCEUS,10]
 FormName = Water Type
 Type1 = WATER
 #-------------------------------
-[ARCEUS,12]
+[ARCEUS,11]
 FormName = Grass Type
 Type1 = GRASS
 #-------------------------------
-[ARCEUS,13]
+[ARCEUS,12]
 FormName = Electric Type
 Type1 = ELECTRIC
 #-------------------------------
-[ARCEUS,14]
+[ARCEUS,13]
 FormName = Psychic Type
 Type1 = PSYCHIC
 #-------------------------------
-[ARCEUS,15]
+[ARCEUS,14]
 FormName = Ice Type
 Type1 = ICE
 #-------------------------------
-[ARCEUS,16]
+[ARCEUS,15]
 FormName = Dragon Type
 Type1 = DRAGON
 #-------------------------------
-[ARCEUS,17]
+[ARCEUS,16]
 FormName = Dark Type
 Type1 = DARK
 #-------------------------------
-[ARCEUS,18]
+[ARCEUS,17]
 FormName = Fairy Type
 Type1 = FAIRY
 #-------------------------------
@@ -329,7 +325,7 @@ Type1 = NORMAL
 Type2 = GROUND
 BaseStats = 60,50,50,85,40,95
 # Total = 380
-Moves = 1,GROWL,1,TACKLE,4,TREADON,8,LEER,12,BESTOW,16,TREMOR,20,HEADBUTT,24,DOUBLEKICK,28,TAKEDOWN,32,SYMBIOSIS,36,TRAMPLE,40,WHIRLWINDKICK,44,SPIKES,48,DOUBLEEDGE,52,EARTHQUAKE,56,SHOREUP,60,NATURALGIFT,64,EARTHSPLITTER
+Moves = 1,GROWL,1,TACKLE,4,TREADON,8,LEER,12,BESTOW,16,BULLDOZE,20,HEADBUTT,24,DOUBLEKICK,28,TAKEDOWN,32,SYMBIOSIS,36,TRAMPLE,40,WHIRLWINDKICK,44,SPIKES,48,DOUBLEEDGE,52,EARTHQUAKE,56,SHOREUP,60,NATURALGIFT,64,EARTHSPLITTER
 #-------------------------------
 [DEERLING,3]
 FormName = Winter
@@ -716,42 +712,38 @@ FormName = Type: Steel
 Type1 = STEEL
 #-------------------------------
 [SILVALLY,9]
-FormName = Type: Unknown
-Type1 = QMARKS
-#-------------------------------
-[SILVALLY,10]
 FormName = Type: Fire
 Type1 = FIRE
 #-------------------------------
-[SILVALLY,11]
+[SILVALLY,10]
 FormName = Type: Water
 Type1 = WATER
 #-------------------------------
-[SILVALLY,12]
+[SILVALLY,11]
 FormName = Type: Grass
 Type1 = GRASS
 #-------------------------------
-[SILVALLY,13]
+[SILVALLY,12]
 FormName = Type: Electric
 Type1 = ELECTRIC
 #-------------------------------
-[SILVALLY,14]
+[SILVALLY,13]
 FormName = Type: Psychic
 Type1 = PSYCHIC
 #-------------------------------
-[SILVALLY,15]
+[SILVALLY,14]
 FormName = Type: Ice
 Type1 = ICE
 #-------------------------------
-[SILVALLY,16]
+[SILVALLY,15]
 FormName = Type: Dragon
 Type1 = DRAGON
 #-------------------------------
-[SILVALLY,17]
+[SILVALLY,16]
 FormName = Type: Dark
 Type1 = DARK
 #-------------------------------
-[SILVALLY,18]
+[SILVALLY,17]
 FormName = Type: Fairy
 Type1 = FAIRY
 #-------------------------------

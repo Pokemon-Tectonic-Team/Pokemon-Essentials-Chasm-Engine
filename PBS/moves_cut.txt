@@ -1450,6 +1450,17 @@ FunctionCode = Invalid
 Flags = CanProtect,CanMagicCoat
 Description = The user scatters a cloud of poisonous dust on the target. It poisons the target.
 #-------------------------------
+[PURIFY]
+Name = Purify
+Type = POISON
+Category = Status
+Accuracy = 0
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,CanMagicCoat
+Description = The user heals the target's non-volatile status condition. If so, it also heals itself by half of its max HP.
+#-------------------------------
 [SLUDGEBOMB]
 Name = Sludge Bomb
 Type = POISON
@@ -1734,6 +1745,18 @@ Target = NearOther
 FunctionCode = Invalid
 Flags = CanProtect
 Description = The user spins a sandstorm around the target, trapping and damaging it for three turns.
+#-------------------------------
+[TREMOR]
+Name = Tremor
+Type = GROUND
+Category = Physical
+Power = 65
+Accuracy = 100
+TotalPP = 15
+Target = AllNearOthers
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user slams the earth, damaging all Pokémon around it and underground.
 #-------------------------------
 [UNDERMINE]
 Name = Undermine

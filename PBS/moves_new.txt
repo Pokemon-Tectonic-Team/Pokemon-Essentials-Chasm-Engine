@@ -1679,6 +1679,18 @@ Flags = CanMagicCoat
 Description = The user lays a hazard layer of poison spikes on the foe's side. One layer hurts switched in foes, two layers poisons.
 Animation = TOXICSPIKES
 #-------------------------------
+[RETREATINGSTING]
+Name = Retreating Sting
+Type = POISON
+Category = Status
+Accuracy = 100
+TotalPP = 8
+Target = NearOther
+FunctionCode = PoisonTargetSwitchOutUserStatusMove
+Flags = CanProtect,CanMagicCoat
+Description = The user jabs the target with its stinger while retreating. This poisons the target and switches the user out.
+Animation = POISONSTING
+#-------------------------------
 [SLIMEBALL]
 Name = Slimeball
 Type = POISON
@@ -2091,6 +2103,20 @@ Flags = CanProtect,Kick
 Description = The user attacks by flattening the target into the ground. This resets the target's positive stat changes.
 Animation = STOMP
 #-------------------------------
+[TAILSLAM]
+Name = Tail Slam
+Type = GROUND
+Category = Physical
+Power = 65
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = LowerTargetAtk1
+Flags = CanProtect
+EffectChance = 40
+Description = The user slams the earth with its tail, creating a shockwave to damage the target. It has a 40% chance to lower Attack.
+Animation = SLAM
+#-------------------------------
 [TRAMPLE]
 Name = Trample
 Type = GROUND
@@ -2118,18 +2144,6 @@ Flags = CanProtect,Kick
 EffectChance = 20
 Description = The user attacks the opposing Pokémon by trampling it. It has a 20% chance to lower Speed.
 Animation = STOMPINGTANTRUM
-#-------------------------------
-[TREMOR]
-Name = Tremor
-Type = GROUND
-Category = Physical
-Power = 65
-Accuracy = 100
-TotalPP = 15
-Target = AllNearOthers
-FunctionCode = HitsDiggers
-Flags = CanProtect
-Description = The user slams the earth, damaging all Pokémon around it and underground.
 #-------------------------------
 #		ROCK MOVES
 #-------------------------------
@@ -2413,6 +2427,19 @@ Target = NearOther
 FunctionCode = RaiseUserAccIfMisses
 Flags = CanProtect
 Description = The user throws a large rock at the target. If it misses, the user's Accuracy is raised.
+Animation = ROCKTHROW
+#-------------------------------
+[ROCKDRIVE]
+Name = Rock Drive
+Type = ROCK
+Category = Physical
+Power = 65
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Basic
+Flags = CanProtect
+Description = The user hits a rock in a precise way to launch it at the target.
 Animation = ROCKTHROW
 #-------------------------------
 [ROCKOUT]
@@ -3112,7 +3139,7 @@ Animation = CURSE
 [DEADEND]
 Name = Dead End
 Type = GHOST
-Category = Special
+Category = Physical
 Power = 65
 Accuracy = 100
 TotalPP = 10
@@ -3120,7 +3147,7 @@ Target = NearOther
 FunctionCode = DoubleDamageTargetBelowHalf
 Flags = CanProtect
 Description = If the target's HP is half or less, this attack will hit with double the power.
-Animation = HEX
+Animation = SHADOWCLAW
 #-------------------------------
 [DEATHKNELL]
 Name = Death Knell
@@ -3459,6 +3486,20 @@ Flags = CanProtect
 EffectChance = 50
 Description = The target is pestered by a giant tongue. This has a 50% chance to numb it.
 Animation = LICK
+#-------------------------------
+[UMBRAGE]
+Name = Umbrage
+Type = GHOST
+Category = Special
+Power = 65
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = LowerTargetSpDef1
+Flags = CanProtect
+EffectChance = 40
+Description = The user shoots the target with darkness formed from anger. It has a 40% chance to lower Sp. Def.
+Animation = SHADOWBALL
 #-------------------------------
 [VIMRIPPER]
 Name = Vim Ripper
@@ -3989,20 +4030,6 @@ Flags = CanProtect,CanMagicCoat
 Description = Welds heavy steel onto the target, giving it the Steel type and reducing its Speed by four steps.
 Animation = SHOTPUT
 #-------------------------------
-#		QMARKS MOVES
-#-------------------------------
-[DISCOVEREDPOWER]
-Name = Discovered Power
-Type = QMARKS
-Category = Status
-Accuracy = 100
-TotalPP = 15
-Target = User
-FunctionCode = UseChoiceOf3RandomNonSignatureStatusMoves
-Flags = CanSnatch
-Description = The user ponders ancient wisdom, selecting three random status moves. You choose which one it uses.
-Animation = METRONOME
-#-------------------------------
 #		FIRE MOVES
 #-------------------------------
 [ABSOLUTERADIANCE]
@@ -4164,7 +4191,7 @@ TotalPP = 1
 Target = User
 Priority = -6
 FunctionCode = RevivePartyMemberTo50HPThenSwitch
-Description = The user creates a golden pyre that revives a fainted Pokémon. That Pokémon switches in and its stats are boosted.
+Description = The user creates a golden pyre that revives a fainted Pokémon at half HP. That Pokémon switches in and its stats are boosted.
 Animation = MORNINGSUN
 #-------------------------------
 [HEARTHFIREHULA]
@@ -4707,7 +4734,7 @@ TotalPP = 15
 Target = NearOther
 FunctionCode = GulpingDive
 Flags = CanProtect,Uninvocable
-Description = The user dives down with its beak wide open. Transforms into Gulping or Gorging form.
+Description = The user dives down with its beak wide open. Transforms into Gulping- or Gorging form, depending on HP.
 #-------------------------------
 [HARBORBREAKER]
 Name = Harbor Breaker
@@ -4914,6 +4941,19 @@ EffectChance = 30
 Description = The user rams the target while splashing up a lot of water. This has a 30% chance to waterlog.
 Animation = WATERFALL
 #-------------------------------
+[STICKYSPINES]
+Name = Sticky Spines
+Type = WATER
+Category = Special
+Power = 1
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = FixedDamageOneEighthWaterlogTarget
+Flags = CanProtect
+Description = The target gets covered in sticky spines, waterlogging it and losing 1/8th of their current HP.
+Animation = SOAK
+#-------------------------------
 [TIDEPULL]
 Name = Tide Pull
 Type = WATER
@@ -5094,7 +5134,7 @@ Accuracy = 0
 TotalPP = 1
 Target = None
 FunctionCode = ReviveGrassTypePartyMemberToFullHP
-Description = Restores a fainted Grass-type party member to full HP. Only one use per battle.
+Description = Revives a fainted Grass-type party member to full HP. Only one use per battle.
 #-------------------------------
 [CAMOUFLAGE]
 Name = Camouflage
@@ -5606,7 +5646,7 @@ Accuracy = 0
 TotalPP = 1
 Target = None
 FunctionCode = RevivePartyMemberTo1HP
-Description = Restores a fainted party member to 1 HP. Only one use per battle.
+Description = Revives a fainted party member to 1 HP. Only one use per battle.
 Animation = ELECTRICTERRAIN
 #-------------------------------
 [DIELECTRICBREAKDOWN]
@@ -6396,7 +6436,7 @@ TotalPP = 5
 Target = NearOther
 FunctionCode = SwitchOutUserDamagingMove
 Flags = CanProtect
-Description = After making its attack to the targets psyche, the user teleports back to switch places with a party Pokémon.
+Description = After making its attack to the target's psyche, the user teleports back to switch places with a party Pokémon.
 Animation = ZENHEADBUTT
 #-------------------------------
 [PSYCHICOVERLOAD]
@@ -7832,7 +7872,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = FixedDamageHalfTargetHealUserByHalfOfDamageDone
-Flags = CanProtect
+Flags = CanProtect,Biting
 Description = The user chomps hard, cutting the target's HP by 50%, and the user's HP is restored by 50% of that.
 Animation = SUPERFANG
 #-------------------------------
@@ -8666,6 +8706,20 @@ FunctionCode = StartMoonglow8
 Flags = CanProtect,Light
 Description = Strikes the target with lunar light, then summons moonglow for eight turns.
 Animation = DAZZLINGGLEAM
+#-------------------------------
+#		QMARKS MOVES
+#-------------------------------
+[DISCOVEREDPOWER]
+Name = Discovered Power
+Type = QMARKS
+Category = Status
+Accuracy = 100
+TotalPP = 15
+Target = User
+FunctionCode = UseChoiceOf3RandomNonSignatureStatusMoves
+Flags = CanSnatch
+Description = The user ponders ancient wisdom, selecting three random status moves. You choose which one it uses.
+Animation = METRONOME
 #-------------------------------
 #		MUTANT MOVES
 #-------------------------------

@@ -1158,7 +1158,7 @@ Description = Upon entry, blinds all foes.
 #-------------------------------
 [INNARDSPUNCH]
 Name = Innards Punch
-Description = When hit with a move, hits back instantly with Mega Punch.
+Description = When hit with an attacking move, hits back instantly with Mega Punch.
 #-------------------------------
 [INNERHEAT]
 Name = Inner Heat
@@ -1315,7 +1315,7 @@ Description = Multi-hit moves can hit up to twice as many times.
 #-------------------------------
 [LONGRECEIVER]
 Name = Long Receiver
-Description = Copies the Ability of the Pokémon it switches in to replace.
+Description = Copies the Ability of the Pokémon it switches in to replace. This excludes fainted allies.
 #-------------------------------
 [LONGTERMVIEW]
 Name = Long-term View
@@ -1918,7 +1918,7 @@ Description = Gets 50% more healing from all sources.
 #-------------------------------
 [ROYALMAJESTY]
 Name = Royal Majesty
-Description = Makes foes unable to use priority moves.
+Description = Prevents foes from using priority moves that target this Pokémon or its allies.
 #-------------------------------
 [RUGGED]
 Name = Rugged
@@ -2421,6 +2421,11 @@ Description = Heals 1/16th HP every turn. Takes half damage from Fire- and Ice-t
 [THIEFSDIVERSION]
 Name = Thief's Diversion
 Description = By sacrificing a held item this Pokémon didn't start with, it can negate one attack against it.
+#-------------------------------
+[THROWNIN]
+Name = Thrown In
+Description = When another party member uses Fling, they swap out for Pyukumuku.
+Flags = Immutable
 #-------------------------------
 [THUNDERSTRUCK]
 Name = Thunderstruck

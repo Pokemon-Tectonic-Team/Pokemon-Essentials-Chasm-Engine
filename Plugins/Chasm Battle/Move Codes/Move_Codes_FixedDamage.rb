@@ -10,6 +10,26 @@ class PokeBattle_Move_FixedDamageHalfTargetHP < PokeBattle_FixedDamageMove
 end
 
 #===============================================================================
+# User gets waterlogged and takes 1/8th max. HP damage. (Sticky Spines)
+#===============================================================================
+class PokeBattle_Move_FixedDamageOneEighthWaterlogTarget < PokeBattle_FixedDamageMove
+    def pbFixedDamage(_user, target)
+        damage = target.hp / 8.0
+        damage *= target.hpBasedEffectResistance if target.boss?
+        return damage.round
+    end
+
+    def pbEffectAgainstTarget(user, target)
+        return unless target.canWaterlog?(user, false, self)
+        target.applyWaterlog(user)
+    end
+
+    def getEffectScore(user, target)
+        return getWaterlogEffectScore(user, target)
+    end
+end
+
+#===============================================================================
 # Halves the target's current HP. (Mouthful)
 # User gains half the HP it inflicts as damage.
 #===============================================================================

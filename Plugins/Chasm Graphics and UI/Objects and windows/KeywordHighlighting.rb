@@ -113,10 +113,10 @@ def battleKeywordsImportant
         "critical hits",
         "critical hit",
         "redirected",
+        "light screen",
         "screens",
         "screen",
         "reflect",
-        "light screen",
 		"sanctuary",
         "invulnerable",
         "clothing",
@@ -159,7 +159,21 @@ def battleKeywordsImportant
         "shrinking",
         "sugar rush",
         "self-destructing",
+        "revives",
         "judgment",
+        "mega punch",
+        "breach",
+        "nuzzle",
+        "parting shot",
+        "covet",
+        "wish",
+        "power split",
+        "pain split",
+        "dragon dance",
+        "lightning dance",
+        "rapid spin",
+        "aromatherapy",
+        "fling",
     ]
 end
 
@@ -178,6 +192,9 @@ def battleKeywordsImportantCaseSensitive
         "Flame Spikes",
         "Poison Spikes",
         "Spikes",
+        "Rest",
+        "Gust",
+        "Snore",
     ]
 end
 

@@ -77,7 +77,7 @@ class PokeBattle_Move_SwitchOutUserDamagingMove < PokeBattle_Move
 end
 
 #===============================================================================
-# Decreases the target's Attack and Special Attack by 1 step each. Then, user
+# Decreases the target's Attack and Special Attack by 2 steps each. Then, user
 # switches out. (Parting Shot)
 #===============================================================================
 class PokeBattle_Move_LowerTargetAtkSpAtk1SwitchOutUser < PokeBattle_TargetMultiStatDownMove
@@ -233,5 +233,38 @@ class PokeBattle_Move_SwitchOutUserIfMissesDamagingMove < PokeBattle_Move
 
     def resetMoveUsageState
         @switchThisTurn = false
+    end
+end
+
+#===============================================================================
+# Poisons target, then user switches out. (Retreating Sting)
+#===============================================================================
+class PokeBattle_Move_PoisonTargetSwitchOutUserStatusMove < PokeBattle_Move
+    def switchOutMove?; return true; end
+
+    def pbFailsAgainstTarget?(user, target, show_message)
+        if !target.canPoison?(user, false, self) && !@battle.pbCanChooseNonActive?(user.index)
+            @battle.pbDisplay(_INTL("But it failed, since {1} can't be poisoned and {2} has no party allies to replace it!", target.pbThis(true), user.pbThis(true))) if show_message
+            return true
+        end
+        return false
+    end
+
+    def pbEffectAgainstTarget(user, target)
+        return unless target.canPoison?(user, false, self)
+        target.applyPoison(user)
+    end
+
+    def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
+        return if user.fainted?
+        return unless @battle.pbCanChooseNonActive?(user.index)
+        switchOutUser(user, switchedBattlers)
+    end
+
+    def getEffectScore(user, target)
+        score = 0
+        score += getSwitchOutEffectScore(user) if @battle.pbCanChooseNonActive?(user.index)
+        score += getPoisonEffectScore(user, target) if target.canPoison?(user, false, self)
+        return score
     end
 end

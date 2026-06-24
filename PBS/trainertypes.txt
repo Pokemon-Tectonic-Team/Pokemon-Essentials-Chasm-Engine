@@ -1209,6 +1209,12 @@ BaseMoney = 20
 IntroBGM = ROUGHNECK
 CableClub = true
 #-------------------------------
+[PUNKS]
+Name = Punks
+Gender = Unknown
+BaseMoney = 64
+IntroBGM = ROUGHNECK
+#-------------------------------
 [RANCHER]
 Name = Rancher
 Gender = Male
