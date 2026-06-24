@@ -57,6 +57,7 @@ def pbPokeCenterPC
         organizeCommand = -1
         widthdrawCommand = -1
         depositCommand = -1
+        battleBoxCommand = -1
         omniTutorCommand = -1
         visitEstateCommand = -1
         viewRewardsCommand = -1
@@ -66,6 +67,7 @@ def pbPokeCenterPC
         commands[organizeCommand = commands.length] = _INTL("Organize Boxes")
         commands[widthdrawCommand = commands.length] = _INTL("Withdraw Pokémon") 
         commands[depositCommand = commands.length] = _INTL("Deposit Pokémon")
+        commands[battleBoxCommand = commands.length] = _INTL("Battle Box")
         commands[omniTutorCommand = commands.length] = _INTL("OmniTutor") if $PokemonGlobal.omnitutor_active 
         commands[visitEstateCommand = commands.length] = _INTL("Visit PokÉstate") unless getGlobalSwitch(ESTATE_DISABLED_SWITCH)
         commands[viewRewardsCommand = commands.length] = _INTL("Check Rewards") unless getGlobalSwitch(ESTATE_DISABLED_SWITCH)
@@ -93,6 +95,12 @@ def pbPokeCenterPC
                 scene = PokemonStorageScene.new
                 screen = PokemonStorageScreen.new(scene,$PokemonStorage)
                 return if screen.pbStartScreen(command)
+            }
+        elsif battleBoxCommand != -1 && command == battleBoxCommand
+            pbFadeOutIn {
+                scene = BattleBoxScene.new
+                screen = BattleBoxScreen.new(scene, $BattleBox)
+                screen.pbStartScreen
             }
         elsif visitEstateCommand != -1 && command == visitEstateCommand
             break if $PokEstate.transferToEstateOfChoice()

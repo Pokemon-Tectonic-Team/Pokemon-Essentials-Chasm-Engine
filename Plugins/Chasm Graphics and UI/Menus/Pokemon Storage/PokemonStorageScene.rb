@@ -707,47 +707,9 @@ class PokemonStorageScene
     def pbSearch(searchText, minchars, maxchars, searchMethod)
         ret = pbEnterText(searchText, minchars, maxchars)
 
-        # Find search candidates
-        found = []
-        if ret.length > 0
-            for i in 0...@storage.maxBoxes
-                next if @storage.boxes[i].isDonationBox?
-                box = @storage.boxes[i]
-                for j in 0..PokemonBox::BOX_SIZE
-                    curpkmn = box[j]
-                    next unless curpkmn
-                    fitsSearch = false
-
-                    if searchMethod == 1 # Name
-                        fitsSearch = curpkmn.name.downcase.include?(ret.downcase)
-                    elsif searchMethod == 2 # Species
-                        fitsSearch = curpkmn.speciesName.downcase.include?(ret.downcase)
-                    elsif searchMethod == 3 # Type
-                        search = GameData::Type.try_get(ret.upcase)
-                        if search
-                            fitsSearch = curpkmn.hasType?(search.id)
-                        else
-                            pbDisplay(_INTL("\"{1}\" is not a valid type.", ret))
-                            return false
-                        end
-                    elsif searchMethod == 4 # Tribe
-                        search = GameData::Tribe.try_get(ret.upcase)
-                        if search
-                            curpkmn.tribes.each do |tribe|
-                                next unless tribe == search.id
-                                fitsSearch = true
-                                break
-                            end
-                        else
-                            pbDisplay(_INTL("\"{1}\" is not a valid tribe.", ret))
-                            return false
-                        end
-                    end
-
-                    found.push([i, j]) if fitsSearch
-                end
-            end
-        end
+        found = @storage.pbSearch(ret, searchMethod, self)
+        return false unless found[1]
+        found = found[0]
         @sprites["box"].refreshBox = true
         pbRefresh
 

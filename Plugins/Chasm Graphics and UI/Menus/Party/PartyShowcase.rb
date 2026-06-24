@@ -199,6 +199,8 @@ class PokemonPartyShowcase_Scene
             end
             if playtesterSubmitted
                 playerName = _INTL("Team Submitted by {1}", playtesterSubmitted)
+            elsif @flags.include?("notrainertype")
+                playerName = "<ar>#{@trainer.name}</ar>"
             else
                 playerName = "<ar>#{@trainer.full_name}</ar>"  
             end
