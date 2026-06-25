@@ -111,6 +111,20 @@ class PokemonRuleSet
     return true
   end
 
+  # Collects every PokemonRule pkmn fails, concatenating each one's
+  # errorMessage(pkmn) (itself a list, since a single rule can have more
+  # than one thing wrong - e.g. knowing two different banned moves), so a
+  # rejected Pokemon's issues can all be shown at once instead of just the
+  # first. Only meant to be called once isPokemonValid?(pkmn) has already
+  # returned false.
+  def pokemonInvalidReasons(pkmn)
+    errors = []
+    for rule in @pokemonRules
+      errors.concat(rule.errorMessage(pkmn)) if !rule.isValid?(pkmn)
+    end
+    return errors.empty? ? [_INTL("{1} is not allowed.", pkmn.name)] : errors
+  end
+
   # Returns true if some combination of [minTeamLength, maxTeamLength]
   # Pokemon from the list would satisfy isValid?.
   def hasRegistrableTeam?(list)
@@ -142,32 +156,47 @@ class PokemonRuleSet
     return true
   end
 
-  # Returns true if the team's length meets the PartySize range and the team
-  # meets the requirements of any team rules. Each Pokemon in the team must
-  # be valid.
-  def isValid?(team, error = nil)
+  # Quick true/false check: does the team's length meet the PartySize range,
+  # is every Pokemon in it individually valid, and does it meet every team
+  # rule? Stops at the first thing wrong, same as before - use
+  # validityErrors below if you need to know what (all) is wrong, not just
+  # whether something is.
+  def isValid?(team)
+    return false if team.length < self.minLength
+    return false if team.length > self.maxLength
+    for pkmn in team
+      return false if !isPokemonValid?(pkmn)
+    end
+    for rule in @teamRules
+      return false if !rule.isValid?(team)
+    end
+    return true
+  end
+
+  # Exhaustively explains every reason this exact team is invalid - unlike
+  # isValid?, this doesn't stop at the first problem, so a player fixing
+  # their selection can see everything wrong with it at once instead of
+  # hitting issues one at a time by trial and error. Empty if the team is
+  # valid.
+  def validityErrors(team)
+    errors = []
     if team.length < self.minLength
-      error.push(_INTL("Choose a Pokémon.")) if error && self.minLength == 1
-      error.push(_INTL("{1} Pokémon are needed.", self.minLength)) if error && self.minLength > 1
-      return false
+      errors.push(_INTL("Choose a Pokémon.")) if self.minLength == 1
+      errors.push(_INTL("{1} Pokémon are needed.", self.minLength)) if self.minLength > 1
     elsif team.length > self.maxLength
-      error.push(_INTL("No more than {1} Pokémon may enter.", self.maxLength)) if error
-      return false
+      errors.push(_INTL("No more than {1} Pokémon may enter.", self.maxLength))
     end
     for pkmn in team
       next if isPokemonValid?(pkmn)
       if pkmn
-        error.push(_INTL("{1} is not allowed.", pkmn.name)) if error
+        errors.concat(pokemonInvalidReasons(pkmn))
       else
-        error.push(_INTL("This team is not allowed.")) if error
+        errors.push(_INTL("This team is not allowed."))
       end
-      return false
     end
     for rule in @teamRules
-      next if rule.isValid?(team)
-      error.push(rule.errorMessage) if error
-      return false
+      errors.concat(rule.errorMessage(team)) if !rule.isValid?(team)
     end
-    return true
+    return errors
   end
 end

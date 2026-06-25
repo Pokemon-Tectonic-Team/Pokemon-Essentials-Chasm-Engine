@@ -1,18 +1,16 @@
 class PokemonRuleSet
   # Returns a deduplicated list of human-readable reasons why no combination
   # of [minTeamLength, maxTeamLength] Pokemon from the list can satisfy this
-  # ruleset, by re-running isValid? (which already collects messages like
-  # "X is not allowed" or a rule's own errorMessage) over every combination
-  # hasRegistrableTeam? tried. hasRegistrableTeam? only returns a boolean, so
-  # without this a rejected team gives the player no clue why.
+  # ruleset, by re-running validityErrors (which already collects every
+  # issue, not just the first) over every combination hasRegistrableTeam?
+  # tried. hasRegistrableTeam? only returns a boolean, so without this a
+  # rejected team gives the player no clue why.
   def registrationErrors(list)
     return [_INTL("Choose a Pokémon.")] if !list || list.length < self.minTeamLength
     errors = []
     (self.minTeamLength..self.maxTeamLength).each do |x|
       pbEachCombination(list,x){|comb|
-        comb_errors = []
-        isValid?(comb,comb_errors)
-        errors.concat(comb_errors)
+        errors.concat(validityErrors(comb))
       }
     end
     return errors.uniq
@@ -36,7 +34,8 @@ class PokemonPartyScreen
     ]
     if !ruleset.hasValidTeam?(@party)
       errors = ruleset.registrationErrors(@party)
-      pbDisplay(errors[0] || _INTL("I'm sorry, you do not have a valid Pokémon team with these rules."))
+      pbDisplay(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."))
+      pbMessage("Issues:\n" + errors.map { |e| "- #{e}" }.join("\n")) unless errors.empty?
       return nil
     end
     ret = nil
@@ -78,9 +77,10 @@ class PokemonPartyScreen
           ret.push(i)
           test_ret.push(@party[i])
         end
-        error = []
-        break if ruleset.isValid?(test_ret,error)
-        pbDisplay(error[0])
+        break if ruleset.isValid?(test_ret)
+        errors = ruleset.validityErrors(test_ret)
+        pbDisplay(_INTL("I'm sorry, this team isn't allowed."))
+        pbMessage("Issues:\n" + errors.map { |e| "- #{e}" }.join("\n")) unless errors.empty?
         ret = nil
         test_ret = nil
       end

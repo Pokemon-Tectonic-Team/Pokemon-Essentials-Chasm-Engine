@@ -13,6 +13,12 @@
 # PartySize's min equals its max (the common case), since the team itself is
 # then the only combination of the right size. "TeamRules" now means what
 # "SubsetRules" was always meant to.
+#
+# errorMessage takes the same team isValid? was just called with (the one it
+# failed on), and returns an Array of every distinct violation of that rule
+# within the team (e.g. one entry per duplicate-item pair, not just the
+# first) - PokemonRuleSet#validityErrors concatenates these across every
+# failing rule so a player can see everything wrong with their team at once.
 
 # Helper used by NicknameClause to track which nicknames are already in use
 # and which species' real names they collide with.
@@ -53,8 +59,19 @@ class NicknameClause
     return true
   end
 
-  def errorMessage
-    return _INTL("Two Pokémon on this team can't share the same nickname.")
+  def errorMessage(team)
+    errors = []
+    team.each do |pkmn|
+      next if NicknameChecker.check(pkmn.name, pkmn.species)
+      errors << _INTL("{1}'s nickname can't match another Pokémon's species name.", pkmn.name)
+    end
+    for i in 0...team.length - 1
+      for j in i + 1...team.length
+        next if team[i].name != team[j].name
+        errors << _INTL("{1} and {2} can't have the same nickname.", team[i].name, team[j].name)
+      end
+    end
+    return errors
   end
 end
 
@@ -79,6 +96,11 @@ class RestrictedSpeciesRestriction
     end
     return count <= @maxValue
   end
+
+  def errorMessage(team)
+    offenders = team.select { |pkmn| pkmn && isSpecies?(pkmn.species, @specieslist) }.map(&:name)
+    return [_INTL("Only {1} of these Pokémon may be on your team: {2}", @maxValue, offenders.join(", "))]
+  end
 end
 
 # TeamRules = RestrictedLegendsRestriction,maxValue
@@ -97,8 +119,9 @@ class RestrictedLegendsRestriction
     return count <= @maxValue
   end
 
-  def errorMessage
-    return _INTL("Sorry, you can only have {1} legendary on your team!", @maxValue)
+  def errorMessage(team)
+    offenders = team.select { |pkmn| pkmn && pkmn.species_data.isLegendary? }.map(&:name)
+    return [_INTL("Sorry, you can only have {1} legendary on your team! You have: {2}", @maxValue, offenders.join(", "))]
   end
 end
 
@@ -134,8 +157,12 @@ class SameSpeciesClause
     return species.length == 1
   end
 
-  def errorMessage
-    return _INTL("Every Pokémon on this team must be the same species.")
+  def errorMessage(team)
+    present = team.select { |pkmn| pkmn }
+    return [] if present.empty?
+    first = present[0]
+    outliers = present.select { |pkmn| pkmn.species != first.species }
+    return outliers.map { |pkmn| _INTL("{1} must be the same species as {2}.", pkmn.name, first.name) }
   end
 end
 
@@ -153,8 +180,18 @@ class SpeciesClause
     return true
   end
 
-  def errorMessage
-    return _INTL("Two Pokémon on this team can't be the same species.")
+  def errorMessage(team)
+    errors = []
+    seen = {}
+    team.each do |pkmn|
+      next if !pkmn
+      if seen[pkmn.species]
+        errors << _INTL("{1} and {2} can't both be {3}.", seen[pkmn.species].name, pkmn.name, pkmn.species_data.name)
+      else
+        seen[pkmn.species] = pkmn
+      end
+    end
+    return errors
   end
 end
 
@@ -172,8 +209,18 @@ class ItemClause
     return true
   end
 
-  def errorMessage
-    return _INTL("Two Pokémon on this team can't hold the same item.")
+  def errorMessage(team)
+    errors = []
+    seen = {}
+    team.each do |pkmn|
+      next if !pkmn || !pkmn.hasItem?
+      if seen[pkmn.firstItem]
+        errors << _INTL("{1} and {2} can't both hold {3}.", seen[pkmn.firstItem].name, pkmn.name, GameData::Item.get(pkmn.firstItem).name)
+      else
+        seen[pkmn.firstItem] = pkmn
+      end
+    end
+    return errors
   end
 end
 
@@ -192,7 +239,9 @@ class TotalLevelRestriction
     return totalLevel <= @level
   end
 
-  def errorMessage
-    return _INTL("The combined level of these Pokémon can't exceed {1}.", @level)
+  def errorMessage(team)
+    totalLevel = 0
+    team.each { |pkmn| totalLevel += pkmn.level if pkmn }
+    return [_INTL("The combined level of these Pokémon ({1}) exceeds {2}.", totalLevel, @level)]
   end
 end

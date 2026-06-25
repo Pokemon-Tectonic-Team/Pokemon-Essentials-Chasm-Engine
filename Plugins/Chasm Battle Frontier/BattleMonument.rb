@@ -12,15 +12,14 @@ def battleMonumentSinglesRegister
 
         rules.setNumber(6)
 
-        errorList = []
-        if rules.ruleset.isValid?($Trainer.party,errorList)
+        if rules.ruleset.isValid?($Trainer.party)
             pbBattleChallenge.setParty($Trainer.party)
             pbMessage(_INTL("Please come this way."))
             pbBattleChallenge.start
             return true
         else
             pbMessage(_INTL("Your party is not legal for this challenge."))
-            errorList.each do |error|
+            rules.ruleset.validityErrors($Trainer.party).each do |error|
                 pbMessage(error)
             end
         end
