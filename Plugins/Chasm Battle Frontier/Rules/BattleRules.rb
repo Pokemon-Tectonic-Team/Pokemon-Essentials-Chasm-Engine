@@ -1,6 +1,20 @@
-# Only used by ChallengeRules.rb's setDoubleBattle and BattleChallenge.rb;
-# Cable Club never refers to this one (it always adds DoubleBattle explicitly
-# for double battles and otherwise leaves single as the implicit default).
+# Base class for PokemonChallengeRules#addBattleRule (ChallengeRules.rb):
+# each subclass's setRule(battle) is called once against the real battle
+# when it starts. Cable Club used to have its own by-name-lookup version of
+# this for its .rules file format, but that only ever needed to pick a
+# battle size, so it was replaced with PokemonOnlineRules#setBattleMode
+# instead - this class hierarchy now exists only for Battle Frontier's own
+# (largely unused) challenge rules.
+class BattleRule
+  def setRule(battle); end
+end
+
+# Used by ChallengeRules.rb's setDoubleBattle and BattleChallenge.rb.
+class DoubleBattle < BattleRule
+  def setRule(battle); battle.setBattleMode("double"); end
+end
+
+# Used by ChallengeRules.rb's setDoubleBattle and BattleChallenge.rb.
 class SingleBattle < BattleRule
   def setRule(battle); battle.setBattleMode("single"); end
 end

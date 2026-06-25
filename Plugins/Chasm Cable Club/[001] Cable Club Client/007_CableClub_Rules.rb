@@ -1,20 +1,16 @@
-class TripleBattle < BattleRule
-  def setRule(battle); battle.setBattleMode("triple"); end
-end
-
 class PokemonOnlineRules
   attr_reader :team_preview
   attr_reader :ruleset
   attr_reader :levelAdjustment
-  attr_reader :battlerules
+  attr_reader :battle_mode
   attr_reader :rules_hash
-  
+
   def initialize
     @team_preview = 0
     @ruleset=ruleset ? ruleset : PokemonRuleSet.new
     @levelAdjustment=nil
-    @battlerules=[]
-    @rules_hash={:battle=>[],:pokemon=>[], :subset=>[], :team=>[],:level_adjust=>nil}
+    @battle_mode=nil
+    @rules_hash={:battle_mode=>nil,:pokemon=>[], :subset=>[], :team=>[],:level_adjust=>nil}
   end
   
   def team_preview?; return @team_preview>0; end
@@ -68,13 +64,6 @@ class PokemonOnlineRules
     return self
   end
 
-  def addBattleRule(rule, *args)
-    saved_args = CableClub::apply_args_type_hint(*args)
-    @rules_hash[:battle].push([rule,*saved_args])
-    @battlerules.push(rule.new(*args))
-    return self
-  end
-  
   def setLevelAdjustment(rule,*args)
     if rule
       saved_args = CableClub::apply_args_type_hint(*args)
@@ -86,10 +75,14 @@ class PokemonOnlineRules
     end
     return self
   end
-  
-  def applyBattleRules(battle)
-    for p in @battlerules
-      p.setRule(battle)
-    end
+
+  def setBattleMode(mode)
+    @battle_mode = mode
+    @rules_hash[:battle_mode] = mode
+    return self
+  end
+
+  def applyBattleMode(battle)
+    battle.setBattleMode(@battle_mode) if @battle_mode
   end
 end

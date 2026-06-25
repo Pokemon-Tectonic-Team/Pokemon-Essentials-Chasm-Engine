@@ -3,5 +3,5 @@ Description = Double battle w/ one legendary @ Lv 70
 TeamPreview = 30
 PartySize = 1,6
 LevelAdjustment = FixedLevelAdjustment,70
-BattleRules = DoubleBattle
+BattleMode = Double
 TeamRules = RestrictedLegendsRestriction,1

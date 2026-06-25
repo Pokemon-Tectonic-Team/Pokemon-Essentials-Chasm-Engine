@@ -645,7 +645,7 @@ def find_changed_files(directory, old_files_hash):
 RULE_HEADER_RE = re.compile(r"^\[(.+)\]$")
 RULE_INT_ARG_RE = re.compile(r"^-?\d+$")
 RULE_STR_ARG_RE = re.compile(r'^"(.*)"$')
-RULE_CATEGORY_KEYS = ["BattleRules", "PokemonRules", "SubsetRules", "TeamRules"]
+RULE_CATEGORY_KEYS = ["PokemonRules", "SubsetRules", "TeamRules"]
 
 
 # Splits a single rule clause's comma-separated fields (its class name
@@ -731,8 +731,8 @@ def parse_rule_file(path):
 
 # Compiles a parsed rule file's data into the flat field list the network
 # protocol expects: name, description, team preview, min/max party size,
-# level adjustment, then each rule category's count followed by its clauses,
-# in the order battle/pokemon/subset/team.
+# level adjustment, battle mode, then each remaining rule category's count
+# followed by its clauses, in the order pokemon/subset/team.
 def compile_rule(data):
     rule = [data["Name"][0], data["Description"][0], data.get("TeamPreview", ["0"])[0]]
     min_value, _, max_value = data["PartySize"][0].partition(",")
@@ -740,6 +740,8 @@ def compile_rule(data):
     rule.append(max_value.strip())
     level_adjustment = data.get("LevelAdjustment", [""])[0]
     rule.append(encode_rule_clause(level_adjustment) if level_adjustment else "")
+    battle_mode = data.get("BattleMode", [""])[0]
+    rule.append(battle_mode.strip().lower() if battle_mode else "")
     for key in RULE_CATEGORY_KEYS:
         clauses = data.get(key, [])
         rule.append(str(len(clauses)))

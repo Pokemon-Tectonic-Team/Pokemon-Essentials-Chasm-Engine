@@ -164,10 +164,10 @@ class CableClub_Scene
           rules.addPokemonRule(NonEggRestriction)
           if battle_cmd == 1 # double battle
             rules.setNumberRange(2,6)
-            rules.addBattleRule(DoubleBattle)
+            rules.setBattleMode("double")
           elsif battle_cmd == 2 # triple battle
             rules.setNumberRange(3,6)
-            rules.addBattleRule(TripleBattle)
+            rules.setBattleMode("triple")
           end
           if !rules.ruleset.hasRegistrableTeam?($Trainer.party)
             pbDisplayTeamIssues(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."),rules.ruleset,$Trainer.party)
@@ -270,7 +270,7 @@ class CableClubScreen
           rules.setLevelAdjustment(Kernel.const_get(level_adjustmentClass),*level_adjustment_args)
         end
       end
-      CableClub.add_rule_clauses(rules,:addBattleRule,data["BattleRules"])
+      rules.setBattleMode(data["BattleMode"].first.downcase) if !data["BattleMode"].empty?
       CableClub.add_rule_clauses(rules,:addPokemonRule,data["PokemonRules"])
       CableClub.add_rule_clauses(rules,:addSubsetRule,data["SubsetRules"])
       CableClub.add_rule_clauses(rules,:addTeamRule,data["TeamRules"])
