@@ -88,16 +88,11 @@ class PokemonChallengeRules
     def addLevelRule(minLevel,maxLevel,totalLevel)
       self.addPokemonRule(MinimumLevelRestriction.new(minLevel))
       self.addPokemonRule(MaximumLevelRestriction.new(maxLevel))
-      self.addSubsetRule(TotalLevelRestriction.new(totalLevel))
+      self.addTeamRule(TotalLevelRestriction.new(totalLevel))
       self.setLevelAdjustment(TotalLevelAdjustment.new(minLevel, maxLevel, totalLevel))
       return self
     end
-  
-    def addSubsetRule(rule)
-      self.ruleset.addSubsetRule(rule)
-      return self
-    end
-  
+
     def addTeamRule(rule)
       self.ruleset.addTeamRule(rule)
       return self
@@ -348,7 +343,7 @@ class PokemonChallengeRules
      :CELEBI,
      :JIRACHI, :DEOXYS,
      :PHIONE, :MANAPHY, :SHAYMIN, :DARKRAI, :ARCEUS))
-  .addSubsetRule(RestrictedSpeciesSubsetRestriction.new(
+  .addTeamRule(RestrictedSpeciesSubsetRestriction.new(
      :MEWTWO,
      :LUGIA, :HOOH,
      :GROUDON, :KYOGRE, :RAYQUAZA,

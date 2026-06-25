@@ -50,7 +50,7 @@ class StandardRules < PokemonRuleSet
       super(3)
       addPokemonRule(StandardRestriction.new)
       addPokemonRule(MaximumLevelRestriction.new(30))
-      addSubsetRule(TotalLevelRestriction.new(80))
+      addTeamRule(TotalLevelRestriction.new(80))
       addPokemonRule(HeightRestriction.new(2))
       addPokemonRule(WeightRestriction.new(20))
       addPokemonRule(BabyRestriction.new)

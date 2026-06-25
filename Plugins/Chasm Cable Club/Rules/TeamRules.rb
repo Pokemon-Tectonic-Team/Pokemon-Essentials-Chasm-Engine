@@ -1,20 +1,18 @@
-# Classes referenced by name from a .rules file's "TeamRules" or "SubsetRules"
-# key, e.g. "TeamRules = SpeciesClause" or "SubsetRules = TotalLevelRestriction,80".
-# Each is checked once against a list of Pokemon, via isValid?(team); see
-# PokemonRules.rb for the separate per-Pokemon checks instead.
+# Classes referenced by name from a .rules file's "TeamRules" key, e.g.
+# "TeamRules = SpeciesClause" or "TeamRules = TotalLevelRestriction,80". Each
+# is checked via isValid?(team) against any combination, sized anywhere from
+# minTeamLength to maxTeamLength, of the entered team (PokemonRuleSet#isValid?/
+# hasRegistrableTeam?, Rulesets.rb) - passes if at least one such combination
+# satisfies every TeamRules entry. See PokemonRules.rb for the separate
+# per-Pokemon checks instead.
 #
-# Kept in one file rather than split by key, because the TeamRules/SubsetRules
-# distinction probably shouldn't exist: PokemonRuleSet#addSubsetRule
-# (Rulesets.rb) currently pushes into @teamRules instead of @subsetRules, so
-# every "SubsetRules" entry has only ever been checked exactly like a
-# TeamRules one (against the whole entered team) - the @subsetRules-checking
-# branches in canRegisterTeam?/isValid? are dead code. Separately, even
-# working as documented, a subset rule checked against every valid-size
-# subset would already cover the full-team case whenever PartySize's min
-# equals its max (no choice in how many to bring), which is the common case.
-# Plan is to drop "TeamRules" as a distinct concept later and rename today's
-# (currently non-functional) SubsetRules to take over the "TeamRules" name -
-# not done yet, so the key names and behavior below are unchanged for now.
+# There used to be a separate "SubsetRules" key with its own (never actually
+# working - see git history) semantics for "must hold for some subset, not
+# necessarily the whole team." That distinction was removed: it never had a
+# working implementation to begin with, and is redundant anyway whenever
+# PartySize's min equals its max (the common case), since the team itself is
+# then the only combination of the right size. "TeamRules" now means what
+# "SubsetRules" was always meant to.
 
 # Helper used by NicknameClause to track which nicknames are already in use
 # and which species' real names they collide with.
@@ -60,7 +58,7 @@ class NicknameClause
   end
 end
 
-# TeamRules/SubsetRules = RestrictedSpeciesRestriction,maxValue,species1,...
+# TeamRules = RestrictedSpeciesRestriction,maxValue,species1,...
 # Caps how many of the listed species can appear together at maxValue. See
 # RestrictedSpeciesTeamRestriction/RestrictedSpeciesSubsetRestriction below
 # for ready-made versions of this with a fixed cap.
@@ -83,9 +81,9 @@ class RestrictedSpeciesRestriction
   end
 end
 
-# TeamRules/SubsetRules = RestrictedLegendsRestriction,maxValue
+# TeamRules = RestrictedLegendsRestriction,maxValue
 # Caps how many legendaries can appear together at maxValue. Used by Cable
-# Club's own doubles.rules preset (as a TeamRules entry).
+# Club's own doubles.rules preset.
 class RestrictedLegendsRestriction
   def initialize(maxValue)
     @maxValue = maxValue
@@ -105,17 +103,19 @@ class RestrictedLegendsRestriction
 end
 
 # TeamRules = RestrictedSpeciesTeamRestriction,species1,species2,...
-# RestrictedSpeciesRestriction with the cap fixed at 4, for capping a listed
-# group of species across the whole entered team.
+# RestrictedSpeciesRestriction with the cap fixed at 4. The "Team" in the
+# name is a leftover from the removed TeamRules/SubsetRules distinction -
+# both this and RestrictedSpeciesSubsetRestriction below go under TeamRules
+# now, and only differ in their preset cap (4 vs 2).
 class RestrictedSpeciesTeamRestriction < RestrictedSpeciesRestriction
   def initialize(*specieslist)
     super(4, *specieslist)
   end
 end
 
-# SubsetRules = RestrictedSpeciesSubsetRestriction,species1,species2,...
-# RestrictedSpeciesRestriction with the cap fixed at 2, for capping a listed
-# group of species across just the Pokemon chosen to battle with.
+# TeamRules = RestrictedSpeciesSubsetRestriction,species1,species2,...
+# RestrictedSpeciesRestriction with the cap fixed at 2. See
+# RestrictedSpeciesTeamRestriction above re: the "Subset" in the name.
 class RestrictedSpeciesSubsetRestriction < RestrictedSpeciesRestriction
   def initialize(*specieslist)
     super(2, *specieslist)
@@ -177,7 +177,7 @@ class ItemClause
   end
 end
 
-# SubsetRules = TotalLevelRestriction,level
+# TeamRules = TotalLevelRestriction,level
 # The combined level of every Pokemon entered can't exceed the given value.
 class TotalLevelRestriction
   attr_reader :level

@@ -272,7 +272,6 @@ class CableClubScreen
       end
       rules.setBattleMode(data["BattleMode"].first.downcase) if !data["BattleMode"].empty?
       CableClub.add_rule_clauses(rules,:addPokemonRule,data["PokemonRules"])
-      CableClub.add_rule_clauses(rules,:addSubsetRule,data["SubsetRules"])
       CableClub.add_rule_clauses(rules,:addTeamRule,data["TeamRules"])
     rescue
       return nil

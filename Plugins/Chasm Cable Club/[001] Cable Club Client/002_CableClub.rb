@@ -381,15 +381,6 @@ module CableClub
         rule.addPokemonRule(Kernel.const_get(clauseClass),*clause_args)
       end
     end
-    # subset rules
-    record.int.times do
-      clause_data = record.str.split(";")
-      clauseClass = clause_data.shift
-      clause_args = process_args_type_hint(*clause_data)
-      if Object.const_defined?(clauseClass)
-        rule.addSubsetRule(Kernel.const_get(clauseClass),*clause_args)
-      end
-    end
     # team rules
     record.int.times do
       clause_data = record.str.split(";")
@@ -418,10 +409,6 @@ module CableClub
     writer.int(rule.rules_hash[:pokemon].length)
     rule.rules_hash[:pokemon].each do |pr|
       writer.str(pr.join(";"))
-    end
-    writer.int(rule.rules_hash[:subset].length)
-    rule.rules_hash[:subset].each do |sr|
-      writer.str(sr.join(";"))
     end
     writer.int(rule.rules_hash[:team].length)
     rule.rules_hash[:team].each do |tr|
@@ -568,9 +555,9 @@ module CableClub
 
   # Adds the rules described by one or more repeated "Key = Clause" lines
   # (each already split into its own array entry by parse_rule_file) to a
-  # PokemonOnlineRules using the given add-method (:addPokemonRule,
-  # :addSubsetRule, or :addTeamRule). Unrecognized rule classes are skipped,
-  # matching the old format's behavior.
+  # PokemonOnlineRules using the given add-method (:addPokemonRule or
+  # :addTeamRule). Unrecognized rule classes are skipped, matching the old
+  # format's behavior.
   def self.add_rule_clauses(rules, add_method, clauses)
     clauses.each do |clause|
       class_name, args = parse_rule_clause(clause)

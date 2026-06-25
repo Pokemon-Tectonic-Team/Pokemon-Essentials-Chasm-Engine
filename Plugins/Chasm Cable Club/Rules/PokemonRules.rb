@@ -1,7 +1,7 @@
 # Classes referenced by name from a .rules file's "PokemonRules" key, e.g.
 # "PokemonRules = NoLegendaryRestriction". Each is checked once per Pokemon
-# entered, via isValid?(pkmn); see TeamRules.rb/SubsetRules.rb for the
-# classes checked against a whole team or chosen subset instead.
+# entered, via isValid?(pkmn); see TeamRules.rb for the classes checked
+# against the team instead.
 
 # PokemonRules = StandardRestriction
 # Bans eggs, Pokemon with a base stat total of 600 or more, and Wynaut/

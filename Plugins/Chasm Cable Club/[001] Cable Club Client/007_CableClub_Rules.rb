@@ -10,7 +10,7 @@ class PokemonOnlineRules
     @ruleset=ruleset ? ruleset : PokemonRuleSet.new
     @levelAdjustment=nil
     @battle_mode=nil
-    @rules_hash={:battle_mode=>nil,:pokemon=>[], :subset=>[], :team=>[],:level_adjust=>nil}
+    @rules_hash={:battle_mode=>nil,:pokemon=>[], :team=>[],:level_adjust=>nil}
   end
   
   def team_preview?; return @team_preview>0; end
@@ -50,13 +50,6 @@ class PokemonOnlineRules
     return self
   end
   
-  def addSubsetRule(rule, *args)
-    saved_args = CableClub::apply_args_type_hint(*args)
-    @rules_hash[:subset].push([rule,*saved_args])
-    self.ruleset.addSubsetRule(rule.new(*args))
-    return self
-  end
-
   def addTeamRule(rule, *args)
     saved_args = CableClub::apply_args_type_hint(*args)
     @rules_hash[:team].push([rule,*saved_args])

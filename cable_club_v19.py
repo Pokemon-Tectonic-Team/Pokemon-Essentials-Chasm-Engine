@@ -645,7 +645,7 @@ def find_changed_files(directory, old_files_hash):
 RULE_HEADER_RE = re.compile(r"^\[(.+)\]$")
 RULE_INT_ARG_RE = re.compile(r"^-?\d+$")
 RULE_STR_ARG_RE = re.compile(r'^"(.*)"$')
-RULE_CATEGORY_KEYS = ["PokemonRules", "SubsetRules", "TeamRules"]
+RULE_CATEGORY_KEYS = ["PokemonRules", "TeamRules"]
 
 
 # Splits a single rule clause's comma-separated fields (its class name
@@ -732,7 +732,7 @@ def parse_rule_file(path):
 # Compiles a parsed rule file's data into the flat field list the network
 # protocol expects: name, description, team preview, min/max party size,
 # level adjustment, battle mode, then each remaining rule category's count
-# followed by its clauses, in the order pokemon/subset/team.
+# followed by its clauses, in the order pokemon/team.
 def compile_rule(data):
     rule = [data["Name"][0], data["Description"][0], data.get("TeamPreview", ["0"])[0]]
     min_value, _, max_value = data["PartySize"][0].partition(",")
