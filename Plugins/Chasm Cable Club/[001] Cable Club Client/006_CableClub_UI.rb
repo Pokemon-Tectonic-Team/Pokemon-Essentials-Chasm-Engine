@@ -245,63 +245,25 @@ class CableClubScreen
   
   def load_local_rule(filename)
     begin
-      name=nil
-      desc=nil
+      data = CableClub.parse_rule_file(sprintf("%s/%s",CableClub::FOLDER_FOR_BATTLE_PRESETS,filename))
+      name = data["Name"].first
+      desc = data["Description"].first
+      raise "missing Description" if !desc
+      raise "missing PartySize" if data["PartySize"].empty?
       rules=PokemonOnlineRules.new
-      lineno=0
-      category=0
-      targetno=-1
-      File.foreach(sprintf("%s/%s",CableClub::FOLDER_FOR_BATTLE_PRESETS,filename))do |line|
-        line = line.chomp
-        case lineno
-        when 0
-          raise "comma found \"#{line}\", aborting load" if line.index(',')
-          name = line
-        when 1
-          raise "comma found \"#{line}\", aborting load" if line.index(',')
-          desc = line
-        when 2; rules.setTeamPreview(line.to_i)
-        when 3
-          line[/(\d+),(\d+)/]
-          minValue = $~[1].to_i
-          maxValue = $~[2].to_i
-          rules.setNumberRange(minValue,maxValue)
-        when 4
-          if !line.empty?
-            level_adjustment_data = line.split(";")
-            level_adjustmentClass = level_adjustment_data.shift
-            level_adjustment_args = CableClub::process_args_type_hint(*level_adjustment_data)
-            if Object.const_defined?(level_adjustmentClass)
-              rules.setLevelAdjustment(Kernel.const_get(level_adjustmentClass),*level_adjustment_args)
-            end
-          end
-        else
-          if targetno<0
-            targetno = lineno + line.to_i
-          else
-            clause_data = line.split(";")
-            clauseClass = clause_data.shift
-            clause_args = CableClub::process_args_type_hint(*clause_data)
-            if Object.const_defined?(clauseClass)
-              case category
-              when 0 #battle
-                rules.addBattleRule(Kernel.const_get(clauseClass),*clause_args)
-              when 1 #pokemon
-                rules.addPokemonRule(Kernel.const_get(clauseClass),*clause_args)
-              when 2 #subset
-                rules.addSubsetRule(Kernel.const_get(clauseClass),*clause_args)
-              when 3 #team
-                rules.addTeamRule(Kernel.const_get(clauseClass),*clause_args)
-              end
-            end
-          end
-          if lineno == targetno
-            category +=1
-            targetno =-1
-          end
+      rules.setTeamPreview((data["TeamPreview"].first || "0").to_i)
+      minValue,maxValue = data["PartySize"].first.split(",").map(&:to_i)
+      rules.setNumberRange(minValue,maxValue)
+      if !data["LevelAdjustment"].empty?
+        level_adjustmentClass,level_adjustment_args = CableClub.parse_rule_clause(data["LevelAdjustment"].first)
+        if Object.const_defined?(level_adjustmentClass)
+          rules.setLevelAdjustment(Kernel.const_get(level_adjustmentClass),*level_adjustment_args)
         end
-        lineno+=1
       end
+      CableClub.add_rule_clauses(rules,:addBattleRule,data["BattleRules"])
+      CableClub.add_rule_clauses(rules,:addPokemonRule,data["PokemonRules"])
+      CableClub.add_rule_clauses(rules,:addSubsetRule,data["SubsetRules"])
+      CableClub.add_rule_clauses(rules,:addTeamRule,data["TeamRules"])
     rescue
       return nil
     end

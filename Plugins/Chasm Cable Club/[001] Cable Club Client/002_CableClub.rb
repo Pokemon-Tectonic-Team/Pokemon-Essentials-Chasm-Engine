@@ -496,4 +496,95 @@ module CableClub
     end
     return ret
   end
+
+  # Splits a single rule clause's comma-separated fields (its class name
+  # followed by any arguments) from the PBS-style rule file format,
+  # respecting quotes so that a quoted string argument can itself contain a
+  # comma (e.g. 'Foo,"a,b"' splits into ["Foo", "\"a,b\""]).
+  def self.split_rule_fields(str)
+    parts = []
+    current = String.new
+    in_quotes = false
+    str.each_char do |c|
+      case c
+      when '"'
+        in_quotes = !in_quotes
+        current << c
+      when ','
+        if in_quotes
+          current << c
+        else
+          parts.push(current.strip)
+          current = String.new
+        end
+      else
+        current << c
+      end
+    end
+    parts.push(current.strip)
+    return parts
+  end
+
+  # Infers the Ruby type of a single rule clause argument as written in a
+  # PBS-style rule file: bare digits become an Integer, "true"/"false"
+  # become a Boolean, "quoted text" becomes a String, and anything else
+  # becomes a Symbol (the common case for species/move/item internal names).
+  def self.infer_rule_arg(str)
+    str = str.strip
+    case str
+    when /\A-?\d+\z/; return str.to_i
+    when "true"; return true
+    when "false"; return false
+    when /\A"(.*)"\z/; return $1
+    else; return str.to_sym
+    end
+  end
+
+  # Parses a single rule clause, e.g. "NoLegendaryRestriction" or
+  # "FixedLevelAdjustment,70", into the rule class's name and its
+  # type-inferred arguments.
+  def self.parse_rule_clause(str)
+    class_name,*args = split_rule_fields(str.strip)
+    raise "invalid rule clause \"#{str}\"" if !class_name || !/\A\w+\z/.match(class_name)
+    return [class_name, args.map { |a| infer_rule_arg(a) }]
+  end
+
+  # Parses a PBS-style Cable Club rule file into a hash of its raw "Key =
+  # Value" pairs, with the ruleset's display name taken from its "[Name]"
+  # header. A key may be repeated to give it multiple values (used by the
+  # rule clause categories below); every key's value is an array of one
+  # entry per line it appeared on. Blank lines and "#" comments are ignored.
+  def self.parse_rule_file(path)
+    name = nil
+    data = Hash.new { |hash,key| hash[key] = [] }
+    File.foreach(path) do |line|
+      line = line.strip
+      next if line.empty? || line.start_with?("#")
+      header = /\A\[(.+)\]\z/.match(line)
+      if header
+        raise "multiple [Name] headers found" if name
+        name = header[1]
+        next
+      end
+      key, sep, value = line.partition("=")
+      raise "invalid line \"#{line}\"" if sep.empty?
+      data[key.strip].push(value.strip)
+    end
+    raise "missing [Name] header" if !name
+    data["Name"] = [name]
+    return data
+  end
+
+  # Adds the rules described by one or more repeated "Key = Clause" lines
+  # (each already split into its own array entry by parse_rule_file) to a
+  # PokemonOnlineRules using the given add-method (:addBattleRule,
+  # :addPokemonRule, :addSubsetRule, or :addTeamRule). Unrecognized rule
+  # classes are skipped, matching the old format's behavior.
+  def self.add_rule_clauses(rules, add_method, clauses)
+    clauses.each do |clause|
+      class_name, args = parse_rule_clause(clause)
+      next if !Object.const_defined?(class_name)
+      rules.send(add_method, Kernel.const_get(class_name), *args)
+    end
+  end
 end
