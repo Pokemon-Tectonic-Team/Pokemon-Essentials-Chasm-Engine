@@ -2,44 +2,6 @@ class TripleBattle < BattleRule
   def setRule(battle); battle.setBattleMode("triple"); end
 end
 
-class PokemonRuleSet
-  def hasRegistrableTeam?(list)
-    return false if !list || list.length<self.minTeamLength
-    (self.minTeamLength..self.maxTeamLength).each do |x|
-      pbEachCombination(list,x){|comb|
-        return true if canRegisterTeam?(comb)
-      }
-    end
-    return false
-  end
-  
-  def hasValidTeam?(team)
-    if !team || team.length<self.minTeamLength
-      return false
-    end
-    validPokemon=[]
-    for pokemon in team
-      if isPokemonValid?(pokemon)
-        validPokemon.push(pokemon)
-      end
-    end
-    if validPokemon.length<self.minLength
-      return false
-    end
-    if @teamRules.length>0
-      (self.minTeamLength..self.maxTeamLength).each do |x|
-        pbEachCombination(team,x){|comb|
-           if isValid?(comb)
-             return true
-           end
-        }
-      end
-      return false
-    end
-    return true
-  end
-end
-
 class PokemonOnlineRules
   attr_reader :team_preview
   attr_reader :ruleset
