@@ -178,14 +178,14 @@ class CableClub_Scene
         end
       elsif (cmdLocalRule>=0 && cmd==cmdLocalRule) ||
             (cmdServerRule>=0 && cmd==cmdServerRule)
-        commands = []
+        rule_commands = []
         rule_array = []
         rule_array = local_rules if cmd == cmdLocalRule
         rule_array = server_rules if cmd == cmdServerRule
         rule_array.each do |r|
-          commands.push(r[0])
+          rule_commands.push(r[0])
         end
-        r_cmd = pbShowCommands(_INTL("Select Battle Ruleset"),commands,-1)
+        r_cmd = pbShowCommands(_INTL("Select Battle Ruleset"),rule_commands,-1)
         if r_cmd>=0
           loop do
             conf_cmd = pbShowCommands(_INTL("Ruleset: {1}",rule_array[r_cmd][0]),[_INTL("See Details"),_INTL("Yes"),_INTL("No")],3)
