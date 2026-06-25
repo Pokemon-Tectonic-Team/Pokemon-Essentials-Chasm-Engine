@@ -179,8 +179,8 @@ def decode_team(code)
 
   begin
     # Read header
-    encoding = (read_team_code_bytes(buffer, 1).unpack('C')[0] & ENCODING_MASK) >> ENCODING_SHIFT
     poke_party_version = read_team_code_bytes(buffer, 1).unpack('C')[0]
+    encoding = (read_team_code_bytes(buffer, 1).unpack('C')[0] & ENCODING_MASK) >> ENCODING_SHIFT
     version_u16 = read_team_code_bytes(buffer, 2).unpack('n')[0]
 
     # Only encoding 0 is supported
