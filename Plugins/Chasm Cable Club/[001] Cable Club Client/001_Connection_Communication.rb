@@ -37,6 +37,12 @@ class Connection
         details << record.str() until record.empty?
         raise Disconnected.new(details.empty? ? reason : "#{reason}\n#{details.join("\n")}")
       end
+      if record.desync?
+        reason = record.str() rescue "unknown reason"
+        e = CableClub::DesyncError.new("The other trainer's game desynced: #{reason}")
+        e.remote = true
+        raise e
+      end
       if @discard_records == 0
         begin
           yield record
@@ -117,6 +123,15 @@ class RecordParser
 
   def disconnect?
     if @fields.last == "disconnect"
+      @fields.pop
+      return true
+    else
+      return false
+    end
+  end
+
+  def desync?
+    if @fields.last == "desync"
       @fields.pop
       return true
     else

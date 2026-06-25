@@ -1,7 +1,78 @@
 module CableClub
+  # Raised when an unexpected message is received from the other client, which
+  # means the two sides have desynced and can no longer meaningfully communicate.
+  # Subclasses Exception rather than StandardError, like Connection::Disconnected, so it
+  # passes straight through bare `rescue`/`rescue StandardError` clauses elsewhere (e.g.
+  # the core battle engine's own catch-all in pbStartBattle) instead of being intercepted
+  # before it reaches the Cable Club-specific recovery handling (mostly local to wherever
+  # it's raised; pbAttemptConnection is only the last-resort fallback via pbConnectServer).
+  class DesyncError < Exception
+    attr_accessor :log_path
+    # True if this was raised locally because the *other* client already told us (via a
+    # :desync message) that they desynced, rather than because we detected it ourselves.
+    attr_accessor :remote
+  end
+
   ACTIVITY_OPTIONS = {:battle => _INTL("battle"),
                       :trade => _INTL("trade"),
                       :record_mix => _INTL("mix records")}
+
+  # Best-effort notice to the other client that we've hit a desync, so they don't sit
+  # waiting forever on a connection/activity we're about to abandon or recover out of.
+  # Deliberately swallows any error: failing to notify the peer shouldn't mask the
+  # original desync we're already in the middle of handling. Skipped for errors that are
+  # themselves a notice FROM the peer, so the two sides don't endlessly echo it back and
+  # forth, each re-interrupting the other's recovery.
+  def self.notify_desync(connection, error)
+    return if error.remote
+    connection.send do |writer|
+      writer.sym(:desync)
+      writer.str(error.message)
+    end
+  rescue StandardError
+  end
+
+  # Writes a standalone desync log for contexts with no battle (and so no RNG diagnostics)
+  # to attach the error to, e.g. while still agreeing on an activity, picking teams, or
+  # trading. Named and timestamped the same way as the in-battle log (PokeBattle_CableClub
+  # #pbDumpDesyncLog), just without an RNG call history. Returns the log's path, or nil if
+  # it couldn't be written.
+  def self.write_desync_log(client_id, error)
+    Dir.mkdir("Analysis") unless Dir.exist?("Analysis")
+    timestamp = Time.now.strftime("%Y%m%d_%H%M%S")
+    filename = "Analysis/desync_log_client#{client_id}_#{timestamp}.txt"
+    File.open(filename, "w:UTF-8") do |f|
+      f.puts("=== Cable Club Desync Log ===")
+      f.puts("Context: Non-battle (no RNG diagnostics)")
+      f.puts("Client ID: #{client_id}")
+      f.puts("Error: #{error.message}")
+      f.puts("Logged: #{Time.now}")
+      f.puts("Backtrace:")
+      (error.backtrace || []).each { |line| f.puts("  #{line}") }
+    end
+    return filename
+  rescue StandardError
+    return nil
+  end
+
+  # Shows the standard "please report this" messaging for a desync, given the log path
+  # (or nil if none could be saved). Shared by every desync recovery point so the
+  # guidance shown to players doesn't drift between them; callers show their own
+  # context-specific opening line (e.g. "the battle has been ended early") beforehand.
+  def self.show_desync_report(log_path)
+    pbMessage(_INTL("Please visit the Discord through the main menu and report this issue to the developers."))
+    if log_path
+      msg = _INTL("A log of the issue has been saved to:")
+      msg += "\n" + log_path
+      pbMessage(msg)
+      pbMessage(_INTL("Please ensure both players' logs are attached with your report."))
+    else
+      msg = _INTL("Unfortunately, a log of the error could not be saved.")
+      msg += "\n" + _INTL("This will make diagnosing the issue difficult, so we may not be able to help.")
+      pbMessage(msg)
+    end
+  end
+
   def self.pokemon_order(client_id)
     case client_id
     when 0; [0, 1, 2, 3, 4, 5]
@@ -51,6 +122,16 @@ module CableClub
         rescue Connection::Disconnected
           scene.pbEndBattle(0)
           exc = $!
+        rescue CableClub::DesyncError => e
+          # Recover like a normal (aborted) battle end rather than tearing down the whole
+          # Cable Club session, so both players can quickly try again with a rematch.
+          e.log_path = battle.pbDumpDesyncLog(e)
+          CableClub.notify_desync(connection, e)
+          # Show the explanation before fading the battle out, so it's clear why the
+          # battle suddenly ended, rather than after.
+          pbMessage(_INTL("I'm sorry, the connection with the other trainer became out of sync, so the battle has been ended early."))
+          CableClub.show_desync_report(e.log_path)
+          scene.pbEndBattle(0)
         ensure
           $Trainer.party.each_with_index do |pkmn, i|
             pkmn.heal

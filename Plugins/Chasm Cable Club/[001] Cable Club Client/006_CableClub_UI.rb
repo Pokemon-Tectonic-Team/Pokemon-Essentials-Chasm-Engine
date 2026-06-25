@@ -364,7 +364,22 @@ class CableClubScreen
   end
   def pbConfirm(helptext); return (@scene.pbShowCommands(helptext,[_INTL("Yes"), _INTL("No")],2)==0); end
   def pbConfirmSerious(helptext); return (@scene.pbShowCommands(helptext,[_INTL("No"), _INTL("Yes")],1)==1); end
-  
+
+  # Recovers from a desync that happened before any battle started (e.g. while agreeing
+  # on an activity, picking teams, or trading), by notifying the peer and dropping back
+  # to the activity hub on the same connection, rather than disconnecting entirely.
+  def pbRecoverFromDesync(connection, error)
+    CableClub.notify_desync(connection, error)
+    error.log_path ||= CableClub.write_desync_log(@client_id, error)
+    pbMessage(_INTL("I'm sorry, the connection became out of sync, so that could not be completed."))
+    CableClub.show_desync_report(error.log_path)
+    if @client_id == 0
+      choose_activity(connection)
+    else
+      await_choose_activity(connection)
+    end
+  end
+
   def pbStartScreen
     @scene.pbStartScene
     pbConnectDisconnectSetup
@@ -426,6 +441,11 @@ class CableClubScreen
     rescue Errno::ECONNREFUSED
       pbDisplay(_INTL("I'm sorry, the Cable Club server is down at the moment."))
       return false
+    rescue CableClub::DesyncError => e
+      e.log_path ||= CableClub.write_desync_log(@client_id, e)
+      pbMessage(_INTL("I'm sorry, the connection with the other trainer became out of sync and the Cable Club could not continue."))
+      CableClub.show_desync_report(e.log_path)
+      return false
     rescue
       pbPrintException($!)
       pbDisplay(_INTL("I'm sorry, the Cable Club has malfunctioned!"))
@@ -438,7 +458,15 @@ class CableClubScreen
   def pbConnectServer(partner_id)
     host,port = CableClub::get_server_info
     Connection.open(host,port) do |connection|
-      await_server(connection,partner_id)
+      begin
+        await_server(connection,partner_id)
+      rescue CableClub::DesyncError => e
+        # Reached only for desyncs with no recoverable state to fall back to (e.g. while
+        # still searching for a partner). Let the other client know before disconnecting,
+        # rather than leaving them waiting forever on a connection we're about to abandon.
+        CableClub.notify_desync(connection, e)
+        raise
+      end
     end
   end
   
@@ -481,7 +509,7 @@ class CableClubScreen
           @server_rules = CableClub::parse_battle_rules(record)
           partner_found = true
         else
-          raise "Unknown message: #{type}"
+          raise CableClub::DesyncError, "Unknown message: #{type}"
         end
       end
       break if partner_found
@@ -526,20 +554,24 @@ class CableClubScreen
   
   def await_accept_activity(connection,activity,method_on_accept)
     accepted = nil
-    change_state(:await_accept_activity){
-      pbDisplayDots(_INTL("Waiting for {1} to accept", @partner_name))
-      connection.update do |record|
-        case (type = record.sym)
-        when :ok
-          accepted = true
-        when :cancel
-          accepted = false
-        else
-          raise "Unknown message: #{type}"
+    begin
+      change_state(:await_accept_activity){
+        pbDisplayDots(_INTL("Waiting for {1} to accept", @partner_name))
+        connection.update do |record|
+          case (type = record.sym)
+          when :ok
+            accepted = true
+          when :cancel
+            accepted = false
+          else
+            raise CableClub::DesyncError, "Unknown message: #{type}"
+          end
         end
-      end
-      break unless accepted.nil?
-    }
+        break unless accepted.nil?
+      }
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
+    end
     if accepted
       self.send(method_on_accept,connection)
     else
@@ -551,26 +583,30 @@ class CableClubScreen
   
   def await_choose_activity(connection)
     method_for_accepting = nil
-    change_state(:await_accept_activity){
-      pbDisplayDots(_INTL("Waiting for {1} to pick an activity", @partner_name))
-      connection.update do |record|
-        case (type = record.sym)
-        when :battle
-          method_for_accepting = :partner_accept_battle
-          seed = record.int
-          battle_origin = record.int
-          battle_rule = CableClub::parse_battle_rule(record)
-          @battle_settings = [seed,battle_rule,battle_origin]
-        when :trade
-          method_for_accepting = :partner_accept_trade
-        when :record_mix
-          method_for_accepting = :partner_accept_record_mix
-        else
-          raise "Unknown message: #{type}"
+    begin
+      change_state(:await_accept_activity){
+        pbDisplayDots(_INTL("Waiting for {1} to pick an activity", @partner_name))
+        connection.update do |record|
+          case (type = record.sym)
+          when :battle
+            method_for_accepting = :partner_accept_battle
+            seed = record.int
+            battle_origin = record.int
+            battle_rule = CableClub::parse_battle_rule(record)
+            @battle_settings = [seed,battle_rule,battle_origin]
+          when :trade
+            method_for_accepting = :partner_accept_trade
+          when :record_mix
+            method_for_accepting = :partner_accept_record_mix
+          else
+            raise CableClub::DesyncError, "Unknown message: #{type}"
+          end
         end
-      end
-      break if method_for_accepting
-    }
+        break if method_for_accepting
+      }
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
+    end
     self.send(method_for_accepting,connection) if method_for_accepting
   end
   
@@ -651,23 +687,27 @@ class CableClubScreen
       end
     end
     if team_order
-      change_state(:await_battle_order){
-        pbDisplayDots(_INTL("Waiting for {1} to pick their team", @partner_name))
-        connection.update do |record|
-          case (type = record.sym)
-          when :ok
-            partner_order = []
-            record.int.times do
-              partner_order.push(record.int)
+      begin
+        change_state(:await_battle_order){
+          pbDisplayDots(_INTL("Waiting for {1} to pick their team", @partner_name))
+          connection.update do |record|
+            case (type = record.sym)
+            when :ok
+              partner_order = []
+              record.int.times do
+                partner_order.push(record.int)
+              end
+            when :cancel
+              cancel_partner = true
+            else
+              raise CableClub::DesyncError, "Unknown message: #{type}"
             end
-          when :cancel
-            cancel_partner = true
-          else
-            raise "Unknown message: #{type}"
           end
-        end
-        break if partner_order || cancel_partner
-      }
+          break if partner_order || cancel_partner
+        }
+      rescue CableClub::DesyncError => e
+        return pbRecoverFromDesync(connection, e)
+      end
     else
       connection.discard(1)
       cancel_battle = true
@@ -755,20 +795,24 @@ class CableClubScreen
   
   def confirm_trade_pokemon(connection)
     @partner_chosen = nil
-    change_state(:await_trade){
-      pbDisplayDots(_INTL("Waiting for {1} to pick a Pokémon", @partner_name))
-      connection.update do |record|
-        case (type = record.sym)
-        when :ok
-          @partner_chosen = record.int
-        when :cancel
-          @partner_chosen = -1
-        else
-          raise "Unknown message: #{type}"
+    begin
+      change_state(:await_trade){
+        pbDisplayDots(_INTL("Waiting for {1} to pick a Pokémon", @partner_name))
+        connection.update do |record|
+          case (type = record.sym)
+          when :ok
+            @partner_chosen = record.int
+          when :cancel
+            @partner_chosen = -1
+          else
+            raise CableClub::DesyncError, "Unknown message: #{type}"
+          end
         end
-      end
-      break if !@partner_chosen.nil?
-    }
+        break if !@partner_chosen.nil?
+      }
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
+    end
     trade_state = :waiting
     if @partner_chosen>=0
       $Trainer.heal_party
@@ -827,20 +871,24 @@ class CableClubScreen
   
   def await_trade_partner(connection)
     partner_confirm = nil
-    change_state(:confirm_trade){
-      pbDisplayDots(_INTL("Waiting for {1} to confirm the trade", @partner_name))
-      connection.update do |record|
-        case (type = record.sym)
-        when :ok
-          partner_confirm = true
-        when :cancel
-          partner_confirm = false
-        else
-          raise "Unknown message: #{type}"
+    begin
+      change_state(:confirm_trade){
+        pbDisplayDots(_INTL("Waiting for {1} to confirm the trade", @partner_name))
+        connection.update do |record|
+          case (type = record.sym)
+          when :ok
+            partner_confirm = true
+          when :cancel
+            partner_confirm = false
+          else
+            raise CableClub::DesyncError, "Unknown message: #{type}"
+          end
         end
-      end
-      break if !partner_confirm.nil?
-    }
+        break if !partner_confirm.nil?
+      }
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
+    end
     if partner_confirm
       do_trade(connection)
     else
@@ -857,21 +905,25 @@ class CableClubScreen
       CableClub::write_pkmn(writer, $Trainer.party[@chosen_pokemon])
     end
     resync=false
-    change_state(:resync_trade){
-      pbDisplayDots(_INTL("Waiting for {1} to resynchronize", @partner_name))
-      connection.update do |record|
-        case (type = record.sym)
-        when :update
-          @partner_party[@partner_chosen] = CableClub::parse_pkmn(record)
-          resync = true
-        else
-          raise "Unknown message: #{type}"
+    begin
+      change_state(:resync_trade){
+        pbDisplayDots(_INTL("Waiting for {1} to resynchronize", @partner_name))
+        connection.update do |record|
+          case (type = record.sym)
+          when :update
+            @partner_party[@partner_chosen] = CableClub::parse_pkmn(record)
+            resync = true
+          else
+            raise CableClub::DesyncError, "Unknown message: #{type}"
+          end
         end
-      end
-      break if resync
-    }
+        break if resync
+      }
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
+    end
   end
-  
+
   # these methods are for record mixing
   def partner_accept_record_mix(connection)
     if pbConfirm(_INTL("{1} wants to mix records!", @partner_name))
@@ -888,8 +940,12 @@ class CableClubScreen
   end
   
   def do_mix_records(connection)
-    CableClub::do_mix_records(connection) do |text|
-      pbDisplayDots(text)
+    begin
+      CableClub::do_mix_records(connection) do |text|
+        pbDisplayDots(text)
+      end
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
     end
     pbDisplay(_INTL("Record Mixing Completed!"))
     if @client_id == 0

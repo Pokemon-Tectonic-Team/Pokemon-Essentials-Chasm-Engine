@@ -60,7 +60,7 @@ module CableClub
             RecordMixer.parse_record(sym, record)
             ret = true
           else
-            raise "Unknown message: #{type}"
+            raise CableClub::DesyncError, "Unknown message: #{type}"
           end
         end
         break if ret

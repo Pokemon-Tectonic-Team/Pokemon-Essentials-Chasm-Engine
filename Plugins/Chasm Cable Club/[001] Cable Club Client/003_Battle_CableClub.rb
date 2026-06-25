@@ -94,22 +94,19 @@ class PokeBattle_CableClub < PokeBattle_Battle
     @battleAI  = PokeBattle_CableClub_AI.new(self)
     @battleRNG = Random.new(seed)
     @rngCalls = 0
-    # Diagnostic RNG logging for desync debugging (Debug mode only)
-    @rngLogFile = nil
-    if $DEBUG
-      Dir.mkdir("Analysis") unless Dir.exist?("Analysis")
-      timestamp = Time.now.strftime("%Y%m%d_%H%M%S")
-      filename = "Analysis/rng_log_client#{client_id}_#{timestamp}.txt"
-      @rngLogFile = File.open(filename, "w:UTF-8")
-      @rngLogFile.puts("=== Cable Club RNG Diagnostic Log ===")
-      @rngLogFile.puts("Client ID: #{client_id}")
-      @rngLogFile.puts("Seed: #{seed}")
-      @rngLogFile.puts("Player: #{$Trainer.name}")
-      @rngLogFile.puts("Opponent: #{opponent.name}")
-      @rngLogFile.puts("Started: #{Time.now}")
-      @rngLogFile.puts("=" * 40)
-      @rngLogFile.flush
-    end
+    # Diagnostic RNG logging for desync debugging. Always buffered in memory, and only
+    # written to disk if a desync is detected, or on battle end in Debug mode - so
+    # battles that complete normally outside Debug mode don't clutter the Analysis folder.
+    @desyncLogLines = []
+    @desyncLogLines << "=== Cable Club Desync Log ==="
+    @desyncLogLines << "Context: Battle (includes RNG diagnostics)"
+    @desyncLogLines << "Client ID: #{client_id}"
+    @desyncLogLines << "Seed: #{seed}"
+    @desyncLogLines << "Player: #{$Trainer.name}"
+    @desyncLogLines << "Opponent: #{opponent.name}"
+    @desyncLogLines << "Started: #{Time.now}"
+    @desyncLogLines << ("=" * 40)
+    @desyncLogFilename = nil
   end
 
   # Override command phase to swap AI and player order
@@ -182,36 +179,63 @@ class PokeBattle_CableClub < PokeBattle_Battle
   def pbRandom(x)
     @rngCalls += 1
     result = @battleRNG.rand(x)
-    if $DEBUG && @rngLogFile
-      # Capture the stack trace, filtering to only battle-relevant frames
-      trace = caller.select { |frame| frame.include?("Chasm") || frame.include?("Cable Club") }
-      @rngLogFile.puts("--- RNG Call ##{@rngCalls} ---")
-      @rngLogFile.puts("Turn: #{@turnCount || 'pre-battle'}")
-      @rngLogFile.puts("rand(#{x}) => #{result}")
-      # Battler state snapshot
-      @battlers.each_with_index do |b, i|
-        next unless b
-        name = b.pbThis.encode("UTF-8", invalid: :replace, undef: :replace, replace: "?")
-        @rngLogFile.puts("  Battler[#{i}]: #{name} (#{b.species}) HP=#{b.hp}/#{b.totalhp} Status=#{b.status} Fainted=#{b.fainted?}")
-      end
-      # Stack trace
-      @rngLogFile.puts("Stack:")
-      trace.each { |frame| @rngLogFile.puts("  #{frame}") }
-      @rngLogFile.puts("")
-      @rngLogFile.flush
+    # Capture the stack trace, filtering to only battle-relevant frames
+    trace = caller.select { |frame| frame.include?("Chasm") || frame.include?("Cable Club") }
+    lines = []
+    lines << "--- RNG Call ##{@rngCalls} ---"
+    lines << "Turn: #{@turnCount || 'pre-battle'}"
+    lines << "rand(#{x}) => #{result}"
+    # Battler state snapshot
+    @battlers.each_with_index do |b, i|
+      next unless b
+      name = b.pbThis.encode("UTF-8", invalid: :replace, undef: :replace, replace: "?")
+      lines << "  Battler[#{i}]: #{name} (#{b.species}) HP=#{b.hp}/#{b.totalhp} Status=#{b.status} Fainted=#{b.fainted?}"
     end
+    # Stack trace
+    lines << "Stack:"
+    trace.each { |frame| lines << "  #{frame}" }
+    lines << ""
+    @desyncLogLines.concat(lines)
     echoln("RNG calls this battle: #{rngCalls}")
     return result
   end
 
+  # Writes the buffered desync log to disk, unless it was already written.
+  def pbWriteDesyncLog(footer)
+    return @desyncLogFilename if @desyncLogFilename
+    Dir.mkdir("Analysis") unless Dir.exist?("Analysis")
+    timestamp = Time.now.strftime("%Y%m%d_%H%M%S")
+    @desyncLogFilename = "Analysis/desync_log_client#{@client_id}_#{timestamp}.txt"
+    File.open(@desyncLogFilename, "w:UTF-8") do |f|
+      @desyncLogLines.each { |line| f.puts(line) }
+      footer.each { |line| f.puts(line) }
+    end
+    return @desyncLogFilename
+  end
+
+  # Persists the desync log to disk after a desync is detected, so it can be
+  # attached to a bug report. The backtrace is appended here rather than shown to the
+  # player via pbPrintException, since that pops up a blocking dialog.
+  def pbDumpDesyncLog(error)
+    footer = [
+      "=== Desync Detected ===",
+      "Error: #{error.message}",
+      "Total RNG calls: #{@rngCalls}",
+      "Ended: #{Time.now}",
+      "Backtrace:"
+    ]
+    footer.concat((error.backtrace || []).map { |line| "  #{line}" })
+    pbWriteDesyncLog(footer)
+  end
+
   def dispose
-    if @rngLogFile
-      @rngLogFile.puts("=== Battle Ended ===")
-      @rngLogFile.puts("Total RNG calls: #{@rngCalls}")
-      @rngLogFile.puts("Decision: #{@decision}")
-      @rngLogFile.puts("Ended: #{Time.now}")
-      @rngLogFile.close
-      @rngLogFile = nil
+    if $DEBUG
+      pbWriteDesyncLog([
+        "=== Battle Ended ===",
+        "Total RNG calls: #{@rngCalls}",
+        "Decision: #{@decision}",
+        "Ended: #{Time.now}"
+      ])
     end
     Thread.current[:current_cable_club_battle] = nil
     super
@@ -254,7 +278,7 @@ class PokeBattle_CableClub < PokeBattle_Battle
               return record.int
 
             else
-              raise "Unknown message: #{type}"
+              raise CableClub::DesyncError, "Unknown message: #{type}"
             end
           end
         end
@@ -431,13 +455,13 @@ class PokeBattle_CableClub_AI < PokeBattle_AI
                     break
                   end
                 else
-                  raise "Unknown message: #{t}"
+                  raise CableClub::DesyncError, "Unknown message: #{t}"
                 end
               end
               return
 
             else
-              raise "Unknown message: #{type}"
+              raise CableClub::DesyncError, "Unknown message: #{type}"
             end
           end
         end
