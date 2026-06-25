@@ -14,7 +14,7 @@ from packaging.version import Version
 # This is the v19 version of the server. It is not compatible with earlier versions of the script
 
 HOST = r"0.0.0.0"
-PORT = 9998  # This is the port for dev. Change to 9999 before updating live server
+PORT = 9998  # Default dev port; deploy_cableclub.ps1 overrides this automatically when deploying with -Live
 PBS_DIR = r"./PBS"
 LOG_DIR = r"."
 RULES_DIR = "./OnlinePresets"

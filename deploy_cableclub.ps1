@@ -21,6 +21,9 @@ $SSH_KEY = if ($env:SSH_PRIVATE_KEY) {
 $ENV_SUFFIX = if ($Live) { "live" } else { "dev" }
 $REMOTE_HOME = "/home/$SERVER_USER/$ENV_SUFFIX"
 $SERVICE_NAME = "cableclub-$ENV_SUFFIX"
+$DEV_PORT = 9998
+$LIVE_PORT = 9999
+$SERVER_PORT = if ($Live) { $LIVE_PORT } else { $DEV_PORT }
 
 # List of specific PBS files to copy
 $PBS_FILES = @(
@@ -38,12 +41,21 @@ function Send-Files {
     
     $sshOpts = "-o StrictHostKeyChecking=accept-new"
 
-    # Upload main server file
-    Write-Host "  Uploading cable_club_v19.py..." -ForegroundColor Yellow
-    & scp $sshOpts -i $SSH_KEY ".\cable_club_v19.py" "${SERVER_USER}@${SERVER_IP}:${REMOTE_HOME}/"
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "Failed to upload main server file!" -ForegroundColor Red
-        exit 1
+    # Upload main server file, patching in the port for this environment
+    # so it never has to be hand-edited and kept in sync with -Live
+    Write-Host "  Uploading cable_club_v19.py (port $SERVER_PORT)..." -ForegroundColor Yellow
+    $serverFileContent = Get-Content ".\cable_club_v19.py" -Raw
+    $patchedServerFileContent = $serverFileContent -replace '(?m)^PORT = \d+', "PORT = $SERVER_PORT"
+    $tempServerFile = [System.IO.Path]::GetTempFileName()
+    try {
+        Set-Content -Path $tempServerFile -Value $patchedServerFileContent -NoNewline
+        & scp $sshOpts -i $SSH_KEY $tempServerFile "${SERVER_USER}@${SERVER_IP}:${REMOTE_HOME}/cable_club_v19.py"
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "Failed to upload main server file!" -ForegroundColor Red
+            exit 1
+        }
+    } finally {
+        Remove-Item -Path $tempServerFile -Force
     }
     
     # Upload specific PBS files
