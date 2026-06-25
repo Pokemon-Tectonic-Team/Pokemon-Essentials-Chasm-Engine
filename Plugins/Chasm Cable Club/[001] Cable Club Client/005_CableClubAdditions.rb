@@ -1,3 +1,24 @@
+class PokemonRuleSet
+  # Returns a deduplicated list of human-readable reasons why no combination
+  # of [minTeamLength, maxTeamLength] Pokemon from the list can satisfy this
+  # ruleset, by re-running isValid? (which already collects messages like
+  # "X is not allowed" or a rule's own errorMessage) over every combination
+  # hasRegistrableTeam? tried. hasRegistrableTeam? only returns a boolean, so
+  # without this a rejected team gives the player no clue why.
+  def registrationErrors(list)
+    return [_INTL("Choose a Pokémon.")] if !list || list.length < self.minTeamLength
+    errors = []
+    (self.minTeamLength..self.maxTeamLength).each do |x|
+      pbEachCombination(list,x){|comb|
+        comb_errors = []
+        isValid?(comb,comb_errors)
+        errors.concat(comb_errors)
+      }
+    end
+    return errors.uniq
+  end
+end
+
 class PokemonPartyScreen
   def pbPokemonMultipleEntryScreenOrder(ruleset)
     annot = []
@@ -13,7 +34,11 @@ class PokemonPartyScreen
        _INTL("FIFTH"),
        _INTL("SIXTH")
     ]
-    return nil if !ruleset.hasValidTeam?(@party)
+    if !ruleset.hasValidTeam?(@party)
+      errors = ruleset.registrationErrors(@party)
+      pbDisplay(errors[0] || _INTL("I'm sorry, you do not have a valid Pokémon team with these rules."))
+      return nil
+    end
     ret = nil
     addedEntry = false
     for i in 0...@party.length

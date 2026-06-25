@@ -131,6 +131,16 @@ class CableClub_Scene
     @viewport.dispose
   end
   
+  # Shows msg, then an itemized list of ruleset.registrationErrors(party) (if
+  # any) the same way pbAttemptConnection reports the Cable Club server's own
+  # party errors, so a custom ruleset rejecting a team is explained just as
+  # clearly as a server-side rejection.
+  def pbDisplayTeamIssues(msg,ruleset,party)
+    pbDisplay(msg)
+    errors = ruleset.registrationErrors(party)
+    pbMessage("Issues:\n" + errors.map { |e| "- #{e}" }.join("\n")) unless errors.empty?
+  end
+
   def pbSelectBattleSettings(partner_party,local_rules,server_rules)
     ret = nil
     type=0
@@ -160,9 +170,9 @@ class CableClub_Scene
             rules.addBattleRule(TripleBattle)
           end
           if !rules.ruleset.hasRegistrableTeam?($Trainer.party)
-            pbDisplay(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."))
+            pbDisplayTeamIssues(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."),rules.ruleset,$Trainer.party)
           elsif !rules.ruleset.hasRegistrableTeam?(partner_party)
-            pbDisplay(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."))
+            pbDisplayTeamIssues(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."),rules.ruleset,partner_party)
           else
             bracket_cmds = [_INTL("FFA"),_INTL("Lv. 70")]
             bracket = pbShowCommands(_INTL("Choose a bracket."),bracket_cmds, -1)
@@ -195,9 +205,9 @@ class CableClub_Scene
             when 1
               rules = rule_array[r_cmd][2]
               if !rules.ruleset.hasRegistrableTeam?($Trainer.party)
-                pbDisplay(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."))
+                pbDisplayTeamIssues(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."),rules.ruleset,$Trainer.party)
               elsif !rules.ruleset.hasRegistrableTeam?(partner_party)
-                pbDisplay(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."))
+                pbDisplayTeamIssues(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."),rules.ruleset,partner_party)
               else
                 ret = rule_array[r_cmd]
                 type = ((cmd==cmdLocalRule) ? 1 : 2)
