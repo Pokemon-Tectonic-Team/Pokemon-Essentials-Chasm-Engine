@@ -36,8 +36,11 @@ class LoadingTest < Minitest::Test
     assert_instance_of PokemonChallengeRules, pbBattleFactoryRules(true, true)
   end
 
-  def test_single_player_capped_level_adjustment_builds
-    adjustment = SinglePlayerCappedLevelAdjustment.new(50)
-    assert_equal LevelAdjustment::BothTeamsDifferent, adjustment.type
+  def test_enemy_level_adjustment_only_changes_the_enemy_team
+    player = [Pkmn.new("Player", :PIKACHU, level: 10)]
+    enemy = [Pkmn.new("Enemy", :CHARMANDER, level: 20)]
+    EnemyLevelAdjustment.new(50).adjustLevels(player, enemy)
+    assert_equal 10, player[0].level
+    assert_equal 50, enemy[0].level
   end
 end

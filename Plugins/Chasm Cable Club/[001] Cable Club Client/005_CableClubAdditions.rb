@@ -2,9 +2,9 @@ class PokemonRuleSet
   # Returns a deduplicated list of human-readable reasons why no combination
   # of [minTeamLength, maxTeamLength] Pokemon from the list can satisfy this
   # ruleset, by re-running validityErrors (which already collects every
-  # issue, not just the first) over every combination hasRegistrableTeam?
-  # tried. hasRegistrableTeam? only returns a boolean, so without this a
-  # rejected team gives the player no clue why.
+  # issue, not just the first) over every combination hasValidTeam? tried.
+  # hasValidTeam? only returns a boolean, so without this a rejected team
+  # gives the player no clue why.
   def registrationErrors(list)
     return [_INTL("Choose a Pokémon.")] if !list || list.length < self.minTeamLength
     errors = []

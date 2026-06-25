@@ -49,17 +49,21 @@ module GameData
     def self.get(id); return GameData::MOVE_DATA.fetch(id, MoveRecord.new(id.to_s, false)); end
   end
 
-  SpeciesRecord = Struct.new(:name, :isLegendary?)
+  SpeciesRecord = Struct.new(:id, :name, :isLegendary?, :species, :form)
   SPECIES_DATA = {
-    PIKACHU: SpeciesRecord.new("Pikachu", false),
-    CHARMANDER: SpeciesRecord.new("Charmander", false),
-    MEWTWO: SpeciesRecord.new("Mewtwo", true),
-    MEW: SpeciesRecord.new("Mew", true),
-    ARCEUS: SpeciesRecord.new("Arceus", true),
+    PIKACHU: SpeciesRecord.new(:PIKACHU, "Pikachu", false, :PIKACHU, 0),
+    CHARMANDER: SpeciesRecord.new(:CHARMANDER, "Charmander", false, :CHARMANDER, 0),
+    MEWTWO: SpeciesRecord.new(:MEWTWO, "Mewtwo", true, :MEWTWO, 0),
+    MEW: SpeciesRecord.new(:MEW, "Mew", true, :MEW, 0),
+    ARCEUS: SpeciesRecord.new(:ARCEUS, "Arceus", true, :ARCEUS, 0),
   }
   module Species
-    def self.get(id); return GameData::SPECIES_DATA.fetch(id, SpeciesRecord.new(id.to_s, false)); end
-    def self.each; end
+    def self.get(id); return GameData::SPECIES_DATA.fetch(id, SpeciesRecord.new(id, id.to_s, false, id, 0)); end
+    def self.each; GameData::SPECIES_DATA.each_value { |data| yield data }; end
+  end
+
+  module Ability
+    def self.getByFlag(_flag); return []; end
   end
 end
 
@@ -83,6 +87,7 @@ require_relative "#{CABLE_CLUB_DIR}/[001] Cable Club Client/007_CableClub_Rules.
 require_relative "#{CABLE_CLUB_DIR}/[001] Cable Club Client/002_CableClub.rb"
 require_relative "#{CABLE_CLUB_DIR}/[001] Cable Club Client/005_CableClubAdditions.rb"
 
+require_relative "#{BATTLE_FRONTIER_DIR}/Rules/PokemonRules.rb"
 require_relative "#{BATTLE_FRONTIER_DIR}/Rules/Rulesets.rb"
 require_relative "#{BATTLE_FRONTIER_DIR}/Rules/BattleRules.rb"
 require_relative "#{BATTLE_FRONTIER_DIR}/Rules/LevelAdjustments.rb"
@@ -97,20 +102,26 @@ class Pokemon; end
 Move = Struct.new(:id)
 
 class Pkmn < Pokemon
-  attr_accessor :name, :species, :level, :firstItem, :moves
+  attr_accessor :name, :species, :level, :firstItem, :moves, :exp, :base_stats
 
-  def initialize(name, species, level: 50, firstItem: nil, moves: [])
+  def initialize(name, species, level: 50, firstItem: nil, moves: [], base_stats: { HP: 50, ATTACK: 50, DEFENSE: 50, SPEED: 50, SPECIAL_ATTACK: 50, SPECIAL_DEFENSE: 50 }, egg: false, able: true)
     @name = name
     @species = species
     @level = level
+    @exp = level
     @firstItem = firstItem
     @moves = moves
+    @base_stats = base_stats
+    @egg = egg
+    @able = able
   end
 
-  def egg?; return false; end
+  def egg?; return @egg; end
   def hasItem?(check = nil); return check ? @firstItem == check : !@firstItem.nil?; end
   def hasMove?(move_id); return @moves.any? { |m| m.id == move_id }; end
   def isSpecies?(sym); return @species == sym; end
   def species_data; return GameData::Species.get(@species); end
-  def able?(*); return true; end
+  def able?(*); return @able; end
+  def calc_stats; end
+  def baseStats; return @base_stats; end
 end

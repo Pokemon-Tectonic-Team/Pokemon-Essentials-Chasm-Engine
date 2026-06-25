@@ -12,78 +12,17 @@
 # (Rulesets.rb) already names the Pokemon, so errorMessage only needs to
 # add the "why".
 
-# PokemonRules = StandardRestriction
-# Bans eggs, Pokemon with a base stat total of 600 or more, and Wynaut/
-# Wobbuffet specifically, but always allows Truant/Slow Start abilities and
-# Dragonite/Salamence/Tyranitar by name despite their BST. Matches the
-# Generation IV "Standard" ban list used by the Cup presets in Rulesets.rb.
-class StandardRestriction
-  def isValid?(pkmn)
-    return false if !pkmn || pkmn.egg?
-    # Species with disadvantageous abilities are not banned
-    pkmn.species_data.abilities.each do |a|
-      return true if [:TRUANT, :SLOWSTART].include?(a)
-    end
-    # Certain named species are not banned
-    return true if [:DRAGONITE, :SALAMENCE, :TYRANITAR].include?(pkmn.species)
-    # Certain named species are banned
-    return false if [:WYNAUT, :WOBBUFFET].include?(pkmn.species)
-    # Species with total base stat 600 or more are banned
-    bst = 0
-    pkmn.baseStats.each_value { |s| bst += s }
-    return false if bst >= 600
-    # Is valid
-    return true
-  end
-
-  def errorMessage(pkmn)
-    return [_INTL("{1} is an egg, which isn't allowed.", pkmn.name)] if pkmn.egg?
-    return [_INTL("{1} is banned under the Standard ruleset.", pkmn.name)] if [:WYNAUT, :WOBBUFFET].include?(pkmn.species)
-    bst = 0
-    pkmn.baseStats.each_value { |s| bst += s }
-    return [_INTL("{1} has a base stat total of {2}, which is 600 or more.", pkmn.name, bst)]
-  end
-end
-
-# PokemonRules = LaxStandardRestriction
-# Same as StandardRestriction, but the BST ban only kicks in above 600 (not
-# at 600), and Defeatist is also allowed alongside Truant/Slow Start.
-class LaxStandardRestriction
-  def isValid?(pkmn)
-    return false if !pkmn || pkmn.egg?
-    # Species with disadvantageous abilities are not banned
-    pkmn.species_data.abilities.each do |a|
-      return true if [:TRUANT, :SLOWSTART, :DEFEATIST].include?(a)
-    end
-    # Certain named species are banned
-    return false if [:WYNAUT, :WOBBUFFET].include?(pkmn.species)
-    # Species with total base stat 600 or more are banned
-    bst = 0
-    pkmn.baseStats.each_value { |s| bst += s }
-    return false if bst > 600
-    # Is valid
-    return true
-  end
-
-  def errorMessage(pkmn)
-    return [_INTL("{1} is an egg, which isn't allowed.", pkmn.name)] if pkmn.egg?
-    return [_INTL("{1} is banned under the Standard ruleset.", pkmn.name)] if [:WYNAUT, :WOBBUFFET].include?(pkmn.species)
-    bst = 0
-    pkmn.baseStats.each_value { |s| bst += s }
-    return [_INTL("{1} has a base stat total of {2}, which is over 600.", pkmn.name, bst)]
-  end
-end
-
 # PokemonRules = NoLegendaryRestriction
-# Bans eggs and any species flagged as legendary.
+# Bans any species flagged as legendary. Eggs are already banned
+# unconditionally by PokemonRuleSet#isPokemonValid? (Rulesets.rb), so this
+# doesn't need to check for them itself.
 class NoLegendaryRestriction
   def isValid?(pkmn)
-    return false if !pkmn || pkmn.egg?
+    return false if !pkmn
     return !pkmn.species_data.isLegendary?
   end
 
   def errorMessage(pkmn)
-    return [_INTL("{1} is an egg, which isn't allowed.", pkmn.name)] if pkmn.egg?
     return [_INTL("{1} is a legendary Pokémon, which isn't allowed.", pkmn.name)]
   end
 end
@@ -121,27 +60,6 @@ class WeightRestriction
   def errorMessage(pkmn)
     weight = (pkmn.is_a?(Pokemon)) ? pkmn.weight : GameData::Species.get(pkmn).weight
     return [_INTL("{1} weighs {2}kg, heavier than the {3}kg maximum.", pkmn.name, weight / 10.0, @level)]
-  end
-end
-
-# Unused - nothing in the codebase constructs this today. Was a "Negative/
-# Extended Game" ban on Arceus and the Sinnoh elemental berries.
-class NegativeExtendedGameClause
-  def isValid?(pkmn)
-    return false if pkmn.isSpecies?(:ARCEUS)
-    return false if pkmn.hasItem?(:MICLEBERRY)
-    return false if pkmn.hasItem?(:CUSTAPBERRY)
-    return false if pkmn.hasItem?(:JABOCABERRY)
-    return false if pkmn.hasItem?(:ROWAPBERRY)
-  end
-
-  def errorMessage(pkmn)
-    errors = []
-    errors << _INTL("{1} is Arceus, which isn't allowed.", pkmn.name) if pkmn.isSpecies?(:ARCEUS)
-    [:MICLEBERRY, :CUSTAPBERRY, :JABOCABERRY, :ROWAPBERRY].each do |item|
-      errors << _INTL("{1} is holding {2}, which isn't allowed.", pkmn.name, GameData::Item.get(item).name) if pkmn.hasItem?(item)
-    end
-    return errors
   end
 end
 
@@ -188,30 +106,6 @@ class UnevolvedFormRestriction
   end
 end
 
-# PokemonRules = NonEggRestriction
-# Bans eggs. Used by Cable Club's own Free For All presets.
-class NonEggRestriction
-  def isValid?(pkmn)
-    return pkmn && !pkmn.egg?
-  end
-
-  def errorMessage(pkmn)
-    return [_INTL("{1} is an egg, which isn't allowed.", pkmn.name)]
-  end
-end
-
-# PokemonRules = AblePokemonRestriction
-# Bans Pokemon that can't battle (fainted, or otherwise unable per any
-# ability flagged "UnableByDefault", e.g. an egg).
-class AblePokemonRestriction
-  def isValid?(pkmn)
-    return pkmn && pkmn.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
-  end
-
-  def errorMessage(pkmn)
-    return [_INTL("{1} isn't able to battle.", pkmn.name)]
-  end
-end
 
 # PokemonRules = SpeciesRestriction,species1,species2,...
 # Only allows the listed species (an allow-list) - anything else is banned.
@@ -296,12 +190,8 @@ class BannedItemRestriction
     @itemlist = itemlist.clone
   end
 
-  def isSpecies?(item,itemlist)
-    return itemlist.include?(item)
-  end
-
   def isValid?(pkmn)
-    return !pkmn.firstItem || !isSpecies?(pkmn.firstItem, @itemlist)
+    return !pkmn.firstItem || !@itemlist.include?(pkmn.firstItem)
   end
 
   def errorMessage(pkmn)
@@ -318,18 +208,6 @@ class ItemsDisallowedClause
 
   def errorMessage(pkmn)
     return [_INTL("{1} is holding {2}, but holding items isn't allowed.", pkmn.name, GameData::Item.get(pkmn.firstItem).name)]
-  end
-end
-
-# PokemonRules = SoulDewClause
-# Bans holding a Soul Dew specifically.
-class SoulDewClause
-  def isValid?(pkmn)
-    return !pkmn.hasItem?(:SOULDEW)
-  end
-
-  def errorMessage(pkmn)
-    return [_INTL("{1} is holding a Soul Dew, which isn't allowed.", pkmn.name)]
   end
 end
 
@@ -351,7 +229,7 @@ class BannedMoveRestriction
 end
 
 # PokemonRules = PrimevalMoveRestriction
-# Bans any Pokemon that knows a Primeval (empowered/Delta) move.
+# Bans any Pokemon that knows a Primeval (incl. empowered) move.
 class PrimevalMoveRestriction
   def isValid?(pkmn)
     return pkmn.moves.none? { |m| GameData::Move.get(m.id).empoweredMove? }
@@ -360,33 +238,5 @@ class PrimevalMoveRestriction
   def errorMessage(pkmn)
     primeval = pkmn.moves.select { |m| GameData::Move.get(m.id).empoweredMove? }
     return primeval.map { |m| _INTL("{1} knows {2}, a Primeval move, which isn't allowed.", pkmn.name, GameData::Move.get(m.id).name) }
-  end
-end
-
-# PokemonRules = LittleCupRestriction
-# Bans a few items/moves/species that would otherwise undermine a Little
-# Cup-style baby-Pokemon format: Berry Juice, Deep Sea Tooth, Sonic Boom,
-# Dragon Rage, and species whose evolution doesn't depend on level (so it
-# can't be capped by a level restriction alone).
-class LittleCupRestriction
-  BANNED_SPECIES = [:SCYTHER, :SNEASEL, :MEDITITE, :YANMA, :TANGELA, :MURKROW]
-
-  def isValid?(pkmn)
-    return false if pkmn.hasItem?(:BERRYJUICE)
-    return false if pkmn.hasItem?(:DEEPSEATOOTH)
-    return false if pkmn.hasMove?(:SONICBOOM)
-    return false if pkmn.hasMove?(:DRAGONRAGE)
-    return false if BANNED_SPECIES.any? { |s| pkmn.isSpecies?(s) }
-    return true
-  end
-
-  def errorMessage(pkmn)
-    errors = []
-    errors << _INTL("{1} is holding a Berry Juice, which isn't allowed in Little Cup.", pkmn.name) if pkmn.hasItem?(:BERRYJUICE)
-    errors << _INTL("{1} is holding a Deep Sea Tooth, which isn't allowed in Little Cup.", pkmn.name) if pkmn.hasItem?(:DEEPSEATOOTH)
-    errors << _INTL("{1} knows {2}, which isn't allowed in Little Cup.", pkmn.name, GameData::Move.get(:SONICBOOM).name) if pkmn.hasMove?(:SONICBOOM)
-    errors << _INTL("{1} knows {2}, which isn't allowed in Little Cup.", pkmn.name, GameData::Move.get(:DRAGONRAGE).name) if pkmn.hasMove?(:DRAGONRAGE)
-    errors << _INTL("{1}'s species isn't allowed in Little Cup.", pkmn.name) if BANNED_SPECIES.any? { |s| pkmn.isSpecies?(s) }
-    return errors
   end
 end

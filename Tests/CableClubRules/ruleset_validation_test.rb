@@ -12,12 +12,12 @@ class RulesetValidationTest < Minitest::Test
     assert ruleset.respond_to?(:addTeamRule)
   end
 
-  def test_hasRegistrableTeam_basic_legal_and_illegal
+  def test_hasValidTeam_basic_legal_and_illegal
     ruleset = PokemonRuleSet.new(1)
     ruleset.setNumberRange(1, 1)
     ruleset.addPokemonRule(NoLegendaryRestriction.new)
-    assert ruleset.hasRegistrableTeam?([Pkmn.new("Pikachu", :PIKACHU)])
-    refute ruleset.hasRegistrableTeam?([Pkmn.new("Mewtwo", :MEWTWO)])
+    assert ruleset.hasValidTeam?([Pkmn.new("Pikachu", :PIKACHU)])
+    refute ruleset.hasValidTeam?([Pkmn.new("Mewtwo", :MEWTWO)])
   end
 
   # Before the canRegisterTeam? removal, isValid?-equivalent bounds checks
@@ -56,8 +56,51 @@ class RulesetValidationTest < Minitest::Test
     ruleset.setNumberRange(2, 2)
     ruleset.addTeamRule(SpeciesClause.new)
     duplicates = [Pkmn.new("Pikachu1", :PIKACHU), Pkmn.new("Pikachu2", :PIKACHU)]
-    refute ruleset.hasRegistrableTeam?(duplicates)
+    refute ruleset.hasValidTeam?(duplicates)
     errors = ruleset.registrationErrors(duplicates)
     assert_equal ["Pikachu1 and Pikachu2 can't both be Pikachu."], errors
+  end
+
+  # Eggs and not-able Pokemon used to only be banned if a ruleset explicitly
+  # opted into NonEggRestriction/AblePokemonRestriction. Both are gone now -
+  # isPokemonValid?/pokemonInvalidReasons reject them unconditionally, with
+  # no PokemonRules added at all.
+  def test_eggs_are_always_rejected_with_no_rules_added
+    ruleset = PokemonRuleSet.new(1)
+    egg = Pkmn.new("Egg", :PIKACHU, egg: true)
+    refute ruleset.isPokemonValid?(egg)
+    assert_equal ["Egg is an egg, which isn't allowed."], ruleset.pokemonInvalidReasons(egg)
+  end
+
+  def test_not_able_pokemon_are_always_rejected_with_no_rules_added
+    ruleset = PokemonRuleSet.new(1)
+    fainted = Pkmn.new("Fainted", :PIKACHU, able: false)
+    refute ruleset.isPokemonValid?(fainted)
+    assert_equal ["Fainted isn't able to battle."], ruleset.pokemonInvalidReasons(fainted)
+  end
+
+  # pokemonInvalidReasons used to return as soon as it found the egg/not-able
+  # issue, so a Pokemon that was also banned for some other reason (e.g. a
+  # banned item) would only ever be told about the egg - the other rule never
+  # even ran. It should report everything wrong at once, same as any other
+  # PokemonRule.
+  def test_egg_does_not_stop_other_pokemon_rules_from_also_being_reported
+    ruleset = PokemonRuleSet.new(1)
+    ruleset.addPokemonRule(BannedItemRestriction.new(:SOULDEW))
+    egg = Pkmn.new("Egg", :PIKACHU, egg: true, firstItem: :SOULDEW)
+    errors = ruleset.pokemonInvalidReasons(egg)
+    assert_includes errors, "Egg is an egg, which isn't allowed."
+    assert_includes errors, "Egg is holding Soul Dew, which isn't allowed."
+    assert_equal 2, errors.length
+  end
+
+  def test_not_able_does_not_stop_other_pokemon_rules_from_also_being_reported
+    ruleset = PokemonRuleSet.new(1)
+    ruleset.addPokemonRule(BannedItemRestriction.new(:SOULDEW))
+    fainted = Pkmn.new("Fainted", :PIKACHU, able: false, firstItem: :SOULDEW)
+    errors = ruleset.pokemonInvalidReasons(fainted)
+    assert_includes errors, "Fainted isn't able to battle."
+    assert_includes errors, "Fainted is holding Soul Dew, which isn't allowed."
+    assert_equal 2, errors.length
   end
 end

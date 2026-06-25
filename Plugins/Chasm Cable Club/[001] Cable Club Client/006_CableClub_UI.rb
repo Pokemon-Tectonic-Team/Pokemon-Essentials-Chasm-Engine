@@ -161,7 +161,6 @@ class CableClub_Scene
           rules=PokemonOnlineRules.new
           rules.setTeamPreview(30)
           rules.setNumberRange(1,6)
-          rules.addPokemonRule(NonEggRestriction)
           if battle_cmd == 1 # double battle
             rules.setNumberRange(2,6)
             rules.setBattleMode("double")
@@ -169,9 +168,9 @@ class CableClub_Scene
             rules.setNumberRange(3,6)
             rules.setBattleMode("triple")
           end
-          if !rules.ruleset.hasRegistrableTeam?($Trainer.party)
+          if !rules.ruleset.hasValidTeam?($Trainer.party)
             pbDisplayTeamIssues(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."),rules.ruleset,$Trainer.party)
-          elsif !rules.ruleset.hasRegistrableTeam?(partner_party)
+          elsif !rules.ruleset.hasValidTeam?(partner_party)
             pbDisplayTeamIssues(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."),rules.ruleset,partner_party)
           else
             bracket_cmds = [_INTL("FFA"),_INTL("Lv. 70")]
@@ -204,9 +203,9 @@ class CableClub_Scene
               pbDisplay(rule_array[r_cmd][1])
             when 1
               rules = rule_array[r_cmd][2]
-              if !rules.ruleset.hasRegistrableTeam?($Trainer.party)
+              if !rules.ruleset.hasValidTeam?($Trainer.party)
                 pbDisplayTeamIssues(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."),rules.ruleset,$Trainer.party)
-              elsif !rules.ruleset.hasRegistrableTeam?(partner_party)
+              elsif !rules.ruleset.hasValidTeam?(partner_party)
                 pbDisplayTeamIssues(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."),rules.ruleset,partner_party)
               else
                 ret = rule_array[r_cmd]

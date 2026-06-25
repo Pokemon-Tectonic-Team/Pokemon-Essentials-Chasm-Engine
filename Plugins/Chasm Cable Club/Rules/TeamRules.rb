@@ -2,7 +2,7 @@
 # "TeamRules = SpeciesClause" or "TeamRules = TotalLevelRestriction,80". Each
 # is checked via isValid?(team) against any combination, sized anywhere from
 # minTeamLength to maxTeamLength, of the entered team (PokemonRuleSet#isValid?/
-# hasRegistrableTeam?, Rulesets.rb) - passes if at least one such combination
+# hasValidTeam?, Rulesets.rb) - passes if at least one such combination
 # satisfies every TeamRules entry. See PokemonRules.rb for the separate
 # per-Pokemon checks instead.
 #
@@ -21,15 +21,21 @@
 # failing rule so a player can see everything wrong with their team at once.
 
 # Helper used by NicknameClause to track which nicknames are already in use
-# and which species' real names they collide with.
+# and which species' real names they collide with. NicknameClause calls
+# these directly on the module (NicknameChecker.check(...)), so extend self
+# is required - without it these would only be usable as instance methods
+# on something that includes this module, and the module-level calls below
+# would raise NoMethodError.
 module NicknameChecker
+  extend self
+
   @@names = {}
 
   def getName(species)
     n = @@names[species]
     return n if n
-    n = GameData::Species.get(species).name
-    @@names[species] = n.upcase
+    n = GameData::Species.get(species).name.upcase
+    @@names[species] = n
     return n
   end
 
@@ -50,10 +56,12 @@ end
 # match the (real) species name of another Pokemon on the team.
 class NicknameClause
   def isValid?(team)
+    team.each do |pkmn|
+      return false if !NicknameChecker.check(pkmn.name, pkmn.species)
+    end
     for i in 0...team.length - 1
       for j in i + 1...team.length
         return false if team[i].name == team[j].name
-        return false if !NicknameChecker.check(team[i].name, team[i].species)
       end
     end
     return true
@@ -76,9 +84,7 @@ class NicknameClause
 end
 
 # TeamRules = RestrictedSpeciesRestriction,maxValue,species1,...
-# Caps how many of the listed species can appear together at maxValue. See
-# RestrictedSpeciesTeamRestriction/RestrictedSpeciesSubsetRestriction below
-# for ready-made versions of this with a fixed cap.
+# Caps how many of the listed species can appear together at maxValue.
 class RestrictedSpeciesRestriction
   def initialize(maxValue, *specieslist)
     @specieslist = specieslist.clone
@@ -122,26 +128,6 @@ class RestrictedLegendsRestriction
   def errorMessage(team)
     offenders = team.select { |pkmn| pkmn && pkmn.species_data.isLegendary? }.map(&:name)
     return [_INTL("Sorry, you can only have {1} legendary on your team! You have: {2}", @maxValue, offenders.join(", "))]
-  end
-end
-
-# TeamRules = RestrictedSpeciesTeamRestriction,species1,species2,...
-# RestrictedSpeciesRestriction with the cap fixed at 4. The "Team" in the
-# name is a leftover from the removed TeamRules/SubsetRules distinction -
-# both this and RestrictedSpeciesSubsetRestriction below go under TeamRules
-# now, and only differ in their preset cap (4 vs 2).
-class RestrictedSpeciesTeamRestriction < RestrictedSpeciesRestriction
-  def initialize(*specieslist)
-    super(4, *specieslist)
-  end
-end
-
-# TeamRules = RestrictedSpeciesSubsetRestriction,species1,species2,...
-# RestrictedSpeciesRestriction with the cap fixed at 2. See
-# RestrictedSpeciesTeamRestriction above re: the "Subset" in the name.
-class RestrictedSpeciesSubsetRestriction < RestrictedSpeciesRestriction
-  def initialize(*specieslist)
-    super(2, *specieslist)
   end
 end
 
