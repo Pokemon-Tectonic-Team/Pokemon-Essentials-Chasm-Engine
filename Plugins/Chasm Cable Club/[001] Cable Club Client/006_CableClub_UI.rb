@@ -135,47 +135,45 @@ class CableClub_Scene
     ret = nil
     type=0
     commands = []
-    cmdSingleBattle  = -1
-    cmdDoubleBattle  = -1
-    cmdTripleBattle  = -1
+    cmdFreeForAll    = -1
     cmdLocalRule     = -1
     cmdServerRule    = -1
-    commands[cmdSingleBattle = commands.length]  = _INTL("Single Battle")
-    commands[cmdDoubleBattle = commands.length]  = _INTL("Double Battle")
-    commands[cmdTripleBattle = commands.length]  = _INTL("Triple Battle")
-    commands[cmdLocalRule = commands.length]     = _INTL("Load Local Rule") if local_rules && !local_rules.empty?
-    commands[cmdServerRule = commands.length]    = _INTL("Load Server Rule") if server_rules && !server_rules.empty?
+    commands[cmdFreeForAll = commands.length]    = _INTL("Free For All")
+    commands[cmdServerRule = commands.length]    = _INTL("Official Rules") if server_rules && !server_rules.empty?
+    commands[cmdLocalRule = commands.length]     = _INTL("Custom Rules") if local_rules && !local_rules.empty?
     loop do
       break if ret
       cmd = pbShowCommands(_INTL("Select Battle Ruleset"),commands,-1)
-      if (cmdSingleBattle>=0 && cmd==cmdSingleBattle) ||
-         (cmdDoubleBattle>=0 && cmd==cmdDoubleBattle) ||
-         (cmdTripleBattle>=0 && cmd==cmdTripleBattle)
-        rules=PokemonOnlineRules.new
-        rules.setTeamPreview(30)
-        rules.setNumberRange(1,6)
-        rules.addPokemonRule(NonEggRestriction)
-        if cmd == cmdDoubleBattle # double battle
-          rules.setNumberRange(2,6)
-          rules.addBattleRule(DoubleBattle)
-        elsif cmd == cmdTripleBattle
-          rules.setNumberRange(3,6)
-          rules.addBattleRule(TripleBattle)
-        end
-        if !rules.ruleset.hasRegistrableTeam?($Trainer.party)
-          pbDisplay(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."))
-        elsif !rules.ruleset.hasRegistrableTeam?(partner_party)
-          pbDisplay(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."))
-        else
-          bracket_cmds = [_INTL("FFA"),_INTL("Lv. 70")]
-          bracket = pbShowCommands(_INTL("Choose a bracket."),bracket_cmds, -1)
-          if bracket >= 0
-            case bracket
-            when 1; rules.setLevelAdjustment(FixedLevelAdjustment,70)
+      if cmdFreeForAll>=0 && cmd==cmdFreeForAll
+        battle_cmds = [_INTL("Single Battle"),_INTL("Double Battle"),_INTL("Triple Battle")]
+        battle_cmd = pbShowCommands(_INTL("Free For All"),battle_cmds,-1)
+        if battle_cmd>=0
+          rules=PokemonOnlineRules.new
+          rules.setTeamPreview(30)
+          rules.setNumberRange(1,6)
+          rules.addPokemonRule(NonEggRestriction)
+          if battle_cmd == 1 # double battle
+            rules.setNumberRange(2,6)
+            rules.addBattleRule(DoubleBattle)
+          elsif battle_cmd == 2 # triple battle
+            rules.setNumberRange(3,6)
+            rules.addBattleRule(TripleBattle)
+          end
+          if !rules.ruleset.hasRegistrableTeam?($Trainer.party)
+            pbDisplay(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."))
+          elsif !rules.ruleset.hasRegistrableTeam?(partner_party)
+            pbDisplay(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."))
+          else
+            bracket_cmds = [_INTL("FFA"),_INTL("Lv. 70")]
+            bracket = pbShowCommands(_INTL("Choose a bracket."),bracket_cmds, -1)
+            if bracket >= 0
+              case bracket
+              when 1; rules.setLevelAdjustment(FixedLevelAdjustment,70)
+              end
+              desc = sprintf("%s (%s)",battle_cmds[battle_cmd],bracket_cmds[bracket])
+              ret = [desc,desc,rules]
+              break
             end
-            desc = sprintf("%s (%s)",commands[cmd],bracket_cmds[bracket])
-            ret = [desc,desc,rules]
-            break
           end
         end
       elsif (cmdLocalRule>=0 && cmd==cmdLocalRule) ||
