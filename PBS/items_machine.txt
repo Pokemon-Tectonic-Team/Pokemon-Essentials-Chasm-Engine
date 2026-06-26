@@ -1259,3 +1259,327 @@ Price = 4000
 FieldUse = TM
 Flags = SkipPocketMessage
 Move = SWEETSELENE
+#-------------------------------
+[TMHEADBUTT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = HEADBUTT
+#-------------------------------
+[TMLATHER]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LATHER
+#-------------------------------
+[TMFLAMEWHEEL]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FLAMEWHEEL
+#-------------------------------
+[TMBROIL]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BROIL
+#-------------------------------
+[TMWAVEBREAK]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = WAVEBREAK
+#-------------------------------
+[TMBUBBLEBEAM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BUBBLEBEAM
+#-------------------------------
+[TMRAZORLEAF]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RAZORLEAF
+#-------------------------------
+[TMMAGICALLEAF]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = MAGICALLEAF
+#-------------------------------
+[TMSPARK]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SPARK
+#-------------------------------
+[TMLASERBEAM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = LASERBEAM
+#-------------------------------
+[TMFROSTBARB]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FROSTBARB
+#-------------------------------
+[TMFROSTOVER]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FROSTOVER
+#-------------------------------
+[TMPSYCHOCUT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PSYCHOCUT
+#-------------------------------
+[TMPSYPIERCE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = PSYPIERCE
+#-------------------------------
+[TMCAUSTICPUNCH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CAUSTICPUNCH
+#-------------------------------
+[TMSLUDGE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SLUDGE
+#-------------------------------
+[TMRAKE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = RAKE
+#-------------------------------
+[TMDRONING]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DRONING
+#-------------------------------
+[TMROCKDRIVE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = ROCKDRIVE
+#-------------------------------
+[TMCRYSTALGLEAM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CRYSTALGLEAM
+#-------------------------------
+[TMTAILSLAM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TAILSLAM
+#-------------------------------
+[TMVENT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = VENT
+#-------------------------------
+[TMAERIALACE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = AERIALACE
+#-------------------------------
+[TMBOREALWIND]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = BOREALWIND
+#-------------------------------
+[TMFORCEPALM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FORCEPALM
+#-------------------------------
+[TMCONCUSS]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CONCUSS
+#-------------------------------
+[TMSHADOWCLAW]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SHADOWCLAW
+#-------------------------------
+[TMUMBRAGE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = UMBRAGE
+#-------------------------------
+[TMSHRED]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SHRED
+#-------------------------------
+[TMDRAGONBREATH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DRAGONBREATH
+#-------------------------------
+[TMFEINTATTACK]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FEINTATTACK
+#-------------------------------
+[TMTEASE]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = TEASE
+#-------------------------------
+[TMMETALCLAW]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = METALCLAW
+#-------------------------------
+[TMSHINESHOT]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = SHINESHOT
+#-------------------------------
+[TMFROLIC]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = FROLIC
+#-------------------------------
+[TMDAZZLINGGLEAM]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = DAZZLINGGLEAM

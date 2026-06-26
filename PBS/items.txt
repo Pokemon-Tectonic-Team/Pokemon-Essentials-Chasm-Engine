@@ -1877,7 +1877,7 @@ Description = A held item that can cure dizzy.
 Name = Spelon Berry
 NamePlural = Spelon Berries
 Pocket = 9
-Price = 500
+Price = 0
 Flags = Berry
 Description = A held item that can cure leeched.
 #-------------------------------
@@ -1885,7 +1885,7 @@ Description = A held item that can cure leeched.
 Name = Belue Berry
 NamePlural = Belue Berries
 Pocket = 9
-Price = 500
+Price = 0
 Flags = Berry
 Description = A held item that can cure waterlogged.
 #-------------------------------
@@ -2165,7 +2165,7 @@ Description = If held by a Pokémon and a special attack hits it, the attacker t
 Name = Kee Berry
 NamePlural = Kee Berries
 Pocket = 9
-Price = 20
+Price = 0
 Flags = Berry
 Description = If held by a Pokémon and a physical attack hits it, raises the holder's Defense by four steps.
 #-------------------------------
@@ -2173,7 +2173,7 @@ Description = If held by a Pokémon and a physical attack hits it, raises the ho
 Name = Maranga Berry
 NamePlural = Maranga Berries
 Pocket = 9
-Price = 20
+Price = 0
 Flags = Berry
 Description = If held by a Pokémon and a special attack hits it, raises the holder's Sp. Def by four steps.
 #-------------------------------
