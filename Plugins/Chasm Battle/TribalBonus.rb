@@ -20,8 +20,10 @@ class TribalBonus
     def updateTribeCount()
         resetTribeCounts()
 
-        # Count all tribes that exist for pokemon in player's party
-        @trainer.party.each {|pokemon|
+        # Count all tribes that exist for pokemon in the trainer's standby party (falling back to
+        # their battle party if no standby override is set - see Trainer#standby_party)
+        party = @trainer.standby_party || @trainer.party
+        party.each {|pokemon|
             tribes = pokemon.tribes
             tribes.each {|tribe|
                 next if !@tribeCounts.has_key?(tribe)

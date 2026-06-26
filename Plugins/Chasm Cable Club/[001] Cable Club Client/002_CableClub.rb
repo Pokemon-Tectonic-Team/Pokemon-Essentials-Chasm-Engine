@@ -88,7 +88,7 @@ module CableClub
     end
   end
 
-  def self.do_battle(connection, client_id, seed, battle_rules, player_party, partner, partner_party, previewed_opponent_party: nil)
+  def self.do_battle(connection, client_id, seed, battle_rules, player_party, partner, partner_party, previewed_opponent_party: nil, opponent_standby_party: nil)
     $Trainer.heal_party # Avoids having to transmit damaged state.
     partner_party.each{|pkmn| pkmn.heal} # back to back battles desync without it.
     oldlevels = battle_rules.adjustLevels($Trainer.party,partner_party)
@@ -99,7 +99,7 @@ module CableClub
       oldmoves2 = partner_party.transform { |p| p.moves.dup }
     end
     scene = pbNewBattleScene
-    battle = PokeBattle_CableClub.new(connection, client_id, scene, player_party, partner_party, partner, seed, previewed_opponent_party: previewed_opponent_party)
+    battle = PokeBattle_CableClub.new(connection, client_id, scene, player_party, partner_party, partner, seed, previewed_opponent_party: previewed_opponent_party, opponent_standby_party: opponent_standby_party)
     battle.endSpeechesWin = [partner.win_text]
     battle.endSpeeches = [partner.lose_text]
     battle.items = []
@@ -148,6 +148,10 @@ module CableClub
             pkmn.moves = oldmoves2[i] if !DISABLE_SKETCH_ONLINE
           end
           battle_rules.unadjustLevels($Trainer.party,partner_party,oldlevels)
+          # Clear the standby_party set in PokeBattle_CableClub#initialize - otherwise it'd keep
+          # pointing at this battle's roster snapshot, going stale once $Trainer.party is next
+          # reassigned wholesale (rather than just mutated) elsewhere, e.g. Battle Frontier.
+          $Trainer.standby_party = nil
         end
       }
     }

@@ -79,7 +79,7 @@ class PokeBattle_CableClub < PokeBattle_Battle
   # around purely so the Poké X-Ray's note-taking display can still list previewed Pokémon
   # the opponent never sent out, marking them "Not Brought" once the pick cap is reached.
   attr_reader :previewed_opponent_party
-  def initialize(connection, client_id, scene, player_party, opponent_party, opponent, seed, previewed_opponent_party: nil)
+  def initialize(connection, client_id, scene, player_party, opponent_party, opponent, seed, previewed_opponent_party: nil, opponent_standby_party: nil)
     @connection = connection
     @client_id = client_id
     @previewed_opponent_party = previewed_opponent_party
@@ -90,10 +90,16 @@ class PokeBattle_CableClub < PokeBattle_Battle
     # else
     #   player = NPCTrainer.new($Trainer.name, $Trainer.trainertype)
     # end
-    # attach parties to trainers for tribe calculations
-    # player.party = player_party
     player = $Trainer
     opponent.party = opponent_party
+    # Tribes (TribalBonus.rb) should count against everyone a trainer brought to Cable Club, not
+    # just whoever they picked to fight this particular battle (e.g. Pick 4 formats) - so give both
+    # sides an explicit standby_party (Trainer#standby_party) covering their whole brought roster.
+    # player.party (== $Trainer.party) already is that whole roster, since unlike opponent.party
+    # above it's never reassigned to the battle subset - kept explicit here anyway so both sides
+    # are set up the same way and neither relies on that as an unstated assumption.
+    player.standby_party = player.party
+    opponent.standby_party = opponent_standby_party || opponent_party
     Thread.current[:current_cable_club_battle] = self
     super(scene, player_party, opponent_party, [player], [opponent])
     @battleAI  = PokeBattle_CableClub_AI.new(self)

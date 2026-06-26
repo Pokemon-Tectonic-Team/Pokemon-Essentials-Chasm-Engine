@@ -8,6 +8,11 @@ class Trainer
     attr_accessor :id
     attr_accessor :language
     attr_accessor :party
+    # Optional override of the roster Tribe membership is counted against (TribalBonus#updateTribeCount).
+    # Lets an online battle where only some of a trainer's brought Pokemon are actually fighting (e.g. Pick 4
+    # formats) still count tribes against everyone they brought, not just whoever's in the battle itself.
+    # nil for every trainer except an online opponent, who has no other roster the engine tracks.
+    attr_accessor :standby_party
     attr_reader   :name_for_hashing
     attr_accessor :policies
     attr_accessor :tribalBonus
