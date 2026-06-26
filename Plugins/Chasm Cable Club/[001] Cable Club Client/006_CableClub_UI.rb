@@ -939,7 +939,7 @@ class TeamPreview_Scene
         # Make a string for displaying the timer
         min = @total_sec / 60
         sec = @total_sec % 60
-        @sprites["timer"].text = _ISPRINTF("<ac>{1:02d}:{2:02d}", min, sec)
+        @sprites["timer"].text = _ISPRINTF("{1:02d}:{2:02d}", min, sec) + "<r>" + _INTL("Press ESC to skip")
       end
     end
   end
@@ -1021,7 +1021,7 @@ class TeamPreview_Scene
       self.update
       if Input.trigger?(Input::B) || @total_sec <= 0
         @enable_timer = false
-        @sprites["timer"].text = _ISPRINTF("<ac>00:00")
+        @sprites["timer"].text = "00:00<r>" + _INTL("Press ESC to skip")
         break
       end
     end 
