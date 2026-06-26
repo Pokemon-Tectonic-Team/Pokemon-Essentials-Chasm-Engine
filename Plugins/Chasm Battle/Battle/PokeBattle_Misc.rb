@@ -300,15 +300,21 @@ class PokeBattle_Battle
         return @commandPhasesThisRound.zero?
     end
 
+    # Normally only the player's reveals matter, since the AI uses this to react fairly to the
+    # human's hidden info and already has full knowledge of its own (NPC) side. Online,
+    # both sides are real players, so the opponent's reveals matter too, for the Poké X-Ray's
+    # note-taking display (PartyShowcaseRevealState.rb) - and it's safe to track them, since no
+    # AI decision-making ever runs for the opponent's side online (PokeBattle_CableClub_AI
+    # relays the network connection's actual choices instead of scoring anything).
     def aiLearnsAbility(battler, ability)
-        return unless battler.pbOwnedByPlayer?
+        return unless battler.pbOwnedByPlayer? || is_online?
         return if @knownAbilities[battler.pokemon.personalID].include?(ability)
         @knownAbilities[battler.pokemon.personalID].push(ability)
         echoln("[AI LEARNING] The AI is now aware of #{battler.pbThis(true)}'s ability #{ability}")
     end
 
     def aiLearnsPokemonAbility(pkmn, ownerIndex, ability)
-        return unless ownerIndex == 0
+        return unless ownerIndex == 0 || is_online?
         return if @knownAbilities[pkmn.personalID].include?(ability)
         @knownAbilities[pkmn.personalID].push(ability)
         echoln("[AI LEARNING] The AI is now aware of #{pkmn.name}'s ability #{ability}")
@@ -328,8 +334,13 @@ class PokeBattle_Battle
         end
     end
 
+    def aiKnownAbilities(pokemon)
+        initializeKnownAbilities(pokemon) unless @knownAbilities.include?(pokemon.personalID)
+        return @knownAbilities[pokemon.personalID]
+    end
+
     def aiLearnsItem(battler, item)
-        return unless battler.pbOwnedByPlayer?
+        return unless battler.pbOwnedByPlayer? || is_online?
         return if @knownItems[battler.pokemon.personalID].include?(item)
         @knownItems[battler.pokemon.personalID].push(item)
         echoln("[AI LEARNING] The AI is now aware of #{battler.pbThis(true)}'s item #{item}")
@@ -349,8 +360,13 @@ class PokeBattle_Battle
         end
     end
 
+    def aiKnownItems(pokemon)
+        initializeKnownItems(pokemon) unless @knownItems.include?(pokemon.personalID)
+        return @knownItems[pokemon.personalID]
+    end
+
     def aiSeesMove(battler, moveID)
-        return unless battler.pbOwnedByPlayer?
+        return unless battler.pbOwnedByPlayer? || is_online?
         return if battler.boss?
         moveID = moveID.id if moveID.is_a?(PokeBattle_Move)
         array = @knownMoves[battler.pokemon.personalID]

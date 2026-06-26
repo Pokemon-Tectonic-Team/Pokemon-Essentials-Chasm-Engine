@@ -6,7 +6,7 @@ module DeterministicSample
   end
 
   module InstanceMethods
-    def initialize(*args)
+    def initialize(*args, **kwargs)
       super
       override_array_sample
     end
@@ -75,9 +75,14 @@ class PokeBattle_CableClub < PokeBattle_Battle
   attr_reader :connection
   attr_reader :battleRNG
   attr_reader :rngCalls
-  def initialize(connection, client_id, scene, player_party, opponent_party, opponent, seed)
+  # The opponent's full team-preview roster (nil if team preview was off this match), kept
+  # around purely so the Poké X-Ray's note-taking display can still list previewed Pokémon
+  # the opponent never sent out, marking them "Not Brought" once the pick cap is reached.
+  attr_reader :previewed_opponent_party
+  def initialize(connection, client_id, scene, player_party, opponent_party, opponent, seed, previewed_opponent_party: nil)
     @connection = connection
     @client_id = client_id
+    @previewed_opponent_party = previewed_opponent_party
     # Disable custom backsprite feature because overriding the player Trainer messes with Tribes
     # online_back_check = GameData::TrainerType.player_back_sprite_filename($Trainer.online_trainer_type)
     # if online_back_check

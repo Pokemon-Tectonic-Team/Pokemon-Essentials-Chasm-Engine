@@ -88,7 +88,7 @@ module CableClub
     end
   end
 
-  def self.do_battle(connection, client_id, seed, battle_rules, player_party, partner, partner_party)
+  def self.do_battle(connection, client_id, seed, battle_rules, player_party, partner, partner_party, previewed_opponent_party: nil)
     $Trainer.heal_party # Avoids having to transmit damaged state.
     partner_party.each{|pkmn| pkmn.heal} # back to back battles desync without it.
     oldlevels = battle_rules.adjustLevels($Trainer.party,partner_party)
@@ -99,7 +99,7 @@ module CableClub
       oldmoves2 = partner_party.transform { |p| p.moves.dup }
     end
     scene = pbNewBattleScene
-    battle = PokeBattle_CableClub.new(connection, client_id, scene, player_party, partner_party, partner, seed)
+    battle = PokeBattle_CableClub.new(connection, client_id, scene, player_party, partner_party, partner, seed, previewed_opponent_party: previewed_opponent_party)
     battle.endSpeechesWin = [partner.win_text]
     battle.endSpeeches = [partner.lose_text]
     battle.items = []

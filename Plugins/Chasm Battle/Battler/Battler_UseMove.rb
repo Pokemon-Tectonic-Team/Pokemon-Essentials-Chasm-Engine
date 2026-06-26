@@ -288,7 +288,10 @@ class PokeBattle_Battler
         end
 
         # Record move as having been used
-        aiSeesMove(move) if pbOwnedByPlayer? && !boss? # Enemy trainers now know of this move's existence
+        # Enemy trainers now know of this move's existence - online, the opponent's own moves
+        # need recording too, since the same knowledge now drives the Poké X-Ray's notes
+        # (PartyShowcaseRevealState.rb) about them, not just the AI's fairness toward the player.
+        aiSeesMove(move) if (pbOwnedByPlayer? || @battle.is_online?) && !boss?
         aiLearnsAbility(:ILLUSION) if hasActiveAbility?(:ILLUSION) && effectActive?(:Illusion)
         aiLearnsAbility(:INCOGNITO) if hasActiveAbility?(:INCOGNITO) && effectActive?(:Illusion)
         increaseMoveUsageCount(move.id)

@@ -675,7 +675,11 @@ class CableClubScreen
         party_partner.push(@partner_party[i])
       end
     end
-    decision = CableClub::do_battle(connection, @client_id, seed, battle_rules[2], party_player, partner, party_partner)
+    # Team preview (if shown) reveals the partner's whole brought roster, not just the subset
+    # they end up using - carry that through so the Poké X-Ray's notes can still list the rest
+    # as "Not Brought" once the pick cap is reached, instead of forgetting they were ever seen.
+    previewed_opponent_party = battle_rules[2].team_preview? ? @partner_party.clone : nil
+    decision = CableClub::do_battle(connection, @client_id, seed, battle_rules[2], party_player, partner, party_partner, previewed_opponent_party: previewed_opponent_party)
     @battle_settings = nil
     if @client_id == 0
       choose_activity(connection)
