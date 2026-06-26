@@ -250,6 +250,7 @@ class CableClubScreen
     @partner_chosen = nil
     @battle_settings = nil
     @local_rules = CableClub.load_local_rules
+    @asked_to_save_friend = false
   end
   
   def change_state(new_state)
@@ -326,15 +327,8 @@ class CableClubScreen
       return false
     end
     begin
-      msg = _ISPRINTF("Opponent's ID (Yours: {1:05d})",$Trainer.public_ID($Trainer.id))
-      partner_id = $PokemonGlobal.last_partner_id || ""
-      partner_id = pbEnterText(msg, 0, 5, partner_id)
-      if partner_id =~ /^[0-9]{5}$/
-        $PokemonGlobal.last_partner_id = partner_id
-      else
-        pbDisplay(_INTL("Please enter a valid trainer ID of 5 digits."))
-        return false
-      end
+      partner_id = pbChooseConnectionID
+      return false if !partner_id
       pbConnectServer(partner_id)
       raise Connection::Disconnected.new("disconnected")
     rescue Connection::Disconnected => e
@@ -381,7 +375,36 @@ class CableClubScreen
       pbHideMessageBox
     end
   end
-  
+
+  # Offers a saved friend (picked by name, no retyping) ahead of manual entry,
+  # but only if any are saved - so a player who's never used the Friends List
+  # sees the exact same manual-entry prompt as before.
+  def pbChooseConnectionID
+    friends = $PokemonGlobal.cable_club_friends_list
+    return pbEnterConnectionID if friends.empty?
+    entries = friends.to_a
+    cmds = entries.map { |id, name| _INTL("{1} ({2})", name, id) }
+    cmds.push(_INTL("Manual Entry"))
+    cmds.push(_INTL("Cancel"))
+    cmd = pbMessage(_ISPRINTF("Connect to whom? (Yours: {1:05d})",$Trainer.public_ID($Trainer.id)), cmds, cmds.length)
+    return entries[cmd][0] if cmd >= 0 && cmd < entries.length
+    return pbEnterConnectionID if cmd == entries.length
+    return nil
+  end
+
+  def pbEnterConnectionID
+    msg = _ISPRINTF("Opponent's ID (Yours: {1:05d})",$Trainer.public_ID($Trainer.id))
+    partner_id = $PokemonGlobal.last_partner_id || ""
+    partner_id = pbEnterText(msg, 0, 5, partner_id)
+    if CableClubFriendsList.valid_id?(partner_id)
+      $PokemonGlobal.last_partner_id = partner_id
+      return partner_id
+    else
+      pbDisplay(_INTL("Please enter a valid trainer ID of 5 digits."))
+      return nil
+    end
+  end
+
   def pbConnectServer(partner_id)
     host,port = CableClub::get_server_info
     Connection.open(host,port) do |connection|
@@ -680,6 +703,7 @@ class CableClubScreen
     # as "Not Brought" once the pick cap is reached, instead of forgetting they were ever seen.
     previewed_opponent_party = battle_rules[2].team_preview? ? @partner_party.clone : nil
     decision = CableClub::do_battle(connection, @client_id, seed, battle_rules[2], party_player, partner, party_partner, previewed_opponent_party: previewed_opponent_party)
+    pbOfferSaveFriend
     @battle_settings = nil
     if @client_id == 0
       choose_activity(connection)
@@ -687,7 +711,24 @@ class CableClubScreen
       await_choose_activity(connection)
     end
   end
-  
+
+  # Offers to save the just-battled opponent to the Friends List, defaulting
+  # the label to their in-game name but never forcing it (issue #493). Only
+  # asks once per connection (not after every rematch against the same
+  # partner), and not at all if they're already saved.
+  def pbOfferSaveFriend
+    return if @asked_to_save_friend
+    @asked_to_save_friend = true
+    friends = $PokemonGlobal.cable_club_friends_list
+    partner_id = $PokemonGlobal.last_partner_id
+    return if partner_id.nil? || friends.include?(partner_id)
+    return unless pbConfirmMessage(_INTL("Save {1} to your Friends List?", @partner_name))
+    typed = pbEnterText(_INTL("Save this friend as?"), 0, Settings::MAX_PLAYER_NAME_SIZE, @partner_name)
+    name = typed.empty? ? @partner_name : typed
+    friends.add(partner_id, name)
+    pbMessage(_INTL("{1} was added to your Friends List.", name))
+  end
+
   # These methods handle trading pokemon
   def partner_accept_trade(connection)
     if pbConfirm(_INTL("{1} wants to trade!", @partner_name))

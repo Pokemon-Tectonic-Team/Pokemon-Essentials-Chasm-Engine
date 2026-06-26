@@ -353,4 +353,9 @@ class PokemonGlobalMetadata
         @futureFilledHoles = {} if @futureFilledHoles.nil?
         return @futureFilledHoles
     end
+
+    def cable_club_friends_list
+        @cable_club_friends_list = CableClubFriendsList.new if @cable_club_friends_list.nil?
+        return @cable_club_friends_list
+    end
 end

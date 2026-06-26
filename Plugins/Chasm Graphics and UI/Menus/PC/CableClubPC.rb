@@ -22,6 +22,7 @@ def pbCableClubCustomMenu
         _INTL("Win Message"),
         _INTL("Loss Message"),
         _INTL("Custom Rulesets"),
+        _INTL("Friends List"),
         _INTL("Cancel")
         ],-1,nil,command)
     case command
@@ -29,6 +30,7 @@ def pbCableClubCustomMenu
     when 1 then pbChangeOnlineWinText
     when 2 then pbChangeOnlineLoseText
     when 3 then pbManageCustomRulesets
+    when 4 then pbManageFriendsList
     else        break
     end
   end
