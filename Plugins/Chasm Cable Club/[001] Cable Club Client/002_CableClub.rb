@@ -565,4 +565,131 @@ module CableClub
       rules.send(add_method, Kernel.const_get(class_name), *args)
     end
   end
+
+  # Builds a PokemonOnlineRules from any .rules file at the given path.
+  # Returns [name, desc, rules], or nil if the file is missing required keys
+  # or otherwise fails to parse. Doesn't care where the file lives - see
+  # load_local_rule below for the LocalPresets/-specific wrapper around this
+  # that the rest of Cable Club actually uses.
+  def self.load_rule_file(path)
+    data = parse_rule_file(path)
+    name = data["Name"].first
+    desc = data["Description"].first
+    raise "missing Description" if !desc
+    raise "missing PartySize" if data["PartySize"].empty?
+    rules = PokemonOnlineRules.new
+    rules.setTeamPreview((data["TeamPreview"].first || "0").to_i)
+    minValue, maxValue = data["PartySize"].first.split(",").map(&:to_i)
+    rules.setNumberRange(minValue, maxValue)
+    if !data["LevelAdjustment"].empty?
+      level_adjustmentClass, level_adjustment_args = parse_rule_clause(data["LevelAdjustment"].first)
+      if Object.const_defined?(level_adjustmentClass)
+        rules.setLevelAdjustment(Kernel.const_get(level_adjustmentClass), *level_adjustment_args)
+      end
+    end
+    rules.setBattleMode(data["BattleMode"].first.downcase) if !data["BattleMode"].empty?
+    add_rule_clauses(rules, :addPokemonRule, data["PokemonRules"])
+    add_rule_clauses(rules, :addTeamRule, data["TeamRules"])
+    return [name, desc, rules]
+  rescue
+    return nil
+  end
+
+  # Builds a PokemonOnlineRules from one LocalPresets/*.rules file. Returns
+  # [name, desc, rules, filename] - the filename (not just [name, desc,
+  # rules]) is threaded through so the in-game ruleset builder's "Edit" can
+  # save back to the same file instead of always prompting for a new name.
+  # Returns nil under the same conditions as load_rule_file. Lives here
+  # (rather than on CableClubScreen, where it used to live) so it's callable
+  # from CableClub_Scene too, with no dependency on either owning a
+  # reference to the other.
+  def self.load_local_rule(filename)
+    found = load_rule_file(sprintf("%s/%s", FOLDER_FOR_BATTLE_PRESETS, filename))
+    return nil if !found
+    return found + [filename]
+  end
+
+  # Returns every ruleset found in LocalPresets/*.rules, as
+  # [name, desc, rules, filename] tuples (see load_local_rule above).
+  def self.load_local_rules
+    files = []
+    begin
+      Dir.chdir("#{FOLDER_FOR_BATTLE_PRESETS}/") { Dir.glob("*.rules") { |f| files.push(f) } }
+    rescue
+      return []
+    end
+    rules = []
+    files.each do |f|
+      r = load_local_rule(f)
+      rules.push(r) if r
+    end
+    return rules
+  end
+
+  # Inverse of infer_rule_arg: renders a single Ruby value back into the
+  # PBS-style text an argument needs to be written as for infer_rule_arg/
+  # split_rule_fields to read it back unchanged. Symbols and bare-word
+  # booleans/integers are written without quotes (matching how every
+  # existing .rules file writes them); only String falls back to a quoted
+  # literal, since it's the one type infer_rule_arg can't otherwise
+  # distinguish from a Symbol.
+  def self.format_rule_arg(value)
+    case value
+    when Integer, TrueClass, FalseClass, Symbol; return value.to_s
+    when String; return "\"#{value}\""
+    else; raise "unwritable rule argument #{value.inspect} (#{value.class})"
+    end
+  end
+
+  # Inverse of parse_rule_clause: renders a rule class plus its arguments
+  # back into one "ClassName,arg1,arg2" line.
+  def self.format_rule_clause(klass, *args)
+    return ([klass.to_s] + args.map { |a| format_rule_arg(a) }).join(",")
+  end
+
+  # rules_hash entries store each argument as an [:type_tag, value] pair
+  # (apply_args_type_hint's output, e.g. [:int, 50]) rather than the bare
+  # value - this strips the tags back off so format_rule_clause can be
+  # given plain Ruby values, the same as parse_rule_clause produces.
+  def self.untag_rule_args(tagged_args)
+    return tagged_args.map { |_tag, value| value }
+  end
+
+  # Inverse of load_rule_file: writes battle_rule (a [name, desc,
+  # PokemonOnlineRules] tuple) out to the given path, in the same PBS-style
+  # format the reader above expects. Doesn't care where the file lives -
+  # see write_rule_file below for the LocalPresets/-specific wrapper around
+  # this that the rest of Cable Club actually uses.
+  def self.write_rule_file_to_path(path, battle_rule)
+    name, desc, rules = battle_rule
+    File.open(path, "w:UTF-8") do |f|
+      f.puts("[#{name}]")
+      f.puts("Description = #{desc}")
+      f.puts("TeamPreview = #{rules.team_preview}") if rules.team_preview > 0
+      f.puts("PartySize = #{rules.ruleset.minLength},#{rules.ruleset.maxLength}")
+      if rules.rules_hash[:level_adjust]
+        klass, *tagged_args = rules.rules_hash[:level_adjust]
+        f.puts("LevelAdjustment = #{format_rule_clause(klass, *untag_rule_args(tagged_args))}")
+      end
+      f.puts("BattleMode = #{rules.battle_mode.capitalize}") if rules.battle_mode
+      rules.rules_hash[:pokemon].each do |klass, *tagged_args|
+        f.puts("PokemonRules = #{format_rule_clause(klass, *untag_rule_args(tagged_args))}")
+      end
+      rules.rules_hash[:team].each do |klass, *tagged_args|
+        f.puts("TeamRules = #{format_rule_clause(klass, *untag_rule_args(tagged_args))}")
+      end
+    end
+    return path
+  end
+
+  # Writes battle_rule out to "#{FOLDER_FOR_BATTLE_PRESETS}/#{filename}",
+  # creating that directory first if it doesn't exist yet (it isn't checked
+  # into the repo, so a fresh install has none until the first save).
+  # filename should already end in ".rules" and contain no path separators -
+  # sanitizing/overwrite-confirming it is the caller's (the ruleset
+  # builder's) job, not this pure writer's.
+  def self.write_rule_file(filename, battle_rule)
+    Dir.mkdir(FOLDER_FOR_BATTLE_PRESETS) unless Dir.exist?(FOLDER_FOR_BATTLE_PRESETS)
+    return write_rule_file_to_path(sprintf("%s/%s", FOLDER_FOR_BATTLE_PRESETS, filename), battle_rule)
+  end
 end

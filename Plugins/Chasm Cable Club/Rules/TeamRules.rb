@@ -19,6 +19,23 @@
 # within the team (e.g. one entry per duplicate-item pair, not just the
 # first) - PokemonRuleSet#validityErrors concatenates these across every
 # failing rule so a player can see everything wrong with their team at once.
+#
+# Every class below also declares self.builder_name/self.builder_desc/
+# self.builder_args for the in-game ruleset builder
+# (009_CableClub_RulesetBuilder.rb) - see PokemonRules.rb's header comment
+# for what these mean. Extending TeamRuleMetadata registers the class into
+# TEAM_RULE_CLASSES automatically, so that list never needs to be maintained
+# by hand.
+
+# Classes extend this to automatically register themselves into
+# TEAM_RULE_CLASSES - see the file header above.
+module TeamRuleMetadata
+  def self.extended(base)
+    TEAM_RULE_CLASSES.push(base)
+  end
+end
+
+TEAM_RULE_CLASSES = []
 
 # Helper used by NicknameClause to track which nicknames are already in use
 # and which species' real names they collide with. NicknameClause calls
@@ -55,6 +72,12 @@ end
 # No two Pokemon on the team can have the same nickname, and no nickname can
 # match the (real) species name of another Pokemon on the team.
 class NicknameClause
+  extend TeamRuleMetadata
+
+  def self.builder_name; _INTL("Nickname Clause"); end
+  def self.builder_desc; _INTL("No two Pokémon may share a nickname or another's species name."); end
+  def self.builder_args; []; end
+
   def isValid?(team)
     team.each do |pkmn|
       return false if !NicknameChecker.check(pkmn.name, pkmn.species)
@@ -86,6 +109,12 @@ end
 # TeamRules = RestrictedSpeciesRestriction,maxValue,species1,...
 # Caps how many of the listed species can appear together at maxValue.
 class RestrictedSpeciesRestriction
+  extend TeamRuleMetadata
+
+  def self.builder_name; _INTL("Restricted Species Count"); end
+  def self.builder_desc; _INTL("Caps how many of the listed species may appear together."); end
+  def self.builder_args; [[:int, _INTL("Max allowed")], [:species_list, _INTL("Restricted species")]]; end
+
   def initialize(maxValue, *specieslist)
     @specieslist = specieslist.clone
     @maxValue = maxValue
@@ -113,6 +142,12 @@ end
 # Caps how many legendaries can appear together at maxValue. Used by Cable
 # Club's own doubles.rules preset.
 class RestrictedLegendsRestriction
+  extend TeamRuleMetadata
+
+  def self.builder_name; _INTL("Restricted Legend Count"); end
+  def self.builder_desc; _INTL("Caps how many legendaries may appear together."); end
+  def self.builder_args; [[:int, _INTL("Max allowed")]]; end
+
   def initialize(maxValue)
     @maxValue = maxValue
   end
@@ -135,6 +170,12 @@ end
 # Every Pokemon on the team must be the same species as each other (a
 # monotype-species theme team).
 class SameSpeciesClause
+  extend TeamRuleMetadata
+
+  def self.builder_name; _INTL("Same Species Clause"); end
+  def self.builder_desc; _INTL("Every Pokémon on the team must be the same species."); end
+  def self.builder_args; []; end
+
   def isValid?(team)
     species = []
     team.each do |pkmn|
@@ -156,6 +197,12 @@ end
 # No two Pokemon on the team can be the same species as each other. This is
 # the standard competitive "Species Clause".
 class SpeciesClause
+  extend TeamRuleMetadata
+
+  def self.builder_name; _INTL("Species Clause"); end
+  def self.builder_desc; _INTL("No two Pokémon on the team may be the same species."); end
+  def self.builder_args; []; end
+
   def isValid?(team)
     species = []
     team.each do |pkmn|
@@ -185,6 +232,12 @@ end
 # No two Pokemon on the team can hold the same item as each other. This is
 # the standard competitive "Item Clause".
 class ItemClause
+  extend TeamRuleMetadata
+
+  def self.builder_name; _INTL("Item Clause"); end
+  def self.builder_desc; _INTL("No two Pokémon on the team may hold the same item."); end
+  def self.builder_args; []; end
+
   def isValid?(team)
     items = []
     team.each do |pkmn|
@@ -213,7 +266,12 @@ end
 # TeamRules = TotalLevelRestriction,level
 # The combined level of every Pokemon entered can't exceed the given value.
 class TotalLevelRestriction
+  extend TeamRuleMetadata
   attr_reader :level
+
+  def self.builder_name; _INTL("Total Level Cap"); end
+  def self.builder_desc; _INTL("Caps the team's combined level."); end
+  def self.builder_args; [[:int, _INTL("Max total level")]]; end
 
   def initialize(level)
     @level = level

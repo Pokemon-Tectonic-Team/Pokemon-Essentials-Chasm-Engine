@@ -21,12 +21,14 @@ def pbCableClubCustomMenu
         _INTL("Trainer Class"),
         _INTL("Win Message"),
         _INTL("Loss Message"),
+        _INTL("Custom Rulesets"),
         _INTL("Cancel")
         ],-1,nil,command)
     case command
     when 0 then pbChangeOnlineTrainerType
     when 1 then pbChangeOnlineWinText
     when 2 then pbChangeOnlineLoseText
+    when 3 then pbManageCustomRulesets
     else        break
     end
   end

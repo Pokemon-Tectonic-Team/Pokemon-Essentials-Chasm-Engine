@@ -11,6 +11,13 @@
 # Battle Frontier's asymmetric, enemy-only version of this class (see
 # Rules/LevelAdjustments.rb there), this one has no concept of which side to
 # apply to - getAdjustment is always applied to both teams the same way.
+#
+# Concrete subclasses below also declare self.builder_name/self.builder_desc/
+# self.builder_args for the in-game ruleset builder
+# (009_CableClub_RulesetBuilder.rb) - see PokemonRules.rb's header comment
+# for what these mean. Extending LevelAdjustmentMetadata registers the class
+# into LEVEL_ADJUSTMENT_CLASSES automatically, so that list never needs to
+# be maintained by hand.
 class LevelAdjustment
   def self.getNullAdjustment(thisTeam, _otherTeam)
     ret = []
@@ -59,9 +66,29 @@ class LevelAdjustment
   end
 end
 
+# Classes extend this to automatically register themselves into
+# LEVEL_ADJUSTMENT_CLASSES - see the file header comment above.
+module LevelAdjustmentMetadata
+  def self.extended(base)
+    LEVEL_ADJUSTMENT_CLASSES.push(base)
+  end
+end
+
+# Cable Club's own (always-symmetric) classes only - Battle Frontier's
+# asymmetric, enemy-only ones aren't usable from a Cable Club ruleset at all
+# (see the header comment on LevelAdjustment above), so they never extend
+# LevelAdjustmentMetadata and never end up in this list.
+LEVEL_ADJUSTMENT_CLASSES = []
+
 # LevelAdjustment = FixedLevelAdjustment,70
 # Sets every Pokemon on both teams to exactly the given level.
 class FixedLevelAdjustment < LevelAdjustment
+  extend LevelAdjustmentMetadata
+
+  def self.builder_name; _INTL("Fixed Level"); end
+  def self.builder_desc; _INTL("Sets every Pokémon to exactly this level."); end
+  def self.builder_args; [[:level, _INTL("Level")]]; end
+
   def initialize(level)
     @level = level.clamp(1, GameData::GrowthRate.max_level)
   end
@@ -77,6 +104,12 @@ end
 # Lowers any Pokemon on either team above the given level down to it; leaves
 # Pokemon already at or below it untouched.
 class CappedLevelAdjustment < LevelAdjustment
+  extend LevelAdjustmentMetadata
+
+  def self.builder_name; _INTL("Level Cap"); end
+  def self.builder_desc; _INTL("Lowers Pokémon above this level down to it."); end
+  def self.builder_args; [[:level, _INTL("Level cap")]]; end
+
   def initialize(level)
     @level = level.clamp(1, GameData::GrowthRate.max_level)
   end
@@ -97,9 +130,15 @@ end
 # weakest gets the level cap, the strongest gets LEVEL_SPREAD below it, and
 # everything else is linearly interpolated (and clamped) between the two.
 class LevelBalanceAdjustment < LevelAdjustment
+  extend LevelAdjustmentMetadata
+
   WEAKEST_BST   = 195
   STRONGEST_BST = 720
   LEVEL_SPREAD  = 30
+
+  def self.builder_name; _INTL("Level Balance"); end
+  def self.builder_desc; _INTL("Scales levels inversely with base stat total."); end
+  def self.builder_args; []; end
 
   def getAdjustment(thisTeam, _otherTeam)
     maxLevel = GameData::GrowthRate.max_level

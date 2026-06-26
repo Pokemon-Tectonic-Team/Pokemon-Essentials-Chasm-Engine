@@ -249,50 +249,7 @@ class CableClubScreen
     @chosen_pokemon = nil
     @partner_chosen = nil
     @battle_settings = nil
-    load_local_rules
-  end
-  
-  def load_local_rule(filename)
-    begin
-      data = CableClub.parse_rule_file(sprintf("%s/%s",CableClub::FOLDER_FOR_BATTLE_PRESETS,filename))
-      name = data["Name"].first
-      desc = data["Description"].first
-      raise "missing Description" if !desc
-      raise "missing PartySize" if data["PartySize"].empty?
-      rules=PokemonOnlineRules.new
-      rules.setTeamPreview((data["TeamPreview"].first || "0").to_i)
-      minValue,maxValue = data["PartySize"].first.split(",").map(&:to_i)
-      rules.setNumberRange(minValue,maxValue)
-      if !data["LevelAdjustment"].empty?
-        level_adjustmentClass,level_adjustment_args = CableClub.parse_rule_clause(data["LevelAdjustment"].first)
-        if Object.const_defined?(level_adjustmentClass)
-          rules.setLevelAdjustment(Kernel.const_get(level_adjustmentClass),*level_adjustment_args)
-        end
-      end
-      rules.setBattleMode(data["BattleMode"].first.downcase) if !data["BattleMode"].empty?
-      CableClub.add_rule_clauses(rules,:addPokemonRule,data["PokemonRules"])
-      CableClub.add_rule_clauses(rules,:addTeamRule,data["TeamRules"])
-    rescue
-      return nil
-    end
-    return [name,desc,rules]
-  end
-  
-  def load_local_rules
-    begin
-      files = []
-      Dir.chdir(CableClub::FOLDER_FOR_BATTLE_PRESETS + "/"){
-        Dir.glob("*.rules") {|f| files.push(f)}
-      }
-    rescue
-      return
-    end
-    rules = []
-    files.each do |f|
-      r=load_local_rule(f)
-      rules.push(r) if r
-    end
-    @local_rules = rules
+    @local_rules = CableClub.load_local_rules
   end
   
   def change_state(new_state)
