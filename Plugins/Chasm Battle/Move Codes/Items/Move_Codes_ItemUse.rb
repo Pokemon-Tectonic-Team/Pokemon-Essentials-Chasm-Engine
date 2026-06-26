@@ -41,21 +41,8 @@ class PokeBattle_Move_GiftItem < PokeBattle_Move
             validItems.push(item)
             validItemNames.push(getItemName(item))
         end
-        if validItems.length == 1
-            @chosenItem = validItems[0]
-        elsif validItems.length > 1
-            if @battle.autoTesting
-                @chosenItem = validItems.sample
-            elsif !user.pbOwnedByPlayer? # Trainer AI
-                @chosenItem = validItems[0]
-            elsif !replayed_choice.nil?
-                @chosenItem = replayed_choice
-            else
-                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} give away?", user.pbThis(true)),validItemNames)
-                @chosenItem = validItems[chosenIndex]
-                return @chosenItem
-            end
-        end
+        @chosenItem = pbChooseOption(user, validItems, validItemNames,
+                                      _INTL("Which item should {1} give away?", user.pbThis(true)), replayed_choice)
     end
 
     def pbFailsAgainstTarget?(user, target, show_message)
@@ -173,21 +160,8 @@ class PokeBattle_Move_Fling < PokeBattle_Move
             validItems.push(item)
             validItemNames.push(getItemName(item))
         end
-        if validItems.length == 1
-            @chosenItem = validItems[0]
-        elsif validItems.length > 1
-            if @battle.autoTesting
-                @chosenItem = validItems.sample
-            elsif !user.pbOwnedByPlayer? # Trainer AI
-                @chosenItem = validItems[0]
-            elsif !replayed_choice.nil?
-                @chosenItem = replayed_choice
-            else
-                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} fling?", user.pbThis(true)),validItemNames)
-                @chosenItem = validItems[chosenIndex]
-                return @chosenItem
-            end
-        end
+        @chosenItem = pbChooseOption(user, validItems, validItemNames,
+                                      _INTL("Which item should {1} fling?", user.pbThis(true)), replayed_choice)
     end
 
     def pbDisplayUseMessage(user, targets)
@@ -330,21 +304,8 @@ class PokeBattle_Move_NaturalGift < PokeBattle_Move
             validItems.push(item)
             validItemNames.push(getItemName(item))
         end
-        if validItems.length == 1
-            @chosenItem = validItems[0]
-        elsif validItems.length > 1
-            if @battle.autoTesting
-                @chosenItem = validItems.sample
-            elsif !user.pbOwnedByPlayer? # Trainer AI
-                @chosenItem = validItems[0]
-            elsif !replayed_choice.nil?
-                @chosenItem = replayed_choice
-            else
-                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} use?", user.pbThis(true)),validItemNames)
-                @chosenItem = validItems[chosenIndex]
-                return @chosenItem
-            end
-        end
+        @chosenItem = pbChooseOption(user, validItems, validItemNames,
+                                      _INTL("Which item should {1} use?", user.pbThis(true)), replayed_choice)
     end
 
     def pbDisplayUseMessage(user, targets)

@@ -113,15 +113,9 @@ class PokeBattle_Move_TechnoBlast < PokeBattle_Move_TypeDependsOnUserSpecialItem
         return unless user.hasActiveAbility?(:MODUSSWITCH)
         return unless user.countsAs?(:GENESECT)
         drivesToChooseFrom = @itemTypes.keys
-        if @battle.autoTesting
-            @chosenDrive = drivesToChooseFrom.sample
-        elsif !user.pbOwnedByPlayer? # Trainer AI
-            @chosenDrive = drivesToChooseFrom[0]
-        else
-            driveNames = drivesToChooseFrom.map { |drive| GameData::Item.get(drive).name }
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which drive should {1} use?", user.pbThis(true)), driveNames)
-            @chosenDrive = drivesToChooseFrom[chosenIndex]
-        end
+        driveNames = drivesToChooseFrom.map { |drive| GameData::Item.get(drive).name }
+        @chosenDrive = pbChooseOption(user, drivesToChooseFrom, driveNames,
+                                       _INTL("Which drive should {1} use?", user.pbThis(true)), replayed_choice)
         newForm = @itemTypes.keys.index(@chosenDrive) + 1
         user.pbChangeForm(newForm, _INTL("{1} loaded a {2}!", user.pbThis, GameData::Item.get(@chosenDrive).name)) unless user.form == newForm
     end

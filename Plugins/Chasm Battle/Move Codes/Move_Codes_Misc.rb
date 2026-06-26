@@ -111,20 +111,12 @@ end
 #===============================================================================
 class PokeBattle_Move_ChangeUserMewtwoChoiceOfForm < PokeBattle_Move
     def resolutionChoice(user, replayed_choice)
-        if @battle.autoTesting
-            @chosenForm = rand(2) + 1
-        elsif !user.pbOwnedByPlayer? # Trainer AI
-            @chosenForm = 2 # Always chooses mega mind form
-        elsif !replayed_choice.nil?
-            @chosenForm = replayed_choice
-        else
-            form1Name = GameData::Species.get_species_form(:MEWTWO,1).form_name
-            form2Name = GameData::Species.get_species_form(:MEWTWO,2).form_name
-            formNames = [form1Name,form2Name]
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)),formNames)
-            @chosenForm = chosenIndex + 1
-            return @chosenForm
-        end
+        form1Name = GameData::Species.get_species_form(:MEWTWO,1).form_name
+        form2Name = GameData::Species.get_species_form(:MEWTWO,2).form_name
+        formNames = [form1Name,form2Name]
+        @chosenForm = pbChooseOption(user, [1, 2], formNames,
+                                      _INTL("Which form should {1} take?", user.pbThis(true)), replayed_choice,
+                                      ai_default_index: 1) # Trainer AI always chooses mega mind form
     end
 
     def pbCanChooseMove?(user, commandPhase, show_message)
@@ -395,21 +387,13 @@ end
 #===============================================================================
 class PokeBattle_Move_ChangeUserDeoxusChoiceOfForm < PokeBattle_Move
     def resolutionChoice(user, replayed_choice)
-        if @battle.autoTesting
-            @chosenForm = rand(3) + 1
-        elsif !user.pbOwnedByPlayer? # Trainer AI
-            @chosenForm = 2 # Always chooses defense form
-        elsif !replayed_choice.nil?
-            @chosenForm = replayed_choice
-        else
-            form1Name = GameData::Species.get_species_form(:DEOXYS,1).form_name
-            form2Name = GameData::Species.get_species_form(:DEOXYS,2).form_name
-            form3Name = GameData::Species.get_species_form(:DEOXYS,3).form_name
-            formNames = [form1Name,form2Name,form3Name]
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)),formNames)
-            @chosenForm = chosenIndex + 1
-            return @chosenForm
-        end
+        form1Name = GameData::Species.get_species_form(:DEOXYS,1).form_name
+        form2Name = GameData::Species.get_species_form(:DEOXYS,2).form_name
+        form3Name = GameData::Species.get_species_form(:DEOXYS,3).form_name
+        formNames = [form1Name,form2Name,form3Name]
+        @chosenForm = pbChooseOption(user, [1, 2, 3], formNames,
+                                      _INTL("Which form should {1} take?", user.pbThis(true)), replayed_choice,
+                                      ai_default_index: 1) # Trainer AI always chooses defense form
     end
 
     def pbCanChooseMove?(user, commandPhase, show_message)
@@ -687,19 +671,9 @@ class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
     end
 
     def resolutionChoice(user, replayed_choice)
-        validMoveNames = []
-        @validMoves.each do |move|
-            validMoveNames.push(getMoveName(move))
-        end
-
-        if @battle.autoTesting
-            @chosenMove = @validMoves.sample
-        elsif !user.pbOwnedByPlayer? # Trainer AI
-            @chosenMove = @validMoves[0]
-        else
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
-            @chosenMove = @validMoves[chosenIndex]
-        end
+        validMoveNames = @validMoves.map { |move| getMoveName(move) }
+        @chosenMove = pbChooseOption(user, @validMoves, validMoveNames,
+                                      _INTL("Which move should {1} use?", user.pbThis(true)), replayed_choice)
     end
 
     def pbEffectAgainstTarget(user, target)
@@ -732,22 +706,9 @@ class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
     end
 
     def resolutionChoice(user, replayed_choice)
-        validMoveNames = []
-        @validMoves.each do |move|
-            validMoveNames.push(getMoveName(move))
-        end
-
-        if @battle.autoTesting
-            @chosenMove = @validMoves.sample
-        elsif !user.pbOwnedByPlayer? # Trainer AI
-            @chosenMove = @validMoves[0]
-        elsif !replayed_choice.nil?
-            @chosenMove = replayed_choice
-        else
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
-            @chosenMove = @validMoves[chosenIndex]
-            return @chosenMove
-        end
+        validMoveNames = @validMoves.map { |move| getMoveName(move) }
+        @chosenMove = pbChooseOption(user, @validMoves, validMoveNames,
+                                      _INTL("Which move should {1} use?", user.pbThis(true)), replayed_choice)
     end
 
     def pbEffectAgainstTarget(user, target)

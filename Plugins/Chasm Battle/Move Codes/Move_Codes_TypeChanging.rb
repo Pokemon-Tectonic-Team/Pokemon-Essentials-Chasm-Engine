@@ -439,25 +439,9 @@ end
 class PokeBattle_Move_SetTargetTypesToChoiceOfDragonFairySteel < PokeBattle_Move
     def resolutionChoice(user, replayed_choice)
         validTypes = %i[DRAGON FAIRY STEEL]
-        validTypeNames = []
-        validTypes.each do |typeID|
-            validTypeNames.push(GameData::Type.get(typeID).name)
-        end
-        if validTypes.length == 1
-            @chosenType = validTypes[0]
-        elsif validTypes.length > 1
-            if @battle.autoTesting
-                @chosenType = validTypes.sample
-            elsif !user.pbOwnedByPlayer? # Trainer AI
-                @chosenType = validTypes[0]
-            elsif !replayed_choice.nil?
-                @chosenType = replayed_choice
-            else
-                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which type should {1} gift?", user.pbThis(true)),validTypeNames)
-                @chosenType = validTypes[chosenIndex]
-                return @chosenType
-            end
-        end
+        validTypeNames = validTypes.map { |typeID| GameData::Type.get(typeID).name }
+        @chosenType = pbChooseOption(user, validTypes, validTypeNames,
+                                      _INTL("Which type should {1} gift?", user.pbThis(true)), replayed_choice)
     end
 
     def pbFailsAgainstTarget?(_user, target, show_message)

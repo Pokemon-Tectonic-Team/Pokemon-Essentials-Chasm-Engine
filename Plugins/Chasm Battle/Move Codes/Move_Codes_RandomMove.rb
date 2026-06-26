@@ -169,17 +169,8 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureStatusMoves < PokeBattle_Mov
             end
         end
 
-        if @battle.autoTesting
-            @chosenMove = validMoves.sample
-        elsif !user.pbOwnedByPlayer? # Trainer AI
-            @chosenMove = validMoves[0]
-        elsif !replayed_choice.nil?
-            @chosenMove = replayed_choice
-        else
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
-            @chosenMove = validMoves[chosenIndex]
-            return @chosenMove
-        end
+        @chosenMove = pbChooseOption(user, validMoves, validMoveNames,
+                                      _INTL("Which move should {1} use?", user.pbThis(true)), replayed_choice)
     end
 
     def pbEffectGeneral(user)
@@ -296,17 +287,8 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureNonPsychicDamagingMoves < Po
             end
         end
 
-        if @battle.autoTesting
-            @chosenMove = validMoves.sample
-        elsif !user.pbOwnedByPlayer? # Trainer AI
-            @chosenMove = validMoves[0]
-        elsif !replayed_choice.nil?
-            @chosenMove = replayed_choice
-        else
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
-            @chosenMove = validMoves[chosenIndex]
-            return @chosenMove
-        end
+        @chosenMove = pbChooseOption(user, validMoves, validMoveNames,
+                                      _INTL("Which move should {1} use?", user.pbThis(true)), replayed_choice)
     end
 
     def pbEffectGeneral(user)

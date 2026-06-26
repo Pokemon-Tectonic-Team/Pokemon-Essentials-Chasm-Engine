@@ -482,6 +482,66 @@ class PokeBattle_CableClub_AI < PokeBattle_AI
 end
 
 #===============================================================================
+# Moves like Fire For Effect and Elemental Crunch ask the user to pick between
+# several options mid-turn (outside the synced command phase). pbChooseOption's
+# default treats any battler not owned by the local player as Trainer AI and
+# just picks ai_default_index - which is wrong online, since that "AI" battler
+# is actually the opponent's own Pokemon, being chosen for by a real person on
+# their client. So if it's ours, send the chosen index once we know it; if it's
+# theirs, wait for them to send theirs instead of guessing.
+#===============================================================================
+class PokeBattle_Move
+  alias _cc_pbChooseOption pbChooseOption
+  def pbChooseOption(user, options, optionNames, prompt, replayed_choice = nil, ai_default_index: 0)
+    unless @battle.is_online? && options.length > 1
+      return _cc_pbChooseOption(user, options, optionNames, prompt, replayed_choice, ai_default_index: ai_default_index)
+    end
+    if user.pbOwnedByPlayer?
+      chosen = _cc_pbChooseOption(user, options, optionNames, prompt, replayed_choice, ai_default_index: ai_default_index)
+      @battle.connection.send do |writer|
+        writer.sym(:resolution_choice)
+        writer.int(options.index(chosen))
+      end
+      return chosen
+    else
+      frame = 0
+      @battle.scene.pbShowWindow(PokeBattle_Scene::MESSAGE_BOX)
+      cw = @battle.scene.sprites["messageWindow"]
+      cw.letterbyletter = false
+      begin
+        loop do
+          frame += 1
+          cw.text = _INTL("Waiting" + "." * (1 + ((frame / 8) % 3)))
+          @battle.scene.pbFrameUpdate(cw)
+          Graphics.update
+          Input.update
+          raise Connection::Disconnected.new("disconnected") if Input.trigger?(Input::BACK) && pbConfirmMessageSerious("Would you like to disconnect?")
+          chosenIndex = nil
+          @battle.connection.update do |record|
+            case (type = record.sym)
+            when :forfeit
+              pbSEPlay("Battle flee")
+              @battle.pbDisplay(_INTL("{1} forfeited the match!", @battle.opponent[0].full_name))
+              @battle.decision = 1
+              @battle.pbAbort
+
+            when :resolution_choice
+              chosenIndex = record.int
+
+            else
+              raise CableClub::DesyncError, "Unknown message: #{type}"
+            end
+          end
+          return options[chosenIndex] if chosenIndex
+        end
+      ensure
+        cw.letterbyletter = true
+      end
+    end
+  end
+end
+
+#===============================================================================
 # This move permanently turns into the last move used by the target. (Sketch)
 #===============================================================================
 class PokeBattle_Move_ReplaceMoveWithTargetLastMoveUsed

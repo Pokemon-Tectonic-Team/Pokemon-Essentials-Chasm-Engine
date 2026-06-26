@@ -151,25 +151,10 @@ class PokeBattle_Move_UseChoiceOf3LastUsedMoves < PokeBattle_Move
             break if moveChoices.length == 3
         end
 
-        moveNames = []
-        moveChoices.each do |moveID|
-            moveNames.push(GameData::Move.get(moveID).name)
-        end
-        if moveChoices.length == 1
-            @chosenMoveID = moveChoices[0]
-        elsif moveChoices.length > 1
-            if @battle.autoTesting
-                @chosenMoveID = moveChoices.sample
-            elsif !user.pbOwnedByPlayer? # Trainer AI
-                @chosenMoveID = moveChoices[0]
-            elsif !replayed_choice.nil?
-                @chosenMoveID = replayed_choice
-            else
-                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),moveNames)
-                @chosenMoveID = moveChoices[chosenIndex]
-                return @chosenMoveID
-            end
-        end
+        return if moveChoices.empty?
+        moveNames = moveChoices.map { |moveID| GameData::Move.get(moveID).name }
+        @chosenMoveID = pbChooseOption(user, moveChoices, moveNames,
+                                        _INTL("Which move should {1} use?", user.pbThis(true)), replayed_choice)
     end
 
     def validMoveArray(user)

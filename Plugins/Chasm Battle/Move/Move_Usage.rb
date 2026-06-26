@@ -52,6 +52,22 @@ class PokeBattle_Move
 
     def resolutionChoice(user, replayed_choice); return nil; end
 
+    # Shared chooser for moves that pick one of several options when used (a type,
+    # a move, a form, an item, etc.) - used by resolutionChoice implementations.
+    # Cable Club overrides this so that the "Trainer AI" branch (taken for any
+    # battler not owned by the local player) waits for the real choice the
+    # opponent's own client sent over the network, rather than always defaulting
+    # to ai_default_index.
+    def pbChooseOption(user, options, optionNames, prompt, replayed_choice = nil, ai_default_index: 0)
+        return nil if options.empty?
+        return options[0] if options.length == 1
+        return options.sample if @battle.autoTesting
+        return options[ai_default_index] unless user.pbOwnedByPlayer? # Trainer AI
+        return replayed_choice unless replayed_choice.nil?
+        chosenIndex = @battle.scene.pbChooseWithThinkingLoop(prompt, optionNames)
+        return options[chosenIndex]
+    end
+
     #=============================================================================
     # Methods for displaying stuff when the move is used
     #=============================================================================
