@@ -98,7 +98,7 @@ class PokeBattle_AI
         PBDebug.log("[STAY-IN RATING] #{battler.pbThis} defensive matchup rating: #{defensiveMatchupRating.to_change}")
 
         # Value of its own moves
-        bestMoveScore, killInfo = switchRatingBestMoveScore(battler, killInfoArray: killInfoArray)
+        bestMoveScore, killInfo = switchRatingBestMoveScore(battler, killInfoArray: killInfoArray, selfAssessment: true)
         offensiveMatchupRating = (0.5 * bestMoveScore).floor
         
         urgency = 0
@@ -359,7 +359,7 @@ class PokeBattle_AI
                 echoln("[SWITCH SCORING] #{fakeBattler.pbThis} defensive matchup rating: #{defensiveMatchupRating.to_change} (thinks can be fainted!)")
             end
 
-            offensiveMatchupRating, killInfo = switchRatingBestMoveScore(fakeBattler, killInfoArray: killInfoArray)
+            offensiveMatchupRating, killInfo = switchRatingBestMoveScore(fakeBattler, killInfoArray: killInfoArray, selfAssessment: true)
             if safeSwitch
                 offensiveMatchupRating = (0.5 * offensiveMatchupRating).floor unless urgency >= 20
             else
@@ -488,15 +488,17 @@ class PokeBattle_AI
 
     EFFECT_SCORE_TO_SWITCH_SCORE_CONVERSION_RATIO = 2.5
 
-    def switchRatingBestMoveScore(battler, opposingBattler: nil, killInfoArray: [])
-        maxScore, killInfo = highestMoveScoreForBattler(battler, opposingBattler: opposingBattler, killInfoArray: killInfoArray)
+    def switchRatingBestMoveScore(battler, opposingBattler: nil, killInfoArray: [], selfAssessment: false)
+        maxScore, killInfo = highestMoveScoreForBattler(battler, opposingBattler: opposingBattler, killInfoArray: killInfoArray, selfAssessment: selfAssessment)
         maxMoveScoreBiasChange = -40
         maxMoveScoreBiasChange += (maxScore / EFFECT_SCORE_TO_SWITCH_SCORE_CONVERSION_RATIO).round
         return maxMoveScoreBiasChange, killInfo
     end
 
-    def highestMoveScoreForBattler(battler, opposingBattler: nil, killInfoArray: [])
-        if battler.pbOwnedByPlayer?
+    def highestMoveScoreForBattler(battler, opposingBattler: nil, killInfoArray: [], selfAssessment: false)
+        # Allow AI vs AI testing to properly know its own moves while only guessing at the opponent's
+        usePredictedMoves = @battle.autoTesting ? !selfAssessment : battler.pbOwnedByPlayer?
+        if usePredictedMoves
             maxScore, bestMove, killInfo = pbScorePredictedPlayerMoves(battler, opposingBattler: opposingBattler, killInfoArray: killInfoArray)
         else
             choices, killInfo = pbGetBestTrainerMoveChoices(battler, opposingBattler: opposingBattler, killInfoArray: killInfoArray)
