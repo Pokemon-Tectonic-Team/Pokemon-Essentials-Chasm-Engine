@@ -58,6 +58,7 @@ class PokeBattle_Battle
     attr_accessor :bossBattle
     attr_accessor :autoTesting
     attr_accessor :autoTestingIndex
+    attr_accessor :autoTestingRandomization
     attr_accessor :honorAura
     attr_accessor :expStored
     attr_reader	  :curses
@@ -158,6 +159,7 @@ class PokeBattle_Battle
         @bossBattle		   = false
         @autoTesting	   = false
         @autoTestingIndex = 1
+        @autoTestingRandomization = false
         @commandPhasesThisRound = 0
         @honorAura = false
         @curses = []

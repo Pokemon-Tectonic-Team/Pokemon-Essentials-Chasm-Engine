@@ -324,6 +324,7 @@ module AIBenchmark
         battle.party1starts    = [0]
         battle.party2starts    = [0]
         battle.autoTesting     = true
+        battle.autoTestingRandomization = false # run AI properly for meaningful results
         battle.controlPlayer   = true
         battle.expGain         = false
         battle.moneyGain       = false
