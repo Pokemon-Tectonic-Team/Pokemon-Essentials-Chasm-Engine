@@ -138,6 +138,8 @@ module PokeBattle_BattleRecorder
 			:recorded_choices => @recorded_choices,
 			:recorded_switches => @recorded_switches,
 			:random => @random,
+			:controlPlayer => @controlPlayer,
+			:autoTesting => @autoTesting,
 			:player_info => @player_info,
 			:player_party => @player_party,
 			:player_party_starts => @player_party_starts,
@@ -225,6 +227,8 @@ module PokeBattle_BattleReplayer
 		@recorded_choices          = battle[:recorded_choices]
 		@recorded_switches         = battle[:recorded_switches]
 		@random                    = battle[:random]
+		@controlPlayer             = battle[:controlPlayer] || false
+		@autoTesting               = battle[:autoTesting] || false
 		@save_battle               = false
 		@is_replayed               = true
 		@is_recorded               = false
