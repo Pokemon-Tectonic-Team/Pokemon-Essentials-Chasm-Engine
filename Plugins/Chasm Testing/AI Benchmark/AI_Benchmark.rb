@@ -308,7 +308,7 @@ module AIBenchmark
     # result: 1 = test side (party1) wins, 2 = baseline side (party2) wins,
     #         0 = draw / timeout
     #--------------------------------------------------------------------------
-    def self.runBattle(trainerData1, trainerData2, heuristic1, heuristic2)
+    def self.runBattle(trainerData1, trainerData2, heuristic1, heuristic2, battleMode: "single", saveBattle: false)
         trainer1 = trainerData1.to_trainer
         trainer2 = trainerData2.to_trainer
         party1 = trainer1.party
@@ -321,6 +321,7 @@ module AIBenchmark
         battle = PokeBattle_TectonicRecordedBattle.new(
             scene, party1, party2, [trainer1], [trainer2], 1
         )
+        battle.setBattleMode(battleMode)
         battle.party1starts    = [0]
         battle.party2starts    = [0]
         battle.autoTesting     = true
@@ -329,7 +330,7 @@ module AIBenchmark
         battle.expGain         = false
         battle.moneyGain       = false
         battle.showAnims       = false
-        battle.save_battle     = false
+        battle.save_battle     = saveBattle
 
         battle.benchmarkMode        = true
         battle.moveGuessHeuristics  = { 0 => heuristic1, 1 => heuristic2 }
