@@ -118,14 +118,15 @@ class PokeBattle_AI
         stayInRating += speedTierRating(battler)
         stayInRating += battler.levelNerfSwitch(0.4).round # AI nerf
 
-        # Determine who to swap into if at all
-        PBDebug.log("[AI SWITCH] #{battler.pbThis} (#{battler.index}) is trying to find a switch. Staying in is rated: #{stayInRating}.")
-        list = pbGetPartyWithSwapRatings(idxBattler,urgency)
-        listSwapOutCandidates(battler, list)
-
         # Only considers swapping into pokemon whose rating would be at least a +30 upgrade
         upgradeThreshold = 30
         upgradeThreshold -= 5 if owner.tribalBonus.hasTribeBonus?(:CHARMER)
+
+        # Determine who to swap into if at all
+        PBDebug.log("[AI SWITCH] #{battler.pbThis} (#{battler.index}) is trying to find a switch. Staying in is rated: #{stayInRating}.")
+        list = pbGetPartyWithSwapRatings(idxBattler, urgency, futilityThreshold: stayInRating + upgradeThreshold)
+        listSwapOutCandidates(battler, list)
+
         list.delete_if { |val| val[1] < stayInRating + upgradeThreshold }
 
         if list.empty?
@@ -301,8 +302,10 @@ class PokeBattle_AI
         end
     end
 
+    FUTILITY_MARGIN = 60 # tuned through testing to maximise pruning without affecting behaviour
+
     # Rates every other Pokemon in the trainer's party and returns a sorted list of the indices and swap in rating
-    def pbGetPartyWithSwapRatings(idxBattler, safeSwitch = false,urgency)
+    def pbGetPartyWithSwapRatings(idxBattler, safeSwitch = false, urgency, futilityThreshold: nil)
         list = []
         battlerSlot = @battle.battlers[idxBattler]
 
@@ -311,7 +314,16 @@ class PokeBattle_AI
             next unless pkmn.able?(false, @battle.getAbleParametersByBattlerIndex(partyIndex, idxBattler))
             next if battlerSlot.pokemonIndex == partyIndex
             next unless @battle.pbCanSwitch?(idxBattler, partyIndex)
-            switchScore = getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, safeSwitch,urgency)
+
+            # use a cheap heuristic to estimate switch-in value
+            estimate = (futilityThreshold && !safeSwitch) ? estimateSwitchScoreCeiling(pkmn, battlerSlot, urgency) : nil
+
+            # if the estimate, with a safe margin, shows that there's no chance the switch is worthwhile, skip the expensive full evaluation
+            if estimate && estimate + FUTILITY_MARGIN < futilityThreshold
+                next
+            end
+
+            switchScore = getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, safeSwitch, urgency)
             list.push([partyIndex, switchScore])
         end
         list.sort_by! { |entry| entry[1].nil? ? 99_999 : -entry[1] }
@@ -512,4 +524,53 @@ class PokeBattle_AI
         end
         return maxScore, killInfo
     end
+
+   # rough numbers for evaluating bad switches
+    TYPE_MOD_TO_MOVE_SCORE_CEILING = {
+        0.0 => 20, 0.25 => 90, 0.5 => 130, 1.0 => 200, 2.0 => 250, 4.0 => 250,
+    }.freeze
+
+    # Cheap heuristic for rejecting bad switches early
+    def estimateSwitchScoreCeiling(pkmn, battlerSlot, urgency)
+        return nil if urgency >= 20
+
+        foeTypes = []
+        battlerSlot.eachOpposing(true) { |foe| foeTypes.concat(foe.pbTypes(true)) }
+        foeTypes.uniq!
+        return nil if foeTypes.empty?
+
+        pkmnTypes = [pkmn.type1, pkmn.type2].compact.uniq
+        return nil if pkmnTypes.empty?
+
+        # Best case for the candidate's own offense: its best known move
+        # type against the foe's typing.
+        bestOffenseMod = 0.0
+        pkmn.moves.each do |move|
+            moveType = GameData::Move.get(move.id).type
+            next unless moveType
+            mod = Effectiveness.calculate(moveType, foeTypes)
+            bestOffenseMod = mod if mod > bestOffenseMod
+        end
+
+        # Worst case for the candidate's defense: the foe's best type
+        # against it
+        worstDefenseMod = 0.0
+        foeTypes.each do |t|
+            mod = Effectiveness.calculate(t, pkmnTypes)
+            worstDefenseMod = mod if mod > worstDefenseMod
+        end
+
+        offenseScoreEstimate = TYPE_MOD_TO_MOVE_SCORE_CEILING[bestOffenseMod] || 250
+        defenseScoreEstimate = TYPE_MOD_TO_MOVE_SCORE_CEILING[worstDefenseMod] || 250
+
+        offensiveBiased = -40 + offenseScoreEstimate / EFFECT_SCORE_TO_SWITCH_SCORE_CONVERSION_RATIO
+        defensiveBiased = -40 + defenseScoreEstimate / EFFECT_SCORE_TO_SWITCH_SCORE_CONVERSION_RATIO
+
+        offensiveEstimate = (0.25 * offensiveBiased).floor
+        defensiveEstimate = (0.75 * -defensiveBiased).floor
+
+        offensiveEstimate + defensiveEstimate
+    end
 end
+
+ 
