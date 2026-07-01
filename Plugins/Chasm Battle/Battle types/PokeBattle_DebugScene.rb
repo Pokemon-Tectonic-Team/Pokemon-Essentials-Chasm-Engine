@@ -51,6 +51,9 @@ class PokeBattle_DebugSceneNoLogging < PokeBattle_Scene
     def pbEXPBar(battler,startExp,endExp,tempExp1,tempExp2); end
     def pbForgetMove(pkmn,moveToLearn); return 0; end   # Always forget first move
     def pbChangePokemon(idxBattler,pkmn,species=nil); end
+
+    def pbHideTurnCountReminder; end
+    def updateTurnCountReminder(turnCount); end
   
     def showTrainerDialogue(idxTrainer); end
 
