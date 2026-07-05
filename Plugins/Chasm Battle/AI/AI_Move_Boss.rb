@@ -82,7 +82,7 @@ class PokeBattle_AI
                     end
 
                     # Sort the moves by their calculated score
-                    sortedChoices = regularChoices.sort_by { |regularChoices| next -regularChoices[1] }
+                    sortedChoices = regularChoices.stable_sort_by { |regularChoices| next -regularChoices[1] }
 
                     logMoveChoices(user, sortedChoices)
 
@@ -255,7 +255,7 @@ class PokeBattle_AI
 
                 # Get the one best target for the move
                 if chosenST.nil?
-                    scoresAndTargets.sort! { |a, b| b[0] <=> a[0] }
+                    scoresAndTargets.stable_sort_by! { |entry| -entry[0] }
                     chosenST = scoresAndTargets[0]
                 end
 

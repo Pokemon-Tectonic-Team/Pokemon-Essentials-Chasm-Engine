@@ -10,7 +10,7 @@ class PokeBattle_AI
         # If there are valid choices, pick among them
         if choices.length > 0
             # Determine the most preferred move
-            sortedChoices = choices.sort_by { |choice| -choice[1] }
+            sortedChoices = choices.stable_sort_by { |choice| -choice[1] }
             preferredChoice = sortedChoices[0]
             PBDebug.log("[AI] #{user.pbThis} (#{user.index}) thinks #{user.getMoves[preferredChoice[0]].name} is the highest rated choice")
             unless preferredChoice.nil?
@@ -188,7 +188,7 @@ class PokeBattle_AI
                     newChoice = [totalScore, -1]
                 else
                     # Get the one best target for the move
-                    scoresAndTargets.sort! { |a, b| b[0] <=> a[0] }
+                    scoresAndTargets.stable_sort_by! { |entry| -entry[0] }
                     bestTargetChoice = scoresAndTargets[0]
                     newChoice = [bestTargetChoice[0], bestTargetChoice[1]]
                     killInfo = bestTargetChoice[2]
