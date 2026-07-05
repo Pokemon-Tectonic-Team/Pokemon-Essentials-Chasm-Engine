@@ -42,6 +42,7 @@ class PokeBattle_DebugSceneNoLogging < PokeBattle_Scene
   
     def pbSendOutBattlers(sendOuts,startBattle=false); end
     def pbRecall(idxBattler); end
+    def reviveBattler(idxBattler); end
     def pbItemMenu(idxBattler,firstAction); return -1; end
     def pbResetMoveIndex(idxBattler); end
   
