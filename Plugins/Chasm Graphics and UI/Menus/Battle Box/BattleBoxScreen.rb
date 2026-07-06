@@ -41,7 +41,44 @@ class BattleBoxScreen
     end
 
     def pbInteractWithTeam(team, teamIndex)
-        if @selectedToMove == -1
+        if team == nil && @selectedToMove != -1
+            pbDisplay("You can't move your team there!")
+        elsif team == nil
+            cmds = []
+            copy_cmd = -1
+            create_cmd = -1
+            import_cmd = -1
+            cmds[copy_cmd = cmds.size] = _INTL("Copy current party")
+            cmds[create_cmd = cmds.size] = _INTL("Create from scratch")
+            cmds[import_cmd = cmds.size] = _INTL("Import from site")
+            result = pbShowCommands(_INTL("How do you want to create a team ?"), cmds)
+            case result
+            when copy_cmd
+                rename = pbEnterText(_INTL("Team name..."),1,24)
+                return unless rename
+                self.currentBox.pbSaveParty
+                self.currentBox.setTeamName(teamIndex, rename)
+                pbDisplay("Team successfuly created!")
+                @scene.pbUpdateBox
+            when create_cmd
+                rename = pbEnterText(_INTL("Team name..."),1,24)
+                return unless rename
+                pbDisplay("Choose this party's first Pokémon...")
+                species = pbChooseSpeciesList
+                return unless species
+                self.currentBox[self.currentBox.teamNumber] = [Pokemon.new(species, getLevelCap)]
+                self.currentBox.setTeamName(teamIndex, rename)
+                @scene.pbUpdateBox
+            when import_cmd
+                rename = pbEnterText(_INTL("Team name..."),1,24)
+                return unless rename
+                code_party = read_team_code(true)
+                return if code_party.nil?
+                self.currentBox[self.currentBox.teamNumber] = code_party
+                self.currentBox.setTeamName(teamIndex, rename)
+                @scene.pbUpdateBox
+            end
+        elsif @selectedToMove == -1
             cmds = []
             use_cmd = -1
             showcase_cmd = -1
@@ -55,8 +92,6 @@ class BattleBoxScreen
             cmds[rename_cmd = cmds.size] = _INTL("Rename")
             result = pbShowCommands(_INTL("What do you want to do with this team ?"), cmds)
             case result
-            when -1
-                return
             when use_cmd
                 pbChangePartyIntoTeam(team)
             when showcase_cmd

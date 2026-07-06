@@ -242,7 +242,7 @@ def decode_team(code)
   return party
 end
 
-def read_team_code()
+def read_team_code(return_team=false)
   filename = "Analysis/teamcode.txt"
   code = IO.read(filename)
   if code.nil?
@@ -258,15 +258,20 @@ def read_team_code()
     pbMessage(_INTL("Could not decode team from code."))
     return
   end
-  # Store current party in PC
-  $Trainer.party.each do |mon|
-    $PokemonStorage.pbStoreCaught(mon)
-  end
-  $Trainer.party.clear
+  unless return_team
+    # Store current party in PC
+    $Trainer.party.each do |mon|
+      $PokemonStorage.pbStoreCaught(mon)
+    end
+    $Trainer.party.clear
 
-  # Add new pokemon to party
-  pokemon.each do |mon|
-    pbAddToPartySilent(mon)
+    # Add new pokemon to party
+    pokemon.each do |mon|
+      pbAddToPartySilent(mon)
+    end
+    
+    pbMessage(_INTL("Team code loaded into party."))
+  else
+    return pokemon
   end
-  pbMessage(_INTL("Team code loaded into party."))
 end

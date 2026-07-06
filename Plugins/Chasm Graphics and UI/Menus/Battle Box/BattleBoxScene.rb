@@ -106,8 +106,8 @@ class BattleBoxScene
         case key
         when Input::UP 
             if selection <= 0
-                @selectionOffset = [self.currentBox.teamNumber - 3, 0].max
-                ret = self.currentBox.teamNumber - 1
+                @selectionOffset = [self.currentBox.teamNumber - 2, 0].max
+                ret = self.currentBox.teamNumber
             else
                 ret = selection - 1
             end
@@ -115,7 +115,7 @@ class BattleBoxScene
                 @selectionOffset = ret
             end
         when Input::DOWN
-            if selection >= self.currentBox.teamNumber-1
+            if selection >= self.currentBox.teamNumber
                 @selectionOffset = 0
                 ret = 0
             else

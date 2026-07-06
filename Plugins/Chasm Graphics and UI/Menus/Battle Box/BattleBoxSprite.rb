@@ -29,6 +29,8 @@ class BattleBoxSprite < SpriteWrapper
         @slotbitmap = Bitmap.new("Graphics/Pictures/Battle Box/teamslot")
         @focusslotbitmap = Bitmap.new("Graphics/Pictures/Battle Box/teamslot_focus")
         @moveslotbitmap = Bitmap.new("Graphics/Pictures/Battle Box/teamslot_move")
+        @addslotbitmap = Bitmap.new("Graphics/Pictures/Battle Box/teamslot_add")
+        @addfocusslotbitmap = Bitmap.new("Graphics/Pictures/Battle Box/teamslot_addfocus")
         @headerbitmap = Bitmap.new("Graphics/Pictures/Battle Box/header")
         self.bitmap = @contents
         self.x = 0
@@ -98,10 +100,15 @@ class BattleBoxSprite < SpriteWrapper
             if teamIndex == @selectedToMove
                 sprite = @moveslotbitmap
             else
-                sprite = (@focus == teamIndex) ? @focusslotbitmap : @slotbitmap
+                if teamIndex == @battlebox.teamNumber
+                    sprite = (@focus == teamIndex) ? @addfocusslotbitmap : @addslotbitmap
+                else
+                    sprite = (@focus == teamIndex) ? @focusslotbitmap : @slotbitmap
+                end
             end
 
             @contents.blt(8, yval+8, sprite, Rect.new(0, 0, 496, 120))
+            next if teamIndex == @battlebox.teamNumber
 
             teamname = @battlebox.getTeamName(teamIndex)
             pbSetSystemFont(@contents)
