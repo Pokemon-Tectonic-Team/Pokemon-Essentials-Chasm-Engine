@@ -80,8 +80,6 @@ module PokeBattle_BattleRecorder
 	def pbStartBattle
 		@player_info                  = Marshal.dump(@player)
 		@opponent_info                = Marshal.dump(@opponent)
-		@player_party                 = Marshal.dump(@party1)
-		@opponent_party               = Marshal.dump(@party2)
 		@player_party_starts          = Marshal.dump(@party1starts)
 		@opponent_party_starts        = Marshal.dump(@party2starts)
 		@starting_weather             = @field.weather
@@ -139,10 +137,8 @@ module PokeBattle_BattleRecorder
 			:recorded_switches => @recorded_switches,
 			:random => @random,
 			:player_info => @player_info,
-			:player_party => @player_party,
 			:player_party_starts => @player_party_starts,
 			:opponent_info => @opponent_info,
-			:opponent_party => @opponent_party,
 			:opponent_party_starts => @opponent_party_starts,
 			:starting_weather => @starting_weather,
 			:starting_weather_duration => @starting_weather_duration,
@@ -190,8 +186,11 @@ module PokeBattle_BattleReplayer
 		@randomindex               = 0
 		@player_info               = Marshal.load(battle[:player_info])
 		@opponent_info             = Marshal.load(battle[:opponent_info])
-		@player_party              = Marshal.load(battle[:player_party])
-		@opponent_party            = Marshal.load(battle[:opponent_party])
+
+		# load these from the player info instead of a separate marshal to maintain connection by reference
+		# otherwise checks against the party array (e.g. alive_pokemon_count) would check against a stale copy
+		@player_party              = @player_info.flat_map(&:party)
+		@opponent_party            = @opponent_info.flat_map(&:party)
 		
 
 		echo_rules_debug = false
