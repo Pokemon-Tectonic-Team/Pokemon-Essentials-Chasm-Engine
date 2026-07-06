@@ -337,6 +337,7 @@ end
 def playRecordedBattle(record_name)
 	original_level_cap = getLevelCap
 	scene = pbNewBattleScene
+	scene.abortable = true
 	begin
 		battle = PokeBattle_TectonicReplayedBattle.new(scene, record_name)
 	rescue LoadError => e

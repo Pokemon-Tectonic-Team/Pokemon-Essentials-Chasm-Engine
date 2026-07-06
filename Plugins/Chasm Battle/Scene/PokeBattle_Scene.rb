@@ -182,7 +182,8 @@ class PokeBattle_Scene
             yield if block_given?   # For playing SE as soon as the message is all shown
             yielded = true
           end
-          if !@battleEnd
+          # allow skipping end-of-battle messages in abortable mode since manual input is blocked
+          if !@battleEnd || @abortable
             if i>=MESSAGE_PAUSE_TIME*3   # Autoclose after 3 seconds
               cw.text = ""
               cw.visible = false
