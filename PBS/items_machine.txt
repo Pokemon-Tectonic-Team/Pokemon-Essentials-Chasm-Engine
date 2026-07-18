@@ -1386,14 +1386,14 @@ FieldUse = TM
 Flags = SkipPocketMessage
 Move = PSYPIERCE
 #-------------------------------
-[TMCAUSTICPUNCH]
+[TMSLUDGYSLUG]
 Name = Unnamed
 NamePlural = Unnamed
 Pocket = 5
 Price = 3000
 FieldUse = TM
 Flags = SkipPocketMessage
-Move = CAUSTICPUNCH
+Move = SLUDGYSLUG
 #-------------------------------
 [TMSLUDGE]
 Name = Unnamed

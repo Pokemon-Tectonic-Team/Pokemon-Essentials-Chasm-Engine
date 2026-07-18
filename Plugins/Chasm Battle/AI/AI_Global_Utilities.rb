@@ -18,7 +18,7 @@ def getUrgency
         urgency += 2 if b.hasSetupMove? && b.lastRoundMoveCategory == 2 # Actively setting up
         urgency += 2 if b.hasUseableHazardMove?
         urgency += 1 if b.hasUseableHazardMove? && b.lastRoundMoveCategory == 2 # Actively hazard stacking
-        urgency += 2 if b.hasActiveAbilityAI?(:CONTRARY) || b.hasActiveAbilityAI?(:INVERSION) || b.hasActiveAbilityAI?(:PERSISTENTGROWTH)
+        urgency += 2 if b.hasActiveAbilityAI?(:CONTRARY) || b.hasActiveAbilityAI?(:INVERSION)
     end
     if inWeatherTeam && urgency = 0
         weatherInfo = [

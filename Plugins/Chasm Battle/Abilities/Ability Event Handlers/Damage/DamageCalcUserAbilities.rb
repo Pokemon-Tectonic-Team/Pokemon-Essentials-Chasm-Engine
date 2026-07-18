@@ -1,9 +1,9 @@
 BattleHandlers::DamageCalcUserAbility.add(:ARCTICARIETTE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
       if aiCheck
-          mults[:base_damage_multiplier] *= 1.3 if move.soundMove?
+          mults[:base_damage_multiplier] *= 13 / 10.0 if move.soundMove?
       elsif move.powerBoost
-          mults[:base_damage_multiplier] *= 1.3
+          mults[:base_damage_multiplier] *= 13 / 10.0
           user.aiLearnsAbility(ability) unless aiCheck
       end
   }
@@ -12,9 +12,9 @@ BattleHandlers::DamageCalcUserAbility.add(:ARCTICARIETTE,
 BattleHandlers::DamageCalcUserAbility.add(:GALVANIZE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
       if aiCheck
-          mults[:base_damage_multiplier] *= 1.3 if type == :ELECTRIC
+          mults[:base_damage_multiplier] *= 13 / 10.0 if type == :ELECTRIC
       elsif move.powerBoost
-          mults[:base_damage_multiplier] *= 1.3
+          mults[:base_damage_multiplier] *= 13 / 10.0
           user.aiLearnsAbility(ability) unless aiCheck
       end
   }
@@ -23,9 +23,9 @@ BattleHandlers::DamageCalcUserAbility.add(:GALVANIZE,
 BattleHandlers::DamageCalcUserAbility.add(:NORMALIZE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
       if aiCheck
-          mults[:base_damage_multiplier] *= 1.5 if type == :NORMAL
+          mults[:base_damage_multiplier] *= 3 / 2.0 if type == :NORMAL
       elsif move.powerBoost
-          mults[:base_damage_multiplier] *= 1.5
+          mults[:base_damage_multiplier] *= 3 / 2.0
           user.aiLearnsAbility(ability) unless aiCheck
       end
   }
@@ -34,11 +34,11 @@ BattleHandlers::DamageCalcUserAbility.add(:NORMALIZE,
 BattleHandlers::DamageCalcUserAbility.add(:ANALYTIC,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
       if aiCheck
-          mults[:base_damage_multiplier] *= 1.3 if target.pbSpeed < user.pbSpeed
+          mults[:base_damage_multiplier] *= 13 / 10.0 if target.pbSpeed < user.pbSpeed
       elsif (target.battle.choices[target.index][0] != :UseMove &&
             target.battle.choices[target.index][0] != :Shift) ||
             target.movedThisRound?
-          mults[:base_damage_multiplier] *= 1.3
+          mults[:base_damage_multiplier] *= 13 / 10.0
           user.aiLearnsAbility(ability) unless aiCheck
       end
   }
@@ -47,7 +47,7 @@ BattleHandlers::DamageCalcUserAbility.add(:ANALYTIC,
 BattleHandlers::DamageCalcUserAbility.add(:DEFEATIST,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if user.belowHalfHealth?
-      mults[:attack_multiplier] /= 2
+      mults[:attack_multiplier] *= 1 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -56,7 +56,7 @@ BattleHandlers::DamageCalcUserAbility.add(:DEFEATIST,
 BattleHandlers::DamageCalcUserAbility.add(:PERFECTIONIST,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     unless target.damageState.critical # TODO: Ai check
-      mults[:final_damage_multiplier] /= 2
+      mults[:final_damage_multiplier] *= 1 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -65,7 +65,7 @@ BattleHandlers::DamageCalcUserAbility.add(:PERFECTIONIST,
 BattleHandlers::DamageCalcUserAbility.add(:MEGALAUNCHER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.pulseMove?
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -76,7 +76,7 @@ BattleHandlers::DamageCalcUserAbility.copy(:MEGALAUNCHER, :PRIMEVALMEGALAUNCHER,
 BattleHandlers::DamageCalcUserAbility.add(:EMANATION,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.pulseMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -85,7 +85,7 @@ BattleHandlers::DamageCalcUserAbility.add(:EMANATION,
 BattleHandlers::DamageCalcUserAbility.add(:LETEMHAVEIT,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.pulseMove?
-      mults[:attack_multiplier] *= 1.25
+      mults[:attack_multiplier] *= 5 / 4.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -94,7 +94,7 @@ BattleHandlers::DamageCalcUserAbility.add(:LETEMHAVEIT,
 BattleHandlers::DamageCalcUserAbility.add(:FICKLEUNION,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.pulseMove?
-      mults[:base_damage_multiplier] *= 0.3
+      mults[:base_damage_multiplier] *= 3 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -103,7 +103,7 @@ BattleHandlers::DamageCalcUserAbility.add(:FICKLEUNION,
 BattleHandlers::DamageCalcUserAbility.add(:ULTRABUSTER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.pulseMove? || move.punchingMove?
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -112,7 +112,7 @@ BattleHandlers::DamageCalcUserAbility.add(:ULTRABUSTER,
 BattleHandlers::DamageCalcUserAbility.add(:FADINGFURY,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.lightMove? || move.kickingMove?
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -121,7 +121,7 @@ BattleHandlers::DamageCalcUserAbility.add(:FADINGFURY,
 BattleHandlers::DamageCalcUserAbility.add(:REFRACTIVE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.lightMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -130,7 +130,7 @@ BattleHandlers::DamageCalcUserAbility.add(:REFRACTIVE,
 BattleHandlers::DamageCalcUserAbility.add(:RECKLESS,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.recoilMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -148,7 +148,7 @@ BattleHandlers::DamageCalcUserAbility.add(:LINEBACKER,
 BattleHandlers::DamageCalcUserAbility.add(:HOOLIGAN,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.recoilMove? || move.soundMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -157,7 +157,7 @@ BattleHandlers::DamageCalcUserAbility.add(:HOOLIGAN,
 BattleHandlers::DamageCalcUserAbility.add(:STONEMANE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.recoilMove?
-      mults[:base_damage_multiplier] *= 1.2
+      mults[:base_damage_multiplier] *= 6 / 5.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -166,7 +166,7 @@ BattleHandlers::DamageCalcUserAbility.add(:STONEMANE,
 BattleHandlers::DamageCalcUserAbility.add(:BITEY,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.bitingMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -175,7 +175,7 @@ BattleHandlers::DamageCalcUserAbility.add(:BITEY,
 BattleHandlers::DamageCalcUserAbility.add(:STRONGJAW,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.bitingMove?
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -184,7 +184,7 @@ BattleHandlers::DamageCalcUserAbility.add(:STRONGJAW,
 BattleHandlers::DamageCalcUserAbility.add(:SHEERFORCE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.randomEffect?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -194,7 +194,7 @@ BattleHandlers::DamageCalcUserAbility.add(:TECHNICIAN,
   proc { |ability, user, target, move, mults, baseDmg, type, aiCheck|
       if    user.index != target.index && move && move.id != :STRUGGLE &&
             baseDmg * mults[:base_damage_multiplier] <= 60
-          mults[:base_damage_multiplier] *= 1.5
+          mults[:base_damage_multiplier] *= 3 / 2.0
           user.aiLearnsAbility(ability) unless aiCheck
       end
   }
@@ -203,7 +203,7 @@ BattleHandlers::DamageCalcUserAbility.add(:TECHNICIAN,
 BattleHandlers::DamageCalcUserAbility.add(:IRONFIST,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.punchingMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -213,7 +213,7 @@ BattleHandlers::DamageCalcUserAbility.copy(:IRONFIST, :MYSTICFIST)
 BattleHandlers::DamageCalcUserAbility.add(:KNUCKLEDUSTER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.punchingMove?
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -222,7 +222,7 @@ BattleHandlers::DamageCalcUserAbility.add(:KNUCKLEDUSTER,
 BattleHandlers::DamageCalcUserAbility.add(:SHIFTINGFIST,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.punchingMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -231,7 +231,7 @@ BattleHandlers::DamageCalcUserAbility.add(:SHIFTINGFIST,
 BattleHandlers::DamageCalcUserAbility.add(:BRISK,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.windMove?
-      mults[:attack_multiplier] *= 1.3
+      mults[:attack_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -240,7 +240,7 @@ BattleHandlers::DamageCalcUserAbility.add(:BRISK,
 BattleHandlers::DamageCalcUserAbility.add(:GALEFORCE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.windMove?
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -249,20 +249,18 @@ BattleHandlers::DamageCalcUserAbility.add(:GALEFORCE,
 BattleHandlers::DamageCalcUserAbility.add(:LOUD,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.soundMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
 )
 
-BattleHandlers::DamageCalcUserAbility.copy(:LOUD, :TUNEDOUT)
-
-BattleHandlers::DamageCalcUserAbility.copy(:LOUD, :LEADSINGER)
+BattleHandlers::DamageCalcUserAbility.copy(:LOUD, :TUNEDOUT, :LEADSINGER)
 
 BattleHandlers::DamageCalcUserAbility.add(:EARSPLITTING,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.soundMove?
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -271,7 +269,7 @@ BattleHandlers::DamageCalcUserAbility.add(:EARSPLITTING,
 BattleHandlers::DamageCalcUserAbility.add(:SWORDPLAY,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.sliceMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -279,19 +277,10 @@ BattleHandlers::DamageCalcUserAbility.add(:SWORDPLAY,
 
 BattleHandlers::DamageCalcUserAbility.copy(:SWORDPLAY, :RAZORSEDGE, :BLADEBRAINED)
 
-BattleHandlers::DamageCalcUserAbility.add(:SHARPNESS,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if move.sliceMove?
-      mults[:base_damage_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
-
 BattleHandlers::DamageCalcUserAbility.add(:IRONHEEL,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.kickingMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -302,7 +291,7 @@ BattleHandlers::DamageCalcUserAbility.copy(:IRONHEEL, :HEAVYDUTYHOOVES)
 BattleHandlers::DamageCalcUserAbility.add(:BEAMING,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.lightMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -311,7 +300,7 @@ BattleHandlers::DamageCalcUserAbility.add(:BEAMING,
 BattleHandlers::DamageCalcUserAbility.add(:RADIATE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.lightMove?
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -320,7 +309,7 @@ BattleHandlers::DamageCalcUserAbility.add(:RADIATE,
 BattleHandlers::DamageCalcUserAbility.add(:WELLROUNDED,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.tagged?
-      mults[:base_damage_multiplier] *= 1.2
+      mults[:base_damage_multiplier] *= 6 / 5.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -329,7 +318,7 @@ BattleHandlers::DamageCalcUserAbility.add(:WELLROUNDED,
 BattleHandlers::DamageCalcUserAbility.add(:BADOMEN,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.foretoldMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -338,7 +327,7 @@ BattleHandlers::DamageCalcUserAbility.add(:BADOMEN,
 BattleHandlers::DamageCalcUserAbility.add(:SEER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.foretoldMove?
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -347,7 +336,7 @@ BattleHandlers::DamageCalcUserAbility.add(:SEER,
 BattleHandlers::DamageCalcUserAbility.add(:CREEPINGHORROR,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.foretoldMove?
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -356,7 +345,7 @@ BattleHandlers::DamageCalcUserAbility.add(:CREEPINGHORROR,
 BattleHandlers::DamageCalcUserAbility.add(:GORGING,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.healingMove?
-      mults[:attack_multiplier] *= 1.3
+      mults[:attack_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -365,7 +354,7 @@ BattleHandlers::DamageCalcUserAbility.add(:GORGING,
 BattleHandlers::DamageCalcUserAbility.add(:EXPERTISE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if Effectiveness.super_effective?(typeModToCheck(user.battle, type, user, target, move, aiCheck))
-      mults[:final_damage_multiplier] *= 1.3
+      mults[:final_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -385,16 +374,7 @@ BattleHandlers::DamageCalcUserAbility.add(:TINTEDLENS,
 BattleHandlers::DamageCalcUserAbility.add(:SNIPER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if target.damageState.critical # TODO: Ai check
-      mults[:final_damage_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
-
-BattleHandlers::DamageCalcUserAbility.add(:STAKEOUT,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if target.effectActive?(:SwitchedIn)
-      mults[:attack_multiplier] *= 2
+      mults[:final_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -403,7 +383,7 @@ BattleHandlers::DamageCalcUserAbility.add(:STAKEOUT,
 BattleHandlers::DamageCalcUserAbility.add(:LIMINAL,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if target.effectActive?(:SwitchedIn)
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -412,7 +392,7 @@ BattleHandlers::DamageCalcUserAbility.add(:LIMINAL,
 BattleHandlers::DamageCalcUserAbility.add(:BIRDOFPREY,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if target.effectActive?(:SwitchedIn) || target.belowHalfHealth?
-      mults[:attack_multiplier] *= 1.3
+      mults[:attack_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -421,7 +401,7 @@ BattleHandlers::DamageCalcUserAbility.add(:BIRDOFPREY,
 BattleHandlers::DamageCalcUserAbility.add(:AFTERIMAGE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if target.effectActive?(:SwitchedIn)
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -439,18 +419,16 @@ BattleHandlers::DamageCalcUserAbility.add(:QUARRELSOME,
 BattleHandlers::DamageCalcUserAbility.add(:STEELWORKER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :STEEL
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
 )
 
-BattleHandlers::DamageCalcUserAbility.copy(:STEELWORKER, :STEELYSHELL, :PULVERIZE)
-
 BattleHandlers::DamageCalcUserAbility.add(:SURFSUP,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :WATER
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -459,7 +437,7 @@ BattleHandlers::DamageCalcUserAbility.add(:SURFSUP,
 BattleHandlers::DamageCalcUserAbility.add(:ERUDITE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :PSYCHIC
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -468,7 +446,7 @@ BattleHandlers::DamageCalcUserAbility.add(:ERUDITE,
 BattleHandlers::DamageCalcUserAbility.add(:MULTITASKER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :PSYCHIC
-      mults[:attack_multiplier] *= 1.35
+      mults[:attack_multiplier] *= 27 / 20.0 # 1.35
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -477,7 +455,7 @@ BattleHandlers::DamageCalcUserAbility.add(:MULTITASKER,
 BattleHandlers::DamageCalcUserAbility.add(:EVENHANDED,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :FIGHTING
-      mults[:attack_multiplier] *= 1.35
+      mults[:attack_multiplier] *= 27 / 20.0 # 1.35
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -486,7 +464,7 @@ BattleHandlers::DamageCalcUserAbility.add(:EVENHANDED,
 BattleHandlers::DamageCalcUserAbility.add(:PECKINGORDER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :FLYING
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -495,7 +473,7 @@ BattleHandlers::DamageCalcUserAbility.add(:PECKINGORDER,
 BattleHandlers::DamageCalcUserAbility.add(:TUNNELMAKER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :GROUND
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -504,7 +482,7 @@ BattleHandlers::DamageCalcUserAbility.add(:TUNNELMAKER,
 BattleHandlers::DamageCalcUserAbility.add(:SUBZERO,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :ICE
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -513,7 +491,7 @@ BattleHandlers::DamageCalcUserAbility.add(:SUBZERO,
 BattleHandlers::DamageCalcUserAbility.add(:PALEOLITHIC,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :ROCK
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -522,7 +500,7 @@ BattleHandlers::DamageCalcUserAbility.add(:PALEOLITHIC,
 BattleHandlers::DamageCalcUserAbility.add(:SUPERALLOY,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :STEEL
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -531,7 +509,7 @@ BattleHandlers::DamageCalcUserAbility.add(:SUPERALLOY,
 BattleHandlers::DamageCalcUserAbility.add(:SCALDINGSMOKE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :POISON
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -540,7 +518,7 @@ BattleHandlers::DamageCalcUserAbility.add(:SCALDINGSMOKE,
 BattleHandlers::DamageCalcUserAbility.add(:STEELYSPIRIT,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :STEEL
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -549,7 +527,7 @@ BattleHandlers::DamageCalcUserAbility.add(:STEELYSPIRIT,
 BattleHandlers::DamageCalcUserAbility.add(:VERDANT,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :GRASS
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -558,16 +536,7 @@ BattleHandlers::DamageCalcUserAbility.add(:VERDANT,
 BattleHandlers::DamageCalcUserAbility.add(:TOXICATTITUDE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :POISON
-      mults[:base_damage_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
-
-BattleHandlers::DamageCalcUserAbility.add(:UNCANNYCOLD,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if type == :ICE
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -582,18 +551,9 @@ BattleHandlers::DamageCalcUserAbility.add(:WATERBUBBLE,
   }
 )
 
-BattleHandlers::DamageCalcUserAbility.add(:SHOCKSTYLE,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if type == :FIGHTING
-      mults[:attack_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
-
 BattleHandlers::DamageCalcUserAbility.add(:HUSTLE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
   }
 )
@@ -601,7 +561,7 @@ BattleHandlers::DamageCalcUserAbility.add(:HUSTLE,
 BattleHandlers::DamageCalcUserAbility.add(:DRAGONSMAW,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :DRAGON
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -610,7 +570,7 @@ BattleHandlers::DamageCalcUserAbility.add(:DRAGONSMAW,
 BattleHandlers::DamageCalcUserAbility.add(:TRANSISTOR,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :ELECTRIC
-      mults[:attack_multiplier] *= 1.5
+      mults[:attack_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -619,7 +579,7 @@ BattleHandlers::DamageCalcUserAbility.add(:TRANSISTOR,
 BattleHandlers::DamageCalcUserAbility.add(:MIDNIGHTSUN,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if user.battle.sunny? && type == :DARK
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -628,7 +588,7 @@ BattleHandlers::DamageCalcUserAbility.add(:MIDNIGHTSUN,
 BattleHandlers::DamageCalcUserAbility.add(:DARKENEDSKIES,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if user.battle.sandy? && type == :DARK
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -637,7 +597,7 @@ BattleHandlers::DamageCalcUserAbility.add(:DARKENEDSKIES,
 BattleHandlers::DamageCalcUserAbility.add(:RAINPRISM,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if user.battle.rainy? && type == :FAIRY
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -646,16 +606,7 @@ BattleHandlers::DamageCalcUserAbility.add(:RAINPRISM,
 BattleHandlers::DamageCalcUserAbility.add(:WORLDQUAKE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if user.battle.eclipsed? && type == :GROUND
-      mults[:base_damage_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
-
-BattleHandlers::DamageCalcUserAbility.add(:TIDALFORCE,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if user.battle.moonGlowing? && type == :WATER
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -664,16 +615,7 @@ BattleHandlers::DamageCalcUserAbility.add(:TIDALFORCE,
 BattleHandlers::DamageCalcUserAbility.add(:TAIGATREKKER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if user.battle.icy? && type == :GRASS
-      mults[:base_damage_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
-
-BattleHandlers::DamageCalcUserAbility.add(:VARIETY,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if user.lastMoveUsed != move.id && !user.lastMoveFailed
-      mults[:attack_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -682,7 +624,7 @@ BattleHandlers::DamageCalcUserAbility.add(:VARIETY,
 BattleHandlers::DamageCalcUserAbility.add(:PHASESHIFT,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if !user.lastMoveUsedType.nil? && type != user.lastMoveUsedType
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -702,7 +644,7 @@ BattleHandlers::DamageCalcUserAbility.add(:ARMORPIERCING,
 BattleHandlers::DamageCalcUserAbility.add(:TERRITORIAL,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if target.battle.pbWeather != :None
-      mults[:attack_multiplier] *= 1.2
+      mults[:attack_multiplier] *= 6 / 5.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -720,7 +662,7 @@ BattleHandlers::DamageCalcUserAbility.add(:SOULREAD,
 BattleHandlers::DamageCalcUserAbility.add(:DOUBLECHECK,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if target.tookDamage
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -737,7 +679,7 @@ BattleHandlers::DamageCalcUserAbility.add(:DRAGONSLAYER,
 
 BattleHandlers::DamageCalcUserAbility.add(:SPACEINTERLOPER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-      mults[:attack_multiplier] *= 0.5
+      mults[:attack_multiplier] *= 1 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
   }
 )
@@ -752,7 +694,7 @@ BattleHandlers::DamageCalcUserAbility.add(:TIMEINTERLOPER,
 BattleHandlers::DamageCalcUserAbility.add(:GRIPSTRENGTH,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.function == "BindTarget3" # 3-turn DOT trapping moves
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -771,16 +713,7 @@ UNCONVENTIONAL_MOVE_CODES = %w[
 BattleHandlers::DamageCalcUserAbility.add(:UNCONVENTIONAL,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if UNCONVENTIONAL_MOVE_CODES.include?(move.function)
-      mults[:base_damage_multiplier] *= 1.5
-      user.aiLearnsAbility(ability) unless aiCheck
-    end
-  }
-)
-
-BattleHandlers::DamageCalcUserAbility.add(:RATTLEEM,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    if target.effectActive?(:FlinchImmunity)
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -789,7 +722,7 @@ BattleHandlers::DamageCalcUserAbility.add(:RATTLEEM,
 BattleHandlers::DamageCalcUserAbility.add(:AURORAPRISM,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     unless user.pbHasType?(type)
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -798,7 +731,7 @@ BattleHandlers::DamageCalcUserAbility.add(:AURORAPRISM,
 BattleHandlers::DamageCalcUserAbility.add(:FLEXIBLE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     unless user.pbHasType?(type)
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -808,7 +741,7 @@ BattleHandlers::DamageCalcUserAbility.add(:FIRSTSTRIKE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
       priority = user.battle.choices[user.index][4] || move.priority || nil
       if priority > 0
-        mults[:base_damage_multiplier] *= 1.3
+        mults[:base_damage_multiplier] *= 13 / 10.0
         user.aiLearnsAbility(ability) unless aiCheck
       end
   }
@@ -817,7 +750,7 @@ BattleHandlers::DamageCalcUserAbility.add(:FIRSTSTRIKE,
 BattleHandlers::DamageCalcUserAbility.add(:HARDFALL,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if target.pbHeight > user.pbHeight
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -826,7 +759,7 @@ BattleHandlers::DamageCalcUserAbility.add(:HARDFALL,
 BattleHandlers::DamageCalcUserAbility.add(:SCATHINGSYZYGY,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if user.battle.eclipsed?
-      mults[:base_damage_multiplier] *= 1.25
+      mults[:base_damage_multiplier] *= 5 / 4.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -848,7 +781,7 @@ BattleHandlers::DamageCalcUserAbility.add(:BALLLIGHTNING,
 BattleHandlers::DamageCalcUserAbility.add(:PREEMINENCE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
       if user.pbSpeed > target.pbSpeed
-        mults[:base_damage_multiplier] *= 1.3
+        mults[:base_damage_multiplier] *= 13 / 10.0
         user.aiLearnsAbility(ability) unless aiCheck
       end
   }
@@ -857,7 +790,7 @@ BattleHandlers::DamageCalcUserAbility.add(:PREEMINENCE,
 BattleHandlers::DamageCalcUserAbility.add(:LATEBLOOMER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if user.pbSpeed < target.pbSpeed
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -866,7 +799,7 @@ BattleHandlers::DamageCalcUserAbility.add(:LATEBLOOMER,
 BattleHandlers::DamageCalcUserAbility.add(:VANDAL,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if target.hasAnyItem?
-      mults[:attack_multiplier] *= 1.3
+      mults[:attack_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -885,7 +818,7 @@ BattleHandlers::DamageCalcUserAbility.add(:TEAMPLAYER,
 
 BattleHandlers::DamageCalcUserAbility.add(:CLEANFREAK,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-      mults[:attack_multiplier] *= 1.5 if user.pbHasAnyStatus?
+      mults[:attack_multiplier] *= 3 / 2.0 if user.pbHasAnyStatus?
       user.aiLearnsAbility(ability) unless aiCheck
   }
 )
@@ -900,7 +833,7 @@ BattleHandlers::DamageCalcUserAbility.add(:PUFFUP,
 BattleHandlers::DamageCalcUserAbility.add(:WREAKHAVOC,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.rampagingMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -918,23 +851,16 @@ BattleHandlers::DamageCalcUserAbility.add(:SLINKY,
 BattleHandlers::DamageCalcUserAbility.add(:PHANTASMAL,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.is_a?(PokeBattle_Move_TwoTurnAttackInvulnerable)
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
-  }
-)
-
-BattleHandlers::DamageCalcUserAbility.add(:TERRORIZE,
-  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    mults[:base_damage_multiplier] *= 0.9
-    user.aiLearnsAbility(ability) unless aiCheck
   }
 )
 
 BattleHandlers::DamageCalcUserAbility.add(:PITFIGHTER,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if target.trapped?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -943,7 +869,7 @@ BattleHandlers::DamageCalcUserAbility.add(:PITFIGHTER,
 BattleHandlers::DamageCalcUserAbility.add(:HIVEMIND,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if type == :BUG
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -952,7 +878,7 @@ BattleHandlers::DamageCalcUserAbility.add(:HIVEMIND,
 BattleHandlers::DamageCalcUserAbility.add(:RELUCTANTWARRIOR,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if user.belowHalfHealth?
-      mults[:attack_multiplier] *= 1.3
+      mults[:attack_multiplier] *= 13 / 10.0
 	  user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -961,7 +887,7 @@ BattleHandlers::DamageCalcUserAbility.add(:RELUCTANTWARRIOR,
 BattleHandlers::DamageCalcUserAbility.add(:TANGLINGVINES,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if target.pointsAt?(:TanglingVines, user)
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -972,7 +898,7 @@ BattleHandlers::DamageCalcUserAbility.add(:ACTIONSTAR,
     next unless user.effectActive?(:ActionStar)
     next unless move.damagingMove?
     next unless type == :NORMAL
-    mults[:base_damage_multiplier] *= 1.3
+    mults[:base_damage_multiplier] *= 13 / 10.0
     user.aiLearnsAbility(ability) unless aiCheck
   }
 )
@@ -980,7 +906,7 @@ BattleHandlers::DamageCalcUserAbility.add(:ACTIONSTAR,
 BattleHandlers::DamageCalcUserAbility.add(:SLUMBERFORCE,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if target.asleep?
-      mults[:base_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -988,7 +914,7 @@ BattleHandlers::DamageCalcUserAbility.add(:SLUMBERFORCE,
 
 BattleHandlers::DamageCalcUserAbility.add(:BREAKTHROUGH,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    mults[:base_damage_multiplier] *= 1.2
+    mults[:base_damage_multiplier] *= 6 / 5.0
     user.aiLearnsAbility(ability) unless aiCheck
   }
 )
@@ -997,21 +923,21 @@ BattleHandlers::DamageCalcUserAbility.copy(:BREAKTHROUGH, :PRIMEVALBREAKTHROUGH)
 
 BattleHandlers::DamageCalcUserAbility.add(:JUGGERNAUT,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    mults[:base_damage_multiplier] *= 1.2
+    mults[:base_damage_multiplier] *= 6 / 5.0
     user.aiLearnsAbility(ability) unless aiCheck
   }
 )
 
 BattleHandlers::DamageCalcUserAbility.add(:STRAIGHTAHEAD,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    mults[:base_damage_multiplier] *= 1.2
+    mults[:base_damage_multiplier] *= 6 / 5.0
     user.aiLearnsAbility(ability) unless aiCheck
   }
 )
 
 BattleHandlers::DamageCalcUserAbility.add(:INSCRUTABLEORDERS,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    mults[:base_damage_multiplier] *= 1.3
+    mults[:base_damage_multiplier] *= 13 / 10.0
     user.aiLearnsAbility(ability) unless aiCheck
   }
 )
@@ -1019,7 +945,7 @@ BattleHandlers::DamageCalcUserAbility.add(:INSCRUTABLEORDERS,
 BattleHandlers::DamageCalcUserAbility.add(:HAPHAZARD,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
     if move.accuracy < 100 || move.multiHitMove?
-      mults[:base_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 13 / 10.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
   }
@@ -1027,7 +953,81 @@ BattleHandlers::DamageCalcUserAbility.add(:HAPHAZARD,
 
 BattleHandlers::DamageCalcUserAbility.add(:FUELHUNGRY,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
-    mults[:base_damage_multiplier] *= 1.5
+    mults[:base_damage_multiplier] *= 3 / 2.0
+    user.aiLearnsAbility(ability) unless aiCheck
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::DamageCalcUserAbility.add(:SHARPNESS,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if move.sliceMove?
+      mults[:base_damage_multiplier] *= 3 / 2.0
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:STAKEOUT,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if target.effectActive?(:SwitchedIn)
+      mults[:attack_multiplier] *= 2
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:UNCANNYCOLD,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if type == :ICE
+      mults[:base_damage_multiplier] *= 3 / 2.0
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:SHOCKSTYLE,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if type == :FIGHTING
+      mults[:attack_multiplier] *= 1.5
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:TIDALFORCE,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if user.battle.moonGlowing? && type == :WATER
+      mults[:base_damage_multiplier] *= 3 / 2.0
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:VARIETY,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if user.lastMoveUsed != move.id && !user.lastMoveFailed
+      mults[:attack_multiplier] *= 3 / 2.0
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:RATTLEEM,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if target.effectActive?(:FlinchImmunity)
+      mults[:base_damage_multiplier] *= 3 / 2.0
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:TERRORIZE,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    mults[:base_damage_multiplier] *= 0.9
     user.aiLearnsAbility(ability) unless aiCheck
   }
 )

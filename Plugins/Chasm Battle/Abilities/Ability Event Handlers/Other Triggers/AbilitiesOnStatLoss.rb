@@ -12,16 +12,20 @@ BattleHandlers::AbilityOnStatLoss.add(:DEFIANT,
   }
 )
 
-BattleHandlers::AbilityOnStatLoss.add(:BELLIGERENT,
-  proc { |ability, battler, user|
-      next unless user&.opposes?(battler)
-      battler.pbRaiseMultipleStatSteps([:ATTACK, 3, :SPECIAL_ATTACK, 3], battler, ability: ability)
-  }
-)
-
 BattleHandlers::AbilityOnStatLoss.add(:IMPERIOUS,
   proc { |ability, battler, user|
       next unless user&.opposes?(battler)
       battler.tryRaiseStat(:SPEED, battler, ability: ability, increment: 4)
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::AbilityOnStatLoss.add(:BELLIGERENT,
+  proc { |ability, battler, user|
+      next unless user&.opposes?(battler)
+      battler.pbRaiseMultipleStatSteps([:ATTACK, 3, :SPECIAL_ATTACK, 3], battler, ability: ability)
   }
 )

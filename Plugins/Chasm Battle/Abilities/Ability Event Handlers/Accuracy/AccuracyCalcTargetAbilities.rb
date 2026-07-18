@@ -1,12 +1,16 @@
-BattleHandlers::AccuracyCalcTargetAbility.add(:LIGHTNINGROD,
-  proc { |ability, mults, _user, _target, _move, type|
-      mults[:base_accuracy] = 0 if type == :ELECTRIC
-  }
-)
-
 BattleHandlers::AccuracyCalcTargetAbility.add(:NOGUARD,
   proc { |ability, mults, _user, _target, _move, _type|
       mults[:base_accuracy] = 0
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::AccuracyCalcTargetAbility.add(:LIGHTNINGROD,
+  proc { |ability, mults, _user, _target, _move, type|
+      mults[:base_accuracy] = 0 if type == :ELECTRIC
   }
 )
 

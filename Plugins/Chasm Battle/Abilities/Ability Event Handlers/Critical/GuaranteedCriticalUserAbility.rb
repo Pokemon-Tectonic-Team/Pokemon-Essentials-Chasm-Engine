@@ -34,12 +34,6 @@ BattleHandlers::GuaranteedCriticalUserAbility.add(:BREAKINGWAVE,
     }
 )
 
-BattleHandlers::GuaranteedCriticalUserAbility.add(:LURING,
-    proc { |ability, _user, target, _battle, move|
-        next true if target.dizzy?
-    }
-)
-
 BattleHandlers::GuaranteedCriticalUserAbility.add(:PERFECTLUCK,
     proc { |ability, _user, target, _battle, move|
         next true
@@ -55,5 +49,15 @@ BattleHandlers::GuaranteedCriticalUserAbility.add(:STERN,
 BattleHandlers::GuaranteedCriticalUserAbility.add(:STAYOFEXECUTION,
     proc { |ability, _user, target, _battle, move|
         next true if move.sliceMove?
+    }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::GuaranteedCriticalUserAbility.add(:LURING,
+    proc { |ability, _user, target, _battle, move|
+        next true if target.dizzy?
     }
 )

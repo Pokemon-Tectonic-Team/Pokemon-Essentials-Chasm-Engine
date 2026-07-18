@@ -10,7 +10,7 @@ class PokeBattle_Move_EmpoweredSludgeWave < PokeBattle_Move_Poison
 end
 
 #===============================================================================
-# Changes Category based on Opponent's Def and SpDef. Has 20% Chance to Poison
+# Changes Category based on Opponent's Def and SpDef. Has 30% Chance to Poison
 # (Shell Side Arm)
 #===============================================================================
 class PokeBattle_Move_CategoryDependsOnHigherDamagePoisonTarget < PokeBattle_Move_Poison

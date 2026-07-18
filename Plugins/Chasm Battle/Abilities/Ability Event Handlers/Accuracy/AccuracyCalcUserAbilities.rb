@@ -1,18 +1,6 @@
-BattleHandlers::AccuracyCalcUserAbility.add(:COMPOUNDEYES,
-    proc { |ability, mults, _user, _target, _move, _type|
-        mults[:accuracy_multiplier] *= 1.3
-    }
-)
-
 BattleHandlers::AccuracyCalcUserAbility.add(:HUSTLE,
   proc { |ability, mults, _user, _target, move, _type|
       mults[:accuracy_multiplier] *= 0.8
-  }
-)
-
-BattleHandlers::AccuracyCalcUserAbility.add(:KEENEYE,
-  proc { |ability, mults, _user, _target, _move, _type|
-      mults[:evasion_step] = 0 if mults[:evasion_step] > 0
   }
 )
 
@@ -68,4 +56,20 @@ BattleHandlers::AccuracyCalcUserAbility.add(:PINDOWN,
     proc { |ability, mults, user, target, _move, _type|
         mults[:base_accuracy] = 0 if target.trapped?
     }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::AccuracyCalcUserAbility.add(:COMPOUNDEYES,
+    proc { |ability, mults, _user, _target, _move, _type|
+        mults[:accuracy_multiplier] *= 1.3
+    }
+)
+
+BattleHandlers::AccuracyCalcUserAbility.add(:KEENEYE,
+  proc { |ability, mults, _user, _target, _move, _type|
+      mults[:evasion_step] = 0 if mults[:evasion_step] > 0
+  }
 )

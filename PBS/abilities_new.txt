@@ -632,7 +632,7 @@ Description = Takes half damage from Psychic- and Ghost-type attacks.
 [EXOSPHERICDESCENT]
 Name = Exospheric Descent
 Description = Cannot enter battle unless all party members are below half HP. Upon entry, transforms into Meteoric Form.
-Flags = Immutable,UnableByDefault
+Flags = Immutable,UnableByDefault,BattleEndReviver
 #-------------------------------
 [EXOTHERMENGINE]
 Name = Exotherm Engine
@@ -1245,10 +1245,6 @@ Description = Rather than take recoil damage, it swaps out, and its replacement 
 Name = Killjoy
 Description = Pokémon can't raise their stats. Pokémon that dance take damage equal to 1/4th their HP.
 #-------------------------------
-[KLEPTOMANIAC]
-Name = Kleptomaniac
-Description = Uses Snatch upon entry, stealing self-targeting status moves.
-#-------------------------------
 [KNUCKLEDUSTER]
 Name = Knuckleduster
 Description = Boosts the power of punching moves by 50%.
@@ -1620,7 +1616,7 @@ Description = Immune to Flying-type moves and deals 50% more damage with them.
 #-------------------------------
 [PERENNIALPAYLOAD]
 Name = Perennial Payload
-Description = After fainting from self-destructing, revives after five turns.
+Description = After fainting from self-destructing, revives at 1 HP after five turns.
 #-------------------------------
 [PERFECTIONIST]
 Name = Perfectionist
@@ -2109,10 +2105,6 @@ Description = Whenever a foe fails or misses, they take 1/8th HP damage.
 Name = Sleetshaker
 Description = Boosts Attack by 30% in hail.
 Flags = HailSynergy
-#-------------------------------
-[SLICKSURFACE]
-Name = Slick Surface
-Description = Can't be leeched, drained, or trapped.
 #-------------------------------
 [SLINKY]
 Name = Slinky

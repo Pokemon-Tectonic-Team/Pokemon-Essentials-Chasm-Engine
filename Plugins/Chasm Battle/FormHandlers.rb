@@ -302,14 +302,6 @@ MultipleForms.register(:SCATTERBUG,{
 
 MultipleForms.copy(:SCATTERBUG,:SPEWPA,:VIVILLON)
 
-MultipleForms.register(:ESPURR,{
-  "getFormOnCreation" => proc { |pkmn|
-    next pkmn.gender
-  }
-})
-
-MultipleForms.copy(:ESPURR,:MEOWSTIC)
-
 MultipleForms.register(:AEGISLASH,{
   "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
     next 0
@@ -327,7 +319,7 @@ MultipleForms.register(:XERNEAS,{
 
 MultipleForms.register(:ZYGARDE,{
   "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
-    next pkmn.form==0 if pkmn.form==2 && endBattle
+    next pkmn.form-2 if pkmn.form>=2 && endBattle
   }
 })
 

@@ -29,12 +29,92 @@ class PokeBattle_Move_SuperEffectiveAgainstGhost < PokeBattle_TypeSuperMove
 end
 
 #===============================================================================
-# Effectiveness against Fighting-type is 2x. (Honorless Sting)
+# Effectiveness against Fighting-type is 2x. (Spasmic Sting)
 #===============================================================================
 class PokeBattle_Move_SuperEffectiveAgainstFighting < PokeBattle_TypeSuperMove
     def initialize(battle, move)
         super
         @typeHated = :FIGHTING
+    end
+end
+
+#===============================================================================
+# Effectiveness against Fairy-type is 2x. (Dispell)
+#===============================================================================
+class PokeBattle_Move_SuperEffectiveAgainstFairy < PokeBattle_TypeSuperMove
+    def initialize(battle, move)
+        super
+        @typeHated = :FAIRY
+    end
+end
+
+#===============================================================================
+# Effectiveness against Steel-type is 2x.
+#===============================================================================
+class PokeBattle_Move_SuperEffectiveAgainstSteel < PokeBattle_TypeSuperMove
+    def initialize(battle, move)
+        super
+        @typeHated = :STEEL
+    end
+end
+
+#===============================================================================
+# Effectiveness against Poison-type is 2x.
+#===============================================================================
+class PokeBattle_Move_SuperEffectiveAgainstPoison < PokeBattle_TypeSuperMove
+    def initialize(battle, move)
+        super
+        @typeHated = :POISON
+    end
+end
+
+#===============================================================================
+# Effectiveness against Normal-type is 2x.
+#===============================================================================
+class PokeBattle_Move_SuperEffectiveAgainstNormal < PokeBattle_TypeSuperMove
+    def initialize(battle, move)
+        super
+        @typeHated = :NORMAL
+    end
+end
+
+#===============================================================================
+# Effectiveness against Dark-type is 2x.
+#===============================================================================
+class PokeBattle_Move_SuperEffectiveAgainstDark < PokeBattle_TypeSuperMove
+    def initialize(battle, move)
+        super
+        @typeHated = :DARK
+    end
+end
+
+#===============================================================================
+# Effectiveness against Ground-type is 2x.
+#===============================================================================
+class PokeBattle_Move_SuperEffectiveAgainstGround < PokeBattle_TypeSuperMove
+    def initialize(battle, move)
+        super
+        @typeHated = :GROUND
+    end
+end
+
+#===============================================================================
+# Effectiveness against Flying-type is 2x.
+#===============================================================================
+class PokeBattle_Move_SuperEffectiveAgainstFlying < PokeBattle_TypeSuperMove
+    def initialize(battle, move)
+        super
+        @typeHated = :FLYING
+    end
+end
+
+#===============================================================================
+# Effectiveness against Psychic-type is 2x.
+#===============================================================================
+class PokeBattle_Move_SuperEffectiveAgainstPsychic < PokeBattle_TypeSuperMove
+    def initialize(battle, move)
+        super
+        @typeHated = :PSYCHIC
     end
 end
 

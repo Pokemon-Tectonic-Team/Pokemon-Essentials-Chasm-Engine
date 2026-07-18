@@ -140,7 +140,8 @@ class PokeBattle_Move_StartUserShedTypeWeaknesses < PokeBattle_Move
 end
 
 #===============================================================================
-# User is protected from random additional effects for a number of turns, by consuming coins (Wishing Well)
+# User is protected from random additional effects for a number of turns, by consuming coins. 
+# (Wishing Well)
 #===============================================================================
 class PokeBattle_Move_WishingWellScalesWithMoney < PokeBattle_Move
     def initialize(battle, move)
@@ -213,7 +214,7 @@ class PokeBattle_Move_EmpoweredWorkUp < PokeBattle_Move
 end
 
 #===============================================================================
-# User transforms into Gulping or Gorging form (Gulping Dive)
+# User transforms into Gulping or Gorging form. (Gulping Dive)
 #===============================================================================
 
 class PokeBattle_Move_GulpingDive < PokeBattle_Move

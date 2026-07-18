@@ -1,20 +1,6 @@
 #############################################################
 # Adaption abilities
 #############################################################
-BattleHandlers::TargetAbilityAfterMoveUse.add(:COLORCHANGE,
-  proc { |ability, target, user, move, _switched, battle|
-      next unless user.activatesTargetAbilities?
-      next if target.damageState.calcDamage == 0 || target.damageState.substitute
-      next if !move.calcType || GameData::Type.get(move.calcType).pseudo_type
-      next if target.pbHasType?(move.calcType) && !target.pbHasOtherType?(move.calcType)
-      typeName = GameData::Type.get(move.calcType).name
-      battle.pbShowAbilitySplash(target, ability)
-      target.pbChangeTypes(move.calcType)
-      battle.pbDisplay(_INTL("{1}'s {2} made it the {3} type!", target.pbThis, getAbilityName(ability), typeName))
-      battle.pbHideAbilitySplash(target)
-  }
-)
-
 BattleHandlers::TargetAbilityAfterMoveUse.add(:INDESTRUCTIBLE,
   proc { |ability, target, _user, move, _switched, battle|
       next unless move.damagingMove?
@@ -107,4 +93,22 @@ BattleHandlers::TargetAbilityAfterMoveUse.add(:FRIGIDREFLECTION,
         next if target.damageState.calcDamage == 0 || target.damageState.substitute
         battle.forceUseMove(target, move.id, user.index, ability: ability)
     }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::TargetAbilityAfterMoveUse.add(:COLORCHANGE,
+  proc { |ability, target, user, move, _switched, battle|
+      next unless user.activatesTargetAbilities?
+      next if target.damageState.calcDamage == 0 || target.damageState.substitute
+      next if !move.calcType || GameData::Type.get(move.calcType).pseudo_type
+      next if target.pbHasType?(move.calcType) && !target.pbHasOtherType?(move.calcType)
+      typeName = GameData::Type.get(move.calcType).name
+      battle.pbShowAbilitySplash(target, ability)
+      target.pbChangeTypes(move.calcType)
+      battle.pbDisplay(_INTL("{1}'s {2} made it the {3} type!", target.pbThis, getAbilityName(ability), typeName))
+      battle.pbHideAbilitySplash(target)
+  }
 )

@@ -13,21 +13,9 @@ BattleHandlers::PriorityChangeAbility.add(:TRIAGE,
   }
 )
 
-BattleHandlers::PriorityChangeAbility.add(:FAUXLIAGE,
-  proc { |ability, battler, move, _pri, _targets = nil, _aiCheck = false|
-      next 1 if move.calcType == :GRASS
-  }
-)
-
 BattleHandlers::PriorityChangeAbility.add(:ENVY,
   proc { |ability, _battler, _move, _pri, targets = nil, _aiCheck = false|
       next 1 if targets && targets.length == 1 && targets[0].hasRaisedStatSteps?
-  }
-)
-
-BattleHandlers::PriorityChangeAbility.add(:QUICKBUILD,
-  proc { |ability, _battler, move, _pri, _targets = nil, _aiCheck = false|
-      next 1 if move.setsARoom?
   }
 )
 
@@ -40,12 +28,6 @@ BattleHandlers::PriorityChangeAbility.add(:TIMEINTERLOPER,
 BattleHandlers::PriorityChangeAbility.add(:POWERLIFTER,
   proc { |ability, _battler, move, _pri, _targets = nil, _aiCheck = false|
       next -6 if move.physicalMove?
-  }
-)
-
-BattleHandlers::PriorityChangeAbility.add(:EGOIST,
-  proc { |ability, battler, move, _pri, _targets = nil, _aiCheck = false|
-      next 1 if move.type == :FIGHTING
   }
 )
 
@@ -69,5 +51,27 @@ BattleHandlers::PriorityChangeAbility.add(:TREMORSENSE,
           battler.hideMyAbilitySplash
       end
       next 1
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::PriorityChangeAbility.add(:FAUXLIAGE,
+  proc { |ability, battler, move, _pri, _targets = nil, _aiCheck = false|
+      next 1 if move.calcType == :GRASS
+  }
+)
+
+BattleHandlers::PriorityChangeAbility.add(:QUICKBUILD,
+  proc { |ability, _battler, move, _pri, _targets = nil, _aiCheck = false|
+      next 1 if move.setsARoom?
+  }
+)
+
+BattleHandlers::PriorityChangeAbility.add(:EGOIST,
+  proc { |ability, battler, move, _pri, _targets = nil, _aiCheck = false|
+      next 1 if move.type == :FIGHTING
   }
 )

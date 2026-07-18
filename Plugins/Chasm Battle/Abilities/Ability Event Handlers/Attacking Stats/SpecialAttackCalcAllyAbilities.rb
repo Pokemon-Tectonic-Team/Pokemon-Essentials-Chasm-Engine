@@ -5,6 +5,10 @@ BattleHandlers::SpecialAttackCalcAllyAbility.add(:BATTERY,
     }
 )
 
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
 BattleHandlers::SpecialAttackCalcAllyAbility.add(:POSITIVEOUTLOOK,
     proc { |ability, user, _battle, spAtkMult|
         spAtkMult *= 1.5 if user.pbHasType?(:ELECTRIC)

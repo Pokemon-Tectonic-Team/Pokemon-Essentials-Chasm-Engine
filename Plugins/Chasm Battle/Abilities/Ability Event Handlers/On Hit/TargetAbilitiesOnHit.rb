@@ -65,7 +65,7 @@ BattleHandlers::TargetAbilityOnHit.add(:GRAVITYWELL,
 #########################################
 
 BattleHandlers::TargetAbilityOnHit.add(:GOOEY,
-  proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
+  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
         next if user.dummy
         next unless move.physicalMove?
         if aiCheck
@@ -76,11 +76,12 @@ BattleHandlers::TargetAbilityOnHit.add(:GOOEY,
             next ret
         end
         user.pbLowerMultipleStatSteps([:ATTACK,1,:SPEED,1], target, ability: ability)
-  }
+        battle.pbHideAbilitySplash(target)
+    }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:SICKENING,
-  proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
+  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
         next if user.dummy
         next unless move.specialMove?
         if aiCheck
@@ -91,20 +92,7 @@ BattleHandlers::TargetAbilityOnHit.add(:SICKENING,
             next ret
         end
         user.pbLowerMultipleStatSteps([:SPECIAL_ATTACK,1,:SPEED,1], target, ability: ability)
-  }
-)
-
-BattleHandlers::TargetAbilityOnHit.add(:TANGLINGHAIR,
-    proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
-          next unless move.physicalMove?
-          if aiCheck
-              ret = 0
-              aiNumHits.times do |i|
-                  ret -= getMultiStatDownEffectScore([:SPEED,3], target, user, fakeStepModifier: i)
-              end
-              next ret
-          end
-          user.tryLowerStat(:SPEED, target, ability: ability, increment: 3)
+        battle.pbHideAbilitySplash(target)
     }
 )
 
@@ -203,23 +191,6 @@ BattleHandlers::TargetAbilityOnHit.add(:STEAMPOWER,
     }
 )
 
-BattleHandlers::TargetAbilityOnHit.add(:FORCEREVERSAL,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        if aiCheck
-            expectedTypeMod = battle.battleAI.pbCalcTypeModAI(move.calcType, user, target, move)
-            next 0 unless Effectiveness.resistant?(target.damageState.typeMod)
-            ret = 0
-            aiNumHits.times do |i|
-                ret -= getMultiStatUpEffectScore(ATTACKING_STATS_2, user, target, fakeStepModifier: i, evaluateThreat: false)
-            end
-            next ret
-        else
-            next unless Effectiveness.resistant?(target.damageState.typeMod)
-            target.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, target, ability: ability)
-        end
-    }
-)
-
 #########################################
 # Damaging abilities
 #########################################
@@ -306,7 +277,6 @@ BattleHandlers::TargetAbilityOnHit.add(:CONSTRICTOR,
         trappingDuration = 3
         trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
         score = 30
-        score *= 2 if user.hasActiveItemAI?(:BINDINGBAND)
         score *= 2 if user.hasActiveItemAI?(:GRIPCLAW)
         next score if aiCheck
         battle.pbShowAbilitySplash(target, ability)
@@ -329,7 +299,6 @@ BattleHandlers::TargetAbilityOnHit.add(:MAGNETTRAP,
         trappingDuration = 3
         trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
         score = 30
-        score *= 2 if user.hasActiveItemAI?(:BINDINGBAND)
         score *= 2 if user.hasActiveItemAI?(:GRIPCLAW)
         next score if aiCheck
         battle.pbShowAbilitySplash(target, ability)
@@ -346,15 +315,6 @@ BattleHandlers::TargetAbilityOnHit.add(:MAGNETTRAP,
 #########################################
 
 # TODO: Make the checks here more detailed
-
-BattleHandlers::TargetAbilityOnHit.add(:RELUCTANTBLADE,
-  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next unless move.physicalMove?
-        next if target.fainted?
-        next -30 * aiNumHits if aiCheck
-        battle.forceUseMove(target, :LEAFAGE, user.index, ability: ability)
-  }
-)
 
 BattleHandlers::TargetAbilityOnHit.add(:COUNTERFLOW,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
@@ -878,32 +838,6 @@ BattleHandlers::TargetAbilityOnHit.add(:CALMINGSCUTECHARM,
 # Other abilities
 #########################################
 
-BattleHandlers::TargetAbilityOnHit.add(:INNARDSOUT,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next if user.dummy
-        if aiCheck
-            if user.takesIndirectDamage?
-                next -50 / aiNumHits
-            else
-                next 0
-            end
-        end
-        next unless target.fainted?
-        battle.pbShowAbilitySplash(target, ability)
-        if user.takesIndirectDamage?(true)
-            battle.pbDisplay(_INTL("{1} is hurt!", user.pbThis))
-            oldHP = user.hp
-            damageTaken = target.damageState.hpLost
-            damageTaken /= 4 if target.boss?
-            user.damageState.displayedDamage = damageTaken
-            battle.scene.pbDamageAnimation(user)
-            user.pbReduceHP(damageTaken, false)
-            user.pbHealthLossChecks(oldHP)
-        end
-        battle.pbHideAbilitySplash(target)
-    }
-)
-  
 BattleHandlers::TargetAbilityOnHit.add(:MUMMY,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
         next if user.dummy
@@ -951,37 +885,6 @@ BattleHandlers::TargetAbilityOnHit.add(:THUNDERSTRUCK,
             battle.pbAnimation(:CHARGE, target, nil)
             target.applyEffect(:EnergyCharge)
             target.hideMyAbilitySplash
-        end
-    }
-)
-
-BattleHandlers::TargetAbilityOnHit.add(:GULPMISSILE,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next if target.form == 0
-        next unless target.species == :CRAMORANT
-        gulpform = target.form
-        if aiCheck
-            score = 0
-            score -= 20 if user.takesIndirectDamage?
-            if gulpform == 1
-                score -= getMultiStatDownEffectScore(DEFENDING_STATS_1, target, user)
-            elsif gulpform == 2
-                score -= getNumbEffectScore(target, user)
-            end
-            next score
-        else
-            battle.pbShowAbilitySplash(target, ability)
-            target.form = 0
-            battle.scene.pbChangePokemon(target, target.pokemon)
-            battle.scene.pbDamageAnimation(user)
-            user.applyFractionalDamage(1.0 / 4.0) if user.takesIndirectDamage?(true)
-            if gulpform == 1
-                user.pbLowerMultipleStatSteps(DEFENDING_STATS_1, target, ability: ability)
-            elsif gulpform == 2
-                msg = nil
-                user.applyNumb(target, msg)
-            end
-            battle.pbHideAbilitySplash(target)
         end
     }
 )
@@ -1100,5 +1003,92 @@ BattleHandlers::TargetAbilityOnHit.add(:PRIMEVALFLOURISHING,
             target.applyEffect(:HitsThisTurn, 1)
         end
         target.hideMyAbilitySplash
+    }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::TargetAbilityOnHit.add(:FORCEREVERSAL,
+    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        if aiCheck
+            expectedTypeMod = battle.battleAI.pbCalcTypeModAI(move.calcType, user, target, move)
+            next 0 unless Effectiveness.resistant?(target.damageState.typeMod)
+            ret = 0
+            aiNumHits.times do |i|
+                ret -= getMultiStatUpEffectScore(ATTACKING_STATS_2, user, target, fakeStepModifier: i, evaluateThreat: false)
+            end
+            next ret
+        else
+            next unless Effectiveness.resistant?(target.damageState.typeMod)
+            target.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, target, ability: ability)
+        end
+    }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:RELUCTANTBLADE,
+  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next unless move.physicalMove?
+        next if target.fainted?
+        next -30 * aiNumHits if aiCheck
+        battle.forceUseMove(target, :LEAFAGE, user.index, ability: ability)
+  }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:INNARDSOUT,
+    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next if user.dummy
+        if aiCheck
+            if user.takesIndirectDamage?
+                next -50 / aiNumHits
+            else
+                next 0
+            end
+        end
+        next unless target.fainted?
+        battle.pbShowAbilitySplash(target, ability)
+        if user.takesIndirectDamage?(true)
+            battle.pbDisplay(_INTL("{1} is hurt!", user.pbThis))
+            oldHP = user.hp
+            damageTaken = target.damageState.hpLost
+            damageTaken /= 4 if target.boss?
+            user.damageState.displayedDamage = damageTaken
+            battle.scene.pbDamageAnimation(user)
+            user.pbReduceHP(damageTaken, false)
+            user.pbHealthLossChecks(oldHP)
+        end
+        battle.pbHideAbilitySplash(target)
+    }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:GULPMISSILE,
+    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next if target.form == 0
+        next unless target.species == :CRAMORANT
+        gulpform = target.form
+        if aiCheck
+            score = 0
+            score -= 20 if user.takesIndirectDamage?
+            if gulpform == 1
+                score -= getMultiStatDownEffectScore(DEFENDING_STATS_1, target, user)
+            elsif gulpform == 2
+                score -= getNumbEffectScore(target, user)
+            end
+            next score
+        else
+            battle.pbShowAbilitySplash(target, ability)
+            target.form = 0
+            battle.scene.pbChangePokemon(target, target.pokemon)
+            battle.scene.pbDamageAnimation(user)
+            user.applyFractionalDamage(1.0 / 4.0) if user.takesIndirectDamage?(true)
+            if gulpform == 1
+                user.pbLowerMultipleStatSteps(DEFENDING_STATS_1, target, ability: ability)
+            elsif gulpform == 2
+                msg = nil
+                user.applyNumb(target, msg)
+            end
+            battle.pbHideAbilitySplash(target)
+        end
     }
 )

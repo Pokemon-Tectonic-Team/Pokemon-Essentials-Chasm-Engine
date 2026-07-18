@@ -1,6 +1,6 @@
 #===============================================================================
 # The user raises the target's Attack and Sp. Atk by 5 steps by decorating
-# the target. (Decorate)
+# the target.
 #===============================================================================
 class PokeBattle_Move_RaiseTargetAtkSpAtk5 < PokeBattle_TargetMultiStatUpMove
     def initialize(battle, move)

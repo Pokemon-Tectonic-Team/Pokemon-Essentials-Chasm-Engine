@@ -9,12 +9,6 @@ BattleHandlers::UserAbilityStartOfMove.add(:PROTEAN,
 
 BattleHandlers::UserAbilityStartOfMove.copy(:PROTEAN,:FREESTYLE)
 
-BattleHandlers::UserAbilityStartOfMove.add(:SHAKYCODE,
-  proc { |ability, user, targets, move, battle|
-    moveUseTypeChangeAbility(ability, user, move, battle) if battle.eclipsed?
-  }
-)
-
 BattleHandlers::UserAbilityStartOfMove.add(:MUTABLE,
   proc { |ability, user, targets, move, battle|
     next if user.effectActive?(:Mutated)
@@ -66,5 +60,15 @@ BattleHandlers::UserAbilityStartOfMove.add(:STAYOFEXECUTION,
     user.showMyAbilitySplash(ability)
     battle.pbDisplay(_INTL("{1} foresees an imminent demise!", user.pbThis))
     user.hideMyAbilitySplash
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::UserAbilityStartOfMove.add(:SHAKYCODE,
+  proc { |ability, user, targets, move, battle|
+    moveUseTypeChangeAbility(ability, user, move, battle) if battle.eclipsed?
   }
 )

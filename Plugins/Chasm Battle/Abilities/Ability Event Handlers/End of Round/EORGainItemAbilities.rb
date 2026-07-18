@@ -1,14 +1,3 @@
-BattleHandlers::EORGainItemAbility.add(:HARVEST,
-    proc { |ability, battler, battle|
-        next unless battler.recyclableItem
-        next unless GameData::Item.get(battler.recyclableItem).is_berry?
-        next if battler.hasItem?(battler.recyclableItem)
-        next if !battle.sunny? && !(battle.pbRandom(100) < 50)
-        recyclingMsg = _INTL("{1} harvested one {2}!", battler.pbThis, getItemName(battler.recyclableItem))
-        battler.recycleItem(recyclingMsg: recyclingMsg, ability: ability)
-    }
-)
-
 BattleHandlers::EORGainItemAbility.add(:LARDER,
     proc { |ability, battler, battle|
         next unless battler.recyclableItem
@@ -55,5 +44,20 @@ BattleHandlers::EORGainItemAbility.add(:STRATAGEM,
         battle.pbDisplay(_INTL("{1} found a {2} in its shell!", battler.pbThis, getItemName(itemToAdd)))
         battle.pbHideAbilitySplash(battler)
         battler.pbHeldItemTriggerCheck
+    }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::EORGainItemAbility.add(:HARVEST,
+    proc { |ability, battler, battle|
+        next unless battler.recyclableItem
+        next unless GameData::Item.get(battler.recyclableItem).is_berry?
+        next if battler.hasItem?(battler.recyclableItem)
+        next if !battle.sunny? && !(battle.pbRandom(100) < 50)
+        recyclingMsg = _INTL("{1} harvested one {2}!", battler.pbThis, getItemName(battler.recyclableItem))
+        battler.recycleItem(recyclingMsg: recyclingMsg, ability: ability)
     }
 )

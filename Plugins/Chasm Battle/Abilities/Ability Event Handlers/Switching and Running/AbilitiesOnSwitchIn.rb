@@ -176,15 +176,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:ASONEICE,
 
 BattleHandlers::AbilityOnSwitchIn.copy(:ASONEICE, :ASONEGHOST)
 
-BattleHandlers::AbilityOnSwitchIn.add(:AURABREAK,
-  proc { |ability, battler, battle, aiCheck|
-      next 0 if aiCheck
-      battle.pbShowAbilitySplash(battler, ability)
-      battle.pbDisplay(_INTL("{1} reversed all other Pokémon's auras!", battler.pbThis))
-      battle.pbHideAbilitySplash(battler)
-  }
-)
-
 BattleHandlers::AbilityOnSwitchIn.add(:COMATOSE,
   proc { |ability, battler, battle, aiCheck|
       next 0 if aiCheck
@@ -226,15 +217,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:CITYRAZER,
       next 0 if aiCheck
       battle.pbShowAbilitySplash(battler, ability)
       battle.pbDisplay(_INTL("{1} is hungry for destruction!", battler.pbThis))
-      battle.pbHideAbilitySplash(battler)
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:HONORABLE,
-  proc { |ability, battler, battle, aiCheck|
-      next 0 if aiCheck
-      battle.pbShowAbilitySplash(battler, ability)
-      battle.pbDisplay(_INTL("{1} is honorable! Status moves lose priority!", battler.pbThis))
       battle.pbHideAbilitySplash(battler)
   }
 )
@@ -316,15 +298,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:TRENCHCARVER,
       next 0 if aiCheck
       battle.pbShowAbilitySplash(battler, ability)
       battle.pbDisplay(_INTL("{1} is barging through!", battler.pbThis))
-      battle.pbHideAbilitySplash(battler)
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:EGOIST,
-  proc { |ability, battler, battle, aiCheck|
-      next 0 if aiCheck
-      battle.pbShowAbilitySplash(battler, ability)
-      battle.pbDisplay(_INTL("{1} has a huge ego!", battler.pbThis))
       battle.pbHideAbilitySplash(battler)
   }
 )
@@ -760,44 +733,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:WISHOFWINTER,
 ##########################################
 # Other effect setting
 ##########################################
-BattleHandlers::AbilityOnSwitchIn.add(:GARLANDGUARDIAN,
-  proc { |ability, battler, battle, aiCheck|
-      if aiCheck
-          next getSafeguardEffectScore(battler, 10)
-      else
-          battle.pbShowAbilitySplash(battler, ability)
-          battle.pbAnimation(:SAFEGUARD, battler, nil, 0)
-          battler.pbOwnSide.applyEffect(:Safeguard, applyEffectDurationModifiers(10, battler))
-          battle.pbHideAbilitySplash(battler)
-      end
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:CLOVERSONG,
-  proc { |ability, battler, battle, aiCheck|
-      if aiCheck
-          next getLuckyChantEffectScore(battler, 10)
-      else
-          battle.pbShowAbilitySplash(battler, ability)
-          battle.pbAnimation(:LUCKYCHANT, battler, nil, 0)
-          battler.pbOwnSide.applyEffect(:LuckyChant, applyEffectDurationModifiers(10, battler))
-          battle.pbHideAbilitySplash(battler)
-      end
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:ONTHEWIND,
-  proc { |ability, battler, battle, aiCheck|
-      if aiCheck
-          next getTailwindEffectScore(battler, 4)
-      else
-          battle.pbShowAbilitySplash(battler, ability)
-          battle.pbAnimation(:TAILWIND, battler, nil, 0)
-          battler.pbOwnSide.applyEffect(:Tailwind, applyEffectDurationModifiers(4, battler))
-          battle.pbHideAbilitySplash(battler)
-      end
-  }
-)
 
 BattleHandlers::AbilityOnSwitchIn.add(:GRAVITAS,
   proc { |ability, battler, battle, aiCheck|
@@ -842,18 +777,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:FITTOSURVIVE,
 # Free move use
 ##########################################
 
-BattleHandlers::AbilityOnSwitchIn.add(:KLEPTOMANIAC,
-  proc { |ability, battler, battle, aiCheck|
-      next battle.forceUseMove(battler, :SNATCH, ability: ability, aiCheck: aiCheck)
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:ASSISTANT,
-  proc { |ability, battler, battle, aiCheck|
-      next battle.forceUseMove(battler, :ASSIST, ability: ability, aiCheck: aiCheck)
-  }
-)
-
 # Only used to force the AI to use Sudden Turn somewhat properly
 BattleHandlers::AbilityOnSwitchIn.add(:SUDDENTURN,
   proc { |ability, battler, battle, aiCheck|
@@ -874,25 +797,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:WIBBLEWOBBLE,
 ##########################################
 # Self buffing
 ##########################################
-BattleHandlers::AbilityOnSwitchIn.add(:INTREPIDSWORD,
-  proc { |ability, battler, _battle, aiCheck|
-      if aiCheck
-          next getMultiStatUpEffectScore([:ATTACK, 1], battler, battler)
-      else
-          battler.tryRaiseStat(:ATTACK, battler, ability: ability)
-      end
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:DAUNTLESSSHIELD,
-  proc { |ability, battler, _battle, aiCheck|
-      if aiCheck
-          next getMultiStatUpEffectScore([:DEFENSE, 1], battler, battler)
-      else
-          battler.tryRaiseStat(:DEFENSE, battler, ability: ability)
-      end
-  }
-)
 
 BattleHandlers::AbilityOnSwitchIn.add(:DOWNLOAD,
   proc { |ability, battler, battle, aiCheck|
@@ -1035,26 +939,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:TOLLTHEBELLS,
   }
 )
 
-BattleHandlers::AbilityOnSwitchIn.add(:GYRESPINNER,
-  proc { |ability, battler, battle, aiCheck|
-      next entryTrappingAbility(ability, battler, battle, :WHIRLPOOL, aiCheck: aiCheck) { |trappedFoe|
-        _INTL("{1} became trapped in the vortex!", trappedFoe.pbThis)
-      }
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:SUSTAINABLE,
-  proc { |ability, battler, battle, aiCheck|
-      next 0 unless battler.recyclableItem
-      next 0 unless GameData::Item.get(battler.recyclableItem).is_berry?
-      next 0 if battler.hasItem?(battler.recyclableItem)
-      next 0 unless battle.sunny?
-      next 80 if aiCheck
-      recyclingMsg = _INTL("{1} regrew one {2}!", battler.pbThis, getItemName(battler.recyclableItem))
-      battler.recycleItem(recyclingMsg: recyclingMsg, ability: ability)
-  }
-)
-
 BattleHandlers::AbilityOnSwitchIn.add(:COTTONDECOY,
   proc { |ability, battler, battle, aiCheck|
       next 0 if battler.substituted?
@@ -1162,15 +1046,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:IONIZEDALLOY,
   }
 )
 
-BattleHandlers::AbilityOnSwitchIn.add(:BRUTEFORCE,
-  proc { |ability, battler, battle, aiCheck|
-      next 0 if aiCheck
-      battle.pbShowAbilitySplash(battler, ability)
-      battle.pbDisplay(_INTL("{1} forces its moves to be physical!", battler.pbThis))
-      battle.pbHideAbilitySplash(battler)
-  }
-)
-
 BattleHandlers::AbilityOnSwitchIn.add(:TIMEINTERLOPER,
   proc { |ability, battler, battle, aiCheck|
       next 0 if aiCheck
@@ -1222,8 +1097,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:AIRLOCK,
   }
 )
 
-BattleHandlers::AbilityOnSwitchIn.copy(:AIRLOCK, :CLOUDNINE)
-
 BattleHandlers::AbilityOnSwitchIn.add(:IMPOSTER,
   proc { |ability, battler, battle, aiCheck|
       next 0 if battler.transformed?
@@ -1240,41 +1113,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:IMPOSTER,
       battle.pbHideAbilitySplash(battler)
       battle.pbAnimation(:TRANSFORM, battler, choice)
       battler.pbTransform(choice)
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:SCREENCLEANER,
-  proc { |ability, battler, battle, aiCheck|
-      anyScreen = false
-      battle.sides.each do |side|
-          side.eachEffect(true) do |_effect, _value, effectData|
-              next 0 unless effectData.is_screen?
-              anyScreen = true
-              break
-          end
-          break if anyScreen
-      end
-      next 0 unless anyScreen
-
-      battle.pbShowAbilitySplash(battler, ability) unless aiCheck
-      score = 0
-      battle.sides.each do |side|
-          side.eachEffect(true) do |effect, value, effectData|
-              next unless effectData.is_screen?
-              if aiCheck
-                  screenScore = 20 + value * 10
-                  if side.index == battler.index % 2
-                      score -= screenScore
-                  else
-                      score += screenScore
-                  end
-              else
-                  side.disableEffect(effect)
-              end
-          end
-      end
-      battle.pbHideAbilitySplash(battler) unless aiCheck
-      next score if aiCheck
   }
 )
 
@@ -1304,26 +1142,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:CURIOUSMEDICINE,
       if done
           battle.pbShowAbilitySplash(battler, ability)
           battle.pbDisplay(_INTL("All stat changes were eliminated!"))
-          battle.pbHideAbilitySplash(battler)
-      end
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:NEUTRALIZINGGAS,
-  proc { |ability, battler, battle, aiCheck|
-      next 0 if battle.field.effectActive?(:NeutralizingGas)
-      if aiCheck
-          score = 0
-          battler.eachOpposing do |b|
-              score += 40 if b.abilityActive?
-          end
-          battler.eachAlly do |b|
-              score -= 40 if b.abilityActive?
-          end
-          next score
-      else
-          battle.pbShowAbilitySplash(battler, ability)
-          battle.field.applyEffect(:NeutralizingGas)
           battle.pbHideAbilitySplash(battler)
       end
   }
@@ -1360,15 +1178,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:LASTGASP,
     battler.applyEffect(:LastGasp)
     battler.applyEffect(:PerishSong, 3)
     battler.hideMyAbilitySplash
-  }
-)
-
-BattleHandlers::AbilityOnSwitchIn.add(:UNBOUND,
-  proc { |ability, battler, battle, aiCheck|
-      next 0 if aiCheck
-      battle.pbShowAbilitySplash(battler, ability)
-      battle.pbDisplay(_INTL("{1} overpowers type immunities!", battler.pbThis))
-      battle.pbHideAbilitySplash(battler)
   }
 )
 
@@ -1530,5 +1339,200 @@ BattleHandlers::AbilityOnSwitchIn.add(:PRIMORDIALSEAL,
     battle.pbShowAbilitySplash(battler, ability)
     battle.pbDisplay(_INTL("Eons course through {1}'s being!", battler.pbThis(true)))
     battle.pbHideAbilitySplash(battler)
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::AbilityOnSwitchIn.add(:AURABREAK,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} reversed all other Pokémon's auras!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:HONORABLE,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} is honorable! Status moves lose priority!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:EGOIST,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} has a huge ego!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:GARLANDGUARDIAN,
+  proc { |ability, battler, battle, aiCheck|
+      if aiCheck
+          next getSafeguardEffectScore(battler, 10)
+      else
+          battle.pbShowAbilitySplash(battler, ability)
+          battle.pbAnimation(:SAFEGUARD, battler, nil, 0)
+          battler.pbOwnSide.applyEffect(:Safeguard, applyEffectDurationModifiers(10, battler))
+          battle.pbHideAbilitySplash(battler)
+      end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:CLOVERSONG,
+  proc { |ability, battler, battle, aiCheck|
+      if aiCheck
+          next getLuckyChantEffectScore(battler, 10)
+      else
+          battle.pbShowAbilitySplash(battler, ability)
+          battle.pbAnimation(:LUCKYCHANT, battler, nil, 0)
+          battler.pbOwnSide.applyEffect(:LuckyChant, applyEffectDurationModifiers(10, battler))
+          battle.pbHideAbilitySplash(battler)
+      end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:ONTHEWIND,
+  proc { |ability, battler, battle, aiCheck|
+      if aiCheck
+          next getTailwindEffectScore(battler, 4)
+      else
+          battle.pbShowAbilitySplash(battler, ability)
+          battle.pbAnimation(:TAILWIND, battler, nil, 0)
+          battler.pbOwnSide.applyEffect(:Tailwind, applyEffectDurationModifiers(4, battler))
+          battle.pbHideAbilitySplash(battler)
+      end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:KLEPTOMANIAC,
+  proc { |ability, battler, battle, aiCheck|
+      next battle.forceUseMove(battler, :SNATCH, ability: ability, aiCheck: aiCheck)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:ASSISTANT,
+  proc { |ability, battler, battle, aiCheck|
+      next battle.forceUseMove(battler, :ASSIST, ability: ability, aiCheck: aiCheck)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:INTREPIDSWORD,
+  proc { |ability, battler, _battle, aiCheck|
+      if aiCheck
+          next getMultiStatUpEffectScore([:ATTACK, 1], battler, battler)
+      else
+          battler.tryRaiseStat(:ATTACK, battler, ability: ability)
+      end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:DAUNTLESSSHIELD,
+  proc { |ability, battler, _battle, aiCheck|
+      if aiCheck
+          next getMultiStatUpEffectScore([:DEFENSE, 1], battler, battler)
+      else
+          battler.tryRaiseStat(:DEFENSE, battler, ability: ability)
+      end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:GYRESPINNER,
+  proc { |ability, battler, battle, aiCheck|
+      next entryTrappingAbility(ability, battler, battle, :WHIRLPOOL, aiCheck: aiCheck) { |trappedFoe|
+        _INTL("{1} became trapped in the vortex!", trappedFoe.pbThis)
+      }
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:SUSTAINABLE,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 unless battler.recyclableItem
+      next 0 unless GameData::Item.get(battler.recyclableItem).is_berry?
+      next 0 if battler.hasItem?(battler.recyclableItem)
+      next 0 unless battle.sunny?
+      next 80 if aiCheck
+      recyclingMsg = _INTL("{1} regrew one {2}!", battler.pbThis, getItemName(battler.recyclableItem))
+      battler.recycleItem(recyclingMsg: recyclingMsg, ability: ability)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:BRUTEFORCE,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} forces its moves to be physical!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:SCREENCLEANER,
+  proc { |ability, battler, battle, aiCheck|
+      anyScreen = false
+      battle.sides.each do |side|
+          side.eachEffect(true) do |_effect, _value, effectData|
+              next 0 unless effectData.is_screen?
+              anyScreen = true
+              break
+          end
+          break if anyScreen
+      end
+      next 0 unless anyScreen
+
+      battle.pbShowAbilitySplash(battler, ability) unless aiCheck
+      score = 0
+      battle.sides.each do |side|
+          side.eachEffect(true) do |effect, value, effectData|
+              next unless effectData.is_screen?
+              if aiCheck
+                  screenScore = 20 + value * 10
+                  if side.index == battler.index % 2
+                      score -= screenScore
+                  else
+                      score += screenScore
+                  end
+              else
+                  side.disableEffect(effect)
+              end
+          end
+      end
+      battle.pbHideAbilitySplash(battler) unless aiCheck
+      next score if aiCheck
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:NEUTRALIZINGGAS,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if battle.field.effectActive?(:NeutralizingGas)
+      if aiCheck
+          score = 0
+          battler.eachOpposing do |b|
+              score += 40 if b.abilityActive?
+          end
+          battler.eachAlly do |b|
+              score -= 40 if b.abilityActive?
+          end
+          next score
+      else
+          battle.pbShowAbilitySplash(battler, ability)
+          battle.field.applyEffect(:NeutralizingGas)
+          battle.pbHideAbilitySplash(battler)
+      end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:UNBOUND,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbDisplay(_INTL("{1} overpowers type immunities!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
   }
 )

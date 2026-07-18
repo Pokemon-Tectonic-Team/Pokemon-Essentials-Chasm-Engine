@@ -45,7 +45,6 @@ class PokeBattle_Move
         return 0 if @category == 1 && user.hasActiveItem?(:STRENGTHHERB)
         return 1 if @category == 0 && user.hasActiveItem?(:INTELLECTHERB)
         return selectBestCategory(user) if adaptiveMove?
-        return 0 if @category == 1 && user.hasActiveAbility?(:BRUTEFORCE)
         return 1 if @category == 0 && user.hasActiveAbility?(%i[TIMEINTERLOPER SPACEINTERLOPER])
         return nil
     end

@@ -40,14 +40,6 @@ BattleHandlers::EORWeatherAbility.add(:EXTREMOPHILE,
     }
 )
 
-BattleHandlers::EORWeatherAbility.add(:NESTING,
-    proc { |ability, _weather, battler, battle|
-        next if battle.pbWeather == :None
-        healingMessage = _INTL("{1} rests in safety.", battler.pbThis)
-        battler.applyFractionalHealing(1.0 / 12.0, ability: ability, customMessage: healingMessage)
-    }
-)
-
 BattleHandlers::EORWeatherAbility.add(:MOONBASKING,
     proc { |ability, _weather, battler, battle|
         next unless battle.moonGlowing?
@@ -129,4 +121,16 @@ BattleHandlers::EORWeatherAbility.add(:SUNBURNING,
             battle.pbHideAbilitySplash(battler)
         end
   }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::EORWeatherAbility.add(:NESTING,
+    proc { |ability, _weather, battler, battle|
+        next if battle.pbWeather == :None
+        healingMessage = _INTL("{1} rests in safety.", battler.pbThis)
+        battler.applyFractionalHealing(1.0 / 12.0, ability: ability, customMessage: healingMessage)
+    }
 )

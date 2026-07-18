@@ -1,5 +1,5 @@
 #===============================================================================
-# Power doubles for each consecutive use. (Fury Cutter)
+# Power doubles for each consecutive use.
 #===============================================================================
 class PokeBattle_Move_FuryCutter < PokeBattle_SnowballingMove
     def initialize(battle, move)
@@ -9,7 +9,7 @@ class PokeBattle_Move_FuryCutter < PokeBattle_SnowballingMove
 end
 
 #===============================================================================
-# Power doubles for each consecutive use. (Ice Ball)
+# Power doubles for each consecutive use.
 #===============================================================================
 class PokeBattle_Move_IceBall < PokeBattle_SnowballingMove
     def initialize(battle, move)
@@ -19,7 +19,7 @@ class PokeBattle_Move_IceBall < PokeBattle_SnowballingMove
 end
 
 #===============================================================================
-# Power doubles for each consecutive use. (Rock Roll)
+# Power doubles for each consecutive use.
 #===============================================================================
 class PokeBattle_Move_RockRoll < PokeBattle_SnowballingMove
     def initialize(battle, move)
@@ -29,7 +29,7 @@ class PokeBattle_Move_RockRoll < PokeBattle_SnowballingMove
 end
 
 #===============================================================================
-# Counts as a use of Rock Roll, Snowball, or Furycutter. (On A Roll)
+# Counts as a use of Rock Roll, Snowball, or Furycutter.
 #===============================================================================
 class PokeBattle_Move_OnARoll < PokeBattle_Move
     def pbChangeUsageCounters(user, specialUsage)
@@ -68,7 +68,7 @@ class PokeBattle_Move_EchoedVoice < PokeBattle_Move
 end
 
 #===============================================================================
-# Power increases by 20 for each consecutive use. User heals by 50% of damage dealt. (Heart Rhythm)
+# Power increases by 20 for each consecutive use. User heals by 50% of damage dealt.
 #===============================================================================
 class PokeBattle_Move_HeartRhythm < PokeBattle_SnowballingMove
     def initialize(battle, move)

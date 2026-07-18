@@ -173,7 +173,7 @@ class PokeBattle_Battler
             echoln(msg)
             return false
         end
-        # Belch
+        # Moves that restrict when they can be used
         return false unless move.pbCanChooseMove?(self, commandPhase, showMessages)
         # Turbulent Sky
         if pbOwnSide.effectActive?(:TurbulentSky) && !effectActive?(:Instructed) &&

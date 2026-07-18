@@ -2079,7 +2079,7 @@ NamePlural = Ganlon Berries
 Pocket = 9
 Price = 0
 Flags = Berry,Pinch
-Description = If held by a Pokémon, it raises its Defense by two steps in a pinch.
+Description = If held by a Pokémon, it raises its Defense by three steps in a pinch.
 #-------------------------------
 [SALACBERRY]
 Name = Salac Berry
@@ -2103,7 +2103,7 @@ NamePlural = Apicot Berries
 Pocket = 9
 Price = 0
 Flags = Berry,Pinch
-Description = If held by a Pokémon, it raises its Sp. Def by two steps in a pinch.
+Description = If held by a Pokémon, it raises its Sp. Def by three steps in a pinch.
 #-------------------------------
 [LANSATBERRY]
 Name = Lansat Berry
@@ -2167,7 +2167,7 @@ NamePlural = Kee Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = If held by a Pokémon and a physical attack hits it, raises the holder's Defense by four steps.
+Description = If held by a Pokémon and a physical attack hits it, raises the holder's Defense by three steps.
 #-------------------------------
 [MARANGABERRY]
 Name = Maranga Berry
@@ -2175,7 +2175,7 @@ NamePlural = Maranga Berries
 Pocket = 9
 Price = 0
 Flags = Berry
-Description = If held by a Pokémon and a special attack hits it, raises the holder's Sp. Def by four steps.
+Description = If held by a Pokémon and a special attack hits it, raises the holder's Sp. Def by three steps.
 #-------------------------------
 [BICYCLE]
 Name = Bicycle
@@ -2653,7 +2653,7 @@ NamePlural = EXP-EZ Dispensers
 Pocket = 3
 Price = 0
 FieldUse = OnPokemon
-Flags = EXPCandy,KeyItem
+Flags = KeyItem
 Description = A machine that stores EXP Candy and excess EXP. Use it on your Pokémon to feed them candy.
 #-------------------------------
 [UNIVERSALFORMALIZER]
@@ -2734,7 +2734,7 @@ Pocket = 8
 Price = 0
 FieldUse = Direct
 Flags = KeyItem
-Description = A high tech surveillance device. Use it to scout out the teams of nearby trainers.
+Description = A high tech surveillance device. Use it to scout out the teams of nearby trainers or mid-battle.
 #-------------------------------
 [CELLBOOSTER]
 Name = Cell Booster

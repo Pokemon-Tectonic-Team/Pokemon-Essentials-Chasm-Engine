@@ -602,7 +602,8 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
                     TwoTurnAttackInvulnerableInFoliage
                     TwoTurnAttackInvulnerableScalesFaster
                     TwoTurnAttackInvulnerableJinxFrostbite
-                    TwoTurnAttackInvulnerableRemoveProtections].include?(@function)
+                    TwoTurnAttackInvulnerableRemoveProtections
+                    TwoTurnAttackInvulnerableVerminCloud].include?(@function)
                 @battle.pbDisplay(_INTL("{1} became fully charged due to its Power Herb!", user.pbThis))
                 user.consumeItem(:POWERHERB)
             end

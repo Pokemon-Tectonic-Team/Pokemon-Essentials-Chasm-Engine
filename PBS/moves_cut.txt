@@ -944,6 +944,18 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = The user forces the target to switch out, to be replaced at random. In the wild, the battle ends.
 #-------------------------------
+[CLOSECOMBAT]
+Name = Close Combat
+Type = FIGHTING
+Category = Physical
+Power = 110
+Accuracy = 100
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user fights the foe up close without guarding itself. This lowers the user's Defense and Sp. Def by two steps.
+#-------------------------------
 [DETECT]
 Name = Detect
 Type = FIGHTING
@@ -968,6 +980,19 @@ Flags = CanProtect
 EffectChance = 10
 Description = The user distorts the target's aura, damaging it. This has a 10% chance of reducing the target's Defense.
 Animation = VACUUMWAVE
+#-------------------------------
+[DYNAMICPUNCH]
+Name = Dynamic Punch
+Type = FIGHTING
+Category = Physical
+Power = 100
+Accuracy = 50
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Punch
+EffectChance = 100
+Description = The user punches the target with full, concentrated power. It dizzies the target if it hits.
 #-------------------------------
 [ENLIGHTENEDHIT]
 Name = Enlightened Hit
@@ -1317,6 +1342,20 @@ Flags = CanProtect
 Description = The user takes an advantageous airborne position, then strikes on the second turn.
 Animation = FLY
 #-------------------------------
+[TEMPEST]
+Name = Tempest
+Type = FLYING
+Category = Special
+Power = 100
+Accuracy = 50
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Wind
+EffectChance = 100
+Description = Chaotic winds push the target around, dizzying it.
+Animation = HURRICANE
+#-------------------------------
 [WINGATTACK]
 Name = Wing Attack
 Type = FLYING
@@ -1352,6 +1391,18 @@ Target = User
 Priority = 4
 FunctionCode = Invalid
 Description = Protects the user from attacks. Also poisons any attacker physically attacks the user.
+#-------------------------------
+[CAUSTICPUNCH]
+Name = Caustic Punch
+Type = POISON
+Category = Physical
+Power = 65
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Punch
+Description = The user strikes with an acidic punch that destroys Gems and Berries.
 #-------------------------------
 [CORRODE]
 Name = Corrode
@@ -1425,6 +1476,19 @@ FunctionCode = Invalid
 Flags = CanProtect,Sound
 EffectChance = 30
 Description = The user creates distorted guitar sounds to attack the target. It has a 30% chance to dizzy.
+#-------------------------------
+[HONORLESSSTING]
+Name = Honorless Sting
+Type = POISON
+Category = Physical
+Power = 105
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user uses venom that turns the target's body against it. Super effective vs Fighting-types.
+Animation = POISONSTING
 #-------------------------------
 [MURKYFOG]
 Name = Murky Fog
@@ -3971,6 +4035,18 @@ FunctionCode = Invalid
 Flags = CanMagicCoat
 Description = The user imprisons all near foes, reducing their attacking stats by one step each and trapping them until the next time they take a hit.
 Animation = CHILL
+#-------------------------------
+[ICEHAMMER]
+Name = Ice Hammer
+Type = ICE
+Category = Physical
+Power = 100
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Punch
+Description = The user swings and hits with its strong, heavy fist. This lowers the user's Speed by two steps.
 #-------------------------------
 [ICICLECRASH]
 Name = Icicle Crash

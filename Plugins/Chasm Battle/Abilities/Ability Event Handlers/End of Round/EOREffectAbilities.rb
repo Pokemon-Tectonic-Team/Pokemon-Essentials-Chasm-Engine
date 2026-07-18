@@ -13,42 +13,6 @@ BattleHandlers::EOREffectAbility.add(:BADDREAMS,
   }
 )
 
-BattleHandlers::EOREffectAbility.add(:MOODY,
-  proc { |ability, battler, battle|
-      randomUp = []
-      randomDown = []
-      GameData::Stat.each_main_battle do |s|
-          randomUp.push(s.id) if battler.pbCanRaiseStatStep?(s.id, battler)
-          randomDown.push(s.id) if battler.pbCanLowerStatStep?(s.id, battler)
-      end
-      next if randomUp.length == 0 && randomDown.length == 0
-      battle.pbShowAbilitySplash(battler, ability)
-      if randomUp.length > 0
-          r = battle.pbRandom(randomUp.length)
-          randomUpStat = randomUp[r]
-          battler.tryRaiseStat(randomUpStat, battler, increment: 3)
-          randomDown.delete(randomUp[r])
-      end
-      if randomDown.length > 0
-          r = battle.pbRandom(randomDown.length)
-          randomDownStat = randomDown[r]
-          battler.tryLowerStat(randomDownStat, battler)
-      end
-      battle.pbHideAbilitySplash(battler)
-      battler.pbItemStatRestoreCheck if randomDown.length > 0
-  }
-)
-
-BattleHandlers::EOREffectAbility.add(:PERSISTENTGROWTH,
-  proc { |ability, battler, battle|
-      next unless battler.turnCount > 0
-      battle.pbShowAbilitySplash(battler, ability)
-      battler.pbRaiseMultipleStatSteps([:ATTACK,1,:DEFENSE,1,:SPECIAL_ATTACK,1,:SPECIAL_DEFENSE,1], battler)
-      battler.tryLowerStat(:SPEED, battler)
-      battle.pbHideAbilitySplash(battler)
-  }
-)
-
 BattleHandlers::EOREffectAbility.add(:SPEEDBOOST,
   proc { |ability, battler, _battle|
       # A Pokémon's turnCount is 0 if it became active after the beginning of a
@@ -244,7 +208,7 @@ BattleHandlers::EOREffectAbility.add(:DISTORTEDGRAVITY,
   proc { |ability, battler, battle|
   next unless battle.gravityIntensified? 
   battler.showMyAbilitySplash(ability)
-    battle.eachOtherSideBattler do |b|
+    battle.eachOtherSideBattler(battler) do |b|
       if b.takesIndirectDamage?(true)
         battle.pbDisplay(_INTL("{1} is crushed by the distorted gravity!", b.pbThis))
         damageFraction = 1.0 / 16.0
@@ -286,5 +250,45 @@ BattleHandlers::EOREffectAbility.add(:INSCRUTABLEORDERS,
     battle.pbShowAbilitySplash(battler, ability)
     battler.applyEffect(:Torment)
     battle.pbHideAbilitySplash(battler)
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::EOREffectAbility.add(:MOODY,
+  proc { |ability, battler, battle|
+      randomUp = []
+      randomDown = []
+      GameData::Stat.each_main_battle do |s|
+          randomUp.push(s.id) if battler.pbCanRaiseStatStep?(s.id, battler)
+          randomDown.push(s.id) if battler.pbCanLowerStatStep?(s.id, battler)
+      end
+      next if randomUp.length == 0 && randomDown.length == 0
+      battle.pbShowAbilitySplash(battler, ability)
+      if randomUp.length > 0
+          r = battle.pbRandom(randomUp.length)
+          randomUpStat = randomUp[r]
+          battler.tryRaiseStat(randomUpStat, battler, increment: 3)
+          randomDown.delete(randomUp[r])
+      end
+      if randomDown.length > 0
+          r = battle.pbRandom(randomDown.length)
+          randomDownStat = randomDown[r]
+          battler.tryLowerStat(randomDownStat, battler)
+      end
+      battle.pbHideAbilitySplash(battler)
+      battler.pbItemStatRestoreCheck if randomDown.length > 0
+  }
+)
+
+BattleHandlers::EOREffectAbility.add(:PERSISTENTGROWTH,
+  proc { |ability, battler, battle|
+      next unless battler.turnCount > 0
+      battle.pbShowAbilitySplash(battler, ability)
+      battler.pbRaiseMultipleStatSteps([:ATTACK,1,:DEFENSE,1,:SPECIAL_ATTACK,1,:SPECIAL_DEFENSE,1], battler)
+      battler.tryLowerStat(:SPEED, battler)
+      battle.pbHideAbilitySplash(battler)
   }
 )

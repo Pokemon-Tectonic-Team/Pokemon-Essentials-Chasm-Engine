@@ -6,7 +6,7 @@ end
 
 #===============================================================================
 # Dizzies the target. Accuracy perfect in rainstorm. Hits flying
-# semi-invuln targets. (Tempest)
+# semi-invuln targets.
 #===============================================================================
 class PokeBattle_Move_DizzyTargetAlwaysHitsInRainstormHitsTargetInSky < PokeBattle_DizzyMove
     def immuneToRainDebuff?; return true; end

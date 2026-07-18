@@ -306,7 +306,6 @@ end
 
 #===============================================================================
 # Cures the target's permanent status problems. Heals user by 1/2 of its max HP.
-# (Purify)
 #===============================================================================
 class PokeBattle_Move_CureTargetStatusHealUserHalfOfTotalHP < PokeBattle_HalfHealingMove
     def pbFailsAgainstTarget?(_user, target, show_message)

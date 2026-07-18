@@ -101,7 +101,7 @@ class PokeBattle_Move_TypeDependsOnUserSpecialItem < PokeBattle_Move
 end
 
 #===============================================================================
-# Type depends on the user's form, and can be chosen if the Pokémon has the Modus Switch ability. (Techno Blast)
+# Type depends on the user's form, and can be chosen if the Pokémon has the Modus Switch ability.
 #===============================================================================
 class PokeBattle_Move_TechnoBlast < PokeBattle_Move_TypeDependsOnUserSpecialItem
     def initialize(battle, move)

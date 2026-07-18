@@ -86,7 +86,7 @@ class PokeBattle_Move_TwoTurnAttackOneTurnInRainstorm < PokeBattle_TwoTurnMove
 end
 
 #===============================================================================
-# Two turn attack. Skips first turn, attacks second turn. (Freeze Shock)
+# Two turn attack. Skips first turn, attacks second turn.
 # May paralyze the target.
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackParalyzeTarget < PokeBattle_TwoTurnMove
@@ -105,7 +105,7 @@ class PokeBattle_Move_TwoTurnAttackParalyzeTarget < PokeBattle_TwoTurnMove
 end
 
 #===============================================================================
-# Two turn attack. Skips first turn, attacks second turn. (Ice Burn)
+# Two turn attack. Skips first turn, attacks second turn.
 # May burn the target.
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackBurnTarget < PokeBattle_TwoTurnMove
@@ -378,6 +378,16 @@ end
 class PokeBattle_Move_TwoTurnAttackInvulnerableInFoliage < PokeBattle_Move_TwoTurnAttackInvulnerable
     def pbChargingTurnMessage(user, _targets)
         @battle.pbDisplay(_INTL("{1} melded into the foliage!", user.pbThis))
+    end
+end
+
+#===============================================================================
+# Two turn attack. Skips first turn, attacks second turn. (Vermin Cloud)
+# (Handled in Battler's pbSuccessCheckPerHit): Is semi-invulnerable during use.
+#===============================================================================
+class PokeBattle_Move_TwoTurnAttackInvulnerableVerminCloud < PokeBattle_Move_TwoTurnAttackInvulnerable
+    def pbChargingTurnMessage(user, _targets)
+        @battle.pbDisplay(_INTL("{1} vanished into a cloud of vermin!", user.pbThis))
     end
 end
 

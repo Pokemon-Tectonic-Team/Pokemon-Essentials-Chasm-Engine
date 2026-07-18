@@ -605,6 +605,10 @@ Description = Raises Attack when hit by a Dark-type move.
 Name = Keen Eye
 Description = Prevents other Pokémon from lowering accuracy.
 #-------------------------------
+[KLEPTOMANIAC]
+Name = Kleptomaniac
+Description = Uses Snatch upon entry, stealing self-targeting status moves.
+#-------------------------------
 [KLUMSYKINESIS]
 Name = Clumsy Kinesis
 Description = Can hold two items, but drops one when swapping out.
@@ -1151,6 +1155,10 @@ Description = Can't be statused due to its hard shell. Boosts Sp. Atk and Speed 
 [SLEEPSNARE]
 Name = Dreamy Haze
 Description = If an attack lowers its HP to half or less, the attacker becomes drowsy.
+#-------------------------------
+[SLICKSURFACE]
+Name = Slick Surface
+Description = Can't be leeched, drained, or trapped.
 #-------------------------------
 [SMOKEREFLEX]
 Name = Pressure Valve

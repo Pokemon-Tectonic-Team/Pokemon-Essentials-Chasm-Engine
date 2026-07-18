@@ -12,13 +12,6 @@ BattleHandlers::DefenseCalcUserAbility.add(:FURCOAT,
     }
 )
 
-BattleHandlers::DefenseCalcUserAbility.add(:MARVELSCALE,
-    proc { |ability, user, _battle, defenseMult|
-        defenseMult *= 1.5 if user.pbHasAnyStatus?
-        next defenseMult
-    }
-)
-
 BattleHandlers::DefenseCalcUserAbility.add(:DESERTARMOR,
     proc { |ability, _user, battle, defenseMult|
         defenseMult *= 2 if battle.sandy?
@@ -68,13 +61,6 @@ BattleHandlers::DefenseCalcUserAbility.add(:CHILLEDBODY,
     }
 )
 
-BattleHandlers::DefenseCalcUserAbility.add(:DISORIENT,
-    proc { |ability, _user, _battle, defenseMult|
-        defenseMult *= 1.2
-        next defenseMult
-    }
-)
-
 BattleHandlers::DefenseCalcUserAbility.add(:KELPLINK,
     proc { |ability, _user, _battle, defenseMult|
         defenseMult *= 1.2
@@ -92,6 +78,24 @@ BattleHandlers::DefenseCalcUserAbility.add(:SOPPING,
 BattleHandlers::DefenseCalcUserAbility.add(:STRIKECORONA,
     proc { |ability, _user, _battle, defenseMult|
         defenseMult *= 2
+        next defenseMult
+    }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::DefenseCalcUserAbility.add(:MARVELSCALE,
+    proc { |ability, user, _battle, defenseMult|
+        defenseMult *= 1.5 if user.pbHasAnyStatus?
+        next defenseMult
+    }
+)
+
+BattleHandlers::DefenseCalcUserAbility.add(:DISORIENT,
+    proc { |ability, _user, _battle, defenseMult|
+        defenseMult *= 1.2
         next defenseMult
     }
 )

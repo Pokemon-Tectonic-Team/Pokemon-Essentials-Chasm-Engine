@@ -76,6 +76,16 @@ BattleHandlers::UserAbilityEndOfMove.add(:WISEHUNTER,
   }
 )
 
+BattleHandlers::UserAbilityEndOfMove.add(:DAUNTLESS,
+  proc { |ability, user, targets, _move, battle, _switchedBattlers|
+      next if battle.pbAllFainted?(user.idxOpposingSide)
+      numFainted = 0
+      targets.each { |b| numFainted += 1 if b.damageState.fainted }
+      next if numFainted == 0
+      user.pbRaiseMultipleStatSteps([:ATTACK, numFainted, :SPECIAL_ATTACK, numFainted], user, ability: ability)
+  }
+)
+
 BattleHandlers::UserAbilityEndOfMove.add(:CITYRAZER,
   proc { |ability, user, targets, move, battle, _switchedBattlers|
       next unless user.species == :GYARADOS
@@ -117,24 +127,6 @@ BattleHandlers::UserAbilityEndOfMove.add(:JOYOUSSORROW,
       targets.each { |b| numFainted += 1 if b.damageState.fainted }
       next if numFainted == 0
       battle.forceUseMove(user, :WISH, user.index, ability: ability)
-  }
-)
-
-BattleHandlers::UserAbilityEndOfMove.add(:BEASTBOOST,
-  proc { |ability, user, targets, _move, battle, _switchedBattlers|
-      next if battle.pbAllFainted?(user.idxOpposingSide)
-      numFainted = 0
-      targets.each { |b| numFainted += 1 if b.damageState.fainted }
-      next if numFainted == 0
-      userStats = user.plainStats
-      highestStatValue = 0
-      userStats.each_value { |value| highestStatValue = value if highestStatValue < value }
-      GameData::Stat.each_main_battle do |s|
-          next if userStats[s.id] < highestStatValue
-          stat = s.id
-          user.tryRaiseStat(stat, user, increment: numFainted, ability: ability)
-          break
-      end
   }
 )
 
@@ -292,16 +284,6 @@ BattleHandlers::UserAbilityEndOfMove.add(:SPARESCALES,
   }
 )
 
-BattleHandlers::UserAbilityEndOfMove.add(:DAUNTLESS,
-  proc { |ability, user, targets, _move, battle, _switchedBattlers|
-      next if battle.pbAllFainted?(user.idxOpposingSide)
-      numFainted = 0
-      targets.each { |b| numFainted += 1 if b.damageState.fainted }
-      next if numFainted == 0
-      user.pbRaiseMultipleStatSteps([:ATTACK, numFainted, :SPECIAL_ATTACK, numFainted], user, ability: ability)
-  }
-)
-
 BattleHandlers::UserAbilityEndOfMove.add(:POWERLIFTER,
   proc { |ability, user, targets, move, battle, switchedBattlers|
       next if user.dummy
@@ -430,19 +412,6 @@ BattleHandlers::UserAbilityEndOfMove.add(:HORDETACTICS,
   }
 )
 
-BattleHandlers::UserAbilityEndOfMove.add(:ETERNALWINTER,
-  proc { |ability, user, targets, _move, battle, _switchedBattlers|
-      next if battle.pbAllFainted?(user.idxOpposingSide)
-      next unless battle.icy?
-      numFainted = 0
-      targets.each { |b| numFainted += 1 if b.damageState.fainted }
-      next if numFainted == 0
-      battle.pbShowAbilitySplash(user, ability)
-      battle.extendWeather(numFainted * 2)
-      battle.pbHideAbilitySplash(user)
-  }
-)
-
 BattleHandlers::UserAbilityEndOfMove.add(:COREPROVENANCE,
   proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if move.damagingMove?
@@ -541,10 +510,13 @@ BattleHandlers::UserAbilityEndOfMove.add(:FUELHUNGRY,
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:SIRENSONG,
-  proc { |ability, user, _targets, move, battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next unless move.soundMove?
+      targets = []
+      user.eachOpposing { |b| targets << b unless b.fainted? }
+      next if targets.empty?
       battle.pbShowAbilitySplash(user, ability)
-      user.eachOpposing do |b|
+      targets.each do |b|
         if b.pbAttack > b.pbSpAtk
           b.tryLowerStat(:ATTACK, user, increment: 1, showFailMsg: true)
         else
@@ -556,10 +528,13 @@ BattleHandlers::UserAbilityEndOfMove.add(:SIRENSONG,
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:BOGGLINGBOLERO,
-  proc { |ability, user, _targets, move, battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next unless move.danceMove?
+      targets = []
+      user.eachOpposing { |b| targets << b unless b.fainted? }
+      next if targets.empty?
       battle.pbShowAbilitySplash(user, ability)
-      user.eachOpposing do |b|
+      targets.each do |b|
         if b.pbAttack > b.pbSpAtk
           b.tryLowerStat(:ATTACK, user, increment: 1, showFailMsg: true)
         else
@@ -571,10 +546,13 @@ BattleHandlers::UserAbilityEndOfMove.add(:BOGGLINGBOLERO,
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:BELLOWER,
-  proc { |ability, user, _targets, move, battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next unless move.soundMove?
+      targets = []
+      user.eachOpposing { |b| targets << b unless b.fainted? }
+      next if targets.empty?
       battle.pbShowAbilitySplash(user, ability)
-      user.eachOpposing do |b|
+      targets.each do |b|
         b.applyEffect(:Torment)
       end
       battle.pbHideAbilitySplash(user)
@@ -727,12 +705,39 @@ BattleHandlers::UserAbilityEndOfMove.add(:FRIGHTENINGFANGS,
           next if b.damageState.missed || b.damageState.unaffected
           battle.pbShowAbilitySplash(user, ability)
           if b.pbAttack > b.pbSpAtk
-          b.pbLowerMultipleStatSteps([:ATTACK,2], user, move: self)
+            b.tryLowerStat(:ATTACK, user, increment: 2, showFailMsg: true)
           else
-          b.pbLowerMultipleStatSteps([:SPECIAL_ATTACK,2], user, move: self)
+            b.tryLowerStat(:SPECIAL_ATTACK, user, increment: 2, showFailMsg: true)
           end
       battle.pbHideAbilitySplash(user)
       end
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:KARMICBALANCE,
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
+        next if battle.pbAllFainted?(user.idxOpposingSide)
+        unchangedKarma = false
+        targets.each do |b|
+          unchangedKarma = true if b.damageState.missed || b.damageState.unaffected
+        end
+        next if unchangedKarma
+        if move.damagingMove?
+          user.pbLowerMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
+          user.pbRaiseMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
+        elsif move.statusMove?
+          user.pbLowerMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
+          user.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
+        end
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:HITANDRUN,
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
+      next if user.dummy
+      next unless move.damagingMove?
+      next unless targets.any? { |b| b.knockedBelowHalf? }
+      user.applyEffect(:HitAndRunSwitch)
   }
 )
 
@@ -930,29 +935,37 @@ BattleHandlers::UserAbilityEndOfMove.add(:SWORDHORNSTYLE,
   }
 )
 
-BattleHandlers::UserAbilityEndOfMove.add(:KARMICBALANCE,
-  proc { |ability, user, targets, move, battle, _switchedBattlers|
-        next if battle.pbAllFainted?(user.idxOpposingSide)
-        unchangedKarma = false
-        targets.each do |b|
-          unchangedKarma = true if b.damageState.missed || b.damageState.unaffected
-        end
-        next if unchangedKarma
-        if move.damagingMove?
-          user.pbLowerMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
-          user.pbRaiseMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
-        elsif move.statusMove?
-          user.pbLowerMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
-          user.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
-        end
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::UserAbilityEndOfMove.add(:BEASTBOOST,
+  proc { |ability, user, targets, _move, battle, _switchedBattlers|
+      next if battle.pbAllFainted?(user.idxOpposingSide)
+      numFainted = 0
+      targets.each { |b| numFainted += 1 if b.damageState.fainted }
+      next if numFainted == 0
+      userStats = user.plainStats
+      highestStatValue = 0
+      userStats.each_value { |value| highestStatValue = value if highestStatValue < value }
+      GameData::Stat.each_main_battle do |s|
+          next if userStats[s.id] < highestStatValue
+          stat = s.id
+          user.tryRaiseStat(stat, user, increment: numFainted, ability: ability)
+          break
+      end
   }
 )
 
-BattleHandlers::UserAbilityEndOfMove.add(:HITANDRUN,
-  proc { |ability, user, targets, move, battle, _switchedBattlers|
-      next if user.dummy
-      next unless move.damagingMove?
-      next unless targets.any? { |b| b.knockedBelowHalf? }
-      user.applyEffect(:HitAndRunSwitch)
+BattleHandlers::UserAbilityEndOfMove.add(:ETERNALWINTER,
+  proc { |ability, user, targets, _move, battle, _switchedBattlers|
+      next if battle.pbAllFainted?(user.idxOpposingSide)
+      next unless battle.icy?
+      numFainted = 0
+      targets.each { |b| numFainted += 1 if b.damageState.fainted }
+      next if numFainted == 0
+      battle.pbShowAbilitySplash(user, ability)
+      battle.extendWeather(numFainted * 2)
+      battle.pbHideAbilitySplash(user)
   }
 )

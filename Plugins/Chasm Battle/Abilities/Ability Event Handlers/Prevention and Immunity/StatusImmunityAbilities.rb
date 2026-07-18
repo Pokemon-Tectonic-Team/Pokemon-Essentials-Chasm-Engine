@@ -10,14 +10,6 @@ BattleHandlers::StatusImmunityAbility.add(:VITALSPIRIT,
   }
 )
 
-BattleHandlers::StatusImmunityAbility.copy(:VITALSPIRIT, :SWEETVEIL, :INSOMNIA)
-
-BattleHandlers::StatusImmunityAbility.add(:LEAFGUARD,
-  proc { |ability, battler, _status|
-      next true if battler.battle.sunny?
-  }
-)
-
 BattleHandlers::StatusImmunityAbility.add(:STABILITY,
   proc { |ability, _battler, status|
       next true
@@ -54,12 +46,6 @@ BattleHandlers::StatusImmunityAllyAbility.add(:CANDYVEIL,
   }
 )
 
-BattleHandlers::StatusImmunityAbility.add(:SLICKSURFACE,
-  proc { |ability, _battler, status|
-      next true if status == :LEECHED
-  }
-)
-
 BattleHandlers::StatusImmunityAbility.add(:FIGHTINGVIGOR,
   proc { |ability, _battler, status|
       next true if %i[NUMB WATERLOG].include?(status)
@@ -69,12 +55,6 @@ BattleHandlers::StatusImmunityAbility.add(:FIGHTINGVIGOR,
 BattleHandlers::StatusImmunityAbility.add(:GROTESQUEVITALS,
   proc { |ability, _battler, status|
       next true if status == :POISON
-  }
-)
-
-BattleHandlers::StatusImmunityAbility.add(:SELFSUFFICIENT,
-  proc { |ability, _battler, status|
-      next true if %i[BURN FROSTBITE].include?(status)
   }
 )
 
@@ -111,5 +91,27 @@ BattleHandlers::StatusImmunityAbility.add(:PLOTARMOR,
 BattleHandlers::StatusImmunityAbility.add(:STONESYMBOL,
   proc { |ability, battler, status|
       next true if battler.battle.sandy?
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::StatusImmunityAbility.add(:LEAFGUARD,
+  proc { |ability, battler, _status|
+      next true if battler.battle.sunny?
+  }
+)
+
+BattleHandlers::StatusImmunityAbility.add(:SLICKSURFACE,
+  proc { |ability, _battler, status|
+      next true if status == :LEECHED
+  }
+)
+
+BattleHandlers::StatusImmunityAbility.add(:SELFSUFFICIENT,
+  proc { |ability, _battler, status|
+      next true if %i[BURN FROSTBITE].include?(status)
   }
 )

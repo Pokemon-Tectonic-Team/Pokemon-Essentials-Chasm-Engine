@@ -218,7 +218,7 @@ end
 # Hits in 2 volleys. The second volley targets the original target's ally if it
 # has one (that can be targeted), or the original target if not. A battler
 # cannot be targeted if it is is immune to or protected from this move somehow,
-# or if this move will miss it. (Dragon Darts)
+# or if this move will miss it.
 # NOTE: This move sometimes shows a different failure message compared to the
 #       official games. This is because of the order in which failure checks are
 #       done (all checks for each target in turn, versus all targets for each
@@ -307,6 +307,7 @@ end
 
 #===============================================================================
 # Works just like HitTwoTimesTargetThenTargetAlly, but hits four times.
+# (Dreepy Barrage)
 #===============================================================================
 class PokeBattle_Move_HitFourTimesTargetThenTargetAlly < PokeBattle_Move_HitTwoTimesTargetThenTargetAlly
     def pbNumHits(_user, _targets, checkingForAI = false)

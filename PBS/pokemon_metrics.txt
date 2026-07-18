@@ -3840,12 +3840,6 @@ FrontSprite = 0,24
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
-[MEOWSTIC,1]
-BackSprite = 0,19
-FrontSprite = 0,23
-ShadowX = 0
-ShadowSize = 2
-#-------------------------------
 [MEOWTH]
 BackSprite = 0,25
 FrontSprite = 1,20

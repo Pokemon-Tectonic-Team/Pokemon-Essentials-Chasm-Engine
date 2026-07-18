@@ -424,7 +424,7 @@ Target = NearOther
 FunctionCode = Flinch
 Flags = CanProtect,Biting
 EffectChance = 50
-Description = The user bites hard on the target with its sharp fangs. It has a 50% to make the target flinch.
+Description = The user bites hard on the target with its sharp fangs. It has a 50% chance to flinch the target.
 #-------------------------------
 [HYPERVOICE]
 Name = Hyper Voice
@@ -768,7 +768,7 @@ Type = NORMAL
 Category = Physical
 Power = 70
 Accuracy = 100
-TotalPP = 15
+TotalPP = 20
 Target = NearOther
 FunctionCode = Basic
 Flags = CanProtect,CanRandomCrit,Slice
@@ -1143,18 +1143,6 @@ FunctionCode = RaiseUserAtkDef2
 Flags = CanSnatch
 Description = The user tenses its muscles to bulk up, raising its Attack and Defense by two steps.
 #-------------------------------
-[CLOSECOMBAT]
-Name = Close Combat
-Type = FIGHTING
-Category = Physical
-Power = 110
-Accuracy = 100
-TotalPP = 5
-Target = NearOther
-FunctionCode = LowerUserDefSpDef2
-Flags = CanProtect
-Description = The user fights the foe up close without guarding itself. This lowers the user's Defense and Sp. Def by two steps.
-#-------------------------------
 [COACHING]
 Name = Coaching
 Type = FIGHTING
@@ -1213,19 +1201,6 @@ Target = NearOther
 FunctionCode = HealUserByThirdOfDamageDone
 Flags = CanProtect,Punch
 Description = An energy-draining punch. The user's HP is restored by 33% of the damage dealt.
-#-------------------------------
-[DYNAMICPUNCH]
-Name = Dynamic Punch
-Type = FIGHTING
-Category = Physical
-Power = 100
-Accuracy = 50
-TotalPP = 5
-Target = NearOther
-FunctionCode = Dizzy
-Flags = CanProtect,Punch
-EffectChance = 100
-Description = The user punches the target with full, concentrated power. It dizzies the target if it hits.
 #-------------------------------
 [FINALGAMBIT]
 Name = Final Gambit
@@ -1308,7 +1283,7 @@ Type = FIGHTING
 Category = Physical
 Power = 40
 Accuracy = 100
-TotalPP = 20
+TotalPP = 30
 Target = NearOther
 FunctionCode = Basic
 Flags = CanProtect,CanRandomCrit
@@ -1393,7 +1368,7 @@ Type = FIGHTING
 Category = Physical
 Power = 40
 Accuracy = 100
-TotalPP = 15
+TotalPP = 10
 Target = NearOther
 FunctionCode = RaiseUserAttack2
 Flags = CanProtect,Punch
@@ -1737,7 +1712,7 @@ Type = POISON
 Category = Special
 Power = 40
 Accuracy = 100
-TotalPP = 25
+TotalPP = 30
 Target = NearOther
 FunctionCode = LowerTargetSpDef1
 Flags = CanProtect
@@ -1820,7 +1795,7 @@ Description = The user shoots filthy garbage at the target to attack.
 Name = Poison Fang
 Type = POISON
 Category = Physical
-Power = 60
+Power = 55
 Accuracy = 100
 TotalPP = 20
 Target = NearOther
@@ -1859,7 +1834,7 @@ Type = POISON
 Category = Physical
 Power = 30
 Accuracy = 100
-TotalPP = 30
+TotalPP = 25
 Target = NearOther
 FunctionCode = Poison
 Flags = CanProtect
@@ -1922,7 +1897,7 @@ Type = POISON
 Category = Special
 Power = 30
 Accuracy = 100
-TotalPP = 30
+TotalPP = 25
 Target = NearOther
 FunctionCode = Poison
 Flags = CanProtect,Wind
@@ -2133,7 +2108,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = DoubleDamageLastMoveFailed
 Flags = CanProtect,Kick
-Description = The user attacks driven by frustration. Power increases if previous move failed.
+Description = The user attacks driven by frustration. Power doubles if previous move failed.
 #-------------------------------
 [THOUSANDARROWS]
 Name = Thousand Arrows
@@ -2590,9 +2565,9 @@ Description = All nearby foes are bound with silk blown from the user's mouth. T
 Name = Struggle Bug
 Type = BUG
 Category = Special
-Power = 50
+Power = 55
 Accuracy = 100
-TotalPP = 15
+TotalPP = 12
 Target = AllNearFoes
 FunctionCode = LowerTargetSpAtk2
 Flags = CanProtect
@@ -2642,12 +2617,12 @@ Type = GHOST
 Category = Physical
 Power = 40
 Accuracy = 100
-TotalPP = 12
+TotalPP = 20
 Target = NearOther
 FunctionCode = Flinch
 Flags = CanProtect
 EffectChance = 40
-Description = The user attacks the target while shouting in a startling fashion. It has a 40% chance to flinch.
+Description = The user attacks the target while shouting in a startling fashion. It has a 40% chance to flinch the target.
 #-------------------------------
 [ASTRALBARRAGE]
 Name = Astral Barrage
@@ -2809,7 +2784,7 @@ Type = GHOST
 Category = Physical
 Power = 60
 Accuracy = 100
-TotalPP = 12
+TotalPP = 20
 Target = NearOther
 FunctionCode = Basic
 Flags = CanProtect,CanRandomCrit,Slice
@@ -2971,7 +2946,7 @@ Target = NearOther
 FunctionCode = HitTwoTimesFlinchTarget
 Flags = CanProtect,Punch
 EffectChance = 30
-Description = The user rotates, centering the hex nut in its chest, and then strikes twice. Each hit has a 30% chance to cause flinching.
+Description = The user rotates, centering the hex nut in its chest, and then strikes twice. Each hit has a 30% chance to flinch the target.
 #-------------------------------
 [FLASHCANNON]
 Name = Flash Cannon
@@ -3044,7 +3019,7 @@ Target = NearOther
 FunctionCode = Flinch
 Flags = CanProtect
 EffectChance = 40
-Description = The foe slams the target with its steel-hard head. It has a 40% chance to make the target flinch.
+Description = The foe slams the target with its steel-hard head. It has a 40% chance to flinch the target.
 #-------------------------------
 [KINGSSHIELD]
 Name = King's Shield
@@ -3151,7 +3126,6 @@ TotalPP = 5
 Target = NearOther
 FunctionCode = UserLosesHalfOfCurrentHP
 Flags = CanProtect
-EffectChance = 100
 Description = Fires a beam of steel that it collected from its entire body. The user loses half its current HP.
 #-------------------------------
 [STEELWING]
@@ -3240,7 +3214,7 @@ TotalPP = 5
 Target = NearOther
 FunctionCode = UserLosesFireType
 Flags = CanProtect
-Description = To inflict massive damage, the user uses up its Fire-typing.
+Description = To inflict massive damage, the user uses up its Fire-typing. This move can't be used if the user is not a Fire type.
 #-------------------------------
 [EMBER]
 Name = Ember
@@ -3248,7 +3222,7 @@ Type = FIRE
 Category = Special
 Power = 40
 Accuracy = 100
-TotalPP = 20
+TotalPP = 30
 Target = NearOther
 FunctionCode = Burn
 Flags = CanProtect
@@ -3436,7 +3410,7 @@ Type = FIRE
 Category = Special
 Power = 100
 Accuracy = 50
-TotalPP = 5
+TotalPP = 10
 Target = NearOther
 FunctionCode = Burn
 Flags = CanProtect
@@ -3588,7 +3562,7 @@ Type = WATER
 Category = Special
 Power = 40
 Accuracy = 100
-TotalPP = 25
+TotalPP = 30
 Target = NearOther
 FunctionCode = LowerTargetSpd1
 Flags = CanProtect
@@ -3827,7 +3801,7 @@ Target = NearOther
 FunctionCode = Flinch
 Flags = CanProtect
 EffectChance = 40
-Description = The user lunges at the target and has a 40% chance to make it flinch.
+Description = The user lunges at the target and has a 40% chance to flinch the target.
 #-------------------------------
 [WATERGUN]
 Name = Water Gun
@@ -3835,7 +3809,7 @@ Type = WATER
 Category = Special
 Power = 40
 Accuracy = 100
-TotalPP = 20
+TotalPP = 30
 Target = NearOther
 FunctionCode = Basic
 Flags = CanProtect,CanRandomCrit
@@ -4132,7 +4106,7 @@ Description = The user violently whirls its vines, tentacles, or the like to las
 Name = Razor Leaf
 Type = GRASS
 Category = Physical
-Power = 55
+Power = 60
 Accuracy = 100
 TotalPP = 20
 Target = AllNearFoes
@@ -4462,7 +4436,7 @@ Type = ELECTRIC
 Category = Special
 Power = 40
 Accuracy = 100
-TotalPP = 25
+TotalPP = 30
 Target = NearOther
 FunctionCode = Numb
 Flags = CanProtect
@@ -4525,7 +4499,7 @@ Type = ELECTRIC
 Category = Special
 Power = 100
 Accuracy = 50
-TotalPP = 5
+TotalPP = 10
 Target = NearOther
 FunctionCode = Numb
 Flags = CanProtect
@@ -4543,7 +4517,7 @@ Target = NearOther
 FunctionCode = Flinch
 Flags = CanProtect
 EffectChance = 60
-Description = A strong electric blast crashes down on the target. It has a 60% chance to make the target flinch.
+Description = A strong electric blast crashes down on the target. It has a 60% chance to flinch the target.
 #-------------------------------
 #		PSYCHIC MOVES
 #-------------------------------
@@ -4655,12 +4629,12 @@ Type = PSYCHIC
 Category = Physical
 Power = 60
 Accuracy = 100
-TotalPP = 20
+TotalPP = 15
 Target = NearOther
 FunctionCode = Flinch
 Flags = CanProtect
 EffectChance = 40
-Description = The user unleashes a vicious blow after a cute act. It has a 40% chance to cause flinching.
+Description = The user unleashes a vicious blow after a cute act. It has a 40% chance to flinch the target.
 #-------------------------------
 [HEARTSWAP]
 Name = Heart Swap
@@ -4794,9 +4768,9 @@ Description = The user attacks the target at full power. This lowers the user's 
 Name = Psycho Cut
 Type = PSYCHIC
 Category = Physical
-Power = 70
+Power = 60
 Accuracy = 100
-TotalPP = 15
+TotalPP = 20
 Target = NearOther
 FunctionCode = Basic
 Flags = CanProtect,CanRandomCrit,Slice
@@ -4891,7 +4865,7 @@ Target = NearOther
 FunctionCode = Flinch
 Flags = CanProtect
 EffectChance = 40
-Description = The user focuses its willpower to its head and attacks the foe. It has a 40% chance to make the target flinch.
+Description = The user focuses its willpower to its head and attacks the foe. It has a 40% chance to flinch the target.
 #-------------------------------
 #		ICE MOVES
 #-------------------------------
@@ -4992,18 +4966,6 @@ Flags = CanProtect,Biting,FakeRandomEffect
 EffectChance = 100
 Description = The user bites with cold-infused fangs. It has a 20% chance to frostbite and a 20% chance to lower Defense by two steps.
 #-------------------------------
-[ICEHAMMER]
-Name = Ice Hammer
-Type = ICE
-Category = Physical
-Power = 100
-Accuracy = 100
-TotalPP = 10
-Target = NearOther
-FunctionCode = LowerUserSpd2
-Flags = CanProtect,Punch
-Description = The user swings and hits with its strong, heavy fist. This lowers the user's Speed by two steps.
-#-------------------------------
 [ICEPUNCH]
 Name = Ice Punch
 Type = ICE
@@ -5061,7 +5023,7 @@ Type = ICE
 Category = Special
 Power = 40
 Accuracy = 100
-TotalPP = 20
+TotalPP = 30
 Target = NearOther
 FunctionCode = Frostbite
 Flags = CanProtect,Wind
@@ -5074,7 +5036,7 @@ Description = The user attacks with a chilling gust of powdery snow. It has a 10
 Name = Breaking Swipe
 Type = DRAGON
 Category = Physical
-Power = 60
+Power = 55
 Accuracy = 100
 TotalPP = 12
 Target = AllNearFoes
@@ -5294,12 +5256,12 @@ Type = DRAGON
 Category = Special
 Power = 40
 Accuracy = 100
-TotalPP = 15
+TotalPP = 20
 Target = NearOther
 FunctionCode = Flinch
 Flags = CanProtect,Wind
 EffectChance = 40
-Description = A small tornado hits the target. It has a 40% chance to make targets flinch.
+Description = A small tornado hits the target. It has a 40% chance to flinch the target.
 #-------------------------------
 #		DARK MOVES
 #-------------------------------
@@ -5333,7 +5295,7 @@ Type = DARK
 Category = Physical
 Power = 40
 Accuracy = 100
-TotalPP = 20
+TotalPP = 30
 Target = NearOther
 FunctionCode = LowerTargetDef1
 Flags = CanProtect,Biting
@@ -5458,7 +5420,7 @@ TotalPP = 10
 Target = AllNearFoes
 FunctionCode = Flinch
 EffectChance = 50
-Description = The user transforms its wrath into a fire-like aura to attack. It has a 50% chance to make the target flinch.
+Description = The user transforms its wrath into a fire-like aura to attack. It has a 50% chance to flinch the target.
 #-------------------------------
 [FLING]
 Name = Fling
@@ -5570,9 +5532,9 @@ Description = The user faints in order to lower the target's Attack and Sp. Atk 
 Name = Night Slash
 Type = DARK
 Category = Physical
-Power = 70
+Power = 60
 Accuracy = 100
-TotalPP = 12
+TotalPP = 20
 Target = NearOther
 FunctionCode = Basic
 Flags = CanProtect,CanRandomCrit,Slice
@@ -5833,7 +5795,7 @@ Type = FAIRY
 Category = Special
 Power = 40
 Accuracy = 0
-TotalPP = 12
+TotalPP = 30
 Target = NearOther
 FunctionCode = AlwaysHits
 Flags = Sound
@@ -5987,7 +5949,7 @@ Target = NearOther
 FunctionCode = EffectDependsOnEnvironment
 Flags = CanProtect
 EffectChance = 30
-Description = The user attacks with a secret power. Its added effects vary depending on the user's environment.
+Description = The user attacks with a secret power that has a 30% chance to cause an effect. The effect varies depending on the user's environment.
 #-------------------------------
 #		FLEX MOVES
 #-------------------------------

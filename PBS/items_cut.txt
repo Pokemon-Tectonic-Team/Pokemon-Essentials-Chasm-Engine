@@ -4893,3 +4893,12 @@ Price = 4000
 FieldUse = TM
 Flags = SkipPocketMessage
 Move = REND
+#-------------------------------
+[TMCAUSTICPUNCH]
+Name = Unnamed
+NamePlural = Unnamed
+Pocket = 5
+Price = 3000
+FieldUse = TM
+Flags = SkipPocketMessage
+Move = CAUSTICPUNCH

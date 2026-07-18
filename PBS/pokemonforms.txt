@@ -563,9 +563,6 @@ FormName = Kabuki Trim
 [FURFROU,9]
 FormName = Pharaoh Trim
 #-------------------------------
-[MEOWSTIC,1]
-FormName = Female
-#-------------------------------
 [AEGISLASH,1]
 FormName = Blade
 BaseStats = 60,140,50,60,140,50

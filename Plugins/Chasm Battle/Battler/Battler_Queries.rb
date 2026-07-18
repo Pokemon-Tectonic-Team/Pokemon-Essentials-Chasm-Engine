@@ -536,7 +536,6 @@ class PokeBattle_Battler
     def inTwoTurnSkyAttack?
         return inTwoTurnAttack?(
                 "TwoTurnAttackInvulnerableInSky",
-                "TwoTurnAttackInvulnerableInSkyNumbTarget",
                 "TwoTurnAttackInvulnerableInSkyRecoilQuarterOfDamageDealt",
                 "TwoTurnAttackInvulnerableScalesFaster",
                 "TwoTurnAttackInvulnerableJinxFrostbite"
@@ -553,7 +552,8 @@ class PokeBattle_Battler
         "TwoTurnAttackInvulnerableRemoveProtections",
         "TwoTurnAttackInvulnerableInSkyRecoilQuarterOfDamageDealt",
         "TwoTurnAttackInvulnerableScalesFaster",
-        "TwoTurnAttackInvulnerableJinxFrostbite",)
+        "TwoTurnAttackInvulnerableJinxFrostbite",
+        "TwoTurnAttackInvulnerableVerminCloud",)
     end
 
     def pbEncoredMoveIndex

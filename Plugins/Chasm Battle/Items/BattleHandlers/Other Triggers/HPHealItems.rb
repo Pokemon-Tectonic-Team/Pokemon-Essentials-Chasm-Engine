@@ -24,13 +24,13 @@ BattleHandlers::HPHealItem.add(:BERRYJUICE,
 
 BattleHandlers::HPHealItem.add(:GANLONBERRY,
   proc { |item, battler, battle, forced, filchedFrom, filchingAbility, items_to_skip|
-      next pbBattleStatIncreasingBerry(battler, battle, item, forced, :DEFENSE, 2, true, filchedFrom, filchingAbility)
+      next pbBattleStatIncreasingBerry(battler, battle, item, forced, :DEFENSE, 3, true, filchedFrom, filchingAbility)
   }
 )
 
 BattleHandlers::HPHealItem.add(:APICOTBERRY,
   proc { |item, battler, battle, forced, filchedFrom, filchingAbility, items_to_skip|
-      next pbBattleStatIncreasingBerry(battler, battle, item, forced, :SPECIAL_DEFENSE, 2, true, filchedFrom, filchingAbility)
+      next pbBattleStatIncreasingBerry(battler, battle, item, forced, :SPECIAL_DEFENSE, 3, true, filchedFrom, filchingAbility)
   }
 )
 

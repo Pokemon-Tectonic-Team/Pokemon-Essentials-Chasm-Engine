@@ -1518,7 +1518,6 @@ GameData::BattleEffect.register_effect(:Battler, {
 
 def trappingDamageFraction(battler)
     fraction = 1.0 / 8.0
-    fraction *= 2 if battler.getBattlerPointsTo(:TrappingUser)&.hasActiveItem?(:BINDINGBAND)
     return fraction
 end
 
