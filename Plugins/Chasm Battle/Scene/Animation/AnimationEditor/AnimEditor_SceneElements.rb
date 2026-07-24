@@ -431,6 +431,7 @@ class Window_Menu < Window_CommandPokemon
     attr_reader :animation # Currently selected animation
     attr_reader :animbitmap # Currently selected animation bitmap
     attr_accessor :pattern  # Currently selected pattern
+    attr_reader :userSlot   # Which battler slot (0 or 1) is currently the move's user
     BORDERSIZE=64
   
     def initialize(animation,viewport=nil)
@@ -438,6 +439,7 @@ class Window_Menu < Window_CommandPokemon
       @currentframe=0
       @currentcel=-1
       @pattern=0
+      @userSlot=0
       @sprites={}
       @celsprites=[]
       @framesprites=[]
@@ -490,6 +492,33 @@ class Window_Menu < Window_CommandPokemon
       self.currentframe=0
       @selecting=false
       @pattern=0
+      @userSlot=0
+      self.invalidate
+    end
+
+    def swapUserTarget
+      for f in 0...@animation.length
+        frame=@animation[f]
+        for i in 0...PBAnimation::MAX_SPRITES
+          cel=frame[i]
+          next if !cel
+          case cel[AnimFrame::PATTERN]
+          when -1 then cel[AnimFrame::PATTERN]=-2
+          when -2 then cel[AnimFrame::PATTERN]=-1
+          end
+          case cel[AnimFrame::FOCUS]
+          when 1 # Was focused on target, now focused on user
+            cel[AnimFrame::FOCUS]=2
+            cel[AnimFrame::X]+=PokeBattle_SceneConstants::FOCUSUSER_X-PokeBattle_SceneConstants::FOCUSTARGET_X
+            cel[AnimFrame::Y]+=PokeBattle_SceneConstants::FOCUSUSER_Y-PokeBattle_SceneConstants::FOCUSTARGET_Y
+          when 2 # Was focused on user, now focused on target
+            cel[AnimFrame::FOCUS]=1
+            cel[AnimFrame::X]+=PokeBattle_SceneConstants::FOCUSTARGET_X-PokeBattle_SceneConstants::FOCUSUSER_X
+            cel[AnimFrame::Y]+=PokeBattle_SceneConstants::FOCUSTARGET_Y-PokeBattle_SceneConstants::FOCUSUSER_Y
+          end
+        end
+      end
+      @userSlot=1-@userSlot
       self.invalidate
     end
   
