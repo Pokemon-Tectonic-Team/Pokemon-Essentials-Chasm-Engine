@@ -127,7 +127,7 @@ Type1 = WATER
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 45,45,65,38,60,65
-# Total = 320
+# Total = 318
 BaseEXP = 63
 Rareness = 115
 Happiness = 50
@@ -149,7 +149,7 @@ Type1 = WATER
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,55,80,48,80,80
-# Total = 405
+# Total = 403
 BaseEXP = 142
 Rareness = 80
 Happiness = 50
@@ -168,7 +168,7 @@ Type1 = WATER
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,75,100,68,105,105
-# Total = 535
+# Total = 533
 BaseEXP = 239
 Rareness = 35
 Happiness = 50
@@ -185,8 +185,8 @@ Generation = 1
 Name = Caterpie
 Type1 = BUG
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 45,20,20,45,30,35
-# Total = 195
+BaseStats = 45,20,20,46,30,35
+# Total = 196
 BaseEXP = 49
 Rareness = 195
 Happiness = 50
@@ -207,8 +207,8 @@ Evolutions = METAPOD,Level,10
 Name = Metapod
 Type1 = BUG
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 50,20,45,30,25,75
-# Total = 245
+BaseStats = 50,20,45,31,25,75
+# Total = 246
 BaseEXP = 72
 Rareness = 95
 Happiness = 50
@@ -228,8 +228,8 @@ Name = Butterfree
 Type1 = BUG
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,45,50,70,90,80
-# Total = 395
+BaseStats = 60,45,50,71,90,80
+# Total = 396
 BaseEXP = 178
 Rareness = 35
 Happiness = 50
@@ -250,8 +250,8 @@ Name = Papellumen
 Type1 = BUG
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 95,55,75,100,105,95
-# Total = 525
+BaseStats = 95,55,75,101,105,95
+# Total = 526
 BaseEXP = 228
 Rareness = 25
 Happiness = 50
@@ -270,7 +270,7 @@ Type1 = BUG
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 40,40,30,51,15,20
-# Total = 195
+# Total = 196
 BaseEXP = 39
 Rareness = 195
 Abilities = SHIELDDUST
@@ -292,7 +292,7 @@ Type1 = BUG
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,35,50,36,25,45
-# Total = 245
+# Total = 246
 BaseEXP = 72
 Rareness = 95
 Abilities = SHEDSKIN
@@ -312,7 +312,7 @@ Type1 = BUG
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,90,40,76,45,80
-# Total = 395
+# Total = 396
 BaseEXP = 178
 Rareness = 35
 Abilities = DEEPSTING,POISONTOUCH
@@ -334,7 +334,7 @@ Type1 = BUG
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,100,85,111,65,90
-# Total = 525
+# Total = 526
 BaseEXP = 228
 Rareness = 25
 Abilities = DEEPSTING,POISONTOUCH
@@ -352,7 +352,7 @@ Name = Pidgey
 Type1 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,45,50,66,55,45
-# Total = 310
+# Total = 311
 BaseEXP = 50
 Rareness = 195
 Abilities = NOGUARD,BRISK
@@ -373,7 +373,7 @@ Name = Pidgeotto
 Type1 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,60,65,86,85,60
-# Total = 425
+# Total = 426
 BaseEXP = 122
 Rareness = 95
 Abilities = NOGUARD,BRISK
@@ -391,7 +391,7 @@ Name = Pidgeot
 Type1 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,75,80,106,105,75
-# Total = 530
+# Total = 531
 BaseEXP = 216
 Rareness = 35
 Abilities = NOGUARD,BRISK
@@ -408,7 +408,7 @@ Name = Rattata
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,90,55,82,50,75
-# Total = 400
+# Total = 402
 BaseEXP = 81
 Rareness = 195
 Abilities = BREAKTHROUGH,GNAWING
@@ -428,7 +428,7 @@ Name = Raticate
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,115,70,107,65,100
-# Total = 520
+# Total = 522
 BaseEXP = 205
 Rareness = 100
 Abilities = BREAKTHROUGH,GNAWING
@@ -446,7 +446,7 @@ Type1 = DARK
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,65,70,67,35,85
-# Total = 400
+# Total = 402
 BaseEXP = 81
 Rareness = 195
 Abilities = NIGHTLIFE,GOURMAND
@@ -468,7 +468,7 @@ Type1 = DARK
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,85,90,87,45,110
-# Total = 520
+# Total = 522
 BaseEXP = 205
 Rareness = 100
 Abilities = NIGHTLIFE,GOURMAND
@@ -565,7 +565,7 @@ Name = Pichu
 Type1 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 40,50,35,72,65,60
-# Total = 320
+# Total = 322
 BaseEXP = 48
 Rareness = 160
 Happiness = 50
@@ -586,7 +586,7 @@ Name = Pikachu
 Type1 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,70,50,92,85,70
-# Total = 425
+# Total = 427
 BaseEXP = 112
 Rareness = 155
 Happiness = 50
@@ -605,7 +605,7 @@ Name = Raichu
 Type1 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,85,65,112,100,100
-# Total = 530
+# Total = 532
 BaseEXP = 218
 Rareness = 60
 Happiness = 50
@@ -626,7 +626,7 @@ Type1 = ELECTRIC
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 185,100,65,47,70,65
-# Total = 530
+# Total = 532
 BaseEXP = 218
 Rareness = 60
 Happiness = 50
@@ -646,7 +646,7 @@ Type1 = ELECTRIC
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,100,65,82,100,115
-# Total = 530
+# Total = 532
 BaseEXP = 218
 Rareness = 60
 Happiness = 50
@@ -667,7 +667,7 @@ Name = Sandshrew
 Type1 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,80,80,72,40,55
-# Total = 395
+# Total = 397
 BaseEXP = 60
 Rareness = 195
 Abilities = SANDRUSH,SPINYRUSE
@@ -688,7 +688,7 @@ Name = Sandslash
 Type1 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,105,105,97,55,75
-# Total = 530
+# Total = 532
 BaseEXP = 158
 Rareness = 70
 Abilities = SANDRUSH,SPINYRUSE
@@ -707,7 +707,7 @@ Type1 = ICE
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,75,90,57,60,50
-# Total = 395
+# Total = 397
 BaseEXP = 60
 Rareness = 195
 Abilities = REPETITION,ASSAULTSPINES
@@ -729,7 +729,7 @@ Type1 = ICE
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,100,120,77,85,65
-# Total = 530
+# Total = 532
 BaseEXP = 158
 Rareness = 70
 Abilities = REPETITION,ASSAULTSPINES
@@ -747,7 +747,7 @@ Type1 = POISON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,35,45,49,55,65
-# Total = 300
+# Total = 299
 GenderRate = AlwaysFemale
 BaseEXP = 55
 Rareness = 180
@@ -769,7 +769,7 @@ Type1 = POISON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,50,55,74,70,90
-# Total = 410
+# Total = 409
 GenderRate = AlwaysFemale
 BaseEXP = 128
 Rareness = 95
@@ -788,7 +788,7 @@ Type1 = POISON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,60,70,94,95,110
-# Total = 515
+# Total = 514
 GenderRate = AlwaysFemale
 BaseEXP = 227
 Rareness = 35
@@ -807,7 +807,7 @@ Type1 = POISON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,65,55,49,35,45
-# Total = 300
+# Total = 299
 GenderRate = AlwaysMale
 BaseEXP = 55
 Rareness = 180
@@ -829,7 +829,7 @@ Type1 = POISON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,90,75,69,50,55
-# Total = 410
+# Total = 409
 GenderRate = AlwaysMale
 BaseEXP = 128
 Rareness = 95
@@ -848,7 +848,7 @@ Type1 = POISON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,110,95,94,60,70
-# Total = 515
+# Total = 514
 GenderRate = AlwaysMale
 BaseEXP = 227
 Rareness = 35
@@ -2177,7 +2177,7 @@ Type1 = FIRE
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,80,50,83,55,60
-# Total = 385
+# Total = 383
 BaseEXP = 82
 Rareness = 145
 Happiness = 50
@@ -2198,8 +2198,8 @@ Name = Rapidash
 Type1 = FIRE
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 80,100,65,118,65,75
-# Total = 505
+BaseStats = 80,95,65,118,70,75
+# Total = 503
 BaseEXP = 175
 Rareness = 50
 Happiness = 50
@@ -2219,7 +2219,7 @@ Type1 = PSYCHIC
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,85,55,88,65,65
-# Total = 415
+# Total = 413
 BaseEXP = 82
 Rareness = 145
 Happiness = 50
@@ -2241,7 +2241,7 @@ Type1 = PSYCHIC
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,105,70,123,80,85
-# Total = 545
+# Total = 543
 BaseEXP = 175
 Rareness = 50
 Happiness = 50
@@ -2457,7 +2457,7 @@ Type1 = NORMAL
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,85,75,64,50,75
-# Total = 445
+# Total = 444
 BaseEXP = 132
 Rareness = 95
 Happiness = 50
@@ -2479,7 +2479,7 @@ Name = G. Farfetch'd
 Type1 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,95,75,64,60,75
-# Total = 445
+# Total = 444
 BaseEXP = 132
 Rareness = 95
 Happiness = 50
@@ -2501,7 +2501,7 @@ Name = Sirfetch'd
 Type1 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,135,90,74,65,80
-# Total = 525
+# Total = 524
 BaseEXP = 177
 Rareness = 35
 Happiness = 50
@@ -2521,7 +2521,7 @@ Type1 = NORMAL
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,90,60,96,40,50
-# Total = 385
+# Total = 386
 BaseEXP = 62
 Rareness = 145
 Abilities = FLUSTERFLOCK,OUTRIDER
@@ -2544,7 +2544,7 @@ Type1 = NORMAL
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,110,85,121,60,70
-# Total = 530
+# Total = 531
 BaseEXP = 165
 Rareness = 35
 Abilities = FLUSTERFLOCK,OUTRIDER
@@ -2851,7 +2851,7 @@ Name = Drowzee
 Type1 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,65,75,52,50,90
-# Total = 400
+# Total = 402
 BaseEXP = 66
 Rareness = 145
 Abilities = TORPORSAP,KNUCKLEDUSTER
@@ -2872,7 +2872,7 @@ Name = Hypno
 Type1 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,95,105,72,70,120
-# Total = 535
+# Total = 537
 BaseEXP = 169
 Rareness = 60
 Abilities = TORPORSAP,KNUCKLEDUSTER
@@ -3093,7 +3093,7 @@ Type1 = GROUND
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,85,80,49,70,60
-# Total = 410
+# Total = 409
 BaseEXP = 64
 Rareness = 145
 Abilities = ROCKHEAD,BREAKTHROUGH
@@ -3115,7 +3115,7 @@ Type1 = GROUND
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,120,120,64,80,80
-# Total = 545
+# Total = 544
 BaseEXP = 149
 Rareness = 60
 Abilities = ROCKHEAD,BREAKTHROUGH
@@ -3136,7 +3136,7 @@ Type1 = FIRE
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,120,80,59,100,100
-# Total = 545
+# Total = 544
 BaseEXP = 149
 Rareness = 60
 Abilities = SEALINGBODY,CELEBRATION
@@ -3155,7 +3155,7 @@ Name = Tyrogue
 Type1 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,55,55,57,55,55
-# Total = 330
+# Total = 332
 BaseEXP = 42
 Rareness = 115
 Happiness = 50
@@ -3176,7 +3176,7 @@ Name = Hitmonlee
 Type1 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,130,55,92,35,115
-# Total = 510
+# Total = 512
 BaseEXP = 159
 Rareness = 35
 Happiness = 50
@@ -3196,7 +3196,7 @@ Name = Hitmonchan
 Type1 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,110,90,82,35,115
-# Total = 510
+# Total = 512
 BaseEXP = 159
 Rareness = 35
 Happiness = 50
@@ -3216,7 +3216,7 @@ Name = Hitmontop
 Type1 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,95,95,97,35,115
-# Total = 510
+# Total = 512
 BaseEXP = 159
 Rareness = 35
 Happiness = 50
@@ -3631,7 +3631,7 @@ Type1 = WATER
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,90,65,78,55,55
-# Total = 405
+# Total = 403
 BaseEXP = 64
 Rareness = 170
 Happiness = 50
@@ -3654,7 +3654,7 @@ Type1 = WATER
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,110,85,108,85,70
-# Total = 550
+# Total = 548
 BaseEXP = 158
 Rareness = 50
 Happiness = 50
@@ -3674,7 +3674,7 @@ Type1 = DRAGON
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,90,70,78,50,45
-# Total = 405
+# Total = 403
 BaseEXP = 64
 Rareness = 170
 Happiness = 50
@@ -3696,7 +3696,7 @@ Type1 = DRAGON
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,120,95,88,85,70
-# Total = 550
+# Total = 548
 BaseEXP = 158
 Rareness = 50
 Happiness = 50
@@ -3961,8 +3961,8 @@ Name = Elekid
 Type1 = ELECTRIC
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,75,45,45,40,65
-# Total = 330
+BaseStats = 40,75,35,68,45,65
+# Total = 328
 GenderRate = Female25Percent
 BaseEXP = 72
 Rareness = 155
@@ -3984,8 +3984,8 @@ Name = Electabuzz
 Type1 = ELECTRIC
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 65,95,45,95,75,85
-# Total = 460
+BaseStats = 65,95,45,88,75,85
+# Total = 453
 GenderRate = Female25Percent
 BaseEXP = 172
 Rareness = 35
@@ -4004,8 +4004,8 @@ Name = Electivire
 Type1 = ELECTRIC
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 75,125,65,95,95,85
-# Total = 540
+BaseStats = 75,125,65,98,95,85
+# Total = 543
 GenderRate = Female25Percent
 BaseEXP = 243
 Rareness = 25
@@ -4024,7 +4024,7 @@ Name = Magby
 Type1 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 45,55,35,68,70,55
-# Total = 330
+# Total = 328
 GenderRate = Female25Percent
 BaseEXP = 73
 Rareness = 155
@@ -4046,7 +4046,7 @@ Name = Magmar
 Type1 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,60,65,73,95,85
-# Total = 460
+# Total = 453
 GenderRate = Female25Percent
 BaseEXP = 173
 Rareness = 35
@@ -4065,7 +4065,7 @@ Name = Magmortar
 Type1 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,75,75,78,125,105
-# Total = 540
+# Total = 543
 GenderRate = Female25Percent
 BaseEXP = 243
 Rareness = 25
@@ -4203,7 +4203,7 @@ Name = Magikarp
 Type1 = WATER
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 20,20,55,81,10,20
-# Total = 205
+# Total = 206
 BaseEXP = 40
 Rareness = 195
 Happiness = 50
@@ -4226,7 +4226,7 @@ Type1 = WATER
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,125,80,86,75,85
-# Total = 545
+# Total = 546
 BaseEXP = 189
 Rareness = 35
 Happiness = 50
@@ -4287,7 +4287,7 @@ Name = Ditto
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,50,50,48,50,50
-# Total = 300
+# Total = 298
 GenderRate = Genderless
 BaseEXP = 101
 Rareness = 115
@@ -4594,7 +4594,7 @@ Type1 = ROCK
 Type2 = WATER
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,40,80,47,80,60
-# Total = 360
+# Total = 362
 BaseEXP = 71
 Rareness = 115
 Abilities = SWIFTSWIM,INTROVERT
@@ -4615,7 +4615,7 @@ Type1 = ROCK
 Type2 = WATER
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,60,115,67,115,90
-# Total = 525
+# Total = 527
 BaseEXP = 173
 Rareness = 60
 Abilities = SWIFTSWIM,INTROVERT
@@ -4633,7 +4633,7 @@ Type1 = DRAGON
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,40,55,47,70,70
-# Total = 360
+# Total = 362
 BaseEXP = 71
 Rareness = 115
 Abilities = CREEPINGHORROR,IMPERVIOUS
@@ -4653,7 +4653,7 @@ Type1 = DRAGON
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 115,60,80,67,105,100
-# Total = 525
+# Total = 527
 BaseEXP = 173
 Rareness = 60
 Abilities = CREEPINGHORROR,IMPERVIOUS
@@ -5029,7 +5029,7 @@ Name = Mewtwo
 Type1 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,120,80,122,120,80
-# Total = 620
+# Total = 622
 GenderRate = Genderless
 BaseEXP = 306
 Rareness = 5
@@ -5202,7 +5202,7 @@ Name = Totodile
 Type1 = WATER
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,65,65,44,45,50
-# Total = 320
+# Total = 319
 BaseEXP = 63
 Rareness = 115
 Abilities = FEROCIOUS,LIVEANDLURK
@@ -5222,7 +5222,7 @@ Name = Croconaw
 Type1 = WATER
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,80,80,59,60,65
-# Total = 410
+# Total = 409
 BaseEXP = 142
 Rareness = 80
 Abilities = FEROCIOUS,LIVEANDLURK
@@ -5239,7 +5239,7 @@ Name = Feraligatr
 Type1 = WATER
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,105,100,79,85,85
-# Total = 540
+# Total = 539
 BaseEXP = 239
 Rareness = 35
 Abilities = FEROCIOUS,LIVEANDLURK
@@ -5333,7 +5333,7 @@ Type1 = PSYCHIC
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,45,40,62,80,70
-# Total = 375
+# Total = 377
 BaseEXP = 52
 Rareness = 195
 Happiness = 50
@@ -5357,7 +5357,7 @@ Type1 = PSYCHIC
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 110,60,60,82,115,100
-# Total = 525
+# Total = 527
 BaseEXP = 158
 Rareness = 70
 Happiness = 50
@@ -5377,7 +5377,7 @@ Type1 = ICE
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,40,50,62,60,90
-# Total = 375
+# Total = 377
 BaseEXP = 52
 Rareness = 195
 Happiness = 50
@@ -5399,7 +5399,7 @@ Type1 = ICE
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,50,80,82,85,125
-# Total = 525
+# Total = 527
 BaseEXP = 158
 Rareness = 70
 Happiness = 50
@@ -6012,7 +6012,7 @@ Type1 = DARK
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,55,45,83,95,45
-# Total = 385
+# Total = 383
 BaseEXP = 81
 Rareness = 100
 Happiness = 35
@@ -6035,7 +6035,7 @@ Type1 = DARK
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,70,65,98,125,65
-# Total = 505
+# Total = 503
 BaseEXP = 177
 Rareness = 55
 Happiness = 35
@@ -6119,7 +6119,7 @@ Name = Wynaut
 Type1 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 115,25,40,23,25,40
-# Total = 270
+# Total = 268
 BaseEXP = 52
 Rareness = 95
 Happiness = 50
@@ -6140,7 +6140,7 @@ Name = Wobbuffet
 Type1 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 190,35,60,33,35,60
-# Total = 415
+# Total = 413
 BaseEXP = 142
 Rareness = 35
 Happiness = 50
@@ -6158,7 +6158,7 @@ Type1 = PSYCHIC
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,75,65,77,75,65
-# Total = 445
+# Total = 447
 BaseEXP = 159
 Rareness = 95
 Abilities = CUDCHEW,PHASESHIFT
@@ -6180,7 +6180,7 @@ Type1 = PSYCHIC
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 110,100,75,88,100,75
-# Total = 550
+# Total = 548
 BaseEXP = 260
 Rareness = 50
 Abilities = CUDCHEW,PHASESHIFT
@@ -6789,7 +6789,7 @@ Name = Remoraid
 Type1 = WATER
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,40,50,26,85,55
-# Total = 310
+# Total = 311
 BaseEXP = 60
 Rareness = 145
 Happiness = 50
@@ -6811,7 +6811,7 @@ Type1 = WATER
 Type2 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,70,85,46,145,90
-# Total = 530
+# Total = 531
 BaseEXP = 168
 Rareness = 60
 Happiness = 50
@@ -7049,7 +7049,7 @@ Type1 = NORMAL
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,95,65,79,55,65
-# Total = 440
+# Total = 439
 BaseEXP = 163
 Rareness = 95
 Abilities = TENEBROUSCANTER,FASCINATE
@@ -7070,7 +7070,7 @@ Type1 = NORMAL
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,115,80,94,65,80
-# Total = 530
+# Total = 529
 BaseEXP = 163
 Rareness = 95
 Abilities = TENEBROUSCANTER,FASCINATE
@@ -7107,7 +7107,7 @@ Type1 = ROCK
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,65,60,42,45,60
-# Total = 330
+# Total = 332
 BaseEXP = 60
 Rareness = 95
 Happiness = 35
@@ -7130,7 +7130,7 @@ Type1 = ROCK
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,85,80,52,65,80
-# Total = 440
+# Total = 442
 BaseEXP = 144
 Rareness = 50
 Happiness = 35
@@ -7150,7 +7150,7 @@ Type1 = ROCK
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,135,110,62,75,95
-# Total = 575
+# Total = 577
 BaseEXP = 270
 Rareness = 35
 Happiness = 35
@@ -8482,7 +8482,7 @@ Name = Whismur
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,60,35,38,85,35
-# Total = 320
+# Total = 318
 BaseEXP = 48
 Rareness = 155
 Abilities = ECHO,LOUD
@@ -8502,7 +8502,7 @@ Name = Loudred
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,75,50,53,115,50
-# Total = 425
+# Total = 423
 BaseEXP = 126
 Rareness = 95
 Abilities = ECHO,LOUD
@@ -8520,7 +8520,7 @@ Name = Exploud
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,90,65,68,140,75
-# Total = 535
+# Total = 533
 BaseEXP = 221
 Rareness = 35
 Abilities = ECHO,LOUD
@@ -8579,7 +8579,7 @@ Type1 = ROCK
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,55,60,21,80,95
-# Total = 375
+# Total = 376
 BaseEXP = 75
 Rareness = 195
 Abilities = MAGNETTRAP,IRONSTORM
@@ -8601,7 +8601,7 @@ Type1 = ROCK
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,75,85,31,115,130
-# Total = 525
+# Total = 526
 BaseEXP = 184
 Rareness = 50
 Abilities = MAGNETTRAP,IRONSTORM
@@ -9506,8 +9506,8 @@ Flags = Floating
 Name = Zangoose
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 80,120,80,110,60,80
-# Total = 530
+BaseStats = 80,120,80,112,60,80
+# Total = 532
 BaseEXP = 160
 Rareness = 95
 Abilities = VENOMDETTA,RENDINGCLAWS
@@ -9527,7 +9527,7 @@ Name = Seviper
 Type1 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,110,95,67,60,95
-# Total = 530
+# Total = 532
 BaseEXP = 160
 Rareness = 95
 Abilities = SHEDSKIN,ENVY
@@ -9547,8 +9547,8 @@ Name = M. Zangoose
 Type1 = FIGHTING
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 80,125,65,110,70,80
-# Total = 530
+BaseStats = 80,125,65,112,70,80
+# Total = 532
 BaseEXP = 160
 Rareness = 95
 Happiness = 40
@@ -9569,7 +9569,7 @@ Type1 = STEEL
 Type2 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,115,80,97,60,80
-# Total = 530
+# Total = 532
 BaseEXP = 160
 Rareness = 95
 Abilities = TESLACOILS,ENVY
@@ -9766,7 +9766,7 @@ Type1 = ROCK
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,50,75,23,70,85
-# Total = 370
+# Total = 368
 BaseEXP = 71
 Rareness = 115
 Abilities = ROOTED,WATERABSORB
@@ -9788,7 +9788,7 @@ Type1 = ROCK
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,70,105,43,95,115
-# Total = 525
+# Total = 523
 BaseEXP = 173
 Rareness = 60
 Abilities = ROOTED,WATERABSORB
@@ -9847,7 +9847,7 @@ Name = Feebas
 Type1 = WATER
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 20,10,20,79,20,55
-# Total = 205
+# Total = 204
 BaseEXP = 40
 Rareness = 195
 Happiness = 50
@@ -9870,7 +9870,7 @@ Type1 = WATER
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,50,85,79,100,130
-# Total = 545
+# Total = 544
 BaseEXP = 189
 Rareness = 50
 Happiness = 50
@@ -9891,7 +9891,7 @@ Name = M. Feebas
 Type1 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 20,10,55,79,20,20
-# Total = 205
+# Total = 204
 BaseEXP = 40
 Rareness = 195
 Happiness = 50
@@ -9913,7 +9913,7 @@ Type1 = GHOST
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,50,125,119,80,90
-# Total = 545
+# Total = 544
 BaseEXP = 189
 Rareness = 50
 Happiness = 50
@@ -9932,7 +9932,7 @@ Name = Castform
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,80,90,96,80,90
-# Total = 535
+# Total = 536
 BaseEXP = 207
 Rareness = 95
 Abilities = FORECAST
@@ -9974,7 +9974,7 @@ Type1 = GHOST
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 45,65,65,54,50,55
-# Total = 335
+# Total = 334
 BaseEXP = 59
 Rareness = 170
 Happiness = 35
@@ -9998,7 +9998,7 @@ Type1 = GHOST
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,90,80,69,70,70
-# Total = 440
+# Total = 439
 BaseEXP = 159
 Rareness = 35
 Happiness = 35
@@ -10019,7 +10019,7 @@ Type1 = GHOST
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,110,100,84,85,85
-# Total = 535
+# Total = 534
 BaseEXP = 259
 Rareness = 25
 Happiness = 35
@@ -10101,7 +10101,7 @@ Type1 = GRASS
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 120,60,125,51,80,110
-# Total = 545
+# Total = 546
 BaseEXP = 161
 Rareness = 155
 Abilities = MENTALBLOCK,BERRYBUNCH
@@ -10165,7 +10165,7 @@ Type1 = DARK
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,70,55,83,95,55
-# Total = 420
+# Total = 418
 BaseEXP = 163
 Rareness = 95
 Happiness = 35
@@ -10187,7 +10187,7 @@ Type1 = DARK
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,90,70,108,120,70
-# Total = 535
+# Total = 533
 BaseEXP = 263
 Rareness = 55
 Happiness = 35
@@ -10346,7 +10346,7 @@ Name = Clamperl
 Type1 = WATER
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 45,65,85,32,65,85
-# Total = 375
+# Total = 377
 BaseEXP = 69
 Rareness = 195
 Abilities = IMPERVIOUS,ILLUMINANCE
@@ -10369,7 +10369,7 @@ Type1 = WATER
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,65,105,102,125,75
-# Total = 525
+# Total = 527
 BaseEXP = 170
 Rareness = 50
 Abilities = INTIMIDATE,ILLUMINANCE
@@ -10388,7 +10388,7 @@ Type1 = WATER
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,65,105,72,95,115
-# Total = 525
+# Total = 527
 BaseEXP = 170
 Rareness = 50
 Abilities = FASCINATE,ILLUMINANCE
@@ -10428,7 +10428,7 @@ Type1 = WATER
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,45,55,77,30,45
-# Total = 315
+# Total = 317
 GenderRate = Female75Percent
 BaseEXP = 116
 Rareness = 170
@@ -10450,7 +10450,7 @@ Type1 = WATER
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 155,75,80,77,40,75
-# Total = 490
+# Total = 502
 BaseEXP = 165
 Rareness = 60
 Abilities = MOISTSKIN,MOONGAZE
@@ -10897,7 +10897,7 @@ Type1 = GRASS
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,70,65,31,45,55
-# Total = 320
+# Total = 321
 BaseEXP = 64
 Rareness = 115
 Abilities = REFUGE,LIVINGARMOR
@@ -10918,7 +10918,7 @@ Type1 = GRASS
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,90,85,36,55,65
-# Total = 405
+# Total = 406
 BaseEXP = 142
 Rareness = 80
 Abilities = REFUGE,LIVINGARMOR
@@ -10936,7 +10936,7 @@ Type1 = GRASS
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,110,105,56,75,85
-# Total = 535
+# Total = 536
 BaseEXP = 236
 Rareness = 35
 Abilities = REFUGE,LIVINGARMOR
@@ -11261,7 +11261,7 @@ Name = Cranidos
 Type1 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,125,40,58,30,40
-# Total = 360
+# Total = 358
 BaseEXP = 70
 Rareness = 115
 Abilities = SANDRUSH,STURDY
@@ -11281,7 +11281,7 @@ Name = Rampardos
 Type1 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 115,165,60,78,45,60
-# Total = 525
+# Total = 523
 BaseEXP = 173
 Rareness = 60
 Abilities = SANDRUSH,STURDY
@@ -11299,7 +11299,7 @@ Type1 = ROCK
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,55,95,38,40,75
-# Total = 365
+# Total = 363
 BaseEXP = 70
 Rareness = 115
 Abilities = ROCKBODY,SWORDBREAKER
@@ -11320,7 +11320,7 @@ Type1 = ROCK
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,80,140,53,55,110
-# Total = 525
+# Total = 523
 BaseEXP = 173
 Rareness = 60
 Abilities = ROCKBODY,SWORDBREAKER
@@ -11556,7 +11556,7 @@ Type1 = GROUND
 Type2 = BUG
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,60,65,24,80,65
-# Total = 375
+# Total = 374
 BaseEXP = 65
 Rareness = 145
 Happiness = 50
@@ -11579,7 +11579,7 @@ Type1 = GROUND
 Type2 = BUG
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 110,85,90,34,110,90
-# Total = 520
+# Total = 519
 BaseEXP = 166
 Rareness = 60
 Happiness = 50
@@ -11800,7 +11800,7 @@ Type1 = POISON
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,80,50,76,60,45
-# Total = 385
+# Total = 386
 BaseEXP = 66
 Rareness = 170
 Happiness = 50
@@ -11822,7 +11822,7 @@ Type1 = POISON
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,105,65,96,80,60
-# Total = 510
+# Total = 511
 BaseEXP = 168
 Rareness = 50
 Happiness = 50
@@ -11841,7 +11841,7 @@ Type1 = STEEL
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,45,85,26,45,85
-# Total = 350
+# Total = 351
 GenderRate = Genderless
 BaseEXP = 60
 Rareness = 195
@@ -11866,7 +11866,7 @@ Type1 = STEEL
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,85,115,36,85,115
-# Total = 520
+# Total = 521
 GenderRate = Genderless
 BaseEXP = 175
 Rareness = 70
@@ -11888,7 +11888,7 @@ Type1 = NORMAL
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,65,65,91,110,90
-# Total = 495
+# Total = 496
 BaseEXP = 214
 Rareness = 95
 Happiness = 35
@@ -11911,7 +11911,7 @@ Type1 = GHOST
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,90,70,68,110,130
-# Total = 540
+# Total = 538
 BaseEXP = 170
 Rareness = 95
 Abilities = BADINFLUENCE,ODDITY
@@ -11932,7 +11932,7 @@ Type1 = DRAGON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,70,50,52,40,45
-# Total = 315
+# Total = 317
 BaseEXP = 60
 Rareness = 95
 Abilities = ROUGHSKIN,SANDSHROUD
@@ -11954,7 +11954,7 @@ Type1 = DRAGON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,90,75,82,60,60
-# Total = 445
+# Total = 447
 BaseEXP = 144
 Rareness = 50
 Abilities = ROUGHSKIN,SANDSHROUD
@@ -11973,7 +11973,7 @@ Type1 = DRAGON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 110,125,105,87,80,75
-# Total = 580
+# Total = 582
 BaseEXP = 270
 Rareness = 35
 Abilities = ROUGHSKIN,SANDSMACABRE
@@ -11993,7 +11993,7 @@ Type1 = FIGHTING
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,55,50,67,85,50
-# Total = 355
+# Total = 357
 BaseEXP = 57
 Rareness = 155
 Happiness = 50
@@ -12015,7 +12015,7 @@ Type1 = FIGHTING
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,70,60,82,105,60
-# Total = 440
+# Total = 442
 BaseEXP = 184
 Rareness = 60
 Happiness = 50
@@ -12034,7 +12034,7 @@ Type1 = FIGHTING
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,85,70,97,125,70
-# Total = 520
+# Total = 522
 BaseEXP = 250
 Rareness = 55
 Happiness = 50
@@ -12174,7 +12174,7 @@ Type1 = GRASS
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,130,85,46,90,85
-# Total = 525
+# Total = 526
 BaseEXP = 159
 Rareness = 155
 Abilities = AMBUSHPREDATOR,LURINGMAW
@@ -12194,7 +12194,7 @@ Type1 = DARK
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,125,125,46,50,125
-# Total = 525
+# Total = 526
 BaseEXP = 159
 Rareness = 155
 Abilities = ARCHVILLAIN,PESTILENT
@@ -12312,7 +12312,7 @@ Type1 = ELECTRIC
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,65,105,87,105,105
-# Total = 530
+# Total = 532
 GenderRate = Genderless
 BaseEXP = 154
 Rareness = 70
@@ -12456,7 +12456,7 @@ Type1 = FIRE
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,90,105,77,130,105
-# Total = 600
+# Total = 602
 BaseEXP = 270
 Rareness = 5
 Happiness = 100
@@ -12635,7 +12635,7 @@ Type1 = GRASS
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 45,45,45,66,65,45
-# Total = 310
+# Total = 311
 BaseEXP = 62
 Rareness = 115
 Abilities = PREEMINENCE,VICTORYMOLT
@@ -12656,7 +12656,7 @@ Type1 = GRASS
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,60,60,86,90,60
-# Total = 415
+# Total = 416
 BaseEXP = 145
 Rareness = 80
 Abilities = PREEMINENCE,VICTORYMOLT
@@ -12674,7 +12674,7 @@ Type1 = GRASS
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,75,80,111,115,85
-# Total = 540
+# Total = 541
 BaseEXP = 238
 Rareness = 35
 Abilities = PREEMINENCE,VICTORYMOLT
@@ -12692,7 +12692,7 @@ Type1 = FIRE
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,55,55,42,35,55
-# Total = 305
+# Total = 307
 BaseEXP = 62
 Rareness = 115
 Abilities = ROAST,HEATSAVOR
@@ -12713,7 +12713,7 @@ Type1 = FIRE
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,80,75,52,55,75
-# Total = 425
+# Total = 427
 BaseEXP = 146
 Rareness = 80
 Abilities = ROAST,HEATSAVOR
@@ -12731,7 +12731,7 @@ Type1 = FIRE
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 110,105,95,57,75,95
-# Total = 535
+# Total = 537
 BaseEXP = 238
 Rareness = 35
 Abilities = ROAST,HEATSAVOR
@@ -12749,7 +12749,7 @@ Type1 = WATER
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,60,45,53,45,45
-# Total = 305
+# Total = 303
 BaseEXP = 62
 Rareness = 115
 Abilities = WARDING,STAYOFEXECUTION
@@ -12770,7 +12770,7 @@ Type1 = WATER
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,80,60,73,65,60
-# Total = 415
+# Total = 413
 BaseEXP = 145
 Rareness = 80
 Abilities = WARDING,STAYOFEXECUTION
@@ -12788,7 +12788,7 @@ Type1 = WATER
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,105,95,93,70,75
-# Total = 535
+# Total = 533
 BaseEXP = 238
 Rareness = 35
 Abilities = WARDING,STAYOFEXECUTION
@@ -12808,7 +12808,7 @@ Type1 = WATER
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,90,75,108,75,80
-# Total = 535
+# Total = 533
 BaseEXP = 238
 Rareness = 35
 Abilities = POORCONDUCT,SWORDPLAY
@@ -12827,7 +12827,7 @@ Name = Patrat
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,35,55,51,70,80
-# Total = 360
+# Total = 361
 BaseEXP = 51
 Rareness = 195
 Abilities = REFRACTIVE,PARANOID
@@ -12848,7 +12848,7 @@ Name = Watchog
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,55,80,76,95,115
-# Total = 515
+# Total = 516
 BaseEXP = 197
 Rareness = 195
 Abilities = REFRACTIVE,PARANOID
@@ -12959,7 +12959,7 @@ Type1 = GRASS
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,65,50,79,65,50
-# Total = 360
+# Total = 359
 BaseEXP = 63
 Rareness = 145
 Abilities = FRIENDGUARD,RECLAMATION
@@ -12980,7 +12980,7 @@ Type1 = GRASS
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,105,70,104,105,70
-# Total = 545
+# Total = 544
 BaseEXP = 174
 Rareness = 60
 Abilities = FRIENDGUARD,RECLAMATION
@@ -12998,7 +12998,7 @@ Type1 = FIRE
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,65,50,79,65,50
-# Total = 360
+# Total = 359
 BaseEXP = 63
 Rareness = 145
 Abilities = FRIENDGUARD,RIPEN
@@ -13019,7 +13019,7 @@ Type1 = FIRE
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,105,70,104,105,70
-# Total = 545
+# Total = 544
 BaseEXP = 174
 Rareness = 60
 Abilities = FRIENDGUARD,RIPEN
@@ -13037,7 +13037,7 @@ Type1 = WATER
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,65,50,79,65,50
-# Total = 360
+# Total = 359
 BaseEXP = 63
 Rareness = 145
 Abilities = FRIENDGUARD,UNBURDEN
@@ -13058,7 +13058,7 @@ Type1 = WATER
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,105,70,104,105,70
-# Total = 545
+# Total = 544
 BaseEXP = 174
 Rareness = 60
 Abilities = FRIENDGUARD,UNBURDEN
@@ -13076,7 +13076,7 @@ Type1 = PSYCHIC
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,35,85,24,85,85
-# Total = 365
+# Total = 364
 BaseEXP = 58
 Rareness = 145
 Happiness = 50
@@ -13099,7 +13099,7 @@ Type1 = PSYCHIC
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,55,115,29,115,115
-# Total = 525
+# Total = 524
 BaseEXP = 170
 Rareness = 60
 Happiness = 50
@@ -13119,7 +13119,7 @@ Type1 = PSYCHIC
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,45,95,24,75,75
-# Total = 365
+# Total = 364
 BaseEXP = 58
 Rareness = 145
 Happiness = 50
@@ -13141,7 +13141,7 @@ Type1 = PSYCHIC
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,65,135,29,105,95
-# Total = 525
+# Total = 524
 BaseEXP = 170
 Rareness = 60
 Happiness = 50
@@ -13158,7 +13158,7 @@ Name = Pidove
 Type1 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,65,70,66,45,40
-# Total = 345
+# Total = 346
 BaseEXP = 53
 Rareness = 195
 Happiness = 50
@@ -13180,7 +13180,7 @@ Type1 = FLYING
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,85,80,86,50,50
-# Total = 420
+# Total = 421
 BaseEXP = 125
 Rareness = 95
 Happiness = 50
@@ -13199,7 +13199,7 @@ Type1 = FLYING
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,115,95,106,65,65
-# Total = 535
+# Total = 536
 BaseEXP = 220
 Rareness = 35
 Happiness = 50
@@ -13217,7 +13217,7 @@ Name = Blitzle
 Type1 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,80,45,91,55,45
-# Total = 390
+# Total = 391
 BaseEXP = 59
 Rareness = 145
 Abilities = GALLOPINGSTORM,RECKLESS
@@ -13238,7 +13238,7 @@ Name = Zebstrika
 Type1 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,110,65,126,80,65
-# Total = 550
+# Total = 551
 BaseEXP = 174
 Rareness = 60
 Abilities = GALLOPINGSTORM,RECKLESS
@@ -13256,7 +13256,7 @@ Name = Roggenrola
 Type1 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,25,75,31,75,40
-# Total = 300
+# Total = 301
 BaseEXP = 56
 Rareness = 195
 Happiness = 50
@@ -13278,7 +13278,7 @@ Name = Boldore
 Type1 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,50,100,41,100,65
-# Total = 425
+# Total = 426
 BaseEXP = 137
 Rareness = 95
 Happiness = 50
@@ -13298,7 +13298,7 @@ Name = Gigalith
 Type1 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,60,120,51,120,80
-# Total = 515
+# Total = 516
 BaseEXP = 232
 Rareness = 35
 Happiness = 50
@@ -13318,7 +13318,7 @@ Type1 = PSYCHIC
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,40,55,21,60,65
-# Total = 300
+# Total = 301
 BaseEXP = 56
 Rareness = 195
 Happiness = 50
@@ -13340,7 +13340,7 @@ Type1 = PSYCHIC
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,70,75,31,100,80
-# Total = 425
+# Total = 426
 BaseEXP = 137
 Rareness = 95
 Happiness = 50
@@ -13359,7 +13359,7 @@ Type1 = PSYCHIC
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,85,90,46,115,95
-# Total = 515
+# Total = 516
 BaseEXP = 232
 Rareness = 35
 Happiness = 50
@@ -13378,7 +13378,7 @@ Type1 = PSYCHIC
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,65,45,68,55,55
-# Total = 355
+# Total = 353
 BaseEXP = 65
 Rareness = 145
 Happiness = 50
@@ -13400,7 +13400,7 @@ Type1 = PSYCHIC
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,115,55,118,75,75
-# Total = 515
+# Total = 513
 BaseEXP = 149
 Rareness = 35
 Happiness = 50
@@ -13418,7 +13418,7 @@ Type1 = GROUND
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,100,45,79,55,55
-# Total = 415
+# Total = 414
 BaseEXP = 66
 Rareness = 95
 Happiness = 50
@@ -13440,7 +13440,7 @@ Type1 = GROUND
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,125,60,109,70,70
-# Total = 535
+# Total = 534
 BaseEXP = 178
 Rareness = 50
 Happiness = 50
@@ -13564,7 +13564,7 @@ Type1 = POISON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,60,55,54,60,45
-# Total = 350
+# Total = 349
 BaseEXP = 59
 Rareness = 195
 Happiness = 50
@@ -13587,7 +13587,7 @@ Type1 = POISON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,75,65,69,75,60
-# Total = 435
+# Total = 434
 BaseEXP = 134
 Rareness = 95
 Happiness = 50
@@ -13608,7 +13608,7 @@ Type1 = POISON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 115,95,85,89,95,75
-# Total = 555
+# Total = 554
 BaseEXP = 229
 Rareness = 35
 Happiness = 50
@@ -13670,7 +13670,7 @@ Type1 = BUG
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 45,55,70,39,40,60
-# Total = 310
+# Total = 309
 BaseEXP = 62
 Rareness = 195
 Abilities = COLDRECEPTION,BLADEBRAINED
@@ -13692,7 +13692,7 @@ Type1 = BUG
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,75,100,49,60,90
-# Total = 440
+# Total = 439
 BaseEXP = 133
 Rareness = 95
 Abilities = COLDRECEPTION,BLADEBRAINED
@@ -13712,7 +13712,7 @@ Type1 = BUG
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,135,75,99,70,70
-# Total = 520
+# Total = 519
 BaseEXP = 225
 Rareness = 35
 Abilities = COLDRECEPTION,BLADEBRAINED
@@ -13731,7 +13731,7 @@ Type1 = BUG
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,55,75,57,50,50
-# Total = 335
+# Total = 337
 BaseEXP = 52
 Rareness = 195
 Abilities = SPEEDBOOST,STAMINA
@@ -13753,7 +13753,7 @@ Type1 = BUG
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,80,100,77,60,70
-# Total = 455
+# Total = 457
 BaseEXP = 126
 Rareness = 95
 Abilities = SPEEDBOOST,STAMINA
@@ -13772,7 +13772,7 @@ Type1 = BUG
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,105,110,102,75,80
-# Total = 560
+# Total = 562
 BaseEXP = 218
 Rareness = 35
 Abilities = SPEEDBOOST,STAMINA
@@ -13791,7 +13791,7 @@ Type1 = GRASS
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 40,65,65,81,55,50
-# Total = 355
+# Total = 356
 BaseEXP = 56
 Rareness = 145
 Happiness = 50
@@ -13814,7 +13814,7 @@ Type1 = GRASS
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,95,95,116,75,75
-# Total = 515
+# Total = 516
 BaseEXP = 168
 Rareness = 60
 Happiness = 50
@@ -13833,7 +13833,7 @@ Name = Petilil
 Type1 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,50,70,57,90,70
-# Total = 390
+# Total = 392
 BaseEXP = 56
 Rareness = 145
 Abilities = CHLOROPHYLL,HERBALIST
@@ -13855,7 +13855,7 @@ Type1 = GRASS
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,65,115,77,120,90
-# Total = 540
+# Total = 542
 BaseEXP = 168
 Rareness = 60
 Abilities = CHLOROPHYLL,HERBALIST
@@ -13876,7 +13876,7 @@ Type1 = GRASS
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,120,75,117,65,90
-# Total = 540
+# Total = 542
 BaseEXP = 168
 Rareness = 60
 Abilities = FASCINATE,EFFLORESCENT
@@ -13896,7 +13896,7 @@ Type1 = ICE
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,90,60,57,50,80
-# Total = 390
+# Total = 392
 BaseEXP = 56
 Rareness = 145
 Abilities = SUDDENCHILL,PETTY
@@ -13917,7 +13917,7 @@ Type1 = ICE
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,120,90,77,65,115
-# Total = 540
+# Total = 542
 BaseEXP = 168
 Rareness = 60
 Abilities = SUDDENCHILL,PETTY
@@ -14179,7 +14179,7 @@ Type1 = DARK
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 40,80,60,68,40,80
-# Total = 370
+# Total = 368
 BaseEXP = 70
 Rareness = 140
 Happiness = 35
@@ -14202,7 +14202,7 @@ Type1 = DARK
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,110,85,98,55,115
-# Total = 525
+# Total = 523
 BaseEXP = 171
 Rareness = 70
 Happiness = 50
@@ -14222,7 +14222,7 @@ Type1 = PSYCHIC
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 110,60,120,76,85,80
-# Total = 530
+# Total = 531
 BaseEXP = 172
 Rareness = 50
 Happiness = 50
@@ -14330,7 +14330,7 @@ Type1 = WATER
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,70,80,27,50,105
-# Total = 390
+# Total = 392
 BaseEXP = 71
 Rareness = 115
 Abilities = MARINE,TOUGH
@@ -14351,7 +14351,7 @@ Type1 = WATER
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,100,110,32,70,145
-# Total = 540
+# Total = 542
 BaseEXP = 173
 Rareness = 60
 Abilities = MARINE,TOUGH
@@ -14407,7 +14407,7 @@ Type1 = POISON
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,45,65,48,55,65
-# Total = 345
+# Total = 343
 BaseEXP = 66
 Rareness = 145
 Happiness = 50
@@ -14430,7 +14430,7 @@ Type1 = POISON
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,60,90,63,75,90
-# Total = 470
+# Total = 468
 BaseEXP = 166
 Rareness = 50
 Happiness = 50
@@ -14451,7 +14451,7 @@ Type1 = POISON
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,70,105,73,85,105
-# Total = 545
+# Total = 543
 BaseEXP = 166
 Rareness = 50
 Happiness = 50
@@ -14591,7 +14591,7 @@ Type1 = PSYCHIC
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,30,35,49,60,40
-# Total = 320
+# Total = 319
 GenderRate = Female75Percent
 BaseEXP = 58
 Rareness = 155
@@ -14614,7 +14614,7 @@ Type1 = PSYCHIC
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 135,40,45,64,80,55
-# Total = 420
+# Total = 419
 GenderRate = Female75Percent
 BaseEXP = 137
 Rareness = 80
@@ -14634,7 +14634,7 @@ Type1 = PSYCHIC
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 175,50,70,69,90,80
-# Total = 535
+# Total = 534
 GenderRate = Female75Percent
 BaseEXP = 221
 Rareness = 40
@@ -14761,7 +14761,7 @@ Type1 = ICE
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 40,50,50,44,65,60
-# Total = 310
+# Total = 309
 BaseEXP = 61
 Rareness = 195
 Happiness = 50
@@ -14785,7 +14785,7 @@ Type1 = ICE
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,70,70,64,85,80
-# Total = 435
+# Total = 434
 BaseEXP = 138
 Rareness = 95
 Happiness = 50
@@ -14806,7 +14806,7 @@ Type1 = ICE
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,95,85,79,110,95
-# Total = 555
+# Total = 554
 BaseEXP = 241
 Rareness = 35
 Happiness = 50
@@ -14870,7 +14870,7 @@ Type1 = ELECTRIC
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,75,75,123,105,75
-# Total = 530
+# Total = 528
 BaseEXP = 150
 Rareness = 155
 Abilities = OVERWHELM,FLYBY
@@ -15056,7 +15056,7 @@ Type1 = BUG
 Type2 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,50,60,92,80,45
-# Total = 380
+# Total = 382
 BaseEXP = 64
 Rareness = 145
 Happiness = 50
@@ -15078,7 +15078,7 @@ Type1 = BUG
 Type2 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,75,85,132,115,65
-# Total = 545
+# Total = 547
 BaseEXP = 165
 Rareness = 60
 Happiness = 50
@@ -15557,7 +15557,7 @@ Type1 = GROUND
 Type2 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 110,65,105,32,95,95
-# Total = 500
+# Total = 502
 BaseEXP = 165
 Rareness = 95
 Abilities = DOUBLECHECK,DRIZZLE
@@ -15577,7 +15577,7 @@ Type1 = GROUND
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 110,85,95,22,85,125
-# Total = 520
+# Total = 522
 BaseEXP = 165
 Rareness = 95
 Abilities = DENTICLEDEBRIS,DETERRENT
@@ -15936,7 +15936,7 @@ Type1 = FIRE
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,105,70,71,80,70
-# Total = 495
+# Total = 496
 BaseEXP = 169
 Rareness = 95
 Happiness = 50
@@ -15957,7 +15957,7 @@ Type1 = BUG
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,110,110,112,50,60
-# Total = 500
+# Total = 502
 BaseEXP = 169
 Rareness = 95
 Happiness = 50
@@ -15978,7 +15978,7 @@ Type1 = DARK
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,35,50,36,60,50
-# Total = 295
+# Total = 296
 BaseEXP = 60
 Rareness = 95
 Happiness = 35
@@ -16000,7 +16000,7 @@ Type1 = DARK
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,60,70,61,90,70
-# Total = 435
+# Total = 436
 BaseEXP = 147
 Rareness = 50
 Happiness = 35
@@ -16019,7 +16019,7 @@ Type1 = DARK
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,85,90,81,120,90
-# Total = 570
+# Total = 571
 BaseEXP = 270
 Rareness = 35
 Happiness = 35
@@ -16082,7 +16082,7 @@ Type1 = STEEL
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,90,130,108,90,70
-# Total = 580
+# Total = 578
 GenderRate = Genderless
 BaseEXP = 261
 Rareness = 5
@@ -16105,7 +16105,7 @@ Type1 = ROCK
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,130,90,108,70,90
-# Total = 580
+# Total = 578
 GenderRate = Genderless
 BaseEXP = 261
 Rareness = 5
@@ -16128,7 +16128,7 @@ Type1 = GRASS
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,90,70,108,90,130
-# Total = 580
+# Total = 578
 GenderRate = Genderless
 BaseEXP = 261
 Rareness = 5
@@ -16151,7 +16151,7 @@ Type1 = WATER
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,70,90,108,130,90
-# Total = 580
+# Total = 578
 GenderRate = Genderless
 BaseEXP = 261
 Rareness = 5
@@ -16368,7 +16368,7 @@ Type1 = BUG
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,120,95,99,120,95
-# Total = 600
+# Total = 599
 GenderRate = Genderless
 BaseEXP = 270
 Rareness = 5
@@ -16415,7 +16415,7 @@ Type1 = GRASS
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,60,65,39,50,45
-# Total = 315
+# Total = 314
 BaseEXP = 63
 Rareness = 115
 Abilities = INTIMIDATE,AGGRAVATE
@@ -16436,7 +16436,7 @@ Type1 = GRASS
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,80,95,54,55,60
-# Total = 405
+# Total = 404
 BaseEXP = 142
 Rareness = 80
 Abilities = INTIMIDATE,AGGRAVATE
@@ -16455,7 +16455,7 @@ Type1 = GRASS
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,110,120,64,75,75
-# Total = 535
+# Total = 534
 BaseEXP = 239
 Rareness = 35
 Abilities = INTIMIDATE,AGGRAVATE
@@ -16473,7 +16473,7 @@ Type1 = FIRE
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 40,45,40,58,60,60
-# Total = 305
+# Total = 303
 BaseEXP = 61
 Rareness = 115
 Abilities = BLINDINGLIGHT,FASCINATE
@@ -16494,7 +16494,7 @@ Type1 = FIRE
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,60,60,73,90,70
-# Total = 415
+# Total = 413
 BaseEXP = 143
 Rareness = 80
 Abilities = BLINDINGLIGHT,FASCINATE
@@ -16512,7 +16512,7 @@ Type1 = FIRE
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,70,70,103,115,100
-# Total = 535
+# Total = 533
 BaseEXP = 240
 Rareness = 35
 Abilities = BLINDINGLIGHT,FASCINATE
@@ -16530,7 +16530,7 @@ Type1 = WATER
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 40,55,40,72,60,45
-# Total = 310
+# Total = 312
 BaseEXP = 63
 Rareness = 115
 Abilities = MUTABLE,WISEHUNTER
@@ -16551,7 +16551,7 @@ Type1 = WATER
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,65,50,97,85,55
-# Total = 405
+# Total = 407
 BaseEXP = 142
 Rareness = 80
 Abilities = MUTABLE,WISEHUNTER
@@ -16570,7 +16570,7 @@ Type1 = WATER
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,95,70,122,105,70
-# Total = 530
+# Total = 532
 BaseEXP = 239
 Rareness = 35
 Abilities = MUTABLE,WISEHUNTER
@@ -16631,7 +16631,7 @@ Type1 = FIRE
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,65,60,67,40,45
-# Total = 340
+# Total = 342
 BaseEXP = 56
 Rareness = 195
 Abilities = HARSH,GALEWINGS
@@ -16654,7 +16654,7 @@ Type1 = FIRE
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,80,75,72,55,50
-# Total = 410
+# Total = 412
 BaseEXP = 134
 Rareness = 195
 Abilities = HARSH,GALEWINGS
@@ -16673,7 +16673,7 @@ Type1 = FIRE
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,105,95,92,75,65
-# Total = 535
+# Total = 537
 BaseEXP = 175
 Rareness = 195
 Abilities = HARSH,GALEWINGS
@@ -16691,7 +16691,7 @@ Name = Scatterbug
 Type1 = BUG
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,45,45,54,55,65
-# Total = 325
+# Total = 324
 BaseEXP = 46
 Rareness = 195
 Abilities = MULTISCALE,SHEDSKIN
@@ -16712,7 +16712,7 @@ Name = Spewpa
 Type1 = BUG
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,55,65,44,70,105
-# Total = 425
+# Total = 424
 BaseEXP = 75
 Rareness = 195
 Abilities = MULTISCALE,SHEDSKIN
@@ -16732,7 +16732,7 @@ Type1 = BUG
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,50,65,99,95,125
-# Total = 535
+# Total = 534
 BaseEXP = 185
 Rareness = 195
 Abilities = MULTISCALE,SHEDSKIN
@@ -16751,8 +16751,8 @@ Name = Litleo
 Type1 = FIRE
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 65,55,60,75,80,55
-# Total = 390
+BaseStats = 65,55,60,74,80,55
+# Total = 389
 GenderRate = Female75Percent
 BaseEXP = 74
 Rareness = 155
@@ -16774,7 +16774,7 @@ Type1 = FIRE
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,70,80,109,125,65
-# Total = 540
+# Total = 539
 GenderRate = Female75Percent
 BaseEXP = 177
 Rareness = 155
@@ -16836,7 +16836,7 @@ Type1 = FAIRY
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,65,80,65,110,155
-# Total = 565
+# Total = 555
 BaseEXP = 248
 Rareness = 195
 Abilities = BEAMING,SENTRY
@@ -16855,7 +16855,7 @@ Name = Skiddo
 Type1 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,70,55,52,70,50
-# Total = 360
+# Total = 362
 BaseEXP = 70
 Rareness = 125
 Abilities = BULLY,ROCKCLIMBER
@@ -16876,7 +16876,7 @@ Type1 = GRASS
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 125,110,80,72,110,60
-# Total = 555
+# Total = 557
 BaseEXP = 186
 Rareness = 125
 Abilities = BULLY,ROCKCLIMBER
@@ -16894,7 +16894,7 @@ Type1 = FIGHTING
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,85,70,43,45,60
-# Total = 370
+# Total = 368
 BaseEXP = 70
 Rareness = 100
 Happiness = 50
@@ -16916,7 +16916,7 @@ Type1 = FIGHTING
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,130,95,58,70,85
-# Total = 535
+# Total = 533
 BaseEXP = 173
 Rareness = 100
 Happiness = 50
@@ -16956,7 +16956,7 @@ Name = Espurr
 Type1 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,60,60,72,50,60
-# Total = 360
+# Total = 362
 BaseEXP = 71
 Rareness = 175
 Happiness = 50
@@ -16978,7 +16978,7 @@ Name = Meowstic
 Type1 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,90,115,107,75,80
-# Total = 540
+# Total = 542
 BaseEXP = 163
 Rareness = 175
 Happiness = 50
@@ -17127,7 +17127,7 @@ Name = Swirlix
 Type1 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,70,55,49,50,45
-# Total = 360
+# Total = 359
 BaseEXP = 68
 Rareness = 155
 Happiness = 50
@@ -17149,7 +17149,7 @@ Name = Slurpuff
 Type1 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 130,100,85,69,75,65
-# Total = 525
+# Total = 524
 BaseEXP = 168
 Rareness = 155
 Happiness = 50
@@ -17168,7 +17168,7 @@ Type1 = DARK
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,70,65,56,50,55
-# Total = 375
+# Total = 376
 BaseEXP = 58
 Rareness = 155
 Happiness = 50
@@ -17191,7 +17191,7 @@ Type1 = DARK
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,95,90,76,70,75
-# Total = 510
+# Total = 511
 BaseEXP = 169
 Rareness = 95
 Happiness = 50
@@ -17250,8 +17250,8 @@ Name = Skrelp
 Type1 = POISON
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 70,80,70,43,65,95
-# Total = 425
+BaseStats = 70,80,70,47,65,95
+# Total = 427
 BaseEXP = 64
 Rareness = 170
 Abilities = DETERRENT,WATERABSORB
@@ -17272,8 +17272,8 @@ Name = Dragalge
 Type1 = POISON
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 95,95,90,63,75,145
-# Total = 565
+BaseStats = 95,95,90,67,75,145
+# Total = 567
 BaseEXP = 173
 Rareness = 170
 Abilities = DETERRENT,WATERABSORB
@@ -17292,7 +17292,7 @@ Type1 = GRASS
 Type2 = WATER
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,85,75,72,65,65
-# Total = 425
+# Total = 427
 BaseEXP = 64
 Rareness = 170
 Abilities = SINKINGFEELING,HASTY
@@ -17312,7 +17312,7 @@ Type1 = GRASS
 Type2 = WATER
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,115,95,102,75,85
-# Total = 565
+# Total = 567
 BaseEXP = 173
 Rareness = 170
 Abilities = SINKINGFEELING,HASTY
@@ -17366,7 +17366,7 @@ Type1 = ELECTRIC
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,40,40,91,75,70
-# Total = 370
+# Total = 371
 BaseEXP = 58
 Rareness = 95
 Happiness = 50
@@ -17389,7 +17389,7 @@ Type1 = ELECTRIC
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,55,55,121,110,105
-# Total = 505
+# Total = 506
 BaseEXP = 168
 Rareness = 70
 Happiness = 50
@@ -17409,7 +17409,7 @@ Type1 = ROCK
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,90,65,51,45,55
-# Total = 385
+# Total = 386
 BaseEXP = 72
 Rareness = 115
 Abilities = WRATHINSTINCT,ROCKHEAD
@@ -17430,7 +17430,7 @@ Type1 = ROCK
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,120,100,71,70,80
-# Total = 540
+# Total = 541
 BaseEXP = 204
 Rareness = 60
 Abilities = WRATHINSTINCT,ROCKHEAD
@@ -17448,7 +17448,7 @@ Type1 = ROCK
 Type2 = ICE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,45,55,29,65,75
-# Total = 360
+# Total = 359
 BaseEXP = 72
 Rareness = 115
 Abilities = AURORAPRISM,MULTISCALE
@@ -17469,7 +17469,7 @@ Type1 = ROCK
 Type2 = ICE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 135,65,80,49,100,110
-# Total = 540
+# Total = 539
 BaseEXP = 204
 Rareness = 60
 Abilities = AURORAPRISM,MULTISCALE
@@ -17487,7 +17487,7 @@ Type1 = FIGHTING
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,90,95,119,75,65
-# Total = 535
+# Total = 534
 BaseEXP = 175
 Rareness = 100
 Happiness = 50
@@ -17510,7 +17510,7 @@ Type1 = ELECTRIC
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 115,95,90,52,95,90
-# Total = 535
+# Total = 537
 BaseEXP = 151
 Rareness = 155
 Abilities = CHEEKPOUCH,RATSNEST
@@ -17573,8 +17573,8 @@ StickyItems = CRYSTALCALIBURN
 Name = Goomy
 Type1 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 45,45,75,40,60,35
-# Total = 300
+BaseStats = 45,45,75,39,60,35
+# Total = 299
 BaseEXP = 60
 Rareness = 135
 Happiness = 35
@@ -17597,7 +17597,7 @@ Type1 = DRAGON
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,55,100,59,85,70
-# Total = 440
+# Total = 439
 BaseEXP = 158
 Rareness = 95
 Happiness = 60
@@ -17620,7 +17620,7 @@ Type1 = DRAGON
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,70,125,84,110,85
-# Total = 570
+# Total = 569
 BaseEXP = 270
 Rareness = 35
 Happiness = 35
@@ -17639,7 +17639,7 @@ Type1 = DRAGON
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,85,100,49,55,80
-# Total = 440
+# Total = 439
 BaseEXP = 158
 Rareness = 95
 Happiness = 60
@@ -17661,7 +17661,7 @@ Type1 = DRAGON
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,110,105,69,70,125
-# Total = 570
+# Total = 569
 BaseEXP = 270
 Rareness = 35
 Happiness = 35
@@ -17680,7 +17680,7 @@ Type1 = STEEL
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,85,125,32,85,125
-# Total = 510
+# Total = 512
 BaseEXP = 165
 Rareness = 95
 Abilities = PRANKSTER,ROOMLOCK
@@ -17701,7 +17701,7 @@ Type1 = GHOST
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 45,70,50,38,50,75
-# Total = 330
+# Total = 328
 BaseEXP = 62
 Rareness = 115
 Happiness = 50
@@ -17724,7 +17724,7 @@ Type1 = GHOST
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,110,75,53,65,110
-# Total = 520
+# Total = 518
 BaseEXP = 166
 Rareness = 115
 Happiness = 50
@@ -17786,7 +17786,7 @@ Name = Bergmite
 Type1 = ICE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,80,90,26,60,70
-# Total = 395
+# Total = 396
 BaseEXP = 61
 Rareness = 195
 Happiness = 50
@@ -17809,7 +17809,7 @@ Type1 = ICE
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,110,125,36,90,95
-# Total = 550
+# Total = 551
 BaseEXP = 180
 Rareness = 195
 Happiness = 50
@@ -17831,7 +17831,7 @@ Type1 = ICE
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,120,125,56,60,95
-# Total = 550
+# Total = 551
 BaseEXP = 180
 Rareness = 195
 Happiness = 50
@@ -17851,8 +17851,8 @@ Name = Noibat
 Type1 = FLYING
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 50,40,55,80,75,55
-# Total = 355
+BaseStats = 50,40,55,82,75,55
+# Total = 357
 BaseEXP = 49
 Rareness = 155
 Happiness = 50
@@ -17875,7 +17875,7 @@ Type1 = FLYING
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,70,80,117,100,80
-# Total = 520
+# Total = 522
 BaseEXP = 187
 Rareness = 155
 Happiness = 50
@@ -18377,7 +18377,7 @@ Name = Crabrawler
 Type1 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,95,70,62,55,60
-# Total = 420
+# Total = 422
 BaseEXP = 68
 Rareness = 170
 Abilities = SURVIVALIST,IRONFIST
@@ -18399,7 +18399,7 @@ Type1 = FIGHTING
 Type2 = ICE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,135,85,57,55,100
-# Total = 535
+# Total = 537
 BaseEXP = 167
 Rareness = 50
 Abilities = SURVIVALIST,IRONFIST
@@ -18797,7 +18797,7 @@ Type1 = POISON
 Type2 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,50,40,86,80,50
-# Total = 360
+# Total = 361
 BaseEXP = 64
 Rareness = 155
 Happiness = 50
@@ -18819,7 +18819,7 @@ Type1 = POISON
 Type2 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,65,60,116,110,80
-# Total = 520
+# Total = 521
 BaseEXP = 168
 Rareness = 35
 Happiness = 50
@@ -18878,7 +18878,7 @@ Name = Bounsweet
 Type1 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 45,70,55,37,40,80
-# Total = 325
+# Total = 327
 BaseEXP = 42
 Rareness = 180
 Happiness = 50
@@ -18899,7 +18899,7 @@ Name = Steenee
 Type1 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,95,75,52,55,105
-# Total = 435
+# Total = 437
 BaseEXP = 102
 Rareness = 95
 Happiness = 50
@@ -18917,7 +18917,7 @@ Name = Tsareena
 Type1 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,120,95,62,70,130
-# Total = 545
+# Total = 547
 BaseEXP = 230
 Rareness = 35
 Happiness = 50
@@ -19042,7 +19042,7 @@ Type1 = GHOST
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,45,55,24,85,65
-# Total = 340
+# Total = 339
 BaseEXP = 64
 Rareness = 155
 Abilities = GRIT,SANDSHROUD
@@ -19064,7 +19064,7 @@ Type1 = GHOST
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,65,85,34,125,100
-# Total = 505
+# Total = 504
 BaseEXP = 168
 Rareness = 50
 Abilities = GRIT,SANDSHROUD
@@ -19191,7 +19191,7 @@ Type1 = FIRE
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,80,125,36,100,100
-# Total = 535
+# Total = 536
 BaseEXP = 170
 Rareness = 55
 Happiness = 50
@@ -19213,7 +19213,7 @@ Type1 = ELECTRIC
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,60,110,106,80,80
-# Total = 530
+# Total = 531
 BaseEXP = 152
 Rareness = 140
 Happiness = 50
@@ -19234,7 +19234,7 @@ Type1 = GHOST
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,110,80,93,55,105
-# Total = 500
+# Total = 498
 BaseEXP = 167
 Rareness = 95
 Happiness = 50
@@ -19257,7 +19257,7 @@ Type1 = PSYCHIC
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,115,80,92,70,80
-# Total = 535
+# Total = 537
 BaseEXP = 166
 Rareness = 95
 Abilities = SOPPING,BITEY
@@ -19278,7 +19278,7 @@ Type1 = NORMAL
 Type2 = DRAGON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 95,70,90,46,135,100
-# Total = 535
+# Total = 536
 BaseEXP = 170
 Rareness = 95
 Happiness = 50
@@ -19474,7 +19474,7 @@ Name = Cosmog
 Type1 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 55,40,40,47,40,40
-# Total = 260
+# Total = 262
 GenderRate = Genderless
 BaseEXP = 40
 Rareness = 15
@@ -19497,7 +19497,7 @@ Name = Cosmoem
 Type1 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 45,30,130,37,30,130
-# Total = 400
+# Total = 402
 GenderRate = Genderless
 BaseEXP = 140
 Rareness = 15
@@ -19519,7 +19519,7 @@ Type1 = PSYCHIC
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 125,125,95,87,105,85
-# Total = 620
+# Total = 622
 GenderRate = Genderless
 BaseEXP = 306
 Rareness = 5
@@ -19541,7 +19541,7 @@ Type1 = PSYCHIC
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 125,105,85,87,125,95
-# Total = 620
+# Total = 622
 GenderRate = Genderless
 BaseEXP = 306
 Rareness = 5
@@ -19563,7 +19563,7 @@ Type1 = ROCK
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,105,100,79,125,90
-# Total = 600
+# Total = 599
 GenderRate = Genderless
 BaseEXP = 270
 Rareness = 5
@@ -19916,7 +19916,7 @@ Name = Meltan
 Type1 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 45,65,65,34,55,35
-# Total = 300
+# Total = 299
 GenderRate = Genderless
 BaseEXP = 135
 Rareness = 5
@@ -19939,7 +19939,7 @@ Name = Melmetal
 Type1 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 130,145,145,34,80,65
-# Total = 600
+# Total = 599
 GenderRate = Genderless
 BaseEXP = 270
 Rareness = 5
@@ -20016,7 +20016,7 @@ Name = Scorbunny
 Type1 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,70,40,69,40,40
-# Total = 310
+# Total = 309
 BaseEXP = 62
 Rareness = 115
 Happiness = 50
@@ -20037,7 +20037,7 @@ Name = Raboot
 Type1 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,85,60,94,55,60
-# Total = 420
+# Total = 419
 BaseEXP = 147
 Rareness = 80
 Happiness = 50
@@ -20055,7 +20055,7 @@ Name = Cinderace
 Type1 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,115,75,119,70,75
-# Total = 535
+# Total = 534
 BaseEXP = 265
 Rareness = 35
 Happiness = 50
@@ -20172,7 +20172,7 @@ Type1 = FLYING
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 45,60,40,72,45,55
-# Total = 315
+# Total = 317
 BaseEXP = 49
 Rareness = 195
 Happiness = 50
@@ -20195,7 +20195,7 @@ Type1 = FLYING
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,85,55,87,50,70
-# Total = 415
+# Total = 417
 BaseEXP = 128
 Rareness = 95
 Happiness = 50
@@ -20214,7 +20214,7 @@ Type1 = FLYING
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,85,95,72,55,105
-# Total = 510
+# Total = 512
 BaseEXP = 248
 Rareness = 35
 Happiness = 50
@@ -20373,7 +20373,7 @@ Name = Wooloo
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,60,75,58,40,55
-# Total = 340
+# Total = 338
 BaseEXP = 122
 Rareness = 195
 Happiness = 50
@@ -20395,7 +20395,7 @@ Name = Dubwool
 Type1 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,90,110,88,60,90
-# Total = 510
+# Total = 508
 BaseEXP = 172
 Rareness = 100
 Happiness = 50
@@ -20415,7 +20415,7 @@ Type1 = WATER
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,70,55,48,45,45
-# Total = 325
+# Total = 323
 BaseEXP = 57
 Rareness = 195
 Happiness = 50
@@ -20437,7 +20437,7 @@ Type1 = WATER
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 80,95,80,63,50,50
-# Total = 420
+# Total = 418
 BaseEXP = 170
 Rareness = 60
 Happiness = 50
@@ -20456,7 +20456,7 @@ Type1 = WATER
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 100,135,100,83,60,80
-# Total = 560
+# Total = 558
 BaseEXP = 170
 Rareness = 60
 Happiness = 50
@@ -20473,7 +20473,7 @@ Name = Yamper
 Type1 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,65,60,67,50,60
-# Total = 340
+# Total = 367
 BaseEXP = 54
 Rareness = 195
 Happiness = 50
@@ -20494,7 +20494,7 @@ Name = Boltund
 Type1 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,105,75,122,60,75
-# Total = 520
+# Total = 522
 BaseEXP = 172
 Rareness = 35
 Happiness = 50
@@ -20512,8 +20512,8 @@ Name = Rolycoly
 Type1 = ROCK
 Type2 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,65,65,40,65,65
-# Total = 360
+BaseStats = 60,65,65,39,65,65
+# Total = 359
 BaseEXP = 48
 Rareness = 195
 Happiness = 50
@@ -20535,8 +20535,8 @@ Name = Carkol
 Type1 = ROCK
 Type2 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 80,75,80,50,75,80
-# Total = 440
+BaseStats = 80,75,80,49,75,80
+# Total = 439
 BaseEXP = 144
 Rareness = 95
 Happiness = 50
@@ -20557,7 +20557,7 @@ Type1 = ROCK
 Type2 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 110,90,100,69,90,100
-# Total = 560
+# Total = 559
 BaseEXP = 255
 Rareness = 35
 Happiness = 50
@@ -20917,7 +20917,7 @@ Name = Clobbopus
 Type1 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 75,70,70,37,45,70
-# Total = 365
+# Total = 367
 BaseEXP = 62
 Rareness = 155
 Happiness = 50
@@ -20940,7 +20940,7 @@ Name = Grapploct
 Type1 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 115,100,105,52,65,100
-# Total = 535
+# Total = 537
 BaseEXP = 168
 Rareness = 35
 Happiness = 50
@@ -21046,7 +21046,7 @@ Type1 = PSYCHIC
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 50,75,55,41,35,60
-# Total = 315
+# Total = 316
 BaseEXP = 53
 Rareness = 180
 Happiness = 50
@@ -21069,7 +21069,7 @@ Type1 = PSYCHIC
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 65,100,75,36,40,90
-# Total = 405
+# Total = 406
 BaseEXP = 130
 Rareness = 95
 Happiness = 50
@@ -21090,7 +21090,7 @@ Type1 = PSYCHIC
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,135,100,31,80,110
-# Total = 540
+# Total = 541
 BaseEXP = 255
 Rareness = 35
 Happiness = 50
@@ -21169,7 +21169,7 @@ Name = Milcery
 Type1 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 60,50,70,44,60,50
-# Total = 335
+# Total = 334
 BaseEXP = 54
 Rareness = 155
 Happiness = 50
@@ -21190,7 +21190,7 @@ Name = Alcremie
 Type1 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,50,105,49,85,65
-# Total = 440
+# Total = 439
 BaseEXP = 173
 Rareness = 80
 Happiness = 50
@@ -21209,7 +21209,7 @@ Name = Blasfemmie
 Type1 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 105,65,130,59,110,80
-# Total = 550
+# Total = 549
 BaseEXP = 173
 Rareness = 80
 Happiness = 50
@@ -21608,7 +21608,7 @@ Type1 = DRAGON
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 40,70,40,92,50,40
-# Total = 330
+# Total = 332
 BaseEXP = 54
 Rareness = 95
 Happiness = 50
@@ -21631,7 +21631,7 @@ Type1 = DRAGON
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 70,90,60,112,60,60
-# Total = 440
+# Total = 452
 BaseEXP = 144
 Rareness = 50
 Happiness = 50
@@ -21652,7 +21652,7 @@ Type1 = DRAGON
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 90,110,75,132,80,75
-# Total = 560
+# Total = 562
 BaseEXP = 300
 Rareness = 35
 Happiness = 50
@@ -21671,7 +21671,7 @@ Name = Zacian
 Type1 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,120,105,129,75,105
-# Total = 620
+# Total = 619
 GenderRate = Genderless
 BaseEXP = 335
 Rareness = 5
@@ -21694,7 +21694,7 @@ Name = Zamazenta
 Type1 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
 BaseStats = 85,120,105,129,75,105
-# Total = 620
+# Total = 619
 GenderRate = Genderless
 BaseEXP = 335
 Rareness = 5
