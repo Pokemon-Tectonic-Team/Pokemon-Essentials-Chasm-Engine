@@ -123,10 +123,29 @@ function Invoke-GameCompile {
     Write-Step "Compile confirmed."
 }
 
-function New-ZipFromRelativePaths {
+function Get-NanaZipConsolePath {
+    $cmd = Get-Command 'NanaZipC.exe' -ErrorAction SilentlyContinue
+    if ($cmd) { return $cmd.Source }
+    return $null
+}
+
+function New-ZipWithNanaZip {
+    param([string[]]$Paths, [string]$OutputZipPath, [string]$NanaZipPath)
+
+    $listFile = [System.IO.Path]::GetTempFileName()
+    try {
+        Set-Content -Path $listFile -Value $Paths -Encoding UTF8
+        & $NanaZipPath a -tzip -mmt -y -scsUTF-8 "$OutputZipPath" "@$listFile" -w"$RepoRoot" | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw "NanaZip exited with code $LASTEXITCODE" }
+    }
+    finally {
+        Remove-Item $listFile -Force -ErrorAction SilentlyContinue
+    }
+}
+
+function New-ZipWithDotNet {
     param([string[]]$Paths, [string]$OutputZipPath)
 
-    if (Test-Path $OutputZipPath) { Remove-Item $OutputZipPath -Force }
     $zip = [System.IO.Compression.ZipFile]::Open($OutputZipPath, [System.IO.Compression.ZipArchiveMode]::Create)
     try {
         foreach ($relPath in $Paths) {
@@ -137,17 +156,35 @@ function New-ZipFromRelativePaths {
                     [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $entryName, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
                 }
             }
-            elseif (Test-Path $fullPath -PathType Leaf) {
+            else {
                 $entryName = $relPath -replace '\\', '/'
                 [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $fullPath, $entryName, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
-            }
-            else {
-                Write-Warning "Path not found, skipping: $relPath"
             }
         }
     }
     finally {
         $zip.Dispose()
+    }
+}
+
+function New-ZipFromRelativePaths {
+    param([string[]]$Paths, [string]$OutputZipPath)
+
+    if (Test-Path $OutputZipPath) { Remove-Item $OutputZipPath -Force }
+
+    $existingPaths = @()
+    foreach ($relPath in $Paths) {
+        if (Test-Path (Join-Path $RepoRoot $relPath)) { $existingPaths += $relPath }
+        else { Write-Warning "Path not found, skipping: $relPath" }
+    }
+
+    $nanaZipPath = Get-NanaZipConsolePath
+    if ($nanaZipPath) {
+        Write-Step "Using NanaZip ($nanaZipPath) for faster multi-threaded compression"
+        New-ZipWithNanaZip -Paths $existingPaths -OutputZipPath $OutputZipPath -NanaZipPath $nanaZipPath
+    }
+    else {
+        New-ZipWithDotNet -Paths $existingPaths -OutputZipPath $OutputZipPath
     }
 }
 
