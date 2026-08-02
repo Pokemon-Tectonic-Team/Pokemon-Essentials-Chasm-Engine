@@ -14,7 +14,7 @@
 
     This script is intentionally dependency-free so any dev can run it with
     nothing but PowerShell. Publishing the built zips (Drive upload, etc.)
-    is a separate step — see Publish-Release.ps1.
+    is a separate step -- see Publish-Release.ps1.
 
 .PARAMETER Version
     Release version in X.Y.Z form, e.g. 3.2.4.

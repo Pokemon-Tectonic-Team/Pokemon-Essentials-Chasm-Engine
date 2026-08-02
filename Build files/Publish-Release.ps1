@@ -8,7 +8,7 @@
     Separate from Zip-Release.ps1 on purpose: Zip-Release.ps1 stays
     dependency-free so any dev can build a release zip with nothing but
     PowerShell, while this script carries the extra setup cost (rclone,
-    Short.io, Azure, SSH access, gh CLI — see README) and is only expected
+    Short.io, Azure, SSH access, gh CLI) and is only expected
     to be run by whoever is actually publishing a release.
 
     Five steps, all run by default. Pass one or more -Only<Step> switches to
@@ -18,7 +18,7 @@
     aren't set up yet). -Only<Step> takes precedence if both are given.
 
     -DryRun makes every step perform a real, read-only verification instead
-    of just logging intent — a missing tool, bad credentials, or a wrong
+    of just logging intent -- a missing tool, bad credentials, or a wrong
     ID/URL surfaces as a real error here, not silently: Drive upload passes
     rclone's own --dry-run through; shortlinks call Short.io's domain-list
     endpoint; the version-list step HEADs the SAS URL; Cable Club runs
@@ -27,7 +27,7 @@
 
 .PARAMETER Version
     Release version in X.Y.Z form, e.g. 3.2.4. Used to locate the zips built
-    by Zip-Release.ps1 in Releases/ — must match the -Version it was run
+    by Zip-Release.ps1 in Releases/ -- must match the -Version it was run
     with.
 
 .PARAMETER GameTitle
@@ -42,11 +42,11 @@
 .PARAMETER RcloneRemote
     Name of the rclone remote to upload through. Each publisher runs
     `rclone config` once to create a remote with this name, authorized
-    against their own Google account (see README).
+    against their own Google account.
 
 .PARAMETER ShortIoApiKey
     Short.io API key. Falls back to $env:SHORTIO_API_KEY, then a
-    SHORTIO_API_KEY line in Build files/.env (gitignored, see README).
+    SHORTIO_API_KEY line in Build files/.env (gitignored).
     Required for the shortlinks step.
 
 .PARAMETER ShortIoDomain
@@ -65,7 +65,7 @@
 
 .PARAMETER OnlyShortlinks
     Run only the Short.io shortlink step. Requires the zips to already be
-    uploaded to Drive — it looks up each one's share URL via `rclone link`
+    uploaded to Drive -- it looks up each one's share URL via `rclone link`
     rather than re-uploading.
 
 .PARAMETER OnlyVersionList
@@ -138,7 +138,7 @@ $BuildFilesDir = $PSScriptRoot
 $RepoRoot = Split-Path -Parent $BuildFilesDir
 $OutputDir = Join-Path $BuildFilesDir "Releases"
 
-# Loads Build files/.env (gitignored, see README) into the process environment
+# Loads Build files/.env (gitignored) into the process environment
 # so credentials never need to be pasted on the command line or hardcoded.
 # Doesn't override a variable that's already set in the environment.
 $dotEnvPath = Join-Path $BuildFilesDir ".env"
@@ -206,7 +206,7 @@ function Publish-ToDrive {
     if (-not (Test-StepEnabled 'Upload')) { Write-Step "Skipping Drive upload"; return }
 
     if (-not (Get-Command rclone -ErrorAction SilentlyContinue)) {
-        throw "rclone not found on PATH. Install it and run 'rclone config' to create a remote named '$RcloneRemote' authorized against your Google account (see README)."
+        throw "rclone not found on PATH. Install it and run 'rclone config' to create a remote named '$RcloneRemote' authorized against your Google account."
     }
 
     foreach ($zipPath in (Get-ZipsToPublish)) {
@@ -221,11 +221,11 @@ function Publish-ToDrive {
 
 function Get-DriveShareUrl([string]$ZipName) {
     if (-not (Get-Command rclone -ErrorAction SilentlyContinue)) {
-        throw "rclone not found on PATH. Install it and run 'rclone config' to create a remote named '$RcloneRemote' authorized against your Google account (see README)."
+        throw "rclone not found on PATH. Install it and run 'rclone config' to create a remote named '$RcloneRemote' authorized against your Google account."
     }
     $url = & rclone link "${RcloneRemote}:$ZipName" --drive-root-folder-id $DriveFolderId
     if ($LASTEXITCODE -ne 0 -or -not $url) {
-        throw "Could not get a Drive share link for $ZipName — has it been uploaded yet? (run without -OnlyShortlinks first)"
+        throw "Could not get a Drive share link for $ZipName -- has it been uploaded yet? (run without -OnlyShortlinks first)"
     }
     return $url.Trim()
 }
@@ -251,8 +251,8 @@ function Test-ShortIoAuth {
 function Publish-Shortlinks {
     if (-not (Test-StepEnabled 'Shortlinks')) { Write-Step "Skipping shortlinks"; return }
 
-    if (-not $ShortIoApiKey) { throw "No Short.io API key given. Pass -ShortIoApiKey, set `$env:SHORTIO_API_KEY, or add SHORTIO_API_KEY to Build files/.env (see README)." }
-    if (-not $ShortIoDomain) { throw "No Short.io domain given. Pass -ShortIoDomain, set `$env:SHORTIO_DOMAIN, or add SHORTIO_DOMAIN to Build files/.env (see README)." }
+    if (-not $ShortIoApiKey) { throw "No Short.io API key given. Pass -ShortIoApiKey, set `$env:SHORTIO_API_KEY, or add SHORTIO_API_KEY to Build files/.env." }
+    if (-not $ShortIoDomain) { throw "No Short.io domain given. Pass -ShortIoDomain, set `$env:SHORTIO_DOMAIN, or add SHORTIO_DOMAIN to Build files/.env." }
 
     if ($DryRun) {
         Write-DryRun "Verifying Short.io API key/domain via a real API call (GET /api/domains)..."
@@ -275,7 +275,7 @@ function Publish-Shortlinks {
 
 function Publish-VersionList {
     if (-not (Test-StepEnabled 'VersionList')) { Write-Step "Skipping version-list update"; return }
-    if (-not $AzureBlobSasUrl) { throw "No Azure blob SAS URL given. Pass -AzureBlobSasUrl, set `$env:VERSION_LIST_SAS_URL, or add VERSION_LIST_SAS_URL to Build files/.env (see README)." }
+    if (-not $AzureBlobSasUrl) { throw "No Azure blob SAS URL given. Pass -AzureBlobSasUrl, set `$env:VERSION_LIST_SAS_URL, or add VERSION_LIST_SAS_URL to Build files/.env." }
 
     $currentBody = (Invoke-WebRequest -Uri $VersionListUrl -UseBasicParsing).Content
     $lines = @($currentBody -split "`r`n" | Where-Object { $_ -ne '' })
@@ -325,14 +325,14 @@ function Publish-ToolsWebsite {
     if (-not (Test-StepEnabled 'ToolsWebsite')) { Write-Step "Skipping tools-website triggers"; return }
 
     if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
-        throw "gh CLI not found on PATH. Install it and run 'gh auth login' (see README)."
+        throw "gh CLI not found on PATH. Install it and run 'gh auth login'."
     }
 
     foreach ($target in $ToolsWebsiteTargets) {
         if ($DryRun) {
             Write-DryRun "Verifying workflow '$($target.Workflow)' exists on $($target.Repo) (gh workflow view)..."
             & gh workflow view $target.Workflow --repo $target.Repo | Out-Null
-            if ($LASTEXITCODE -ne 0) { throw "Could not find workflow '$($target.Workflow)' on $($target.Repo) — check gh auth and the workflow name." }
+            if ($LASTEXITCODE -ne 0) { throw "Could not find workflow '$($target.Workflow)' on $($target.Repo) -- check gh auth and the workflow name." }
             Write-DryRun "Would trigger '$($target.Workflow)' on $($target.Repo)"
         }
         else {
