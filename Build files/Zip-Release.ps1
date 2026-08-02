@@ -7,9 +7,14 @@
     debug compile and waits for you to confirm it finished (Game.exe's debug
     console can't be captured reliably, see Invoke-GameCompile), tags the
     release, and produces both zips with forward-slash zip entry paths (so
-    they extract correctly on Linux). Each step can be skipped independently
-    to test in isolation or resume after a failure, and -DryRun logs every
-    action without touching the repo or filesystem.
+    they extract correctly on Linux). All steps run by default; pass one or
+    more -Only<Step> switches to isolate just those steps (e.g. to resume
+    after a failure partway through, or to test one step). -DryRun logs
+    every action without touching the repo or filesystem.
+
+    This script is intentionally dependency-free so any dev can run it with
+    nothing but PowerShell. Publishing the built zips (Drive upload, etc.)
+    is a separate step — see Publish-Release.ps1.
 
 .PARAMETER Version
     Release version in X.Y.Z form, e.g. 3.2.4.
@@ -19,11 +24,11 @@
     default below to their own name.
 
 .EXAMPLE
-    ./Release.ps1 -Version 3.2.4
+    ./Zip-Release.ps1 -Version 3.2.4
 .EXAMPLE
-    ./Release.ps1 -Version 3.2.4 -DryRun
+    ./Zip-Release.ps1 -Version 3.2.4 -DryRun
 .EXAMPLE
-    ./Release.ps1 -Version 3.2.4 -SkipCompile -SkipTag
+    ./Zip-Release.ps1 -Version 3.2.4 -OnlyInstallZip -OnlyPatchZip
 #>
 param(
     [Parameter(Mandatory = $true)]
@@ -34,11 +39,11 @@ param(
 
     [switch]$Dev,
 
-    [switch]$SkipVersionBump,
-    [switch]$SkipCompile,
-    [switch]$SkipInstallZip,
-    [switch]$SkipPatchZip,
-    [switch]$SkipTag,
+    [switch]$OnlyVersionBump,
+    [switch]$OnlyCompile,
+    [switch]$OnlyInstallZip,
+    [switch]$OnlyPatchZip,
+    [switch]$OnlyTag,
 
     [switch]$DryRun
 )
@@ -56,6 +61,25 @@ $major = [int]$versionParts[0]
 $minor = [int]$versionParts[1]
 $patch = [int]$versionParts[2]
 $tagName = "v$Version"
+
+$installZipName = "$GameTitle $Version.zip"
+$patchZipName = "$GameTitle $major.$minor -- Patch $patch.zip"
+$installZipPath = Join-Path $OutputDir $installZipName
+$patchZipPath = Join-Path $OutputDir $patchZipName
+
+$OnlySteps = @{
+    VersionBump = $OnlyVersionBump
+    Compile     = $OnlyCompile
+    InstallZip  = $OnlyInstallZip
+    PatchZip    = $OnlyPatchZip
+    Tag         = $OnlyTag
+}
+$AnyOnlySet = @($OnlySteps.Values) -contains $true
+
+function Test-StepEnabled([string]$Name) {
+    if ($AnyOnlySet) { return $OnlySteps[$Name] }
+    return $true
+}
 
 function Write-Step($msg) { Write-Host "==> $msg" -ForegroundColor Cyan }
 function Write-DryRun($msg) { Write-Host "[DryRun] $msg" -ForegroundColor Yellow }
@@ -84,7 +108,7 @@ function Update-GameVersion {
 }
 
 function Invoke-GameCompile {
-    if ($SkipCompile) { Write-Step "Skipping PBS compile (-SkipCompile)"; return }
+    if (-not (Test-StepEnabled 'Compile')) { Write-Step "Skipping PBS compile"; return }
     if ($DryRun) { Write-DryRun "Would launch Game.exe debug compile and wait for manual confirmation"; return }
 
     Write-Step "Launching Game.exe debug compile..."
@@ -164,7 +188,7 @@ function Get-PatchFileList {
 }
 
 function New-ReleaseTag {
-    if ($SkipTag) { Write-Step "Skipping git tag (-SkipTag)"; return }
+    if (-not (Test-StepEnabled 'Tag')) { Write-Step "Skipping git tag"; return }
     if ($DryRun) { Write-DryRun "Would create and push tag $tagName"; return }
     Write-Step "Tagging release: $tagName"
     git -C $RepoRoot tag $tagName
@@ -175,20 +199,18 @@ function New-ReleaseTag {
 
 Write-Step "Releasing $GameTitle $Version (tag $tagName)$(if ($Dev) { ' [DEV]' })"
 
-if ($SkipVersionBump) { Write-Step "Skipping version bump (-SkipVersionBump)" } else { Update-GameVersion }
+if (-not (Test-StepEnabled 'VersionBump')) { Write-Step "Skipping version bump" } else { Update-GameVersion }
 
 Invoke-GameCompile
 
 if (-not $DryRun) { New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null }
 
-if ($SkipInstallZip) {
-    Write-Step "Skipping install zip (-SkipInstallZip)"
+if (-not (Test-StepEnabled 'InstallZip')) {
+    Write-Step "Skipping install zip"
 }
 else {
     $installFilesListPath = Join-Path $BuildFilesDir "install_files.txt"
     $installPaths = Get-Content $installFilesListPath | Where-Object { $_.Trim() -ne '' }
-    $installZipName = "$GameTitle $Version.zip"
-    $installZipPath = Join-Path $OutputDir $installZipName
     if ($DryRun) {
         Write-DryRun "Would create install zip '$installZipName' from $($installPaths.Count) entries in install_files.txt"
     }
@@ -198,20 +220,18 @@ else {
     }
 }
 
-if ($SkipPatchZip) {
-    Write-Step "Skipping patch zip (-SkipPatchZip)"
+if (-not (Test-StepEnabled 'PatchZip')) {
+    Write-Step "Skipping patch zip"
 }
 else {
     try {
         $baseTag = Get-DiffBaseTag
-        $patchZipName = "$GameTitle $major.$minor -- Patch $patch.zip"
         if ($DryRun) {
             $patchFiles = Get-PatchFileList -BaseTag $baseTag
             Write-DryRun "Would create patch zip '$patchZipName' diffing against $baseTag ($($patchFiles.Count) entries, Plugins/ included wholesale)"
         }
         else {
             $patchFiles = Get-PatchFileList -BaseTag $baseTag
-            $patchZipPath = Join-Path $OutputDir $patchZipName
             Write-Step "Building patch zip: $patchZipName (diff base: $baseTag)"
             New-ZipFromRelativePaths -Paths $patchFiles -OutputZipPath $patchZipPath
         }
