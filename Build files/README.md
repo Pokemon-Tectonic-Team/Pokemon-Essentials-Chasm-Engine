@@ -1,9 +1,15 @@
 # Build files
 
 `Release.ps1` builds the install and patch release zips: it bumps the game
-version, runs a PBS debug compile, tags the release, and produces both zips
-with forward-slash zip entry paths (so they extract correctly on Linux,
-unlike the old Chasm Zipper.jar output).
+version, launches a PBS debug compile and waits for you to confirm it
+finished, tags the release, and produces both zips with forward-slash zip
+entry paths (so they extract correctly on Linux, unlike the old Chasm
+Zipper.jar output).
+
+The compile step launches `Game.exe debug compile` and pauses for you to
+confirm it's finished and press Enter — Game.exe opens its own debug console
+rather than using the parent process's stdout, so the script can't reliably
+capture or wait on that output itself.
 
 Run it from this folder, e.g.:
 

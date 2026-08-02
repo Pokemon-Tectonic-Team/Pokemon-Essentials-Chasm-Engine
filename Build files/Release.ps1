@@ -3,11 +3,13 @@
     Builds the install and patch release zips, replacing "Chasm Zipper.jar".
 
 .DESCRIPTION
-    Bumps GAME_VERSION/DEV_VERSION and release_version.txt, runs a PBS debug
-    compile, tags the release, and produces both zips with forward-slash zip
-    entry paths (so they extract correctly on Linux). Each step can be
-    skipped independently to test in isolation or resume after a failure,
-    and -DryRun logs every action without touching the repo or filesystem.
+    Bumps GAME_VERSION/DEV_VERSION and release_version.txt, launches a PBS
+    debug compile and waits for you to confirm it finished (Game.exe's debug
+    console can't be captured reliably, see Invoke-GameCompile), tags the
+    release, and produces both zips with forward-slash zip entry paths (so
+    they extract correctly on Linux). Each step can be skipped independently
+    to test in isolation or resume after a failure, and -DryRun logs every
+    action without touching the repo or filesystem.
 
 .PARAMETER Version
     Release version in X.Y.Z form, e.g. 3.2.4.
@@ -38,9 +40,7 @@ param(
     [switch]$SkipPatchZip,
     [switch]$SkipTag,
 
-    [switch]$DryRun,
-
-    [int]$CompileTimeoutSeconds = 300
+    [switch]$DryRun
 )
 
 $ErrorActionPreference = 'Stop'
@@ -85,40 +85,26 @@ function Update-GameVersion {
 
 function Invoke-GameCompile {
     if ($SkipCompile) { Write-Step "Skipping PBS compile (-SkipCompile)"; return }
-    if ($DryRun) { Write-DryRun "Would run 'Game.exe debug compile' and wait for the finished-compile signal"; return }
+    if ($DryRun) { Write-DryRun "Would launch Game.exe debug compile and wait for manual confirmation"; return }
 
-    Write-Step "Compiling PBS data (Game.exe debug compile)..."
+    Write-Step "Launching Game.exe debug compile..."
     $exePath = Join-Path $RepoRoot "Game.exe"
     if (-not (Test-Path $exePath)) { throw "Game.exe not found at $exePath" }
 
-    $psi = New-Object System.Diagnostics.ProcessStartInfo
-    $psi.FileName = $exePath
-    $psi.Arguments = "debug compile"
-    $psi.WorkingDirectory = $RepoRoot
-    $psi.UseShellExecute = $false
-    $psi.RedirectStandardOutput = $true
-    $psi.RedirectStandardError = $true
-    $psi.CreateNoWindow = $true
+    # Game.exe's debug console is its own AllocConsole window; redirecting stdout from here
+    # is unreliable (output never arrives, and it can crash the game with EBADF), so launch
+    # it exactly like "Debug Game With PBS Compile.bat" does and confirm manually instead.
+    $proc = Start-Process -FilePath $exePath -ArgumentList "debug", "compile" -WorkingDirectory $RepoRoot -PassThru
 
-    $proc = New-Object System.Diagnostics.Process
-    $proc.StartInfo = $psi
-    $proc.Start() | Out-Null
-
-    $finished = $false
-    $deadline = (Get-Date).AddSeconds($CompileTimeoutSeconds)
-    while (-not $proc.HasExited -and (Get-Date) -lt $deadline) {
-        $line = $proc.StandardOutput.ReadLine()
-        if ($null -eq $line) { continue }
-        Write-Host $line
-        if ($line -match '\*\*\* Finished full compile \*\*\*') { $finished = $true; break }
+    Write-Host ""
+    $response = Read-Host "Press Enter once the compile finished successfully (or type 'n' to abort)"
+    if ($response -match '^(n|no)$') {
+        if (-not $proc.HasExited) { Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue }
+        throw "PBS compile aborted by user."
     }
 
-    if (-not $proc.HasExited) { Stop-Process -Id $proc.Id -Force }
-
-    if (-not $finished) {
-        throw "PBS compile did not report success within $CompileTimeoutSeconds s. Check the output above for legality errors."
-    }
-    Write-Step "Compile finished successfully."
+    if (-not $proc.HasExited) { Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue }
+    Write-Step "Compile confirmed."
 }
 
 function New-ZipFromRelativePaths {
