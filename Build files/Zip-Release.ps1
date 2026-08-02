@@ -133,12 +133,14 @@ function New-ZipWithNanaZip {
     param([string[]]$Paths, [string]$OutputZipPath, [string]$NanaZipPath)
 
     $listFile = [System.IO.Path]::GetTempFileName()
+    Push-Location $RepoRoot
     try {
         Set-Content -Path $listFile -Value $Paths -Encoding UTF8
-        & $NanaZipPath a -tzip -mmt -y -scsUTF-8 "$OutputZipPath" "@$listFile" -w"$RepoRoot" | Out-Null
+        & $NanaZipPath a -tzip -mmt -y -scsUTF-8 "$OutputZipPath" "@$listFile" | Out-Null
         if ($LASTEXITCODE -ne 0) { throw "NanaZip exited with code $LASTEXITCODE" }
     }
     finally {
+        Pop-Location
         Remove-Item $listFile -Force -ErrorAction SilentlyContinue
     }
 }
