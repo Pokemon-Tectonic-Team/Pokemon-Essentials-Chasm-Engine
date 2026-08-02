@@ -3,7 +3,7 @@
     Builds the install and patch release zips, replacing "Chasm Zipper.jar".
 
 .DESCRIPTION
-    Bumps GAME_VERSION/DEV_VERSION and release_version.txt, launches a PBS
+    Bumps GAME_VERSION/DEV_VERSION, launches a PBS
     debug compile and waits for you to confirm it finished (Game.exe's debug
     console can't be captured reliably, see Invoke-GameCompile), tags the
     release, and produces both zips with forward-slash zip entry paths (so
@@ -96,14 +96,6 @@ function Update-GameVersion {
         $content = $content -replace 'GAME_VERSION\s*=\s*"[^"]*"', "GAME_VERSION = `"$Version`""
         $content = $content -replace 'DEV_VERSION\s*=\s*(true|false)', "DEV_VERSION  = $devValue"
         Set-Content -Path $settingsPath -Value $content -NoNewline
-    }
-
-    $releaseVersionPath = Join-Path $RepoRoot "release_version.txt"
-    if ($DryRun) {
-        Write-DryRun "Would write '$Version' to $releaseVersionPath"
-    }
-    else {
-        Set-Content -Path $releaseVersionPath -Value $Version -NoNewline
     }
 }
 

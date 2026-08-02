@@ -29,4 +29,3 @@ cable_club_v19.py
 Game Linux.x86_64
 Debug Game.bat
 Debug Game With PBS Compile.bat
-release_version.txt
