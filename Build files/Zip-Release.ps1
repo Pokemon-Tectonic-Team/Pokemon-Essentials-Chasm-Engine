@@ -152,10 +152,11 @@ function New-ZipFromRelativePaths {
 }
 
 function Get-DiffBaseTag {
-    $existingTags = git -C $RepoRoot tag -l "v*" | Where-Object { $_ -match '^v\d+\.\d+\.\d+$' }
-    $candidate = if ($patch -gt 0) { "v$major.$minor.0" } else { "v$major.$($minor - 1).0" }
-    if ($existingTags -notcontains $candidate) {
-        throw "Diff-base tag '$candidate' not found. Existing tags: $(if ($existingTags) { $existingTags -join ', ' } else { '(none)' })"
+    $existingTags = git -C $RepoRoot tag -l | Where-Object { $_ -match '^v?\d+\.\d+\.\d+$' }
+    $baseVersion = if ($patch -gt 0) { "$major.$minor.0" } else { "$major.$($minor - 1).0" }
+    $candidate = @("v$baseVersion", $baseVersion) | Where-Object { $existingTags -contains $_ } | Select-Object -First 1
+    if (-not $candidate) {
+        throw "Diff-base tag 'v$baseVersion' (or '$baseVersion') not found. Existing tags: $(if ($existingTags) { $existingTags -join ', ' } else { '(none)' })"
     }
     return $candidate
 }
