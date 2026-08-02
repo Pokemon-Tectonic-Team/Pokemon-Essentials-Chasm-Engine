@@ -214,9 +214,12 @@ function Get-PatchFileList {
     Where-Object {
         $_ -and (Test-Path (Join-Path $RepoRoot $_)) -and
         $_ -match $installFilter -and
-        $_ -notmatch '^Plugins/'
+        $_ -notmatch '^Plugins/' -and
+        $_ -notmatch '^Data/'
     }
-    return @($diffFiles) + @('Plugins') | Select-Object -Unique
+    # Plugins/ and Data/ are included wholesale rather than via diff: both contain
+    # gitignored files (e.g. Data/PluginScripts.rxdata) that a git diff can't see.
+    return @($diffFiles) + @('Plugins') + @('Data') | Select-Object -Unique
 }
 
 function New-ReleaseTag {
@@ -260,7 +263,7 @@ else {
         $baseTag = Get-DiffBaseTag
         if ($DryRun) {
             $patchFiles = Get-PatchFileList -BaseTag $baseTag
-            Write-DryRun "Would create patch zip '$patchZipName' diffing against $baseTag ($($patchFiles.Count) entries, Plugins/ included wholesale)"
+            Write-DryRun "Would create patch zip '$patchZipName' diffing against $baseTag ($($patchFiles.Count) entries, Plugins/ and Data/ included wholesale)"
         }
         else {
             $patchFiles = Get-PatchFileList -BaseTag $baseTag

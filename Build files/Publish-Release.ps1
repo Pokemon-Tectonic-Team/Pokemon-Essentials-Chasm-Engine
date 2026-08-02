@@ -22,8 +22,9 @@
     ID/URL surfaces as a real error here, not silently: Drive upload passes
     rclone's own --dry-run through; shortlinks call Short.io's domain-list
     endpoint; the version-list step HEADs the SAS URL; Cable Club runs
-    `-Status` against live instead of deploying; tools-website runs
-    `gh workflow view` instead of `gh workflow run`.
+    `-Status` against live instead of deploying; tools-website reads
+    tectonic-data's current PUBLIC_VERSION_COMMIT instead of writing it, and
+    runs `gh workflow view` instead of `gh workflow run`.
 
 .PARAMETER Version
     Release version in X.Y.Z form, e.g. 3.2.4. Used to locate the zips built
@@ -75,8 +76,10 @@
     Run only the Cable Club live deploy (via deploy_cableclub.ps1 -Live).
 
 .PARAMETER OnlyToolsWebsite
-    Run only the tools-website workflow triggers (tectonic-data then
-    tectonic-tools).
+    Run only the tools-website update: pins PUBLIC_VERSION_COMMIT in
+    tectonic-data to the vX.Y.Z tag's commit, then triggers tectonic-data's
+    build workflow and waits for it to finish (tectonic-tools' deploy reads
+    its output) before triggering tectonic-tools' deploy workflow.
 
 .PARAMETER SkipUpload
     Run every step except the Google Drive upload.
@@ -91,7 +94,8 @@
     Run every step except the Cable Club live deploy.
 
 .PARAMETER SkipToolsWebsite
-    Run every step except the tools-website workflow triggers.
+    Run every step except the tools-website update (version pin + workflow
+    triggers).
 
 .EXAMPLE
     ./Publish-Release.ps1 -Version 3.2.4 -ShortIoDomain go.example.com -AzureBlobSasUrl "https://..."
@@ -166,6 +170,10 @@ $versionParts = $Version.Split('.')
 $major = [int]$versionParts[0]
 $minor = [int]$versionParts[1]
 $patch = [int]$versionParts[2]
+$tagName = "v$Version"
+
+$DataRepo = 'Pokemon-Tectonic-Team/tectonic-data'
+$DataRepoVersionFile = 'src/loadTectonicRepoData.ts'
 
 $installZipPath = Join-Path $OutputDir "$GameTitle $Version.zip"
 $patchZipPath = Join-Path $OutputDir "$GameTitle $major.$minor -- Patch $patch.zip"
@@ -321,6 +329,75 @@ function Publish-CableClubLive {
     }
 }
 
+function Update-DataVersionPin {
+    $commitSha = git -C $RepoRoot rev-parse "$tagName^{commit}" 2>$null
+    if ($LASTEXITCODE -ne 0 -or -not $commitSha) {
+        throw "Could not resolve tag '$tagName' to a commit in $RepoRoot -- has it been created yet? (Zip-Release.ps1's Tag step creates it)"
+    }
+    $commitSha = $commitSha.Trim()
+
+    $fileJson = & gh api "repos/$DataRepo/contents/$DataRepoVersionFile" | ConvertFrom-Json
+    if ($LASTEXITCODE -ne 0) { throw "Failed to read $DataRepoVersionFile from $DataRepo (exit $LASTEXITCODE)" }
+    $currentContent = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($fileJson.content))
+
+    $pattern = 'const PUBLIC_VERSION_COMMIT = "[0-9a-f]{40}";'
+    $match = [regex]::Match($currentContent, $pattern)
+    if (-not $match.Success) {
+        throw "Could not find a PUBLIC_VERSION_COMMIT line in $DataRepo/$DataRepoVersionFile -- file format may have changed."
+    }
+    $currentSha = $match.Value -replace '.*"([0-9a-f]{40})".*', '$1'
+
+    if ($currentSha -eq $commitSha) {
+        Write-Step "PUBLIC_VERSION_COMMIT in $DataRepo already points at $commitSha ($tagName), nothing to update."
+        return
+    }
+
+    if ($DryRun) {
+        Write-DryRun "Would update PUBLIC_VERSION_COMMIT in $DataRepo/$DataRepoVersionFile from $currentSha to $commitSha ($tagName)"
+        return
+    }
+
+    $newContent = $currentContent -replace $pattern, "const PUBLIC_VERSION_COMMIT = `"$commitSha`";"
+    $newContentB64 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($newContent))
+
+    # Passed via a temp file, not inline -- the base64 blob is long enough to
+    # blow past Windows' command-line length limit ("filename or extension is
+    # too long" from gh.exe).
+    $contentFile = [System.IO.Path]::GetTempFileName()
+    try {
+        # Set-Content's encoding varies by host and can add a BOM, corrupting
+        # the base64 payload -- write raw ASCII bytes instead (base64 is
+        # always pure ASCII).
+        [System.IO.File]::WriteAllText($contentFile, $newContentB64, [System.Text.Encoding]::ASCII)
+        Write-Step "Updating PUBLIC_VERSION_COMMIT in $DataRepo to $commitSha ($tagName)..."
+        & gh api -X PUT "repos/$DataRepo/contents/$DataRepoVersionFile" `
+            -f "message=Update PUBLIC_VERSION_COMMIT to $tagName" `
+            -F "content=@$contentFile" `
+            -f "sha=$($fileJson.sha)" `
+            -f "branch=main" | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw "Failed to update $DataRepoVersionFile in $DataRepo (exit $LASTEXITCODE)" }
+    }
+    finally {
+        Remove-Item -Path $contentFile -Force -ErrorAction SilentlyContinue
+    }
+}
+
+function Wait-ForWorkflowRun([string]$Workflow, [string]$Repo, [DateTimeOffset]$Since) {
+    Write-Step "Waiting for '$Workflow' on $Repo to start..."
+    $runId = $null
+    for ($i = 0; $i -lt 30; $i++) {
+        $runs = & gh run list --workflow $Workflow --repo $Repo --limit 5 --json databaseId,createdAt | ConvertFrom-Json
+        $match = $runs | Where-Object { [DateTimeOffset]$_.createdAt -ge $Since.AddSeconds(-5) } | Select-Object -First 1
+        if ($match) { $runId = $match.databaseId; break }
+        Start-Sleep -Seconds 2
+    }
+    if (-not $runId) { throw "Timed out waiting for a new run of '$Workflow' on $Repo to appear." }
+
+    Write-Step "Watching run $runId ('$Workflow' on $Repo) until it completes..."
+    & gh run watch $runId --repo $Repo --exit-status
+    if ($LASTEXITCODE -ne 0) { throw "'$Workflow' on $Repo failed (run $runId, exit $LASTEXITCODE) -- see https://github.com/$Repo/actions/runs/$runId" }
+}
+
 function Publish-ToolsWebsite {
     if (-not (Test-StepEnabled 'ToolsWebsite')) { Write-Step "Skipping tools-website triggers"; return }
 
@@ -328,7 +405,12 @@ function Publish-ToolsWebsite {
         throw "gh CLI not found on PATH. Install it and run 'gh auth login'."
     }
 
-    foreach ($target in $ToolsWebsiteTargets) {
+    Update-DataVersionPin
+
+    for ($i = 0; $i -lt $ToolsWebsiteTargets.Count; $i++) {
+        $target = $ToolsWebsiteTargets[$i]
+        $isLast = $i -eq ($ToolsWebsiteTargets.Count - 1)
+
         if ($DryRun) {
             Write-DryRun "Verifying workflow '$($target.Workflow)' exists on $($target.Repo) (gh workflow view)..."
             & gh workflow view $target.Workflow --repo $target.Repo | Out-Null
@@ -337,8 +419,16 @@ function Publish-ToolsWebsite {
         }
         else {
             Write-Step "Triggering '$($target.Workflow)' on $($target.Repo)..."
+            $triggeredAt = [DateTimeOffset]::UtcNow
             & gh workflow run $target.Workflow --repo $target.Repo
             if ($LASTEXITCODE -ne 0) { throw "Failed to trigger '$($target.Workflow)' on $($target.Repo) (exit $LASTEXITCODE)" }
+
+            # tectonic-tools' deploy reads tectonic-data's build output, so it
+            # can't start until tectonic-data's run actually finishes -- wait
+            # on every step but the last, where nothing downstream depends on it.
+            if (-not $isLast) {
+                Wait-ForWorkflowRun -Workflow $target.Workflow -Repo $target.Repo -Since $triggeredAt
+            }
         }
     }
 }
