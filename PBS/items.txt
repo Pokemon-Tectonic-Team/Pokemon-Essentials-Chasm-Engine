@@ -2719,6 +2719,15 @@ FieldUse = Direct
 Flags = KeyItem
 Description = A high tech surveillance device. Use it to scout out the teams of nearby trainers or mid-battle.
 #-------------------------------
+[BOSSVIEWER]
+Name = Boss Viewer
+NamePlural = Boss Viewer
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = Description here.
+#-------------------------------
 [CELLBOOSTER]
 Name = Cell Booster
 NamePlural = Cell Boosters

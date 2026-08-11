@@ -66,9 +66,13 @@ class PokemonDocumentationMenu < PokemonPauseMenu
 		cmdBattleGuide = -1
 		cmdTribesMenu = -1
 		cmdPokeXRay = -1
+		cmdBossViewer = -1
 		infoCommands = []
 		if pbHasItem?(:POKEXRAY) && @battle && @battle.trainerBattle? && !@battle.is_online?
 			infoCommands[cmdPokeXRay = infoCommands.length] = getItemName(:POKEXRAY)
+		end
+		if pbHasItem?(:BOSSVIEWER) && @battle && @battle.bossBattle? && !@battle.is_online?
+			infoCommands[cmdBossViewer = infoCommands.length] = getItemName(:BOSSVIEWER)
 		end
 		infoCommands[cmdMasterDex = infoCommands.length] = _INTL("MasterDex")
 		infoCommands[cmdMoveDex = infoCommands.length] = _INTL("MoveDex")
@@ -109,6 +113,9 @@ class PokemonDocumentationMenu < PokemonPauseMenu
 					chosenTrainer = @battle.opponent[choice]
 					showPokeXRayForTrainer(chosenTrainer)
 				end
+			elsif cmdBossViewer > -1 && infoCommand == cmdBossViewer
+				bossViewer(@battle.battlers[1])
+				# TO DO support double battles
 			else
 				pbPlayCloseMenuSE
 				break
