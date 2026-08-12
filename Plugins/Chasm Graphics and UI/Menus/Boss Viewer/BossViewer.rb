@@ -6,10 +6,10 @@ class BossViewer_Scene
     MOVE_ENTRY_HEIGHT = 40
     PRIMEVAL_COLOR = Color.new(42, 166, 62)
 
-    def initialize(bossSpecies, bossVersion: 0)
+    def initialize(bossSpecies, bossVersion: 0, phase: 0)
         @bossSpecies = bossSpecies
         @boss = GameData::Avatar.get(bossSpecies, bossVersion)
-        @phase = 0
+        @phase = phase
 
         @sprites = {}
         @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
@@ -40,9 +40,9 @@ class BossViewer_Scene
         @typeY = 8
         @abilityY = 38
         @arrowX = 292
-        @arrowY = 28
+        @arrowY = 24
         @phaseNumberX = 348
-        @phaseNumberY = 28
+        @phaseNumberY = 24
 
         # Create the left and right arrow sprites which surround the selected index
         @sprites["leftarrow"] = AnimatedSprite.new("Graphics/Pictures/leftarrow", 8, 40, 28, 2, @viewport)
@@ -331,12 +331,13 @@ class BossViewer_Scene
     end
 end
 
-def bossViewer(bossSpecies, bossVersion: 0)
+def bossViewer(bossSpecies, bossVersion: 0, phase: 0)
     if bossSpecies.is_a?(PokeBattle_Battler)
+        phase = bossSpecies.avatarPhase - 1
         bossVersion = bossSpecies.pokemon.bossVersion
         bossSpecies = bossSpecies.species
     end
     pbFadeOutIn {
-        BossViewer_Scene.new(bossSpecies, bossVersion: bossVersion)
+        BossViewer_Scene.new(bossSpecies, bossVersion: bossVersion, phase: phase)
     }
 end

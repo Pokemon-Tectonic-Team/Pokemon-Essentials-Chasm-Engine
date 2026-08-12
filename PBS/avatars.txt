@@ -18,6 +18,20 @@ HPMult = 16.0
 Item = LIFEORB
 DMGMult = 1.25
 #-------------------------------
+[ZAMAZENTA]
+Ability = SHIELDSMITHING
+Moves1 = IRONHEAD,SUPERPOWER,PRIMEVALSPIKES
+Moves2 = STOMPINGTANTRUM
+HPMult = 4.0
+Form = 1
+#-------------------------------
+[ZACIAN]
+Ability = SWORDSMITHING
+Moves1 = SACREDSWORD,PLAYROUGH,PRIMEVALSTRINGSHOT
+Moves2 = XSCISSOR
+HPMult = 4.0
+Form = 1
+#-------------------------------
 [GOSSIFLEUR]
 Ability = COTTONDOWN
 Moves1 = FOLLOWME
