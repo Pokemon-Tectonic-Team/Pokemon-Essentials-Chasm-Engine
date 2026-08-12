@@ -10,7 +10,6 @@ class BossViewer_Scene
         @bossSpecies = bossSpecies
         @boss = GameData::Avatar.get(bossSpecies, bossVersion)
         @phase = 0
-        @moveIndex = 0
 
         @sprites = {}
         @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
@@ -156,7 +155,7 @@ class BossViewer_Scene
         drawFormattedTextEx(@phaseInfoOverlay, 336, @phaseNumberY, Graphics.width, _INTL("Phase {1}/{2}",@phase+1,@boss.num_phases), base, shadow)
 
         # Draw move info
-        writeMoveInfoToInfoOverlayBackwardsL(@extraInfoOverlay.bitmap,@boss.arrayOfMoveSets[@phase][@moveIndex],false)
+        writeMoveInfoToInfoOverlayBackwardsL(@extraInfoOverlay.bitmap,@boss.arrayOfMoveSets[@phase][@sprites["commands"].index],false)
     
         @sprites["leftarrow"].visible = @phase > 0
         @sprites["rightarrow"].visible = @phase < @boss.num_phases - 1
@@ -284,6 +283,7 @@ class BossViewer_Scene
                 elsif Input.trigger?(Input::LEFT)
                     if @phase > 0
                         @phase -= 1
+                        @sprites["commands"].index = 0
                         refreshNeeded = true
                         pbPlayCursorSE
                     else
@@ -292,6 +292,7 @@ class BossViewer_Scene
                 elsif Input.trigger?(Input::RIGHT)
                     if @phase < @boss.num_phases - 1
                         @phase += 1
+                        @sprites["commands"].index = 0
                         refreshNeeded = true
                         pbPlayCursorSE
                     else
