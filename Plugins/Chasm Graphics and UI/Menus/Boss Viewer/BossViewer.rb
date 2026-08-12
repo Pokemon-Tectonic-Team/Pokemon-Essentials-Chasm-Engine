@@ -4,7 +4,7 @@ class BossViewer_Scene
     POKEMON_ICON_SIZE = 64
     VISIBLEMOVES = 5
     MOVE_ENTRY_HEIGHT = 40
-    PRIMEVAL_COLOR = Color.new(139, 224, 146)
+    PRIMEVAL_COLOR = Color.new(42, 166, 62)
 
     def initialize(bossSpecies, bossVersion: 0)
         @bossSpecies = bossSpecies
@@ -38,17 +38,19 @@ class BossViewer_Scene
         @speciesIconY = 0
         @typeX = 132
         @typeY = 8
-        @abilityY = 40
+        @abilityY = 38
+        @arrowX = 292
         @arrowY = 28
+        @phaseNumberX = 348
         @phaseNumberY = 28
 
         # Create the left and right arrow sprites which surround the selected index
         @sprites["leftarrow"] = AnimatedSprite.new("Graphics/Pictures/leftarrow", 8, 40, 28, 2, @viewport)
-        @sprites["leftarrow"].x       = 280
+        @sprites["leftarrow"].x       = @arrowX
         @sprites["leftarrow"].y       = @arrowY
         @sprites["leftarrow"].play
         @sprites["rightarrow"] = AnimatedSprite.new("Graphics/Pictures/rightarrow", 8, 40, 28, 2, @viewport)
-        @sprites["rightarrow"].x       = 280 + 180
+        @sprites["rightarrow"].x       = @arrowX + 180
         @sprites["rightarrow"].y       = @arrowY
         @sprites["rightarrow"].play
 
@@ -81,14 +83,15 @@ class BossViewer_Scene
     MAX_MOVE_NAME_WIDTH = 140
 
     def renderBossInfo
-        base = MessageConfig::DARK_TEXT_MAIN_COLOR
-        shadow = MessageConfig::DARK_TEXT_SHADOW_COLOR
+        base = MessageConfig.pbDefaultTextMainColor
+        shadow = MessageConfig.pbDefaultTextShadowColor
         @bossInfoOverlay.clear
 
         # Add pokemon icon
         @sprites["pokeicon"] = PokemonSpeciesIconSprite.new(@bossSpecies, @viewport)
         @sprites["pokeicon"].x = @speciesIconX
         @sprites["pokeicon"].y = @speciesIconY
+        @sprites["pokeicon"].opacity = 180
 
         # Draw ability name(s)
         abilityLabel = GameData::Ability.get(@boss.abilities[0]).name
@@ -119,8 +122,8 @@ class BossViewer_Scene
     end
 
     def renderPhaseInfo
-        base = MessageConfig::DARK_TEXT_MAIN_COLOR
-        shadow = MessageConfig::DARK_TEXT_SHADOW_COLOR
+        base = MessageConfig.pbDefaultTextMainColor
+        shadow = MessageConfig.pbDefaultTextShadowColor
         @phaseInfoOverlay.clear
 
         # Draw Pokémon type(s)
@@ -152,7 +155,7 @@ class BossViewer_Scene
         end
 
         # Draw phase number
-        drawFormattedTextEx(@phaseInfoOverlay, 336, @phaseNumberY, Graphics.width, _INTL("Phase {1}/{2}",@phase+1,@boss.num_phases), base, shadow)
+        drawFormattedTextEx(@phaseInfoOverlay, @phaseNumberX, @phaseNumberY, Graphics.width, _INTL("Phase {1}/{2}",@phase+1,@boss.num_phases), base, shadow)
 
         # Draw move info
         writeMoveInfoToInfoOverlayBackwardsL(@extraInfoOverlay.bitmap,@boss.arrayOfMoveSets[@phase][@sprites["commands"].index],false)
@@ -234,7 +237,17 @@ class BossViewer_Scene
         if move_data.type == :FLEX
             isSTAB = true
         else
-            isSTAB = move_data.category != 2 && [fSpecies.type1, fSpecies.type2].include?(move_data.type)
+            if move_data.category == 2
+                isSTAB
+            else
+                if @phase == 0
+                    types = [fSpecies.type1, fSpecies.type2]
+                else
+                    types = @boss.getTypeForPhase(@phase)
+                    types = [types] unless types.is_a?(Array)
+                end
+                isSTAB = types.include?(move_data.type)
+            end
         end
     
         # Add formatting based on if the move is the same type as the user
