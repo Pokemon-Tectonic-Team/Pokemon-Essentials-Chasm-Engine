@@ -177,8 +177,6 @@ class BossViewer_Scene
     def refreshMoveList
         @sprites["commands"].commands = moveListForCurrentPhase
         @sprites["commands"].index = 0
-
-        pbDrawMoveList
     end
 
     def pbDrawMoveList
@@ -296,7 +294,7 @@ class BossViewer_Scene
                 elsif Input.trigger?(Input::LEFT)
                     if @phase > 0
                         @phase -= 1
-                        @sprites["commands"].index = 0
+                        refreshMoveList
                         refreshNeeded = true
                         pbPlayCursorSE
                     else
@@ -305,7 +303,7 @@ class BossViewer_Scene
                 elsif Input.trigger?(Input::RIGHT)
                     if @phase < @boss.num_phases - 1
                         @phase += 1
-                        @sprites["commands"].index = 0
+                        refreshMoveList
                         refreshNeeded = true
                         pbPlayCursorSE
                     else
