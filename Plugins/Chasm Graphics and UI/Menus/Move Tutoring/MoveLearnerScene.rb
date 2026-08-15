@@ -30,7 +30,7 @@ class MoveLearner_Scene
 
         # Create sprite hash
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
-        @viewport.z = 0
+        @viewport.z = 99_999
         @sprites = {}
         bg_path = "Move Tutor/reminderbg"
         bg_path += "_dark" if darkMode?
