@@ -2728,15 +2728,6 @@ FieldUse = Direct
 Flags = KeyItem
 Description = Used to scout the teams of nearby trainers and the behaviour of nearby Avatars. Can also be used mid-battle.
 #-------------------------------
-[BOSSVIEWER]
-Name = Boss Viewer
-NamePlural = Boss Viewer
-Pocket = 8
-Price = 0
-FieldUse = Direct
-Flags = KeyItem
-Description = Description here.
-#-------------------------------
 [CELLBOOSTER]
 Name = Cell Booster
 NamePlural = Cell Boosters
