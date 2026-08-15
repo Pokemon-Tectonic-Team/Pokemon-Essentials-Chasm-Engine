@@ -1,5 +1,10 @@
 require 'stringio'
 
+# Raised when a team code doesn't match the binary layout this decoder expects
+# (e.g. a Team Builder website sharing code, which uses a different, shorter format
+# meant only for importing into the website, not the game).
+class TeamCodeFormatError < StandardError; end
+
 # Bytes required enum
 module BytesRequired
   U8 = 1
@@ -123,16 +128,26 @@ def encode_team(party)
   return code
 end
 
+# Reads exactly `length` bytes from buffer, raising TeamCodeFormatError instead of
+# crashing with a NoMethodError on nil if the buffer runs out of data unexpectedly.
+def read_team_code_bytes(buffer, length)
+  data = buffer.read(length)
+  if data.nil? || data.bytesize < length
+    raise TeamCodeFormatError, "Expected #{length} byte(s) at offset #{buffer.pos}, but only #{data.nil? ? 0 : data.bytesize} were available (buffer size #{buffer.size})"
+  end
+  return data
+end
+
 # Decodes the string id from (num chars (u8)) (u8 value 1, 2, 3...). Returns [id, new_offset]
 def decode_string_id(buffer)
-  num_chars = buffer.read(1).unpack('C')[0]
-  id = num_chars > 0 ? buffer.read(num_chars) : ""
+  num_chars = read_team_code_bytes(buffer, 1).unpack('C')[0]
+  id = num_chars > 0 ? read_team_code_bytes(buffer, num_chars) : ""
   return id
 end
 
 # Decodes style points and level from a u32
 def decode_stats(mon, buffer)
-  stats = buffer.read(4).unpack('N')[0]
+  stats = read_team_code_bytes(buffer, 4).unpack('N')[0]
   style_hp = (stats & STYLE_HP_MASK) >> STYLE_HP_SHIFT
   style_atk = (stats & STYLE_ATK_MASK) >> STYLE_ATK_SHIFT
   style_def = (stats & STYLE_DEF_MASK) >> STYLE_DEF_SHIFT
@@ -162,81 +177,87 @@ def decode_team(code)
 
   return party if buffer.size < VERSION_BYTES
 
-  # Read header
-  encoding = (buffer.read(1).unpack('C')[0] & ENCODING_MASK) >> ENCODING_SHIFT
-  poke_party_version = buffer.read(1).unpack('C')[0]
-  version_u16 = buffer.read(2).unpack('n')[0]
+  begin
+    # Read header
+    poke_party_version = read_team_code_bytes(buffer, 1).unpack('C')[0]
+    encoding = (read_team_code_bytes(buffer, 1).unpack('C')[0] & ENCODING_MASK) >> ENCODING_SHIFT
+    version_u16 = read_team_code_bytes(buffer, 2).unpack('n')[0]
 
-  # Only encoding 0 is supported
-  return nil if encoding != 0
+    # Only encoding 0 is supported
+    return nil if encoding != 0
 
-  # Decode each Pokemon
-  while buffer.pos < buffer.size
-    mon_id = decode_string_id(buffer)
-    ability_id = decode_string_id(buffer)
-    item1_id = decode_string_id(buffer)
-    item1_type_id = decode_string_id(buffer)
-    item2_id = decode_string_id(buffer)
-    move1_id = decode_string_id(buffer)
-    move2_id = decode_string_id(buffer)
-    move3_id = decode_string_id(buffer)
-    move4_id = decode_string_id(buffer)
-    form = buffer.read(1).unpack('C')[0]
+    # Decode each Pokemon
+    while buffer.pos < buffer.size
+      mon_id = decode_string_id(buffer)
+      ability_id = decode_string_id(buffer)
+      item1_id = decode_string_id(buffer)
+      item1_type_id = decode_string_id(buffer)
+      item2_id = decode_string_id(buffer)
+      move1_id = decode_string_id(buffer)
+      move2_id = decode_string_id(buffer)
+      move3_id = decode_string_id(buffer)
+      move4_id = decode_string_id(buffer)
+      form = read_team_code_bytes(buffer, 1).unpack('C')[0]
 
-    # Create Pokemon
-    species = GameData::Species.get(mon_id.to_sym)
-    mon = Pokemon.new(species.id, 1) # Level will be set by decode_stats
+      # Create Pokemon
+      species = GameData::Species.get(mon_id.to_sym)
+      mon = Pokemon.new(species.id, 1) # Level will be set by decode_stats
 
-    # Set form
-    mon.form = form
+      # Set form
+      mon.form = form
 
-    # Set ability
-    if ability_id.length > 0
-      resolved_ability = GameData::Ability.get(ability_id.to_sym).id
-      # Find the matching ability_index from species data so it stays consistent
-      sp_data = mon.species_data
-      index = sp_data.abilities.index(resolved_ability)
-      if index
-        mon.ability_index = index # Should also set ability automatically
-      elsif 
-        echoln(_INTL("WARNING: Illegal ability #{ability_id} for species #{mon_id} in team code."))
-        mon.ability_index = 0 # Default to first ability index for consistent behaviour
-        mon.ability = resolved_ability # Override with illegal ability anyway, but it may cause issues
+      # Set ability
+      if ability_id.length > 0
+        resolved_ability = GameData::Ability.get(ability_id.to_sym).id
+        # Find the matching ability_index from species data so it stays consistent
+        sp_data = mon.species_data
+        index = sp_data.abilities.index(resolved_ability)
+        if index
+          mon.ability_index = index # Should also set ability automatically
+        elsif
+          echoln(_INTL("WARNING: Illegal ability #{ability_id} for species #{mon_id} in team code."))
+          mon.ability_index = 0 # Default to first ability index for consistent behaviour
+          mon.ability = resolved_ability # Override with illegal ability anyway, but it may cause issues
+        end
+      else
+        mon.ability_index = 0 # Default to first ability index if no ability specified
       end
-    else
-      mon.ability_index = 0 # Default to first ability index if no ability specified
+
+      # Set items
+      mon.items[0] = GameData::Item.get(item1_id.to_sym).id if item1_id.length > 0
+      mon.items[1] = GameData::Item.get(item2_id.to_sym).id if item2_id.length > 0
+
+      # Set item type
+      mon.itemTypeChosen = GameData::Type.get(item1_type_id.to_sym).id if item1_type_id.length > 0
+
+      # Set moves
+      if move1_id.length > 0
+        # If we have moves specified, remove level 1 moves so that the Pokemon has only the specified moves
+        mon.forget_all_moves
+      end
+      mon.learn_move(GameData::Move.get(move1_id.to_sym).id) if move1_id.length > 0
+      mon.learn_move(GameData::Move.get(move2_id.to_sym).id) if move2_id.length > 0
+      mon.learn_move(GameData::Move.get(move3_id.to_sym).id) if move3_id.length > 0
+      mon.learn_move(GameData::Move.get(move4_id.to_sym).id) if move4_id.length > 0
+
+
+      # Decode stats (style points and level)
+      decode_stats(mon, buffer)
+
+      # roll any traits we have the happiness threshold for so it's not in limbo later
+      # any we haven't unlocked will return nil as appropriate
+      mon.trait1
+      mon.trait2
+      mon.trait3
+      mon.like
+      mon.dislike
+
+      party.push(mon)
     end
-
-    # Set items
-    mon.items[0] = GameData::Item.get(item1_id.to_sym).id if item1_id.length > 0
-    mon.items[1] = GameData::Item.get(item2_id.to_sym).id if item2_id.length > 0
-
-    # Set item type
-    mon.itemTypeChosen = GameData::Type.get(item1_type_id.to_sym).id if item1_type_id.length > 0
-
-    # Set moves
-    if move1_id.length > 0
-      # If we have moves specified, remove level 1 moves so that the Pokemon has only the specified moves
-      mon.forget_all_moves
-    end
-    mon.learn_move(GameData::Move.get(move1_id.to_sym).id) if move1_id.length > 0
-    mon.learn_move(GameData::Move.get(move2_id.to_sym).id) if move2_id.length > 0
-    mon.learn_move(GameData::Move.get(move3_id.to_sym).id) if move3_id.length > 0
-    mon.learn_move(GameData::Move.get(move4_id.to_sym).id) if move4_id.length > 0
-    
-
-    # Decode stats (style points and level)
-    decode_stats(mon, buffer)
-
-    # roll any traits we have the happiness threshold for so it's not in limbo later
-    # any we haven't unlocked will return nil as appropriate
-    mon.trait1
-    mon.trait2
-    mon.trait3
-    mon.like
-    mon.dislike
-
-    party.push(mon)
+  rescue TeamCodeFormatError, RuntimeError => e
+    # internal error in the console
+    echoln(_INTL("WARNING: Team code does not match the expected import format ({1}). This is usually caused by using a general Team Code instead of the specific Tectonic format.", e.message))
+    return nil
   end
 
   return party
@@ -251,7 +272,8 @@ def read_team_code()
   end
   pokemon = decode_team(code)
   if pokemon.nil?
-    pbMessage(_INTL("Unsupported team code format."))
+    # player-facing error message
+    pbMessage(_INTL("Error reading team code. Make sure you're using the right format by clicking Advanced > Export for Tectonic on the website."))
     return
   end
   if pokemon.empty?

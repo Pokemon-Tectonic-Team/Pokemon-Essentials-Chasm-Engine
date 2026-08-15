@@ -66,20 +66,7 @@ class PokemonChallengeRules
     def unadjustLevels(party1, party2, adjusts)
       @levelAdjustment.unadjustLevels(party1, party2, adjusts) if @levelAdjustment && adjusts
     end
-  
-    def adjustLevelsBilateral(party1,party2)
-      if @levelAdjustment && @levelAdjustment.type == LevelAdjustment::BothTeams
-        return @levelAdjustment.adjustLevels(party1, party2)
-      end
-      return nil
-    end
-  
-    def unadjustLevelsBilateral(party1,party2,adjusts)
-      if @levelAdjustment && adjusts && @levelAdjustment.type == LevelAdjustment::BothTeams
-        @levelAdjustment.unadjustLevels(party1, party2, adjusts)
-      end
-    end
-  
+
     def addPokemonRule(rule)
       self.ruleset.addPokemonRule(rule)
       return self
@@ -88,16 +75,11 @@ class PokemonChallengeRules
     def addLevelRule(minLevel,maxLevel,totalLevel)
       self.addPokemonRule(MinimumLevelRestriction.new(minLevel))
       self.addPokemonRule(MaximumLevelRestriction.new(maxLevel))
-      self.addSubsetRule(TotalLevelRestriction.new(totalLevel))
+      self.addTeamRule(TotalLevelRestriction.new(totalLevel))
       self.setLevelAdjustment(TotalLevelAdjustment.new(minLevel, maxLevel, totalLevel))
       return self
     end
-  
-    def addSubsetRule(rule)
-      self.ruleset.addSubsetRule(rule)
-      return self
-    end
-  
+
     def addTeamRule(rule)
       self.ruleset.addTeamRule(rule)
       return self
@@ -348,7 +330,7 @@ class PokemonChallengeRules
      :CELEBI,
      :JIRACHI, :DEOXYS,
      :PHIONE, :MANAPHY, :SHAYMIN, :DARKRAI, :ARCEUS))
-  .addSubsetRule(RestrictedSpeciesSubsetRestriction.new(
+  .addTeamRule(RestrictedSpeciesSubsetRestriction.new(
      :MEWTWO,
      :LUGIA, :HOOH,
      :GROUDON, :KYOGRE, :RAYQUAZA,

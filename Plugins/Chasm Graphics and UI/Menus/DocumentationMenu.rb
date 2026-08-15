@@ -67,7 +67,7 @@ class PokemonDocumentationMenu < PokemonPauseMenu
 		cmdTribesMenu = -1
 		cmdPokeXRay = -1
 		infoCommands = []
-		if pbHasItem?(:POKEXRAY) && @battle && @battle.trainerBattle? && !@battle.is_online?
+		if pbHasItem?(:POKEXRAY) && @battle && @battle.trainerBattle?
 			infoCommands[cmdPokeXRay = infoCommands.length] = getItemName(:POKEXRAY)
 		end
 		infoCommands[cmdMasterDex = infoCommands.length] = _INTL("MasterDex")
@@ -97,7 +97,9 @@ class PokemonDocumentationMenu < PokemonPauseMenu
 					}
 			elsif cmdPokeXRay > -1 && infoCommand == cmdPokeXRay
 				if @battle.opponent.length == 1
-					showPokeXRayForTrainer(@battle.opponent[0])
+					chosenTrainer = @battle.opponent[0]
+					revealStates = @battle.is_online? ? PokeXRayRevealState.compute_all(chosenTrainer, @battle) : nil
+					showPokeXRayForTrainer(chosenTrainer, revealStates: revealStates)
 				else
 					opponentCommands = []
 					@battle.opponent.each do |trainer|
@@ -107,7 +109,8 @@ class PokemonDocumentationMenu < PokemonPauseMenu
 					choice = pbMessage(_INTL("Point the Poké X-Ray at which trainer?"),opponentCommands,opponentCommands.length)
 					next if choice == opponentCommands.length - 1
 					chosenTrainer = @battle.opponent[choice]
-					showPokeXRayForTrainer(chosenTrainer)
+					revealStates = @battle.is_online? ? PokeXRayRevealState.compute_all(chosenTrainer, @battle) : nil
+					showPokeXRayForTrainer(chosenTrainer, revealStates: revealStates)
 				end
 			else
 				pbPlayCloseMenuSE

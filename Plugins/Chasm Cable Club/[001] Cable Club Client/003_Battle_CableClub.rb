@@ -6,7 +6,7 @@ module DeterministicSample
   end
 
   module InstanceMethods
-    def initialize(*args)
+    def initialize(*args, **kwargs)
       super
       override_array_sample
     end
@@ -75,9 +75,14 @@ class PokeBattle_CableClub < PokeBattle_Battle
   attr_reader :connection
   attr_reader :battleRNG
   attr_reader :rngCalls
-  def initialize(connection, client_id, scene, player_party, opponent_party, opponent, seed)
+  # The opponent's full team-preview roster (nil if team preview was off this match), kept
+  # around purely so the Poké X-Ray's note-taking display can still list previewed Pokémon
+  # the opponent never sent out, marking them "Not Brought" once the pick cap is reached.
+  attr_reader :previewed_opponent_party
+  def initialize(connection, client_id, scene, player_party, opponent_party, opponent, seed, previewed_opponent_party: nil, opponent_standby_party: nil)
     @connection = connection
     @client_id = client_id
+    @previewed_opponent_party = previewed_opponent_party
     # Disable custom backsprite feature because overriding the player Trainer messes with Tribes
     # online_back_check = GameData::TrainerType.player_back_sprite_filename($Trainer.online_trainer_type)
     # if online_back_check
@@ -85,31 +90,34 @@ class PokeBattle_CableClub < PokeBattle_Battle
     # else
     #   player = NPCTrainer.new($Trainer.name, $Trainer.trainertype)
     # end
-    # attach parties to trainers for tribe calculations
-    # player.party = player_party
     player = $Trainer
     opponent.party = opponent_party
+    # Tribes (TribalBonus.rb) should count against everyone a trainer brought to Cable Club, not
+    # just whoever they picked to fight this particular battle (e.g. Pick 4 formats) - so give both
+    # sides an explicit standby_party (Trainer#standby_party) covering their whole brought roster.
+    # player.party (== $Trainer.party) already is that whole roster, since unlike opponent.party
+    # above it's never reassigned to the battle subset - kept explicit here anyway so both sides
+    # are set up the same way and neither relies on that as an unstated assumption.
+    player.standby_party = player.party
+    opponent.standby_party = opponent_standby_party || opponent_party
     Thread.current[:current_cable_club_battle] = self
     super(scene, player_party, opponent_party, [player], [opponent])
     @battleAI  = PokeBattle_CableClub_AI.new(self)
     @battleRNG = Random.new(seed)
     @rngCalls = 0
-    # Diagnostic RNG logging for desync debugging (Debug mode only)
-    @rngLogFile = nil
-    if $DEBUG
-      Dir.mkdir("Analysis") unless Dir.exist?("Analysis")
-      timestamp = Time.now.strftime("%Y%m%d_%H%M%S")
-      filename = "Analysis/rng_log_client#{client_id}_#{timestamp}.txt"
-      @rngLogFile = File.open(filename, "w:UTF-8")
-      @rngLogFile.puts("=== Cable Club RNG Diagnostic Log ===")
-      @rngLogFile.puts("Client ID: #{client_id}")
-      @rngLogFile.puts("Seed: #{seed}")
-      @rngLogFile.puts("Player: #{$Trainer.name}")
-      @rngLogFile.puts("Opponent: #{opponent.name}")
-      @rngLogFile.puts("Started: #{Time.now}")
-      @rngLogFile.puts("=" * 40)
-      @rngLogFile.flush
-    end
+    # Diagnostic RNG logging for desync debugging. Always buffered in memory, and only
+    # written to disk if a desync is detected, or on battle end in Debug mode - so
+    # battles that complete normally outside Debug mode don't clutter the Analysis folder.
+    @desyncLogLines = []
+    @desyncLogLines << "=== Cable Club Desync Log ==="
+    @desyncLogLines << "Context: Battle (includes RNG diagnostics)"
+    @desyncLogLines << "Client ID: #{client_id}"
+    @desyncLogLines << "Seed: #{seed}"
+    @desyncLogLines << "Player: #{$Trainer.name}"
+    @desyncLogLines << "Opponent: #{opponent.name}"
+    @desyncLogLines << "Started: #{Time.now}"
+    @desyncLogLines << ("=" * 40)
+    @desyncLogFilename = nil
   end
 
   # Override command phase to swap AI and player order
@@ -182,36 +190,63 @@ class PokeBattle_CableClub < PokeBattle_Battle
   def pbRandom(x)
     @rngCalls += 1
     result = @battleRNG.rand(x)
-    if $DEBUG && @rngLogFile
-      # Capture the stack trace, filtering to only battle-relevant frames
-      trace = caller.select { |frame| frame.include?("Chasm") || frame.include?("Cable Club") }
-      @rngLogFile.puts("--- RNG Call ##{@rngCalls} ---")
-      @rngLogFile.puts("Turn: #{@turnCount || 'pre-battle'}")
-      @rngLogFile.puts("rand(#{x}) => #{result}")
-      # Battler state snapshot
-      @battlers.each_with_index do |b, i|
-        next unless b
-        name = b.pbThis.encode("UTF-8", invalid: :replace, undef: :replace, replace: "?")
-        @rngLogFile.puts("  Battler[#{i}]: #{name} (#{b.species}) HP=#{b.hp}/#{b.totalhp} Status=#{b.status} Fainted=#{b.fainted?}")
-      end
-      # Stack trace
-      @rngLogFile.puts("Stack:")
-      trace.each { |frame| @rngLogFile.puts("  #{frame}") }
-      @rngLogFile.puts("")
-      @rngLogFile.flush
+    # Capture the stack trace, filtering to only battle-relevant frames
+    trace = caller.select { |frame| frame.include?("Chasm") || frame.include?("Cable Club") }
+    lines = []
+    lines << "--- RNG Call ##{@rngCalls} ---"
+    lines << "Turn: #{@turnCount || 'pre-battle'}"
+    lines << "rand(#{x}) => #{result}"
+    # Battler state snapshot
+    @battlers.each_with_index do |b, i|
+      next unless b
+      name = b.pbThis.encode("UTF-8", invalid: :replace, undef: :replace, replace: "?")
+      lines << "  Battler[#{i}]: #{name} (#{b.species}) HP=#{b.hp}/#{b.totalhp} Status=#{b.status} Fainted=#{b.fainted?}"
     end
+    # Stack trace
+    lines << "Stack:"
+    trace.each { |frame| lines << "  #{frame}" }
+    lines << ""
+    @desyncLogLines.concat(lines)
     echoln("RNG calls this battle: #{rngCalls}")
     return result
   end
 
+  # Writes the buffered desync log to disk, unless it was already written.
+  def pbWriteDesyncLog(footer)
+    return @desyncLogFilename if @desyncLogFilename
+    Dir.mkdir("Analysis") unless Dir.exist?("Analysis")
+    timestamp = Time.now.strftime("%Y%m%d_%H%M%S")
+    @desyncLogFilename = "Analysis/desync_log_client#{@client_id}_#{timestamp}.txt"
+    File.open(@desyncLogFilename, "w:UTF-8") do |f|
+      @desyncLogLines.each { |line| f.puts(line) }
+      footer.each { |line| f.puts(line) }
+    end
+    return @desyncLogFilename
+  end
+
+  # Persists the desync log to disk after a desync is detected, so it can be
+  # attached to a bug report. The backtrace is appended here rather than shown to the
+  # player via pbPrintException, since that pops up a blocking dialog.
+  def pbDumpDesyncLog(error)
+    footer = [
+      "=== Desync Detected ===",
+      "Error: #{error.message}",
+      "Total RNG calls: #{@rngCalls}",
+      "Ended: #{Time.now}",
+      "Backtrace:"
+    ]
+    footer.concat((error.backtrace || []).map { |line| "  #{line}" })
+    pbWriteDesyncLog(footer)
+  end
+
   def dispose
-    if @rngLogFile
-      @rngLogFile.puts("=== Battle Ended ===")
-      @rngLogFile.puts("Total RNG calls: #{@rngCalls}")
-      @rngLogFile.puts("Decision: #{@decision}")
-      @rngLogFile.puts("Ended: #{Time.now}")
-      @rngLogFile.close
-      @rngLogFile = nil
+    if $DEBUG
+      pbWriteDesyncLog([
+        "=== Battle Ended ===",
+        "Total RNG calls: #{@rngCalls}",
+        "Decision: #{@decision}",
+        "Ended: #{Time.now}"
+      ])
     end
     Thread.current[:current_cable_club_battle] = nil
     super
@@ -254,7 +289,7 @@ class PokeBattle_CableClub < PokeBattle_Battle
               return record.int
 
             else
-              raise "Unknown message: #{type}"
+              raise CableClub::DesyncError, "Unknown message: #{type}"
             end
           end
         end
@@ -431,13 +466,13 @@ class PokeBattle_CableClub_AI < PokeBattle_AI
                     break
                   end
                 else
-                  raise "Unknown message: #{t}"
+                  raise CableClub::DesyncError, "Unknown message: #{t}"
                 end
               end
               return
 
             else
-              raise "Unknown message: #{type}"
+              raise CableClub::DesyncError, "Unknown message: #{type}"
             end
           end
         end
@@ -449,6 +484,66 @@ class PokeBattle_CableClub_AI < PokeBattle_AI
 
   def pbDefaultChooseNewEnemy(index, party)
     raise "Expected this to be unused."
+  end
+end
+
+#===============================================================================
+# Moves like Fire For Effect and Elemental Crunch ask the user to pick between
+# several options mid-turn (outside the synced command phase). pbChooseOption's
+# default treats any battler not owned by the local player as Trainer AI and
+# just picks ai_default_index - which is wrong online, since that "AI" battler
+# is actually the opponent's own Pokemon, being chosen for by a real person on
+# their client. So if it's ours, send the chosen index once we know it; if it's
+# theirs, wait for them to send theirs instead of guessing.
+#===============================================================================
+class PokeBattle_Move
+  alias _cc_pbChooseOption pbChooseOption
+  def pbChooseOption(user, options, optionNames, prompt, replayed_choice = nil, ai_default_index: 0)
+    unless @battle.is_online? && options.length > 1
+      return _cc_pbChooseOption(user, options, optionNames, prompt, replayed_choice, ai_default_index: ai_default_index)
+    end
+    if user.pbOwnedByPlayer?
+      chosen = _cc_pbChooseOption(user, options, optionNames, prompt, replayed_choice, ai_default_index: ai_default_index)
+      @battle.connection.send do |writer|
+        writer.sym(:resolution_choice)
+        writer.int(options.index(chosen))
+      end
+      return chosen
+    else
+      frame = 0
+      @battle.scene.pbShowWindow(PokeBattle_Scene::MESSAGE_BOX)
+      cw = @battle.scene.sprites["messageWindow"]
+      cw.letterbyletter = false
+      begin
+        loop do
+          frame += 1
+          cw.text = _INTL("Waiting" + "." * (1 + ((frame / 8) % 3)))
+          @battle.scene.pbFrameUpdate(cw)
+          Graphics.update
+          Input.update
+          raise Connection::Disconnected.new("disconnected") if Input.trigger?(Input::BACK) && pbConfirmMessageSerious("Would you like to disconnect?")
+          chosenIndex = nil
+          @battle.connection.update do |record|
+            case (type = record.sym)
+            when :forfeit
+              pbSEPlay("Battle flee")
+              @battle.pbDisplay(_INTL("{1} forfeited the match!", @battle.opponent[0].full_name))
+              @battle.decision = 1
+              @battle.pbAbort
+
+            when :resolution_choice
+              chosenIndex = record.int
+
+            else
+              raise CableClub::DesyncError, "Unknown message: #{type}"
+            end
+          end
+          return options[chosenIndex] if chosenIndex
+        end
+      ensure
+        cw.letterbyletter = true
+      end
+    end
   end
 end
 

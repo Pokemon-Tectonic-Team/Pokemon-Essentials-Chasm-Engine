@@ -1079,10 +1079,10 @@ def pbScrollableTextSelection(options, initial_index = 0)
     navwindow.update
     pbUpdateSceneMap
 
-    if Input.trigger?(Input::LEFT) || Input.trigger?(Input::UP)
+    if Input.trigger?(Input::LEFT) || Input.trigger?(Input::DOWN)
       pbPlayCursorSE
       index = (index - 1) % options.length
-    elsif Input.trigger?(Input::RIGHT) || Input.trigger?(Input::DOWN)
+    elsif Input.trigger?(Input::RIGHT) || Input.trigger?(Input::UP)
       pbPlayCursorSE
       index = (index + 1) % options.length
     elsif Input.trigger?(Input::USE)

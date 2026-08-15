@@ -1032,7 +1032,12 @@ end
           ordinals.push("#{i + 1}th")
         end
       end
-      return nil if !ruleset.hasValidTeam?(@party)
+      if !ruleset.hasValidTeam?(@party)
+        errors = ruleset.registrationErrors(@party)
+        pbDisplay(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."))
+        pbMessage("Issues:\n" + errors.map { |e| "- #{e}" }.join("\n")) unless errors.empty?
+        return nil
+      end
       ret = nil
       addedEntry = false
       for i in 0...@party.length
@@ -1068,9 +1073,10 @@ end
         if pkmnid == Settings::MAX_PARTY_SIZE   # Confirm was chosen
           ret = []
           for i in realorder; ret.push(@party[i]); end
-          error = []
-          break if ruleset.isValid?(ret,error)
-          pbDisplay(error[0])
+          break if ruleset.isValid?(ret)
+          errors = ruleset.validityErrors(ret)
+          pbDisplay(_INTL("I'm sorry, this team isn't allowed."))
+          pbMessage("Issues:\n" + errors.map { |e| "- #{e}" }.join("\n")) unless errors.empty?
           ret = nil
         end
         break if pkmnid<0   # Cancelled

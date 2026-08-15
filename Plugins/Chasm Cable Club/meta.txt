@@ -4,4 +4,3 @@ Optional  = v19.1 Hotfixes
 Website   = https://eeveeexpo.com/resources/640/
 Credits   = mGriffin,Khaikaa,Vendily,LunaFlare
 Requires  = Chasm Battle
-Requires  = Chasm Battle Frontier

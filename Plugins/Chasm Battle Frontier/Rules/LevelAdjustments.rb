@@ -1,228 +1,84 @@
-#===============================================================================
-#
-#===============================================================================
-class LevelAdjustment
-    BothTeams          = 0
-    EnemyTeam          = 1
-    MyTeam             = 2
-    BothTeamsDifferent = 3
-  
-    def initialize(adjustment)
-      @adjustment = adjustment
+# Adjusts only the enemy/Frontier trainer's team for a challenge; the
+# player's own team is always left exactly as-is. See Cable Club's
+# Rules/LevelAdjustments.rb for why its plain, always-symmetric
+# LevelAdjustment doesn't fit these player-vs-trainer challenges - this is
+# Battle Frontier's own asymmetric extension of that shared base class.
+class EnemyTeamLevelAdjustment < LevelAdjustment
+  def adjustLevels(playerTeam, enemyTeam)
+    ret = [getOldExp(playerTeam, enemyTeam), getOldExp(enemyTeam, playerTeam)]
+    adj = getAdjustment(enemyTeam, playerTeam)
+    enemyTeam.each_with_index do |pkmn, i|
+      next if pkmn.level == adj[i]
+      pkmn.level = adj[i]
+      pkmn.calc_stats
     end
-  
-    def type
-      @adjustment
-    end
-  
-    def self.getNullAdjustment(thisTeam, _otherTeam)
-      ret = []
-      thisTeam.each_with_index { |pkmn, i| ret[i] = pkmn.level }
-      return ret
-    end
-  
-    def getAdjustment(thisTeam, otherTeam)
-      return self.getNullAdjustment(thisTeam, otherTeam)
-    end
-  
-    def getOldExp(team1, _team2)
-      ret = []
-      team1.each_with_index { |pkmn, i| ret[i] = pkmn.exp }
-      return ret
-    end
-  
-    def unadjustLevels(team1, team2, adjustments)
-      team1.each_with_index do |pkmn, i|
-        next if !adjustments[0][i] || pkmn.exp == adjustments[0][i]
-        pkmn.exp = adjustments[0][i]
-        pkmn.calc_stats
-      end
-      team2.each_with_index do |pkmn, i|
-        next if !adjustments[1][i] || pkmn.exp == adjustments[1][i]
-        pkmn.exp = adjustments[1][i]
-        pkmn.calc_stats
-      end
-    end
-  
-    def adjustLevels(team1, team2)
-      adj1 = nil
-      adj2 = nil
-      ret = [getOldExp(team1, team2), getOldExp(team2, team1)]
-      if @adjustment == BothTeams || @adjustment == MyTeam
-        adj1 = getAdjustment(team1, team2)
-      elsif @adjustment == BothTeamsDifferent
-        adj1 = getMyAdjustment(team1, team2)
-      end
-      if @adjustment == BothTeams || @adjustment == EnemyTeam
-        adj2 = getAdjustment(team2, team1)
-      elsif @adjustment == BothTeamsDifferent
-        adj2 = getTheirAdjustment(team2, team1)
-      end
-      if adj1
-        team1.each_with_index do |pkmn, i|
-          next if pkmn.level == adj1[i]
-          pkmn.level = adj1[i]
-          pkmn.calc_stats
-        end
-      end
-      if adj2
-        team2.each_with_index do |pkmn, i|
-          next if pkmn.level == adj2[i]
-          pkmn.level = adj2[i]
-          pkmn.calc_stats
-        end
-      end
-      return ret
-    end
+    return ret
   end
-  
-  #===============================================================================
-  #
-  #===============================================================================
-  class FixedLevelAdjustment < LevelAdjustment
-    def initialize(level)
-      super(LevelAdjustment::BothTeams)
-      @level = level.clamp(1, GameData::GrowthRate.max_level)
-    end
-  
-    def getAdjustment(thisTeam, _otherTeam)
-      ret = []
-      thisTeam.each_with_index { |pkmn, i| ret[i] = @level }
-      return ret
-    end
+end
+
+# Only adjusts the enemy team. Starts every enemy Pokemon at minLevel, then
+# raises them one at a time (looping over the team) up to maxLevel each,
+# stopping once their combined level would exceed totalLevel. Set via
+# PokemonChallengeRules#addLevelRule(minLevel, maxLevel, totalLevel).
+class TotalLevelAdjustment < EnemyTeamLevelAdjustment
+  def initialize(minLevel, maxLevel, totalLevel)
+    @minLevel = minLevel.clamp(1, GameData::GrowthRate.max_level)
+    @maxLevel = maxLevel.clamp(1, GameData::GrowthRate.max_level)
+    @totalLevel = totalLevel
   end
-  
-  #===============================================================================
-  #
-  #===============================================================================
-  class TotalLevelAdjustment < LevelAdjustment
-    def initialize(minLevel, maxLevel, totalLevel)
-      super(LevelAdjustment::EnemyTeam)
-      @minLevel = minLevel.clamp(1, GameData::GrowthRate.max_level)
-      @maxLevel = maxLevel.clamp(1, GameData::GrowthRate.max_level)
-      @totalLevel=totalLevel
+
+  def getAdjustment(thisTeam, _otherTeam)
+    ret = []
+    total = 0
+    thisTeam.each_with_index do |pkmn, i|
+      ret[i] = @minLevel
+      total += @minLevel
     end
-  
-    def getAdjustment(thisTeam, _otherTeam)
-      ret = []
-      total = 0
+    loop do
+      work = false
       thisTeam.each_with_index do |pkmn, i|
-        ret[i] = @minLevel
-        total += @minLevel
+        next if ret[i] >= @maxLevel || total >= @totalLevel
+        ret[i] += 1
+        total += 1
+        work = true
       end
-      loop do
-        work = false
-        thisTeam.each_with_index do |pkmn, i|
-          next if ret[i] >= @maxLevel || total >= @totalLevel
-          ret[i] += 1
-          total += 1
-          work = true
-        end
-        break if !work
-      end
-      return ret
+      break if !work
     end
+    return ret
   end
-  
-  #===============================================================================
-  #
-  #===============================================================================
-  class CombinedLevelAdjustment < LevelAdjustment
-    def initialize(my, their)
-      super(LevelAdjustment::BothTeamsDifferent)
-      @my    = my
-      @their = their
-    end
-  
-    def getMyAdjustment(myTeam,theirTeam)
-      return @my.getAdjustment(myTeam, theirTeam) if @my
-      return LevelAdjustment.getNullAdjustment(myTeam, theirTeam)
-    end
-  
-    def getTheirAdjustment(theirTeam,myTeam)
-      return @their.getAdjustment(theirTeam, myTeam) if @their
-      return LevelAdjustment.getNullAdjustment(theirTeam, myTeam)
-    end
+end
+
+# Sets every Pokemon on the enemy team to exactly the given level. The
+# player's own team is left alone, unlike FixedLevelAdjustment.
+class EnemyLevelAdjustment < EnemyTeamLevelAdjustment
+  def initialize(level)
+    @level = level.clamp(1, GameData::GrowthRate.max_level)
   end
-  
-  #===============================================================================
-  #
-  #===============================================================================
-  class SinglePlayerCappedLevelAdjustment < CombinedLevelAdjustment
-    def initialize(level)
-      super(CappedLevelAdjustment.new(level), FixedLevelAdjustment.new(level))
-    end
+
+  def getAdjustment(thisTeam, _otherTeam)
+    ret = []
+    thisTeam.each_with_index { |pkmn, i| ret[i] = @level }
+    return ret
   end
-  
-  #===============================================================================
-  #
-  #===============================================================================
-  class CappedLevelAdjustment < LevelAdjustment
-    def initialize(level)
-      super(LevelAdjustment::BothTeams)
-      @level = level.clamp(1, GameData::GrowthRate.max_level)
-    end
-  
-    def getAdjustment(thisTeam, _otherTeam)
-      ret = []
-      thisTeam.each_with_index { |pkmn, i| ret[i] = [pkmn.level, @level].min }
-      return ret
-    end
+end
+
+# Sets every Pokemon on the enemy team to match the player's highest-level
+# Pokemon (or minLevel, whichever is higher; minLevel defaults to 1). The
+# player's own team is left alone.
+class OpenLevelAdjustment < EnemyTeamLevelAdjustment
+  def initialize(minLevel = 1)
+    @minLevel = minLevel
   end
-  
-  #===============================================================================
-  # Unused
-  #===============================================================================
-  class LevelBalanceAdjustment < LevelAdjustment
-    def initialize(minLevel)
-      super(LevelAdjustment::BothTeams)
-      @minLevel = minLevel
+
+  def getAdjustment(thisTeam, otherTeam)
+    maxLevel = 1
+    otherTeam.each do |pkmn|
+      level = pkmn.level
+      maxLevel = level if maxLevel < level
     end
-  
-    def getAdjustment(thisTeam, _otherTeam)
-      ret = []
-      thisTeam.each_with_index do |pkmn, i|
-        ret[i] = (113 - (pbBaseStatTotal(pkmn.species) * 0.072)).round
-      end
-      return ret
-    end
+    maxLevel = @minLevel if maxLevel < @minLevel
+    ret = []
+    thisTeam.each_with_index { |pkmn, i| ret[i] = maxLevel }
+    return ret
   end
-  
-  #===============================================================================
-  #
-  #===============================================================================
-  class EnemyLevelAdjustment < LevelAdjustment
-    def initialize(level)
-      super(LevelAdjustment::EnemyTeam)
-      @level = level.clamp(1, GameData::GrowthRate.max_level)
-    end
-  
-    def getAdjustment(thisTeam, _otherTeam)
-      ret = []
-      thisTeam.each_with_index { |pkmn, i| ret[i] = @level }
-      return ret
-    end
-  end
-  
-  #===============================================================================
-  #
-  #===============================================================================
-  class OpenLevelAdjustment < LevelAdjustment
-    def initialize(minLevel = 1)
-      super(LevelAdjustment::EnemyTeam)
-      @minLevel = minLevel
-    end
-  
-    def getAdjustment(thisTeam, otherTeam)
-      maxLevel = 1
-      otherTeam.each do |pkmn|
-        level = pkmn.level
-        maxLevel = level if maxLevel < level
-      end
-      maxLevel = @minLevel if maxLevel < @minLevel
-      ret = []
-      thisTeam.each_with_index { |pkmn, i| ret[i] = maxLevel }
-      return ret
-    end
-  end
-  
+end

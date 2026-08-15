@@ -233,7 +233,11 @@ class PokeBattle_Battle
         knownMovesArray = []
         @knownMoves[pokemon.personalID] = knownMovesArray
         pokemon.moves.each do |move|
-            next unless pokemon.boss? || aiAutoKnowsMove?(move,pokemon)
+            # aiAutoKnowsMove? is a pure AI-strength heuristic (guessing STAB-typed moves are
+            # "probably known"), not a real reveal - skip it online, where the same knowledge
+            # hash now also drives the Poké X-Ray's note-taking display (see aiLearnsAbility),
+            # which must only ever show what's actually been revealed in the match.
+            next unless pokemon.boss? || (!is_online? && aiAutoKnowsMove?(move,pokemon))
             knownMovesArray.push(move.id)
             unless is_online? # Prevent debug cheating online
                 echoln("Pokemon #{pokemon.name}'s move #{move.name} is known by the AI")

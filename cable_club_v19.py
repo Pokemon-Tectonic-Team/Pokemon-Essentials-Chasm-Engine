@@ -14,7 +14,7 @@ from packaging.version import Version
 # This is the v19 version of the server. It is not compatible with earlier versions of the script
 
 HOST = r"0.0.0.0"
-PORT = 9998  # This is the port for dev. Change to 9999 before updating live server
+PORT = 9998  # Default dev port; deploy_cableclub.ps1 overrides this automatically when deploying with -Live
 PBS_DIR = r"./PBS"
 LOG_DIR = r"."
 RULES_DIR = "./OnlinePresets"
@@ -642,18 +642,118 @@ def find_changed_files(directory, old_files_hash):
     return False, old_files_hash
 
 
+RULE_HEADER_RE = re.compile(r"^\[(.+)\]$")
+RULE_INT_ARG_RE = re.compile(r"^-?\d+$")
+RULE_STR_ARG_RE = re.compile(r'^"(.*)"$')
+RULE_CATEGORY_KEYS = ["PokemonRules", "TeamRules"]
+
+
+# Splits a single rule clause's comma-separated fields (its class name
+# followed by any arguments) from the PBS-style rule file format, respecting
+# quotes so that a quoted string argument can itself contain a comma (e.g.
+# 'Foo,"a,b"' splits into ["Foo", '"a,b"']).
+def split_rule_fields(value):
+    parts = []
+    current = ""
+    in_quotes = False
+    for c in value:
+        if c == '"':
+            in_quotes = not in_quotes
+            current += c
+        elif c == "," and not in_quotes:
+            parts.append(current.strip())
+            current = ""
+        else:
+            current += c
+    parts.append(current.strip())
+    return parts
+
+
+# Infers the wire type tag/value of a single rule clause argument as written
+# in a PBS-style rule file: bare digits become "int", "true"/"false" become
+# "bool", "quoted text" becomes "str", and anything else becomes "sym" (the
+# common case for species/move/item internal names).
+def infer_rule_arg(value):
+    value = value.strip()
+    if RULE_INT_ARG_RE.match(value):
+        return "int", value
+    if value in ("true", "false"):
+        return "bool", value
+    str_match = RULE_STR_ARG_RE.match(value)
+    if str_match:
+        return "str", str_match.group(1)
+    return "sym", value
+
+
+# Encodes a single rule clause, e.g. "NoLegendaryRestriction" or
+# "FixedLevelAdjustment,70", into the "ClassName;type;value;..." string the
+# Ruby client's network parser expects.
+def encode_rule_clause(clause):
+    class_name, *args = split_rule_fields(clause.strip())
+    if not class_name or not re.match(r"^\w+$", class_name):
+        raise ValueError(f"invalid rule clause \"{clause}\"")
+    fields = [class_name]
+    for arg in args:
+        type_tag, value = infer_rule_arg(arg)
+        fields.append(type_tag)
+        fields.append(value)
+    return ";".join(fields)
+
+
+# Parses a PBS-style Cable Club rule file into a hash of its raw "Key =
+# Value" pairs, with the ruleset's display name taken from its "[Name]"
+# header. A key may be repeated to give it multiple values (used by the rule
+# clause categories below); every key's value is a list of one entry per
+# line it appeared on. Blank lines and "#" comments are ignored.
+def parse_rule_file(path):
+    name = None
+    data = collections.defaultdict(list)
+    with open(path) as rule_file:
+        for raw_line in rule_file:
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            header_match = RULE_HEADER_RE.match(line)
+            if header_match:
+                if name:
+                    raise ValueError(f"{path}: multiple [Name] headers found")
+                name = header_match.group(1)
+                continue
+            key, sep, value = line.partition("=")
+            if not sep:
+                raise ValueError(f"{path}: invalid line \"{line}\"")
+            data[key.strip()].append(value.strip())
+    if not name:
+        raise ValueError(f"{path}: missing [Name] header")
+    data["Name"] = [name]
+    return data
+
+
+# Compiles a parsed rule file's data into the flat field list the network
+# protocol expects: name, description, team preview, min/max party size,
+# level adjustment, battle mode, then each remaining rule category's count
+# followed by its clauses, in the order pokemon/team.
+def compile_rule(data):
+    rule = [data["Name"][0], data["Description"][0], data.get("TeamPreview", ["0"])[0]]
+    min_value, _, max_value = data["PartySize"][0].partition(",")
+    rule.append(min_value.strip())
+    rule.append(max_value.strip())
+    level_adjustment = data.get("LevelAdjustment", [""])[0]
+    rule.append(encode_rule_clause(level_adjustment) if level_adjustment else "")
+    battle_mode = data.get("BattleMode", [""])[0]
+    rule.append(battle_mode.strip().lower() if battle_mode else "")
+    for key in RULE_CATEGORY_KEYS:
+        clauses = data.get(key, [])
+        rule.append(str(len(clauses)))
+        rule.extend(encode_rule_clause(c) for c in clauses)
+    return rule
+
+
 def load_rules_files(directory, files_hash):
     rules = []
     for f in iter(files_hash):
-        rule = []
-        with open(os.path.join(directory, f)) as rule_file:
-            for num, line in enumerate(rule_file):
-                line = line.strip()
-                if num == 3:
-                    rule.extend(line.split(","))
-                else:
-                    rule.append(line)
-        rules.append(rule)
+        data = parse_rule_file(os.path.join(directory, f))
+        rules.append(compile_rule(data))
     return rules
 
 

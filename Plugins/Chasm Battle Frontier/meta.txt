@@ -1,2 +1,3 @@
 Name         = Chasm Battle Frontier
 Credits      = Essentials v19 Team,Zinnia
+Requires     = Chasm Cable Club

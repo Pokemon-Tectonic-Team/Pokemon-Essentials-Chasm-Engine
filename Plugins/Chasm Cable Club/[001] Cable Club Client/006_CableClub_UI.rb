@@ -131,63 +131,70 @@ class CableClub_Scene
     @viewport.dispose
   end
   
+  # Shows msg, then an itemized list of ruleset.registrationErrors(party) (if
+  # any) the same way pbAttemptConnection reports the Cable Club server's own
+  # party errors, so a custom ruleset rejecting a team is explained just as
+  # clearly as a server-side rejection.
+  def pbDisplayTeamIssues(msg,ruleset,party)
+    pbDisplay(msg)
+    errors = ruleset.registrationErrors(party)
+    pbMessage("Issues:\n" + errors.map { |e| "- #{e}" }.join("\n")) unless errors.empty?
+  end
+
   def pbSelectBattleSettings(partner_party,local_rules,server_rules)
     ret = nil
     type=0
     commands = []
-    cmdSingleBattle  = -1
-    cmdDoubleBattle  = -1
-    cmdTripleBattle  = -1
+    cmdFreeForAll    = -1
     cmdLocalRule     = -1
     cmdServerRule    = -1
-    commands[cmdSingleBattle = commands.length]  = _INTL("Single Battle")
-    commands[cmdDoubleBattle = commands.length]  = _INTL("Double Battle")
-    commands[cmdTripleBattle = commands.length]  = _INTL("Triple Battle")
-    commands[cmdLocalRule = commands.length]     = _INTL("Load Local Rule") if local_rules && !local_rules.empty?
-    commands[cmdServerRule = commands.length]    = _INTL("Load Server Rule") if server_rules && !server_rules.empty?
+    commands[cmdFreeForAll = commands.length]    = _INTL("Free For All")
+    commands[cmdServerRule = commands.length]    = _INTL("Official Rules") if server_rules && !server_rules.empty?
+    commands[cmdLocalRule = commands.length]     = _INTL("Custom Rules") if local_rules && !local_rules.empty?
     loop do
       break if ret
       cmd = pbShowCommands(_INTL("Select Battle Ruleset"),commands,-1)
-      if (cmdSingleBattle>=0 && cmd==cmdSingleBattle) ||
-         (cmdDoubleBattle>=0 && cmd==cmdDoubleBattle) ||
-         (cmdTripleBattle>=0 && cmd==cmdTripleBattle)
-        rules=PokemonOnlineRules.new
-        rules.setTeamPreview(30)
-        rules.setNumberRange(1,6)
-        rules.addPokemonRule(NonEggRestriction)
-        if cmd == cmdDoubleBattle # double battle
-          rules.setNumberRange(2,6)
-          rules.addBattleRule(DoubleBattle)
-        elsif cmd == cmdTripleBattle
-          rules.setNumberRange(3,6)
-          rules.addBattleRule(TripleBattle)
-        end
-        if !rules.ruleset.hasRegistrableTeam?($Trainer.party)
-          pbDisplay(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."))
-        elsif !rules.ruleset.hasRegistrableTeam?(partner_party)
-          pbDisplay(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."))
-        else
-          bracket_cmds = [_INTL("FFA"),_INTL("Lv. 70")]
-          bracket = pbShowCommands(_INTL("Choose a bracket."),bracket_cmds, -1)
-          if bracket >= 0
-            case bracket
-            when 1; rules.setLevelAdjustment(FixedLevelAdjustment,70)
+      if cmdFreeForAll>=0 && cmd==cmdFreeForAll
+        battle_cmds = [_INTL("Single Battle"),_INTL("Double Battle"),_INTL("Triple Battle")]
+        battle_cmd = pbShowCommands(_INTL("Free For All"),battle_cmds,-1)
+        if battle_cmd>=0
+          rules=PokemonOnlineRules.new
+          rules.setTeamPreview(30)
+          rules.setNumberRange(1,6)
+          if battle_cmd == 1 # double battle
+            rules.setNumberRange(2,6)
+            rules.setBattleMode("double")
+          elsif battle_cmd == 2 # triple battle
+            rules.setNumberRange(3,6)
+            rules.setBattleMode("triple")
+          end
+          if !rules.ruleset.hasValidTeam?($Trainer.party)
+            pbDisplayTeamIssues(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."),rules.ruleset,$Trainer.party)
+          elsif !rules.ruleset.hasValidTeam?(partner_party)
+            pbDisplayTeamIssues(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."),rules.ruleset,partner_party)
+          else
+            bracket_cmds = [_INTL("FFA"),_INTL("Lv. 70")]
+            bracket = pbShowCommands(_INTL("Choose a bracket."),bracket_cmds, -1)
+            if bracket >= 0
+              case bracket
+              when 1; rules.setLevelAdjustment(FixedLevelAdjustment,70)
+              end
+              desc = sprintf("%s (%s)",battle_cmds[battle_cmd],bracket_cmds[bracket])
+              ret = [desc,desc,rules]
+              break
             end
-            desc = sprintf("%s (%s)",commands[cmd],bracket_cmds[bracket])
-            ret = [desc,desc,rules]
-            break
           end
         end
       elsif (cmdLocalRule>=0 && cmd==cmdLocalRule) ||
             (cmdServerRule>=0 && cmd==cmdServerRule)
-        commands = []
+        rule_commands = []
         rule_array = []
         rule_array = local_rules if cmd == cmdLocalRule
         rule_array = server_rules if cmd == cmdServerRule
         rule_array.each do |r|
-          commands.push(r[0])
+          rule_commands.push(r[0])
         end
-        r_cmd = pbShowCommands(_INTL("Select Battle Ruleset"),commands,-1)
+        r_cmd = pbShowCommands(_INTL("Select Battle Ruleset"),rule_commands,-1)
         if r_cmd>=0
           loop do
             conf_cmd = pbShowCommands(_INTL("Ruleset: {1}",rule_array[r_cmd][0]),[_INTL("See Details"),_INTL("Yes"),_INTL("No")],3)
@@ -196,10 +203,10 @@ class CableClub_Scene
               pbDisplay(rule_array[r_cmd][1])
             when 1
               rules = rule_array[r_cmd][2]
-              if !rules.ruleset.hasRegistrableTeam?($Trainer.party)
-                pbDisplay(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."))
-              elsif !rules.ruleset.hasRegistrableTeam?(partner_party)
-                pbDisplay(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."))
+              if !rules.ruleset.hasValidTeam?($Trainer.party)
+                pbDisplayTeamIssues(_INTL("I'm sorry, you do not have a valid Pokémon team with these rules."),rules.ruleset,$Trainer.party)
+              elsif !rules.ruleset.hasValidTeam?(partner_party)
+                pbDisplayTeamIssues(_INTL("I'm sorry, your partner does not have a valid Pokémon team with these rules."),rules.ruleset,partner_party)
               else
                 ret = rule_array[r_cmd]
                 type = ((cmd==cmdLocalRule) ? 1 : 2)
@@ -242,89 +249,8 @@ class CableClubScreen
     @chosen_pokemon = nil
     @partner_chosen = nil
     @battle_settings = nil
-    load_local_rules
-  end
-  
-  def load_local_rule(filename)
-    begin
-      name=nil
-      desc=nil
-      rules=PokemonOnlineRules.new
-      lineno=0
-      category=0
-      targetno=-1
-      File.foreach(sprintf("%s/%s",CableClub::FOLDER_FOR_BATTLE_PRESETS,filename))do |line|
-        line = line.chomp
-        case lineno
-        when 0
-          raise "comma found \"#{line}\", aborting load" if line.index(',')
-          name = line
-        when 1
-          raise "comma found \"#{line}\", aborting load" if line.index(',')
-          desc = line
-        when 2; rules.setTeamPreview(line.to_i)
-        when 3
-          line[/(\d+),(\d+)/]
-          minValue = $~[1].to_i
-          maxValue = $~[2].to_i
-          rules.setNumberRange(minValue,maxValue)
-        when 4
-          if !line.empty?
-            level_adjustment_data = line.split(";")
-            level_adjustmentClass = level_adjustment_data.shift
-            level_adjustment_args = CableClub::process_args_type_hint(*level_adjustment_data)
-            if Object.const_defined?(level_adjustmentClass)
-              rules.setLevelAdjustment(Kernel.const_get(level_adjustmentClass),*level_adjustment_args)
-            end
-          end
-        else
-          if targetno<0
-            targetno = lineno + line.to_i
-          else
-            clause_data = line.split(";")
-            clauseClass = clause_data.shift
-            clause_args = CableClub::process_args_type_hint(*clause_data)
-            if Object.const_defined?(clauseClass)
-              case category
-              when 0 #battle
-                rules.addBattleRule(Kernel.const_get(clauseClass),*clause_args)
-              when 1 #pokemon
-                rules.addPokemonRule(Kernel.const_get(clauseClass),*clause_args)
-              when 2 #subset
-                rules.addSubsetRule(Kernel.const_get(clauseClass),*clause_args)
-              when 3 #team
-                rules.addTeamRule(Kernel.const_get(clauseClass),*clause_args)
-              end
-            end
-          end
-          if lineno == targetno
-            category +=1
-            targetno =-1
-          end
-        end
-        lineno+=1
-      end
-    rescue
-      return nil
-    end
-    return [name,desc,rules]
-  end
-  
-  def load_local_rules
-    begin
-      files = []
-      Dir.chdir(CableClub::FOLDER_FOR_BATTLE_PRESETS + "/"){
-        Dir.glob("*.rules") {|f| files.push(f)}
-      }
-    rescue
-      return
-    end
-    rules = []
-    files.each do |f|
-      r=load_local_rule(f)
-      rules.push(r) if r
-    end
-    @local_rules = rules
+    @local_rules = CableClub.load_local_rules
+    @asked_to_save_friend = false
   end
   
   def change_state(new_state)
@@ -366,7 +292,22 @@ class CableClubScreen
   end
   def pbConfirm(helptext); return (@scene.pbShowCommands(helptext,[_INTL("Yes"), _INTL("No")],2)==0); end
   def pbConfirmSerious(helptext); return (@scene.pbShowCommands(helptext,[_INTL("No"), _INTL("Yes")],1)==1); end
-  
+
+  # Recovers from a desync that happened before any battle started (e.g. while agreeing
+  # on an activity, picking teams, or trading), by notifying the peer and dropping back
+  # to the activity hub on the same connection, rather than disconnecting entirely.
+  def pbRecoverFromDesync(connection, error)
+    CableClub.notify_desync(connection, error)
+    error.log_path ||= CableClub.write_desync_log(@client_id, error)
+    pbMessage(_INTL("I'm sorry, the connection became out of sync, so that could not be completed."))
+    CableClub.show_desync_report(error.log_path)
+    if @client_id == 0
+      choose_activity(connection)
+    else
+      await_choose_activity(connection)
+    end
+  end
+
   def pbStartScreen
     @scene.pbStartScene
     pbConnectDisconnectSetup
@@ -386,15 +327,8 @@ class CableClubScreen
       return false
     end
     begin
-      msg = _ISPRINTF("Opponent's ID (Yours: {1:05d})",$Trainer.public_ID($Trainer.id))
-      partner_id = $PokemonGlobal.last_partner_id || ""
-      partner_id = pbEnterText(msg, 0, 5, partner_id)
-      if partner_id =~ /^[0-9]{5}$/
-        $PokemonGlobal.last_partner_id = partner_id
-      else
-        pbDisplay(_INTL("Please enter a valid trainer ID of 5 digits."))
-        return false
-      end
+      partner_id = pbChooseConnectionID
+      return false if !partner_id
       pbConnectServer(partner_id)
       raise Connection::Disconnected.new("disconnected")
     rescue Connection::Disconnected => e
@@ -428,6 +362,11 @@ class CableClubScreen
     rescue Errno::ECONNREFUSED
       pbDisplay(_INTL("I'm sorry, the Cable Club server is down at the moment."))
       return false
+    rescue CableClub::DesyncError => e
+      e.log_path ||= CableClub.write_desync_log(@client_id, e)
+      pbMessage(_INTL("I'm sorry, the connection with the other trainer became out of sync and the Cable Club could not continue."))
+      CableClub.show_desync_report(e.log_path)
+      return false
     rescue
       pbPrintException($!)
       pbDisplay(_INTL("I'm sorry, the Cable Club has malfunctioned!"))
@@ -436,11 +375,48 @@ class CableClubScreen
       pbHideMessageBox
     end
   end
-  
+
+  # Offers a saved friend (picked by name, no retyping) ahead of manual entry,
+  # but only if any are saved - so a player who's never used the Friends List
+  # sees the exact same manual-entry prompt as before.
+  def pbChooseConnectionID
+    friends = $PokemonGlobal.cable_club_friends_list
+    return pbEnterConnectionID if friends.empty?
+    entries = friends.to_a
+    cmds = entries.map { |id, name| _INTL("{1} ({2})", name, id) }
+    cmds.push(_INTL("Manual Entry"))
+    cmds.push(_INTL("Cancel"))
+    cmd = pbMessage(_ISPRINTF("Connect to whom? (Yours: {1:05d})",$Trainer.public_ID($Trainer.id)), cmds, cmds.length)
+    return entries[cmd][0] if cmd >= 0 && cmd < entries.length
+    return pbEnterConnectionID if cmd == entries.length
+    return nil
+  end
+
+  def pbEnterConnectionID
+    msg = _ISPRINTF("Opponent's ID (Yours: {1:05d})",$Trainer.public_ID($Trainer.id))
+    partner_id = $PokemonGlobal.last_partner_id || ""
+    partner_id = pbEnterText(msg, 0, 5, partner_id)
+    if CableClubFriendsList.valid_id?(partner_id)
+      $PokemonGlobal.last_partner_id = partner_id
+      return partner_id
+    else
+      pbDisplay(_INTL("Please enter a valid trainer ID of 5 digits."))
+      return nil
+    end
+  end
+
   def pbConnectServer(partner_id)
     host,port = CableClub::get_server_info
     Connection.open(host,port) do |connection|
-      await_server(connection,partner_id)
+      begin
+        await_server(connection,partner_id)
+      rescue CableClub::DesyncError => e
+        # Reached only for desyncs with no recoverable state to fall back to (e.g. while
+        # still searching for a partner). Let the other client know before disconnecting,
+        # rather than leaving them waiting forever on a connection we're about to abandon.
+        CableClub.notify_desync(connection, e)
+        raise
+      end
     end
   end
   
@@ -483,7 +459,7 @@ class CableClubScreen
           @server_rules = CableClub::parse_battle_rules(record)
           partner_found = true
         else
-          raise "Unknown message: #{type}"
+          raise CableClub::DesyncError, "Unknown message: #{type}"
         end
       end
       break if partner_found
@@ -528,20 +504,24 @@ class CableClubScreen
   
   def await_accept_activity(connection,activity,method_on_accept)
     accepted = nil
-    change_state(:await_accept_activity){
-      pbDisplayDots(_INTL("Waiting for {1} to accept", @partner_name))
-      connection.update do |record|
-        case (type = record.sym)
-        when :ok
-          accepted = true
-        when :cancel
-          accepted = false
-        else
-          raise "Unknown message: #{type}"
+    begin
+      change_state(:await_accept_activity){
+        pbDisplayDots(_INTL("Waiting for {1} to accept", @partner_name))
+        connection.update do |record|
+          case (type = record.sym)
+          when :ok
+            accepted = true
+          when :cancel
+            accepted = false
+          else
+            raise CableClub::DesyncError, "Unknown message: #{type}"
+          end
         end
-      end
-      break unless accepted.nil?
-    }
+        break unless accepted.nil?
+      }
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
+    end
     if accepted
       self.send(method_on_accept,connection)
     else
@@ -553,26 +533,30 @@ class CableClubScreen
   
   def await_choose_activity(connection)
     method_for_accepting = nil
-    change_state(:await_accept_activity){
-      pbDisplayDots(_INTL("Waiting for {1} to pick an activity", @partner_name))
-      connection.update do |record|
-        case (type = record.sym)
-        when :battle
-          method_for_accepting = :partner_accept_battle
-          seed = record.int
-          battle_origin = record.int
-          battle_rule = CableClub::parse_battle_rule(record)
-          @battle_settings = [seed,battle_rule,battle_origin]
-        when :trade
-          method_for_accepting = :partner_accept_trade
-        when :record_mix
-          method_for_accepting = :partner_accept_record_mix
-        else
-          raise "Unknown message: #{type}"
+    begin
+      change_state(:await_accept_activity){
+        pbDisplayDots(_INTL("Waiting for {1} to pick an activity", @partner_name))
+        connection.update do |record|
+          case (type = record.sym)
+          when :battle
+            method_for_accepting = :partner_accept_battle
+            seed = record.int
+            battle_origin = record.int
+            battle_rule = CableClub::parse_battle_rule(record)
+            @battle_settings = [seed,battle_rule,battle_origin]
+          when :trade
+            method_for_accepting = :partner_accept_trade
+          when :record_mix
+            method_for_accepting = :partner_accept_record_mix
+          else
+            raise CableClub::DesyncError, "Unknown message: #{type}"
+          end
         end
-      end
-      break if method_for_accepting
-    }
+        break if method_for_accepting
+      }
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
+    end
     self.send(method_for_accepting,connection) if method_for_accepting
   end
   
@@ -653,23 +637,27 @@ class CableClubScreen
       end
     end
     if team_order
-      change_state(:await_battle_order){
-        pbDisplayDots(_INTL("Waiting for {1} to pick their team", @partner_name))
-        connection.update do |record|
-          case (type = record.sym)
-          when :ok
-            partner_order = []
-            record.int.times do
-              partner_order.push(record.int)
+      begin
+        change_state(:await_battle_order){
+          pbDisplayDots(_INTL("Waiting for {1} to pick their team", @partner_name))
+          connection.update do |record|
+            case (type = record.sym)
+            when :ok
+              partner_order = []
+              record.int.times do
+                partner_order.push(record.int)
+              end
+            when :cancel
+              cancel_partner = true
+            else
+              raise CableClub::DesyncError, "Unknown message: #{type}"
             end
-          when :cancel
-            cancel_partner = true
-          else
-            raise "Unknown message: #{type}"
           end
-        end
-        break if partner_order || cancel_partner
-      }
+          break if partner_order || cancel_partner
+        }
+      rescue CableClub::DesyncError => e
+        return pbRecoverFromDesync(connection, e)
+      end
     else
       connection.discard(1)
       cancel_battle = true
@@ -710,7 +698,12 @@ class CableClubScreen
         party_partner.push(@partner_party[i])
       end
     end
-    decision = CableClub::do_battle(connection, @client_id, seed, battle_rules[2], party_player, partner, party_partner)
+    # Team preview (if shown) reveals the partner's whole brought roster, not just the subset
+    # they end up using - carry that through so the Poké X-Ray's notes can still list the rest
+    # as "Not Brought" once the pick cap is reached, instead of forgetting they were ever seen.
+    previewed_opponent_party = battle_rules[2].team_preview? ? @partner_party.clone : nil
+    decision = CableClub::do_battle(connection, @client_id, seed, battle_rules[2], party_player, partner, party_partner, previewed_opponent_party: previewed_opponent_party, opponent_standby_party: @partner_party)
+    pbOfferSaveFriend
     @battle_settings = nil
     if @client_id == 0
       choose_activity(connection)
@@ -718,7 +711,24 @@ class CableClubScreen
       await_choose_activity(connection)
     end
   end
-  
+
+  # Offers to save the just-battled opponent to the Friends List, defaulting
+  # the label to their in-game name but never forcing it (issue #493). Only
+  # asks once per connection (not after every rematch against the same
+  # partner), and not at all if they're already saved.
+  def pbOfferSaveFriend
+    return if @asked_to_save_friend
+    @asked_to_save_friend = true
+    friends = $PokemonGlobal.cable_club_friends_list
+    partner_id = $PokemonGlobal.last_partner_id
+    return if partner_id.nil? || friends.include?(partner_id)
+    return unless pbConfirmMessage(_INTL("Save {1} to your Friends List?", @partner_name))
+    typed = pbEnterText(_INTL("Save this friend as?"), 0, Settings::MAX_PLAYER_NAME_SIZE, @partner_name)
+    name = typed.empty? ? @partner_name : typed
+    friends.add(partner_id, name)
+    pbMessage(_INTL("{1} was added to your Friends List.", name))
+  end
+
   # These methods handle trading pokemon
   def partner_accept_trade(connection)
     if pbConfirm(_INTL("{1} wants to trade!", @partner_name))
@@ -757,20 +767,24 @@ class CableClubScreen
   
   def confirm_trade_pokemon(connection)
     @partner_chosen = nil
-    change_state(:await_trade){
-      pbDisplayDots(_INTL("Waiting for {1} to pick a Pokémon", @partner_name))
-      connection.update do |record|
-        case (type = record.sym)
-        when :ok
-          @partner_chosen = record.int
-        when :cancel
-          @partner_chosen = -1
-        else
-          raise "Unknown message: #{type}"
+    begin
+      change_state(:await_trade){
+        pbDisplayDots(_INTL("Waiting for {1} to pick a Pokémon", @partner_name))
+        connection.update do |record|
+          case (type = record.sym)
+          when :ok
+            @partner_chosen = record.int
+          when :cancel
+            @partner_chosen = -1
+          else
+            raise CableClub::DesyncError, "Unknown message: #{type}"
+          end
         end
-      end
-      break if !@partner_chosen.nil?
-    }
+        break if !@partner_chosen.nil?
+      }
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
+    end
     trade_state = :waiting
     if @partner_chosen>=0
       $Trainer.heal_party
@@ -829,20 +843,24 @@ class CableClubScreen
   
   def await_trade_partner(connection)
     partner_confirm = nil
-    change_state(:confirm_trade){
-      pbDisplayDots(_INTL("Waiting for {1} to confirm the trade", @partner_name))
-      connection.update do |record|
-        case (type = record.sym)
-        when :ok
-          partner_confirm = true
-        when :cancel
-          partner_confirm = false
-        else
-          raise "Unknown message: #{type}"
+    begin
+      change_state(:confirm_trade){
+        pbDisplayDots(_INTL("Waiting for {1} to confirm the trade", @partner_name))
+        connection.update do |record|
+          case (type = record.sym)
+          when :ok
+            partner_confirm = true
+          when :cancel
+            partner_confirm = false
+          else
+            raise CableClub::DesyncError, "Unknown message: #{type}"
+          end
         end
-      end
-      break if !partner_confirm.nil?
-    }
+        break if !partner_confirm.nil?
+      }
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
+    end
     if partner_confirm
       do_trade(connection)
     else
@@ -859,21 +877,25 @@ class CableClubScreen
       CableClub::write_pkmn(writer, $Trainer.party[@chosen_pokemon])
     end
     resync=false
-    change_state(:resync_trade){
-      pbDisplayDots(_INTL("Waiting for {1} to resynchronize", @partner_name))
-      connection.update do |record|
-        case (type = record.sym)
-        when :update
-          @partner_party[@partner_chosen] = CableClub::parse_pkmn(record)
-          resync = true
-        else
-          raise "Unknown message: #{type}"
+    begin
+      change_state(:resync_trade){
+        pbDisplayDots(_INTL("Waiting for {1} to resynchronize", @partner_name))
+        connection.update do |record|
+          case (type = record.sym)
+          when :update
+            @partner_party[@partner_chosen] = CableClub::parse_pkmn(record)
+            resync = true
+          else
+            raise CableClub::DesyncError, "Unknown message: #{type}"
+          end
         end
-      end
-      break if resync
-    }
+        break if resync
+      }
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
+    end
   end
-  
+
   # these methods are for record mixing
   def partner_accept_record_mix(connection)
     if pbConfirm(_INTL("{1} wants to mix records!", @partner_name))
@@ -890,8 +912,12 @@ class CableClubScreen
   end
   
   def do_mix_records(connection)
-    CableClub::do_mix_records(connection) do |text|
-      pbDisplayDots(text)
+    begin
+      CableClub::do_mix_records(connection) do |text|
+        pbDisplayDots(text)
+      end
+    rescue CableClub::DesyncError => e
+      return pbRecoverFromDesync(connection, e)
     end
     pbDisplay(_INTL("Record Mixing Completed!"))
     if @client_id == 0
@@ -913,7 +939,7 @@ class TeamPreview_Scene
         # Make a string for displaying the timer
         min = @total_sec / 60
         sec = @total_sec % 60
-        @sprites["timer"].text = _ISPRINTF("<ac>{1:02d}:{2:02d}", min, sec)
+        @sprites["timer"].text = _ISPRINTF("{1:02d}:{2:02d}", min, sec) + "<r>" + _INTL("Press ESC to skip")
       end
     end
   end
@@ -995,7 +1021,7 @@ class TeamPreview_Scene
       self.update
       if Input.trigger?(Input::B) || @total_sec <= 0
         @enable_timer = false
-        @sprites["timer"].text = _ISPRINTF("<ac>00:00")
+        @sprites["timer"].text = "00:00<r>" + _INTL("Press ESC to skip")
         break
       end
     end 

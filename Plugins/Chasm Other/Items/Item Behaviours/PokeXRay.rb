@@ -66,8 +66,16 @@ ItemHandlers::UseInField.add(:POKEXRAY,proc { |item|
     next 1
 })
 
-def showPokeXRayForTrainer(chosenTrainer, chosenPartyIndex = 0)
-    trainerShowcase(chosenTrainer, npcTrainer: true, illusionsFool: true, startWithIndex: chosenPartyIndex)
+def showPokeXRayForTrainer(chosenTrainer, chosenPartyIndex = 0, revealStates: nil)
+    # Illusion-fooling swaps the real Pokémon objects in the showcase scene, which would leak
+    # which slot actually has Illusion in partial-info mode (the swap itself reveals info
+    # revealState doesn't know to hide) - so it's only safe to apply in full-info mode.
+    #
+    # Status/fainted badges are live battle state, not team info - only relevant for the
+    # online note-taking mode. Against in-game trainers the X-Ray is meant to be a
+    # comprehensive look at their whole team as brought into the fight, not a live tracker.
+    flags = revealStates ? ["showstatuses"] : []
+    trainerShowcase(chosenTrainer, npcTrainer: true, illusionsFool: revealStates.nil?, startWithIndex: chosenPartyIndex, revealStates: revealStates, flags: flags)
 end
 
 def dialogueOnUsingPokeXRay(event, trainer)

@@ -22,25 +22,9 @@ class PokeBattle_Move_AttackOneTurnLaterChooseIceFireElectricType < PokeBattle_F
     def resolutionChoice(user, replayed_choice)
         return nil if damagingMove?
         validTypes = %i[FIRE ELECTRIC ICE]
-        validTypeNames = []
-        validTypes.each do |typeID|
-            validTypeNames.push(GameData::Type.get(typeID).name)
-        end
-        if validTypes.length == 1
-            @chosenType = validTypes[0]
-        elsif validTypes.length > 1
-            if @battle.autoTesting
-                @chosenType = validTypes.sample
-            elsif !user.pbOwnedByPlayer? # Trainer AI
-                @chosenType = validTypes[0]
-            elsif !replayed_choice.nil?
-                @chosenType = replayed_choice
-            else
-                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which type should {1} launch?", user.pbThis(true)),validTypeNames)
-                @chosenType = validTypes[chosenIndex]
-                return @chosenType
-            end
-        end
+        validTypeNames = validTypes.map { |typeID| GameData::Type.get(typeID).name }
+        @chosenType = pbChooseOption(user, validTypes, validTypeNames,
+                                      _INTL("Which type should {1} launch?", user.pbThis(true)), replayed_choice)
     end
 
     def pbEffectAgainstTarget(user, target)
