@@ -332,7 +332,7 @@ class PokemonStorageScreen
 
     def pbStoreDonation(donatedPokemon)
         if pbShowCommands(_INTL("Permanently store this Pokémon in exchange for Candies?"), [_INTL("No"), _INTL("Yes")]) == 1
-            if pbShowCommands(_INTL("This Pokémon will not be retrievable after this. Are you sure?"), [_INTL("No"), _INTL("Yes")])
+            if pbShowCommands(_INTL("This Pokémon will not be retrievable after this. Are you sure?"), [_INTL("No"), _INTL("Yes")]) == 1
                 pbTakeItemsFromPokemon(donatedPokemon) if donatedPokemon.hasItem?
                 pkmnname = donatedPokemon.name
                 pbDisplay(_INTL("{1} was stored forever.", pkmnname))
