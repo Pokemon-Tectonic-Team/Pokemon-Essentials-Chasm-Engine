@@ -68,28 +68,23 @@ class PokemonStorageScreen
 
                     if !pokemonAtSlot && !heldpoke
                         if @scene.cursormode == :MultiSelect && !@multiSelectedSlots.empty?
-                            if selectedBox > -1 && @storage[selectedBox].isDonationBox?
-                                pbDisplay(_INTL("You cannot mass-move Pokémon into a Donation Box."))
-                                next
-                            else
-                                cmdMoveSelection = -1
-                                cmdTakeAllItems = -1
-                                cmdClearSelection = -1
+                            cmdMoveSelection = -1
+                            cmdTakeAllItems = -1
+                            cmdClearSelection = -1
 
-                                commands = []
-                                commands[cmdMoveSelection = commands.length] = _INTL("Move Selection")
-                                commands[cmdTakeAllItems = commands.length] = _INTL("Take All Items")
-                                commands[cmdClearSelection = commands.length] = _INTL("Clear Selection")
-                                commands.push(_INTL("Cancel"))
-                                choice = pbShowCommands(_INTL("Do what with your {1} selected Pokémon?", @multiSelectedSlots.length), commands, 0)
-                                
-                                if choice == cmdMoveSelection && cmdMoveSelection > -1
-                                    massMoveMultiSelection(selected)
-                                elsif choice == cmdTakeAllItems && cmdTakeAllItems > -1
-                                    takeItemsMultiSelection
-                                elsif choice == cmdClearSelection && cmdClearSelection > -1
-                                    clearMultiSelection
-                                end
+                            commands = []
+                            commands[cmdMoveSelection = commands.length] = _INTL("Move Selection")
+                            commands[cmdTakeAllItems = commands.length] = _INTL("Take All Items")
+                            commands[cmdClearSelection = commands.length] = _INTL("Clear Selection")
+                            commands.push(_INTL("Cancel"))
+                            choice = pbShowCommands(_INTL("Do what with your {1} selected Pokémon?", @multiSelectedSlots.length), commands, 0)
+                            
+                            if choice == cmdMoveSelection && cmdMoveSelection > -1
+                                massMoveMultiSelection(selected)
+                            elsif choice == cmdTakeAllItems && cmdTakeAllItems > -1
+                                takeItemsMultiSelection
+                            elsif choice == cmdClearSelection && cmdClearSelection > -1
+                                clearMultiSelection
                             end
                         else
                             next 
@@ -103,11 +98,11 @@ class PokemonStorageScreen
                             pbHold(selected)
                         end
                     elsif @scene.cursormode == :MultiSelect
-                        if selectedBox > -1 && @storage[selectedBox].isDonationBox?
-                            pbDisplay(_INTL("You cannot multi-select Pokémon that are in a Donation Box."))
-                            next
-                        end
                         if pokemonAtSlot
+                            if selectedBox > -1 && @storage[selectedBox].isDonationBox?
+                                pbDisplay(_INTL("You cannot multi-select Pokémon that are in a Donation Box."))
+                                next
+                            end
                             toggleMultiSelection(selected)
                         elsif @heldpkmn
                             pbPlace(selected)
@@ -335,22 +330,30 @@ class PokemonStorageScreen
         @heldpkmn = nil
     end
 
-    def pbStoreDonation(heldpokemon)
-        command = pbShowCommands(_INTL("Permanently store this Pokémon in exchange for Candies?"), [_INTL("No"), _INTL("Yes")])
-        if command == 1
-            command = pbShowCommands(_INTL("This Pokémon will not be retrievable after this. Are you sure?"), [_INTL("No"), _INTL("Yes")])
-            if command == 1
-                pbTakeItemsFromPokemon(heldpokemon) if heldpokemon.hasItem?
-                pkmnname = heldpokemon.name
-                lifetimeEXP = heldpokemon.exp - heldpokemon.growth_rate.minimum_exp_for_level(heldpokemon.obtain_level)
+    def pbStoreDonation(donatedPokemon)
+        if pbShowCommands(_INTL("Permanently store this Pokémon in exchange for Candies?"), [_INTL("No"), _INTL("Yes")]) == 1
+            if pbShowCommands(_INTL("This Pokémon will not be retrievable after this. Are you sure?"), [_INTL("No"), _INTL("Yes")])
+                pbTakeItemsFromPokemon(donatedPokemon) if donatedPokemon.hasItem?
+                pkmnname = donatedPokemon.name
                 pbDisplay(_INTL("{1} was stored forever.", pkmnname))
-                candiesFromDonating(lifetimeEXP)
+                candiesFromDonating(getEXPReimbursementAmount(donatedPokemon))
                 pbDisplay(_INTL("Bye-bye, {1}!", pkmnname))
-            else return false
+            else
+                return false
             end
-        else return false
+        else
+            return false
         end
         return true
+    end
+
+    def pbStoreMassDonation(donatedPokemonList)
+        totalEXPAmount = 0
+        donatedPokemonList.each do |donatedPokemon|
+            pbTakeItemsFromPokemon(donatedPokemon) if donatedPokemon.hasItem?
+            totalEXPAmount += getEXPReimbursementAmount(donatedPokemon)
+        end
+        candiesFromDonating(totalEXPAmount, donatedPokemonList.length > 1)
     end
 
     def clearMultiSelection
@@ -429,6 +432,15 @@ class PokemonStorageScreen
             return 
         end
 
+        massDonation = boxNumber > -1 && @storage[boxNumber].isDonationBox?
+
+        # Add extra confirmation prompts for mass donation
+        if massDonation
+            return unless pbShowCommands(_INTL("Permanently store {1} Pokémon in exchange for Candies?",@multiSelectedSlots.length), [_INTL("No"), _INTL("Yes")]) == 1
+            return unless pbShowCommands(_INTL("{1} Pokémon will not be retrievable after this. Are you sure?",@multiSelectedSlots.length), [_INTL("No"), _INTL("Yes")]) == 1
+        end
+
+        # Mass move into normal box
         pokemonToMove = []
         @multiSelectedSlots.each do |nextSlotToMove|
             movingPokemonBox = nextSlotToMove[0]
@@ -453,12 +465,26 @@ class PokemonStorageScreen
         else
             for i in slotNumber...box.maxPokemon
                 next unless box[i].nil?
-                box[i] = pokemonToMove[pokemonMoved]  
+                box[i] = pokemonToMove[pokemonMoved]
                 pokemonMoved += 1
                 break if pokemonMoved >= pokemonToMove.length
             end
             raise _INTL("ERROR! Couldn't move all Pokémon in a mass move.") if pokemonMoved != pokemonToMove.length
-            resultMessage = _INTL("{1} Pokémon have been mass moved to {2}.", pokemonMoved, box.getName(boxNumber))
+            
+            pbStoreMassDonation(pokemonToMove) if massDonation
+            if massDonation
+                if pokemonMoved > 1
+                    resultMessage = _INTL("{1} Pokémon have been mass donated to {2}.", pokemonMoved, box.getName(boxNumber))
+                else
+                    resultMessage = _INTL("{1} Pokémon has been mass donated to {2}.", pokemonMoved, box.getName(boxNumber))
+                end
+            else
+                if pokemonMoved > 1
+                    resultMessage = _INTL("{1} Pokémon have been mass moved to {2}.", pokemonMoved, box.getName(boxNumber))
+                else
+                    resultMessage = _INTL("{1} Pokémon have been mass moved to {2}.", pokemonMoved, box.getName(boxNumber))
+                end
+            end
         end
 
         clearMultiSelection
@@ -728,22 +754,39 @@ class PokemonStorageScreen
 
     CANDY_EXCHANGE_EFFICIENCY = 1.0
 
-    def candiesFromDonating(lifetimeEXP)
+    def getEXPReimbursementAmount(donatedPokemon)
+        lifetimeEXP = donatedPokemon.exp - donatedPokemon.growth_rate.minimum_exp_for_level(donatedPokemon.obtain_level)
         lifetimeEXP = (lifetimeEXP * CANDY_EXCHANGE_EFFICIENCY).floor
-        if lifetimeEXP > 0
-            candyAmounts = calculateCandySplitForEXP(lifetimeEXP)
+        return lifetimeEXP
+    end
+
+    def candiesFromDonating(expAmount, plural = false)
+        if expAmount > 0
+            candyAmounts = calculateCandySplitForEXP(expAmount)
             candySum = candyAmounts.sum
             if candySum == 0
-                pbDisplay(_INTL("It didn't earn enough XP for you to earn any candies back."))
+                if plural
+                    pbDisplay(_INTL("They didn't earn enough XP for you to earn any candies back."))
+                else
+                    pbDisplay(_INTL("It didn't earn enough XP for you to earn any candies back."))
+                end
             else
                 percentile = (CANDY_EXCHANGE_EFFICIENCY * 100).to_i
-                pbDisplay(_INTL("You are reimbursed for {1} percent of the EXP it earned.", percentile))
+                if plural
+                    pbDisplay(_INTL("You are reimbursed for {1} percent of the EXP they earned.", percentile))
+                else
+                    pbDisplay(_INTL("You are reimbursed for {1} percent of the EXP it earned.", percentile))
+                end
                 EXP_CANDY_IDS.each_with_index do |expCandyID, index|
                     pbReceiveItem(expCandyID, candyAmounts[index]) if candyAmounts[index] > 0
                 end                
             end
         else
-            pbDisplay(_INTL("It never gained any EXP, so no candies are awarded."))
+            if plural
+                pbDisplay(_INTL("They never gained any EXP, so no candies are awarded."))
+            else
+                pbDisplay(_INTL("It never gained any EXP, so no candies are awarded."))
+            end
         end
     end
 
