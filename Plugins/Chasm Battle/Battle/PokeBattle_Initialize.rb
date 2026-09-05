@@ -58,6 +58,7 @@ class PokeBattle_Battle
     attr_accessor :bossBattle
     attr_accessor :autoTesting
     attr_accessor :autoTestingIndex
+    attr_accessor :autoTestingRandomization
     attr_accessor :honorAura
     attr_accessor :expStored
     attr_reader	  :curses
@@ -158,6 +159,7 @@ class PokeBattle_Battle
         @bossBattle		   = false
         @autoTesting	   = false
         @autoTestingIndex = 1
+        @autoTestingRandomization = false
         @commandPhasesThisRound = 0
         @honorAura = false
         @curses = []
@@ -194,7 +196,10 @@ class PokeBattle_Battle
         end
 
         # System for learning the player's moves
-        @knownMoves = {}
+        # Three-array system: initial guess, definite knowledge, current best guess
+        @initialMoveGuess = {}
+        @definiteMoveKnowledge = {}
+        @currentBestMoveGuess = {}
         echoln("===PARTY 1 KNOWN MOVES===")
         @party1.each do |pokemon|
             initializeKnownMoves(pokemon)
@@ -230,15 +235,75 @@ class PokeBattle_Battle
     end
 
     def initializeKnownMoves(pokemon)
-        knownMovesArray = []
-        @knownMoves[pokemon.personalID] = knownMovesArray
-        pokemon.moves.each do |move|
-            next unless pokemon.boss? || aiAutoKnowsMove?(move,pokemon)
-            knownMovesArray.push(move.id)
-            unless is_online? # Prevent debug cheating online
-                echoln("Pokemon #{pokemon.name}'s move #{move.name} is known by the AI")
+        # Initialize the three arrays for this Pokemon
+        @definiteMoveKnowledge[pokemon.personalID] = []
+
+        # Build initial guess using signature > strongest STABs > highest-level moves
+        initialGuess = buildInitialMoveGuess(pokemon)
+        @initialMoveGuess[pokemon.personalID] = initialGuess
+
+        # Current best guess starts as a copy of initial guess
+        @currentBestMoveGuess[pokemon.personalID] = initialGuess.clone
+
+        unless is_online?
+            echoln("Pokemon #{pokemon.name}'s initial move guess: #{initialGuess.map { |id| getMoveName(id) }.join(', ')}")
+        end
+    end
+
+    # Build the initial move guess array: Signature > Strongest STABs > Remaining highest-level moves
+    def buildInitialMoveGuess(pokemon, use_other_moves = false)
+        moveset = pokemon.getMoveList # intentionally gets only level moves
+        signature_moves = []
+        stab_moves_by_type = {} # Track one STAB move per type
+        other_moves = []
+
+        # Categorize all learnable moves (already sorted by level, low to high)
+        moveset.each do |m|
+            next if m[0] > pokemon.level # Only moves learnable at current level
+            moveID = m[1]
+            moveData = GameData::Move.get(moveID)
+
+            if moveData.is_signature?
+                signature_moves.push(moveID)
+            elsif pokemon.likelyHasSTAB?(moveData.type)
+                # Keep the highest-level STAB move of each type (overwrite earlier ones)
+                stab_moves_by_type[moveData.type] = moveID
+            else
+                other_moves.push(moveID)
             end
         end
+
+        # Build the initial guess array (max 4 moves)
+        guess = []
+
+        # Priority 1: All signature moves
+        guess.concat(signature_moves)
+
+        # Priority 2: One STAB move per type (highest level for each type), skipping types already
+        # covered by a damaging signature move (a status signature doesn't make a STAB redundant)
+        signature_damaging_types = signature_moves.filter_map { |id|
+            data = GameData::Move.get(id)
+            data.type unless data.category == 2
+        }.uniq
+        remaining_slots = 4 - guess.length
+        if remaining_slots > 0
+            stab_moves = stab_moves_by_type.reject { |type, _| signature_damaging_types.include?(type) }.values
+            guess.concat(stab_moves.take(remaining_slots))
+        end
+
+        # Priority 3: Highest-level other moves (take from the end)
+        # Optional, may be reasonable to leave blank instead of making random guesses
+        if use_other_moves
+            remaining_slots = 4 - guess.length
+            if remaining_slots > 0
+                guess.concat(other_moves.last(remaining_slots))
+            end
+        end
+
+        # Ensure we have no more than 4 moves (theoretically possible if many signature moves)
+        guess = guess.take(4)
+
+        return guess
     end
 
     def initializeKnownItems(pokemon)

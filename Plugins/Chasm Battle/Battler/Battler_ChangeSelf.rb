@@ -651,6 +651,7 @@ class PokeBattle_Battler
             @effects[effect] = value if data.critical_rate_buff?
         end
         @moves.clear
+        @battle.aiTransformed(self)
         target.moves.each_with_index do |m, i|
             @moves[i] = PokeBattle_Move.from_pokemon_move(@battle, Pokemon::Move.new(m.id))
             aiSeesMove(@moves[i])
