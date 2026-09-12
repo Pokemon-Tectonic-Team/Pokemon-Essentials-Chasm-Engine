@@ -49237,11 +49237,11 @@ The name to give the map if it's missing in MapInfos.rxdata.
 The entry {1} is required in {2} section 0.
 The entry {1} is required in {2} section 0.
 Physical
-Physical
+Físico
 Special
-Special
+Especial
 Adaptive
-Adaptive
+Misto
 Status
 Status
 Bite
@@ -49675,37 +49675,37 @@ Ensopado
 All
 Tudo
 Each
-Each
+Tudo
 One
-One
+Um
 User
-User
+Você
 Error
-Error
+Erro
 Near Ally
-Near Ally
+Aliado Próximo
 User or Near Ally
-User or Near Ally
+Você ou Aliado Próx.
 User and Allies
-User and Allies
+Você e Aliados
 Us
-Us
+Nós
 Near Foe
-Near Foe
+Inimigo Próx.
 Random Near Foe
-Random Near Foe
+Inimigo Próx. Aleat.
 Random
-Random
+Aleatório
 Closest Near Foe
-Closest Near Foe
+Inimigo Mais Próx.
 Closer
-Closer
+Adjac.
 All Near Foes
-All Near Foes
+Todos Os Inimigos Próx.
 Foe
-Foe
+Inim.
 All Foes
-All Foes
+Todos os Inimigos
 Near Other
 Near Other
 All Near Others
@@ -49723,7 +49723,7 @@ Both Sides
 User Or Near Other
 User Or Near Other
 Ally
-Ally
+Amigo
 User Or Other
 User Or Other
 Box {1}
@@ -49971,21 +49971,21 @@ Are you sure you want {1} to forget {2}?
 Success! {1} forgot {2} completely.
 Success! {1} forgot {2} completely.
 TYPE
-TYPE
+TIPO
 CATEGORY
-CATEGORY
+CATEG.
 POWER
-POWER
+PODER
 ACC
-ACC
+PREC.
 PP
 PP
 TAG
-TAG
+ETQ
 PRIORITY
-PRIORITY
+PRIORID.
 TARGET
-TARGET
+ALVOS
 {1}/{2}
 {1}/{2}
 Mystery Gift
@@ -52285,63 +52285,63 @@ storage box {1}
 \PN received a MasterDex!
 \PN received a MasterDex!
 at level {1}
-at level {1}
+no nível {1}
 at level {1} if it's male
-at level {1} if it's male
+no nível {1} se for macho
 at level {1} if it's female
-at level {1} if it's female
+no nível {1} se for fêmea
 at level {1} during the day
-at level {1} during the day
+no nível {1} durante o dia
 at level {1} during nighttime
-at level {1} during nighttime
+no nível {1} durante a noite
 at level {1} while raining
-at level {1} while raining
+no nível {1} durate a chuva
 at level {1} while a dark type is in the party
-at level {1} while a dark type is in the party
+no nível {1} enquanto um tipo sombrio está na equipe
 at level {1} if it has more attack than defense
-at level {1} if it has more attack than defense
+no nível {1} se tem mais ataque que defesa
 at level {1} if it has attack equal to defense
-at level {1} if it has attack equal to defense
+no nível {1} se ataque e defesa forem iguais
 at level {1} if it has more defense than attack
-at level {1} if it has more defense than attack
+no nível {1} se tem mais defesa que ataque
 at level {1} half of the time
-at level {1} half of the time
+no nível {1} metade das vezes
 at level {1} the other half of the time
-at level {1} the other half of the time
+no nível {1} na outra metade das vezes
 at level {1} if it has the first of its possible abilities
-at level {1} if it has the first of its possible abilities
+no nível {1} se tiver a primeira de suas habilidades possíveis
 at level {1} if it has the second of its possible abilities
-at level {1} if it has the second of its possible abilities
+no nível {1} se tiver a segunda de suas habilidades possíveis
 when leveled up while it has high happiness
-when leveled up while it has high happiness
+se sobe de nível com felicidade alta
 when leveled up while it has maximum happiness
-when leveled up while it has maximum happiness
+se sobe de nível com felicidade maximizada
 when leveled up while it has maximum beauty
-when leveled up while it has maximum beauty
+quando sobe de nível com beleza maximizada
 when leveled up while it knows the move {1}
-when leveled up while it knows the move {1}
+quando sobe de nível sabendo o movimento {1}
 when leveled up while it knows a move of the {1} type
-when leveled up while it knows a move of the {1} type
+quando sobe de nível sabendo um movimento do tipo {1}
 when leveled up near a special location
-when leveled up near a special location
+quando sobe de nível perto de uma localização especial
 by using a {1}
-by using a {1}
+usando um(a) {1}
 by using a {1} if it's male
-by using a {1} if it's male
+usando um(a) {1} se for macho
 by using a {1} if it's female
-by using a {1} if it's female
+usando um(a) {1} se for fêmea
 when traded
-when traded
+quando trocado
 when traded holding an {1}
-when traded holding an {1}
+quando trocado segurando um(a) {1}
 when leveled up while a {1} is also in the party
-when leveled up while a {1} is also in the party
+quando sobe de nível enquanto um {1} também está na equipe
 also if you have an empty Poké Ball and party slot
-also if you have an empty Poké Ball and party slot
+também se você tiver uma Poké Bola e um espaço na equipe vazios
 at level {1} if you spend an {2}
-at level {1} if you spend an {2}
+no nível {1} se você gastar um(a) {2}
 via a method the programmer was too lazy to describe
-via a method the programmer was too lazy to describe
+através de um método que o programador estava com muita preguiça para descrever
 Sparse Grass
 Sparse Grass
 Tall Grass
@@ -52367,39 +52367,39 @@ Surfing
 Water Grass
 Water Grass
 ABILITIES
-ABILITIES
+HABILIDADES
 STATS
-STATS
+ATRIBUTOS
 DEF. MATCHUPS
-DEF. MATCHUPS
+VANTAGENS DEF.
 ATK. MATCHUPS
-ATK. MATCHUPS
+VANTAGENS ATK.
 LEVEL UP MOVES
-LEVEL UP MOVES
+MOV. POR NÍVEL
 OTHER MOVES
-OTHER MOVES
+OUTROS MOV.
 EVOLUTIONS
-EVOLUTIONS
+EVOLUÇÕES
 AREA
-AREA
+ÁREA
 FORMS
-FORMS
+FORMAS
 ANALYSIS
 ANALYSIS
 Male
-Male
+Macho
 Female
-Female
+Fêmea
 One Form
-One Form
+Forma Normal
 {1}{2} {3}
 {1}{2} {3}
 {1} Pokémon
 {1} Pokémon
 Ability 1
-Ability 1
+Habilid. 1
 Ability 2
-Ability 2
+Habilid. 2
 7/8 Male
 7/8 Male
 3/4 Male
@@ -52425,9 +52425,9 @@ Peso
 Gender Rate
 Proporç. Gên.
 Catch Dif.
-Catch Dif.
+Dif. Captura
 Exp. Grant
-Exp. Grant
+Ganho EXP.
 {1:d}'{2:02d}"
 {1:d}'{2:02d}"
 {1:4.1f} lbs.
@@ -52441,53 +52441,53 @@ Exp. Grant
 Wild Items
 Itens Equipáveis
 Weak:
-Weak:
+Fraco:
 Resist:
-Resist:
+Resist.:
 Immune:
-Immune:
+Imune:
 Super:
 Super:
 Not Very:
-Not Very:
+Pouco:
 No Effect:
-No Effect:
+Inefetivo:
 E
 E
 <u>Pre-Evolutions</u>
-<u>Pre-Evolutions</u>
+<u>Pré-Evoluções</u>
 <b>{1}</b> {2}
 <b>{1}</b> {2}
 <u>Evolutions</u>
-<u>Evolutions</u>
+<u>Evoluções</u>
 (through {1})
-(through {1})
+(através de {1})
 Unknown Map
 Unknown Map
 {1}: {2} ({3}\%)
 {1}: {2} ({3}\%)
 <u>Encounterable Areas for {1}</u>
-<u>Encounterable Areas for {1}</u>
+<u>Áreas de ocorrência de {1}</u>
 <u>Encounter Areas for Pre-Evolutions</u>
-<u>Encounter Areas for Pre-Evolutions</u>
+<u>Áreas de ocorrência de Pré-Evoluções</u>
 SPECIAL/D to show map
-SPECIAL/D to show map
+ESP./D para mostrar mapa
 Area unknown
-Area unknown
+Área desconhecida
 SPECIAL/D to hide map
-SPECIAL/D to hide map
+ESP./D para esconder mapa
 SPECIAL/D to
-SPECIAL/D to
+ESP./D para
 hide shinies
-hide shinies
+ver normal
 show shinies
-show shinies
+ver shiny
 Moves now sorted by name.
-Moves now sorted by name.
+Movimentos ordenados por nome.
 Moves now sorted by base power.
-Moves now sorted by base power.
+Movimentos ordenados por Poder Base.
 Moves now sorted by type.
-Moves now sorted by type.
+Movimentos ordenados por tipo.
 Analysis of {1}
 Analysis of {1}
 Use count: {1}, {2}
