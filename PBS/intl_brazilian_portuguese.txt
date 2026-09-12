@@ -52699,19 +52699,19 @@ Encontrado No Mapa
 Legendary
 Lendário
 Moveset Noncomfority (D)
-Inconformidade De Mov. (D)
+Moveset Noncomfority (D)
 No Monument Uses (D)
-Não Usado No Monumento (D)
+No Monument Uses (D)
 One Ability (D)
-Uma Habilidade (D)
+One Ability (D)
 Signature Move
 Movimento-Assinatura
 Signature Ability
 Habilidade-Assinatura
 Signature (D)
-Assinatura
+Signature (D)
 Avatar Data (D)
-Dados De Avatar (D)
+Avatar Data (D)
 Generation
 Geração
 Multiple Forms
