@@ -49645,7 +49645,7 @@ Defesa Especial
 SpDef
 DefEsp
 Speed
-Velocidade
+Velocid.
 Spd
 Vel
 Accuracy
