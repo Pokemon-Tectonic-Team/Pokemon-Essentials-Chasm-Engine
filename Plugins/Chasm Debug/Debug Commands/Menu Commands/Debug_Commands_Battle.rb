@@ -244,7 +244,30 @@ DebugMenuCommands.register("testwildbattle", {
     }
   })
   
-  DebugMenuCommands.register("encounterversion", {
+  DebugMenuCommands.register("aibenchmark", {
+    "parent"      => "battlemenu",
+    "name"        => _INTL("AI Heuristic Benchmark"),
+    "description" => _INTL("Run simulated battles to compare move-prediction heuristics."),
+    "effect"      => proc {
+        heuristic_names = AIBenchmark::HEURISTICS.keys.map(&:to_s)
+        cmd = pbShowCommands(nil, heuristic_names.map { |n| "Test: #{n}" }, -1)
+        next if cmd < 0
+        test_key = heuristic_names[cmd].to_sym
+        cmd2 = pbShowCommands(nil, heuristic_names.map { |n| "Baseline: #{n}" }, -1)
+        next if cmd2 < 0
+        baseline_key = heuristic_names[cmd2].to_sym
+        params = ChooseNumberParams.new
+        params.setRange(10, 1000)
+        params.setInitialValue(100)
+        params.setCancelValue(0)
+        n = pbMessageChooseNumber(_INTL("How many battles?"), params)
+        next if n <= 0
+        pbRunAIBenchmark(test_key, baseline_key, n_battles: n)
+        next false
+    }
+  })
+
+DebugMenuCommands.register("encounterversion", {
     "parent"      => "battlemenu",
     "name"        => _INTL("Set Encounters Version"),
     "description" => _INTL("Choose which version of wild encounters should be used."),

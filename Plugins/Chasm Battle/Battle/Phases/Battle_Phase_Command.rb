@@ -396,7 +396,7 @@ class PokeBattle_Battle
         # NOTE: Doing some things (e.g. running, throwing a Poké Ball) takes up all
         #       your actions in a round.
 
-        changesForAutoTesting if @autoTesting && @turnCount == 0
+        changesForAutoTesting if @autoTesting && @autoTestingRandomization && @turnCount == 0
 
         unless isPlayer
             @battleAI.resetPrecalculations
@@ -449,7 +449,7 @@ class PokeBattle_Battle
             next unless pbCanShowCommands?(idxBattler) # Action is forced, can't choose one
             # AI controls this battler
             if @controlPlayer || !pbOwnedByPlayer?(idxBattler) || battler.effectActive?(:AutoPilot)
-                if @autoTesting
+                if @autoTesting && @autoTestingRandomization
                     chooseAutoTesting(idxBattler)
                     next
                 end
@@ -480,7 +480,11 @@ class PokeBattle_Battle
             actioned.push(idxBattler)
 
             if @autoTesting
-                chooseAutoTesting(idxBattler)
+                if @autoTestingRandomization
+                    chooseAutoTesting(idxBattler)
+                else
+                    @battleAI.pbDefaultChooseEnemyCommand(idxBattler)
+                end
                 next
             end
 
