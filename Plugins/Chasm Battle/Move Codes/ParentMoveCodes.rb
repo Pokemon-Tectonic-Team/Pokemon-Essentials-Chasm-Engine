@@ -667,6 +667,13 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
     def shouldHighlight?(user, _target)
         return skipChargingTurn?(user)
     end
+
+    def dealsDamageThisTurnAI?(user)
+        return true if user.effectActive?(:TwoTurnAttack)
+        return true if skipChargingTurn?(user)
+        return true if user.hasActiveItemAI?(:POWERHERB)
+        return false
+    end
 end
 
 #===============================================================================
