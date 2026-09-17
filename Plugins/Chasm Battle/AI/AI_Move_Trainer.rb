@@ -207,13 +207,13 @@ class PokeBattle_AI
         isSlowerDead3 = false
         isFasterDead3 = false
         if @precalculatedChoices.key?(scoringKey)
-            precalcedScore,precalcedKillInfo = @precalculatedChoices[scoringKey]
+            precalcedScore,precalcedKillInfo,precalcedIsSlowerDead,precalcedIsFasterDead = @precalculatedChoices[scoringKey]
             if precalcedKillInfo
                 echoln("[MOVE SCORING] Score for #{user.pbThis(true)}'s #{move.id} against target #{target.pbThis(true)} already calced this round: #{precalcedScore} (will faint the target)")
             else
                 echoln("[MOVE SCORING] Score for #{user.pbThis(true)}'s #{move.id} against target #{target.pbThis(true)} already calced this round: #{precalcedScore}")
             end
-            return precalcedScore,precalcedKillInfo
+            return precalcedScore,precalcedKillInfo,precalcedIsSlowerDead,precalcedIsFasterDead
         end
 
         echoln("[MOVE SCORING] Scoring #{user.pbThis(true)}'s #{move.id} against target #{target.pbThis(true)}:")
@@ -408,7 +408,7 @@ class PokeBattle_AI
             killInfo = nil
         end
         
-        @precalculatedChoices[scoringKey] = [score,killInfo]
+        @precalculatedChoices[scoringKey] = [score,killInfo,isSlowerDead3,isFasterDead3]
         return score,killInfo,isSlowerDead3,isFasterDead3
     end
 
