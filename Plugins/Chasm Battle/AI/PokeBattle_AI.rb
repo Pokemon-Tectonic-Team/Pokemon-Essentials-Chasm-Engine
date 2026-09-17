@@ -81,7 +81,7 @@ class PokeBattle_AI
         return [:None, 0, nil, -1] if bestMoveChoices.empty?
         switchChoice = pbDetermineSwitch(idxBattler)
         return [:SwitchOut, switchChoice, -1] if switchChoice > -1
-        bestMoveChoices.sort_by! { |choice| -choice[1] }
+        bestMoveChoices.stable_sort_by! { |choice| -choice[1] }
         moveChoice = bestMoveChoices[0]
         moveIndex = moveChoice[0]
         return [:UseMove,moveIndex,user.getMoves[moveIndex],moveChoice[2]]

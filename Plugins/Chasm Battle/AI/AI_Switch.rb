@@ -314,7 +314,7 @@ class PokeBattle_AI
             switchScore = getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, safeSwitch,urgency)
             list.push([partyIndex, switchScore])
         end
-        list.sort_by! { |entry| entry[1].nil? ? 99_999 : -entry[1] }
+        list.stable_sort_by! { |entry| entry[1].nil? ? 99_999 : -entry[1] }
         return list
     end
 
