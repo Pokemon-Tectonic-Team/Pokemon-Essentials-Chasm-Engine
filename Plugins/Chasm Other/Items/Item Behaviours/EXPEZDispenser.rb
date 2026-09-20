@@ -12,7 +12,6 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 	end
 
 	current_lvl = pkmn.level
-	current_exp = pkmn.exp
 	level_cap = LEVEL_CAPS_USED ? getLevelCap : growth_rate.max_level
 
 	# Do nothing if the pokemon's already at the level cap
@@ -21,7 +20,7 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 		next false
 	end
 
-	expAfterAllFed = pkmn.growth_rate.add_exp(current_exp, $PokemonGlobal.expJAR)
+	expAfterAllFed = pkmn.growth_rate.add_exp(pkmn.exp, $PokemonGlobal.expJAR)
 	highestLevelForStoredEXP = pkmn.growth_rate.level_from_exp(expAfterAllFed)
 
 	# Do nothing if the EXP-EZ Dispenser is empty
@@ -40,10 +39,20 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 	targetLevel = pbMessageChooseNumber(question, params)
 	next true if targetLevel == 0
 
+	dumpEXPDispenserIntoPokemon(pkmn, targetLevel, scene)
+
+	next true
+})
+
+def dumpEXPDispenserIntoPokemon(pkmn, targetLevel, scene)
+	current_lvl = pkmn.level
+	level_cap = LEVEL_CAPS_USED ? getLevelCap : growth_rate.max_level
+
 	# Max XP and level
 	maxxp = pkmn.growth_rate.minimum_exp_for_level(targetLevel)
 	
-	expAmount = [maxxp - current_exp, $PokemonGlobal.expJAR].min
+	expAmount = [maxxp - pkmn.exp, $PokemonGlobal.expJAR].min
+	return false if expAmount == 0
 
 	# Apply the new EXP, accounting for the level cap
 	$PokemonGlobal.expJAR -= expAmount
@@ -63,7 +72,7 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 	scene&.pbRefresh
 
 	# Leave if didn't level up
-	next true if new_level == current_lvl
+	return true if new_level == current_lvl
 
 	# Show messages surrounding leveling up
 	showPokemonChangesWindow(pkmn) do
@@ -101,8 +110,8 @@ ItemHandlers::UseOnPokemon.add(:EXPEZDISPENSER,proc { |item,pkmn,scene|
 		break unless evolutionSuccess
 	end
 
-	next true
-})
+	return true
+end
 
 def printDispenserEXPGrantMessage(pkmn, expAmount, level_cap: nil, scene: nil)
 	if pkmn.level == level_cap

@@ -71,10 +71,12 @@ class PokemonStorageScreen
                             cmdMoveSelection = -1
                             cmdTakeAllItems = -1
                             cmdClearSelection = -1
+                            cmdDumpEXPDispenser = -1
 
                             commands = []
                             commands[cmdMoveSelection = commands.length] = _INTL("Move Selection")
                             commands[cmdTakeAllItems = commands.length] = _INTL("Take All Items")
+                            commands[cmdDumpEXPDispenser = commands.length] = _INTL("Mass Feed EXP") if pbHasItem?(:EXPEZDISPENSER)
                             commands[cmdClearSelection = commands.length] = _INTL("Clear Selection")
                             commands.push(_INTL("Cancel"))
                             choice = pbShowCommands(_INTL("Do what with your {1} selected Pokémon?", @multiSelectedSlots.length), commands, 0)
@@ -83,6 +85,8 @@ class PokemonStorageScreen
                                 massMoveMultiSelection(selected)
                             elsif choice == cmdTakeAllItems && cmdTakeAllItems > -1
                                 takeItemsMultiSelection
+                            elsif choice == cmdDumpEXPDispenser && cmdDumpEXPDispenser > -1
+                                dumpEXPDispenserMultiSelection
                             elsif choice == cmdClearSelection && cmdClearSelection > -1
                                 clearMultiSelection
                             end
@@ -516,6 +520,34 @@ class PokemonStorageScreen
         @scene.pbHardRefresh
     end
 
+    def dumpEXPDispenserMultiSelection
+        expAmountBefore = $PokemonGlobal.expJAR
+        level_cap = LEVEL_CAPS_USED ? getLevelCap : growth_rate.max_level
+        pokemonLeveled = 0
+        @multiSelectedSlots.each do |nextSlot|
+            selectedPokemonBox = nextSlot[0]
+            selectedPokemonSlot = nextSlot[1]
+
+            if selectedPokemonBox == -1
+                selectedPokemon = @storage.party[selectedPokemonSlot]
+            else
+                selectedPokemon = @storage.boxes[selectedPokemonBox][selectedPokemonSlot]
+            end
+
+            next if selectedPokemon.nil?
+
+            next unless dumpEXPDispenserIntoPokemon(selectedPokemon, level_cap, @scene)
+            @scene.pbHardRefresh
+            pokemonLeveled += 1
+        end
+        expSpent = expAmountBefore - $PokemonGlobal.expJAR
+        if pokemonLeveled == 0
+            @scene.pbDisplay(_INTL("No selected Pokemon can receive any EXP."))
+        else
+            @scene.pbDisplay(_INTL("{1} Pokemon were fed a total of {2} EXP!",pokemonLeveled,separate_comma(expSpent)))
+        end
+    end
+
     def pbChangeLock(boxNumber)
         box = @storage.boxes[boxNumber]
         if box.isLocked?
@@ -836,6 +868,7 @@ class PokemonStorageScreen
         sortAllCommand = -1
         visitEstateCommand = -1
         swapBoxCommand = -1
+        dumpEXPDispenserCommand = -1
         cancelCommand = -1
         command = 0
 
@@ -858,6 +891,9 @@ class PokemonStorageScreen
                 if defined?(PokEstate) && !getGlobalSwitch(ESTATE_DISABLED_SWITCH)
                     commands[visitEstateCommand = commands.length] = _INTL("Visit PokÉstate")
                 end
+            end
+            if pbHasItem?(:EXPEZDISPENSER) && !(selectionMode || donationBox)
+                commands[dumpEXPDispenserCommand = commands.length]      = _INTL("Mass Feed EXP")
             end
             commands[cancelCommand = commands.length]       = _INTL("Cancel")
             command = pbShowCommands(_INTL("What do you want to do?"), commands, command)
@@ -961,10 +997,38 @@ class PokemonStorageScreen
                 else
                     @scene.pbDisplay(_INTL("{1} boxes were sorted!", boxesSorted))
                 end
+            elsif command == dumpEXPDispenserCommand && dumpEXPDispenserCommand > -1
+                if $PokemonGlobal.expJAR <= 0
+                    pbPlayBuzzerSE
+                    @scene.pbDisplay(_INTL("There is no EXP stored in the {1}!",getItemName(:EXPEZDISPENSER)))
+                    next
+                end
+                if pbConfirm(_INTL("Mass feed this box of Pokemon from the {1}?",getItemName(:EXPEZDISPENSER)))
+                    pbPlayDecisionSE
+                    dumpEXPDispenserIntoBox(@storage.currentBox)
+                end
             end
             break
         end
         return false
+    end
+
+    def dumpEXPDispenserIntoBox(boxNumber)
+        expAmountBefore = $PokemonGlobal.expJAR
+        level_cap = LEVEL_CAPS_USED ? getLevelCap : growth_rate.max_level
+        pokemonLeveled = 0
+        @storage.boxes[boxNumber].each do |pkmn|
+            next if pkmn.nil?
+            next unless dumpEXPDispenserIntoPokemon(pkmn, level_cap, @scene)
+            @scene.pbHardRefresh
+            pokemonLeveled += 1
+        end
+        expSpent = expAmountBefore - $PokemonGlobal.expJAR
+        if pokemonLeveled == 0
+            @scene.pbDisplay(_INTL("No Pokemon in this box can receive any EXP."))
+        else
+            @scene.pbDisplay(_INTL("{1} Pokemon were fed a total of {2} EXP!",pokemonLeveled,separate_comma(expSpent)))
+        end
     end
 
     def pbChoosePokemon(_party = nil)
