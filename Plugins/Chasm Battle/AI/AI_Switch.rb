@@ -451,6 +451,9 @@ class PokeBattle_AI
             if @precalculatedDefensiveMatchup.key?(scoringKey)
                 matchup, killInfo = @precalculatedDefensiveMatchup[scoringKey]
             else
+                # Temporarily cache a value to avoid a loop if we recursively evaluate this move
+                # Will be overwritten with the actual value after evaluation
+                @precalculatedDefensiveMatchup[scoringKey] = [0, nil]
                 matchup, killInfo = rateDefensiveMatchup(battler, opposingBattler)
                 @precalculatedDefensiveMatchup[scoringKey] = [matchup, killInfo]
             end
