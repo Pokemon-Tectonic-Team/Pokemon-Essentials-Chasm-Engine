@@ -413,7 +413,7 @@ class PokeBattle_Battle
         when :IceAge      then pbDisplay(_INTL("An ice age is here."))
         end
         # Change avatars for auto-testing
-        if @autoTesting
+        if @autoTesting && @autoTestingRandomization
             eachBattler do |b|
                 next unless b.boss?
                 loop do
