@@ -86,4 +86,15 @@ class PokeBattle_AI
         moveIndex = moveChoice[0]
         return [:UseMove,moveIndex,user.getMoves[moveIndex],moveChoice[2]]
     end
+
+    def safePivotMove?(user, move, target)
+        return false unless move.switchOutMove?
+        # Pivot is safe if Player can't move due to Recharge/Truant/etc.
+        return true unless target.canActThisTurn?
+
+        # Pivot is safe if AI moves first
+        userSpeed = user.pbSpeed(true, 0, afterSwitching: true, move: move)
+        targetSpeed = target.pbSpeed(true, 0, afterSwitching: true, move: nil)
+        return userSpeed > targetSpeed
+    end
 end
