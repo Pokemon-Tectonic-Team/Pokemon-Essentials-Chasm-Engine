@@ -450,6 +450,9 @@ class PokeBattle_AI
             scoringKey = [battler.personalID, opposingBattler.personalID]
             if @precalculatedDefensiveMatchup.key?(scoringKey)
                 matchup, killInfo = @precalculatedDefensiveMatchup[scoringKey]
+                if matchup == 0 && killInfo.nil?
+                    echoln("[DEFENSIVE MATCHUP] #{battler.pbThis} vs #{opposingBattler.pbThis(true)} is evaluated recursively, using placeholder value")  
+                end
             else
                 # Temporarily cache a value to avoid a loop if we recursively evaluate this move
                 # Will be overwritten with the actual value after evaluation
