@@ -320,6 +320,7 @@ class PokeBattle_AI
 
             # if the estimate, with a safe margin, shows that there's no chance the switch is worthwhile, skip the expensive full evaluation
             if estimate && estimate + FUTILITY_MARGIN < futilityThreshold
+                echoln("[SWITCH SCORING] Rejecting #{pkmn.pbThis} as a futile switch (estimated score: #{estimate})")
                 next
             end
 
