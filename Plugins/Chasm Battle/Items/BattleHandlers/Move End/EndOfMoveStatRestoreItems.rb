@@ -38,9 +38,10 @@ BattleHandlers::EndOfMoveStatRestoreItem.add(:BLACKHERB,
             battle.pbDisplay(_INTL("{1} weaponized its stat changes using its {2}!",
                battler.pbThis, itemName))
         end
+        battler.pbHeldItemTriggered(item, !forced, false)
         battler.eachOpposing do |oppBattler|
             oppBattler.pbLowerMultipleStatSteps(statDown,battler,item: item)
         end
-        next true
+        next false
     }
 )
