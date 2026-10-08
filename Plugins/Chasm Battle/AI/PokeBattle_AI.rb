@@ -89,9 +89,7 @@ class PokeBattle_AI
 
     def safePivotMove?(user, move, target)
         return false unless move.switchOutMove?
-        if aiPredictsFailure?(move, user, target)
-            return false
-        end
+        return false if aiPredictsFailure?(move, user, target)
         # Pivot is safe if Player can't move due to Recharge/Truant/etc.
         return true unless target.canActThisTurn?
 
