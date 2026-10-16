@@ -43,7 +43,7 @@ class PokeBattle_Move_PoisonTargetLowerTargetSpd4 < PokeBattle_Move
     end
 
     def getTargetAffectingEffectScore(user, target)
-        score = getMultiStatDownEffectScore([:SPEED, 4], user, target)
+        score = getMultiStatDownEffectScore([:SPEED,4],user,target)
         score += getPoisonEffectScore(user, target)
         return score
     end

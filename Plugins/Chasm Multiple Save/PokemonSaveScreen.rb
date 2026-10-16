@@ -29,9 +29,11 @@ class PokemonSaveScreen
         # Count save file
         count = FileSave.count
         # Start
+        saveCommand = -1
         mainMenuCommand = -1
         deleteCommand = -1
         quitCommand = -1
+        cancelCommand = -1
         returnCommand = -1
         cmds = []
         cmds[saveCommand = cmds.length] = _INTL("Just Save")
@@ -39,18 +41,18 @@ class PokemonSaveScreen
         cmds[quitCommand = cmds.length] = _INTL("Save & Quit to Desktop") if quitting
         cmds[returnCommand = cmds.length] = _INTL("Quit to Menu") if quitting
         cmds[deleteCommand = cmds.length] = _INTL("Delete") if deleting
-        cmds[cmds.length] = _INTL("Cancel")
+        cmds[cancelCommand = cmds.length] = _INTL("Cancel")
         saveChoice = pbCustomMessageForSave(_INTL("What do you want to do?"), cmds, cmds.length)
         if mainMenuCommand >= 0 && saveChoice == mainMenuCommand
-            return 1 if inGameSaveScreen(count)
+          return 1 if inGameSaveScreen(count)
         elsif quitCommand >= 0 && saveChoice == quitCommand
-            return 2 if inGameSaveScreen(count)
+          return 2 if inGameSaveScreen(count)
         elsif returnCommand >= 0 && saveChoice == returnCommand
-            return 3 # Just quit to title screen
+          return 3 # Just quit to title screen
         elsif saveCommand >= 0 && saveChoice == saveCommand
-            inGameSaveScreen(count)
+          inGameSaveScreen(count)
         elsif deleteCommand >= 0 && saveChoice == deleteCommand
-            inGameDeleteScreen(count)
+          inGameDeleteScreen(count)
         end
         return false
     end
@@ -60,6 +62,8 @@ class PokemonSaveScreen
         @scene.pbStartScreen
         commands = []
         cmdSaveCurrent	= -1
+        cmdSaveNew		= -1
+        cmdSaveOld		= -1
         if !$current_save_file_name.nil? && count > 0
             commands[cmdSaveCurrent = commands.length] =
                 _INTL("Save current save file")
@@ -81,7 +85,7 @@ class PokemonSaveScreen
             end
             # Change the stored save file to what you just created
             $current_save_file_name = FileSave.name(count + 1)
-            SaveData.changeFILEPATH($current_save_file_name.nil? ? FileSave.name : $current_save_file_name)
+            SaveData.changeFILEPATH(!$current_save_file_name.nil? ? $current_save_file_name : FileSave.name)
         end
         # Old save file
         if cmdSaveOld >= 0 && saveTypeSelection == cmdSaveOld
@@ -106,7 +110,7 @@ class PokemonSaveScreen
                 pbMessage(_INTL("\\se[]Save failed.\\wtnp[30]"))
                 ret = false
             end
-            SaveData.changeFILEPATH($current_save_file_name.nil? ? FileSave.name : $current_save_file_name)
+            SaveData.changeFILEPATH(!$current_save_file_name.nil? ? $current_save_file_name : FileSave.name)
         end
         PokeBattle_BattleRecorder.createDir
         @scene.pbEndScreen

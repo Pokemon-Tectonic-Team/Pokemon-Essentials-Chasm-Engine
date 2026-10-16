@@ -59,7 +59,7 @@ module FileSave
         return if saveArray.size <= 0
 
         name = []
-        saveArray.each { |f| name << File.basename(f, ".#{type}").gsub(/[^0-9]/, "") }
+        saveArray.each { |f| name << (File.basename(f, ".#{type}").gsub(/[^0-9]/, "")) }
         needtorewrite = false
         (0...saveArray.size).each do |i|
             needtorewrite = true if saveArray[i] != "#{dir}/#{file}#{name[i]}.#{type}"
@@ -117,7 +117,7 @@ module FileSave
 
     # Version 19
     def self.dirv19(dir = DIR_SAVE_GAME, file = FILENAME_SAVE_GAME, type = "rxdata")
-        title
+        game_title = title
         return unless File.directory?(System.data_directory)
         old_file = System.data_directory + "/Game.rxdata"
         return unless File.file?(old_file)
@@ -129,7 +129,7 @@ module FileSave
     # Version 18
     def self.dirv18(dir = DIR_SAVE_GAME, file = FILENAME_SAVE_GAME, type = "rxdata")
         game_title = title
-        home = ENV["HOME"] || ENV.fetch("HOMEPATH", nil)
+        home = ENV["HOME"] || ENV["HOMEPATH"]
         return if home.nil?
         old_location = File.join(home, "Saved Games", game_title)
         return unless File.directory?(old_location)

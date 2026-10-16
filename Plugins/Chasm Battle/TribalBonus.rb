@@ -8,7 +8,7 @@ class TribalBonus
         updateTribeCount
     end
 
-    def resetTribeCounts
+    def resetTribeCounts()
         @tribeCounts = {}
         @tribesGivingBonus = []
         # Reset all counts
@@ -17,25 +17,25 @@ class TribalBonus
         end
     end
 
-    def updateTribeCount
-        resetTribeCounts
+    def updateTribeCount()
+        resetTribeCounts()
 
         # Count all tribes that exist for pokemon in player's party
-        @trainer.party.each { |pokemon|
+        @trainer.party.each {|pokemon|
             tribes = pokemon.tribes
-            tribes.each { |tribe|
+            tribes.each {|tribe|
                 next if !@tribeCounts.has_key?(tribe)
                 @tribeCounts[tribe] += 1
             }
         }
-
+        
         GameData::Tribe.each_legal do |tribeData|
             next unless @tribeCounts[tribeData.id] >= tribeData.threshold
             @tribesGivingBonus.push(tribeData.id)
         end
     end
 
-    def getActiveBonusesList(concat = true, _foe = false)
+    def getActiveBonusesList(concat = true, foe = false)
         list = []
         @tribesGivingBonus.each do |tribeID|
             description = getTribeName(tribeID)
@@ -105,7 +105,7 @@ class TribalBonus
 
     def hasAnyTribeOverlap?
         updateTribeCount
-        @tribeCounts.each do |_tribe, count|
+        @tribeCounts.each do |tribe, count|
             return true if count >= 2
         end
         return false
@@ -117,7 +117,7 @@ class TribalBonus
     end
 end
 
-def playerTribalBonus
+def playerTribalBonus()
     $Trainer.tribalBonus = TribalBonus.new($Trainer) unless $Trainer.tribalBonus
     $Trainer.tribalBonus.trainer = $Trainer unless $Trainer.tribalBonus.trainer
     return $Trainer.tribalBonus

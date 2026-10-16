@@ -84,12 +84,12 @@ class PokeBattle_Battle
 
     def pbIsTrapped?(idxBattler, partyScene = nil)
         battler = @battlers[idxBattler]
-
+        
         if battler.effectActive?(:LastGasp)
             partyScene.pbDisplay(_INTL("{1} can't be switched out!", battler.pbThis)) if partyScene
             return true
         end
-
+        
         # Ability effects that allow switching no matter what
         battler.eachActiveAbility do |ability|
             return false if BattleHandlers.triggerCertainSwitchingUserAbility(ability, battler, self, false)
@@ -172,7 +172,7 @@ class PokeBattle_Battle
     # things happening (U-turn, Baton Pass, in def pbSwitch).
     def pbSwitchInBetween(idxBattler, checkLaxOnly: false, canCancel: false, safeSwitch: nil)
         if pbOwnedByPlayer?(idxBattler) && !@autoTesting && !@controlPlayer
-            return pbPartyScreen(idxBattler, checkLaxOnly, canCancel)
+            return pbPartyScreen(idxBattler, checkLaxOnly, canCancel) 
         else
             return @battleAI.pbDefaultChooseNewEnemy(idxBattler, safeSwitch)
         end
@@ -247,7 +247,7 @@ class PokeBattle_Battle
                                 idxPlayerPartyNew = pbSwitchInBetween(playerBattler.index, canCancel: true)
                                 if idxPlayerPartyNew >= 0
                                     pbMessageOnRecall(playerBattler)
-                                    pbRecallAndReplace(playerBattler.index, idxPlayerPartyNew)
+                                    pbRecallAndReplace(playerBattler.index,idxPlayerPartyNew)
                                     switched.push(playerBattler.index)
                                 end
                             end
@@ -319,11 +319,13 @@ class PokeBattle_Battle
             else
                 pbDisplayBrief(_INTL("{1}, switch out! Come back!", battler.name))
             end
-        elsif battler.wildParty?
-            pbDisplayBrief(_INTL("The {1} withdrew!", battler.name))
         else
-            owner = pbGetOwnerName(battler.index)
-            pbDisplayBrief(_INTL("{1} withdrew {2}!", owner, battler.name))
+            if battler.wildParty?
+                pbDisplayBrief(_INTL("The {1} withdrew!", battler.name))
+            else
+                owner = pbGetOwnerName(battler.index)
+                pbDisplayBrief(_INTL("{1} withdrew {2}!", owner, battler.name))
+            end
         end
     end
 
@@ -507,7 +509,7 @@ class PokeBattle_Battle
         eachSameSideBattler(battler.index) do |ally|
             next if ally.index == battler.index
             ally.eachActiveAbility do |ability|
-                BattleHandlers.triggerAbilityOnAllySwitchIn(ability, battler, ally, self, false) unless @preBattle # Don't count send-outs from battle start as switches
+                BattleHandlers.triggerAbilityOnAllySwitchIn(ability, battler, ally, self, false) unless @preBattle #Don't count send-outs from battle start as switches
             end
         end
 
@@ -530,14 +532,14 @@ class PokeBattle_Battle
 
         unless battler.immuneToHazards?(aiCheck)
             # Stealth Rock
-            if battler.pbOwnSide.effectActive?(:StealthRock) && battler.takesIndirectDamage?(false, aiCheck)
+            if battler.pbOwnSide.effectActive?(:StealthRock) && battler.takesIndirectDamage?(false,aiCheck)
                 stealthRocksRation = 1.0 / 10.0
                 getTypedHazardHPRatio = getTypedHazardHPRatio(:ROCK, battler, ratio: stealthRocksRation)
                 if getTypedHazardHPRatio > 0
                     # Rock Climber
-                    if battler.shouldAbilityApply?(:ROCKCLIMBER, aiCheck)
+                    if battler.shouldAbilityApply?(:ROCKCLIMBER,aiCheck)
                         if aiCheck
-                            rockClimberScore = getMultiStatUpEffectScore([:SPEED, 1], battler, battler)
+                            rockClimberScore = getMultiStatUpEffectScore([:SPEED,1],battler,battler)
                             rockClimberScore = (rockClimberScore / PokeBattle_AI::EFFECT_SCORE_TO_SWITCH_SCORE_CONVERSION_RATIO).ceil
                             otherHazardScore += rockClimberScore
                             echoln("\t[HAZARD SCORING] #{battler.pbThis} will activate Rock Climber (#{rockClimberScore.to_change})")
@@ -546,8 +548,8 @@ class PokeBattle_Battle
                             battler.tryRaiseStat(:SPEED, battler, ability: :ROCKCLIMBER)
                         end
                     # Rugged
-                    elsif battler.shouldAbilityApply?(:RUGGED, aiCheck)
-                        pbDisplay(_INTL("{1} resists the pointed stones!", battler.pbThis)) unless aiCheck
+                    elsif battler.shouldAbilityApply?(:RUGGED,aiCheck)
+                            pbDisplay(_INTL("{1} resists the pointed stones!", battler.pbThis)) unless aiCheck
                     else # Takes damage
                         if aiCheck
                             stealthRocksDamage = battler.applyFractionalDamage(getTypedHazardHPRatio, aiCheck: true)
@@ -564,7 +566,7 @@ class PokeBattle_Battle
             end
 
             # Feather Ward
-            if battler.pbOwnSide.effectActive?(:FeatherWard) && battler.takesIndirectDamage?(false, aiCheck)
+            if battler.pbOwnSide.effectActive?(:FeatherWard) && battler.takesIndirectDamage?(false,aiCheck)
                 getTypedHazardHPRatio = getTypedHazardHPRatio(:STEEL, battler)
                 if getTypedHazardHPRatio > 0
                     if aiCheck
@@ -584,11 +586,11 @@ class PokeBattle_Battle
             if !battler.fainted? && !battler.airborne?(aiCheck)
                 # Spikes
                 if  battler.pbOwnSide.effectActive?(:Spikes) &&
-                    battler.takesIndirectDamage?(false, aiCheck) &&
+                    battler.takesIndirectDamage?(false,aiCheck) &&
                     !battler.hasActiveAbility?(:AFTERIMAGE)
 
                     spikesIndex = battler.pbOwnSide.countEffect(:Spikes) - 1
-                    spikesDiv = [8, 6, 4][spikesIndex]
+                    spikesDiv = [8,6,4][spikesIndex]
                     spikesHPRatio = 1.0 / spikesDiv.to_f
                     layerLabel = [_INTL("layer"), _INTL("2 layers"), _INTL("3 layers")][spikesIndex]
                     if aiCheck
@@ -606,7 +608,7 @@ class PokeBattle_Battle
                 # Sticky Web
                 if battler.pbOwnSide.effectActive?(:StickyWeb)
                     if aiCheck
-                        stickyWebScore = getMultiStatDownEffectScore([:SPEED, 2], battler, battler)
+                        stickyWebScore = getMultiStatDownEffectScore([:SPEED,2],battler,battler)
                         stickyWebScore = (stickyWebScore / PokeBattle_AI::EFFECT_SCORE_TO_SWITCH_SCORE_CONVERSION_RATIO).ceil
                         otherHazardScore += stickyWebScore
                         echoln("\t[HAZARD SCORING] #{battler.pbThis} will be afflicted by Sticky Web (#{stickyWebScore.to_change})")
@@ -617,8 +619,8 @@ class PokeBattle_Battle
                 end
 
                 # Live Wire
-                if battler.pbOwnSide.effectActive?(:LiveWire) && battler.takesIndirectDamage?(false, aiCheck)
-                    liveWireRation = 1.0 / 12.0
+                if battler.pbOwnSide.effectActive?(:LiveWire) && battler.takesIndirectDamage?(false,aiCheck)
+                    liveWireRation = 1.0/12.0
                     liveWireRation *= 2 if rainy?
                     getTypedHazardHPRatio = getTypedHazardHPRatio(:ELECTRIC, battler, ratio: liveWireRation)
                     if getTypedHazardHPRatio > 0
@@ -656,7 +658,7 @@ class PokeBattle_Battle
                     end
                 elsif   battler.pbCanInflictStatus?(status, nil, false) &&
                         !battler.immuneToHazards?(aiCheck) &&
-                        !battler.shouldAbilityApply?(:AFTERIMAGE, aiCheck)
+                        !battler.shouldAbilityApply?(:AFTERIMAGE,aiCheck)
                     # Apply status
                     if battler.pbOwnSide.countEffect(effect) >= 2
                         if aiCheck
@@ -667,7 +669,7 @@ class PokeBattle_Battle
                         else
                             battler.pbInflictStatus(status)
                         end
-                    elsif battler.takesIndirectDamage?(false, aiCheck) # Damage
+                    elsif battler.takesIndirectDamage?(false,aiCheck) # Damage
                         thinStatusSpikesDamageFraction = 1.0 / 16.0
                         if aiCheck
                             statusSpikesDamage = battler.applyFractionalDamage(thinStatusSpikesDamageFraction, aiCheck: true)
@@ -684,6 +686,6 @@ class PokeBattle_Battle
             end
         end
 
-        return hazardDamagePredicted, otherHazardScore
+        return hazardDamagePredicted,otherHazardScore
     end
 end

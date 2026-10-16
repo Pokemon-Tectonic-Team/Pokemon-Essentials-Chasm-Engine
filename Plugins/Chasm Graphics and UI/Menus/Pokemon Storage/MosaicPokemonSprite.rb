@@ -5,7 +5,7 @@ class MosaicPokemonSprite < PokemonSprite
     attr_reader :mosaic
 
     def initialize(*args)
-        super
+        super(*args)
         @mosaic = 0
         @inrefresh = false
         @mosaicbitmap = nil
@@ -52,7 +52,7 @@ class MosaicPokemonSprite < PokemonSprite
             @mosaicbitmap2.clear
             @mosaicbitmap.stretch_blt(Rect.new(0, 0, newWidth, newHeight), @oldbitmap, @oldbitmap.rect)
             @mosaicbitmap2.stretch_blt(
-                Rect.new((-@mosaic / 2) + 1, (-@mosaic / 2) + 1,
+                Rect.new(-@mosaic / 2 + 1, -@mosaic / 2 + 1,
                 @mosaicbitmap2.width, @mosaicbitmap2.height),
                @mosaicbitmap, Rect.new(0, 0, newWidth, newHeight))
             self.bitmap = @mosaicbitmap2

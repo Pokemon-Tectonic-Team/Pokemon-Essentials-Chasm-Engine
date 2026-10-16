@@ -48,15 +48,15 @@ class PokeBattle_Move
             ret = Effectiveness::NORMAL_EFFECTIVE
         end
         # Delta Stream's weather
-        if @battle&.pbWeather == :StrongWinds && defType == :FLYING && Effectiveness.super_effective_type?(moveType, defType)
+        if @battle&.pbWeather == :StrongWinds && (defType == :FLYING && Effectiveness.super_effective_type?(moveType, defType))
             ret = Effectiveness::NORMAL_EFFECTIVE
         end
         # Grounded Flying-type Pokémon become susceptible to Ground moves
-        ret = Effectiveness::NORMAL_EFFECTIVE if !target&.airborne? && defType == :FLYING && moveType == :GROUND
+        ret = Effectiveness::NORMAL_EFFECTIVE if !target&.airborne? && (defType == :FLYING && moveType == :GROUND)
         # Inured
         ret /= 2 if target&.effectActive?(:Inured) && Effectiveness.super_effective_type?(moveType, defType)
         # Break Through
-        if GameData::Ability.getByFlag("BypassTypeImmunity").any? { |abil| user&.hasActiveAbility?(abil) } && Effectiveness.ineffective_type?(moveType, defType)
+        if GameData::Ability.getByFlag("BypassTypeImmunity").any? { |abil| user&.hasActiveAbility?(abil)} && Effectiveness.ineffective_type?(moveType, defType)
             ret = Effectiveness::NORMAL_EFFECTIVE
         end
         return ret
@@ -177,7 +177,7 @@ class PokeBattle_Move
         target.eachActiveItem do |item|
             BattleHandlers.triggerAccuracyCalcTargetItem(item, modifiers, user, target, self, typeToUse)
         end
-
+        
         # Other effects, inc. ones that set accuracy_multiplier or evasion_step to
         # specific values
         modifiers[:accuracy_multiplier] *= 2.0 if @battle.gravityIntensified?
@@ -215,7 +215,7 @@ class PokeBattle_Move
         elsif allowedToRandomCrit
             rate = criticalHitRate(user, target)
             random_crit = false
-            random_crit = isRandomCrit?(user, target, rate) unless checkingForAI # Avoids needlessly calling pbRandom on AI checks
+            random_crit = isRandomCrit?(user, target, rate) unless checkingForAI #Avoids needlessly calling pbRandom on AI checks
             if random_crit
                 crit = true
             end
@@ -335,10 +335,10 @@ class PokeBattle_Move
         return false
     end
 
-    def allowedToRandomCrit?(user, _target)
-        return true if canRandomCrit?
+    def allowedToRandomCrit?(user, target)
+        return true if canRandomCrit?  
         return true if user.effectActive?(:RaisedCritChance)
-        return true if user.hasActiveAbility?(GameData::Ability.getByFlag("EnablesRandomCrits"))
+        return true if user.hasActiveAbility?(GameData::Ability.getByFlag("EnablesRandomCrits")) 
         return false
     end
 
@@ -353,12 +353,12 @@ class PokeBattle_Move
 
     def ignoresDefensiveStepBoosts?(_user, _target); return false; end
 
-    def pbAttackingStat(user, _target, _checkingForAI = false)
+    def pbAttackingStat(user, target, checkingForAI = false)
         return user, :SPECIAL_ATTACK if specialMove?
         return user, :ATTACK
     end
 
-    def pbDefendingStat(_user, target, _checkingForAI = false)
+    def pbDefendingStat(user, target, checkingForAI = false)
         return target, :SPECIAL_DEFENSE if specialMove?
         return target, :DEFENSE
     end
@@ -397,7 +397,7 @@ showMessages)
         return true
     end
 
-    def pbAdditionalEffectChance(user, target, _type, effectChance = 0, aiCheck = false, aiContext = nil)
+    def pbAdditionalEffectChance(user, target, type, effectChance = 0, aiCheck = false, aiContext = nil)
         return 100 if @battle.pbCheckGlobalAbility(:WISHMAKER)
         # Abilities ensure effect chance
         user.eachAbilityShouldApply(aiCheck) do |ability|

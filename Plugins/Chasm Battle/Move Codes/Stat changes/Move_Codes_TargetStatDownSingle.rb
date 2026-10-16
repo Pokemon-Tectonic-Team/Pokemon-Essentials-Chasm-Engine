@@ -37,7 +37,7 @@ class PokeBattle_Move_LowerTargetAtk2StartEclipse8 < PokeBattle_Move_LowerTarget
         @battle.pbStartWeather(user, :Eclipse, 8, false) unless @battle.primevalWeatherPresent?
     end
 
-    def getEffectScore(user, _target)
+    def getEffectScore(user, target)
         return getWeatherSettingEffectScore(:Eclipse, user, @battle, 8)
     end
 end
@@ -336,17 +336,17 @@ class PokeBattle_Move_LowerTargetHighestStat1 < PokeBattle_Move
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
         if target.pbAttack > target.pbSpAtk
-            target.pbLowerMultipleStatSteps([:ATTACK, 1], user, move: self)
+            target.pbLowerMultipleStatSteps([:ATTACK,1], user, move: self)
         else
-            target.pbLowerMultipleStatSteps([:SPECIAL_ATTACK, 1], user, move: self)
+            target.pbLowerMultipleStatSteps([:SPECIAL_ATTACK,1], user, move: self)
         end
     end
 
     def getTargetAffectingEffectScore(user, target)
         if target.pbAttack > target.pbSpAtk
-            statDownArray = [:ATTACK, 1]
+            statDownArray = [:ATTACK,1]
         else
-            statDownArray = [:SPECIAL_ATTACK, 1]
+            statDownArray = [:SPECIAL_ATTACK,1]
         end
         return getMultiStatDownEffectScore(statDownArray, user, target)
     end

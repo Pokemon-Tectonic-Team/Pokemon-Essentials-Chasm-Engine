@@ -108,18 +108,18 @@ class MoveLearner_Scene
             end
         }
 
-        @moves = [[], [], []] # An array for each category
-        @moveCommands = [[], [], []]
+        @moves = [[],[],[]] # An array for each category
+        @moveCommands = [[],[],[]]
         unsortedMoves.each do |m|
             moveData = GameData::Move.get(m)
             category = moveData.category
 
-            if [0, 3].include?(category) # Physical or adaptive
+            if category == 0 || category == 3 # Physical or adaptive
                 @moves[0].push(m)
                 @moveCommands[0].push(moveData.name)
             end
 
-            if [1, 3].include?(category) # Special or adaptive
+            if category == 1 || category == 3 # Special or adaptive
                 @moves[1].push(m)
                 @moveCommands[1].push(moveData.name)
             end
@@ -142,7 +142,7 @@ class MoveLearner_Scene
     def setReminderSelPosition
         @sprites["background"].visible = @moveCommands[@tabSelected].length > 0
         @sprites["background"].x = 0
-        @sprites["background"].y = 74 + ((@sprites["commands"].index - @sprites["commands"].top_item) * MOVE_ENTRY_HEIGHT)
+        @sprites["background"].y = 74 + (@sprites["commands"].index - @sprites["commands"].top_item) * MOVE_ENTRY_HEIGHT  
     end
 
     def pbDrawMoveList
@@ -174,7 +174,7 @@ class MoveLearner_Scene
             for i in 0...VISIBLEMOVES
                 moveobject = @moves[@tabSelected][@sprites["commands"].top_item + i]
                 if moveobject
-                    GameData::Move.get(moveobject)
+                    moveData = GameData::Move.get(moveobject)
                     # type_number = GameData::Type.get(moveData.type).id_number
                     # imagepos.push([addLanguageSuffix("Graphics/Pictures/types"), 12, yPos + 8, 0, type_number * 28, 64, 28])
                     formattedName, nameColor, nameShadow = getFormattedMoveName(moveobject)
@@ -187,18 +187,18 @@ class MoveLearner_Scene
             sel_path = "Graphics/Pictures/Move Tutor/reminderSel"
             sel_path += "_dark" if darkMode?
             imagepos.push([sel_path,
-                           0, 72 + ((@sprites["commands"].index - @sprites["commands"].top_item) * MOVE_ENTRY_HEIGHT), 0, 0, 254, 48,])
+                        0, 72 + (@sprites["commands"].index - @sprites["commands"].top_item) * MOVE_ENTRY_HEIGHT, 0, 0, 254, 48,])
 
             # Draw the selected move
             selectedMoveID = @moves[@tabSelected][@sprites["commands"].index]
             drawMoveInfo(selectedMoveID)
         else
-            textpos.push([_INTL("None"), 126, startingYPos - 12, 2, base, shadow])
+            textpos.push([_INTL("None"), 126, startingYPos-12, 2, base, shadow])
             @extraInfoOverlay.bitmap.clear
         end
 
         # Draw the currently selected category name
-        categoryName = [_INTL("Physical"), _INTL("Special"), _INTL("Status")][@tabSelected]
+        categoryName = [_INTL("Physical"),_INTL("Special"),_INTL("Status")][@tabSelected]
         textpos.push([categoryName, 126, 20, 2, base, shadow])
 
         # Actually render everything
@@ -214,13 +214,13 @@ class MoveLearner_Scene
         fSpecies = @pokemon.species_data
         move_data = GameData::Move.get(move)
         moveName = move_data.name
-
+    
         if move_data.type == :FLEX
             isSTAB = true
         else
             isSTAB = move_data.category != 2 && [fSpecies.type1, fSpecies.type2].include?(move_data.type)
         end
-
+    
         # Add formatting based on if the move is the same type as the user
         # Or of any of its evolutions
         if isSTAB
@@ -228,7 +228,7 @@ class MoveLearner_Scene
         elsif move_data.category != 2 && isAnyEvolutionOfType(fSpecies, move_data.type)
             moveName = "<i>#{moveName}</i>"
         end
-
+    
         color = MessageConfig.pbDefaultTextMainColor
         if move_data.is_signature?
             if isSTAB
@@ -279,7 +279,7 @@ class MoveLearner_Scene
                         pbMessage(_INTL("Cannot search on an empty tab."))
                         next
                     end
-                    inputText = pbEnterText(_INTL("Search for which move?"), 0, 20).downcase
+                    inputText = pbEnterText(_INTL("Search for which move?"),0,20).downcase
                     unless inputText.blank?
                         filteredIndex = -1
                         @moves[@tabSelected].each_with_index do |move, index|

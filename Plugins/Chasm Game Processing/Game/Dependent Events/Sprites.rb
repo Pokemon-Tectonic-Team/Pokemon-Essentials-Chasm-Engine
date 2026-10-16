@@ -19,7 +19,7 @@ class DependentEventSprites
             if data[2] == @map.map_id # Check current map
                 spr = Sprite_Character.new(@viewport, event)
                 spr.setReflection(event, @viewport)
-                if $PokemonTemp.dependentEvents.can_refresh? && defined?(EVENTNAME_MAY_NOT_INCLUDE) && spr.follower
+                if $PokemonTemp.dependentEvents.can_refresh? && (defined?(EVENTNAME_MAY_NOT_INCLUDE) && spr.follower)
                     spr.steps = $FollowerSteps
                     $FollowerSteps = nil
                 end
@@ -69,7 +69,7 @@ end
 Events.onSpritesetCreate += proc { |_sender, e|
     spriteset = e[0]   # Spriteset being created
     viewport  = e[1]   # Viewport used for tilemap and characters
-    map = spriteset.map # Map associated with the spriteset (not necessarily the current map)
+    map = spriteset.map   # Map associated with the spriteset (not necessarily the current map)
     spriteset.addUserSprite(DependentEventSprites.new(viewport, map))
 }
 

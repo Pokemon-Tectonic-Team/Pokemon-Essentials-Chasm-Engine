@@ -123,7 +123,7 @@ class PokeBattle_Battler
 
     def pbCanInflictStatus?(newStatus, user, showMessages, move = nil, ignoreStatus = false)
         return false if fainted?
-        selfInflicted = user && user.index == @index
+        selfInflicted = (user && user.index == @index)
         statusDoublingCurse = pbOwnedByPlayer? && @battle.curseActive?(:CURSE_STATUS_DOUBLED)
         # Already have that status problem
         if getStatuses.include?(newStatus) && !ignoreStatus
@@ -136,8 +136,8 @@ class PokeBattle_Battler
                 when :NUMB			then msg = _INTL("{1} is already numbed!", pbThis)
                 when :FROSTBITE	    then msg = _INTL("{1} is already frostbitten!", pbThis)
                 when :DIZZY	        then msg = _INTL("{1} is already dizzy!", pbThis)
-                when :LEECHED then msg = _INTL("{1} is already being leeched!", pbThis)
-                when :WATERLOG then msg = _INTL("{1} is already waterlogged!", pbThis)
+                when :LEECHED	    then msg = _INTL("{1} is already being leeched!", pbThis)
+                when :WATERLOG	    then msg = _INTL("{1} is already waterlogged!", pbThis)
                 end
                 @battle.pbDisplay(msg)
             end
@@ -203,7 +203,7 @@ immuneTypeRealName))
             immuneAbility = ability
             break
         end
-        if (immuneAbility.nil? && selfInflicted) || !@battle.moldBreaker
+        if immuneAbility.nil? && selfInflicted || !@battle.moldBreaker
             eachActiveAbility do |ability|
                 next unless BattleHandlers.triggerStatusImmunityAbility(ability, self, newStatus)
                 immuneAbility = ability
@@ -229,8 +229,8 @@ immuneTypeRealName))
                 when :NUMB			then msg = _INTL("{1} cannot be numbed!", pbThis)
                 when :FROSTBITE	    then msg = _INTL("{1} cannot be frostbitten!", pbThis)
                 when :DIZZY	        then msg = _INTL("{1} cannot be dizzied!", pbThis)
-                when :LEECHED then msg = _INTL("{1} cannot become leeched!", pbThis)
-                when :WATERLOG then msg = _INTL("{1} cannot be waterlogged!", pbThis)
+                when :LEECHED	    then msg = _INTL("{1} cannot become leeched!", pbThis)
+                when :WATERLOG      then msg = _INTL("{1} cannot be waterlogged!", pbThis)
                 end
                 @battle.pbDisplay(msg)
                 @battle.pbHideAbilitySplash(immAlly || self)
@@ -276,12 +276,12 @@ immuneTypeRealName))
 
     # Returns which type is providing the immunity
     # Or nil if no immunity present
-    def hasTypeImmunityToStatus?(status, _applicator)
+    def hasTypeImmunityToStatus?(status, applicator)
         immuneType = nil
         case status
         when :POISON
-            if !@battle.pbCheckOpposingAbility(:PIERCINGPOISON, @index) && pbHasType?(:POISON)
-                immuneType = :POISON
+            unless @battle.pbCheckOpposingAbility(:PIERCINGPOISON, @index)
+                immuneType = :POISON if pbHasType?(:POISON)
             end
         when :BURN
             immuneType = :FIRE if pbHasType?(:FIRE)
@@ -302,7 +302,7 @@ immuneTypeRealName))
     #=============================================================================
     def pbInflictStatus(newStatus, newStatusCount = 0, msg = nil, user = nil)
         if hasTribeBonus?(:TYRANNICAL) && !pbOwnSide.effectActive?(:TyrannicalImmunity)
-            @battle.pbShowTribeSplash(self, :TYRANNICAL)
+            @battle.pbShowTribeSplash(self,:TYRANNICAL)
             @battle.pbDisplay(_INTL("{1} refuses to gain a status condition!", pbThis))
             @battle.pbHideTribeSplash(self)
             pbOwnSide.applyEffect(:TyrannicalImmunity)
@@ -352,67 +352,69 @@ immuneTypeRealName))
         if msg != "false"
             if msg && !msg.empty?
                 @battle.pbDisplay(msg)
-            elsif $Options.status_effect_messages.zero?
-                case newStatus
-                when :SLEEP
-                    @battle.pbDisplay(_INTL("{1} fell asleep! {2}!", pbThis, getSleepExplanation))
-                when :POISON
-                    @battle.pbDisplay(_INTL("{1} was poisoned! {2}!", pbThis, getPoisonExplanation))
-                when :BURN
-                    if newStatusCount > 0
-                        @battle.pbDisplay(_INTL("{1} was severely burned! {2}!", pbThis, getSevereBurnExplanation))
-                    else
-                        @battle.pbDisplay(_INTL("{1} was burned! {2}!", pbThis, getBurnExplanation))
+            else
+                if $Options.status_effect_messages.zero?
+                    case newStatus
+                    when :SLEEP
+                        @battle.pbDisplay(_INTL("{1} fell asleep! {2}!", pbThis, getSleepExplanation))
+                    when :POISON
+                        @battle.pbDisplay(_INTL("{1} was poisoned! {2}!", pbThis, getPoisonExplanation))
+                    when :BURN
+                        if newStatusCount > 0
+                            @battle.pbDisplay(_INTL("{1} was severely burned! {2}!", pbThis, getSevereBurnExplanation))
+                        else
+                            @battle.pbDisplay(_INTL("{1} was burned! {2}!", pbThis, getBurnExplanation))
+                        end
+                    when :NUMB
+                        if newStatusCount > 0
+                            @battle.pbDisplay(_INTL("{1} is severely numbed! {2}!", pbThis, getSevereNumbExplanation))
+                        else
+                            @battle.pbDisplay(_INTL("{1} is numbed! {2}!", pbThis, getNumbExplanation))
+                        end
+                    when :FROSTBITE
+                        if newStatusCount > 0
+                            @battle.pbDisplay(_INTL("{1} was severely frostbitten! {2}!", pbThis, getSevereFrostbiteExplanation))
+                        else
+                            @battle.pbDisplay(_INTL("{1} was frostbitten! {2}!", pbThis, getFrostbiteExplanation))
+                        end
+                    when :DIZZY
+                        @battle.pbDisplay(_INTL("{1} is dizzy! {2}!", pbThis, getDizzyExplanation))
+                    when :LEECHED
+                        @battle.pbDisplay(_INTL("{1} became leeched! {2}!", pbThis, getLeechExplanation))
+                    when :WATERLOG
+                        @battle.pbDisplay(_INTL("{1} is waterlogged! {2}!", pbThis, getWaterlogExplanation))
                     end
-                when :NUMB
-                    if newStatusCount > 0
-                        @battle.pbDisplay(_INTL("{1} is severely numbed! {2}!", pbThis, getSevereNumbExplanation))
-                    else
-                        @battle.pbDisplay(_INTL("{1} is numbed! {2}!", pbThis, getNumbExplanation))
+                else # Skip full status explanation if setting was turned off
+                    case newStatus
+                    when :SLEEP
+                        @battle.pbDisplay(_INTL("{1} fell asleep!", pbThis))
+                    when :POISON
+                        @battle.pbDisplay(_INTL("{1} was poisoned!", pbThis))
+                    when :BURN
+                        if newStatusCount > 0
+                            @battle.pbDisplay(_INTL("{1} was severely burned!", pbThis))
+                        else
+                            @battle.pbDisplay(_INTL("{1} was burned!", pbThis))
+                        end
+                    when :NUMB
+                        if newStatusCount > 0
+                            @battle.pbDisplay(_INTL("{1} is severely numbed!", pbThis))
+                        else
+                            @battle.pbDisplay(_INTL("{1} is numbed!", pbThis))
+                        end
+                    when :FROSTBITE
+                        if newStatusCount > 0
+                            @battle.pbDisplay(_INTL("{1} was severely frostbitten!", pbThis))
+                        else
+                            @battle.pbDisplay(_INTL("{1} was frostbitten!", pbThis))
+                        end
+                    when :DIZZY
+                        @battle.pbDisplay(_INTL("{1} is dizzy!", pbThis))
+                    when :LEECHED
+                        @battle.pbDisplay(_INTL("{1} became leeched!", pbThis))
+                    when :WATERLOG
+                        @battle.pbDisplay(_INTL("{1} is waterlogged!", pbThis))
                     end
-                when :FROSTBITE
-                    if newStatusCount > 0
-                        @battle.pbDisplay(_INTL("{1} was severely frostbitten! {2}!", pbThis, getSevereFrostbiteExplanation))
-                    else
-                        @battle.pbDisplay(_INTL("{1} was frostbitten! {2}!", pbThis, getFrostbiteExplanation))
-                    end
-                when :DIZZY
-                    @battle.pbDisplay(_INTL("{1} is dizzy! {2}!", pbThis, getDizzyExplanation))
-                when :LEECHED
-                    @battle.pbDisplay(_INTL("{1} became leeched! {2}!", pbThis, getLeechExplanation))
-                when :WATERLOG
-                    @battle.pbDisplay(_INTL("{1} is waterlogged! {2}!", pbThis, getWaterlogExplanation))
-                end
-            else # Skip full status explanation if setting was turned off
-                case newStatus
-                when :SLEEP
-                    @battle.pbDisplay(_INTL("{1} fell asleep!", pbThis))
-                when :POISON
-                    @battle.pbDisplay(_INTL("{1} was poisoned!", pbThis))
-                when :BURN
-                    if newStatusCount > 0
-                        @battle.pbDisplay(_INTL("{1} was severely burned!", pbThis))
-                    else
-                        @battle.pbDisplay(_INTL("{1} was burned!", pbThis))
-                    end
-                when :NUMB
-                    if newStatusCount > 0
-                        @battle.pbDisplay(_INTL("{1} is severely numbed!", pbThis))
-                    else
-                        @battle.pbDisplay(_INTL("{1} is numbed!", pbThis))
-                    end
-                when :FROSTBITE
-                    if newStatusCount > 0
-                        @battle.pbDisplay(_INTL("{1} was severely frostbitten!", pbThis))
-                    else
-                        @battle.pbDisplay(_INTL("{1} was frostbitten!", pbThis))
-                    end
-                when :DIZZY
-                    @battle.pbDisplay(_INTL("{1} is dizzy!", pbThis))
-                when :LEECHED
-                    @battle.pbDisplay(_INTL("{1} became leeched!", pbThis))
-                when :WATERLOG
-                    @battle.pbDisplay(_INTL("{1} is waterlogged!", pbThis))
                 end
             end
         end
@@ -434,7 +436,7 @@ immuneTypeRealName))
                 eachOther do |b|
                     next unless b.canSleep?(self, true)
                     next if b.effectActive?(:Yawn)
-                    b.applyEffect(:Yawn, 2)
+                    b.applyEffect(:Yawn,2)
                 end
                 hideMyAbilitySplash
             end
@@ -454,7 +456,7 @@ immuneTypeRealName))
         end
         # Form change check
         pbCheckFormOnStatusChange
-
+        
         # Synchronize
         eachActiveAbility do |ability|
             BattleHandlers.triggerAbilityOnStatusInflicted(ability, self, user, newStatus)
@@ -653,11 +655,11 @@ immuneTypeRealName))
     def flinchImmuneByAbility?(checkingForAI = false)
         unless @battle.moldBreaker
             return true if shouldAbilityApply?(GameData::Ability.getByFlag("FlinchImmunity"), checkingForAI)
-            return true if @battle.pbCheckSameSideAbility(:EFFLORESCENT, @index)
+            return true if @battle.pbCheckSameSideAbility(:EFFLORESCENT,@index)
         end
         return false
     end
-
+    
     def pbFlinch
         return if flinchImmuneByAbility?
         applyEffect(:Flinch)
@@ -675,7 +677,7 @@ immuneTypeRealName))
             yield if block_given?
 
             showMessages = $Options.status_effect_messages.zero?
-
+            
             case oneStatus
             when :SLEEP
                 @battle.pbDisplay(_INTL("{1} is fast asleep.", pbThis)) if showMessages
@@ -774,11 +776,11 @@ immuneTypeRealName))
         when :SLEEP			then battle.pbDisplay(_INTL("{1} woke up!", curedName))
         when :POISON		then battle.pbDisplay(_INTL("{1} was cured of its poisoning.", curedName))
         when :BURN	        then battle.pbDisplay(_INTL("{1}'s burn was healed.", curedName))
-        when :FROSTBITE then battle.pbDisplay(_INTL("{1}'s frostbite was healed.", curedName))
+        when :FROSTBITE	    then battle.pbDisplay(_INTL("{1}'s frostbite was healed.", curedName))
         when :NUMB 			then battle.pbDisplay(_INTL("{1} is no longer numbed.", curedName))
         when :DIZZY			then battle.pbDisplay(_INTL("{1} is no longer dizzy!", curedName))
-        when :LEECHED then battle.pbDisplay(_INTL("{1} is no longer being leeched!", curedName))
-        when :WATERLOG then battle.pbDisplay(_INTL("{1} is no longer waterlogged.", curedName))
+        when :LEECHED	    then battle.pbDisplay(_INTL("{1} is no longer being leeched!", curedName))
+        when :WATERLOG      then battle.pbDisplay(_INTL("{1} is no longer waterlogged.", curedName))
         end
     end
 end

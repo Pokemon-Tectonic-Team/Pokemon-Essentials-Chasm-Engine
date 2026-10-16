@@ -1,12 +1,12 @@
 BattleHandlers::ForbidsUserSwitchInAbility.add(:PACIFIST,
-    proc { |_ability, _battle, partyMember, _side, _idxTrainer, _idxParty, show_messages|
+    proc { |ability, battle, partyMember, side, idxTrainer, idxParty, show_messages|
         pbMessage(_INTL("{1} refuses to join the battle. It's a pacifist!", partyMember.name)) if show_messages
         next true
     }
 )
 
 BattleHandlers::ForbidsUserSwitchInAbility.add(:EXOSPHERICDESCENT,
-    proc { |_ability, battle, partyMember, side, idxTrainer, idxParty, show_messages|
+    proc { |ability, battle, partyMember, side, idxTrainer, idxParty, show_messages|
         next false if battle.isLastAboveHalfHealthInTeam?(idxParty, side, idxTrainer)
         pbMessage(_INTL("{1} refuses to join the battle, as it deems its presence not necessary!", partyMember.name)) if show_messages
         next true
@@ -14,7 +14,7 @@ BattleHandlers::ForbidsUserSwitchInAbility.add(:EXOSPHERICDESCENT,
 )
 
 BattleHandlers::ForbidsUserSwitchInAbility.add(:SLUMBERINGSHIELD,
-    proc { |_ability, battle, partyMember, _side, _idxTrainer, _idxParty, show_messages|
+    proc { |ability, battle, partyMember, side, idxTrainer, idxParty, show_messages|
         next false if battle.field.effectActive?(:SlumberingShieldReady)
         pbMessage(_INTL("{1} is in a deep slumber, and cannot join the battle!", partyMember.name)) if show_messages
         next true
@@ -22,7 +22,7 @@ BattleHandlers::ForbidsUserSwitchInAbility.add(:SLUMBERINGSHIELD,
 )
 
 BattleHandlers::ForbidsUserSwitchInAbility.add(:SLUMBERINGSWORD,
-    proc { |_ability, battle, partyMember, _side, _idxTrainer, _idxParty, show_messages|
+    proc { |ability, battle, partyMember, side, idxTrainer, idxParty, show_messages|
         next false if battle.field.effectActive?(:SlumberingSwordReady)
         pbMessage(_INTL("{1} is in a deep slumber, and cannot join the battle!", partyMember.name)) if show_messages
         next true
@@ -30,7 +30,7 @@ BattleHandlers::ForbidsUserSwitchInAbility.add(:SLUMBERINGSWORD,
 )
 
 BattleHandlers::ForbidsUserSwitchInAbility.add(:PRIMORDIALSEAL,
-    proc { |_ability, battle, partyMember, _side, _idxTrainer, _idxParty, show_messages|
+    proc { |ability, battle, partyMember, side, idxTrainer, idxParty, show_messages|
         next false if battle.haveSpeciesEnteredBattle?([:REGIDRAGO, :REGICE, :REGIROCK, :REGISTEEL, :REGIELEKI])
         pbMessage(_INTL("{1} refuses to join the battle! It waits for its kin!", partyMember.name)) if show_messages
         next true

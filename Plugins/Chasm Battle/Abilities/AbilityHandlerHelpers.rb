@@ -32,8 +32,10 @@ def pbBattleMoveImmunityStatAbility(ability, user, target, move, moveType, immun
     battle.pbShowAbilitySplash(target, ability) if showMessages
     if stat.is_a?(Array)
         target.pbRaiseMultipleStatSteps(stat, target, move: move)
-    elsif !target.tryRaiseStat(stat, target, increment: increment) && showMessages
-        battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
+    else
+        if !target.tryRaiseStat(stat, target, increment: increment) && showMessages
+            battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
+        end
     end
     battle.pbHideAbilitySplash(target)
     return true
@@ -97,7 +99,7 @@ def entryDebuffAbility(ability, battler, battle, statDownArray, aiCheck: false)
         next unless b.near?(battler)
         next if b.blockAteAbilities(battler, ability, !aiCheck)
         if aiCheck
-            score += getMultiStatDownEffectScore(statDownArray, battler, b)
+            score += getMultiStatDownEffectScore(statDownArray,battler,b)
         elsif b.pbLowerMultipleStatSteps(statDownArray, battler, showFailMsg: true)
             b.pbItemOnIntimidatedCheck
         end
@@ -107,7 +109,7 @@ def entryDebuffAbility(ability, battler, battle, statDownArray, aiCheck: false)
 end
 
 def entryTrappingAbility(ability, battler, battle, trappingMove, trappingDuration: 2, aiCheck: false, &block)
-    trappingDuration *= 2 if battler.shouldItemApply?(:GRIPCLAW, aiCheck)
+    trappingDuration *= 2 if battler.shouldItemApply?(:GRIPCLAW,aiCheck )
     trappingDuration = applyEffectDurationModifiers(trappingDuration, battler)
 
     score = 0
@@ -133,7 +135,7 @@ def entryTrappingAbility(ability, battler, battle, trappingMove, trappingDuratio
     return score
 end
 
-ENTRY_LOWEST_HEALING_ABILITY_FRACTION = 1.0 / 3.0
+ENTRY_LOWEST_HEALING_ABILITY_FRACTION = 1.0/3.0
 
 def entryLowestHealingAbility(ability, battler, battle, aiCheck: false, &block)
     lowestId = battler.index
@@ -146,7 +148,7 @@ def entryLowestHealingAbility(ability, battler, battle, aiCheck: false, &block)
         end
     end
     lowestIdBattler = battle.battlers[lowestId]
-    if aiCheck
+    if aiCheck    
         return 0 unless lowestIdBattler.canHeal?
         healingScore = lowestIdBattler.applyFractionalHealing(ENTRY_LOWEST_HEALING_ABILITY_FRACTION, aiCheck: true)
         return healingScore
@@ -179,9 +181,9 @@ end
 
 DEFENSE_STACKING_ABILITY_STEP_CAP = 4
 def defenseStatStackingAbility(ability, user)
-    return if user.steps[:DEFENSE] >= DEFENSE_STACKING_ABILITY_STEP_CAP && user.steps[:SPECIAL_DEFENSE] >= DEFENSE_STACKING_ABILITY_STEP_CAP
-    caps = {}
-    caps[:DEFENSE] = DEFENSE_STACKING_ABILITY_STEP_CAP
-    caps[:SPECIAL_DEFENSE] = DEFENSE_STACKING_ABILITY_STEP_CAP
-    user.pbRaiseMultipleStatSteps(DEFENDING_STATS_1, user, ability: ability, statStepCaps: caps)
+  return if user.steps[:DEFENSE] >= DEFENSE_STACKING_ABILITY_STEP_CAP && user.steps[:SPECIAL_DEFENSE] >= DEFENSE_STACKING_ABILITY_STEP_CAP
+  caps = {}
+  caps[:DEFENSE] = DEFENSE_STACKING_ABILITY_STEP_CAP
+  caps[:SPECIAL_DEFENSE] = DEFENSE_STACKING_ABILITY_STEP_CAP
+  user.pbRaiseMultipleStatSteps(DEFENDING_STATS_1, user, ability: ability, statStepCaps: caps)
 end

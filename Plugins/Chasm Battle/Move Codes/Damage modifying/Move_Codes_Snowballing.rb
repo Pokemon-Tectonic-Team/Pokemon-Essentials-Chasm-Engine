@@ -77,7 +77,7 @@ class PokeBattle_Move_HeartRhythm < PokeBattle_SnowballingMove
     end
 
     def damageAtCount(baseDmg, count)
-        return baseDmg + (20 * count)
+        return baseDmg + 20 * count
     end
 
     def healingMove?; return true; end

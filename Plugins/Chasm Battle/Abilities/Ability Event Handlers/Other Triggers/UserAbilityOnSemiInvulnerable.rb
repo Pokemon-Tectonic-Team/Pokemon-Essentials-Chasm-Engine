@@ -1,27 +1,27 @@
 BattleHandlers::UserAbilityOnSemiInvulnerable.add(:LIVEANDLURK,
-  proc { |_ability, user, _move, _battle, aiCheck|
+  proc { |ability, user, move, battle, aiCheck|
       healingMessage = _INTL("{1} regenerates in safety.", user.pbThis)
-      next user.applyFractionalHealing(1.0 / 4.0, ability: :LIVEANDLURK, customMessage: healingMessage, canOverheal: true, aiCheck: aiCheck)
+      next user.applyFractionalHealing(1.0/4.0, ability: :LIVEANDLURK, customMessage: healingMessage, canOverheal: true, aiCheck: aiCheck)
   }
 )
 
 BattleHandlers::UserAbilityOnSemiInvulnerable.add(:SHOWOFF,
-  proc { |ability, user, _move, _battle, aiCheck|
+  proc { |ability, user, move, battle, aiCheck|
       score = 0
       user.eachOpposing do |b|
-          if aiCheck
-              score += getMultiStatDownEffectScore(ATTACKING_STATS_1, user, b)
-          else
-              b.pbLowerMultipleStatSteps(ATTACKING_STATS_1, user, showFailMsg: true, ability: ability)
-          end
+        if aiCheck
+          score += getMultiStatDownEffectScore(ATTACKING_STATS_1, user, b)
+        else
+          b.pbLowerMultipleStatSteps(ATTACKING_STATS_1, user, showFailMsg: true, ability: ability)
+        end
       end
       next score
   }
 )
 
 BattleHandlers::UserAbilityOnSemiInvulnerable.add(:BIRDBRAINED,
-  proc { |_ability, user, _targets, _move, _battle|
-      next if user.effectActive?(:ExtraHidingTurn)
-      user.applyEffect(:ExtraHidingTurn, 2)
+  proc { |ability, user, targets, move, battle|
+    next if user.effectActive?(:ExtraHidingTurn)
+    user.applyEffect(:ExtraHidingTurn, 2)
   }
 )

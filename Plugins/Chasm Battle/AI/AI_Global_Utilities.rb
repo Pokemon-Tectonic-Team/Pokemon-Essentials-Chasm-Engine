@@ -28,7 +28,7 @@ def getUrgency
             [:HAIL_TEAM, @battle.icy?, :SNOWWARNING, :ICYROCK],
             [:MOONGLOW_TEAM, @battle.moonGlowing?, :MOONGAZE, :MIRROREDROCK],
             [:ECLIPSE_TEAM, @battle.eclipsed?, :HARBINGER, :PINPOINTROCK],
-        ]
+        ]    
         weatherInfo.each do |weatherEntry|
             weatherPolicy = weatherEntry[0]
             weatherActive = weatherEntry[1]

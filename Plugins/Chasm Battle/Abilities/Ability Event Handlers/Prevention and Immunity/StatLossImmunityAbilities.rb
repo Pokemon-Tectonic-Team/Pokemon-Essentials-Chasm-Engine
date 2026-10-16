@@ -1,16 +1,16 @@
 BattleHandlers::LoadDataDependentAbilityHandlers += proc {
-    GameData::Ability.getByFlag("OtherStatDropImmunity").each do |abilityID|
-        BattleHandlers::StatLossImmunityAbility.add(abilityID,
-          proc { |ability, battler, _stat, battle, showMessages|
-              if showMessages
-                  battle.pbShowAbilitySplash(battler, ability)
-                  battle.pbDisplay(_INTL("{1}'s stats cannot be lowered!", battler.pbThis))
-                  battle.pbHideAbilitySplash(battler)
-              end
-              next true
-          }
-        )
-    end
+  GameData::Ability.getByFlag("OtherStatDropImmunity").each do |abilityID|
+    BattleHandlers::StatLossImmunityAbility.add(abilityID,
+      proc { |ability, battler, _stat, battle, showMessages|
+          if showMessages
+              battle.pbShowAbilitySplash(battler, ability)
+              battle.pbDisplay(_INTL("{1}'s stats cannot be lowered!", battler.pbThis))
+              battle.pbHideAbilitySplash(battler)
+          end
+          next true
+      }
+    )
+  end
 }
 
 BattleHandlers::StatLossImmunityAbility.add(:PLOTARMOR,

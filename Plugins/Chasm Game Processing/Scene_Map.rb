@@ -47,10 +47,10 @@ class Scene_Map
     end
 
     def recreateSpritesets
-        disposeSpritesets
-        RPG::Cache.clear
-        createSpritesets
-    end
+		disposeSpritesets
+		RPG::Cache.clear
+		createSpritesets
+	end
 
     def force_update_characters
         for map in $MapFactory.maps
@@ -89,7 +89,7 @@ class Scene_Map
         @spritesetGlobal.playersprite.clearShadows if @spritesetGlobal
         if $game_map.map_id != $game_temp.player_new_map_id
             $game_switches[35] = false # Enable Auto Clouds, if it was disabled
-            $MapFactory.setup($game_temp.player_new_map_id)
+            $MapFactory.setup($game_temp.player_new_map_id) 
         end
         $game_player.moveto($game_temp.player_new_x, $game_temp.player_new_y)
         case $game_temp.player_new_direction
@@ -152,19 +152,19 @@ class Scene_Map
     end
 
     def call_save
-        $game_temp.save_calling = false
-        pbSEPlay("GUI save choice")
-        if properlySave
-            pbMessage(_INTL("\\se[]{1} saved the game.\\me[GUI save game]", $Trainer.name))
-        else
-            pbMessage(_INTL("\\se[]Save failed.\\wtnp[30]"))
-        end
+      $game_temp.save_calling = false
+      pbSEPlay("GUI save choice")
+      if properlySave()
+        pbMessage(_INTL("\\se[]{1} saved the game.\\me[GUI save game]",$Trainer.name))
+      else
+        pbMessage(_INTL("\\se[]Save failed.\\wtnp[30]"))
+      end
     end
 
     def call_bike
-        $PokemonTemp.bicycleCalling = false
-        return unless $PokemonBag.pbHasItem?(:BICYCLE)
-        pbUseKeyItemInField(:BICYCLE)
+      $PokemonTemp.bicycleCalling = false
+      return unless $PokemonBag.pbHasItem?(:BICYCLE)
+      pbUseKeyItemInField(:BICYCLE)
     end
 
     def miniupdate
@@ -191,27 +191,27 @@ class Scene_Map
     end
 
     def updateSpritesets(refresh = false)
-        @spritesets ||= {}
-        $MapFactory.maps.each do |map|
-            @spritesets[map.map_id] = Spriteset_Map.new(map) unless @spritesets[map.map_id]
-        end
-        keys = @spritesets.keys.clone
-        for i in keys
-            if $MapFactory.hasMap?(i)
-                @spritesets[i].update
-            else
-                @spritesets[i].dispose if @spritesets[i]
-                @spritesets[i] = nil
-                @spritesets.delete(i)
-            end
-        end
-        @spritesetGlobal.update
-        for map in $MapFactory.maps
-            @spritesets[map.map_id] = Spriteset_Map.new(map) unless @spritesets[map.map_id]
-        end
-        @map_renderer.refresh if refresh
-        @map_renderer.update
-        Events.onMapUpdate.trigger(self)
+      @spritesets ||= {}
+      $MapFactory.maps.each do |map|
+          @spritesets[map.map_id] = Spriteset_Map.new(map) unless @spritesets[map.map_id]
+      end
+      keys = @spritesets.keys.clone
+      for i in keys
+          if !$MapFactory.hasMap?(i)
+              @spritesets[i].dispose if @spritesets[i]
+              @spritesets[i] = nil
+              @spritesets.delete(i)
+          else
+              @spritesets[i].update
+          end
+      end
+      @spritesetGlobal.update
+      for map in $MapFactory.maps
+          @spritesets[map.map_id] = Spriteset_Map.new(map) unless @spritesets[map.map_id]
+      end
+      @map_renderer.refresh if refresh
+      @map_renderer.update
+      Events.onMapUpdate.trigger(self)
     end
 
     def update

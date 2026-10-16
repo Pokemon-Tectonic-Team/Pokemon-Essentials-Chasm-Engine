@@ -1,7 +1,7 @@
 BattleHandlers::PreventAddedEffectTargetAbility.add(:SHIELDDUST,
-    proc { |ability, battle, _user, target, _move, showMessages|
+    proc { |ability, battle, user, target, move, showMessages|
         if showMessages
-            battle.pbShowAbilitySplash(target, ability)
+            battle.pbShowAbilitySplash(target,ability)
             battle.pbDisplay(_INTL("{1} prevents a random added effect!", target.pbThis))
             battle.pbHideAbilitySplash(target)
         end
@@ -9,4 +9,4 @@ BattleHandlers::PreventAddedEffectTargetAbility.add(:SHIELDDUST,
     }
 )
 
-BattleHandlers::PreventAddedEffectTargetAbility.copy(:SHIELDDUST, :UNCONQUERABLE, :RUGGEDSCALES)
+BattleHandlers::PreventAddedEffectTargetAbility.copy(:SHIELDDUST,:UNCONQUERABLE,:RUGGEDSCALES)

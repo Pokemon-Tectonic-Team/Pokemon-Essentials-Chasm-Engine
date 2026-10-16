@@ -10,7 +10,7 @@ class PokeBattle_Move_ScalesWithUserHP < PokeBattle_Move
         basePower = (26 * hpFraction).floor * 5
         return basePower
     end
-
+	
     def getDetailsForMoveDex(detailsList = [])
         detailsList << _INTL("Does more damage the more HP the user has left. Affected by Overhealing.")
         detailsList << _INTL("Range 65-195")
@@ -20,6 +20,7 @@ class PokeBattle_Move_ScalesWithUserHP < PokeBattle_Move
         detailsList << _INTL("<u>125% HP:</u> 160 BP")
         detailsList << _INTL("<u>150% HP:</u> 195 BP")
     end
+	
 end
 
 #===============================================================================
@@ -45,7 +46,7 @@ class PokeBattle_Move_ScalesSlowerThanTarget < PokeBattle_Move
         basePower = 40 if basePower < 40
         return basePower
     end
-
+	
     def getDetailsForMoveDex(detailsList = [])
         detailsList << _INTL("Does more damage the slower the user is compared to the target. Range 40-150")
         detailsList << _INTL("<u>1/2 of the target's speed:</u> 50 BP")
@@ -54,6 +55,7 @@ class PokeBattle_Move_ScalesSlowerThanTarget < PokeBattle_Move
         detailsList << _INTL("<u>1/5 of the target's speed:</u> 125 BP")
         detailsList << _INTL("<u>1/6 of the target's speed:</u> 150 BP")
     end
+	
 end
 
 #===============================================================================
@@ -64,7 +66,7 @@ class PokeBattle_Move_ScalesUsersPositiveStatSteps < PokeBattle_Move
     def pbBaseDamage(baseDmg, user, _target)
         mult = 0
         GameData::Stat.each_battle { |s| mult += user.steps[s.id] if user.steps[s.id] > 0 }
-        return baseDmg + (10 * mult)
+        return baseDmg + 10 * mult
     end
 end
 
@@ -99,7 +101,7 @@ end
 # Power increases the less HP the user has. (Flail, Shiver Squirm)
 #===============================================================================
 def flailBasePowerFormula(ratio)
-    return [(20 / ((ratio * 5)**0.75)).floor * 5, 200].min
+    return [(20 / ((ratio * 5)**0.75)).floor * 5,200].min
 end
 
 class PokeBattle_Move_ScalesWithLostHP < PokeBattle_Move
@@ -107,7 +109,7 @@ class PokeBattle_Move_ScalesWithLostHP < PokeBattle_Move
         ratio = user.hp.to_f / user.totalhp.to_f
         return flailBasePowerFormula(ratio)
     end
-
+	
     def getDetailsForMoveDex(detailsList = [])
         detailsList << _INTL("Does more damage the lower the user's HP is. Range 25-200")
         detailsList << _INTL("<u>100% HP:</u> 25 BP")
@@ -126,7 +128,7 @@ end
 class PokeBattle_Move_ScalesFasterThanTarget < PokeBattle_Move
     def pbBaseDamage(_baseDmg, user, target)
         ratio = user.pbSpeed.to_f / target.pbSpeed.to_f
-        basePower = 10 + ((7 * ratio).floor * 5)
+        basePower = 10 + (7 * ratio).floor * 5
         basePower = 150 if basePower > 150
         basePower = 40 if basePower < 40
         return basePower
@@ -147,10 +149,10 @@ end
 # Power increases the heavier the target is. (Grass Knot, Ghostly Grasp)
 #===============================================================================
 class PokeBattle_Move_ScalesTargetsWeight < PokeBattle_Move
-    def pbBaseDamage(baseDmg, _user, target)
+    def pbBaseDamage(baseDmg, user, target)
         ret = baseDmg
-        weight = [target.pbWeight / 10, 2000].min
-        ret += 19 + (((4 * (weight**0.5)) / 5).floor * 5)
+        weight = [target.pbWeight / 10,2000].min
+        ret += 19 + ((4 * (weight**0.5)) / 5).floor * 5
         return ret
     end
 
@@ -197,7 +199,7 @@ end
 # Deals 20 extra BP per fainted party member. (From Beyond)
 #===============================================================================
 class PokeBattle_Move_ScalesFaintedPartyMembers < PokeBattle_Move
-    def pbBaseDamage(baseDmg, user, _target)
+    def pbBaseDamage(baseDmg, user, target)
         user.ownerParty.each do |partyPokemon|
             next unless partyPokemon
             next if partyPokemon.personalID == user.personalID
@@ -218,7 +220,7 @@ class PokeBattle_Move_HardPlace < PokeBattle_Move
             real_defense = ally_battler.pbDefense
             highestDefense = real_defense if real_defense > highestDefense
         end
-        highestDefense = (highestDefense / 5) * 5 # Round to nearest 5
+        highestDefense = (highestDefense/5)*5 # Round to nearest 5
         highestDefense = 40 if highestDefense < 40
         highestDefense = 200 if highestDefense > 200
         return highestDefense
@@ -265,8 +267,8 @@ class PokeBattle_Move_ScalesCreatedMoney < PokeBattle_Move
         @coinsToConsume = 0
     end
 
-    def pbOnStartUse(user, _targets)
-        @coinsToConsume = [user.pbOwnSide.countEffect(:PayDay), 1000].min
+    def pbOnStartUse(user, targets)
+        @coinsToConsume = [user.pbOwnSide.countEffect(:PayDay),1000].min
     end
 
     def pbBaseDamage(baseDmg, _user, _target)
@@ -274,7 +276,7 @@ class PokeBattle_Move_ScalesCreatedMoney < PokeBattle_Move
         return baseDmg
     end
 
-    def pbEffectAfterAllHits(user, _target)
+    def pbEffectAfterAllHits(user, target)
         beforeCoins = user.pbOwnSide.effects[:PayDay]
         user.pbOwnSide.effects[:PayDay] -= @coinsToConsume
         user.pbOwnSide.effects[:PayDay] = 0 if user.pbOwnSide.effects[:PayDay] < 0

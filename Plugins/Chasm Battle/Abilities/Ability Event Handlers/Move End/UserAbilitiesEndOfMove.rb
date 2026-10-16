@@ -139,7 +139,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:BEASTBOOST,
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:ASONEICE,
-  proc { |_ability, user, targets, _move, battle, _switchedBattlers|
+  proc { |ability, user, targets, _move, battle, _switchedBattlers|
       next if battle.pbAllFainted?(user.idxOpposingSide)
       numFainted = 0
       targets.each { |b| numFainted += 1 if b.damageState.fainted }
@@ -151,7 +151,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:ASONEICE,
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:ASONEGHOST,
-  proc { |_ability, user, targets, _move, battle, _switchedBattlers|
+  proc { |ability, user, targets, _move, battle, _switchedBattlers|
       next if battle.pbAllFainted?(user.idxOpposingSide)
       numFainted = 0
       targets.each { |b| numFainted += 1 if b.damageState.fainted }
@@ -232,12 +232,12 @@ BattleHandlers::UserAbilityEndOfMove.add(:TENEBROUSCANTER,
 ########################################################################
 
 BattleHandlers::UserAbilityEndOfMove.add(:MAGICIAN,
-  proc { |_ability, user, targets, move, _battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
       targets.each do |b|
           b.eachItem do |item|
-              move.stealItem(user, b, item)
+            move.stealItem(user, b, item)
           end
       end
   }
@@ -269,9 +269,9 @@ BattleHandlers::UserAbilityEndOfMove.add(:GILD,
       next unless move.damagingMove?
       targets.each do |b|
           next unless b.hasAnyItem?
-          next unless move.knockOffItems(user, b, ability: ability) do |_itemRemoved, itemName|
-              battle.pbDisplay(_INTL("{1} turned {2}'s {3} into gold!", user.pbThis, b.pbThis(true), itemName))
-              user.generateMoney(8)
+          next unless move.knockOffItems(user, b, ability: ability) do |itemRemoved, itemName|
+            battle.pbDisplay(_INTL("{1} turned {2}'s {3} into gold!", user.pbThis, b.pbThis(true), itemName))
+            user.generateMoney(8)
           end
           break
       end
@@ -280,7 +280,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:GILD,
 
 BattleHandlers::UserAbilityEndOfMove.add(:SPACEINTERLOPER,
   proc { |ability, user, targets, _move, _battle|
-      user.pbRecoverHPFromMultiDrain(targets, 0.25, user: user, ability: ability)
+    user.pbRecoverHPFromMultiDrain(targets, 0.25, user:user, ability: ability)
   }
 )
 
@@ -303,7 +303,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:DAUNTLESS,
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:POWERLIFTER,
-  proc { |ability, user, targets, move, _battle, switchedBattlers|
+  proc { |ability, user, targets, move, battle, switchedBattlers|
       next if user.dummy
       next unless move.physicalMove?
       move.forceOutTargets(user, targets, switchedBattlers, substituteBlocks: true, random: false, ability: ability)
@@ -316,9 +316,9 @@ BattleHandlers::UserAbilityEndOfMove.add(:FLUSTERFLOCK,
       next unless move.damagingMove?
       hitAnything = false
       targets.each do |b|
-          next if b.damageState.unaffected
-          hitAnything = true
-          break
+        next if b.damageState.unaffected
+        hitAnything = true
+        break
       end
       next unless hitAnything
       battle.pbShowAbilitySplash(user, ability)
@@ -373,7 +373,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:ICEQUEEN,
       next if user.dummy
       next unless move.damagingMove?
       next unless battle.icy?
-      user.pbRecoverHPFromMultiDrain(targets, 0.50, user: user, ability: ability)
+      user.pbRecoverHPFromMultiDrain(targets, 0.50, user:user, ability: ability)
   }
 )
 
@@ -382,51 +382,51 @@ BattleHandlers::UserAbilityEndOfMove.add(:ASTRALHARVEST,
       next if user.dummy
       next unless move.damagingMove?
       next unless battle.eclipsed?
-      user.pbRecoverHPFromMultiDrain(targets, 0.50, user: user, ability: ability)
+      user.pbRecoverHPFromMultiDrain(targets, 0.50, user:user, ability: ability)
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:SILVERSENSE,
-  proc { |ability, user, targets, move, _battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
-      user.pbRecoverHPFromMultiDrain(targets, 0.50, user: user, ability: ability, onlyCriticalDamage: true)
+      user.pbRecoverHPFromMultiDrain(targets, 0.50, user:user, ability: ability, onlyCriticalDamage: true)
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:TORPORSAP,
-  proc { |ability, user, targets, move, _battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
       asleepTargets = []
       targets.each do |target|
-          next unless target.asleep?
-          asleepTargets.push(target)
+        next unless target.asleep?
+        asleepTargets.push(target)
       end
       next if asleepTargets.length == 0
-      user.pbRecoverHPFromMultiDrain(asleepTargets, 0.50, user: user, ability: ability)
+      user.pbRecoverHPFromMultiDrain(asleepTargets, 0.50, user:user, ability: ability)
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:VICIOUSCYCLE,
-  proc { |ability, user, targets, move, _battle, _switchedBattlers, aiCheck|
+  proc { |ability, user, targets, move, battle, _switchedBattlers, aiCheck|
       next if user.dummy
       next unless move.damagingMove?
       next unless move.calcType == :DRAGON
       # AI learns ability if move spreads or drain happens
-      user.aiLearnsAbility(ability) if !aiCheck && (targets.size > 1 || user.hp != user.totalhp)
-      user.pbRecoverHPFromMultiDrain(targets, 0.33, user: user, ability: ability)
+      user.aiLearnsAbility(ability) if ( !aiCheck && ( targets.size() > 1 || user.hp != user.totalhp) )
+      user.pbRecoverHPFromMultiDrain(targets, 0.33, user:user, ability: ability)
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:HORDETACTICS,
-  proc { |ability, user, targets, move, _battle, _switchedBattlers, aiCheck|
+  proc { |ability, user, targets, move, battle, _switchedBattlers, aiCheck|
       next if user.dummy
       next unless move.damagingMove?
       next unless move.calcType == :NORMAL
       # AI learns ability if move spreads or drain happens
-      user.aiLearnsAbility(ability) if !aiCheck && (targets.size > 1 || user.hp != user.totalhp)
-      user.pbRecoverHPFromMultiDrain(targets, 0.33, user: user, ability: ability)
+      user.aiLearnsAbility(ability) if ( !aiCheck && ( targets.size() > 1 || user.hp != user.totalhp) )
+      user.pbRecoverHPFromMultiDrain(targets, 0.33, user:user, ability: ability)
   }
 )
 
@@ -444,7 +444,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:ETERNALWINTER,
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:COREPROVENANCE,
-  proc { |ability, user, _targets, move, battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if move.damagingMove?
       next unless user.pbOwnSide.effectActive?(:ErodedRock)
       rockCount = user.pbOwnSide.countEffect(:ErodedRock)
@@ -462,9 +462,9 @@ BattleHandlers::UserAbilityEndOfMove.add(:FEELTHEBURN,
       next if user.burned?
       hitAnything = false
       targets.each do |b|
-          next if b.damageState.unaffected
-          hitAnything = true
-          break
+        next if b.damageState.unaffected
+        hitAnything = true
+        break
       end
       next unless hitAnything
       battle.pbShowAbilitySplash(user, ability)
@@ -480,9 +480,9 @@ BattleHandlers::UserAbilityEndOfMove.add(:COLDCALCULATION,
       next if user.frostbitten?
       hitAnything = false
       targets.each do |b|
-          next if b.damageState.unaffected
-          hitAnything = true
-          break
+        next if b.damageState.unaffected
+        hitAnything = true
+        break
       end
       next unless hitAnything
       battle.pbShowAbilitySplash(user, ability)
@@ -492,14 +492,14 @@ BattleHandlers::UserAbilityEndOfMove.add(:COLDCALCULATION,
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:IRREFUTABLE,
-  proc { |ability, user, targets, move, _battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
       nveHits = 0
       targets.each do |b|
-          next if b.damageState.unaffected
-          next unless Effectiveness.not_very_effective?(b.damageState.typeMod)
-          nveHits += 1
+        next if b.damageState.unaffected
+        next unless Effectiveness.not_very_effective?(b.damageState.typeMod)
+        nveHits += 1
       end
       next unless nveHits > 0
       user.tryRaiseStat(:ATTACK, user, increment: nveHits * 2, ability: ability)
@@ -507,14 +507,14 @@ BattleHandlers::UserAbilityEndOfMove.add(:IRREFUTABLE,
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:OVERTHINKING,
-  proc { |ability, user, targets, move, _battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.specialMove?
       hitAnything = false
       targets.each do |b|
-          next if b.damageState.unaffected
-          hitAnything = true
-          break
+        next if b.damageState.unaffected
+        hitAnything = true
+        break
       end
       next unless hitAnything
       user.tryLowerStat(:SPECIAL_ATTACK, user, ability: ability)
@@ -522,20 +522,20 @@ BattleHandlers::UserAbilityEndOfMove.add(:OVERTHINKING,
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:FUELHUNGRY,
-  proc { |ability, user, targets, move, _battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
       hitAnything = false
       targets.each do |b|
-          next if b.damageState.unaffected
-          hitAnything = true
-          break
+        next if b.damageState.unaffected
+        hitAnything = true
+        break
       end
       next unless hitAnything
       if move.physicalMove?
-          user.tryLowerStat(:ATTACK, user, increment: 2, ability: ability)
+        user.tryLowerStat(:ATTACK, user, increment: 2, ability: ability)
       elsif move.specialMove?
-          user.tryLowerStat(:SPECIAL_ATTACK, user, increment: 2, ability: ability)
+        user.tryLowerStat(:SPECIAL_ATTACK, user, increment: 2, ability: ability)
       end
   }
 )
@@ -545,11 +545,11 @@ BattleHandlers::UserAbilityEndOfMove.add(:SIRENSONG,
       next unless move.soundMove?
       battle.pbShowAbilitySplash(user, ability)
       user.eachOpposing do |b|
-          if b.pbAttack > b.pbSpAtk
-              b.tryLowerStat(:ATTACK, user, increment: 1, showFailMsg: true)
-          else
-              b.tryLowerStat(:SPECIAL_ATTACK, user, increment: 1, showFailMsg: true)
-          end
+        if b.pbAttack > b.pbSpAtk
+          b.tryLowerStat(:ATTACK, user, increment: 1, showFailMsg: true)
+        else
+          b.tryLowerStat(:SPECIAL_ATTACK, user, increment: 1, showFailMsg: true)
+        end
       end
       battle.pbHideAbilitySplash(user)
   }
@@ -560,11 +560,11 @@ BattleHandlers::UserAbilityEndOfMove.add(:BOGGLINGBOLERO,
       next unless move.danceMove?
       battle.pbShowAbilitySplash(user, ability)
       user.eachOpposing do |b|
-          if b.pbAttack > b.pbSpAtk
-              b.tryLowerStat(:ATTACK, user, increment: 1, showFailMsg: true)
-          else
-              b.tryLowerStat(:SPECIAL_ATTACK, user, increment: 1, showFailMsg: true)
-          end
+        if b.pbAttack > b.pbSpAtk
+          b.tryLowerStat(:ATTACK, user, increment: 1, showFailMsg: true)
+        else
+          b.tryLowerStat(:SPECIAL_ATTACK, user, increment: 1, showFailMsg: true)
+        end
       end
       battle.pbHideAbilitySplash(user)
   }
@@ -575,45 +575,45 @@ BattleHandlers::UserAbilityEndOfMove.add(:BELLOWER,
       next unless move.soundMove?
       battle.pbShowAbilitySplash(user, ability)
       user.eachOpposing do |b|
-          b.applyEffect(:Torment)
+        b.applyEffect(:Torment)
       end
       battle.pbHideAbilitySplash(user)
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:VANDAL,
-  proc { |ability, user, targets, move, _battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
       clothingItemProc = proc do |item|
-          GameData::Item.get(item).is_clothing?
+        GameData::Item.get(item).is_clothing?
       end
       targets.each do |b|
-          move.knockOffItems(user, b, ability: ability, validItemProc: clothingItemProc)
+        move.knockOffItems(user, b, ability: ability, validItemProc: clothingItemProc)
       end
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:STUPEFYING,
-  proc { |_ability, user, targets, move, _battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
       targets.each do |target|
-          next unless target.knockedBelowHalf?
-          target.applyDizzy(user) if target.canDizzy?(user, true)
+        next unless target.knockedBelowHalf?
+        target.applyDizzy(user) if target.canDizzy?(user, true)
       end
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:FATIGUED,
-  proc { |_ability, user, targets, move, battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
       hitAnything = false
       targets.each do |b|
-          next if b.damageState.unaffected
-          hitAnything = true
-          break
+        next if b.damageState.unaffected
+        hitAnything = true
+        break
       end
       next unless hitAnything
       battle.forceUseMove(user, :REST)
@@ -626,68 +626,68 @@ BattleHandlers::UserAbilityEndOfMove.add(:HYBRIDFIGHTER,
       next unless move.damagingMove?
       hitAnything = false
       targets.each do |b|
-          next if b.damageState.unaffected
-          hitAnything = true
-          break
+        next if b.damageState.unaffected
+        hitAnything = true
+        break
       end
       next unless hitAnything
-
+      
       previousMoveID = user.moveUsageHistory[1] || nil
       currentMoveID = user.moveUsageHistory[0] || nil
 
       next if currentMoveID.nil?
       next if previousMoveID.nil?
-
+      
       previousMoveData = battle.getBattleMoveInstanceFromID(previousMoveID)
       currentMoveData = battle.getBattleMoveInstanceFromID(currentMoveID)
 
       if previousMoveData.kickingMove? && currentMoveData.bitingMove?
-          user.showMyAbilitySplash(ability)
-          if user.healthCapped?
-              battle.pbDisplay(_INTL("{1}'s HP is full!", user.pbThis))
-          else
-              user.applyFractionalHealing(1.0 / 4.0)
-          end
-          user.hideMyAbilitySplash
+        user.showMyAbilitySplash(ability)
+        if user.healthCapped?
+          battle.pbDisplay(_INTL("{1}'s HP is full!", user.pbThis))
+        else
+          user.applyFractionalHealing(1.0/4.0)
+        end
+        user.hideMyAbilitySplash
       elsif previousMoveData.punchingMove? && currentMoveData.kickingMove?
-          user.showMyAbilitySplash(ability)
-          move.switchOutUser(user, switchedBattlers)
-          user.hideMyAbilitySplash
+        user.showMyAbilitySplash(ability)
+        move.switchOutUser(user,switchedBattlers)
+        user.hideMyAbilitySplash
       elsif previousMoveData.bitingMove? && currentMoveData.punchingMove?
-          targets.each do |target|
-              target.pbLowerMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
-          end
+        targets.each do |target|
+          target.pbLowerMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
+        end
       elsif previousMoveData.bitingMove? && currentMoveData.kickingMove?
-          user.tryRaiseStat(:SPEED, user, increment: 2, ability: ability)
+        user.tryRaiseStat(:SPEED, user, increment: 2, ability: ability)
       elsif previousMoveData.kickingMove? && currentMoveData.punchingMove?
-          user.showMyAbilitySplash(ability)
-          targets.each do |target|
-              target.applyNumb if target.canNumb?(user, true)
-          end
-          user.hideMyAbilitySplash
+        user.showMyAbilitySplash(ability)
+        targets.each do |target|
+          target.applyNumb if target.canNumb?(user, true)
+        end
+        user.hideMyAbilitySplash
       elsif previousMoveData.punchingMove? && currentMoveData.bitingMove?
-          user.showMyAbilitySplash(ability)
-          if user.effectActive?(:EnergyCharge)
-              battle.pbDisplay(_INTL("But {1} is already energized...", user.pbThis(true)))
-          else
-              battle.pbAnimation(:CHARGE, user, nil)
-              user.applyEffect(:EnergyCharge)
-          end
-          user.hideMyAbilitySplash
+        user.showMyAbilitySplash(ability)
+        if user.effectActive?(:EnergyCharge)
+          battle.pbDisplay(_INTL("But {1} is already energized...", user.pbThis(true)))
+        else
+          battle.pbAnimation(:CHARGE, user, nil)
+          user.applyEffect(:EnergyCharge)
+        end
+        user.hideMyAbilitySplash
       end
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:OFFENSIVE,
-  proc { |_ability, user, targets, move, _battle, _switchedBattlers|
-      next if user.dummy
-      next unless move.damagingMove?
-      next unless user.firstTurn?
-      targets.each do |b|
-          next if b.fainted?
-          next if b.damageState.calcDamage == 0 || b.damageState.substitute
-          b.pbFlinch
-      end
+  proc { |ability, user, targets, move, battle, switchedBattlers|
+    next if user.dummy
+    next unless move.damagingMove?
+    next unless user.firstTurn?
+    targets.each do |b|
+      next if b.fainted?
+      next if b.damageState.calcDamage == 0 || b.damageState.substitute
+      b.pbFlinch
+    end
   }
 )
 
@@ -699,22 +699,22 @@ BattleHandlers::UserAbilityEndOfMove.add(:BLINDING,
       next if targets.empty?
       battle.pbShowAbilitySplash(user, ability)
       targets.each do |b|
-          b.tryLowerStat(:SPECIAL_DEFENSE, user, increment: 1, showFailMsg: true)
+        b.tryLowerStat(:SPECIAL_DEFENSE, user, increment: 1, showFailMsg: true)
       end
       battle.pbHideAbilitySplash(user)
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:TANGLINGVINES,
-  proc { |_ability, user, targets, move, _battle, _switchedBattlers|
-      next unless move.damagingMove?
-      targets.each do |b|
-          next if b.fainted?
-          next if b.damageState.missed || b.damageState.unaffected
-          if b.pointsAt?(:TanglingVines, user)
-              b.disableEffect(:TanglingVines)
-          end
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
+    next unless move.damagingMove?
+    targets.each do |b|
+      next if b.fainted?
+      next if b.damageState.missed || b.damageState.unaffected
+      if b.pointsAt?(:TanglingVines, user)
+        b.disableEffect(:TanglingVines)
       end
+    end
   }
 )
 
@@ -727,113 +727,113 @@ BattleHandlers::UserAbilityEndOfMove.add(:FRIGHTENINGFANGS,
           next if b.damageState.missed || b.damageState.unaffected
           battle.pbShowAbilitySplash(user, ability)
           if b.pbAttack > b.pbSpAtk
-              b.pbLowerMultipleStatSteps([:ATTACK, 2], user, move: self)
+          b.pbLowerMultipleStatSteps([:ATTACK,2], user, move: self)
           else
-              b.pbLowerMultipleStatSteps([:SPECIAL_ATTACK, 2], user, move: self)
+          b.pbLowerMultipleStatSteps([:SPECIAL_ATTACK,2], user, move: self)
           end
-          battle.pbHideAbilitySplash(user)
+      battle.pbHideAbilitySplash(user)
       end
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:ACTIONSTAR,
-  proc { |ability, user, targets, _move, battle, _switchedBattlers|
-      next if user.effectActive?(:ActionStar)
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
+    next if user.effectActive?(:ActionStar)
 
-      ability_proc = false
-      targets.each do |b|
-          next if b.damageState.unaffected
-          next unless Effectiveness.super_effective?(b.damageState.typeMod)
-          ability_proc = true
-          break
-      end
-      next unless ability_proc
-
-      battle.pbShowAbilitySplash(user, ability)
-      user.applyEffect(:ActionStar)
-      battle.pbHideAbilitySplash(user)
+    ability_proc = false
+    targets.each do |b| 
+      next if b.damageState.unaffected
+      next unless Effectiveness.super_effective?(b.damageState.typeMod)
+      ability_proc = true
+      break
+    end
+    next unless ability_proc
+    
+    battle.pbShowAbilitySplash(user, ability)
+    user.applyEffect(:ActionStar)
+    battle.pbHideAbilitySplash(user)
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:DISCOMBOBULATOR,
-  proc { |ability, user, targets, _move, battle, _switchedBattlers|
-      targets.each { |target|
-          next unless target.movedThisRound?
-          next unless target.effectActive?(:Flinch)
-          next if target.effectActive?(:FlinchImmunity)
-          battle.pbShowAbilitySplash(user, ability)
-          target.applyEffect(:FlinchNextTurn)
-          battle.pbHideAbilitySplash(user)
-      }
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
+    targets.each { |target|
+      next unless target.movedThisRound?
+      next unless target.effectActive?(:Flinch)
+      next if target.effectActive?(:FlinchImmunity)
+      battle.pbShowAbilitySplash(user, ability)
+      target.applyEffect(:FlinchNextTurn)
+      battle.pbHideAbilitySplash(user)
+    }
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:HEROSJOURNEY,
   proc { |ability, user, targets, move, battle, _switchedBattlers|
-      next if battle.pbAllFainted?(user.idxOpposingSide)
-      if targets.any? { |b| b.damageState.fainted && b.opposes?(user) } && !user.pbOwnSide.effectActive?(:HerosJourneyKO)
-          battle.pbShowAbilitySplash(user, ability)
-          battle.pbDisplay(_INTL("{1} vanquishes its opponents!", user.pbThis))
-          user.pbOwnSide.applyEffect(:HerosJourneyKO)
-          battle.pbHideAbilitySplash(user)
-      end
-      if move.statusMove? && !user.pbOwnSide.effectActive?(:HerosJourneyStatus)
-          battle.pbShowAbilitySplash(user, ability)
-          battle.pbDisplay(_INTL("{1} draws strength from wisdom!", user.pbThis))
-          user.pbOwnSide.applyEffect(:HerosJourneyStatus)
-          battle.pbHideAbilitySplash(user)
-      end
-      checkHerosJourney(battle, user)
+    next if battle.pbAllFainted?(user.idxOpposingSide)
+    if (targets.any? { |b| b.damageState.fainted && b.opposes?(user) }) && !user.pbOwnSide.effectActive?(:HerosJourneyKO)
+      battle.pbShowAbilitySplash(user, ability)
+      battle.pbDisplay(_INTL("{1} vanquishes its opponents!", user.pbThis))
+      user.pbOwnSide.applyEffect(:HerosJourneyKO)
+      battle.pbHideAbilitySplash(user)
+    end
+    if move.statusMove? && !user.pbOwnSide.effectActive?(:HerosJourneyStatus)
+      battle.pbShowAbilitySplash(user, ability)
+      battle.pbDisplay(_INTL("{1} draws strength from wisdom!", user.pbThis))
+      user.pbOwnSide.applyEffect(:HerosJourneyStatus)
+      battle.pbHideAbilitySplash(user)
+    end
+    checkHerosJourney(battle, user)
   }
 )
 
 def checkHerosJourney(battle, battler)
-    return unless battler.hasActiveAbility?(:HEROSJOURNEY)
-    return unless battler.countsAs?(:KELDEO)
-    return unless battler.form == 0
-    return unless battler.pbOwnSide.effectActive?(:HerosJourneyKO)
-    return unless battler.pbOwnSide.effectActive?(:HerosJourneyStatus)
-    return unless battler.pbOwnSide.effectActive?(:HerosJourneyRevenge)
-    battler.showMyAbilitySplash(:HEROSJOURNEY)
-    battle.pbDisplay(_INTL("A fierce resolution gathers around {1}!", battler.pbThis))
-    battler.applyFractionalHealing(1.0)
-    battler.pbChangeForm(1, _INTL("{1} transformed!", battler.pbThis))
-    battler.hideMyAbilitySplash
+  return unless battler.hasActiveAbility?(:HEROSJOURNEY)
+  return unless battler.countsAs?(:KELDEO)
+  return unless battler.form == 0
+  return unless battler.pbOwnSide.effectActive?(:HerosJourneyKO)
+  return unless battler.pbOwnSide.effectActive?(:HerosJourneyStatus)
+  return unless battler.pbOwnSide.effectActive?(:HerosJourneyRevenge)
+  battler.showMyAbilitySplash(:HEROSJOURNEY)
+  battle.pbDisplay(_INTL("A fierce resolution gathers around {1}!", battler.pbThis))
+  battler.applyFractionalHealing(1.0)
+  battler.pbChangeForm(1, _INTL("{1} transformed!",battler.pbThis))
+  battler.hideMyAbilitySplash
 end
 
 BattleHandlers::UserAbilityEndOfMove.add(:RAGEMANEUVERS,
-  proc { |ability, user, _targets, move, battle|
-      next unless move.rampagingMove?
-      next unless user.effectActive?(:Rampaging)
-      battle.pbShowAbilitySplash(user, ability)
-      battle.pbDisplay(_INTL("{1} keeps cool, and can switch between rampaging moves!", user.pbThis))
-      user.applyEffect(:RampageLocked)
-      battle.pbHideAbilitySplash(user)
+  proc { |ability, user, targets, move, battle|
+    next unless move.rampagingMove?
+    next unless user.effectActive?(:Rampaging)
+    battle.pbShowAbilitySplash(user, ability)
+    battle.pbDisplay(_INTL("{1} keeps cool, and can switch between rampaging moves!", user.pbThis))
+    user.applyEffect(:RampageLocked)
+    battle.pbHideAbilitySplash(user)
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:REMANENTVOLTAGE,
-  proc { |ability, user, _targets, move, battle|
-      next unless move.exhaustingMove?
-      next unless user.effectActive?(move.exhaustionTracker)
-      battle.pbShowAbilitySplash(user, ability)
-      battle.pbDisplay(_INTL("Leftover energy runs through {1} despite exhaustion!", user.pbThis(true)))
-      user.applyEffect(:BypassExhaustion)
-      user.applyEffect(:TypeRestricted, :ELECTRIC)
-      user.applyEffect(:TypeRestrictedTurns, 2)
-      battle.pbHideAbilitySplash(user)
+  proc { |ability, user, targets, move, battle|
+    next unless move.exhaustingMove?
+    next unless user.effectActive?(move.exhaustionTracker)
+    battle.pbShowAbilitySplash(user, ability)
+    battle.pbDisplay(_INTL("Leftover energy runs through {1} despite exhaustion!", user.pbThis(true)))
+    user.applyEffect(:BypassExhaustion)
+    user.applyEffect(:TypeRestricted, :ELECTRIC)
+    user.applyEffect(:TypeRestrictedTurns, 2)
+    battle.pbHideAbilitySplash(user)
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:PRIMEVALMEGALAUNCHER,
-  proc { |_ability, _user, targets, move, _battle|
-      next unless move.pulseMove?
-      targets.each do |t|
-          next if t.damageState.fainted
-          next if t.damageState.unaffected
-          t.applyEffect(:IncomingDamageTurns, 2)
-          t.applyEffect(:IncomingDamageAmount, (t.damageState.totalHPLost / 10.0).ceil)
-      end
+  proc { |ability, user, targets, move, battle|
+  next unless move.pulseMove?
+    targets.each do |t|
+      next if t.damageState.fainted
+      next if t.damageState.unaffected
+      t.applyEffect(:IncomingDamageTurns, 2)
+      t.applyEffect(:IncomingDamageAmount, (t.damageState.totalHPLost/10.0).ceil)
+    end
   }
 )
 
@@ -843,113 +843,113 @@ BattleHandlers::UserAbilityEndOfMove.add(:PRIMEVALMEGALAUNCHER,
 
 BattleHandlers::UserAbilityEndOfMove.add(:SPRIGHORNSTYLE,
   proc { |ability, user, targets, move, battle|
-      next if user.fainted?
-      next if move.statusMove?
-      showAbilitySplash = false
-      if targets.any? { |target| target.effectActive?(:SprigHorn) && !(target.damageState.missed || target.damageState.unaffected) }
-          battle.pbShowAbilitySplash(user, ability)
-          showAbilitySplash = true
+    next if user.fainted?
+    next if move.statusMove?
+    showAbilitySplash = false
+    if (targets.any? {|target| target.effectActive?(:SprigHorn) && !(target.damageState.missed || target.damageState.unaffected)})
+      battle.pbShowAbilitySplash(user, ability)
+      showAbilitySplash = true
+    end
+    targets.each do |target|
+      next if target.damageState.missed || target.damageState.unaffected
+      if target.effectActive?(:SprigHorn)
+        if !target.effectActive?(:Binding)
+          trappingDuration = 3
+          trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
+          battle.pbDisplay(_INTL("{1} is caught in vines!", target.pbThis))
+          target.applyEffect(:Binding, applyEffectDurationModifiers(trappingDuration, user))
+          target.applyEffect(:TrappingAbility, :SPRIGHORNSTYLE)
+          target.pointAt(:TrappingUser, user)
+        end
+        user.pbRecoverHP(user.totalhp / 3.0, canOverheal: true)
+        battle.pbHideAbilitySplash(user)
+        target.disableEffect(:SprigHorn)
+      else
+        target.applyEffect(:SprigHorn)
       end
-      targets.each do |target|
-          next if target.damageState.missed || target.damageState.unaffected
-          if target.effectActive?(:SprigHorn)
-              if !target.effectActive?(:Binding)
-                  trappingDuration = 3
-                  trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
-                  battle.pbDisplay(_INTL("{1} is caught in vines!", target.pbThis))
-                  target.applyEffect(:Binding, applyEffectDurationModifiers(trappingDuration, user))
-                  target.applyEffect(:TrappingAbility, :SPRIGHORNSTYLE)
-                  target.pointAt(:TrappingUser, user)
-              end
-              user.pbRecoverHP(user.totalhp / 3.0, canOverheal: true)
-              battle.pbHideAbilitySplash(user)
-              target.disableEffect(:SprigHorn)
-          else
-              target.applyEffect(:SprigHorn)
-          end
-      end
-      if showAbilitySplash
-          battle.pbHideAbilitySplash(user)
-      end
+    end
+    if showAbilitySplash
+      battle.pbHideAbilitySplash(user)
+    end
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:SCYTHEHORNSTYLE,
   proc { |ability, user, targets, move, battle|
-      next if user.fainted?
-      next if move.statusMove?
-      showAbilitySplash = false
-      if targets.any? { |target| target.effectActive?(:ScytheHorn) && !(target.damageState.missed || target.damageState.unaffected) }
-          battle.pbShowAbilitySplash(user, ability)
-          showAbilitySplash = true
+    next if user.fainted?
+    next if move.statusMove?
+    showAbilitySplash = false
+    if (targets.any? {|target| target.effectActive?(:ScytheHorn) && !(target.damageState.missed || target.damageState.unaffected)})
+      battle.pbShowAbilitySplash(user, ability)
+      showAbilitySplash = true
+    end
+    targets.each do |target|
+      next if target.damageState.missed || target.damageState.unaffected
+      if target.effectActive?(:ScytheHorn)
+        target.applyEffect(:Fracture, applyEffectDurationModifiers(DEFAULT_FRACTURE_DURATION, user))
+        if !user.pbOpposingSide.effectActive?(:StealthRock)
+            battle.pbAnimation(:STEALTHROCK, user, nil)
+            user.pbOpposingSide.applyEffect(:StealthRock)
+        end
+        target.disableEffect(:ScytheHorn)
+      else
+        target.applyEffect(:ScytheHorn)
       end
-      targets.each do |target|
-          next if target.damageState.missed || target.damageState.unaffected
-          if target.effectActive?(:ScytheHorn)
-              target.applyEffect(:Fracture, applyEffectDurationModifiers(DEFAULT_FRACTURE_DURATION, user))
-              if !user.pbOpposingSide.effectActive?(:StealthRock)
-                  battle.pbAnimation(:STEALTHROCK, user, nil)
-                  user.pbOpposingSide.applyEffect(:StealthRock)
-              end
-              target.disableEffect(:ScytheHorn)
-          else
-              target.applyEffect(:ScytheHorn)
-          end
-      end
-      if showAbilitySplash
-          battle.pbHideAbilitySplash(user)
-      end
+    end
+    if showAbilitySplash
+      battle.pbHideAbilitySplash(user)
+    end
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:SWORDHORNSTYLE,
   proc { |ability, user, targets, move, battle|
-      next if user.fainted?
-      next if move.statusMove?
-      showAbilitySplash = false
-      if targets.any? { |target| target.effectActive?(:SwordHorn) && !(target.damageState.missed || target.damageState.unaffected) }
-          battle.pbShowAbilitySplash(user, ability)
-          showAbilitySplash = true
+    next if user.fainted?
+    next if move.statusMove?
+    showAbilitySplash = false
+    if (targets.any? {|target| target.effectActive?(:SwordHorn) && !(target.damageState.missed || target.damageState.unaffected)})
+      battle.pbShowAbilitySplash(user, ability)
+      showAbilitySplash = true
+    end
+    targets.each do |target|
+      next if target.damageState.missed || target.damageState.unaffected
+      if target.effectActive?(:SwordHorn)
+        target.pbInflictStatus(:NUMB, 0, nil, user) if target.pbCanInflictStatus?(:NUMB, user, true)
+        unless user.pbOwnSide.effectActive?(:Sanctuary)
+            battle.pbAnimation(:SANCTUARY, user, nil)
+            user.pbOwnSide.applyEffect(:Sanctuary, user.getScreenDuration(3))
+        end
+        target.disableEffect(:SwordHorn)
+      else
+        target.applyEffect(:SwordHorn)
       end
-      targets.each do |target|
-          next if target.damageState.missed || target.damageState.unaffected
-          if target.effectActive?(:SwordHorn)
-              target.pbInflictStatus(:NUMB, 0, nil, user) if target.pbCanInflictStatus?(:NUMB, user, true)
-              unless user.pbOwnSide.effectActive?(:Sanctuary)
-                  battle.pbAnimation(:SANCTUARY, user, nil)
-                  user.pbOwnSide.applyEffect(:Sanctuary, user.getScreenDuration(3))
-              end
-              target.disableEffect(:SwordHorn)
-          else
-              target.applyEffect(:SwordHorn)
-          end
-      end
-      if showAbilitySplash
-          battle.pbHideAbilitySplash(user)
-      end
+    end
+    if showAbilitySplash
+      battle.pbHideAbilitySplash(user)
+    end
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:KARMICBALANCE,
   proc { |ability, user, targets, move, battle, _switchedBattlers|
-      next if battle.pbAllFainted?(user.idxOpposingSide)
-      unchangedKarma = false
-      targets.each do |b|
+        next if battle.pbAllFainted?(user.idxOpposingSide)
+        unchangedKarma = false
+        targets.each do |b|
           unchangedKarma = true if b.damageState.missed || b.damageState.unaffected
-      end
-      next if unchangedKarma
-      if move.damagingMove?
+        end
+        next if unchangedKarma
+        if move.damagingMove?
           user.pbLowerMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
           user.pbRaiseMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
-      elsif move.statusMove?
+        elsif move.statusMove?
           user.pbLowerMultipleStatSteps(DEFENDING_STATS_2, user, ability: ability)
           user.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, user, ability: ability)
-      end
+        end
   }
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:HITANDRUN,
-  proc { |_ability, user, targets, move, _battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
       next unless targets.any? { |b| b.knockedBelowHalf? }

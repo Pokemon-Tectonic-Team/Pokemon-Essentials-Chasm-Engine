@@ -5,7 +5,7 @@ BattleHandlers::TargetItemAfterMoveUse.add(:EJECTBUTTON,
         battle.pbCommonAnimation("UseItem", battler)
         battle.pbDisplay(_INTL("{1} is switched out with the {2}!", battler.pbThis, getItemName(item)))
         battler.consumeItem(item)
-        newPkmn = battle.pbGetReplacementPokemonIndex(battler.index) # Owner chooses
+        newPkmn = battle.pbGetReplacementPokemonIndex(battler.index)   # Owner chooses
         next if newPkmn < 0
         battle.pbRecallAndReplace(battler.index, newPkmn)
         battle.pbClearChoice(battler.index) # Replacement Pokémon does nothing this round
@@ -24,7 +24,7 @@ BattleHandlers::TargetItemAfterMoveUse.add(:REDCARD,
       battler.consumeItem(item)
       battle.pbRecallAndReplace(user.index, newPkmn, true)
       battle.pbDisplay(_INTL("{1} was dragged out!", user.pbThis))
-      battle.pbClearChoice(user.index) # Replacement Pokémon does nothing this round
+      battle.pbClearChoice(user.index)   # Replacement Pokémon does nothing this round
       switched.push(user.index)
   }
 )

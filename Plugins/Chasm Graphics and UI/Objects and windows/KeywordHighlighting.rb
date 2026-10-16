@@ -116,7 +116,7 @@ def battleKeywordsImportant
         "screen",
         "reflect",
         "light screen",
-        "sanctuary",
+		"sanctuary",
         "invulnerable",
         "clothing",
         "Grey Mist",
@@ -256,25 +256,25 @@ def addBattleKeywordHighlighting(description, isAbility: false)
     # Highlight very important words in red
     importantColorTag = getSkinColor(nil, 2, darkMode?, true)
     battleKeywordsImportant.each do |keyword|
-        description = description.gsub(/\b(#{keyword})\b/i, "#{importantColorTag}\\1</c3>")
+        description = description.gsub(/\b(#{keyword})\b/i,"#{importantColorTag}\\1</c3>")
     end
     battleKeywordsImportantCaseSensitive.each do |keyword|
-        description = description.gsub(/\b(#{keyword})\b/, "#{importantColorTag}\\1</c3>")
+        description = description.gsub(/\b(#{keyword})\b/,"#{importantColorTag}\\1</c3>")
     end
 
     # Outline less important keywords in blue
     unimportantColorTag = getSkinColor(nil, 13, darkMode?, true)
     battleKeywordsUnimportant.each do |keyword|
-        description = description.gsub(/\b(#{keyword})\b/i, "#{unimportantColorTag}\\1</c3>")
+        description = description.gsub(/\b(#{keyword})\b/i,"#{unimportantColorTag}\\1</c3>")
     end
     battleKeywordsUnimportantCaseSensitive.each do |keyword|
-        description = description.gsub(/\b(#{keyword})\b/, "#{unimportantColorTag}\\1</c3>")
+        description = description.gsub(/\b(#{keyword})\b/,"#{unimportantColorTag}\\1</c3>")
     end
 
     # Outline move tags in ability descriptions in green (not case sensitive)
     if isAbility
         moveTagKeywords.each do |tag|
-            description = description.gsub(/\b(#{tag})\b/i, "#{importantColorTag}\\1</c3>")
+            description = description.gsub(/\b(#{tag})\b/i,"#{importantColorTag}\\1</c3>")
         end
     end
 

@@ -171,7 +171,7 @@ def pbTrainerBattle(trainerID, trainerName, endSpeech = nil,
     setBattleRule("randomOrder") if random
     # Perform the battle
     if $PokemonTemp.waitingTrainer
-        $PokemonTemp.waitingTrainer
+        waitingTrainer = $PokemonTemp.waitingTrainer
         decision = pbTrainerBattleCore($PokemonTemp.waitingTrainer,
         [trainerID, trainerName, trainerPartyID, endSpeech]
         )
@@ -237,7 +237,7 @@ def trackPerfectBattle(perfectingState)
 end
 
 def battlePerfected?
-    return $game_switches[PERFECTED_SWITCH]
+	return $game_switches[PERFECTED_SWITCH]
 end
 
 TIME_OUT_SWITCH = 37

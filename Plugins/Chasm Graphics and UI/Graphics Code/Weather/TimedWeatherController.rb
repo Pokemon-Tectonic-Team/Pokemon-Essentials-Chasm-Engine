@@ -1,4 +1,4 @@
-Events.onMapChange += proc { |_sender, *_args|
+Events.onMapChange += proc { |_sender,*args|
     applyOutdoorEffects
 }
 
@@ -14,7 +14,7 @@ GLASS_CEILING_MAPS = [
 
 # Every other map is assumed to be temperate, with potential for both hot days, cold days, wet days, and dry days in equal measure
 
-def getWeatherForTimeAndMap(time, map_id)
+def getWeatherForTimeAndMap(time,map_id)
     clockHour = time.hour
     hours = (time - UnrealTime.initial_date).to_i / (60 * 60)
 
@@ -28,12 +28,12 @@ def getWeatherForTimeAndMap(time, map_id)
     # Hotter near noon, colder near midnight
     # Up to + 1 and down to -1
     hotness = hotnessThisHour
-    hotness += (1 - ((clockHour - 11).abs / 6))
+    hotness += (1 - (clockHour - 11).abs / 6)
 
     # Wetter near 6 AM and 6 PM, dryer neat midnight and noon
     # Up to + 1 and down to -1
     wetness = wetnessThisHour
-    wetness += (1 - (2 * [(clockHour - 5).abs / 6, (clockHour - 17).abs / 6].min))
+    wetness += (1 - 2 * [(clockHour - 5).abs / 6,(clockHour - 17).abs / 6].min)
 
     if GameData::MapMetadata.exists?(map_id)
         metaData = GameData::MapMetadata.get(map_id)
@@ -46,7 +46,7 @@ def getWeatherForTimeAndMap(time, map_id)
         when 2 # Stable
             hotness *= 0.7
         end
-
+    
         case metaData.humidity
         when 0 # Wet
             wetness += 1
@@ -66,7 +66,7 @@ def getWeatherForTimeAndMap(time, map_id)
     hotDryness = hotness - wetness
     coldWetness = -hotness + wetness
     coldDryness = -hotness - wetness
-
+    
     if hotness > 0 && wetness > 0 && hotWetness >= 4
         weatherSym, strength = getHotWetWeather(hotWetness - 3)
     elsif hotness > 0 && wetness < 0 && hotDryness >= 4
@@ -89,7 +89,7 @@ def getWeatherForTimeAndMap(time, map_id)
     return weatherSym, strength
 end
 
-def weatherRNGByHour(_totalHours)
+def weatherRNGByHour(totalHours)
     return (Math.sin(day * 2.0) * Math.sin(day * 4.0) * Math.sin(day * 8.0)).abs
 end
 
@@ -101,7 +101,7 @@ def applyOutdoorEffects(delay = -1)
     weather_metadata = GameData::MapMetadata.try_get(map_id).weather
 
     if weather_metadata.nil?
-        weatherSym, strength = getWeatherForTimeAndMap(pbGetTimeNow, map_id)
+        weatherSym,strength = getWeatherForTimeAndMap(pbGetTimeNow,map_id)
         if speedingUpTime? && Input.press?(Input::ACTION)
             if weatherSym != $game_screen.weather_type
                 print("Weather type changed to #{weatherSym}!")
@@ -115,19 +115,19 @@ def applyOutdoorEffects(delay = -1)
 end
 
 def getHotWeather(strength)
-    return :Sun, strength
+    return :Sun,strength
 end
 
 def getColdWeather(strength)
-    return :Snow, strength
+    return :Snow,strength
 end
 
 def getWetWeather(strength)
-    return :Rain, strength
+    return :Rain,strength
 end
 
 def getDryWeather(strength)
-    return :Dusty, strength
+    return :Dusty,strength
 end
 
 def getHotWetWeather(strength)
@@ -138,7 +138,7 @@ def getHotWetWeather(strength)
         strength = (strength - 2) * 2
     end
 
-    return weatherSym, strength
+    return weatherSym,strength
 end
 
 def getHotDryWeather(strength)
@@ -149,7 +149,7 @@ def getHotDryWeather(strength)
         strength = (strength - 2) * 2
     end
 
-    return weatherSym, strength
+    return weatherSym,strength
 end
 
 def getColdWetWeather(strength)
@@ -160,7 +160,7 @@ def getColdWetWeather(strength)
         strength = (strength - 2) * 2
     end
 
-    return weatherSym, strength
+    return weatherSym,strength
 end
 
 def getColdDryWeather(strength)
@@ -171,7 +171,7 @@ def getColdDryWeather(strength)
         strength = (strength - 2) * 2
     end
 
-    return weatherSym, strength
+    return weatherSym,strength
 end
 
 def debugIncrementWeather(weatherSym)
@@ -179,7 +179,7 @@ def debugIncrementWeather(weatherSym)
     if $game_screen.weather_type == GameData::Weather.get(weatherSym).id
         newPower += $game_screen.weather_strength
     end
-    newPower = [newPower, 10].min
+    newPower = [newPower,10].min
     $game_screen.weather(weatherSym, newPower, WEATHER_TRANSITION_DELAY, false)
     pbMessage(_INTL("Setting weather to {1} at power {2}", weatherSym, newPower))
 end
@@ -202,13 +202,13 @@ def getWeatherOverNextDay(map_id = -1)
     # Add 24 hours, then round down to latest 24 hour start
     tomorrowStart = ((pbGetTimeNow.to_i + secondsInADay) / secondsInADay).floor * secondsInADay
 
-    tomorrowMorning = Time.at(tomorrowStart + (secondsInAnHour * 8)) # 8 AM
-    tomorrowAfternoon = Time.at(tomorrowStart + (secondsInAnHour * 14)) # 2 PM
-    tomorrowEvening = Time.at(tomorrowStart + (secondsInAnHour * 20)) # 8 PM
+    tomorrowMorning = Time.at(tomorrowStart + secondsInAnHour * 8) # 8 AM
+    tomorrowAfternoon = Time.at(tomorrowStart + secondsInAnHour * 14) # 2 PM
+    tomorrowEvening = Time.at(tomorrowStart + secondsInAnHour * 20) # 8 PM
 
-    morningWeather, morningStrength = getWeatherForTimeAndMap(tomorrowMorning, map_id)
-    afternoonWeather, afternoonStrength = getWeatherForTimeAndMap(tomorrowAfternoon, map_id)
-    eveningWeather, eveningStrength = getWeatherForTimeAndMap(tomorrowEvening, map_id)
+    morningWeather, morningStrength = getWeatherForTimeAndMap(tomorrowMorning,map_id)
+    afternoonWeather, afternoonStrength = getWeatherForTimeAndMap(tomorrowAfternoon,map_id)
+    eveningWeather, eveningStrength = getWeatherForTimeAndMap(tomorrowEvening,map_id)
 
     return [
         [morningWeather, morningStrength],
@@ -228,7 +228,7 @@ def debugTestMap(mapID)
     hourCount = 100_000
 
     for i in 0..hourCount
-        weatherSym, = getWeatherForTimeAndMap(UnrealTime.initial_date + (i * secondsInAnHour), mapID)
+        weatherSym,strength = getWeatherForTimeAndMap(UnrealTime.initial_date + i * secondsInAnHour,mapID)
         if weatherCounts.has_key?(weatherSym)
             weatherCounts[weatherSym] += 1
         else

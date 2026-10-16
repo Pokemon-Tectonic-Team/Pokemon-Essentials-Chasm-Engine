@@ -1,23 +1,23 @@
 class Particle_Engine::Wormhole < ParticleEffect_Event
-    def initialize(event, viewport)
+    def initialize(event,viewport)
         super
         setParameters([
-                          0, # Random hue
-                          0, # fade
-                          6, # max particles
-                          0, # hue
-                          5, # slowdown
-                          0, # ytop
-                          0, # ybottom
-                          0, # xleft
-                          0, # xright
-                          0, # xgravity
-                          0, # ygravity
-                          0, # xoffset
-                          0, # yoffset
-                          3, # opacity var
-                          5 # original opacity
-                      ])
+            0, # Random hue
+            0, # fade
+            6, # max particles
+            0, # hue
+            5, # slowdown
+            0, # ytop
+            0, # ybottom
+            0, # xleft
+            0, # xright
+            0, # xgravity
+            0, # ygravity
+            0, # xoffset
+            0, # yoffset
+            3, # opacity var
+            5 # original opacity
+            ])
         @opacityMult = 0.8
         @cullOffscreen = false
         @movesleftright = false
@@ -26,7 +26,7 @@ class Particle_Engine::Wormhole < ParticleEffect_Event
         initParticles("wormhole_portal")
     end
 
-    def resetOpacity(_i)
+    def resetOpacity(i)
         return
     end
 
@@ -39,13 +39,13 @@ class Particle_Engine::Wormhole < ParticleEffect_Event
 
         particleSprite.zoom_x = 2.5
 
-        hue = @hue + (360 * i / @max_particles.to_f)
+        hue = @hue + 360 * i / @max_particles.to_f
         hue = clampHue(hue)
         echoln(hue)
         particleSprite.bitmap = loadBitmap(@filename, hue)
     end
 
-    def changeOpacity(_i)
+    def changeOpacity(i)
         return
     end
 
@@ -57,8 +57,8 @@ class Particle_Engine::Wormhole < ParticleEffect_Event
         return 50
     end
 
-    def updateParticle(i, particleZ)
-        if i.even?
+    def updateParticle(i,particleZ)
+        if i % 2 == 0
             @particles[i].angle += 1
         else
             @particles[i].angle -= 1

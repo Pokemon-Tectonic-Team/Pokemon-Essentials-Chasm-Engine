@@ -16,7 +16,7 @@ class PokeBattle_AI
     def testAllMoveScores(user, show_analysis = false)
         scores = []
         target = []
-        GameData::Move.each do |move| # Get any one move
+        GameData::Move.each do |move|    # Get any one move
             next if move.empoweredMove?
             score = 0
             begin

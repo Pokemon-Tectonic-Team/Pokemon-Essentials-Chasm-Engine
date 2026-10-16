@@ -5,7 +5,7 @@ class PokemonTemp
     attr_accessor :menuLastChoice
     attr_accessor :keyItemCalling
     attr_accessor :hiddenMoveEventCalling
-    attr_accessor :bicycleCalling
+    attr_accessor :bicycleCalling 
     attr_accessor :begunNewGame
     attr_accessor :miniupdate
     attr_accessor :waitingTrainer
@@ -33,48 +33,48 @@ class PokemonTemp
     attr_accessor :battleAnims
     attr_accessor :moveToAnim
     attr_accessor :mapInfos
-
+    
     # Dexnav
     attr_accessor :navigationRow
     attr_accessor :navigationColumn
     attr_accessor :currentDexSearch
-
+  
     def initialize
-        reset_session_data
+      reset_session_data
     end
 
     # Resets only session-specific state. Called on save load to avoid carrying
     # transient state (e.g. follower sprites, encounter flags) across saves while
     # preserving loaded GameData caches so they don't have to be deserialized again.
     def reset_session_data
-        @menuLastChoice         = 0
-        @keyItemCalling         = false
-        @hiddenMoveEventCalling = false
-        @bicycleCalling         = nil
-        @begunNewGame           = false
-        @miniupdate             = false
-        @waitingTrainer         = nil
-        @darknessSprite         = nil
-        @lastbattle             = nil
-        @flydata                = nil
-        @surfJump               = nil
-        @endSurf                = nil
-        @forceSingleBattle      = false
-        @encounterTriggered     = nil
-        @encounterType          = nil
-        @evolutionLevels        = nil
-        @dependentEvents        = nil # follower data; lazy-reinitialised on next access
-        @batterywarning         = nil
-        @cueBGM                 = nil
-        @cueFrames              = nil
-        @navigationRow          = nil
-        @navigationColumn       = nil
-        @currentDexSearch       = nil
-        @battleRules            = nil
-        @dragonFlames           = nil
-        # GameData caches (battleAnims, moveToAnim, mapInfos, townMapData,
-        # phoneData, speciesShadowMovesets, regionalDexes) are intentionally
-        # preserved so they don't need to be reloaded on every save load.
+      @menuLastChoice         = 0
+      @keyItemCalling         = false
+      @hiddenMoveEventCalling = false
+      @bicycleCalling         = nil
+      @begunNewGame           = false
+      @miniupdate             = false
+      @waitingTrainer         = nil
+      @darknessSprite         = nil
+      @lastbattle             = nil
+      @flydata                = nil
+      @surfJump               = nil
+      @endSurf                = nil
+      @forceSingleBattle      = false
+      @encounterTriggered     = nil
+      @encounterType          = nil
+      @evolutionLevels        = nil
+      @dependentEvents        = nil  # follower data; lazy-reinitialised on next access
+      @batterywarning         = nil
+      @cueBGM                 = nil
+      @cueFrames              = nil
+      @navigationRow          = nil
+      @navigationColumn       = nil
+      @currentDexSearch       = nil
+      @battleRules            = nil
+      @dragonFlames           = nil
+      # GameData caches (battleAnims, moveToAnim, mapInfos, townMapData,
+      # phoneData, speciesShadowMovesets, regionalDexes) are intentionally
+      # preserved so they don't need to be reloaded on every save load.
     end
 
     def dependentEvents
@@ -83,58 +83,59 @@ class PokemonTemp
     end
 
     def battleRules
-        @battleRules = {} if !@battleRules
-        return @battleRules
+      @battleRules = {} if !@battleRules
+      return @battleRules
     end
 
     def clearBattleRules
-        battleRules.clear
+      self.battleRules.clear
     end
 
-    def recordBattleRule(rule, var = nil)
-        rules = battleRules
-        case rule.to_s.downcase
-        when "single", "1v1", "1v2", "2v1", "1v3", "3v1",
-            "double", "2v2", "2v3", "3v2", "triple", "3v3"
-            rules["size"] = rule.to_s.downcase
-        when "canlose"                then rules["canLose"]        = true
-        when "cannotlose"             then rules["canLose"]        = false
-        when "canrun"                 then rules["canRun"]         = true
-        when "cannotrun"              then rules["canRun"]         = false
-        when "roamerflees"            then rules["roamerFlees"]    = true
-        when "noexp"                  then rules["expGain"]        = false
-        when "nomoney"                then rules["moneyGain"]      = false
-        when "switchstyle"            then rules["switchStyle"]    = true
-        when "setstyle"               then rules["switchStyle"]    = false
-        when "anims"                  then rules["battleAnims"]    = true
-        when "noanims"                then rules["battleAnims"]    = false
-        when "terrain"
-            terrain_data = GameData::BattleTerrain.try_get(var)
-            rules["defaultTerrain"] = terrain_data ? terrain_data.id : nil
-        when "weather"
-            weather_data = GameData::BattleWeather.try_get(var)
-            rules["defaultWeather"] = weather_data ? weather_data.id : nil
-        when "environment", "environ"
-            environment_data = GameData::Environment.try_get(var)
-            rules["environment"] = environment_data ? environment_data.id : nil
-        when "backdrop", "battleback" then rules["backdrop"]       = var
-        when "base"                   then rules["base"]           = var
-        when "outcome", "outcomevar"  then rules["outcomeVar"]     = var
-        when "nopartner"              then rules["noPartner"]      = true
-        when "randomorder";           then rules["randomOrder"]    = true
-        when "turnstosurvive";        then rules["turnsToSurvive"] = var
-        when "autotesting"            then rules["autotesting"]    = true
-        when "playerambush"           then rules["playerambush"]   = true
-        when "foeambush"              then rules["foeambush"]      = true
-        when "lanetargeting"          then rules["lanetargeting"] = true
-        when "doubleshift" then rules["doubleshift"] = true
-        else
-            raise _INTL("Battle rule \"{1}\" does not exist.", rule)
-        end
+    def recordBattleRule(rule,var=nil)
+      rules = self.battleRules
+      case rule.to_s.downcase
+      when "single", "1v1", "1v2", "2v1", "1v3", "3v1",
+          "double", "2v2", "2v3", "3v2", "triple", "3v3"
+        rules["size"] = rule.to_s.downcase
+      when "canlose"                then rules["canLose"]        = true
+      when "cannotlose"             then rules["canLose"]        = false
+      when "canrun"                 then rules["canRun"]         = true
+      when "cannotrun"              then rules["canRun"]         = false
+      when "roamerflees"            then rules["roamerFlees"]    = true
+      when "noexp"                  then rules["expGain"]        = false
+      when "nomoney"                then rules["moneyGain"]      = false
+      when "switchstyle"            then rules["switchStyle"]    = true
+      when "setstyle"               then rules["switchStyle"]    = false
+      when "anims"                  then rules["battleAnims"]    = true
+      when "noanims"                then rules["battleAnims"]    = false
+      when "terrain"
+        terrain_data = GameData::BattleTerrain.try_get(var)
+        rules["defaultTerrain"] = (terrain_data) ? terrain_data.id : nil
+      when "weather"
+        weather_data = GameData::BattleWeather.try_get(var)
+        rules["defaultWeather"] = (weather_data) ? weather_data.id : nil
+      when "environment", "environ"
+        environment_data = GameData::Environment.try_get(var)
+        rules["environment"] = (environment_data) ? environment_data.id : nil
+      when "backdrop", "battleback" then rules["backdrop"]       = var
+      when "base"                   then rules["base"]           = var
+      when "outcome", "outcomevar"  then rules["outcomeVar"]     = var
+      when "nopartner"              then rules["noPartner"]      = true
+      when "randomorder";           then rules["randomOrder"]    = true
+      when "turnstosurvive";        then rules["turnsToSurvive"] = var
+      when "autotesting"            then rules["autotesting"]    = true
+      when "playerambush"           then rules["playerambush"]   = true
+      when "foeambush"              then rules["foeambush"]      = true
+      when "lanetargeting"          then rules["lanetargeting"]   = true
+      when "doubleshift"           then rules["doubleshift"]   = true
+      else
+        raise _INTL("Battle rule \"{1}\" does not exist.", rule)
+      end
     end
 
     def dragonFlames
-        @dragonFlames = [] if @dragonFlames.nil?
-        return @dragonFlames
-    end
+      @dragonFlames = [] if @dragonFlames.nil?
+      return @dragonFlames
+  end
 end
+  

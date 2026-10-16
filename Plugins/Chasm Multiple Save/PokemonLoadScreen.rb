@@ -30,7 +30,7 @@ class PokemonLoadScreen
             _INTL("Do you want to delete the save file and start anew?")
         )
         delete_save_data
-        $game_system = Game_System.new
+        $game_system   = Game_System.new
         $Options = Options.new
     end
 
@@ -90,6 +90,14 @@ class PokemonLoadScreen
         commands = []
         cmd_continue        = -1
         cmd_load_game       = -1
+        cmd_new_game        = -1
+        cmd_achievements    = -1
+        cmd_options         = -1
+        cmd_player_survey   = -1
+        cmd_website         = -1
+        cmd_discord         = -1
+        cmd_wiki            = -1
+        cmd_quit            = -1
         lastModifiedSaveName = FileSave.lastModifiedSaveName
         if FileSave.count > 0
             commands[cmd_continue = commands.length]    = _INTL("Continue") unless lastModifiedSaveName.nil?
@@ -133,8 +141,8 @@ class PokemonLoadScreen
             when cmd_options
                 pbFadeOutIn {
                     optionScene = PokemonOption_Scene.new
-                    optionScreen = PokemonOptionMenu.new(optionScene)
-                    optionScreen.pbStartPokemonMenu
+					optionScreen = PokemonOptionMenu.new(optionScene)
+					optionScreen.pbStartPokemonMenu
                 }
             when cmd_achievements
                 pbFadeOutIn do

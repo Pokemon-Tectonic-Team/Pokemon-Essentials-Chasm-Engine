@@ -61,7 +61,7 @@ def getRandomWarpPointOnMap(mapid, avoidEdges = false)
         x = rand(map.width)
         y = rand(map.height)
     end
-    return [x, y]
+    return [x,y]
 end
 
 #===============================================================================
@@ -105,7 +105,7 @@ class SpriteWindow_DebugVariables < Window_DrawableCommand
         codeswitch = false
         if @mode == 0
             name = $data_system.switches[index + 1]
-            codeswitch = name[/^s:/]
+            codeswitch = (name[/^s:/])
             val = if codeswitch
                       begin
                           eval($~.post_match)
@@ -264,7 +264,7 @@ def pbDebugDayCare
             sprites["overlay"].bitmap.clear
             textpos = []
             for i in 0...2
-                textpos.push([_INTL("Pokémon {1}", i + 1), (Graphics.width / 4) + (i * Graphics.width / 2), 2, 2, base,
+                textpos.push([_INTL("Pokémon {1}", i + 1), Graphics.width / 4 + i * Graphics.width / 2, 2, 2, base,
                               shadow,])
             end
             for i in 0...pbDayCareDeposited
@@ -273,32 +273,32 @@ def pbDebugDayCare
                 pkmn      = $PokemonGlobal.daycare[i][0]
                 initlevel = $PokemonGlobal.daycare[i][1]
                 leveldiff = pkmn.level - initlevel
-                textpos.push(["#{pkmn.name} (#{pkmn.speciesName})", 8 + (i * Graphics.width / 2), y, 0, base, shadow])
+                textpos.push(["#{pkmn.name} (#{pkmn.speciesName})", 8 + i * Graphics.width / 2, y, 0, base, shadow])
                 y += 32
                 if pkmn.male?
-                    textpos.push([_INTL("Male ♂"), 8 + (i * Graphics.width / 2), y, 0, Color.new(128, 192, 248), shadow])
+                    textpos.push([_INTL("Male ♂"), 8 + i * Graphics.width / 2, y, 0, Color.new(128, 192, 248), shadow])
                 elsif pkmn.female?
-                    textpos.push([_INTL("Female ♀"), 8 + (i * Graphics.width / 2), y, 0, Color.new(248, 96, 96), shadow])
+                    textpos.push([_INTL("Female ♀"), 8 + i * Graphics.width / 2, y, 0, Color.new(248, 96, 96), shadow])
                 else
-                    textpos.push([_INTL("Genderless"), 8 + (i * Graphics.width / 2), y, 0, base, shadow])
+                    textpos.push([_INTL("Genderless"), 8 + i * Graphics.width / 2, y, 0, base, shadow])
                 end
                 y += 32
                 if initlevel >= GameData::GrowthRate.max_level
-                    textpos.push(["Lv. #{initlevel} (max)", 8 + (i * Graphics.width / 2), y, 0, base, shadow])
+                    textpos.push(["Lv. #{initlevel} (max)", 8 + i * Graphics.width / 2, y, 0, base, shadow])
                 elsif leveldiff > 0
                     textpos.push(["Lv. #{initlevel} -> #{pkmn.level} (+#{leveldiff})",
-                                  8 + (i * Graphics.width / 2), y, 0, base, shadow,])
+                                  8 + i * Graphics.width / 2, y, 0, base, shadow,])
                 else
-                    textpos.push(["Lv. #{initlevel} (no change)", 8 + (i * Graphics.width / 2), y, 0, base, shadow])
+                    textpos.push(["Lv. #{initlevel} (no change)", 8 + i * Graphics.width / 2, y, 0, base, shadow])
                 end
                 y += 32
                 if pkmn.level < GameData::GrowthRate.max_level
                     endexp = pkmn.growth_rate.minimum_exp_for_level(pkmn.level + 1)
-                    textpos.push(["To next Lv.: #{endexp - pkmn.exp}", 8 + (i * Graphics.width / 2), y, 0, base, shadow])
+                    textpos.push(["To next Lv.: #{endexp - pkmn.exp}", 8 + i * Graphics.width / 2, y, 0, base, shadow])
                     y += 32
                 end
                 cost = pbDayCareGetCost(i)
-                textpos.push(["Cost: $#{cost}", 8 + (i * Graphics.width / 2), y, 0, base, shadow])
+                textpos.push(["Cost: $#{cost}", 8 + i * Graphics.width / 2, y, 0, base, shadow])
             end
             if pbEggGenerated?
                 textpos.push(["Egg waiting for collection", Graphics.width / 2, 210, 2, Color.new(248, 248, 0), shadow])
@@ -597,7 +597,7 @@ def pbCompileTextUI
     pbMessageDisplay(msgwindow, _INTL("Please wait.\\wtnp[0]"))
     begin
         pbCompileText { |fileName|
-            pbMessageDisplay(msgwindow, _INTL("Successfully compiled text and saved it to {1}.\1", fileName))
+            pbMessageDisplay(msgwindow, _INTL("Successfully compiled text and saved it to {1}.\1",fileName))
         }
     rescue RuntimeError
         pbMessageDisplay(msgwindow, _INTL("Failed to compile text: {1}", $!.message))
@@ -628,7 +628,9 @@ def pbExportAllAnimations
             rescue StandardError
                 nil
             end
-            File.binwrite("Animations/#{safename}/#{safename}.anm", dumpBase64Anim(anim))
+            File.open("Animations/#{safename}/#{safename}.anm", "wb") do |f|
+                f.write(dumpBase64Anim(anim))
+            end
             if anim.graphic && anim.graphic != ""
                 graphicname = RTP.getImagePath("Graphics/Animations/" + anim.graphic)
                 pbSafeCopyFile(graphicname, "Animations/#{safename}/" + File.basename(graphicname))
@@ -639,7 +641,7 @@ def pbExportAllAnimations
                         audioName = RTP.getAudioPath("Audio/SE/Anim/" + timing.name)
                         pbSafeCopyFile(audioName, "Animations/#{safename}/" + File.basename(audioName))
                     end
-                elsif [1, 3].include?(timing.timingType)
+                elsif timing.timingType == 1 || timing.timingType == 3
                     if timing.name && timing.name != ""
                         graphicname = RTP.getImagePath("Graphics/Animations/" + timing.name)
                         pbSafeCopyFile(graphicname, "Animations/#{safename}/" + File.basename(graphicname))
@@ -678,8 +680,8 @@ def pbImportAllAnimations
             files = Dir.glob(folder + "/*.*")
             %w[wav ogg mid wma mp3].each do |ext|
                 upext = ext.upcase
-                audios.concat(files.find_all { |f| f[-3, 3] == ext })
-                audios.concat(files.find_all { |f| f[-3, 3] == upext })
+                audios.concat(files.find_all { |f| f[f.length - 3, 3] == ext })
+                audios.concat(files.find_all { |f| f[f.length - 3, 3] == upext })
             end
             for audio in audios
                 pbSafeCopyFile(audio, RTP.getAudioPath("Audio/SE/Anim/" + File.basename(audio)),
@@ -688,8 +690,8 @@ def pbImportAllAnimations
             images = []
             %w[png gif].each do |ext| # jpg jpeg bmp
                 upext = ext.upcase
-                images.concat(files.find_all { |f| f[-3, 3] == ext })
-                images.concat(files.find_all { |f| f[-3, 3] == upext })
+                images.concat(files.find_all { |f| f[f.length - 3, 3] == ext })
+                images.concat(files.find_all { |f| f[f.length - 3, 3] == upext })
             end
             for image in images
                 pbSafeCopyFile(image, RTP.getImagePath("Graphics/Animations/" + File.basename(image)),
@@ -707,14 +709,14 @@ def pbImportAllAnimations
                     textdata.name = File.basename(folder) if textdata.name == ""
                     textdata.id = -1 # This is not an RPG Maker XP animation
                     pbConvertAnimToNewFormat(textdata)
-                    if textdata.graphic && textdata.graphic != "" && !safeExists?(folder + "/" + textdata.graphic) &&
-                       !FileTest.image_exist?("Graphics/Animations/" + textdata.graphic)
+                    if textdata.graphic && textdata.graphic != "" && (!safeExists?(folder + "/" + textdata.graphic) &&
+                           !FileTest.image_exist?("Graphics/Animations/" + textdata.graphic))
                         textdata.graphic = ""
                         missingFiles.push(textdata.graphic)
                     end
                     for timing in textdata.timing
-                        next unless timing.name && timing.name != "" && !safeExists?(folder + "/" + timing.name) &&
-                                    !FileTest.audio_exist?("Audio/SE/Anim/" + timing.name)
+                        next unless timing.name && timing.name != "" && (!safeExists?(folder + "/" + timing.name) &&
+                               !FileTest.audio_exist?("Audio/SE/Anim/" + timing.name))
                         timing.name = ""
                         missingFiles.push(timing.name)
                     end
@@ -789,7 +791,7 @@ def pbCheckTileValidity(tile_id, map, tilesets, passages)
     return false unless tile_id
     if tile_id > 0 && tile_id < 384
         # Check for defined autotile
-        autotile_id = (tile_id / 48) - 1
+        autotile_id = tile_id / 48 - 1
         autotile_name = tilesets[map.tileset_id].autotile_names[autotile_id]
         return true if autotile_name && autotile_name != ""
     elsif passages[tile_id]

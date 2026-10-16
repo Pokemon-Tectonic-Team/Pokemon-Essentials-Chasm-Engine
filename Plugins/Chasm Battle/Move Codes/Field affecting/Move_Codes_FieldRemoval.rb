@@ -4,7 +4,7 @@
 class PokeBattle_Move_RemoveRooms < PokeBattle_Move
     def pbMoveFailed?(_user, _targets, show_message)
         anyRoom = false
-        @battle.field.eachEffect(true) do |_effect, _value, effectData|
+        @battle.field.eachEffect(true) do |effect, _value, effectData|
             next unless effectData.is_room?
             anyRoom = true
             break
@@ -17,14 +17,14 @@ class PokeBattle_Move_RemoveRooms < PokeBattle_Move
         return false
     end
 
-    def pbEffectGeneral(_user)
+    def pbEffectGeneral(user)
         @battle.field.eachEffect(true) do |effect, _value, effectData|
             next unless effectData.is_room?
             @battle.field.disableEffect(effect)
         end
     end
 
-    def getEffectScore(_user, _target)
+    def getEffectScore(user, _target)
         return 80
     end
 end
@@ -33,14 +33,14 @@ end
 # Removes all Rooms.
 #===============================================================================
 class PokeBattle_Move_RemoveRoomsIncidental < PokeBattle_Move
-    def pbEffectGeneral(_user)
+    def pbEffectGeneral(user)
         @battle.field.eachEffect(true) do |effect, _value, effectData|
             next unless effectData.is_room?
             @battle.field.disableEffect(effect)
         end
     end
 
-    def getEffectScore(_user, _target)
+    def getEffectScore(user, _target)
         return 80
     end
 end
@@ -57,8 +57,8 @@ class PokeBattle_Move_RemoveWeather < PokeBattle_Move
         return false
     end
 
-    def pbEffectGeneral(_user)
-        @battle.endWeather unless @battle.primevalWeatherPresent?(true)
+    def pbEffectGeneral(user)
+       @battle.endWeather unless @battle.primevalWeatherPresent?(true)
     end
 
     def getEffectScore(user, _target)
@@ -70,8 +70,8 @@ end
 # Removes all Weather.
 #===============================================================================
 class PokeBattle_Move_RemoveWeatherIncidental < PokeBattle_Move
-    def pbEffectGeneral(_user)
-        @battle.endWeather unless @battle.primevalWeatherPresent?(true)
+    def pbEffectGeneral(user)
+       @battle.endWeather unless @battle.primevalWeatherPresent?(true)
     end
 
     def getEffectScore(user, _target)

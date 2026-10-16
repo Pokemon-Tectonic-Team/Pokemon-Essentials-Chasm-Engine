@@ -56,7 +56,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:INDUSTRIALIZE,
 BattleHandlers::MoveImmunityTargetAbility.add(:ROCKCLIMBER,
   proc { |ability, user, target, move, type, battle, showMessages, aiCheck|
       next pbBattleMoveImmunityStatAbility(ability, user, target, move, type, :ROCK, :SPEED, 1, battle, showMessages, aiCheck)
-  }
+    }
 )
 
 BattleHandlers::MoveImmunityTargetAbility.add(:FILTHY,
@@ -141,7 +141,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:WATERABSORB,
 
 BattleHandlers::MoveImmunityTargetAbility.add(:HULLHUNGER,
   proc { |ability, user, target, move, type, battle, showMessages, aiCheck|
-      next pbBattleMoveImmunityHealAbility(ability, user, target, move, type, :STEEL, battle, showMessages, aiCheck)
+    next pbBattleMoveImmunityHealAbility(ability, user, target, move, type, :STEEL, battle, showMessages, aiCheck)
   }
 )
 
@@ -150,7 +150,7 @@ BattleHandlers::MoveImmunityTargetAbility.copy(:WATERABSORB, :DRYSKIN)
 # Other immunities
 
 BattleHandlers::MoveImmunityTargetAbility.add(:DRAGONSLAYER,
-  proc { |ability, user, target, _move, type, battle, showMessages, _aiCheck|
+  proc { |ability, user, target, _move, type, battle, showMessages, aiCheck|
       next false if user.index == target.index
       next false if type != :DRAGON
       if showMessages
@@ -163,7 +163,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:DRAGONSLAYER,
 )
 
 BattleHandlers::MoveImmunityTargetAbility.add(:PECKINGORDER,
-  proc { |ability, user, target, _move, type, battle, showMessages, _aiCheck|
+  proc { |ability, user, target, _move, type, battle, showMessages, aiCheck|
       next false if user.index == target.index
       next false if type != :FLYING
       if showMessages
@@ -176,7 +176,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:PECKINGORDER,
 )
 
 BattleHandlers::MoveImmunityTargetAbility.add(:MINDLESS,
-  proc { |ability, user, target, _move, type, battle, showMessages, _aiCheck|
+  proc { |ability, user, target, _move, type, battle, showMessages, aiCheck|
       next false if user.index == target.index
       next false if type != :PSYCHIC
       if showMessages
@@ -214,12 +214,12 @@ BattleHandlers::MoveImmunityTargetAbility.add(:TELEPATHY,
 )
 
 def typeModToCheck(battle, type, user, target, move, aiCheck)
-    if aiCheck
-        typeMod = battle.battleAI.pbCalcTypeModAI(type, user, target, move)
-    else
-        typeMod = target.damageState.typeMod
-    end
-    return typeMod
+  if aiCheck
+    typeMod = battle.battleAI.pbCalcTypeModAI(type, user, target, move)
+  else
+    typeMod = target.damageState.typeMod
+  end
+  return typeMod
 end
 
 BattleHandlers::MoveImmunityTargetAbility.add(:WONDERGUARD,
@@ -249,20 +249,20 @@ BattleHandlers::MoveImmunityTargetAbility.add(:SOUNDPROOF,
 )
 
 BattleHandlers::MoveImmunityTargetAbility.add(:WINTERINSULATION,
-  proc { |ability, _user, target, _move, type, battle, showMessages|
+  proc { |ability, _user, target, move, type, battle, showMessages|
       next false unless battle.icy?
       next false unless %i[FIRE ELECTRIC].include?(type)
       if showMessages
-          battle.pbShowAbilitySplash(target, ability)
-          battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
-          battle.pbHideAbilitySplash(target)
+        battle.pbShowAbilitySplash(target, ability)
+        battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
+        battle.pbHideAbilitySplash(target)
       end
       next true
   }
 )
 
 BattleHandlers::MoveImmunityTargetAbility.add(:INDESTRUCTIBLE,
-  proc { |ability, _user, target, _move, type, battle, showMessages|
+  proc { |ability, user, target, _move, type, battle, showMessages|
       next false unless target.effectActive?(:Indestructible)
       next false unless target.effects[:Indestructible] == type
       if showMessages
@@ -275,7 +275,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:INDESTRUCTIBLE,
 )
 
 BattleHandlers::MoveImmunityTargetAbility.add(:FULLBLUBBER,
-  proc { |ability, user, target, _move, type, battle, showMessages, _aiCheck|
+  proc { |ability, user, target, _move, type, battle, showMessages, aiCheck|
       next false if user.index == target.index
       next false unless %i[FIRE ICE].include?(type)
       if showMessages
@@ -288,7 +288,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:FULLBLUBBER,
 )
 
 BattleHandlers::MoveImmunityTargetAbility.add(:CYNIC,
-  proc { |ability, user, target, _move, type, battle, showMessages, _aiCheck|
+  proc { |ability, user, target, _move, type, battle, showMessages, aiCheck|
       next false if user.index == target.index
       next false unless %i[FAIRY DRAGON GHOST].include?(type)
       if showMessages
@@ -301,7 +301,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:CYNIC,
 )
 
 BattleHandlers::MoveImmunityTargetAbility.add(:RESOLUTE,
-  proc { |ability, user, target, _move, type, battle, showMessages, _aiCheck|
+  proc { |ability, user, target, _move, type, battle, showMessages, aiCheck|
       next false if user.index == target.index
       next false unless %i[DARK BUG].include?(type)
       if showMessages
@@ -314,7 +314,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:RESOLUTE,
 )
 
 BattleHandlers::MoveImmunityTargetAbility.add(:RUGGED,
-  proc { |ability, user, target, _move, type, battle, showMessages, _aiCheck|
+  proc { |ability, user, target, _move, type, battle, showMessages, aiCheck|
       next false if user.index == target.index
       next false unless %i[FIGHTING ROCK].include?(type)
       if showMessages
@@ -335,7 +335,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:MUPROTOCOL,
           battle.pbShowAbilitySplash(target, ability)
           battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
           battle.pbHideAbilitySplash(target)
-
+          
           target.aiLearnsItem(:MEMORYSET)
       end
       next true

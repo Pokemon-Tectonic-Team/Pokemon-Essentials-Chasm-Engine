@@ -80,7 +80,7 @@ end
 #===============================================================================
 class PokeBattle_Move_StealPositiveStatSteps < PokeBattle_Move
     def statStepStealingMove?; return true; end
-
+    
     def ignoresSubstitute?(_user); return true; end
 
     def pbCalcDamage(user, target, numTargets = 1)
@@ -204,10 +204,10 @@ class PokeBattle_Move_AverageUserTargetOffenses < PokeBattle_Move
     def pbEffectAgainstTarget(user, target)
         newAtk   = ((user.base_attack + target.base_attack) / 2).floor
         newSpAtk = ((user.base_special_attack + target.base_special_attack) / 2).floor
-        user.applyEffect(:BaseAttack, newAtk)
-        target.applyEffect(:BaseAttack, newAtk)
-        user.applyEffect(:BaseSpecialAttack, newSpAtk)
-        target.applyEffect(:BaseSpecialAttack, newSpAtk)
+        user.applyEffect(:BaseAttack,newAtk)
+        target.applyEffect(:BaseAttack,newAtk)
+        user.applyEffect(:BaseSpecialAttack,newSpAtk)
+        target.applyEffect(:BaseSpecialAttack,newSpAtk)
         @battle.pbDisplay(_INTL("{1} averaged its base attacking stats with the target!", user.pbThis))
     end
 
@@ -238,8 +238,8 @@ class PokeBattle_Move_SwitchUserTargetSpeedsItems < PokeBattle_Move_SwapItems
         return false
     end
 
-    def pbFailsAgainstTarget?(_user, _target, _show_message)
-        return false
+    def pbFailsAgainstTarget?(user, target, show_message)
+        return false  
     end
 
     def pbEffectAgainstTarget(user, target)
@@ -247,13 +247,13 @@ class PokeBattle_Move_SwitchUserTargetSpeedsItems < PokeBattle_Move_SwapItems
 
         newUserSpeed   = target.base_speed
         newTargetSpeed = user.base_speed
-        user.applyEffect(:BaseSpeed, newUserSpeed)
-        target.applyEffect(:BaseSpeed, newTargetSpeed)
+        user.applyEffect(:BaseSpeed,newUserSpeed)
+        target.applyEffect(:BaseSpeed,newTargetSpeed)
         @battle.pbDisplay(_INTL("{1} swapped its unmodified speed stats with the target!", user.pbThis))
     end
 
     def getEffectScore(user, target)
-        super
+        score = super
 
         userSpeed = target.base_speed
         targetSpeed = user.base_speed
@@ -279,10 +279,10 @@ class PokeBattle_Move_AverageUserTargetDefenses < PokeBattle_Move
     def pbEffectAgainstTarget(user, target)
         newDef   = ((user.base_defense + target.base_defense) / 2).floor
         newSpDef = ((user.base_special_defense + target.base_special_defense) / 2).floor
-        user.applyEffect(:BaseDefense, newDef)
-        target.applyEffect(:BaseDefense, newDef)
-        user.applyEffect(:BaseSpecialDefense, newSpDef)
-        target.applyEffect(:BaseSpecialDefense, newSpDef)
+        user.applyEffect(:BaseDefense,newDef)
+        target.applyEffect(:BaseDefense,newDef)
+        user.applyEffect(:BaseSpecialDefense,newSpDef)
+        target.applyEffect(:BaseSpecialDefense,newSpDef)
         @battle.pbDisplay(_INTL("{1} averaged its base defensive stats with the target!", user.pbThis))
     end
 
@@ -358,7 +358,7 @@ class PokeBattle_Move_SharingSmiles < PokeBattle_Move
         return false
     end
 
-    def calculateStepInfo(user, target)
+    def calculateStepInfo(user,target)
         userHighestStat = nil
         userHighestStatStep = 0
         targetHighestStat = nil
@@ -373,7 +373,7 @@ class PokeBattle_Move_SharingSmiles < PokeBattle_Move
                 targetHighestStat = s.id
             end
         }
-        return [userHighestStat, userHighestStatStep, targetHighestStat, targetHighestStatStep]
+        return [userHighestStat,userHighestStatStep,targetHighestStat,targetHighestStatStep]
     end
 
     def pbEffectAgainstTarget(user, target)
@@ -386,8 +386,8 @@ class PokeBattle_Move_SharingSmiles < PokeBattle_Move
     def getEffectScore(user, target)
         stepInfo = calculateStepInfo(user, target)
         score = 0
-        score += getMultiStatUpEffectScore([stepInfo[0], stepInfo[1]], user, user)
-        score += getMultiStatUpEffectScore([stepInfo[2], stepInfo[3]], user, target)
+        score += getMultiStatUpEffectScore([stepInfo[0],stepInfo[1]], user, user)
+        score += getMultiStatUpEffectScore([stepInfo[2],stepInfo[3]], user, target)
         return score
     end
 end
@@ -402,7 +402,7 @@ class PokeBattle_Move_RaiseUserAttack5IfTargetFaints < PokeBattle_Move
         user.tryRaiseStat(:ATTACK, user, increment: 5, move: self)
     end
 
-    def getFaintEffectScore(user, _target)
+    def getFaintEffectScore(user, target)
         return getMultiStatUpEffectScore([:ATTACK, 5], user, user)
     end
 end
@@ -417,7 +417,7 @@ class PokeBattle_Move_RaiseUserSpAtk5IfTargetFaints < PokeBattle_Move
         user.tryRaiseStat(:SPECIAL_ATTACK, user, increment: 5, move: self)
     end
 
-    def getFaintEffectScore(user, _target)
+    def getFaintEffectScore(user, target)
         return getMultiStatUpEffectScore([:SPECIAL_ATTACK, 5], user, user)
     end
 end
@@ -467,15 +467,15 @@ end
 # Set the target's Speed to 0. (Absolute Zero)
 #===============================================================================
 class PokeBattle_Move_SetTargetSpeedZero < PokeBattle_Move
-    def pbAdditionalEffect(_user, target)
+    def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
         return if target.pbSpeed == 0
-        target.applyEffect(:BaseSpeed, 0)
-        @battle.pbDisplay(_INTL("{1} was slowed to zero!", target.pbThis))
+        target.applyEffect(:BaseSpeed,0)
+        @battle.pbDisplay(_INTL("{1} was slowed to zero!",target.pbThis))
     end
 
-    def getEffectScore(_user, target)
-        score = [30, 60, 90][target.getSpeedTier] || 0
+    def getEffectScore(user, target)
+        score = [30,60,90][target.getSpeedTier] || 0
         score = stepAgnosticStatReductionScoreMods(target, score)
         return score
     end

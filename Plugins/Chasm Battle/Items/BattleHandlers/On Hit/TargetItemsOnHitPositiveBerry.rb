@@ -35,10 +35,10 @@ BattleHandlers::TargetItemOnHitPositiveBerry.add(:MARANGABERRY,
 )
 
 BattleHandlers::TargetItemOnHitPositiveBerry.add(:ENIGMABERRY,
-  proc { |item, battler, _battle, forced|
+  proc { |item, battler, battle, forced|
       next false unless battler.canHeal?
       next false if !forced && !battler.canConsumeBerry?
-      healFromBerry(battler, 1.0 / 4.0, item, false)
+      healFromBerry(battler, 1.0 / 4.0, item, forced = false)
       next true
   }
 )

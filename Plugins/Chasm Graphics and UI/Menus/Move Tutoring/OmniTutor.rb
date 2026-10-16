@@ -1,8 +1,8 @@
-def useOmniTutor
-    if !teamEditingAllowed?
-        showNoTeamEditingMessage
-        return
-    end
+def useOmniTutor()
+    if !teamEditingAllowed?()
+		showNoTeamEditingMessage()
+		return
+	end
 
     canOmniTutorProc = proc do |pkmn|
         pkmn.can_omni_tutor?
@@ -36,21 +36,21 @@ def getOmniMoves(pkmn)
     tmLearnableMoves = getTMLearnableMoves
 
     omniMoves = [relearnableMoves, mentorableMoves, tmLearnableMoves].reduce([], :concat)
-    omniMoves &= pkmn.learnable_moves
+    omniMoves = omniMoves & pkmn.learnable_moves
 
     return omniMoves
 end
 
 def omniTutorScreen(pkmn)
     getOmniMovesProc = proc do |pokemon|
-        getOmniMoves(pokemon)
+        getOmniMoves(pokemon)  
     end
     return moveLearningScreen(pkmn, getOmniMovesProc, addFirstMove: true)
 end
 
 class Pokemon
-    def can_omni_tutor?
-        return false if egg?
-        return !getOmniMoves(self).empty?
-    end
+	def can_omni_tutor?
+		return false if egg?
+		return !getOmniMoves(self).empty?
+	end
 end

@@ -15,7 +15,7 @@ def unlockTools
         POKEXRAY
         SACCHARITEPICK
     ]
-
+    
     itemList.each do |itemID|
         pbSilentItem(itemID) unless pbHasItem?(itemID)
     end

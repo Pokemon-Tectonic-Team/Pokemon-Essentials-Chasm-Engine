@@ -2,7 +2,7 @@ class PokeBattle_AI
     def pbChooseMovesTrainer(idxBattler, choices)
         user = @battle.battlers[idxBattler]
         owner = @battle.pbGetOwnerFromBattlerIndex(user.index)
-        owner.policies || []
+        policies = owner.policies || []
 
         # Log the available choices
         logMoveChoices(user, choices)
@@ -58,7 +58,7 @@ class PokeBattle_AI
             next unless @battle.pbCanChooseMove?(user, i, false)
             targets = []
             targets.push(opposingBattler) if opposingBattler
-            newChoice, killInfo, isSlowerDead, isFasterDead = pbEvaluateMoveTrainer(user, move, targets: targets, killInfoArray: killInfoArray)
+            newChoice,killInfo,isSlowerDead,isFasterDead = pbEvaluateMoveTrainer(user, move, targets: targets, killInfoArray: killInfoArray)
 
             # If the move would kill the opposing battler, mark as such
             # But only if its better than any kill seen thus far
@@ -102,8 +102,8 @@ class PokeBattle_AI
             next unless ki
             if ki.consumesItem
                 bestConsumingKOScore = c[1] if c[1] > bestConsumingKOScore
-            elsif c[1] > bestNonConsumingKOScore
-                bestNonConsumingKOScore = c[1]
+            else
+                bestNonConsumingKOScore = c[1] if c[1] > bestNonConsumingKOScore
             end
         end
         if bestNonConsumingKOScore >= bestConsumingKOScore && bestConsumingKOScore > 0
@@ -115,7 +115,7 @@ class PokeBattle_AI
                 end
             end
         end
-        return choices, bestKillInfo
+        return choices,bestKillInfo
     end
 
     def pbEvaluateMoveTrainer(user, move, targets: [], killInfoArray: [], random: false)
@@ -134,7 +134,7 @@ class PokeBattle_AI
                 end
             end
             targets.each do |b|
-                score, targetKillInfo, = pbGetMoveScore(move, user, b, policies, targets.length, ignoreGeneralEffectScores, killInfoArray)
+                score,targetKillInfo,isSlowerDead2,isFasterDead2 = pbGetMoveScore(move, user, b, policies, targets.length, ignoreGeneralEffectScores, killInfoArray)
                 if target_data.targets_foe
                     if user.opposes?(b)
                         totalScore += score
@@ -151,7 +151,7 @@ class PokeBattle_AI
         elsif target_data.num_targets == 0
             if targets.empty?
                 # If move has no targets, affects the user, a side or the whole field
-                score, targetKillInfo, isSlowerDead2, isFasterDead2 = pbGetMoveScore(move, user, user, policies, 0, ignoreGeneralEffectScores, killInfoArray)
+                score,targetKillInfo,isSlowerDead2,isFasterDead2 = pbGetMoveScore(move, user, user, policies, 0, ignoreGeneralEffectScores, killInfoArray)
                 newChoice = [score, -1] if score > 0
             end
         else
@@ -161,10 +161,10 @@ class PokeBattle_AI
                 @battle.eachBattler do |b|
                     next unless @battle.pbMoveCanTarget?(user.index, b.index, target_data)
                     next if target_data.targets_foe && !user.opposes?(b)
-                    score, targetKillInfo, isSlowerDead2, isFasterDead2 = pbGetMoveScore(move, user, b, policies, 1, ignoreGeneralEffectScores, killInfoArray)
+                    score,targetKillInfo,isSlowerDead2,isFasterDead2 = pbGetMoveScore(move, user, b, policies, 1, ignoreGeneralEffectScores, killInfoArray)
                     if user.opposes?(b)
                         b.eachRedirectingAlly do |ally|
-                            allyScore, = pbGetMoveScore(move, user, ally, policies, 1, ignoreGeneralEffectScores, killInfoArray)
+                            allyScore,allyKillInfo = pbGetMoveScore(move, user, ally, policies, 1, ignoreGeneralEffectScores, killInfoArray)
                             score = [score, allyScore].min
                         end
                     end
@@ -174,7 +174,7 @@ class PokeBattle_AI
                 targets.each do |b|
                     next unless @battle.pbMoveCanTarget?(user.index, b.index, target_data)
                     next if target_data.targets_foe && !user.opposes?(b)
-                    score, targetKillInfo, isSlowerDead2, isFasterDead2 = pbGetMoveScore(move, user, b, policies, 1, ignoreGeneralEffectScores, killInfoArray)
+                    score,targetKillInfo,isSlowerDead2,isFasterDead2 = pbGetMoveScore(move, user, b, policies, 1, ignoreGeneralEffectScores, killInfoArray)
                     scoresAndTargets.push([score, b.index, targetKillInfo]) if score > 0
                 end
             end
@@ -195,37 +195,37 @@ class PokeBattle_AI
                 end
             end
         end
-        return newChoice, killInfo, isSlowerDead2, isFasterDead2
+        return newChoice,killInfo,isSlowerDead2,isFasterDead2
     end
 
     #=============================================================================
     # Get a score for the given move being used against the given target
     # Threat array is an array of entries like so: [Foe that can kill, move that kills, their speed, priority of the killing move]
     #=============================================================================
-    def pbGetMoveScore(move, user, target, _policies = [], numTargets = 1, ignoreGeneralEffectScores = false, killInfoArray = [])
+    def pbGetMoveScore(move, user, target, policies = [], numTargets = 1, ignoreGeneralEffectScores = false, killInfoArray = [])
         scoringKey = [move.id, user.personalID, target.personalID, numTargets, ignoreGeneralEffectScores, killInfoArray]
         isSlowerDead3 = false
         isFasterDead3 = false
         if @precalculatedChoices.key?(scoringKey)
-            precalcedScore, precalcedKillInfo = @precalculatedChoices[scoringKey]
+            precalcedScore,precalcedKillInfo = @precalculatedChoices[scoringKey]
             if precalcedKillInfo
                 echoln("[MOVE SCORING] Score for #{user.pbThis(true)}'s #{move.id} against target #{target.pbThis(true)} already calced this round: #{precalcedScore} (will faint the target)")
             else
                 echoln("[MOVE SCORING] Score for #{user.pbThis(true)}'s #{move.id} against target #{target.pbThis(true)} already calced this round: #{precalcedScore}")
             end
-            return precalcedScore, precalcedKillInfo
+            return precalcedScore,precalcedKillInfo
         end
 
         echoln("[MOVE SCORING] Scoring #{user.pbThis(true)}'s #{move.id} against target #{target.pbThis(true)}:")
-
+        
         move.calculateUsageOverrides(user, [target])
 
         if aiPredictsFailure?(move, user, target, false)
             @precalculatedChoices[scoringKey] = 0
-            return 0, nil
+            return 0,nil
         end
-
-        switchPredicted = @battle.aiPredictsSwitch?(user, target.index, true)
+        
+        switchPredicted = @battle.aiPredictsSwitch?(user,target.index,true)
 
         # DAMAGE SCORE AND HIT TRIGGERS SCORE
         damageDealt = 0
@@ -242,8 +242,8 @@ class PokeBattle_AI
             # Adjust the score based on the move dealing damage
             # and perhaps a percent chance to actually benefit from its effect score
             begin
-                damageScore, damageDealt, willFaint = pbGetMoveScoreDamage(move, user, target, numTargets, aiContext)
-            rescue StandardError
+                damageScore,damageDealt,willFaint = pbGetMoveScoreDamage(move, user, target, numTargets, aiContext)
+            rescue StandardError => exception
                 pbPrintException($!) if $DEBUG
             end
 
@@ -260,7 +260,7 @@ class PokeBattle_AI
             if willFaint
                 # Check if the target has an endure-type protection that will prevent the KO
                 abilityEndures = !@battle.moldBreaker && target.fullHealth? &&
-                                 (target.hasActiveAbilityAI?(:STURDY) || target.hasActiveAbilityAI?(:SURVIVALIST))
+                    (target.hasActiveAbilityAI?(:STURDY) || target.hasActiveAbilityAI?(:SURVIVALIST))
                 itemEndures = target.fullHealth? && target.hasActiveItemAI?(GameData::Item.getByFlag("Endure"))
                 clarityEndures = target.hasActiveItemAI?(:CLARITYSASH)
                 if abilityEndures || itemEndures || clarityEndures
@@ -275,12 +275,12 @@ class PokeBattle_AI
             begin
                 scoreModifierUserAbility = 0
                 user.eachAIKnownActiveAbility do |ability|
-                    scoreModifierUserAbility +=
+                    scoreModifierUserAbility += 
                         BattleHandlers.triggerUserAbilityOnHitAI(ability, user, target, move, @battle, numHits)
                 end
                 triggersScore += scoreModifierUserAbility
                 echoln("\t[MOVE SCORING] #{user.pbThis}'s #{numHits} hits adjusts the score by #{scoreModifierUserAbility} due to the user's abilities") if scoreModifierUserAbility != 0
-            rescue StandardError
+            rescue StandardError => exception
                 pbPrintException($!) if $DEBUG
             end
 
@@ -289,12 +289,12 @@ class PokeBattle_AI
                 begin
                     scoreModifierTargetAbility = 0
                     target.eachAIKnownActiveAbility do |ability|
-                        scoreModifierTargetAbility +=
+                        scoreModifierTargetAbility += 
                             BattleHandlers.triggerTargetAbilityOnHitAI(ability, user, target, move, @battle, numHits)
                     end
                     triggersScore += scoreModifierTargetAbility
                     echoln("\t[MOVE SCORING] #{numHits} hits adjusts the score by #{scoreModifierTargetAbility} due to the target's abilities") if scoreModifierTargetAbility != 0
-                rescue StandardError
+                rescue StandardError => exception
                     pbPrintException($!) if $DEBUG
                 end
             end
@@ -304,12 +304,12 @@ class PokeBattle_AI
                 begin
                     scoreModifierTargetItem = 0
                     target.eachAIKnownActiveItem do |item|
-                        scoreModifierTargetItem +=
+                        scoreModifierTargetItem += 
                             BattleHandlers.triggerTargetItemOnHitAI(item, user, target, move, @battle, numHits)
                     end
                     triggersScore += scoreModifierTargetItem
                     echoln("\t[MOVE SCORING] #{numHits} hits adjusts the score by #{scoreModifierTargetItem} due to the target's items") if scoreModifierTargetItem != 0
-                rescue StandardError
+                rescue StandardError => exception
                     pbPrintException($!) if $DEBUG
                 end
             end
@@ -343,7 +343,7 @@ class PokeBattle_AI
         if move.randomEffect?
             type = pbRoughType(move, user)
             realProcChance = move.pbAdditionalEffectChance(user, target, type, 0, true, aiContext)
-            realProcChance = 0 unless move.canApplyRandomAddedEffects?(user, target, realProcChance, false, true)
+            realProcChance = 0 unless move.canApplyRandomAddedEffects?(user,target,realProcChance,false,true)
             factor = (realProcChance / 100.0)
             echoln("\t[MOVE SCORING] #{user.pbThis} multiplies #{move.id}'s effect score of #{effectScore} by #{factor} based on effect chance")
             effectScore *= factor
@@ -400,19 +400,19 @@ class PokeBattle_AI
         score = score.to_i
         score = 0 if score < 0
         echoln("\t[MOVE SCORING] Final score for #{user.pbThis}'s #{move.id} against target #{target.pbThis(true)}: #{score}")
-
+        
         # Create kill info
         if willFaint
-            killInfo = KillInfo.new(user, move, user.pbSpeed(true, move: move), @battle.getMovePriority(move, user, [target], true), score, aiContext[:item_consumed])
+            killInfo = KillInfo.new(user,move,user.pbSpeed(true, move: move),@battle.getMovePriority(move, user, [target], true), score, aiContext[:item_consumed])
         else
             killInfo = nil
         end
-
-        @precalculatedChoices[scoringKey] = [score, killInfo]
-        return score, killInfo, isSlowerDead3, isFasterDead3
+        
+        @precalculatedChoices[scoringKey] = [score,killInfo]
+        return score,killInfo,isSlowerDead3,isFasterDead3
     end
 
-    def getMultiplicativeAbilityScore(score, move, user, _target)
+    def getMultiplicativeAbilityScore(score, move, user, target)
         if move.danceMove?
             dancerBonus = 1.0
             user.eachOther do |b|
@@ -455,7 +455,7 @@ class PokeBattle_AI
     end
 
     def pbGetMoveScoreDamage(move, user, target, numTargets = 1, aiContext = nil)
-        realDamage, damagePercentage, subDestroyed = getDamageAnalysisAI(move, user, target, numTargets, aiContext)
+        realDamage,damagePercentage,subDestroyed = getDamageAnalysisAI(move, user, target, numTargets, aiContext)
 
         # Adjust score
         willFaint = false
@@ -482,12 +482,12 @@ class PokeBattle_AI
         end
         damageScore = damageScore.floor
 
-        return damageScore, realDamage, willFaint
+        return damageScore,realDamage,willFaint
     end
 
     def getDamageAnalysisAI(move, user, target, numTargets = 1, aiContext = nil)
         # Calculate how much damage the move will do (roughly)
-        realDamage, subDestroyed = pbTotalDamageAI(move, user, target, numTargets, aiContext)
+        realDamage,subDestroyed = pbTotalDamageAI(move, user, target, numTargets, aiContext)
 
         # Convert damage to percentage of target's remaining HP
         damagePercentage = realDamage * 100.0 / target.totalhp
@@ -495,15 +495,15 @@ class PokeBattle_AI
         if realDamage >= target.hp
             echoln("\t[MOVE SCORING] #{user.pbThis} thinks that move #{move.id} will deal #{realDamage} damage to #{target.pbThis(true)}, fainting it")
         else
-            # TODO: Enable and rework EoR damage system, > DISABLED <
-            # healthChange,eotDamagePercent = passingTurnBattlerHealthChange(target,@battle)
-            # realDamage += healthChange
-            # damagePercentage += eotDamagePercent
+            # TODO: Enable and rework EoR damage system, > DISABLED < 
+            #healthChange,eotDamagePercent = passingTurnBattlerHealthChange(target,@battle)
+            #realDamage += healthChange
+            #damagePercentage += eotDamagePercent
             echoln("\t[MOVE SCORING] #{user.pbThis} thinks that move #{move.id} will deal #{realDamage} damage -- #{damagePercentage.round(1)} percent of #{target.pbThis(true)}'s HP.")
-            # echoln("\t[MOVE SCORING] Additionally, target's HP will change #{eotDamagePercent} percent EOT.") unless eotDamagePercent == 0
+            #echoln("\t[MOVE SCORING] Additionally, target's HP will change #{eotDamagePercent} percent EOT.") unless eotDamagePercent == 0
             echoln("\t[MOVE SCORING] Additionally, target's Substitute will break") if subDestroyed == true
         end
 
-        return realDamage, damagePercentage, subDestroyed
+        return realDamage,damagePercentage,subDestroyed
     end
 end

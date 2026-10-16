@@ -7,7 +7,7 @@ def circuitPuzzle(circuitPuzzleID)
         state = -1
         pbFadeOutIn {
             scene = CircuitPuzzle_Scene.new(circuitBaseGraphic)
-            screen = CircuitPuzzle_Screen.new(scene, circuitDefinition, circuitPuzzleID)
+            screen = CircuitPuzzle_Screen.new(scene,circuitDefinition,circuitPuzzleID)
             solved, state = screen.startPuzzle
         }
         return solved, state
@@ -26,8 +26,8 @@ class CircuitPuzzle_Scene
 
     def initialize(circuitBaseGraphic)
         @sprites = {}
-        @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
-        @viewport.z = 99_999
+        @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
+        @viewport.z = 99999
 
         backgroundFileName = "Circuit Puzzle/Boards/#{circuitBaseGraphic}"
         addBackgroundPlane(@sprites, "bg", backgroundFileName, @viewport)
@@ -37,13 +37,13 @@ class CircuitPuzzle_Scene
 
         # Initialize the bitmaps for all possible components
         @componentBitmaps = {}
-        CIRCUIT_COMPONENTS.each do |key, value|
+        CIRCUIT_COMPONENTS.each do |key,value|
             fileName = "Graphics/Pictures/Circuit Puzzle/Components/#{value[:graphic]}"
             componentBitmap = AnimatedBitmap.new(fileName)
             @componentBitmaps[key] = componentBitmap
         end
 
-        @sprites["cursor"] = AnimatedSprite.create("Graphics/Pictures/Town Map/mapCursor", 2, 5)
+        @sprites["cursor"] = AnimatedSprite.create("Graphics/Pictures/Town Map/mapCursor",2,5)
         @sprites["cursor"].viewport = @viewport
         @sprites["cursor"].play
         @sprites["cursor"].zoom_x = 2
@@ -59,14 +59,14 @@ class CircuitPuzzle_Scene
             componentX = circuitComponentDefinition[1]
             componentY = circuitComponentDefinition[2]
             defaultState = circuitComponentDefinition[3]
-
+            
             componentBitmap = @componentBitmaps[componentID]
             width = componentBitmap.width
             newSprite = SpriteWrapper.new
             newSprite.bitmap = componentBitmap.bitmap
             newSprite.viewport = @viewport
-            newSprite.x = (componentX * 64) + (20 - width)
-            newSprite.y = (componentY * 64) + (20 - width)
+            newSprite.x = componentX * 64 + (20 - width)
+            newSprite.y = componentY * 64 + (20 - width)
             newSprite.src_rect.height = width
             newSprite.src_rect.y = defaultState * width
             newSprite.zoom_x = 4
@@ -86,7 +86,7 @@ class CircuitPuzzle_Scene
         @sprites["cursor"].y = value * 64
     end
 
-    def updateComponentState(componentIndex, state)
+    def updateComponentState(componentIndex,state)
         componentSprites[componentIndex].src_rect.y = state * componentSprites[componentIndex].bitmap.width
     end
 
@@ -95,7 +95,7 @@ class CircuitPuzzle_Scene
         pbFadeOutAndHide(@sprites) { update }
         pbDisposeSpriteHash(@sprites)
         # DISPOSE OF BITMAPS HERE #
-        @componentBitmaps.each do |_key, value|
+        @componentBitmaps.each do |key,value|
             value.dispose unless value.disposed?
         end
     end
@@ -111,7 +111,7 @@ class CircuitComponent
     attr_reader :x
     attr_reader :y
 
-    def initialize(componentID, x, y)
+    def initialize(componentID,x,y)
         @x = x
         @y = y
         componentDefinition = CIRCUIT_COMPONENTS[componentID]
@@ -126,7 +126,7 @@ class CircuitComponent
 end
 
 class CircuitPuzzle_Screen
-    def initialize(scene, circuitDefinition, puzzleID)
+    def initialize(scene,circuitDefinition,puzzleID)
         @scene = scene
         @puzzleID = puzzleID
         @circuitDefinition = circuitDefinition
@@ -154,7 +154,7 @@ class CircuitPuzzle_Screen
             componentY = circuitComponentDefinition[2]
             defaultState = circuitComponentDefinition[3]
 
-            newComponent = CircuitComponent.new(componentID, componentX, componentY)
+            newComponent = CircuitComponent.new(componentID,componentX,componentY)
             newComponent.state = defaultState || 0
             @components.push(newComponent)
         end
@@ -163,9 +163,9 @@ class CircuitPuzzle_Screen
     def loadCircuitState
         tracker = $PokemonGlobal.circuitPuzzleStateTracker
         savedComponentStates = tracker.loadPuzzleState(@puzzleID)
-        @components.each_with_index do |component, index|
+        @components.each_with_index do |component,index|
             component.state = savedComponentStates[index]
-            @scene.updateComponentState(index, component.state)
+            @scene.updateComponentState(index,component.state)
         end
     end
 
@@ -175,9 +175,9 @@ class CircuitPuzzle_Screen
         @components.each do |component|
             puzzleState.push(component.state)
         end
-        tracker.savePuzzleState(@puzzleID, puzzleState)
+        tracker.savePuzzleState(@puzzleID,puzzleState)
     end
-
+    
     def startPuzzle
         Graphics.update
         Input.update
@@ -231,7 +231,7 @@ class CircuitPuzzle_Screen
                 @cursorX += 1
                 pbPlayCursorSE
             elsif Input.triggerex?(:P) && $DEBUG
-                @components.each_with_index do |component, index|
+                @components.each_with_index do |component,index|
                     echoln("Component #{index} is in state #{component.state}")
                 end
             end
@@ -247,7 +247,7 @@ class CircuitPuzzle_Screen
         if @circuitDefinition[:solution_states]
             @circuitDefinition[:solution_states].each do |possibleSolution|
                 thisSolutionWorks = true
-                @components.each_with_index do |component, index|
+                @components.each_with_index do |component,index|
                     solutionStateForComponent = possibleSolution[index]
                     next if component.state == solutionStateForComponent
                     thisSolutionWorks = false
@@ -263,38 +263,41 @@ class CircuitPuzzle_Screen
         if @inSolutionState
             @inLegalState = true
             if playSE
-                pbWait(20)
-                pbSEPlay("Mining found all", 100, 80)
+              pbWait(20)
+              pbSEPlay("Mining found all",100,80)
             end
-        elsif @circuitDefinition[:legal_states].nil?
-            @inLegalState = true
-            @stateID = -1
         else
-            @inLegalState = false
-            @circuitDefinition[:legal_states].each_with_index do |legalState, index|
-                thisLegalMatches = true
-                @components.each_with_index do |component, index|
-                    legalStateForComponent = legalState[index]
-                    next if component.state == legalStateForComponent
-                    thisLegalMatches = false
-                    break
-                end
-                next unless thisLegalMatches
+            if @circuitDefinition[:legal_states].nil?
                 @inLegalState = true
-                @stateID = index
-                break
+                @stateID = -1
+            else
+                @inLegalState = false
+                @circuitDefinition[:legal_states].each_with_index do |legalState, index|
+                    thisLegalMatches = true
+                    @components.each_with_index do |component,index|
+                        legalStateForComponent = legalState[index]
+                        next if component.state == legalStateForComponent
+                        thisLegalMatches = false
+                        break
+                    end
+                    if thisLegalMatches
+                        @inLegalState = true
+                        @stateID = index
+                        break
+                    end
+                end
             end
         end
     end
 
     def cursorInteract
         return false if @inSolutionState
-        @components.each_with_index do |component, index|
+        @components.each_with_index do |component,index|
             next unless component.x == @cursorX
             next unless component.y == @cursorY
             component.cycleState
             pbSEPlay("Anim/Paralyze1")
-            @scene.updateComponentState(index, component.state)
+            @scene.updateComponentState(index,component.state)
             return true
         end
         return false
@@ -327,8 +330,8 @@ class CircuitPuzzleStateTracker
             return newPuzzleState
         end
     end
-
-    def savePuzzleState(puzzleID, puzzleState)
+    
+    def savePuzzleState(puzzleID,puzzleState)
         @puzzleStateData[puzzleID] = puzzleState
     end
 

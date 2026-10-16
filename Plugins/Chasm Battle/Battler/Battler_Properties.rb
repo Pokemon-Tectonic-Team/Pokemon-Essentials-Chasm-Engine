@@ -66,9 +66,9 @@ class PokeBattle_Battler
         # Wild Pokémon are already in the battle and should never refuse to fight.
         return false if @battle.wildBattle? && pbOwnSide.index == 1
         idxTrainer = @battle.pbGetOwnerIndexFromBattlerIndex(index)
-        eachActiveAbility(true, ignoreGas: true) do |ability|
+        eachActiveAbility(true, ignoreGas:true) do |ability|
             return true if BattleHandlers.triggerForbidsUserSwitchInAbility(
-                ability, @battle, pokemon, pbOwnSide.index, idxTrainer, pokemonIndex, false
+                ability, @battle, self.pokemon, pbOwnSide.index, idxTrainer, pokemonIndex, false
             )
         end
         return false
@@ -145,9 +145,9 @@ class PokeBattle_Battler
                 break if moveLevel > @level
                 next if moveLevel < 45
                 moveAtThisLevel = learnSetEntry[1]
-
+                
                 hasMoveAlready = false
-                movesArray.each do |existingMove|
+                movesArray.each do |existingMove|    
                     next unless existingMove.id == moveAtThisLevel
                     hasMoveAlready = true
                     break

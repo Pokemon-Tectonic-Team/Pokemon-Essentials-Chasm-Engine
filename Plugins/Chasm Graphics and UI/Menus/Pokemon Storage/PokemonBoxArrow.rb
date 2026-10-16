@@ -6,7 +6,7 @@ class PokemonBoxArrow < SpriteWrapper
     attr_accessor :multiselect
 
     def initialize(viewport = nil)
-        super
+        super(viewport)
         @frame         = 0
         @holding       = false
         @updating      = false
@@ -16,18 +16,18 @@ class PokemonBoxArrow < SpriteWrapper
         @placingState  = 0
         @heldpkmn      = nil
         @handsprite    = ChangelingSprite.new(0, 0, viewport)
-        arrowGraphics = ["point_1", "point_2", "grab", "fist"]
-        suffixes = ["", "_q", "_m"]
+        arrowGraphics = ["point_1","point_2","grab","fist"]
+        suffixes = ["","_q","_m"]
         arrowGraphics.each do |graphicName|
             suffixes.each do |suffix|
                 nameWithSuffix = "#{graphicName}#{suffix}"
                 path = "Graphics/Pictures/Storage/cursor_#{nameWithSuffix}"
-                @handsprite.addBitmap(nameWithSuffix, path)
-            end
+                @handsprite.addBitmap(nameWithSuffix, path) 
+            end 
         end
         modifyHandSprite("fist")
-        @spriteX = x
-        @spriteY = y
+        @spriteX = self.x
+        @spriteY = self.y
     end
 
     def dispose
@@ -70,16 +70,16 @@ class PokemonBoxArrow < SpriteWrapper
 
     def x=(value)
         super
-        @handsprite.x = x
+        @handsprite.x = self.x
         @spriteX = x unless @updating
-        heldPokemon.x = x if holding?
+        heldPokemon.x = self.x if holding?
     end
 
     def y=(value)
         super
-        @handsprite.y = y
+        @handsprite.y = self.y
         @spriteY = y unless @updating
-        heldPokemon.y = y + 16 if holding?
+        heldPokemon.y = self.y + 16 if holding?
     end
 
     def z=(value)
@@ -137,12 +137,12 @@ class PokemonBoxArrow < SpriteWrapper
         if @grabbingState > 0
             if @grabbingState <= 4 * Graphics.frame_rate / 20
                 modifyHandSprite("grab")
-                self.y = @spriteY + (4.0 * @grabbingState * 20 / Graphics.frame_rate)
+                self.y = @spriteY + 4.0 * @grabbingState * 20 / Graphics.frame_rate
                 @grabbingState += 1
             elsif @grabbingState <= 8 * Graphics.frame_rate / 20
                 @holding = true
                 modifyHandSprite("fist")
-                self.y = @spriteY + (4 * ((8 * Graphics.frame_rate / 20) - @grabbingState) * 20 / Graphics.frame_rate)
+                self.y = @spriteY + 4 * (8 * Graphics.frame_rate / 20 - @grabbingState) * 20 / Graphics.frame_rate
                 @grabbingState += 1
             else
                 @grabbingState = 0
@@ -150,13 +150,13 @@ class PokemonBoxArrow < SpriteWrapper
         elsif @placingState > 0
             if @placingState <= 4 * Graphics.frame_rate / 20
                 modifyHandSprite("fist")
-                self.y = @spriteY + (4.0 * @placingState * 20 / Graphics.frame_rate)
+                self.y = @spriteY + 4.0 * @placingState * 20 / Graphics.frame_rate
                 @placingState += 1
             elsif @placingState <= 8 * Graphics.frame_rate / 20
                 @holding = false
                 @heldpkmn = nil
                 modifyHandSprite("grab")
-                self.y = @spriteY + (4 * ((8 * Graphics.frame_rate / 20) - @placingState) * 20 / Graphics.frame_rate)
+                self.y = @spriteY + 4 * (8 * Graphics.frame_rate / 20 - @placingState) * 20 / Graphics.frame_rate
                 @placingState += 1
             else
                 @placingState = 0

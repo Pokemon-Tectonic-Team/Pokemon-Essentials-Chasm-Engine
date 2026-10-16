@@ -87,7 +87,7 @@ class PokeBattle_AI_Boss
         validate battler => PokeBattle_Battler
         avatarData = GameData::Avatar.get_from_pokemon(battler.pokemon)
         if avatarData.version > 0
-            id = "#{avatarData.species}_#{avatarData.version}"
+            id = "#{avatarData.species.to_s}_#{avatarData.version}"
         else
             id = avatarData.species.to_s
         end

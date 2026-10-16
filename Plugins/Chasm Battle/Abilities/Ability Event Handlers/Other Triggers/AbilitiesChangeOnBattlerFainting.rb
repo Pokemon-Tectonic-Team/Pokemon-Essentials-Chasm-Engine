@@ -1,5 +1,5 @@
 BattleHandlers::AbilityChangeOnBattlerFainting.add(:POWEROFALCHEMY,
-    proc { |_ability, battler, fainted, _battle|
+    proc { |ability, battler, fainted, battle|
         next if battler.opposes?(fainted)
 
         fainted.eachAbility do |abilityID|
@@ -12,7 +12,7 @@ BattleHandlers::AbilityChangeOnBattlerFainting.add(:POWEROFALCHEMY,
 BattleHandlers::AbilityChangeOnBattlerFainting.add(:ALLCONSUMING,
     proc { |ability, battler, fainted, battle|
         battler.showMyAbilitySplash(ability)
-
+        
         fainted.eachItemWithName do |item, itemName|
             next if fainted.unlosableItem?(item)
             fainted.removeItem(item)

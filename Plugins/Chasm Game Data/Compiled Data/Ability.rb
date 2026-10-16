@@ -19,10 +19,10 @@ module Compiler
             primevalAbility = path == "PBS/abilities_primeval.txt"
             newAbility = ["PBS/abilities_new.txt", "PBS/abilities_primeval.txt"].include?(path) || abilityExtensions.include?(path)
             baseFile = baseFiles.include?(path)
-
-            ability_hash = nil
+            
+            ability_hash         = nil
             pbCompilerEachPreppedLine(path) { |line, line_no|
-                if line[/^\s*\[\s*(.+)\s*\]\s*$/] # New section [ability_id]
+                if line[/^\s*\[\s*(.+)\s*\]\s*$/]   # New section [ability_id]
                     # Add previous ability's data to records
                     GameData::Ability.register(ability_hash) if ability_hash
                     # Parse ability ID
@@ -38,7 +38,7 @@ module Compiler
                         :primeval               => primevalAbility,
                         :defined_in_extension   => !baseFile,
                     }
-                elsif line[/^\s*(\w+)\s*=\s*(.*)\s*$/] # XXX=YYY lines
+                elsif line[/^\s*(\w+)\s*=\s*(.*)\s*$/]   # XXX=YYY lines
                     if !ability_hash
                         raise _INTL("Expected a section at the beginning of the file.\r\n{1}", FileLineData.linereport)
                     end
@@ -105,18 +105,17 @@ module Compiler
     end
 
     def write_ability(f, ability)
-        f.write("#-------------------------------\r\n")
+        f.write("\#-------------------------------\r\n")
         f.write("[#{ability.id}]\r\n")
         f.write("Name = #{ability.real_name}\r\n")
         f.write("Description = #{ability.real_description}\r\n")
-        f.write(format("Flags = %s\r\n", ability.flags.join(","))) if ability.flags.length > 0
+        f.write(sprintf("Flags = %s\r\n", ability.flags.join(","))) if ability.flags.length > 0
     end
 end
 
 module GameData
     class Ability
-        attr_accessor :signature_of
-        attr_reader :cut, :primeval, :tectonic_new
+        attr_reader :signature_of, :cut, :primeval, :tectonic_new
         attr_reader :id
         attr_reader :id_number
         attr_reader :real_name
@@ -137,13 +136,13 @@ module GameData
             "Description"  => [:description, "q"],
             "Flags"        => [:flags,       "*s"]
         }
-
+        
         def initialize(hash)
             @id                     = hash[:id]
             @id_number              = hash[:id_number]    || -1
             @real_name              = hash[:name]         || "Unnamed"
             @real_description       = hash[:description]  || "???"
-            @flags                  = hash[:flags] || []
+            @flags                  = hash[:flags]       || []
             @cut                    = hash[:cut]          || false
             @primeval               = hash[:primeval]     || false
             @tectonic_new           = hash[:tectonic_new] || false
@@ -169,8 +168,11 @@ module GameData
         end
 
         # The highest evolution of a line
-
-        def is_signature?
+        def signature_of=(val)
+            @signature_of = val
+        end
+  
+        def is_signature?()
             return !@signature_of.nil? || @flags.include?("ForceSignature")
         end
 
@@ -207,7 +209,7 @@ module GameData
         def is_moonglow_synergy_ability?
             return @flags.include?("MoonglowSynergy")
         end
-
+        
         def is_multiple_item_ability?
             return @flags.include?("MultipleItems")
         end
@@ -247,9 +249,9 @@ module GameData
 
         def self.getByFlag(flag)
             if FLAG_INDEX.key?(flag)
-                return FLAG_INDEX[flag]
+              return FLAG_INDEX[flag]
             else
-                return []
+              return []
             end
         end
 
@@ -257,7 +259,7 @@ module GameData
             super
             const_set(:FLAG_INDEX, load_data("Data/#{self::FLAGS_INDEX_DATA_FILENAME}"))
         end
-
+    
         def self.save
             super
             save_data(self::FLAG_INDEX, "Data/#{self::FLAGS_INDEX_DATA_FILENAME}")

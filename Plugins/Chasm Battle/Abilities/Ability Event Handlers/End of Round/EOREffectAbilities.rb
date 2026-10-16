@@ -43,7 +43,7 @@ BattleHandlers::EOREffectAbility.add(:PERSISTENTGROWTH,
   proc { |ability, battler, battle|
       next unless battler.turnCount > 0
       battle.pbShowAbilitySplash(battler, ability)
-      battler.pbRaiseMultipleStatSteps([:ATTACK, 1, :DEFENSE, 1, :SPECIAL_ATTACK, 1, :SPECIAL_DEFENSE, 1], battler)
+      battler.pbRaiseMultipleStatSteps([:ATTACK,1,:DEFENSE,1,:SPECIAL_ATTACK,1,:SPECIAL_DEFENSE,1], battler)
       battler.tryLowerStat(:SPEED, battler)
       battle.pbHideAbilitySplash(battler)
   }
@@ -82,13 +82,15 @@ BattleHandlers::EOREffectAbility.add(:HUNGERSWITCH,
 BattleHandlers::EOREffectAbility.add(:IGNITIONCYCLE,
   proc { |ability, battler, battle|
       battle.pbShowAbilitySplash(battler, ability)
-      if battler.statStepAtMax?(:SPEED)
+      if !battler.statStepAtMax?(:SPEED)
+          if battler.tryRaiseStat(:SPEED, battler, increment: 3)
+              battler.applyFractionalDamage(1.0 / 8.0, false)
+              battle.pbDisplay(_INTL("{1}'s inner fire flared up!", battler.pbThis))
+          end
+      else
           battle.pbDisplay(_INTL("{1} finally cooled off!", battler.pbThis))
           battler.steps[:SPEED] = 0
           battler.pbRecoverHP(battler.totalhp - battler.hp)
-      elsif battler.tryRaiseStat(:SPEED, battler, increment: 3)
-          battler.applyFractionalDamage(1.0 / 8.0, false)
-          battle.pbDisplay(_INTL("{1}'s inner fire flared up!", battler.pbThis))
       end
 
       battle.pbHideAbilitySplash(battler)
@@ -103,7 +105,7 @@ BattleHandlers::EOREffectAbility.add(:EXTREMEPOWER,
   }
 )
 
-BattleHandlers::EOREffectAbility.copy(:EXTREMEPOWER, :EXTREMEVOLTAGE, :LIVEFAST, :BURDENED, :FADINGFURY)
+BattleHandlers::EOREffectAbility.copy(:EXTREMEPOWER,:EXTREMEVOLTAGE,:LIVEFAST,:BURDENED,:FADINGFURY)
 
 BattleHandlers::EOREffectAbility.add(:TENDERIZE,
   proc { |ability, battler, battle|
@@ -156,133 +158,133 @@ BattleHandlers::EOREffectAbility.add(:PRIMEVALFLOURISHING,
   }
 )
 
-NOXIOUS_DAMAGE_FRACTION = 1.0 / 12.0
+NOXIOUS_DAMAGE_FRACTION = 1.0/12.0
 
 BattleHandlers::EOREffectAbility.add(:NOXIOUS,
   proc { |ability, battler, battle|
-      anyPresent = false
-      battler.eachOther do |_b|
-          anyPresent = true
-          break
+    anyPresent = false
+    battler.eachOther do |b|
+      anyPresent = true
+      break
+    end
+    next unless anyPresent
+    battler.showMyAbilitySplash(ability)
+    battler.eachOther do |b|
+      if b.takesIndirectDamage?(true)
+        battle.pbDisplay(_INTL("{1} is hurt by the noxious presence!", b.pbThis))
+        b.applyFractionalDamage(NOXIOUS_DAMAGE_FRACTION, false)
       end
-      next unless anyPresent
-      battler.showMyAbilitySplash(ability)
-      battler.eachOther do |b|
-          if b.takesIndirectDamage?(true)
-              battle.pbDisplay(_INTL("{1} is hurt by the noxious presence!", b.pbThis))
-              b.applyFractionalDamage(NOXIOUS_DAMAGE_FRACTION, false)
-          end
-      end
-      battler.hideMyAbilitySplash
+    end
+    battler.hideMyAbilitySplash
   }
 )
 
-PERSONAL_DEMESNE_DAMAGE_FRACTION = 1.0 / 10.0
+PERSONAL_DEMESNE_DAMAGE_FRACTION = 1.0/10.0
 
 BattleHandlers::EOREffectAbility.add(:PERSONALDEMESNE,
   proc { |ability, battler, battle|
-      next unless battle.roomActive?
-      anyPresent = false
-      battler.eachOpposing do |_b|
-          anyPresent = true
-          break
+    next unless battle.roomActive?
+    anyPresent = false
+    battler.eachOpposing do |b|
+      anyPresent = true
+      break
+    end
+    next unless anyPresent
+    battler.showMyAbilitySplash(ability)
+    battler.eachOpposing do |b|
+      if b.takesIndirectDamage?(true)
+        battle.pbDisplay(_INTL("{1} is hurt by the foreboding presence!", b.pbThis))
+        b.applyFractionalDamage(PERSONAL_DEMESNE_DAMAGE_FRACTION, false)
       end
-      next unless anyPresent
-      battler.showMyAbilitySplash(ability)
-      battler.eachOpposing do |b|
-          if b.takesIndirectDamage?(true)
-              battle.pbDisplay(_INTL("{1} is hurt by the foreboding presence!", b.pbThis))
-              b.applyFractionalDamage(PERSONAL_DEMESNE_DAMAGE_FRACTION, false)
-          end
-      end
-      battler.hideMyAbilitySplash
+    end
+    battler.hideMyAbilitySplash
   }
 )
 
 
 BattleHandlers::EOREffectAbility.add(:FIREFESTIVAL,
   proc { |ability, battler, battle|
-      battler.showMyAbilitySplash(ability)
-      battle.eachBattler do |b|
-          if b.takesIndirectDamage?(true)
-              battle.pbDisplay(_INTL("{1} is splashed with fire!", b.pbThis))
-              damageFraction = battle.getTypedHazardHPRatio(:FIRE, b)
-              b.applyFractionalDamage(damageFraction, false)
-          end
+    battler.showMyAbilitySplash(ability)
+    battle.eachBattler do |b|
+      if b.takesIndirectDamage?(true)
+        battle.pbDisplay(_INTL("{1} is splashed with fire!", b.pbThis))
+        damageFraction = battle.getTypedHazardHPRatio(:FIRE, b)
+        b.applyFractionalDamage(damageFraction, false)
       end
-      battler.hideMyAbilitySplash
+    end
+    battler.hideMyAbilitySplash
   }
 )
 
 BattleHandlers::EOREffectAbility.add(:AUTOSTRUCTURE,
   proc { |ability, battler, battle|
-      battler.showMyAbilitySplash(ability)
+    battler.showMyAbilitySplash(ability)
+    
+    # Store the current stats
+    currentStats = {
+      :ATTACK => battler.base_attack,
+      :DEFENSE => battler.base_defense,
+      :SPECIAL_ATTACK => battler.base_special_attack,
+      :SPECIAL_DEFENSE => battler.base_special_defense,
+      :SPEED => battler.base_speed,
+    }
+    # Change the stats
+    battler.applyEffect(:BaseAttack,currentStats[:SPEED])
+    battler.applyEffect(:BaseDefense,currentStats[:ATTACK])
+    battler.applyEffect(:BaseSpecialAttack,currentStats[:DEFENSE])
+    battler.applyEffect(:BaseSpecialDefense,currentStats[:SPECIAL_ATTACK])
+    battler.applyEffect(:BaseSpeed,currentStats[:SPECIAL_DEFENSE])
 
-      # Store the current stats
-      currentStats = {
-        :ATTACK => battler.base_attack,
-        :DEFENSE => battler.base_defense,
-        :SPECIAL_ATTACK => battler.base_special_attack,
-        :SPECIAL_DEFENSE => battler.base_special_defense,
-        :SPEED => battler.base_speed,
-      }
-      # Change the stats
-      battler.applyEffect(:BaseAttack, currentStats[:SPEED])
-      battler.applyEffect(:BaseDefense, currentStats[:ATTACK])
-      battler.applyEffect(:BaseSpecialAttack, currentStats[:DEFENSE])
-      battler.applyEffect(:BaseSpecialDefense, currentStats[:SPECIAL_ATTACK])
-      battler.applyEffect(:BaseSpeed, currentStats[:SPECIAL_DEFENSE])
-
-      battle.pbDisplay(_INTL("{1} has restructured!", battler.pbThis))
-      battler.hideMyAbilitySplash
+    battle.pbDisplay(_INTL("{1} has restructured!", battler.pbThis))
+    battler.hideMyAbilitySplash
   }
 )
 
 BattleHandlers::EOREffectAbility.add(:DISTORTEDGRAVITY,
   proc { |ability, battler, battle|
-      next unless battle.gravityIntensified?
-      battler.showMyAbilitySplash(ability)
-      battle.eachOtherSideBattler do |b|
-          if b.takesIndirectDamage?(true)
-              battle.pbDisplay(_INTL("{1} is crushed by the distorted gravity!", b.pbThis))
-              damageFraction = 1.0 / 16.0
-              b.applyFractionalDamage(damageFraction, false)
-          end
+  next unless battle.gravityIntensified? 
+  battler.showMyAbilitySplash(ability)
+    battle.eachOtherSideBattler do |b|
+      if b.takesIndirectDamage?(true)
+        battle.pbDisplay(_INTL("{1} is crushed by the distorted gravity!", b.pbThis))
+        damageFraction = 1.0 / 16.0
+        b.applyFractionalDamage(damageFraction, false)
       end
-      battler.hideMyAbilitySplash
+    end
+    battler.hideMyAbilitySplash
   }
 )
 
 BattleHandlers::EOREffectAbility.add(:OSCILLATION,
   proc { |ability, battler, battle|
-      next unless battler.hasAlteredStatSteps?
-      battler.showMyAbilitySplash(ability)
-      battler.invertStatSteps(false)
-      battle.pbDisplay(_INTL("{1} turns upside down! Its stat steps are inverted!", battler.pbThis))
-      battler.hideMyAbilitySplash
+  next unless battler.hasAlteredStatSteps?
+  battler.showMyAbilitySplash(ability)
+  battler.invertStatSteps(false)
+  battle.pbDisplay(_INTL("{1} turns upside down! Its stat steps are inverted!", battler.pbThis))
+  battler.hideMyAbilitySplash
   }
 )
 
 BattleHandlers::EOREffectAbility.add(:PILEON,
   proc { |ability, battler, battle|
-      if battler.turnCount != 0 && battler.turnCount % 3 == 0
-          battler.showMyAbilitySplash(ability)
-          if battler.effectAtMax?(:Stockpile)
-              battle.pbDisplay(_INTL("{1} would have gathered power, but it can't stockpile any more!", battler.pbThis))
-          else
-              battle.pbDisplay(_INTL("{1} gathered up more power!", battler.pbThis))
-              battler.incrementEffect(:Stockpile)
-          end
-          battler.hideMyAbilitySplash
+    if battler.turnCount != 0 && battler.turnCount % 3 == 0
+      battler.showMyAbilitySplash(ability)
+      if battler.effectAtMax?(:Stockpile)
+        battle.pbDisplay(_INTL("{1} would have gathered power, but it can't stockpile any more!", battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1} gathered up more power!", battler.pbThis))
+        battler.incrementEffect(:Stockpile)
       end
+      battler.hideMyAbilitySplash
+    end
   }
 )
 
 BattleHandlers::EOREffectAbility.add(:INSCRUTABLEORDERS,
   proc { |ability, battler, battle|
-      next if battler.effectActive?(:Torment)
-      battle.pbShowAbilitySplash(battler, ability)
-      battler.applyEffect(:Torment)
-      battle.pbHideAbilitySplash(battler)
+    next if battler.effectActive?(:Torment)
+    battle.pbShowAbilitySplash(battler, ability)
+    battler.applyEffect(:Torment)
+    battle.pbHideAbilitySplash(battler)
   }
 )

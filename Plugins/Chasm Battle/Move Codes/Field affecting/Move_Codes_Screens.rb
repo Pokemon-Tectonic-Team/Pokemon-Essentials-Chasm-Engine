@@ -34,7 +34,7 @@ class PokeBattle_Move_StartPreventCriticalHitsAndReduceDamageAgainstUserSide5 < 
         user.pbOwnSide.applyEffect(:Sanctuary, user.getScreenDuration)
     end
 
-    def pbAdditionalEffect(user, _target)
+    def pbAdditionalEffect(user, target)
         user.pbOwnSide.applyEffect(:Sanctuary, user.getScreenDuration)
     end
 
@@ -47,7 +47,7 @@ end
 # User falls asleep and sets up Sanctuary for 8 turns. (Dreamscape)
 #===============================================================================
 class PokeBattle_Move_SleepUserSetupSanctuary8 < PokeBattle_Move
-    def pbMoveFailed?(user, _targets, show_message)
+    def pbMoveFailed?(user, targets, show_message)
         if user.asleep?
             @battle.pbDisplay(_INTL("But it failed, since {1} is already asleep!", user.pbThis(true))) if show_message
             return true
@@ -56,7 +56,7 @@ class PokeBattle_Move_SleepUserSetupSanctuary8 < PokeBattle_Move
         return false
     end
 
-    def pbMoveFailedAI?(user, _targets)
+    def pbMoveFailedAI?(user, targets)
         return true if user.willStayAsleepAI?
         return true unless user.canSleep?(user, false, self, true)
         return false
@@ -67,7 +67,7 @@ class PokeBattle_Move_SleepUserSetupSanctuary8 < PokeBattle_Move
         user.pbOwnSide.applyEffect(:Sanctuary, user.getScreenDuration(8))
     end
 
-    def getEffectScore(user, _target)
+    def getEffectScore(user, target)
         score = 0
         score += getSanctuaryEffectScore(user, nil, self)
         score -= getSleepEffectScore(nil, user) * 0.45

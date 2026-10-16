@@ -46,8 +46,8 @@ class PokeBattle_Battle
     end
 
     def hideDataboxes
-        numFrames = (Graphics.frame_rate * 0.4).floor
-        alphaDiff = (255.0 / numFrames).ceil
+        numFrames = (Graphics.frame_rate*0.4).floor
+        alphaDiff = (255.0/numFrames).ceil
         for j in 0..numFrames
             opacity = (numFrames - j) * alphaDiff
             databoxes.each do |dataBox|
@@ -61,8 +61,8 @@ class PokeBattle_Battle
     end
 
     def returnDataboxes
-        numFrames = (Graphics.frame_rate * 0.4).floor
-        alphaDiff = (255.0 / numFrames).ceil
+        numFrames = (Graphics.frame_rate*0.4).floor
+        alphaDiff = (255.0/numFrames).ceil
         for j in 0..numFrames
             opacity = j * alphaDiff
             databoxes.each do |dataBox|
@@ -88,7 +88,7 @@ class PokeBattle_Battle
         echoln("Amulet actives!")
         pbDisplaySlower(_INTL("\\i[TAROTAMULET]The Tarot Amulet glows with power!"))
 
-        curseBG = scene.pbAddSprite("curseBG", 0, 0, "Graphics/Pictures/Battle/cursebg", @viewport)
+        curseBG = scene.pbAddSprite("curseBG",0,0,"Graphics/Pictures/Battle/cursebg",@viewport)
         curseBG.visible = true
         curseBG.z = 100_000
 
@@ -105,9 +105,9 @@ class PokeBattle_Battle
         waitTime = amuletMessageDuration
         fontSize = 48
         msgwindow.lineHeight(48)
-        curseName = _INTL("\\ts[]<c3=4C0D0D,FFFFFF22><b><outln2><ac><fs={1}>\\w[]\\wu\\l[12]{2}</fs></ac></outln2></b></c3>\\wt[{3}]", fontSize, curseName, waitTime)
+        curseName = _INTL("\\ts[]<c3=4C0D0D,FFFFFF22><b><outln2><ac><fs={1}>\\w[]\\wu\\l[12]{2}</fs></ac></outln2></b></c3>\\wt[{3}]",fontSize,curseName,waitTime)
         curseName = "<fn=Didact Gothic>" + curseName + "</fn>"
-        pbMessageDisplay(msgwindow, curseName)
+        pbMessageDisplay(msgwindow,curseName)
 
         pbDisplaySlower(explanation) if explanation
         pbDisposeMessageWindow(msgwindow)

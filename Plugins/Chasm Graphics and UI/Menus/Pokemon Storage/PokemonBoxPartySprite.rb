@@ -1,3 +1,4 @@
+
 #===============================================================================
 # Party pop-up panel
 #===============================================================================
@@ -99,20 +100,20 @@ class PokemonBoxPartySprite < SpriteWrapper
         xvalues = []   # [18, 90, 18, 90, 18, 90]
         yvalues = []   # [2, 18, 66, 82, 130, 146]
         for i in 0...Settings::MAX_PARTY_SIZE
-            xvalues.push(18 + (72 * (i % 2)))
-            yvalues.push(2 + (16 * (i % 2)) + (64 * (i / 2)))
+            xvalues.push(18 + 72 * (i % 2))
+            yvalues.push(2 + 16 * (i % 2) + 64 * (i / 2))
         end
         for j in 0...Settings::MAX_PARTY_SIZE
             @pokemonsprites[j] = nil if @pokemonsprites[j] && @pokemonsprites[j].disposed?
-            @pokemonsprites[j].multiselected = @multiSelectionProc && @multiSelectionProc.call(-1, j) if @pokemonsprites[j]
+            @pokemonsprites[j].multiselected = @multiSelectionProc && @multiSelectionProc.call(-1,j) if @pokemonsprites[j]
         end
         @pokemonsprites.compact!
         for j in 0...Settings::MAX_PARTY_SIZE
             sprite = @pokemonsprites[j]
             next unless sprite && !sprite.disposed?
             sprite.viewport = viewport
-            sprite.x = x + xvalues[j]
-            sprite.y = y + yvalues[j]
+            sprite.x = self.x + xvalues[j]
+            sprite.y = self.y + yvalues[j]
             sprite.z = 0
         end
     end

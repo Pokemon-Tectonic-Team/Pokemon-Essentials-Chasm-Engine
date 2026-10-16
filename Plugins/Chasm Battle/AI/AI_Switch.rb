@@ -98,9 +98,9 @@ class PokeBattle_AI
         PBDebug.log("[STAY-IN RATING] #{battler.pbThis} defensive matchup rating: #{defensiveMatchupRating.to_change}")
 
         # Value of its own moves
-        bestMoveScore, = switchRatingBestMoveScore(battler, killInfoArray: killInfoArray)
+        bestMoveScore, killInfo = switchRatingBestMoveScore(battler, killInfoArray: killInfoArray)
         offensiveMatchupRating = (0.5 * bestMoveScore).floor
-
+        
         urgency = 0
         if offensiveMatchupRating < 0
             urgency = battler.getUrgency
@@ -109,7 +109,7 @@ class PokeBattle_AI
         else
             PBDebug.log("[STAY-IN RATING] No Urgency is needed")
         end
-
+        
         stayInRating += offensiveMatchupRating
         PBDebug.log("[STAY-IN RATING] #{battler.pbThis} offensive matchup rating: #{offensiveMatchupRating.to_change}")
 
@@ -120,7 +120,7 @@ class PokeBattle_AI
 
         # Determine who to swap into if at all
         PBDebug.log("[AI SWITCH] #{battler.pbThis} (#{battler.index}) is trying to find a switch. Staying in is rated: #{stayInRating}.")
-        list = pbGetPartyWithSwapRatings(idxBattler, urgency)
+        list = pbGetPartyWithSwapRatings(idxBattler,urgency)
         listSwapOutCandidates(battler, list)
 
         # Only considers swapping into pokemon whose rating would be at least a +30 upgrade
@@ -138,7 +138,7 @@ class PokeBattle_AI
             end
         end
         return -1
-    rescue StandardError
+    rescue StandardError => exception
         pbPrintException($!) if $DEBUG
         echoln("FAILURE ENCOUNTERED IN pbDetermineSwitch FOR BATTLER INDEX #{idxBattler}")
         return -1
@@ -148,7 +148,7 @@ class PokeBattle_AI
         stayInRating = 0
 
         # Less likely to switch when coming in later would cause it to die to hazards
-        entryDamage, = @battle.applyHazards(battler, true)
+        entryDamage, hazardScore = @battle.applyHazards(battler, true)
         if entryDamage >= battler.hp
             stayInRating += 30
             PBDebug.log("[STAY-IN RATING] #{battler.pbThis} (#{battler.index}) likely to die to hazards if switches back in later (+30)")
@@ -167,19 +167,19 @@ class PokeBattle_AI
 
         # More likely to switch when poison has worsened
         if battler.poisoned?
-            poisonBias = -10 * (2**battler.getPoisonDoublings)
+            poisonBias = -10 * (2 ** battler.getPoisonDoublings)
             stayInRating += poisonBias
             PBDebug.log("[STAY-IN RATING] #{battler.pbThis} (#{battler.index}) is poisoned at count (#{battler.getStatusCount(:POISON)}) (#{poisonBias.to_change})")
         end
 
         # Switch influencing effect of certain battler effects
-        battler.eachEffect(true) do |_effect, value, effectData|
+        battler.eachEffect(true) do |effect, value, effectData|
             next unless effectData.stay_in_rating_proc
             oldStayInRating = stayInRating
             stayInRating = effectData.stay_in_rating_proc.call(@battle, battler, value, stayInRating)
             ratingChange = stayInRating - oldStayInRating
             if ratingChange != 0
-                PBDebug.log("[STAY-IN RATING] #{battler.pbThis} (#{battler.index}) has effect #{effectData.real_name} (#{ratingChange})")
+                PBDebug.log("[STAY-IN RATING] #{battler.pbThis} (#{battler.index}) has effect #{effectData.real_name} (#{ratingChange})")\
             end
         end
 
@@ -193,7 +193,7 @@ class PokeBattle_AI
 
             pursuitMove = b.canChoosePursuit?(battler)
             if pursuitMove
-                pursuitScore, = pbGetMoveScore(pursuitMove, b, battler)
+                pursuitScore, pursuitKillInfo = pbGetMoveScore(pursuitMove, b, battler)
                 pursuitScore = (pursuitScore / PokeBattle_AI::EFFECT_SCORE_TO_SWITCH_SCORE_CONVERSION_RATIO).ceil
                 stayInRating += pursuitScore
                 PBDebug.log("[STAY-IN RATING] #{battler.pbThis} (#{battler.index}) has an opponent that can target it with pursuit (#{pursuitScore.to_change})")
@@ -205,7 +205,7 @@ class PokeBattle_AI
 
         # Less likely to switch if FEAR
         stayInRating += 30 if battler.ownersPolicies.include?(:FEAR) && battler.level <= 10
-
+        
         # More likely to switch if weather setter in policy
         weatherSwitchInfo = [
             [:SUN_TEAM, @battle.sunny?, :DROUGHT, :HEATROCK],
@@ -223,8 +223,8 @@ class PokeBattle_AI
             if battler.ownersPolicies.include?(weatherPolicy)
                 if weatherActive
                     if battler.hasActiveAbilityAI?(weatherAbility) || battler.hasItem?(weatherItem)
-                        stayInRating -= 13
-                        PBDebug.log("[STAY-IN RATING] #{battler.pbThis} (#{battler.index}) wants to switch to preserve its weather (-13)")
+                    stayInRating -= 13 
+                    PBDebug.log("[STAY-IN RATING] #{battler.pbThis} (#{battler.index}) wants to switch to preserve its weather (-13)")
                     end
                 elsif battler.hasActiveAbilityAI?(weatherAbility)
                     stayInRating -= 20
@@ -232,7 +232,7 @@ class PokeBattle_AI
                 end
             end
         end
-
+        
         # Less likely to switch if has stat boosts
         unless battler.hasActiveAbilityAI?(:DOWNLOAD) || battler.hasActiveAbilityAI?(:SELECTIVESCUTES) # This should be a more complicated check but prob not worth time
             stayInSteps = statStepsValueScore(battler) * 0.06
@@ -275,14 +275,14 @@ class PokeBattle_AI
                     PBDebug.log("[STAY-IN RATING] #{battler.pbThis} (#{battler.index}) is bloodied and SLOW (+#{stayInRating.round})")
                     return stayInRating.round
                 end
-            end
+            end    
         end
         return stayInRating
     end
 
     def pbDefaultChooseNewEnemy(idxBattler, safeSwitch = false)
         urgency = 0
-        list = pbGetPartyWithSwapRatings(idxBattler, safeSwitch, urgency)
+        list = pbGetPartyWithSwapRatings(idxBattler, safeSwitch,urgency)
         list.delete_if { |val| !@battle.pbCanSwitchLax?(idxBattler, val[0]) }
         if list.length != 0
             listSwapOutCandidates(@battle.battlers[idxBattler], list)
@@ -302,7 +302,7 @@ class PokeBattle_AI
     end
 
     # Rates every other Pokemon in the trainer's party and returns a sorted list of the indices and swap in rating
-    def pbGetPartyWithSwapRatings(idxBattler, safeSwitch = false, urgency)
+    def pbGetPartyWithSwapRatings(idxBattler, safeSwitch = false,urgency)
         list = []
         battlerSlot = @battle.battlers[idxBattler]
 
@@ -311,14 +311,14 @@ class PokeBattle_AI
             next unless pkmn.able?(false, @battle.getAbleParametersByBattlerIndex(partyIndex, idxBattler))
             next if battlerSlot.pokemonIndex == partyIndex
             next unless @battle.pbCanSwitch?(idxBattler, partyIndex)
-            switchScore = getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, safeSwitch, urgency)
+            switchScore = getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, safeSwitch,urgency)
             list.push([partyIndex, switchScore])
         end
         list.sort_by! { |entry| entry[1].nil? ? 99_999 : -entry[1] }
         return list
     end
 
-    def getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, safeSwitch = false, urgency)
+    def getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, safeSwitch = false,urgency)
         switchScore = 0
 
         # Create a battler to simulate what would happen if the Pokemon was in battle right now
@@ -382,12 +382,14 @@ class PokeBattle_AI
         end
 
         # Focus sash Endeavor quick Attack Rattata
-        if battlerSlot.ownersPolicies.include?(:FEAR) && safeSwitch && fakeBattler.level <= 10
-            canEndeavor = false
-            fakeBattler.eachOpposing do |b|
-                next if b.pbHasType?(:GHOST)
-                canEndeavor = true
+        if battlerSlot.ownersPolicies.include?(:FEAR)
+            if safeSwitch && fakeBattler.level <= 10
+                canEndeavor = false
+                fakeBattler.eachOpposing do |b|
+                    next if b.pbHasType?(:GHOST)
+                    canEndeavor = true
                 switchScore += 30 if canEndeavor
+                end
             end
         end
 
@@ -475,8 +477,8 @@ class PokeBattle_AI
             matchupScore += statStepsValueScore(opposingBattler) * 0.15
         end
 
-        # Value of stalling > DISABLED <
-        # matchupScore += passingTurnBattlerEffectScore(battler, @battle)
+        # Value of stalling > DISABLED < 
+        #matchupScore += passingTurnBattlerEffectScore(battler, @battle)
 
         # Fear of unknown
         matchupScore -= opposingBattler.unknownMovesCountAI * 2

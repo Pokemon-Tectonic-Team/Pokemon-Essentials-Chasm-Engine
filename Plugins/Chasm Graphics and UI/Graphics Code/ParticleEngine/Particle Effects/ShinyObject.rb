@@ -1,23 +1,23 @@
 class Particle_Engine::ShinyObject < ParticleEffect_Event
-    def initialize(event, viewport)
+    def initialize(event,viewport)
         super
         setParameters([
-                          0, # Random hue
-                          0, # fade
-                          12, # max particles
-                          80, # hue
-                          1, # slowdown
-                          -Graphics.height, # ytop
-                          Graphics.height, # ybottom
-                          0, # xleft
-                          Graphics.width, # xright
-                          0, # xgravity
-                          0, # ygravity
-                          0, # xoffset
-                          -12, # yoffset
-                          3, # opacity var
-                          5 # original opacity
-                      ])
+            0, # Random hue
+            0, # fade
+            12, # max particles
+            80, # hue
+            1, # slowdown
+            -Graphics.height, # ytop
+            Graphics.height, # ybottom
+            0, # xleft
+            Graphics.width, # xright
+            0, # xgravity
+            0, # ygravity
+            0, # xoffset
+            -12, # yoffset
+            3, # opacity var
+            5 # original opacity
+            ])
         @opacityMult = 0.9
         @huerange = 0
         @cullOffscreen = false
@@ -26,7 +26,7 @@ class Particle_Engine::ShinyObject < ParticleEffect_Event
         @radius = 12
         @rad2 = @radius * @radius
 
-        initParticles("particle", 100)
+        initParticles("particle",100)
     end
 
     def resetParticle(i)
@@ -42,7 +42,7 @@ class Particle_Engine::ShinyObject < ParticleEffect_Event
         @particles[i].zoom_x = 0.25
         @particles[i].zoom_y = 0.25
 
-        hue = @hue + rand(@huerange) - (@huerange / 2)
+        hue = @hue + rand(@huerange) - @huerange / 2
         hue -= 360 if @hue >= 360
         hue += 360 if @hue <= 0
 

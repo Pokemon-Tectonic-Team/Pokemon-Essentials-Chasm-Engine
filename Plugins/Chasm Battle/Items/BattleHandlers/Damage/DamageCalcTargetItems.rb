@@ -107,28 +107,28 @@ BattleHandlers::DamageCalcTargetItem.add(:YACHEBERRY,
 )
 
 BattleHandlers::DamageCalcTargetItem.add(:EVIOLITE,
-  proc { |item, _user, target, _move, mults, _baseDmg, _type, aiCheck|
+  proc { |item, user, target, _move, mults, _baseDmg, _type, aiCheck|
       # NOTE: Eviolite cares about whether the Pokémon itself can evolve, which
       #       means it also cares about the Pokémon's form. Some forms cannot
       #       evolve even if the species generally can, and such forms are not
       #       affected by Eviolite.
       unless target.notFullyEvolved?
-          mults[:defense_multiplier] *= 1.5
-          target.aiLearnsItem(item) unless aiCheck
+        mults[:defense_multiplier] *= 1.5
+        target.aiLearnsItem(item) unless aiCheck
       end
   }
 )
 
 BattleHandlers::DamageCalcTargetItem.add(:COVERTCLOAK,
-  proc { |item, _user, target, _move, mults, _baseDmg, _type, aiCheck|
-      mults[:final_damage_multiplier] *= 0.9
-      target.aiLearnsItem(item) unless aiCheck
+  proc { |item, user, target, _move, mults, _baseDmg, _type, aiCheck|
+    mults[:final_damage_multiplier] *= 0.9
+    target.aiLearnsItem(item) unless aiCheck
   }
 )
 
 BattleHandlers::DamageCalcTargetItem.add(:RUSTEDSHIELD,
-  proc { |item, _user, target, _move, mults, _baseDmg, _type, aiCheck|
-      mults[:final_damage_multiplier] *= 0.9
-      target.aiLearnsItem(item) unless aiCheck
+  proc { |item, user, target, _move, mults, _baseDmg, _type, aiCheck|
+    mults[:final_damage_multiplier] *= 0.9
+    target.aiLearnsItem(item) unless aiCheck
   }
 )

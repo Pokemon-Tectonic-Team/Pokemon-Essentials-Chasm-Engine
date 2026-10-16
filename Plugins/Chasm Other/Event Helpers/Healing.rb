@@ -23,14 +23,14 @@ def pokeCenterHealing(pokeBallsEventID = nil, mode: :NURSE, respawn: false, push
             pbMoveRoute(get_self,
             [
                 PBMoveRoute::TurnLeft,
-                PBMoveRoute::Wait, 2,
+                PBMoveRoute::Wait,2,
             ])
             command_210 # Wait for move's completion
         end
-        setGlobalVariable(6, 0)
+        setGlobalVariable(6,0)
         count = $Trainer.pokemon_count
         for i in 1..count
-            pbSet(6, i)
+            pbSet(6,i)
             pbSEPlay("Battle ball shake")
             pbWait(10)
         end
@@ -46,15 +46,15 @@ def pokeCenterHealing(pokeBallsEventID = nil, mode: :NURSE, respawn: false, push
         pbWait(20)
     end
     if pokeBallsEvent
-        setGlobalVariable(6, 0)
+        setGlobalVariable(6,0)
         pbMoveRoute(pokeBallsEvent,
             [
                 PBMoveRoute::StepAnimeOff,
             ])
         unless mode == :MACHINE
-            pbMoveRoute(get_self,
+            pbMoveRoute(get_self, 
             [
-                PBMoveRoute::Wait, 15,
+                PBMoveRoute::Wait,15,
                 PBMoveRoute::TurnDown,
             ])
             command_210 # Wait for move's completion
@@ -92,13 +92,13 @@ def pokeCenterHealing(pokeBallsEventID = nil, mode: :NURSE, respawn: false, push
         end
         pbMoveRoute(get_player,
         [
-            PBMoveRoute::ChangeSpeed, 5,
+            PBMoveRoute::ChangeSpeed,5,
             moveRouteDirection,
         ])
     end
 
     # Starting Over to false
-    setGlobalSwitch(Settings::STARTING_OVER_SWITCH, false) if respawn
+    setGlobalSwitch(Settings::STARTING_OVER_SWITCH,false) if respawn
 
     unstowFollowerIfAllowed
 end

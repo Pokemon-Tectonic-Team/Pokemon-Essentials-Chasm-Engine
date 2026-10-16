@@ -1,6 +1,6 @@
-PRESENT_TONE = Tone.new(0, 0, 0, 0)
-PAST_TONE = Tone.new(40, 30, 10, 130)
-FUTURE_TONE = Tone.new(-9, 18, 18, 9)
+PRESENT_TONE = Tone.new(0,0,0,0)
+PAST_TONE = Tone.new(40,30,10,130)
+FUTURE_TONE = Tone.new(-9,18,18,9)
 TIME_TRAVEL_SWITCH = 36
 
 def getTimeTone
@@ -31,9 +31,9 @@ end
 
 def fakeTimeTravelToEvent(eventID, mapID = -1, toneID = -1)
     timeTravelTransition {
-        transferPlayerToEvent(eventID, $game_player.direction, mapID)
+        transferPlayerToEvent(eventID,$game_player.direction,mapID)
         if toneID >= 0
-            tone = [PAST_TONE, PRESENT_TONE, FUTURE_TONE][toneID]
+            tone = [PAST_TONE,PRESENT_TONE,FUTURE_TONE][toneID]
             $game_screen.start_tone_change(tone, 20)
         else
             applyTimeTone(20)
@@ -50,19 +50,19 @@ def timeTravelToEvent(eventID)
     }
 end
 
-def applyTimeTone(_duration = 0)
+def applyTimeTone(duration = 0)
     $game_screen.start_tone_change(getTimeTone, 0)
 end
 
 def timeTravelTransition
-    pbSEPlay("Anim/Sand", 70, 80)
-    pbSEPlay("Anim/Sand", 40, 65)
+    pbSEPlay("Anim/Sand",70,80)
+    pbSEPlay("Anim/Sand",40,65)
     pbWait(10)
-    pbSEPlay("Anim/PRSFX- Roar of Time2", 20, 200)
-    $game_screen.start_tone_change(Tone.new(230, 230, 230, 255), 20)
-    pbWait(20)
+    pbSEPlay("Anim/PRSFX- Roar of Time2",20,200)
+    $game_screen.start_tone_change(Tone.new(230,230,230,255), 20)
+	pbWait(20)
     yield if block_given?
-    pbWait(10)
+	pbWait(10)
 end
 
 def bouldersTimeTravel(fromPast = false)
@@ -88,7 +88,7 @@ def bouldersTimeTravel(fromPast = false)
             if boulder.name.downcase[/timelinked/]
                 # If the boulder is moving from the past to the present, sever its time linking
                 # Otherwise, re-enable its time-linking
-                pbSetSelfSwitch(boulder.id, "D", fromPast)
+                pbSetSelfSwitch(boulder.id,"D",fromPast)
             end
 
             otherEventID = parseTimeTeleporter(event)
@@ -112,7 +112,7 @@ def parseTimeTeleporter(event)
     return nil
 end
 
-def matchPosition(eventToMove, eventToMatch)
+def matchPosition(eventToMove,eventToMatch)
     travelDistanceX = eventToMatch.x - eventToMatch.original_x
     travelDistanceY = eventToMatch.y - eventToMatch.original_y
 
@@ -128,7 +128,7 @@ def modifyTimeLinkedEvents
     map.events.each_value do |event|
         eventName = event.name.downcase
         next unless eventName.include?("timelinked")
-        next if pbGetSelfSwitch(event.id, "D", mapID) # Timelinking disabled with D switch
+        next if pbGetSelfSwitch(event.id,'D',mapID) # Timelinking disabled with D switch
 
         matchState = $PokemonGlobal.timeModifiedEvents.include?(event.id)
 
@@ -139,20 +139,22 @@ def modifyTimeLinkedEvents
             otherEventID = captureGroup1.to_i
             otherEvent = map.events[otherEventID]
 
-            next if pbGetSelfSwitch(otherEvent.id, "D", mapID) # Timelinking disabled with D switch
+            next if pbGetSelfSwitch(otherEvent.id,'D',mapID) # Timelinking disabled with D switch
 
             if matchState
                 # Reset any holes this boulder was filling
-                if $PokemonGlobal.futureFilledHoles.key?($game_map.map_id) && $PokemonGlobal.futureFilledHoles[$game_map.map_id].key?(otherEventID)
-                    futureHoleID = $PokemonGlobal.futureFilledHoles[$game_map.map_id][otherEventID]
-                    pbSetSelfSwitch(futureHoleID, "A", false, mapID)
-                    echoln("Resetting future hole event #{otherEventID} map ID #{mapID}")
+                if $PokemonGlobal.futureFilledHoles.key?($game_map.map_id)
+                    if $PokemonGlobal.futureFilledHoles[$game_map.map_id].key?(otherEventID)
+                        futureHoleID = $PokemonGlobal.futureFilledHoles[$game_map.map_id][otherEventID]
+                        pbSetSelfSwitch(futureHoleID,'A',false,mapID)
+                        echoln("Resetting future hole event #{otherEventID} map ID #{mapID}")
+                    end
                 end
 
                 # Match all self switches
-                ["A", "B", "C"].each do |switchName|
-                    switchValue = pbGetSelfSwitch(event.id, switchName, mapID)
-                    pbSetSelfSwitch(otherEventID, switchName, switchValue, mapID)
+                ['A','B','C'].each do |switchName|
+                    switchValue = pbGetSelfSwitch(event.id,switchName,mapID)
+                    pbSetSelfSwitch(otherEventID,switchName,switchValue,mapID)
                 end
 
                 matchPosition(otherEvent, event)
@@ -160,7 +162,7 @@ def modifyTimeLinkedEvents
 
             # Erode events
             if eroding && otherEvent.name[/erodable/]
-                pbSetSelfSwitch(otherEventID, "B", true, mapID)
+                pbSetSelfSwitch(otherEventID,'B',true,mapID)
                 echoln("Eroding event #{otherEvent.name} (#{otherEventID}) map ID #{mapID}")
             end
         rescue Error
@@ -202,16 +204,16 @@ def resetCanyon(mapID = -1)
         eventName = event.name.downcase
         # If this is an eroding map, all erodables will be eroded in the starting present
         if eroding && eventName.include?("erodable")
-            pbSetSelfSwitch(event.id, "B", true, mapID)
+            pbSetSelfSwitch(event.id,"B",true,mapID)
         end
         # All push boulders are moved back to their original positions, and are no longer down any holes
         if eventName.include?("pushboulder")
             event.moveto(event.original_x, event.original_y)
-            pbSetSelfSwitch(event.id, "A", false, mapID)
+            pbSetSelfSwitch(event.id,"A",false,mapID)
         end
         # No boulder holes are filled
         if eventName.include?("boulderhole")
-            pbSetSelfSwitch(event.id, "A", false, mapID)
+            pbSetSelfSwitch(event.id,"A",false,mapID)
         end
     end
 
@@ -231,7 +233,7 @@ def trackObjectModifiedInPast(event)
     echoln("Tracking object modified in the past (time travel): #{event.name} (#{event.id})")
 end
 
-def trackBoulderHoleFilledInFuture(boulderEvent, holeEvent)
+def trackBoulderHoleFilledInFuture(boulderEvent,holeEvent)
     $PokemonGlobal.futureFilledHoles[$game_map.map_id] = {} unless $PokemonGlobal.futureFilledHoles.key?($game_map.map_id)
     $PokemonGlobal.futureFilledHoles[$game_map.map_id][boulderEvent.id] = holeEvent.id
 

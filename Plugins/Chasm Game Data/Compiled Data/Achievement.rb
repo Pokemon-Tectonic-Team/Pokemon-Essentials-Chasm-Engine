@@ -16,10 +16,10 @@ module Compiler
         achievementTextFiles.concat(achievementExtensions)
         achievementTextFiles.each do |path|
             baseFile = baseFiles.include?(path)
-
-            achievement_hash = nil
+            
+            achievement_hash         = nil
             pbCompilerEachPreppedLine(path) { |line, line_no|
-                if line[/^\s*\[\s*(.+)\s*\]\s*$/] # New section [achievement_id]
+                if line[/^\s*\[\s*(.+)\s*\]\s*$/]   # New section [achievement_id]
                     # Add previous achievement's data to records
                     GameData::Achievement.register(achievement_hash) if achievement_hash
                     # Parse achievement ID
@@ -32,7 +32,7 @@ module Compiler
                         :id                     => achievement_id,
                         :defined_in_extension   => !baseFile,
                     }
-                elsif line[/^\s*(\w+)\s*=\s*(.*)\s*$/] # XXX=YYY lines
+                elsif line[/^\s*(\w+)\s*=\s*(.*)\s*$/]   # XXX=YYY lines
                     if !achievement_hash
                         raise _INTL("Expected a section at the beginning of the file.\r\n{1}", FileLineData.linereport)
                     end
@@ -76,7 +76,7 @@ module Compiler
     end
 
     def write_achievement(f, achievement)
-        f.write("#-------------------------------\r\n")
+        f.write("\#-------------------------------\r\n")
         f.write("[#{achievement.id}]\r\n")
         f.write("Name = #{achievement.real_name}\r\n")
         f.write("Description = #{achievement.real_description}\r\n")
@@ -109,7 +109,7 @@ module GameData
             "Hidden"                => [:hidden,                    "B"],
             "DisabledInRandomizer"  => [:disabled_in_randomizer,    "B"],
         }
-
+        
         def initialize(hash)
             @id                     = hash[:id]
             @id_number              = hash[:id_number]    || -1

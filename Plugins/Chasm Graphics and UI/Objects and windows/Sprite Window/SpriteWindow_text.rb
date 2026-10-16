@@ -76,7 +76,7 @@ class Window_UnformattedTextPokemon < SpriteWindow_Base
     end
 
     def setSkin(skin)
-        super
+        super(skin)
         privRefresh(true)
         oldbaser = @baseColor.red
         oldbaseg = @baseColor.green
@@ -102,7 +102,7 @@ class Window_UnformattedTextPokemon < SpriteWindow_Base
            height - borderY)
         contents.clear
         drawTextEx(contents, 0, 4, contents.width, 0,
-           @text.gsub("\r", ""), @baseColor, @shadowColor)
+           @text.gsub(/\r/, ""), @baseColor, @shadowColor)
     end
 end
 
@@ -619,7 +619,7 @@ class Window_InputNumberPokemon < SpriteWindow_Base
         @sign = false
         @negative = false
         super(0, 0, 32, 32)
-        self.width = (digits_max * 24) + 8 + borderX
+        self.width = digits_max * 24 + 8 + borderX
         self.height = 32 + borderY
         colors = getDefaultTextColors(windowskin)
         @baseColor = colors[0]
@@ -642,16 +642,16 @@ class Window_InputNumberPokemon < SpriteWindow_Base
         value = 0 unless value.is_a?(Numeric)
         if @sign
             @negative = (value < 0)
-            @number = [value.abs, (10**@digits_max) - 1].min
+            @number = [value.abs, 10**@digits_max - 1].min
         else
-            @number = [[value, 0].max, (10**@digits_max) - 1].min
+            @number = [[value, 0].max, 10**@digits_max - 1].min
         end
         refresh
     end
 
     def sign=(value)
         @sign = value
-        self.width = (@digits_max * 24) + 8 + borderX + (@sign ? 24 : 0)
+        self.width = @digits_max * 24 + 8 + borderX + (@sign ? 24 : 0)
         @index = (@digits_max - 1) + (@sign ? 1 : 0)
         refresh
     end
@@ -684,6 +684,7 @@ class Window_InputNumberPokemon < SpriteWindow_Base
                     newNumber = @number
                     n = newNumber / place % 10
                     newNumber -= n * place
+                    higherPlaceChange = 0
                     if Input.repeat?(Input::UP)
                         n = (n + 1) % 10
                         # Went above 9
@@ -744,9 +745,9 @@ class Window_InputNumberPokemon < SpriteWindow_Base
 
     def textHelper(x, y, text, i)
         textwidth = contents.text_size(text).width
-        pbDrawShadowText(contents, x + (12 - (textwidth / 2)), y, textwidth + 4, 32, text, @baseColor, @shadowColor)
+        pbDrawShadowText(contents, x + (12 - textwidth / 2), y, textwidth + 4, 32, text, @baseColor, @shadowColor)
         if @index == i && @active && @frame / 15 == 0
-            contents.fill_rect(x + (12 - (textwidth / 2)), y + 30, textwidth, 2, @baseColor)
+            contents.fill_rect(x + (12 - textwidth / 2), y + 30, textwidth, 2, @baseColor)
         end
     end
 end
@@ -758,7 +759,7 @@ class SpriteWindow_Selectable < SpriteWindow_Base
     attr_reader :index
 
     def initialize(x, y, width, height)
-        super
+        super(x, y, width, height)
         @item_max = 1
         @column_max = 1
         @virtualOy = 0
@@ -851,9 +852,9 @@ class SpriteWindow_Selectable < SpriteWindow_Base
            item > top_item + page_item_max
             return Rect.new(0, 0, 0, 0)
         else
-            cursor_width = (width - borderX - ((@column_max - 1) * @column_spacing)) / @column_max
+            cursor_width = (width - borderX - (@column_max - 1) * @column_spacing) / @column_max
             x = item % @column_max * (cursor_width + @column_spacing)
-            y = (item / @column_max * @row_height) - @virtualOy
+            y = item / @column_max * @row_height - @virtualOy
             return Rect.new(x, y, cursor_width, @row_height)
         end
     end
@@ -973,14 +974,14 @@ class SpriteWindow_Selectable < SpriteWindow_Base
         # as possible.
         new_top_row = row - ((page_row_max - 1) / 2).floor
         new_top_row = [[new_top_row, row_max - page_row_max].min, 0].max
-        if top_row != new_top_row
+        if self.top_row != new_top_row
             self.top_row = new_top_row
             #      dorefresh = true
         end
         # End of code
         cursor_width = (width - borderX) / @column_max
         x = index % @column_max * (cursor_width + @column_spacing)
-        y = (index / @column_max * @row_height) - @virtualOy
+        y = index / @column_max * @row_height - @virtualOy
         cursor_rect.set(x, y, cursor_width, @row_height)
         refresh if dorefresh || force
     end
@@ -1024,8 +1025,8 @@ module UpDownArrowMixin
     def adjustForZoom(sprite)
         sprite.zoom_x = zoom_x
         sprite.zoom_y = zoom_y
-        sprite.x = (sprite.x * zoom_x) + (offset_x / zoom_x)
-        sprite.y = (sprite.y * zoom_y) + (offset_y / zoom_y)
+        sprite.x = sprite.x * zoom_x + offset_x / zoom_x
+        sprite.y = sprite.y * zoom_y + offset_y / zoom_y
     end
 
     def update
@@ -1034,10 +1035,10 @@ module UpDownArrowMixin
         @downarrow.x = x + (width / 2) - (@downarrow.framewidth / 2)
         @uparrow.y   = y
         @downarrow.y = y + height - @downarrow.frameheight
-        @uparrow.visible = visible && active && top_item != 0 &&
-                           @item_max > page_item_max
+        @uparrow.visible = visible && active && (top_item != 0 &&
+                           @item_max > page_item_max)
         @downarrow.visible = visible && active &&
-                             top_item + page_item_max < @item_max && @item_max > page_item_max
+                             (top_item + page_item_max < @item_max && @item_max > page_item_max)
         @uparrow.z   = z + 1
         @downarrow.z = z + 1
         adjustForZoom(@uparrow)
@@ -1056,7 +1057,7 @@ class SpriteWindow_SelectableEx < SpriteWindow_Selectable
     include UpDownArrowMixin
 
     def initialize(*arg)
-        super
+        super(*arg)
         initUpDownArrow
     end
 end
@@ -1130,13 +1131,13 @@ class Window_DrawableCommand < SpriteWindow_SelectableEx
         end
         # Store suggested width and height of window
         dims[0] = [borderX + 1, (width * columns) + borderX +
-            ((columns - 1) * columnSpacing),].max
+            (columns - 1) * columnSpacing,].max
         dims[1] = [borderY + 1, windowheight].max
         dims[1] = [dims[1], Graphics.height].min
     end
 
     def setSkin(skin)
-        super
+        super(skin)
         privRefresh(true)
         colors = getDefaultTextColors(windowskin)
         @baseColor   = colors[0]
@@ -1381,7 +1382,7 @@ class Window_AdvancedCommandPokemon < Window_DrawableCommand
     def drawItem(index, _count, rect)
         pbSetSystemFont(contents)
         rect = drawCursor(index, rect)
-        if toUnformattedText(@commands[index]).gsub("\n", "") == @commands[index]
+        if toUnformattedText(@commands[index]).gsub(/\n/, "") == @commands[index]
             # Use faster alternative for unformatted text without line breaks
             pbDrawShadowText(contents, rect.x, rect.y, rect.width, rect.height,
                @commands[index], baseColor, shadowColor)

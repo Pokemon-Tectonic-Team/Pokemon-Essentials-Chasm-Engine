@@ -50,7 +50,7 @@ class PokeBattle_Move
         return nil
     end
 
-    def resolutionChoice(_user, _replayed_choice); return nil; end
+    def resolutionChoice(user, replayed_choice); return nil; end
 
     #=============================================================================
     # Methods for displaying stuff when the move is used
@@ -60,7 +60,7 @@ class PokeBattle_Move
             unless @battle.autoTesting
                 @battle.pbDisplayWithFormatting(_INTL("\\ss{1} used <c2=06644bd2>{2}</c2>!", user.pbThis, @name))
                 if user.pbOwnedByPlayer?
-                    unlockAchievement(:USE_PRIMEVAL_MOVE) && !user.battle.is_replayed
+                    unlockAchievement(:USE_PRIMEVAL_MOVE) && !(user.battle.is_replayed)
                 end
             end
         else
@@ -139,8 +139,8 @@ class PokeBattle_Move
         return false unless damagingMove?
         return false if chargingTurnMove?
         return false unless targets.length == 1
-        return true if user.shouldAbilityApply?(:PARENTALBOND, checkingForAI)
-        return true if user.shouldAbilityApply?(:STRIKETWICE, checkingForAI) && @battle.rainy?
+        return true if user.shouldAbilityApply?(:PARENTALBOND,checkingForAI)
+        return true if user.shouldAbilityApply?(:STRIKETWICE,checkingForAI) && @battle.rainy?
         return false
     end
 
@@ -149,7 +149,7 @@ class PokeBattle_Move
         return false if chargingTurnMove?
         return false unless targets.length == 1
         return false unless lightMove?
-        return true if user.shouldAbilityApply?(:DIFFRACTION, checkingForAI) && user.protectedByScreen?
+        return true if user.shouldAbilityApply?(:DIFFRACTION,checkingForAI) && user.protectedByScreen?
         return false
     end
 
@@ -274,14 +274,14 @@ class PokeBattle_Move
     end
 
     def pbMoveFailedTargetAlreadyMoved?(target, showMessage = true)
-        if @battle.choices[target.index][0] != :UseMove &&
-           @battle.choices[target.index][0] != :Shift
+        if (@battle.choices[target.index][0] != :UseMove &&
+           @battle.choices[target.index][0] != :Shift)
             @battle.pbDisplay(_INTL("But it failed, since {1} didn't choose to use a move!", target.pbThis(true))) if showMessage
             return true
         end
         if target.movedThisRound?
-            @battle.pbDisplay(_INTL("But it failed, since {1} already move this turn!", target.pbThis(true))) if showMessage
-            return true
+             @battle.pbDisplay(_INTL("But it failed, since {1} already move this turn!", target.pbThis(true))) if showMessage
+             return true
         end
         return false
     end
@@ -326,7 +326,7 @@ class PokeBattle_Move
         if target.hasActiveAbility?(:THIEFSDIVERSION) && target.hasAnyItem? && target.itemActive? && target.hasNonInitialItem? && !@battle.moldBreaker
             target.damageState.thiefsDiversion = true
             return
-        end
+        end 
     end
 
     def disguiseIntact?(target, aiCheck = false)
@@ -335,7 +335,7 @@ class PokeBattle_Move
         return aiCheck ? target.hasActiveAbilityAI?(:DISGUISE) : target.hasActiveAbility?(:DISGUISE)
     end
 
-    def damageNegated?(_user, target, aiCheck = false)
+    def damageNegated?(user, target, aiCheck = false)
         return true if target.effectActive?(:LastGasp)
         return false if aiCheck
         return true if target.damageState.disguise
@@ -439,7 +439,7 @@ class PokeBattle_Move
             delayedDamage = damage
             if delayedDamage > 0
                 target.effects[:DelayedDamage] = [] unless target.effectActive?(:DelayedDamage)
-                target.effects[:DelayedDamage].push([1, delayedDamage])
+                target.effects[:DelayedDamage].push([1,delayedDamage])
                 target.damageState.displayedDamage = 0
                 target.damageState.hpLost = 0
                 return
@@ -526,7 +526,7 @@ class PokeBattle_Move
         end
 
         if Effectiveness.super_effective?(target.damageState.typeMod) && target.pbOwnedByPlayer? &&
-           !$PokemonGlobal.typeChartChangesTutorialized
+                !$PokemonGlobal.typeChartChangesTutorialized
             newWeakness = false
             newWeakness = true if @calcType == :POISON && target.pbHasType?(:WATER)
             newWeakness = true if @calcType == :BUG && target.pbHasType?(:FAIRY)
@@ -592,7 +592,7 @@ class PokeBattle_Move
             target.consumeItem(:CASSBERRY) if target.hasItem?(:CASSBERRY)
         elsif target.damageState.archVillain
             user = target.damageState.archVillain
-            @battle.pbShowAbilitySplash(user, :ARCHVILLAIN)
+            @battle.pbShowAbilitySplash(user,:ARCHVILLAIN)
             @battle.pbDisplay(_INTL("{1} lets out an arrogant laugh!", user.pbThis))
             @battle.pbHideAbilitySplash(user)
         elsif target.damageState.thiefsDiversion
@@ -602,7 +602,7 @@ class PokeBattle_Move
             @battle.pbHideAbilitySplash(target)
         elsif target.effectActive?(:LastGasp)
             @battle.pbDisplay(_INTL("{1} is invulnerable to all damage!", target.pbThis))
-        end
+        end        
     end
 
     # Used by Counter/Mirror Coat/Metal Burst/Revenge/Focus Punch/Bide/Assurance.

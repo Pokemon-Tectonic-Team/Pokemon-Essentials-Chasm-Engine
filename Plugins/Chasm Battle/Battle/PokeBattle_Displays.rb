@@ -37,7 +37,7 @@ class PokeBattle_Battle
     end
 
     def bossNarrationDuration
-        return 20 - ($Options.textspeed * 2)
+        return 20 - $Options.textspeed * 2
     end
 
     def pbDisplayBossNarration(msg)
@@ -47,7 +47,7 @@ class PokeBattle_Battle
         windowSkinName += "_dark" if darkMode?
         msgwindow = pbCreateMessageWindow
         narrationText = "\\wm\\w[#{windowSkinName}]\\ss#{msg}\\wt[#{bossNarrationDuration}]"
-        pbMessageDisplay(msgwindow, narrationText)
+        pbMessageDisplay(msgwindow,narrationText)
         pbDisposeMessageWindow(msgwindow)
     end
 

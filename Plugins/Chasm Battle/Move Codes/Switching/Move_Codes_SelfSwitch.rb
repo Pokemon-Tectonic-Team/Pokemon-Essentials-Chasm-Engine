@@ -19,7 +19,7 @@ class PokeBattle_Move_SwitchOutUserStatusMove < PokeBattle_Move
         switchOutUser(user)
     end
 
-    def getEffectScore(user, _target)
+    def getEffectScore(user, target)
         score = getSwitchOutEffectScore(user)
         score += 20
         return score
@@ -48,7 +48,7 @@ class PokeBattle_Move_SwitchOutUserPassOnEffects < PokeBattle_Move
         switchOutUser(user, switchedBattlers, true, false, true)
     end
 
-    def getEffectScore(user, _target)
+    def getEffectScore(user, target)
         total = 0
         GameData::Stat.each_battle { |s| total += user.steps[s.id] }
         return 0 if total <= 0 || user.firstTurn?
@@ -66,12 +66,12 @@ end
 class PokeBattle_Move_SwitchOutUserDamagingMove < PokeBattle_Move
     def switchOutMove?; return true; end
 
-    def pbEndOfMoveUsageEffect(user, _targets, numHits, switchedBattlers)
+    def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
         return if user.fainted? || numHits == 0
-        switchOutUser(user, switchedBattlers)
+        switchOutUser(user,switchedBattlers)
     end
 
-    def getEffectScore(user, _target)
+    def getEffectScore(user, target)
         return getSwitchOutEffectScore(user)
     end
 end
@@ -95,10 +95,10 @@ class PokeBattle_Move_LowerTargetAtkSpAtk1SwitchOutUser < PokeBattle_TargetMulti
             switcher = b if b.effectActive?(:MagicCoat) || b.effectActive?(:EmpoweredMagicCoat) || b.effectActive?(:MagicBounce)
         end
         return if switcher.fainted? || numHits == 0
-        switchOutUser(switcher, switchedBattlers, switcher.index == user.index)
+        switchOutUser(switcher,switchedBattlers,switcher.index == user.index)
     end
 
-    def getEffectScore(user, _target)
+    def getEffectScore(user, target)
         return getSwitchOutEffectScore(user)
     end
 end
@@ -128,7 +128,7 @@ class PokeBattle_Move_SwitchOutUserDamagingMoveScalesWithLostHP < PokeBattle_Mov
         ratio = user.hp.to_f / user.totalhp.to_f
         return flailBasePowerFormula(ratio)
     end
-
+	
     def getDetailsForMoveDex(detailsList = [])
         detailsList << _INTL("Does more damage the lower the user's HP is. Range 25-200")
         detailsList << _INTL("<u>100% HP:</u> 25 BP")
@@ -139,6 +139,7 @@ class PokeBattle_Move_SwitchOutUserDamagingMoveScalesWithLostHP < PokeBattle_Mov
         detailsList << _INTL("<u>10% HP:</u> 165 BP")
         detailsList << _INTL("<u>7.5% HP:</u> 200 BP")
     end
+	
 end
 
 #===============================================================================
@@ -215,18 +216,18 @@ class PokeBattle_Move_SwitchOutUserIfMissesDamagingMove < PokeBattle_Move
         @switchThisTurn = false
     end
 
-    def pbAllMissed(user, _targets)
-        @battle.pbDisplay(_INTL("{1} charges away!", user.pbThis))
+    def pbAllMissed(user, targets)
+        @battle.pbDisplay(_INTL("{1} charges away!",user.pbThis))
         @switchThisTurn = true
     end
 
-    def pbEndOfMoveUsageEffect(user, _targets, _numHits, switchedBattlers)
+    def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
         return if user.fainted?
         return unless @switchThisTurn
-        switchOutUser(user, switchedBattlers)
+        switchOutUser(user,switchedBattlers)
     end
 
-    def getEffectScore(user, _target)
+    def getEffectScore(user, target)
         return getSwitchOutEffectScore(user) * 0.5
     end
 

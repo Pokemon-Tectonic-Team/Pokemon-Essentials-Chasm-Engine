@@ -62,7 +62,7 @@ class PokeBattle_Move_RedirectAllMovesToUserLowerFoesAtkSpAtk1 < PokeBattle_Move
     def getEffectScore(user, _target)
         score = super
         user.eachOpposing do |b|
-            score += getMultiStatDownEffectScore(ATTACKING_STATS_1, user, b)
+            score += getMultiStatDownEffectScore(ATTACKING_STATS_1,user,b)
         end
         return score
     end

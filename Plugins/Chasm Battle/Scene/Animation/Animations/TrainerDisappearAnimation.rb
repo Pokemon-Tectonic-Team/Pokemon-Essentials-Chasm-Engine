@@ -14,7 +14,7 @@ class TrainerDisappearAnimation < PokeBattle_Animation
             trainer = addSprite(@sprites["trainer_#{@idxTrainer + 1}"], PictureOrigin::Bottom)
             trainer.moveDelta(delay, 8, Graphics.width / 4, 0)
             trainer.setVisible(delay + 8, false)
-            trainer.totalDuration
+            delay = trainer.totalDuration
         end
     end
 end

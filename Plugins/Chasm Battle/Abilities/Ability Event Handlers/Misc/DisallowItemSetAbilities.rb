@@ -1,7 +1,7 @@
 # For multi-item abilities that restrict what items are allowed to be used in multiple
 
 BattleHandlers::DisallowItemSetAbility.add(:ALLTHATGLITTERS,
-    proc { |_ability, pokemon, itemSet, showMessages|
+    proc { |ability, pokemon, itemSet, showMessages|
         allGems = true
         itemSet.each do |item|
             next if GameData::Item.get(item).is_gem?
@@ -17,7 +17,7 @@ BattleHandlers::DisallowItemSetAbility.add(:ALLTHATGLITTERS,
 )
 
 BattleHandlers::DisallowItemSetAbility.add(:BERRYBUNCH,
-    proc { |_ability, pokemon, itemSet, showMessages|
+    proc { |ability, pokemon, itemSet, showMessages|
         allBerries = true
         itemSet.each do |item|
             next if GameData::Item.get(item).is_berry?
@@ -33,7 +33,7 @@ BattleHandlers::DisallowItemSetAbility.add(:BERRYBUNCH,
 )
 
 BattleHandlers::DisallowItemSetAbility.add(:HERBALIST,
-    proc { |_ability, pokemon, itemSet, showMessages|
+    proc { |ability, pokemon, itemSet, showMessages|
         allHerbs = true
         itemSet.each do |item|
             next if GameData::Item.get(item).is_herb?
@@ -49,7 +49,7 @@ BattleHandlers::DisallowItemSetAbility.add(:HERBALIST,
 )
 
 BattleHandlers::DisallowItemSetAbility.add(:FASHIONABLE,
-    proc { |_ability, pokemon, itemSet, showMessages|
+    proc { |ability, pokemon, itemSet, showMessages|
         clothingCount = 0
         itemSet.each do |item|
             next unless GameData::Item.get(item).is_clothing?

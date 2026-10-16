@@ -36,7 +36,7 @@ class PokeBattle_Move_HealUserPositionNextTurn < PokeBattle_Move
         return (user.totalhp / 2.0).round
     end
 
-    def wishTurns(_user)
+    def wishTurns(user)
         return 2
     end
 
@@ -63,7 +63,7 @@ class PokeBattle_Move_HealUserPositionInTwoTurns < PokeBattle_Move_HealUserPosit
         return (user.totalhp * (3.0 / 4.0)).round
     end
 
-    def wishTurns(_user)
+    def wishTurns(user)
         return 3
     end
 end
@@ -254,7 +254,7 @@ class PokeBattle_Move_StartHealUserEachTurnTrapUser < PokeBattle_Move
     end
 
     def getEffectScore(user, _target)
-        return 0 if user.effects[:PerishSong] > 0
+		return 0 if user.effects[:PerishSong] > 0
         score = 50
         score += 30 if user.trapped?
         score += 20 if user.firstTurn?
@@ -278,7 +278,7 @@ class PokeBattle_Move_PrimevalIngrain < PokeBattle_Move_StartHealUserEachTurnTra
     end
 
     def pbEffectGeneral(user)
-        user.applyEffect(:EmpoweredIngrain, 4)
+        user.applyEffect(:EmpoweredIngrain,4)
         transformType(user, :GRASS)
     end
 
@@ -327,7 +327,7 @@ end
 #===============================================================================
 class PokeBattle_Move_HealTargetHalfOfTotalHPAndCureStatus < PokeBattle_Move_HealTargetHalfOfTotalHP
     def pbFailsAgainstTarget?(_user, target, show_message)
-        if !target.canHeal? && !target.pbHasAnyStatus?
+       if !target.canHeal? && !target.pbHasAnyStatus?
             @battle.pbDisplay(_INTL("{1} can't be healed and it has no status conditions!", target.pbThis)) if show_message
             return true
         end
@@ -446,7 +446,7 @@ class PokeBattle_Move_HealTargetDependingOnMoonglow < PokeBattle_Move
         return false
     end
 
-    def healingRatio(_user, _target)
+    def healingRatio(user,target)
         if @battle.moonGlowing?
             return 2.0 / 3.0
         else
@@ -455,11 +455,11 @@ class PokeBattle_Move_HealTargetDependingOnMoonglow < PokeBattle_Move
     end
 
     def pbEffectAgainstTarget(user, target)
-        target.applyFractionalHealing(healingRatio(user, target), user: user)
+        target.applyFractionalHealing(healingRatio(user,target), user: user)
     end
 
     def getEffectScore(user, target)
-        return target.applyFractionalHealing(healingRatio(user, target), user: user, aiCheck: true)
+        return target.applyFractionalHealing(healingRatio(user,target), user: user, aiCheck: true)
     end
 
     def shouldHighlight?(_user, _target)
@@ -760,11 +760,11 @@ class PokeBattle_Move_HealUserBasedOnWeightHalvesWeight < PokeBattle_HealingMove
         end
         detailsList << _INTL("Heals more the heavier the user is.")
         detailsList << _INTL("<u>{1} {2} and more:</u> 100%", values[0], unit)
-        detailsList << _INTL("<u>{1} - {2} {3}:</u> 75%", values[1], values[0] - 1, unit)
-        detailsList << _INTL("<u>{1} - {2} {3}:</u> 50%", values[2], values[1] - 1, unit)
-        detailsList << _INTL("<u>{1} - {2} {3}:</u> 25%", values[3], values[2] - 1, unit)
-        detailsList << _INTL("<u>{1} - {2} {3}:</u> 12.5%", values[4], values[3] - 1, unit)
-        detailsList << _INTL("<u>{1} {2} and less:</u> 6.25%", values[4] - 1, unit)
+        detailsList << _INTL("<u>{1} - {2} {3}:</u> 75%", values[1], values[0]-1, unit)
+        detailsList << _INTL("<u>{1} - {2} {3}:</u> 50%", values[2], values[1]-1, unit)
+        detailsList << _INTL("<u>{1} - {2} {3}:</u> 25%", values[3], values[2]-1, unit)
+        detailsList << _INTL("<u>{1} - {2} {3}:</u> 12.5%", values[4], values[3]-1, unit)
+        detailsList << _INTL("<u>{1} {2} and less:</u> 6.25%", values[4]-1, unit)
     end
 end
 
@@ -773,8 +773,8 @@ end
 #===============================================================================
 class PokeBattle_Move_HealUserHalfOfTotalHPRaiseDefSpDefCriticalHitRate1 < PokeBattle_HalfHealingMove
     def pbMoveFailed?(user, _targets, show_message)
-        if user.effectAtMax?(:RaisedCritChance) && !user.pbCanRaiseStatStep?(:DEFENSE, user, self) &&
-           !user.pbCanRaiseStatStep?(:SPECIAL_DEFENSE, user, self)
+        if user.effectAtMax?(:RaisedCritChance) && !user.pbCanRaiseStatStep?(:DEFENSE, user, self) && 
+                !user.pbCanRaiseStatStep?(:SPECIAL_DEFENSE, user, self)
             return super
         end
         return false
@@ -800,7 +800,7 @@ end
 #===============================================================================
 class PokeBattle_Move_UserMustUseRestNextTurn < PokeBattle_Move
     def pbEffectGeneral(user)
-        user.applyEffect(:ExtremeEffort, 2)
+	    user.applyEffect(:ExtremeEffort, 2)
     end
 
     def getEffectScore(user, _target)
@@ -848,7 +848,7 @@ end
 class PokeBattle_Move_HealUserHalfOfTotalHPExtendScreens1 < PokeBattle_HalfHealingMove
     def pbEffectGeneral(user)
         super
-        user.pbOwnSide.eachEffect(true) do |effect, _value, data|
+        user.pbOwnSide.eachEffect(true) do |effect, value, data|
             next unless data.is_screen?
             user.pbOwnSide.effects[effect] += 1
             @battle.pbDisplay(_INTL("{1}'s {2} was extended 1 turn!", user.pbTeam, data.name))
@@ -857,7 +857,7 @@ class PokeBattle_Move_HealUserHalfOfTotalHPExtendScreens1 < PokeBattle_HalfHeali
 
     def getEffectScore(user, target)
         score = super
-        user.pbOwnSide.eachEffect(true) do |_effect, _value, data|
+        user.pbOwnSide.eachEffect(true) do |effect, value, data|
             next unless data.is_screen?
             score += 30
         end
@@ -881,7 +881,7 @@ class PokeBattle_Move_EmpoweredHealOrder < PokeBattle_HalfHealingMove
 end
 
 #===============================================================================
-# Heals sacrifices 25% of their max HP, and heals every one of its other
+# Heals sacrifices 25% of their max HP, and heals every one of its other 
 # party members by 25%. (Dinner Bell)
 #===============================================================================
 class PokeBattle_Move_UserLosesQuarterHPPartyMembersHealQuarterHP < PokeBattle_Move
@@ -891,7 +891,7 @@ class PokeBattle_Move_UserLosesQuarterHPPartyMembersHealQuarterHP < PokeBattle_M
         super
         @hpFraction = 0.25
     end
-
+    
     def pbMoveFailed?(user, targets, show_message)
         if user.hp <= (user.totalhp * @hpFraction)
             @battle.pbDisplay(_INTL("But it failed, since {1}'s HP is too low!", user.pbThis(true))) if show_message
@@ -945,7 +945,7 @@ class PokeBattle_Move_UserLosesQuarterHPPartyMembersHealQuarterHP < PokeBattle_M
         @battle.pbParty(user.index).each_with_index do |pkmn, i|
             next unless validPokemon(pkmn)
             next if i == user.pokemonIndex
-            healableMembers += 1
+            healableMembers += 1 
         end
         return healableMembers
     end
@@ -954,7 +954,7 @@ class PokeBattle_Move_UserLosesQuarterHPPartyMembersHealQuarterHP < PokeBattle_M
         score += getHPLossEffectScore(user, @hpFraction * 1.5) # intentionally higher than it looks like it should be
         healableMembers = healableMembers(user)
         if healableMembers > 0
-            score += 30 + (healableMembers * 50)
+            score += 30 + healableMembers * 50
         end
         return score
     end

@@ -60,7 +60,7 @@ class PokeBattle_Move_TwoTurnAttackOneTurnInSun < PokeBattle_TwoTurnMove
         @battle.pbDisplay(_INTL("{1} took in sunlight!", user.pbThis))
     end
 
-    def skipChargingTurn?(_user)
+    def skipChargingTurn?(user)
         return @battle.sunny?
     end
 end
@@ -75,12 +75,12 @@ end
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackOneTurnInRainstorm < PokeBattle_TwoTurnMove
     def immuneToRainDebuff?; return true; end
-
+    
     def pbChargingTurnMessage(user, _targets)
         @battle.pbDisplay(_INTL("{1} took in electricity!", user.pbThis))
     end
 
-    def skipChargingTurn?(_user)
+    def skipChargingTurn?(user)
         return @battle.rainy?
     end
 end
@@ -128,14 +128,14 @@ end
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackChargeSleep < PokeBattle_TwoTurnMove
     def usableWhenAsleep?; return true; end
-
+    
     def pbMoveFailed?(user, targets, show_message)
         return true unless user.canSleep?(user, show_message, self, true)
         return true if super
         return false
     end
 
-    def pbMoveFailedAI?(user, targets)
+     def pbMoveFailedAI?(user, targets)
         return true unless user.canSleep?(user, false, self, true)
         return true if super
         return false
@@ -148,7 +148,7 @@ class PokeBattle_Move_TwoTurnAttackChargeSleep < PokeBattle_TwoTurnMove
     def pbChargingTurnGeneralEffect(user)
         user.applySleepSelf
     end
-
+    
     def pbAttackingTurnEffect(user, _target)
         user.pbCureStatus(true, :SLEEP)
     end
@@ -160,7 +160,6 @@ class PokeBattle_Move_TwoTurnAttackChargeSleep < PokeBattle_TwoTurnMove
         return score
     end
 end
-
 #===============================================================================
 # Boosts Attack on 1st Turn and Attacks on 2nd (Quasar Crush)
 #===============================================================================
@@ -175,7 +174,7 @@ class PokeBattle_Move_TwoTurnAttackChargeRaiseUserAtk2 < PokeBattle_TwoTurnMove
 
     def getEffectScore(user, target)
         score = super
-        score += getMultiStatUpEffectScore([:ATTACK, 2], user, user)
+        score += getMultiStatUpEffectScore([:ATTACK,2],user,user)
         return score
     end
 end
@@ -194,7 +193,7 @@ class PokeBattle_Move_TwoTurnAttackChargeRaiseUserSpAtk2 < PokeBattle_TwoTurnMov
 
     def getEffectScore(user, target)
         score = super
-        score += getMultiStatUpEffectScore([:SPECIAL_ATTACK, 2], user, user)
+        score += getMultiStatUpEffectScore([:SPECIAL_ATTACK,2],user,user)
         return score
     end
 end
@@ -241,7 +240,7 @@ end
 # Two turn attack. Skips first turn, attacks second turn.
 # (Handled in Battler's pbSuccessCheckPerHit): Is semi-invulnerable during use.
 #===============================================================================
-class PokeBattle_Move_TwoTurnAttackInvulnerable < PokeBattle_TwoTurnMove
+class PokeBattle_Move_TwoTurnAttackInvulnerable < PokeBattle_TwoTurnMove  
     def pbChargingTurnGeneralEffect(user)
         user.eachActiveAbility do |ability|
             BattleHandlers.triggerUserAbilityOnSemiInvulnerable(ability, user, self, @battle, false)
@@ -270,13 +269,13 @@ class PokeBattle_Move_TwoTurnAttackInvulnerableInSky < PokeBattle_Move_TwoTurnAt
 end
 
 #===============================================================================
-# Two turn attack. Skips first turn, attacks second turn.
+# Two turn attack. Skips first turn, attacks second turn. 
 # Power increases the quicker the user is than the target (Jet Speed)
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackInvulnerableScalesFaster < PokeBattle_Move_TwoTurnAttackInvulnerable
     def pbBaseDamage(_baseDmg, user, target)
         ratio = user.pbSpeed.to_f / target.pbSpeed.to_f
-        basePower = 30 + ((10 * ratio).floor * 5)
+        basePower = 30 + (10 * ratio).floor * 5
         basePower = 200 if basePower > 200
         basePower = 60 if basePower < 60
         return basePower
@@ -477,8 +476,8 @@ class PokeBattle_Move_TwoTurnAttackRaiseUserAllStats2 < PokeBattle_TwoTurnMove
             !user.pbCanRaiseStatStep?(:DEFENSE, user, self) &&
             !user.pbCanRaiseStatStep?(:SPECIAL_DEFENSE, user, self) &&
             !user.pbCanRaiseStatStep?(:SPEED, user, self)
-            @battle.pbDisplay(_INTL("{1}'s stats won't go any higher!", user.pbThis)) if show_message
-            return true
+                @battle.pbDisplay(_INTL("{1}'s stats won't go any higher!", user.pbThis)) if show_message
+                return true
         end
         return false
     end
@@ -504,7 +503,7 @@ end
 # But the user must recharge next turn.
 #===============================================================================
 class PokeBattle_Move_TwoTurnMoveHealTargetHalfOfTotalHP < PokeBattle_Move_TwoTurnAttack
-    def healingRatio(_target); return 1.0; end
+    def healingRatio(target); return 1.0; end
 
     def pbFailsAgainstTarget?(_user, target, show_message)
         unless target.canHeal?(true)
@@ -549,6 +548,7 @@ class PokeBattle_Move_TwoTurnMoveHyperScalesWithLostHP < PokeBattle_TwoTurnMove
         @battle.pbDisplay(_INTL("{1} gathered energy!", user.pbThis))
     end
 end
+
 
 #===============================================================================
 # Charges up Turn 1 and puts the target to sleep on Turn 2 (Sleepy Serenade)

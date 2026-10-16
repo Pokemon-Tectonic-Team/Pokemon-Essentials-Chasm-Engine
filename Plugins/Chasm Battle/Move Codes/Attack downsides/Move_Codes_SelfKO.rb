@@ -30,7 +30,7 @@ class PokeBattle_Move_UserFaintsExplosive < PokeBattle_Move
             end
             user.pbReduceHP(reduction, false)
             @battle.pbHideAbilitySplash(user) if unbreakable
-            if user.hasActiveAbility?(:PERENNIALPAYLOAD, true)
+            if user.hasActiveAbility?(:PERENNIALPAYLOAD,true)
                 @battle.pbShowAbilitySplash(user, :PERENNIALPAYLOAD)
                 @battle.pbDisplay(_INTL("{1} will revive in five turns!", user.pbThis))
                 if user.pbOwnSide.effectActive?(:PerennialPayload)
@@ -97,7 +97,7 @@ end
 #===============================================================================
 class PokeBattle_Move_UserFaintsExplosiveScalesWithEnemySideSpikes < PokeBattle_Move_UserFaintsExplosive
     def pbBaseDamage(baseDmg, _user, target)
-        target.pbOwnSide.eachEffect(true) do |_effect, value, effectData|
+        target.pbOwnSide.eachEffect(true) do |effect, value, effectData|
             next unless effectData.is_spike?
             baseDmg += 30 * value
         end

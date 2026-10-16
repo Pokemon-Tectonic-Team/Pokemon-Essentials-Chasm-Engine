@@ -54,7 +54,7 @@ class PokemonPokedex_Scene
         @sprites["search2cursor"] = SpriteWrapper.new(@viewport)
         @sprites["search2cursor"].bitmap = @search2Cursorbitmap.bitmap
         @sprites["search2cursor"].visible = false
-
+        
         @searchParams = [$PokemonGlobal.pokedexMode, -1, -1, -1, -1, -1, -1, -1, -1, -1]
 
         # Load stored search
@@ -108,8 +108,8 @@ class PokemonPokedex_Scene
     end
 
     def generateSignaturesData
-        $SignatureAbilities ||= getSignatureAbilities
-        $SignatureMoves ||= getSignatureMoves
+        $SignatureAbilities = getSignatureAbilities unless $SignatureAbilities
+        $SignatureMoves	= getSignatureMoves unless $SignatureMoves
     end
 
     def pbEndScene
@@ -171,17 +171,17 @@ class PokemonPokedex_Scene
         ret = []
         regionalSpecies.each_with_index do |species, i|
             next if species.nil?
-
+            
             speciesData = GameData::Species.get(species)
             next if speciesData.isTest? && !$DEBUG
 
             dexListEntry =
-                {
-                    :species => species,
-                    :data => speciesData,
-                    :index => i + 1,
-                    :shift => shift,
-                }
+			{
+				:species => species,
+				:data => speciesData,
+				:index => i + 1,
+				:shift => shift,
+			}
 
             ret.push(dexListEntry)
         end
@@ -272,8 +272,8 @@ class PokemonPokedex_Scene
             overlay.blt(468, y, @sliderbitmap.bitmap, Rect.new(40, 0, 40, 8))
             i = 0
             while i * 16 < boxheight - 8 - 16
-                height = [boxheight - 8 - 16 - (i * 16), 16].min
-                overlay.blt(468, y + 8 + (i * 16), @sliderbitmap.bitmap, Rect.new(40, 8, 40, height))
+                height = [boxheight - 8 - 16 - i * 16, 16].min
+                overlay.blt(468, y + 8 + i * 16, @sliderbitmap.bitmap, Rect.new(40, 8, 40, height))
                 i += 1
             end
             overlay.blt(468, y + boxheight - 16, @sliderbitmap.bitmap, Rect.new(40, 24, 40, 16))
@@ -441,11 +441,11 @@ class PokemonPokedex_Scene
         when 2   # Type icons
             for i in 0...2
                 if !sel[i] || sel[i] < 0
-                    textpos.push(["----", 298 + (128 * i), 58, 2, base, shadow, 1])
+                    textpos.push(["----", 298 + 128 * i, 58, 2, base, shadow, 1])
                 else
                     type_number = @typeCommands[sel[i]].id_number
                     typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(250 + (128 * i), 58, @typebitmap.bitmap, typerect)
+                    overlay.blt(250 + 128 * i, 58, @typebitmap.bitmap, typerect)
                 end
             end
         when 3   # Height range
@@ -519,10 +519,10 @@ class PokemonPokedex_Scene
         end
         # Draw selected option(s) button graphic
         if [3, 4].include?(mode) # Height, weight
-            xpos1 = xstart + ((sel[0] + 1) * xgap)
+            xpos1 = xstart + (sel[0] + 1) * xgap
             xpos1 = xstart if sel[0] < -1
-            xpos2 = xstart + ((sel[1] + 1) * xgap)
-            xpos2 = xstart + (cols * xgap) if sel[1] < 0
+            xpos2 = xstart + (sel[1] + 1) * xgap
+            xpos2 = xstart + cols * xgap if sel[1] < 0
             xpos2 = xstart if sel[1] >= cols - 1
             ypos1 = ystart + 172
             ypos2 = ystart + 28
@@ -540,11 +540,11 @@ class PokemonPokedex_Scene
             for i in 0...sel.length
                 if sel[i] >= 0
                     selrect = Rect.new(0, selbuttony, @selbitmap.bitmap.width, selbuttonheight)
-                    overlay.blt(xstart + ((sel[i] % cols) * xgap), ystart + ((sel[i] / cols).floor * ygap), @selbitmap.bitmap,
+                    overlay.blt(xstart + (sel[i] % cols) * xgap, ystart + (sel[i] / cols).floor * ygap, @selbitmap.bitmap,
   selrect)
                 else
                     selrect = Rect.new(0, selbuttony, @selbitmap.bitmap.width, selbuttonheight)
-                    overlay.blt(xstart + ((cols - 1) * xgap), ystart + ((cmds.length / cols).floor * ygap), @selbitmap.bitmap,
+                    overlay.blt(xstart + (cols - 1) * xgap, ystart + (cmds.length / cols).floor * ygap, @selbitmap.bitmap,
   selrect)
                 end
             end
@@ -553,36 +553,36 @@ class PokemonPokedex_Scene
         case mode
         when 0, 1 # Order, name
             for i in 0...cmds.length
-                x = xstart + halfwidth + ((i % cols) * xgap)
-                y = ystart + 6 + ((i / cols).floor * ygap)
+                x = xstart + halfwidth + (i % cols) * xgap
+                y = ystart + 6 + (i / cols).floor * ygap
                 textpos.push([cmds[i], x, y, 2, base, shadow, 1])
             end
             if mode != 0
                 textpos.push([(mode == 1) ? "-" : "----",
-                              xstart + halfwidth + ((cols - 1) * xgap), ystart + 6 + ((cmds.length / cols).floor * ygap), 2, base, shadow, 1,])
+                              xstart + halfwidth + (cols - 1) * xgap, ystart + 6 + (cmds.length / cols).floor * ygap, 2, base, shadow, 1,])
             end
         when 2   # Type
             typerect = Rect.new(0, 0, 96, 32)
             for i in 0...cmds.length
                 typerect.y = @typeCommands[i].id_number * 32
-                overlay.blt(xstart + 14 + ((i % cols) * xgap), ystart + 6 + ((i / cols).floor * ygap), @typebitmap.bitmap,
+                overlay.blt(xstart + 14 + (i % cols) * xgap, ystart + 6 + (i / cols).floor * ygap, @typebitmap.bitmap,
     typerect)
             end
             textpos.push(["----",
-                          xstart + halfwidth + ((cols - 1) * xgap), ystart + 6 + ((cmds.length / cols).floor * ygap), 2, base, shadow, 1,])
+                          xstart + halfwidth + (cols - 1) * xgap, ystart + 6 + (cmds.length / cols).floor * ygap, 2, base, shadow, 1,])
         when 5   # Color
             for i in 0...cmds.length
-                x = xstart + halfwidth + ((i % cols) * xgap)
-                y = ystart + 6 + ((i / cols).floor * ygap)
+                x = xstart + halfwidth + (i % cols) * xgap
+                y = ystart + 6 + (i / cols).floor * ygap
                 textpos.push([cmds[i].name, x, y, 2, base, shadow, 1])
             end
             textpos.push(["----",
-                          xstart + halfwidth + ((cols - 1) * xgap), ystart + 6 + ((cmds.length / cols).floor * ygap), 2, base, shadow, 1,])
+                          xstart + halfwidth + (cols - 1) * xgap, ystart + 6 + (cmds.length / cols).floor * ygap, 2, base, shadow, 1,])
         when 6   # Shape
             shaperect = Rect.new(0, 0, 60, 60)
             for i in 0...cmds.length
                 shaperect.y = (@shapeCommands[i].id_number - 1) * 60
-                overlay.blt(xstart + 4 + ((i % cols) * xgap), ystart + 4 + ((i / cols).floor * ygap), @shapebitmap.bitmap,
+                overlay.blt(xstart + 4 + (i % cols) * xgap, ystart + 4 + (i / cols).floor * ygap, @shapebitmap.bitmap,
       shaperect)
             end
         end
@@ -620,7 +620,7 @@ class PokemonPokedex_Scene
         end
         @sprites["search2cursor"].x = index.even? ? 72 : 296
         @sprites["search2cursor"].x += 4 if shiftRightABit
-        @sprites["search2cursor"].y = 62 + (index / 2 * 96)
+        @sprites["search2cursor"].y = 62 + index / 2 * 96
     end
 
     def pbDexEntry(index)
@@ -687,20 +687,20 @@ class PokemonPokedex_Scene
         pbFadeInAndShow(@sprites, oldsprites)
     end
 
-    SEARCH_METHODS_INDEX = [
-        :searchBySpeciesName,
-        :searchByType,
-        :searchByAbility,
-        :searchByMoveLearned,
-        :searchByEvolutionMethod,
-        :searchByTribe,
-        :searchByAvailableLevel,
-        :searchByTypeMatchup,
-        :searchByStatComparison,
-        :sortByStat,
-        :searchByMisc,
-        :sortByOther,
-    ]
+	SEARCH_METHODS_INDEX = [
+		:searchBySpeciesName,
+		:searchByType,
+		:searchByAbility,
+		:searchByMoveLearned,
+		:searchByEvolutionMethod,
+		:searchByTribe,
+		:searchByAvailableLevel,
+		:searchByTypeMatchup,
+		:searchByStatComparison,
+		:sortByStat,
+		:searchByMisc,
+		:sortByOther,
+	]
 
     def pbDexSearch
         # Prepare to start the search screen
@@ -712,6 +712,7 @@ class PokemonPokedex_Scene
         overlay.clear
         index = 0
         updateSearch2Cursor(index)
+        oldindex = index
 
         # Write the button names onto the overlay
         base   = MessageConfig.pbDefaultTextMainColor
@@ -793,9 +794,9 @@ class PokemonPokedex_Scene
                 pbPlayCloseMenuSE
                 break
             elsif Input.trigger?(Input::USE)
-                searchChanged = acceptSearchResults2 do
-                    send SEARCH_METHODS_INDEX[index]
-                end
+				searchChanged = acceptSearchResults2 do
+					send SEARCH_METHODS_INDEX[index]
+				end
                 if searchChanged
                     break
                 else
@@ -942,7 +943,7 @@ class PokemonPokedex_Scene
                     starToggleCommands.push(_INTL("Star Them"))
                     starToggleCommands.push(_INTL("Un-star them"))
                     starToggleCommands.push(_INTL("Invert Stars"))
-                    starToggleCommandChosen = pbMessage(_INTL("Change the starring for all species on this list?"), starToggleCommands)
+                    starToggleCommandChosen = pbMessage(_INTL("Change the starring for all species on this list?"),starToggleCommands)
                     if starToggleCommandChosen == 1
                         pbMessage(_INTL("Starring every species on the current MasterDex list."))
                         changeCount = 0
@@ -987,7 +988,7 @@ class PokemonPokedex_Scene
                         pbMessage(_INTL("Added every species on the current list!"))
                     else
                         pbAddPokemonSilent(@sprites["pokedex"].species, getLevelCap)
-                        pbMessage(_INTL("Added {1}", @sprites["pokedex"].species))
+                        pbMessage(_INTL("Added {1}", @sprites['pokedex'].species))
                     end
                 elsif Input.pressex?(0x57) && $DEBUG # W, for Wild Pokemon
                     pbWildBattle(@sprites["pokedex"].species, getLevelCap)
@@ -1030,15 +1031,16 @@ class PokemonPokedex_Scene
                     end
                 elsif Input.pressex?(0x45) && $DEBUG # E, for Export
                     exportDexListAsCSV
-                else
-                    for key_index in 1..6 do
-                        next unless Input.pressex?(:"NUMBER_#{key_index}")
-                        searchIndex = key_index - 1
-                        searchIndex += 6 if Input.press?(Input::CTRL)
-                        acceptSearchResults do
-                            send SEARCH_METHODS_INDEX[searchIndex]
-                        end
-                    end
+				else
+					for key_index in 1..6 do
+						if Input.pressex?("NUMBER_#{key_index}".to_sym)
+							searchIndex = key_index - 1
+							searchIndex += 6 if Input.press?(Input::CTRL)
+							acceptSearchResults do
+								send SEARCH_METHODS_INDEX[searchIndex]
+							end
+						end
+					end
                 end
             end
         end
@@ -1216,9 +1218,10 @@ class PokemonPokedex_Scene
     end
 
     def exportDexListAsCSV
-        File.open("Analysis/species.csv", "wb") { |file|
+        File.open("Analysis/species.csv","wb") { |file|
             file.write("SpeciesID,Species Name,Dex Number,Type1,Type2,Ability1,Ability2,HP,Atk,Def,SpAtk,SpDef,Speed\r\n")
             @dexlist.each do |dexEntry|
+                speciesLine = ""
                 data = GameData::Species.get(dexEntry[:species])
                 stats = data.base_stats
                 type2 = (data.type2 == data.type1) ? "" : data.type2

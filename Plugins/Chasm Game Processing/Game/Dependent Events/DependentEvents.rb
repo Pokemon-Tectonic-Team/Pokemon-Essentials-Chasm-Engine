@@ -37,11 +37,11 @@ class PokemonGlobalMetadata
     end
 end
 
-def pbTestPass(_follower, _x, _y, _direction = nil)
-    # removed line to fix follower jank:
+def pbTestPass(follower, x, y, _direction = nil)
+	# removed line to fix follower jank:
     # return $MapFactory.isPassableStrict?(follower.map.map_id, x, y, follower)
-    # added line to fix follower jank:
-    return true
+	# added line to fix follower jank:
+	return true
 end
 
 # Same map only
@@ -232,7 +232,7 @@ class DependentEvents
             tile = $MapFactory.getFacingTile(facings[0], leader)
             # Assumes leader is 1x1 tile in size
             passable = tile && $MapFactory.isPassable?(tile[0], tile[1], tile[2], follower)
-            mapTile = nil unless passable
+            mapTile = passable ? mapTile : nil
         end
 
         moveFollower(follower, leader, mapTile, instant)
@@ -281,7 +281,7 @@ class DependentEvents
             next unless passable
             relativePos = $MapFactory.getThisAndOtherPosRelativePos(follower, tile[0], tile[1], tile[2])
             # Assumes follower is 1x1 tile in size
-            distance = Math.sqrt((relativePos[0] * relativePos[0]) + (relativePos[1] * relativePos[1]))
+            distance = Math.sqrt(relativePos[0] * relativePos[0] + relativePos[1] * relativePos[1])
             if bestRelativePos > distance || bestRelativePos == -1
                 bestRelativePos = distance
                 mapTile = tile
@@ -308,13 +308,13 @@ class DependentEvents
         newX = mapTile[1]
         newY = mapTile[2]
         if defined?(leader.on_stair?) && leader.on_stair?
-            newX = leader.x + (-1 * xOffsetFromDir(leader.direction))
+            newX = leader.x + -1 * xOffsetFromDir(leader.direction)
             if leader.on_middle_of_stair?
-                newY = leader.y + (-1 * yOffsetFromDir(leader.direction))
+                newY = leader.y + -1 * yOffsetFromDir(leader.direction)
             elsif follower.on_middle_of_stair?
                 newY = follower.stair_start_y - follower.stair_y_position
             else
-                newY = leader.y + (-1 * yOffsetFromDir(leader.direction))
+                newY = leader.y + -1 * yOffsetFromDir(leader.direction)
             end
         end
         deltaX = -1 * xOffsetFromDir(leader.direction)
@@ -363,12 +363,12 @@ class DependentEvents
         end
 
         nearbySpotOffsets.each do |spot|
-            passable = nil
-            if careAboutCollision
-                passable = $MapFactory.isPassable?(leader.map.map_id, leader.x + spot[0], leader.y + spot[1], follower)
-            else
-                passable = true
-            end
+			passable = nil
+			if careAboutCollision
+				passable = $MapFactory.isPassable?(leader.map.map_id, leader.x + spot[0], leader.y + spot[1], follower)
+			else
+				passable = true
+			end
             next unless passable
             newPosX += spot[0]
             newPosY += spot[1]
@@ -635,7 +635,7 @@ class DependentEvents
                 @realEvents[k].opacity = stealthSprayActive? ? STEALTH_SPRAY_OPACITY : 255
             end
             return
-        end
+        end 
     end
 
     # Adds step animation for followers and update their speed
@@ -683,7 +683,7 @@ class DependentEvents
         if ret
             change_sprite([first_pkmn.species, first_pkmn.form,
                            first_pkmn.gender, first_pkmn.shiny?,
-                           false, first_pkmn])
+                           false,first_pkmn])
         end
         update_opacity
         if ret

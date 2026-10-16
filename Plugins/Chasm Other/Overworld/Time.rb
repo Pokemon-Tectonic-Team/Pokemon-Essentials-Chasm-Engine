@@ -106,8 +106,8 @@ module UnrealTime
     def self.advance_to(hour, min = 0, sec = 0)
         raise RangeError, "hour is #{hour}, should be 0..23" if hour < 0 || hour > 23
         day_seconds = 60 * 60 * 24
-        seconds_now = (pbGetTimeNow.hour * 60 * 60) + (pbGetTimeNow.min * 60) + pbGetTimeNow.sec
-        target_seconds = (hour * 60 * 60) + (min * 60) + sec
+        seconds_now = pbGetTimeNow.hour * 60 * 60 + pbGetTimeNow.min * 60 + pbGetTimeNow.sec
+        target_seconds = hour * 60 * 60 + min * 60 + sec
         seconds_added = target_seconds - seconds_now
         seconds_added += day_seconds if seconds_added < 0
         add_seconds(seconds_added)
@@ -158,70 +158,71 @@ module PBDayNight
         Tone.new(-40, -50, -35, 50),   # Day/morning
         Tone.new(-40, -50, -35, 50),   # Day/morning
         Tone.new(-20, -25, -15, 20),   # Day/morning
-        Tone.new(0,   0,   0,  0),   # Day
-        Tone.new(0,   0,   0,  0),   # Day
-        Tone.new(0,   0,   0,  0),   # Day             # Noon
-        Tone.new(0,   0,   0,  0),   # Day
-        Tone.new(0,   0,   0,  0),   # Day/afternoon
-        Tone.new(0,   0,   0,  0),   # Day/afternoon
-        Tone.new(0,   0,   0,  0),   # Day/afternoon
-        Tone.new(0,   0,   0,  0),   # Day/afternoon
-        Tone.new(-5, -30, -20,  0), # Day/evening     # 6PM
+        Tone.new(  0,   0,   0,  0),   # Day
+        Tone.new(  0,   0,   0,  0),   # Day
+        Tone.new(  0,   0,   0,  0),   # Day             # Noon
+        Tone.new(  0,   0,   0,  0),   # Day
+        Tone.new(  0,   0,   0,  0),   # Day/afternoon
+        Tone.new(  0,   0,   0,  0),   # Day/afternoon
+        Tone.new(  0,   0,   0,  0),   # Day/afternoon
+        Tone.new(  0,   0,   0,  0),   # Day/afternoon
+        Tone.new( -5, -30, -20,  0),   # Day/evening     # 6PM
         Tone.new(-15, -60, -10, 20),   # Day/evening
         Tone.new(-15, -60, -10, 20),   # Day/evening
         Tone.new(-40, -75,   5, 40),   # Night
         Tone.new(-70, -90,  15, 55),   # Night
         Tone.new(-70, -90,  15, 55)    # Night
-    ]
-    @cachedTone = nil
-    @dayNightToneLastUpdate = nil
-    @oneOverSixty = 1 / 60.0
-
-    # Returns true if it's day.
-    def self.isDay?(time = nil)
+      ]
+      @cachedTone = nil
+      @dayNightToneLastUpdate = nil
+      @oneOverSixty = 1/60.0
+    
+      # Returns true if it's day.
+      def self.isDay?(time=nil)
         time = pbGetTimeNow if !time
-        return time.hour >= 5 && time.hour < 20
-    end
-
-    # Returns true if it's night.
-    def self.isNight?(time = nil)
+        return (time.hour>=5 && time.hour<20)
+      end
+    
+      # Returns true if it's night.
+      def self.isNight?(time=nil)
         time = pbGetTimeNow if !time
-        return time.hour >= 20 || time.hour < 5
-    end
-
-    # Returns true if it's morning.
-    def self.isMorning?(time = nil)
+        return (time.hour>=20 || time.hour<5)
+      end
+    
+      # Returns true if it's morning.
+      def self.isMorning?(time=nil)
         time = pbGetTimeNow if !time
-        return time.hour >= 5 && time.hour < 10
-    end
-
-    # Returns true if it's the afternoon.
-    def self.isAfternoon?(time = nil)
+        return (time.hour>=5 && time.hour<10)
+      end
+    
+      # Returns true if it's the afternoon.
+      def self.isAfternoon?(time=nil)
         time = pbGetTimeNow if !time
-        return time.hour >= 14 && time.hour < 17
-    end
-
-    # Returns true if it's the evening.
-    def self.isEvening?(time = nil)
+        return (time.hour>=14 && time.hour<17)
+      end
+    
+      # Returns true if it's the evening.
+      def self.isEvening?(time=nil)
         time = pbGetTimeNow if !time
-        return time.hour >= 17 && time.hour < 20
-    end
-
-    # Gets a number representing the amount of daylight (0=full night, 255=full day).
-    def self.getShade
+        return (time.hour>=17 && time.hour<20)
+      end
+    
+      # Gets a number representing the amount of daylight (0=full night, 255=full day).
+      def self.getShade
         time = pbGetDayNightMinutes
-        time = (24 * 60) - time if time > (12 * 60)
-        return 255 * time / (12 * 60)
-    end
-
-    # Gets a Tone object representing a suggested shading
-    # tone for the current time of day.
-    def self.getTone
+        time = (24*60)-time if time>(12*60)
+        return 255*time/(12*60)
+      end
+    
+      # Gets a Tone object representing a suggested shading
+      # tone for the current time of day.
+      def self.getTone
         @cachedTone ||= Tone.new(0, 0, 0)
         return @cachedTone unless Settings::TIME_SHADING
-        toneNeedUpdate = !@dayNightToneLastUpdate ||
-                         Graphics.frame_count - @dayNightToneLastUpdate >=
-                         Graphics.frame_rate * UnrealTime::TONE_CHECK_INTERVAL
+        toneNeedUpdate = (!@dayNightToneLastUpdate ||
+          Graphics.frame_count - @dayNightToneLastUpdate >=
+          Graphics.frame_rate * UnrealTime::TONE_CHECK_INTERVAL
+                         )
         if toneNeedUpdate
             getToneInternal
             applyOutdoorEffects
@@ -234,16 +235,18 @@ module PBDayNight
     def self.sheduleToneRefresh
         @dayNightToneLastUpdate = nil
     end
-
-    def self.pbGetDayNightMinutes
-        now = pbGetTimeNow # Get the current in-game time
-        return (now.hour * 60) + now.min
-    end
-
-    def self.getToneInternal
+    
+      def self.pbGetDayNightMinutes
+        now = pbGetTimeNow   # Get the current in-game time
+        return (now.hour*60)+now.min
+      end
+    
+      private
+    
+      def self.getToneInternal
         if [413, 414].include?($game_map.map_id) # Eventide Isle
-            @cachedTone = PBDayNight::HourlyTones[21]
-            echoln("Faking overworld tone for Eventide Isle")
+          @cachedTone = PBDayNight::HourlyTones[21]
+          echoln("Faking overworld tone for Eventide Isle")
         elsif $Options.forced_time_tint == 0
             # Calculates the tone for the current frame, used for day/night effects
             realMinutes = pbGetDayNightMinutes
@@ -306,7 +309,7 @@ def pbGetTimeNow
     # when displaying years.
     loop do
         time_fix = 0
-        time_fix = $PokemonGlobal.extraYears * day_seconds * ((365 * 6) + 1) / 6 if $PokemonGlobal.extraYears != 0
+        time_fix = $PokemonGlobal.extraYears * day_seconds * (365 * 6 + 1) / 6 if $PokemonGlobal.extraYears != 0
         time_ret = start_time + (time_played + time_jumped - time_fix)
         break if !UnrealTime::NEED_32_BIT_FIX || time_ret.year < 2036
         $PokemonGlobal.extraYears += 6
@@ -347,133 +350,133 @@ def pbDayNightTint(object)
     return if !$scene.is_a?(Scene_Map)
     if Settings::TIME_SHADING && GameData::MapMetadata.exists?($game_map.map_id) &&
        GameData::MapMetadata.get($game_map.map_id).outdoor_map
-        tone = PBDayNight.getTone
-        object.tone.set(tone.red, tone.green, tone.blue, tone.gray)
+      tone = PBDayNight.getTone
+      object.tone.set(tone.red,tone.green,tone.blue,tone.gray)
     else
-        object.tone.set(0, 0, 0, 0)
+      object.tone.set(0,0,0,0)
     end
-end
-
-#===============================================================================
-# Moon phases and Zodiac
-#===============================================================================
-# Calculates the phase of the moon.
-# 0 - New Moon
-# 1 - Waxing Crescent
-# 2 - First Quarter
-# 3 - Waxing Gibbous
-# 4 - Full Moon
-# 5 - Waning Gibbous
-# 6 - Last Quarter
-# 7 - Waning Crescent
-def moonphase(time = nil) # in UTC
+  end
+  
+  
+  
+  #===============================================================================
+  # Moon phases and Zodiac
+  #===============================================================================
+  # Calculates the phase of the moon.
+  # 0 - New Moon
+  # 1 - Waxing Crescent
+  # 2 - First Quarter
+  # 3 - Waxing Gibbous
+  # 4 - Full Moon
+  # 5 - Waning Gibbous
+  # 6 - Last Quarter
+  # 7 - Waning Crescent
+  def moonphase(time=nil) # in UTC
     time = pbGetTimeNow if !time
     transitions = [
-        1.8456618033125,
-        5.5369854099375,
-        9.2283090165625,
-        12.9196326231875,
-        16.6109562298125,
-        20.3022798364375,
-        23.9936034430625,
-        27.6849270496875
-    ]
-    yy = time.year - ((12 - time.mon) / 10.0).floor
-    j = (365.25 * (4712 + yy)).floor + ((((time.mon + 9) % 12) * 30.6) + 0.5).floor + time.day + 59
-    j -= (((yy / 100.0) + 49).floor * 0.75).floor - 38 if j > 2_299_160
-    j += (((time.hour * 60) + (time.min * 60)) + time.sec) / 86_400.0
-    v = (j - 2_451_550.1) / 29.530588853
-    v = ((v - v.floor) + (v < 0 ? 1 : 0))
-    ag = v * 29.53
+       1.8456618033125,
+       5.5369854099375,
+       9.2283090165625,
+       12.9196326231875,
+       16.6109562298125,
+       20.3022798364375,
+       23.9936034430625,
+       27.6849270496875]
+    yy = time.year-((12-time.mon)/10.0).floor
+    j = (365.25*(4712+yy)).floor + (((time.mon+9)%12)*30.6+0.5).floor + time.day+59
+    j -= (((yy/100.0)+49).floor*0.75).floor-38 if j>2299160
+    j += (((time.hour*60)+time.min*60)+time.sec)/86400.0
+    v = (j-2451550.1)/29.530588853
+    v = ((v-v.floor)+(v<0 ? 1 : 0))
+    ag = v*29.53
     for i in 0...transitions.length
-        return i if ag <= transitions[i]
+      return i if ag<=transitions[i]
     end
     return 0
-end
-
-# Calculates the zodiac sign based on the given month and day:
-# 0 is Aries, 11 is Pisces. Month is 1 if January, and so on.
-def zodiac(month, day)
+  end
+  
+  # Calculates the zodiac sign based on the given month and day:
+  # 0 is Aries, 11 is Pisces. Month is 1 if January, and so on.
+  def zodiac(month,day)
     time = [
-        3, 21, 4, 19, # Aries
-        4, 20, 5, 20,   # Taurus
-        5, 21, 6, 20,   # Gemini
-        6, 21, 7, 20,   # Cancer
-        7, 23, 8, 22,   # Leo
-        8, 23, 9, 22,   # Virgo
-        9, 23, 10, 22,  # Libra
-        10, 23, 11, 21, # Scorpio
-        11, 22, 12, 21, # Sagittarius
-        12, 22, 1, 19,  # Capricorn
-        1, 20, 2, 18,   # Aquarius
-        2, 19, 3, 20    # Pisces
+       3,21,4,19,   # Aries
+       4,20,5,20,   # Taurus
+       5,21,6,20,   # Gemini
+       6,21,7,20,   # Cancer
+       7,23,8,22,   # Leo
+       8,23,9,22,   # Virgo
+       9,23,10,22,  # Libra
+       10,23,11,21, # Scorpio
+       11,22,12,21, # Sagittarius
+       12,22,1,19,  # Capricorn
+       1,20,2,18,   # Aquarius
+       2,19,3,20    # Pisces
     ]
     for i in 0...12
-        return i if month == time[i * 4] && day >= time[(i * 4) + 1]
-        return i if month == time[(i * 4) + 2] && day <= time[(i * 4) + 3]
+      return i if month==time[i*4] && day>=time[i*4+1]
+      return i if month==time[i*4+2] && day<=time[i*4+3]
     end
     return 0
-end
-
-# Returns the opposite of the given zodiac sign.
-# 0 is Aries, 11 is Pisces.
-def zodiacOpposite(sign)
-    return (sign + 6) % 12
-end
-
-# 0 is Aries, 11 is Pisces.
-def zodiacPartners(sign)
-    return [(sign + 4) % 12, (sign + 8) % 12]
-end
-
-# 0 is Aries, 11 is Pisces.
-def zodiacComplements(sign)
-    return [(sign + 1) % 12, (sign + 11) % 12]
-end
-
-#===============================================================================
-# Days of the week
-#===============================================================================
-def pbIsWeekday(wdayVariable, *arg)
+  end
+  
+  # Returns the opposite of the given zodiac sign.
+  # 0 is Aries, 11 is Pisces.
+  def zodiacOpposite(sign)
+    return (sign+6)%12
+  end
+  
+  # 0 is Aries, 11 is Pisces.
+  def zodiacPartners(sign)
+    return [(sign+4)%12,(sign+8)%12]
+  end
+  
+  # 0 is Aries, 11 is Pisces.
+  def zodiacComplements(sign)
+    return [(sign+1)%12,(sign+11)%12]
+  end
+  
+  #===============================================================================
+  # Days of the week
+  #===============================================================================
+  def pbIsWeekday(wdayVariable,*arg)
     timenow = pbGetTimeNow
     wday = timenow.wday
     ret = false
     for wd in arg
-        ret = true if wd == wday
+      ret = true if wd==wday
     end
-    if wdayVariable > 0
-        $game_variables[wdayVariable] = [
-            _INTL("Sunday"),
-            _INTL("Monday"),
-            _INTL("Tuesday"),
-            _INTL("Wednesday"),
-            _INTL("Thursday"),
-            _INTL("Friday"),
-            _INTL("Saturday")
-        ][wday]
-        $game_map.need_refresh = true if $game_map
+    if wdayVariable>0
+      $game_variables[wdayVariable] = [
+         _INTL("Sunday"),
+         _INTL("Monday"),
+         _INTL("Tuesday"),
+         _INTL("Wednesday"),
+         _INTL("Thursday"),
+         _INTL("Friday"),
+         _INTL("Saturday")][wday]
+      $game_map.need_refresh = true if $game_map
     end
     return ret
-end
-
-#===============================================================================
-# Months
-#===============================================================================
-def pbIsMonth(monVariable, *arg)
+  end
+  
+  #===============================================================================
+  # Months
+  #===============================================================================
+  def pbIsMonth(monVariable,*arg)
     timenow = pbGetTimeNow
     thismon = timenow.mon
     ret = false
     for wd in arg
-        ret = true if wd == thismon
+      ret = true if wd==thismon
     end
-    if monVariable > 0
-        $game_variables[monVariable] = pbGetMonthName(thismon)
-        $game_map.need_refresh = true if $game_map
+    if monVariable>0
+      $game_variables[monVariable] = pbGetMonthName(thismon)
+      $game_map.need_refresh = true if $game_map
     end
     return ret
-end
-
-def pbGetMonthName(month)
+  end
+  
+  def pbGetMonthName(month)
     return [_INTL("January"),
             _INTL("February"),
             _INTL("March"),
@@ -485,10 +488,10 @@ def pbGetMonthName(month)
             _INTL("September"),
             _INTL("October"),
             _INTL("November"),
-            _INTL("December")][month - 1]
-end
-
-def pbGetAbbrevMonthName(month)
+            _INTL("December")][month-1]
+  end
+  
+  def pbGetAbbrevMonthName(month)
     return ["",
             _INTL("Jan."),
             _INTL("Feb."),
@@ -502,42 +505,42 @@ def pbGetAbbrevMonthName(month)
             _INTL("Oct."),
             _INTL("Nov."),
             _INTL("Dec.")][month]
-end
-
-#===============================================================================
-# Seasons
-#===============================================================================
-def pbGetSeason
-    return (pbGetTimeNow.mon - 1) % 4
-end
-
-def pbIsSeason(seasonVariable, *arg)
+  end
+  
+  #===============================================================================
+  # Seasons
+  #===============================================================================
+  def pbGetSeason
+    return (pbGetTimeNow.mon-1)%4
+  end
+  
+  def pbIsSeason(seasonVariable,*arg)
     thisseason = pbGetSeason
     ret = false
     for wd in arg
-        ret = true if wd == thisseason
+      ret = true if wd==thisseason
     end
-    if seasonVariable > 0
-        $game_variables[seasonVariable] = [
-            _INTL("Spring"),
-            _INTL("Summer"),
-            _INTL("Autumn"),
-            _INTL("Winter")
-        ][thisseason]
-        $game_map.need_refresh = true if $game_map
+    if seasonVariable>0
+      $game_variables[seasonVariable] = [
+         _INTL("Spring"),
+         _INTL("Summer"),
+         _INTL("Autumn"),
+         _INTL("Winter")][thisseason]
+      $game_map.need_refresh = true if $game_map
     end
     return ret
-end
-
-def pbIsSpring; return pbIsSeason(0, 0); end # Jan, May, Sep
-def pbIsSummer; return pbIsSeason(0, 1); end # Feb, Jun, Oct
-def pbIsAutumn; return pbIsSeason(0, 2); end # Mar, Jul, Nov
-def pbIsFall; return pbIsAutumn; end
-def pbIsWinter; return pbIsSeason(0, 3); end # Apr, Aug, Dec
-
-def pbGetSeasonName(season)
+  end
+  
+  def pbIsSpring; return pbIsSeason(0,0); end # Jan, May, Sep
+  def pbIsSummer; return pbIsSeason(0,1); end # Feb, Jun, Oct
+  def pbIsAutumn; return pbIsSeason(0,2); end # Mar, Jul, Nov
+  def pbIsFall; return pbIsAutumn; end
+  def pbIsWinter; return pbIsSeason(0,3); end # Apr, Aug, Dec
+  
+  def pbGetSeasonName(season)
     return [_INTL("Spring"),
             _INTL("Summer"),
             _INTL("Autumn"),
             _INTL("Winter")][season]
-end
+  end
+  

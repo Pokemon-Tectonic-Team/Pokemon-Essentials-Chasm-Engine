@@ -1,8 +1,8 @@
 WEATHER_ABILITY_HEALING_FRACTION = 0.125 # 1/8
 
 BattleHandlers::EORWeatherAbility.add(:MOUNTINGCHILL,
-  proc { |ability, _weather, battler, battle|
-      next unless battle.icy?
+  proc { |ability, weather, battler, battle|
+    next unless battle.icy?
       healingMessage = _INTL("{1} incorporates hail into its body.", battler.pbThis)
       battler.applyFractionalHealing(WEATHER_ABILITY_HEALING_FRACTION, ability: ability, customMessage: healingMessage)
   }
@@ -17,7 +17,7 @@ BattleHandlers::EORWeatherAbility.add(:RAINDISH,
 )
 
 BattleHandlers::EORWeatherAbility.add(:ROCKBODY,
-    proc { |ability, _weather, battler, battle|
+    proc { |ability, weather, battler, battle|
         next unless battle.sandy?
         healingMessage = _INTL("{1} incorporates sand into its body.", battler.pbThis)
         battler.applyFractionalHealing(WEATHER_ABILITY_HEALING_FRACTION, ability: ability, customMessage: healingMessage)
@@ -64,14 +64,14 @@ BattleHandlers::EORWeatherAbility.add(:DRYSKIN,
             battler.applyFractionalDamage(WEATHER_ABILITY_HEALING_FRACTION)
             battle.pbHideAbilitySplash(battler)
         end
-
+  
         if battle.rainy?
             healingMessage = _INTL("{1} soaks up the rain.", battler.pbThis)
             battler.applyFractionalHealing(WEATHER_ABILITY_HEALING_FRACTION, ability: ability, customMessage: healingMessage)
         end
     }
 )
-
+  
 BattleHandlers::EORWeatherAbility.add(:FINESUGAR,
     proc { |ability, _weather, battler, battle|
         if battle.rainy?
@@ -98,7 +98,7 @@ BattleHandlers::EORWeatherAbility.add(:SOLARPOWER,
         battle.pbHideAbilitySplash(battler)
     }
 )
-
+  
 BattleHandlers::EORWeatherAbility.add(:NIGHTSTALKER,
     proc { |ability, _weather, battler, battle|
         next unless battle.moonGlowing?
@@ -111,22 +111,22 @@ BattleHandlers::EORWeatherAbility.add(:NIGHTSTALKER,
 
 BattleHandlers::EORWeatherAbility.add(:ACIDRAIN,
   proc { |ability, _weather, battler, battle|
-      next unless battle.rainy?
-      battler.eachOther do |b|
-          next unless b.debuffedByRain?
-          b.pbLowerMultipleStatSteps(DEFENDING_STATS_1, battler, ability: ability)
-          battle.pbHideAbilitySplash(battler)
-      end
+        next unless battle.rainy?
+        battler.eachOther do |b|
+            next unless b.debuffedByRain?
+            b.pbLowerMultipleStatSteps(DEFENDING_STATS_1, battler, ability: ability)
+            battle.pbHideAbilitySplash(battler)
+        end
   }
 )
 
 BattleHandlers::EORWeatherAbility.add(:SUNBURNING,
   proc { |ability, _weather, battler, battle|
-      next unless battle.sunny?
-      battler.eachOther do |b|
-          next unless b.debuffedBySun?
-          b.pbLowerMultipleStatSteps(DEFENDING_STATS_1, battler, ability: ability)
-          battle.pbHideAbilitySplash(battler)
-      end
+        next unless battle.sunny?
+        battler.eachOther do |b|
+            next unless b.debuffedBySun?
+            b.pbLowerMultipleStatSteps(DEFENDING_STATS_1, battler, ability: ability)
+            battle.pbHideAbilitySplash(battler)
+        end
   }
 )

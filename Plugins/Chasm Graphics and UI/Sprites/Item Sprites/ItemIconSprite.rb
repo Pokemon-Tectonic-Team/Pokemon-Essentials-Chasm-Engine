@@ -68,7 +68,7 @@ class ItemIconSprite < SpriteWrapper
     end
 
     def item=(value)
-        return if @item == value && !@forceitemchange && !ItemIconEvents.item_dynamic_icon?(item)
+        return if @item == value && !@forceitemchange && !ItemIconEvents::item_dynamic_icon?(item)
         @item = value
         @animbitmap.dispose if @animbitmap
         @animbitmap = nil

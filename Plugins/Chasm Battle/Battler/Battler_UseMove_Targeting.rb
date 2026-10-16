@@ -1,3 +1,4 @@
+
 class PokeBattle_Battler
     #=============================================================================
     # Get move's user
@@ -110,10 +111,10 @@ move, false, true)
         elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableRemoveProtections")	# PHANTOMFORCE/SHADOWFORCE in case we have a move that hits them
             return true
         end
-
+        
         # Sky Drop
         return true if target.effectActive?(:SkyDrop) && target.effects[:SkyDrop] != user.index && !move.hitsFlyingTargets?
-
+        
         return false
     end
 
@@ -203,7 +204,7 @@ move, false, true)
     def pbAddTarget(targets, user, target, move, nearOnly = true, allowUser = false)
         return false if !target || (target.fainted? && !move.cannotRedirect?)
         return false if !(allowUser && user == target) && nearOnly && !user.near?(target)
-        targets.each { |b| return true if b.index == target.index } # Already added
+        targets.each { |b| return true if b.index == target.index }   # Already added
         targets.push(target)
         return true
     end
@@ -238,7 +239,7 @@ move, false, true)
 
         opposingIndices = @battle.pbGetOpposingIndicesInOrder(user.index)
         choices.sort_by! do |choice|
-            next (opposingIndices.find_index(choice.index) * 100) - choice.index
+            next opposingIndices.find_index(choice.index) * 100 - choice.index
         end
         pbAddTarget(targets, user, choices[0], nearOnly)
     end

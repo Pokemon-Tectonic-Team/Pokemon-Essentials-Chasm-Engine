@@ -29,8 +29,8 @@ class PokemonRegionMap_Scene
         # Or the lowest parent map in the hierarchy, if possible
         playerpos = getDisplayedPositionOfGameMap($game_map.map_id)
 
-        # Gather information about the map the player is on
-        # To determine whether to place the player icon
+		# Gather information about the map the player is on
+		# To determine whether to place the player icon
         if playerpos.nil?
             mapindex = 0
             @map     = @mapdata[0]
@@ -63,7 +63,7 @@ class PokemonRegionMap_Scene
             return false
         end
 
-        # Add the background graphic of the town map
+		# Add the background graphic of the town map
         addBackgroundOrColoredPlane(@sprites, "background", "Town Map/mapbg", Color.new(0, 0, 0), @viewport)
         @sprites["map"] = IconSprite.new(0, 0, @viewport)
         @sprites["map"].setBitmap("Graphics/Pictures/Town Map/Region Maps/#{@map[1]}")
@@ -84,7 +84,7 @@ class PokemonRegionMap_Scene
                                  ])
         end
 
-        # Add the sprite for the bottom labels
+		# Add the sprite for the bottom labels
         @sprites["mapbottom"] = MapBottomSprite.new(@viewport)
         @sprites["mapbottom"].mapname     = pbGetMessage(MessageTypes::RegionNames, mapindex)
         @sprites["mapbottom"].maplocation = pbGetMapLocation(@mapX, @mapY)
@@ -94,8 +94,8 @@ class PokemonRegionMap_Scene
         if playerpos && mapindex == playerpos[0]
             @sprites["player"] = IconSprite.new(0, 0, @viewport)
             @sprites["player"].setBitmap(GameData::TrainerType.player_map_icon_filename($Trainer.trainer_type))
-            @sprites["player"].x = (-SQUAREWIDTH / 2) + (@mapX * SQUAREWIDTH) + ((Graphics.width - @sprites["map"].bitmap.width) / 2)
-            @sprites["player"].y = (-SQUAREHEIGHT / 2) + (@mapY * SQUAREHEIGHT) + ((Graphics.height - @sprites["map"].bitmap.height) / 2)
+            @sprites["player"].x = -SQUAREWIDTH / 2 + (@mapX * SQUAREWIDTH) + (Graphics.width - @sprites["map"].bitmap.width) / 2
+            @sprites["player"].y = -SQUAREHEIGHT / 2 + (@mapY * SQUAREHEIGHT) + (Graphics.height - @sprites["map"].bitmap.height) / 2
         end
 
         # Add waypoint graphics and fly spot graphics
@@ -113,8 +113,8 @@ class PokemonRegionMap_Scene
         # Add the cursor sprite
         @sprites["cursor"] = AnimatedSprite.create("Graphics/Pictures/Town Map/mapCursor", 2, 5)
         @sprites["cursor"].viewport = @viewport
-        @sprites["cursor"].x        = (-SQUAREWIDTH / 2) + (@mapX * SQUAREWIDTH) + ((Graphics.width - @sprites["map"].bitmap.width) / 2)
-        @sprites["cursor"].y        = (-SQUAREHEIGHT / 2) + (@mapY * SQUAREHEIGHT) + ((Graphics.height - @sprites["map"].bitmap.height) / 2)
+        @sprites["cursor"].x        = -SQUAREWIDTH / 2 + (@mapX * SQUAREWIDTH) + (Graphics.width - @sprites["map"].bitmap.width) / 2
+        @sprites["cursor"].y        = -SQUAREHEIGHT / 2 + (@mapY * SQUAREHEIGHT) + (Graphics.height - @sprites["map"].bitmap.height) / 2
         @sprites["cursor"].play
 
         @changed = false
@@ -131,8 +131,8 @@ class PokemonRegionMap_Scene
                 next unless healspot && $PokemonGlobal.visitedMaps[healspot[0]]
                 @sprites["point#{k}"] = AnimatedSprite.create("Graphics/Pictures/Town Map/mapFly", 2, 16)
                 @sprites["point#{k}"].viewport = @viewport
-                @sprites["point#{k}"].x        = (-SQUAREWIDTH / 2) + (i * SQUAREWIDTH) + ((Graphics.width - @sprites["map"].bitmap.width) / 2)
-                @sprites["point#{k}"].y        = (-SQUAREHEIGHT / 2) + (j * SQUAREHEIGHT) + ((Graphics.height - @sprites["map"].bitmap.height) / 2)
+                @sprites["point#{k}"].x        = -SQUAREWIDTH / 2 + (i * SQUAREWIDTH) + (Graphics.width - @sprites["map"].bitmap.width) / 2
+                @sprites["point#{k}"].y        = -SQUAREHEIGHT / 2 + (j * SQUAREHEIGHT) + (Graphics.height - @sprites["map"].bitmap.height) / 2
                 @sprites["point#{k}"].play
                 k += 1
             end
@@ -143,18 +143,18 @@ class PokemonRegionMap_Scene
         wayPointsUnlocked = $waypoints_tracker.activeWayPoints
         wayPointsUnlocked.each_with_index do |activeWaypoint, index|
             waypointName = activeWaypoint[0]
-            activeWaypoint[1]
+            waypointInfo = activeWaypoint[1]
             mapDisplayPosition = $waypoints_tracker.mapPositionHash[waypointName]
             if mapDisplayPosition.nil?
-                echoln _INTL("No proper map position is known for totem ID {1}. Please inform a programmer about this.", waypointName)
+                echoln _INTL("No proper map position is known for totem ID {1}. Please inform a programmer about this.",waypointName)
                 next
             end
             xPos = mapDisplayPosition[1]
             yPos = mapDisplayPosition[2]
             newWaypointSprite = AnimatedSprite.create("Graphics/Pictures/Town Map/mapTotem", 2, 16)
             newWaypointSprite.viewport = @viewport
-            newWaypointSprite.x        = (-SQUAREWIDTH / 2) + (xPos * SQUAREWIDTH) + ((Graphics.width - @sprites["map"].bitmap.width) / 2)
-            newWaypointSprite.y        = (-SQUAREHEIGHT / 2) + (yPos * SQUAREHEIGHT) + ((Graphics.height - @sprites["map"].bitmap.height) / 2)
+            newWaypointSprite.x        = -SQUAREWIDTH / 2 + (xPos * SQUAREWIDTH) + (Graphics.width - @sprites["map"].bitmap.width) / 2
+            newWaypointSprite.y        = -SQUAREHEIGHT / 2 + (yPos * SQUAREHEIGHT) + (Graphics.height - @sprites["map"].bitmap.height) / 2
             newWaypointSprite.visible = false
             @sprites["point#{index}"] = newWaypointSprite
 
@@ -168,7 +168,7 @@ class PokemonRegionMap_Scene
             for i in 0...@mapdata.length
                 map = @mapdata[i]
                 next unless map
-                f.write("#-------------------------------\r\n")
+                f.write("\#-------------------------------\r\n")
                 f.write(format("[%d]\r\n", i))
                 f.write(format("Name = %s\r\nFilename = %s\r\n",
                   Compiler.csvQuote(map[0]), Compiler.csvQuote(map[1])))
@@ -259,9 +259,9 @@ class PokemonRegionMap_Scene
         yOffset = 0
         newX = 0
         newY = 0
-        @sprites["cursor"].x = (-SQUAREWIDTH / 2) + (@mapX * SQUAREWIDTH) + ((Graphics.width - @sprites["map"].bitmap.width) / 2)
-        @sprites["cursor"].y = (-SQUAREHEIGHT / 2) + (@mapY * SQUAREHEIGHT) + ((Graphics.height - @sprites["map"].bitmap.height) / 2)
-
+        @sprites["cursor"].x = -SQUAREWIDTH / 2 + (@mapX * SQUAREWIDTH) + (Graphics.width - @sprites["map"].bitmap.width) / 2
+        @sprites["cursor"].y = -SQUAREHEIGHT / 2 + (@mapY * SQUAREHEIGHT) + (Graphics.height - @sprites["map"].bitmap.height) / 2
+       
         $PokemonGlobal.town_map_waypoints_showing = false if $PokemonGlobal.town_map_waypoints_showing.nil?
         waypointsShowing = mode == 2 || $PokemonGlobal.town_map_waypoints_showing
         if waypointsShowing
@@ -271,7 +271,7 @@ class PokemonRegionMap_Scene
             end
         end
 
-        loop do
+		loop do
             Graphics.update
             Input.update
             pbUpdate
@@ -358,7 +358,7 @@ class PokemonRegionMap_Scene
                 return waypointAtSpot unless waypointAtSpot.nil?
             elsif Input.trigger?(Input::USE) && @editor   # Intentionally after other USE input check
                 pbChangeMapLocation(@mapX, @mapY)
-            elsif Input.trigger?(Input::ACTION) && mode == 0
+			elsif Input.trigger?(Input::ACTION) && mode == 0
                 waypointsShowing = !waypointsShowing
                 $PokemonGlobal.town_map_waypoints_showing = waypointsShowing
                 if waypointsShowing

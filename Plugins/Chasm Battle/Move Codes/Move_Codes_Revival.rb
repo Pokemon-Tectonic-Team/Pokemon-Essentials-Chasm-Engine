@@ -45,7 +45,7 @@ end
 #===============================================================================
 class PokeBattle_Move_RevivePartyMemberTo50HPThenSwitch < PokeBattle_Move
     def switchOutMove?; return true; end
-
+    
     def initialize(battle, move)
         super
         @partyIndex = 0
@@ -77,16 +77,16 @@ class PokeBattle_Move_RevivePartyMemberTo50HPThenSwitch < PokeBattle_Move
         effectOnPartyMember(selectedPokemon)
     end
 
-    def pbEndOfMoveUsageEffect(user, _targets, numHits, switchedBattlers)
+    def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
         return if user.fainted? || numHits == 0
         user.battle.pbCommonAnimation("FireSpin", user)
         @battle.pbDisplay(_INTL("{1} created a golden pyre!", user.name))
-        switchOutUserForSelectedPokemon(user, @partyIndex, switchedBattlers)
+        switchOutUserForSelectedPokemon(user,@partyIndex,switchedBattlers)
         @battle.pbDisplay(_INTL("{1} emerged from the pyre!", user.name))
-        user.pbRaiseMultipleStatSteps(ALL_STATS_1, user)
+         user.pbRaiseMultipleStatSteps(ALL_STATS_1, user)
     end
 
-    def getEffectScore(user, _target)
+    def getEffectScore(user, target)
         return 200 + getSwitchOutEffectScore(user)
     end
 end

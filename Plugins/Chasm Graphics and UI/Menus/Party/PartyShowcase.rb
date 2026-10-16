@@ -1,15 +1,15 @@
 class PokemonPartyShowcase_Scene
     POKEMON_ICON_SIZE = 64
-    Color.new(80, 80, 88)
-    Color.new(160, 160, 168)
+    base   = Color.new(80, 80, 88)
+    shadow = Color.new(160, 160, 168)
 
-    def initialize(trainer, snapshot: false, snapShotName: nil, fastSnapshot: false, npcTrainer: false, illusionsFool: true, flags: [], startWithIndex: 0)
+    def initialize(trainer,snapshot: false,snapShotName: nil,fastSnapshot: false, npcTrainer: false, illusionsFool: true, flags: [], startWithIndex: 0)
         @trainer = trainer
 
         @sprites = {}
         @party = trainer.party.clone
-        @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
-        @viewport.z = 99_999
+        @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
+        @viewport.z = 99999
         @npcTrainer = npcTrainer
         @flags = flags
 
@@ -26,7 +26,7 @@ class PokemonPartyShowcase_Scene
         pbSetSmallFont(@overlay)
 
         @sprites["overlay2"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
-        @sprites["overlay2"].z = 99_999
+        @sprites["overlay2"].z = 99999
         @overlay2 = @sprites["overlay2"].bitmap
         pbSetSmallFont(@overlay2)
 
@@ -45,7 +45,7 @@ class PokemonPartyShowcase_Scene
         # Illusion
         if illusionsFool && @party[0].hasAbility?(%i[ILLUSION INCOGNITO])
             storage = @party[0]
-            @party[0] = @party[-1]
+            @party[0] = @party[@party.length - 1]
             @party[@party.length - 1] = storage
         end
 
@@ -68,86 +68,92 @@ class PokemonPartyShowcase_Scene
                 return
             end
 
-            next unless @npcTrainer
-            if Input.trigger?(Input::USE)
-                selectedPokemon = @party[@selectedIndex]
-                showItemCommand = -1
-                commands = []
-                commands[showMasterDexCommand = commands.length] = _INTL("View MasterDex")
-                commands[showMovesCommand = commands.length] = _INTL("View Moves")
-                if selectedPokemon.hasItem?
-                    if selectedPokemon.itemCount > 1
-                        commands[showItemCommand = commands.length] = _INTL("View Items")
-                    else
-                        commands[showItemCommand = commands.length] = _INTL("View Item")
-                    end
-                end
-                commands[commands.length] = _INTL("Cancel")
+            if @npcTrainer
+                if Input.trigger?(Input::USE)
+                    selectedPokemon = @party[@selectedIndex]
 
-                commandChoice = pbMessage(_INTL("View which information?"), commands, commands.length)
-
-                if showMasterDexCommand > -1 && commandChoice == showMasterDexCommand
-                    $Trainer.pokedex.set_last_form_seen(selectedPokemon.species, 0, selectedPokemon.form)
-                    openSingleDexScreen(selectedPokemon.species)
-                elsif showMovesCommand > -1 && commandChoice == showMovesCommand
-                    showExternalSummary(selectedPokemon)
-                elsif showItemCommand > -1 && commandChoice == showItemCommand
-                    if selectedPokemon.itemCount > 1
-                        itemNames = []
-                        selectedPokemon.items.each do |itemID|
-                            itemNames.push(getItemName(itemID))
+                    showMasterDexCommand = -1
+                    showMovesCommand = -1
+                    showItemCommand = -1
+                    commands = []
+                    commands[showMasterDexCommand = commands.length] = _INTL("View MasterDex")
+                    commands[showMovesCommand = commands.length] = _INTL("View Moves")
+                    if selectedPokemon.hasItem?
+                        if selectedPokemon.itemCount > 1
+                            commands[showItemCommand = commands.length] = _INTL("View Items")
+                        else
+                            commands[showItemCommand = commands.length] = _INTL("View Item")
                         end
-                        itemNames[itemNames.length] = _INTL("Cancel")
-                        chosenItemIndex = pbMessage(_INTL("View which item?"), itemNames, itemNames.length)
-                        if chosenItemIndex < itemNames.length - 1
-                            item = selectedPokemon.items[chosenItemIndex]
+                    end
+                    commands[commands.length] = _INTL("Cancel")
+
+                    commandChoice = pbMessage(_INTL("View which information?"),commands,commands.length)
+                
+                    if showMasterDexCommand > -1 && commandChoice == showMasterDexCommand
+                        $Trainer.pokedex.set_last_form_seen(selectedPokemon.species, 0, selectedPokemon.form)
+						openSingleDexScreen(selectedPokemon.species)
+                    elsif showMovesCommand > -1 && commandChoice == showMovesCommand
+                        showExternalSummary(selectedPokemon)
+                    elsif showItemCommand > -1 && commandChoice == showItemCommand
+                        if selectedPokemon.itemCount > 1
+                            itemNames = []
+                            selectedPokemon.items.each do |itemID|
+                                itemNames.push(getItemName(itemID))
+                            end
+                            itemNames[itemNames.length] = _INTL("Cancel")
+                            chosenItemIndex = pbMessage(_INTL("View which item?"),itemNames,itemNames.length)
+                            if chosenItemIndex < itemNames.length - 1
+                                item = selectedPokemon.items[chosenItemIndex]
+                                showItemDescriptionMessage(item)
+                            end
+                        else
+                            item = selectedPokemon.items[0]
                             showItemDescriptionMessage(item)
                         end
-                    else
-                        item = selectedPokemon.items[0]
-                        showItemDescriptionMessage(item)
                     end
-                end
-            elsif Input.trigger?(Input::DOWN)
-                @selectedIndex += 2
-                if @selectedIndex >= @party.length
-                    if @selectedIndex.odd? && @party.length > 1
-                        @selectedIndex = 1
-                    else
-                        @selectedIndex = 0
-                    end
-                end
-                pbPlayCursorSE
-            elsif Input.trigger?(Input::UP)
-                @selectedIndex -= 2
-                if @selectedIndex < 0
-                    if @party.length.even?
-                        if @selectedIndex.even?
-                            @selectedIndex = @party.length - 2
+                elsif Input.trigger?(Input::DOWN)
+                    @selectedIndex += 2
+                    if @selectedIndex >= @party.length
+                        if @selectedIndex % 2 == 1 && @party.length > 1
+                            @selectedIndex = 1
                         else
-                            @selectedIndex = @party.length - 1
+                            @selectedIndex = 0
                         end
-                    elsif @selectedIndex.even?
-                        @selectedIndex = @party.length - 1
+                    end
+                    pbPlayCursorSE
+                elsif Input.trigger?(Input::UP)
+                    @selectedIndex -= 2
+                    if @selectedIndex < 0
+                        if @party.length % 2 == 0
+                            if @selectedIndex % 2 == 0
+                                @selectedIndex = @party.length - 2
+                            else
+                                @selectedIndex = @party.length - 1
+                            end
+                        else
+                            if @selectedIndex % 2 == 0
+                                @selectedIndex = @party.length - 1
+                            else
+                                @selectedIndex = @party.length - 2
+                            end
+                        end
+                    end
+                    pbPlayCursorSE
+                elsif Input.trigger?(Input::LEFT) || Input.trigger?(Input::RIGHT)
+                    newIndex = @selectedIndex + (@selectedIndex % 2 == 0 ? 1 : -1)
+                    if newIndex < @party.length
+                        @selectedIndex = newIndex
+                        pbPlayCursorSE
                     else
-                        @selectedIndex = @party.length - 2
+                        pbPlayBuzzerSE
                     end
                 end
-                pbPlayCursorSE
-            elsif Input.trigger?(Input::LEFT) || Input.trigger?(Input::RIGHT)
-                newIndex = @selectedIndex + (@selectedIndex.even? ? 1 : -1)
-                if newIndex < @party.length
-                    @selectedIndex = newIndex
-                    pbPlayCursorSE
-                else
-                    pbPlayBuzzerSE
-                end
+                @sprites["pokemonsel"].x = 256 * (@selectedIndex % 2)
+                @sprites["pokemonsel"].y = 122 * (@selectedIndex / 2)
             end
-            @sprites["pokemonsel"].x = 256 * (@selectedIndex % 2)
-            @sprites["pokemonsel"].y = 122 * (@selectedIndex / 2)
         end
     end
-
+    
     def drawPartyShowcase
         base = MessageConfig::DARK_TEXT_MAIN_COLOR
         shadow = MessageConfig::DARK_TEXT_SHADOW_COLOR
@@ -155,13 +161,13 @@ class PokemonPartyShowcase_Scene
         # Add party Pokémon sprites
         for i in 0...Settings::MAX_PARTY_SIZE
             next unless @party[i]
-            renderShowcaseInfo(i, @party[i])
+            renderShowcaseInfo(i,@party[i])
         end
 
         bottomBarY = Graphics.height - 20
 
         # Draw tribal bonus info at the bottom
-        pbDrawImagePositions(@overlay, [["Graphics/Pictures/icon_tribal_bonus", 4, bottomBarY - 4]])
+        pbDrawImagePositions(@overlay,[["Graphics/Pictures/icon_tribal_bonus",4,bottomBarY-4]])
 
         @trainer.tribalBonus.updateTribeCount
         bonusesList = @trainer.tribalBonus.getActiveBonusesList(false)
@@ -172,7 +178,7 @@ class PokemonPartyShowcase_Scene
         elsif bonusesList.length == tribesTotal
             fullDescription = _INTL("All")
         elsif bonusesList.length <= 2
-            bonusesList.each_with_index do |label, index|
+            bonusesList.each_with_index do |label,index|
                 fullDescription += "," unless index == 0
                 fullDescription += label
             end
@@ -186,7 +192,7 @@ class PokemonPartyShowcase_Scene
         if @npcTrainer
             playtesterSubmitted = nil
             @trainer.flags.each do |flag|
-                match = flag.match(/PlayerTeam:(.+)/)
+                match = flag.match(/PlayerTeam\:(.+)/)
                 next unless match
                 playtesterSubmitted = match[1]
                 break
@@ -194,7 +200,7 @@ class PokemonPartyShowcase_Scene
             if playtesterSubmitted
                 playerName = _INTL("Team Submitted by {1}", playtesterSubmitted)
             else
-                playerName = "<ar>#{@trainer.full_name}</ar>"
+                playerName = "<ar>#{@trainer.full_name}</ar>"  
             end
             drawFormattedTextEx(@overlay, Graphics.width - 304, bottomBarY, 300, playerName, base, shadow)
         elsif $Options.name_on_showcases != 1
@@ -206,7 +212,7 @@ class PokemonPartyShowcase_Scene
             # Show game version
             settingsLabel = "v#{Settings::GAME_VERSION}"
             settingsLabel += "-dev" if Settings::DEV_VERSION
-            drawFormattedTextEx(@overlay, (Graphics.width / 2) + 60, bottomBarY, 160, settingsLabel, base, shadow)
+            drawFormattedTextEx(@overlay, Graphics.width / 2 + 60, bottomBarY, 160, settingsLabel, base, shadow)
 
             numIcons = 0
             numIcons += 1 if Randomizer.on?
@@ -215,22 +221,22 @@ class PokemonPartyShowcase_Scene
 
             # Show randomizer icon
             distanceBetweenIcons = 28
-            bottomIconX = (Graphics.width / 2) - ((numIcons * distanceBetweenIcons) / 2)
+            bottomIconX = Graphics.width / 2 - (numIcons * distanceBetweenIcons) / 2
             if Randomizer.on?
-                pbDrawImagePositions(@overlay, [["Graphics/Pictures/Party/icon_randomizer", bottomIconX, bottomBarY - 4]])
+                pbDrawImagePositions(@overlay,[["Graphics/Pictures/Party/icon_randomizer",bottomIconX,bottomBarY-4]])
                 bottomIconX += distanceBetweenIcons
             end
 
             # Show cursed icon
             if @flags.include?("cursed")
-                pbDrawImagePositions(@overlay, [["Graphics/Pictures/Party/icon_cursed", bottomIconX + 2, bottomBarY - 4]])
+                pbDrawImagePositions(@overlay,[["Graphics/Pictures/Party/icon_cursed",bottomIconX+2,bottomBarY-4]])
                 bottomIconX += distanceBetweenIcons
             end
 
             # Show perfect icon
             if @flags.include?("perfect")
-                pbDrawImagePositions(@overlay, [["Graphics/Pictures/Party/icon_perfect", bottomIconX, bottomBarY - 4]])
-                bottomIconX + distanceBetweenIcons
+                pbDrawImagePositions(@overlay,[["Graphics/Pictures/Party/icon_perfect",bottomIconX,bottomBarY-4]])
+                bottomIconX += distanceBetweenIcons
             end
         end
     end
@@ -240,20 +246,20 @@ class PokemonPartyShowcase_Scene
         scene = PokemonSummary_Scene.new
         screen = PokemonSummaryScreen.new(scene)
         screen.pbStartSingleExternalScene(pokemon)
-        pbFadeInAndShow(@sprites, oldsprites)
+        pbFadeInAndShow(@sprites,oldsprites)
     end
 
     MAX_MOVE_NAME_WIDTH = 140
 
-    def renderShowcaseInfo(index, pokemon)
+    def renderShowcaseInfo(index,pokemon)
         base = MessageConfig::DARK_TEXT_MAIN_COLOR
         shadow = MessageConfig::DARK_TEXT_SHADOW_COLOR
-
+        
         displayX = ((index % 2) * (Graphics.width / 2)) + 6
-        displayY = ((index / 2) * ((Graphics.height / 3) - 8)) + 6
+        displayY = (index / 2) * (Graphics.height / 3 - 8) + 6
 
         mainIconY = displayY + 20
-        newPokemonIcon = PokemonIconSprite.new(pokemon, @viewport)
+        newPokemonIcon = PokemonIconSprite.new(pokemon,@viewport)
         newPokemonIcon.x = displayX
         newPokemonIcon.y = mainIconY
         @sprites["pokemon#{index}"] = newPokemonIcon
@@ -268,16 +274,16 @@ class PokemonPartyShowcase_Scene
         end
 
         # Display pokemon name
-        nameAndLevel = _INTL("#{pokemon.name} Lv. #{pokemon.level}")
+        nameAndLevel = _INTL("#{pokemon.name} Lv. #{pokemon.level.to_s}")
         drawTextEx(@overlay, displayX + 4, displayY, 200, 1, nameAndLevel, base, shadow)
 
         # Display item icon
         if pokemon.hasItem?
             pixelsBetweenItems = 20
-            itemX = displayX + POKEMON_ICON_SIZE - 8 - (pixelsBetweenItems * (pokemon.items.length - 1))
+            itemX = displayX + POKEMON_ICON_SIZE - 8 - pixelsBetweenItems * (pokemon.items.length - 1)
             itemY = mainIconY + POKEMON_ICON_SIZE - 8
             pokemon.items.each_with_index do |item, itemIndex|
-                newItemIcon = ItemIconSprite.new(itemX, itemY, item, @viewport)
+                newItemIcon = ItemIconSprite.new(itemX,itemY,item,@viewport)
                 newItemIcon.zoom_x = 0.5
                 newItemIcon.zoom_y = 0.5
                 newItemIcon.type = pokemon.itemTypeChosen
@@ -289,31 +295,31 @@ class PokemonPartyShowcase_Scene
 
         unless @npcTrainer
             # Display ball caught in icon
-            newItemIcon = ItemIconSprite.new(displayX + 200, mainIconY + POKEMON_ICON_SIZE + 16, pokemon.poke_ball, @viewport)
+            newItemIcon = ItemIconSprite.new(displayX + 200,mainIconY + POKEMON_ICON_SIZE + 16,pokemon.poke_ball,@viewport)
             newItemIcon.zoom_x = 0.5
             newItemIcon.zoom_y = 0.5
             @sprites["ball_#{index}"] = newItemIcon
         end
 
         # Display gender
-        # genderX = displayX + 2
-        # genderY = itemY - 6
+        #genderX = displayX + 2
+        #genderY = itemY - 6
         genderX = displayX + 196
         genderY = displayY
         if pokemon.male?
-            drawTextEx(@overlay, genderX, genderY, 80, 1, _INTL("♂"), Color.new(0, 112, 248), Color.new(120, 184, 232))
+            drawTextEx(@overlay, genderX, genderY, 80, 1, _INTL("♂"), Color.new(0,112,248), Color.new(120,184,232))
         elsif pokemon.female?
-            drawTextEx(@overlay, genderX, genderY, 80, 1, _INTL("♀"), Color.new(232, 32, 16), Color.new(248, 168, 184))
+            drawTextEx(@overlay, genderX, genderY, 80, 1, _INTL("♀"), Color.new(232,32,16), Color.new(248,168,184))
         end
 
         # Draw shiny icon
         if pokemon.shiny?
             shinyIconFileName = pokemon.shiny_variant? ? "Graphics/Pictures/shiny_variant" : "Graphics/Pictures/shiny"
-            pbDrawImagePositions(@overlay, [[shinyIconFileName, displayX, mainIconY, 0, 0, 16, 16]])
+            pbDrawImagePositions(@overlay,[[shinyIconFileName,displayX,mainIconY,0,0,16,16]])
         end
 
         # Display moves
-        pokemon.moves.each_with_index do |pokemonMove, moveIndex|
+        pokemon.moves.each_with_index do |pokemonMove,moveIndex|
             moveName = GameData::Move.get(pokemonMove.id).name
             expectedMoveNameWidth = @overlay.text_size(moveName).width
             if expectedMoveNameWidth > MAX_MOVE_NAME_WIDTH
@@ -326,10 +332,10 @@ class PokemonPartyShowcase_Scene
                     charactersToShave += 1
                 end
                 shavedName = moveName[0..-charactersToShave]
-                shavedName = shavedName[0..-1] if shavedName[-1] == " "
+                shavedName = shavedName[0..-1] if shavedName[shavedName.length-1] == " "
                 moveName = shavedName + "..."
             end
-            drawTextEx(@overlay, displayX + POKEMON_ICON_SIZE + 8, mainIconY + 2 + (moveIndex * 16), 200, 1, moveName, base, shadow)
+            drawTextEx(@overlay, displayX + POKEMON_ICON_SIZE + 8, mainIconY + 2 + moveIndex * 16, 200, 1, moveName, base, shadow)
         end
 
         # Display ability name
@@ -355,18 +361,18 @@ class PokemonPartyShowcase_Scene
         end
         drawTextEx(@overlay, displayX + 4, mainIconY + POKEMON_ICON_SIZE + 8, 200, 1, abilityNameLabel, base, shadow)
         pbSetSmallFont(@overlay)
-
+    
         # Display Style Points
         styleValueX = displayX + 222
         styleHash = pokemon.ev
-        styleValues = [styleHash[:HP], styleHash[:ATTACK], styleHash[:DEFENSE], styleHash[:SPECIAL_ATTACK], styleHash[:SPECIAL_DEFENSE], styleHash[:SPEED]]
-        styleValues.each_with_index do |styleValue, styleIndex|
-            # styleOpacity = (0.5 + styleValue / 40.0) * 255
+        styleValues = [styleHash[:HP],styleHash[:ATTACK],styleHash[:DEFENSE],styleHash[:SPECIAL_ATTACK],styleHash[:SPECIAL_DEFENSE],styleHash[:SPEED]]
+        styleValues.each_with_index do |styleValue,styleIndex|
+            #styleOpacity = (0.5 + styleValue / 40.0) * 255
             thisColor = base.clone
             thisColor.alpha = 120 if styleValue == 0
             thisShadow = shadow.clone
             thisShadow.alpha = 120 if styleValue == 0
-            drawTextEx(@overlay, styleValueX, 2 + displayY + (18 * styleIndex), 80, 1, styleValue.to_s, thisColor, thisShadow)
+            drawTextEx(@overlay, styleValueX, 2 + displayY + 18 * styleIndex, 80, 1, styleValue.to_s, thisColor, thisShadow)
         end
     end
 
@@ -383,8 +389,8 @@ class PokemonPartyShowcase_Scene
     end
 end
 
-def enemyTrainerShowcase(trainerClass, trainerName, version = 0, illusionsFool: false)
-    trainer = pbLoadTrainer(trainerClass, trainerName, version)
+def enemyTrainerShowcase(trainerClass,trainerName,version=0, illusionsFool: false)
+    trainer = pbLoadTrainer(trainerClass,trainerName,version)
     trainerShowcase(trainer, npcTrainer: true, illusionsFool: illusionsFool)
 end
 
@@ -396,10 +402,10 @@ end
 
 def createVisualTrainerDocumentation
     GameData::Trainer.each do |trainerData|
-        trainer = pbLoadTrainer(trainerData.trainer_type, trainerData.name, trainerData.version)
+        trainer = pbLoadTrainer(trainerData.trainer_type,trainerData.name,trainerData.version)
         screenshotName = "#{trainerData.trainer_type} #{trainerData.name}"
         screenshotName += " (#{trainerData.version})" if trainerData.version > 0
         screenshotName += " "
-        PokemonPartyShowcase_Scene.new(trainer, snapshot: true, snapShotName: screenshotName, fastSnapshot: true, npcTrainer: true)
+        PokemonPartyShowcase_Scene.new(trainer,snapshot: true,snapShotName: screenshotName,fastSnapshot: true, npcTrainer: true)
     end
 end

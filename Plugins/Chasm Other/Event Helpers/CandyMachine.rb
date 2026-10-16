@@ -1,4 +1,4 @@
-def candyMachine(candyAmount, level)
+def candyMachine(candyAmount,level)
     if candyAmount == 0
         pbMessage(_INTL("A candy machine. It's out of candy."))
     else
@@ -11,26 +11,28 @@ def candyMachine(candyAmount, level)
         end
         cost = candyBatchCost(level)
         if $Trainer.money < cost
-            pbMessage(_INTL("A batch costs ${1}. You can't afford to pay that much!", cost.to_s_formatted))
-        elsif pbConfirmMessage(_INTL("Buy some candy for ${1}?", cost.to_s_formatted))
-            setTempSwitchOn("A")
-            $Trainer.money = $Trainer.money - cost
-            pbMessage(_INTL("You put in ${1}.", cost))
+            pbMessage(_INTL("A batch costs ${1}. You can't afford to pay that much!",cost.to_s_formatted))
+        else
+            if pbConfirmMessage(_INTL("Buy some candy for ${1}?",cost.to_s_formatted))
+                setTempSwitchOn("A")
+                $Trainer.money = $Trainer.money - cost
+                pbMessage(_INTL("You put in ${1}.", cost))
 
-            # Modify the candy machine
-            case candyAmount
-            when 3
-                setMySwitch("A")
-            when 2
-                setMySwitch("B")
-            when 1
-                setMySwitch("C")
-            end
+                # Modify the candy machine
+                case candyAmount
+                when 3
+                    setMySwitch("A")
+                when 2
+                    setMySwitch("B")
+                when 1
+                    setMySwitch("C")
+                end
 
-            # Give the candy
-            itemsGiven = candiesForLevel(level)
-            for i in 0...itemsGiven.length / 2
-                pbReceiveItem(itemsGiven[i * 2], itemsGiven[(i * 2) + 1])
+                # Give the candy
+                itemsGiven = candiesForLevel(level)
+                for i in 0...itemsGiven.length/2
+                    pbReceiveItem(itemsGiven[i*2],itemsGiven[i*2 + 1])
+                end
             end
         end
     end
@@ -66,6 +68,6 @@ def candyBatchCost(level)
         return 10_000
     else
         pbMessage(_INTL("Unassigned level passed to candyBatchCost: {1}", level)) if $DEBUG
-        return 250
+	    return 250
     end
 end

@@ -27,11 +27,11 @@ BattleHandlers::AbilityOnStatusInflicted.add(:HASTY,
 )
 
 BattleHandlers::AbilityOnStatusInflicted.add(:DISASTERRESPONSE,
-    proc { |ability, battler, _user, _status|
-        next if battler.effectActive?(:DisasterResponse)
-        battler.battle.pbShowAbilitySplash(battler, ability)
-        battler.battle.pbDisplay(_INTL("{1} prepares its response!", battler.pbThis))
-        battler.applyEffect(:DisasterResponse)
-        battler.battle.pbHideAbilitySplash(battler)
+    proc { |ability, battler, user, _status|
+            next if battler.effectActive?(:DisasterResponse)
+            battler.battle.pbShowAbilitySplash(battler, ability)
+            battler.battle.pbDisplay(_INTL("{1} prepares its response!", battler.pbThis))
+            battler.applyEffect(:DisasterResponse)
+            battler.battle.pbHideAbilitySplash(battler)
     }
 )

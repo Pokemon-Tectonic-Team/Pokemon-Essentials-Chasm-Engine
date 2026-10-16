@@ -2,7 +2,7 @@
 # Heals for 1/3 the damage dealt. (Drain Punch)
 #===============================================================================
 class PokeBattle_Move_HealUserByThirdOfDamageDone < PokeBattle_DrainMove
-    def drainFactor(_user, _target); return 1.0 / 3.0; end
+    def drainFactor(_user, _target); return (1.0 / 3.0); end
 end
 
 #===============================================================================
@@ -152,5 +152,5 @@ end
 class PokeBattle_Move_HealUserByHalfOfDamageDoneOverheal < PokeBattle_DrainMove
     def drainFactor(_user, _target); return 0.5; end
 
-    def canOverheal?(_user, _target); return true; end
+    def canOverheal?(user, _target); return true; end
 end

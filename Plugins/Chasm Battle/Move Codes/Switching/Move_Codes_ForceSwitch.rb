@@ -75,7 +75,7 @@ class PokeBattle_Move_SwitchOutTargetIfMisses < PokeBattle_Move
 
     # This method is called if a move fails to hit all of its targets
     def pbAllMissed(user, targets)
-        forceOutTargets(user, targets, [], substituteBlocks: true, invertMissCheck: true)
+        forceOutTargets(user,targets,[],substituteBlocks: true, invertMissCheck: true)
     end
 
     def getEffectScore(user, target)

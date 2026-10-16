@@ -3,39 +3,39 @@
 #===============================================================================
 module PokemonPCList
     @@pclist = []
-
+  
     def self.registerPC(pc)
-        @@pclist.push(pc)
+      @@pclist.push(pc)
     end
-
+  
     def self.getCommandList
-        commands = []
-        for pc in @@pclist
-            commands.push(pc.name) if pc.shouldShow?
-        end
-        commands.push(_INTL("Log Off"))
-        return commands
+      commands = []
+      for pc in @@pclist
+        commands.push(pc.name) if pc.shouldShow?
+      end
+      commands.push(_INTL("Log Off"))
+      return commands
     end
-
+  
     def self.callCommand(cmd)
-        return false if cmd < 0 || cmd >= @@pclist.length
-        i = 0
-        for pc in @@pclist
-            next if !pc.shouldShow?
-            if i == cmd
-                pc.access
-                return true
-            end
-            i += 1
+      return false if cmd<0 || cmd>=@@pclist.length
+      i = 0
+      for pc in @@pclist
+        next if !pc.shouldShow?
+        if i==cmd
+          pc.access
+          return true
         end
-        return false
+        i += 1
+      end
+      return false
     end
-end
+  end
 
 def pbPokeCenterPC
-    if !teamEditingAllowed?
-        showNoTeamEditingMessage
-        return
+    if !teamEditingAllowed?()
+      showNoTeamEditingMessage()
+      return
     end
 
     pbMessage(_INTL("\\se[PC open]The Pokémon Storage System was opened."))
@@ -54,42 +54,48 @@ def pbPokeCenterPC
     command = 0
     loop do
         commands = []
+        organizeCommand = -1
+        widthdrawCommand = -1
+        depositCommand = -1
         omniTutorCommand = -1
         visitEstateCommand = -1
         viewRewardsCommand = -1
+        cableClubCommand = -1
+        teamCodeCommand = -1
+        logOutCommand = -1
         commands[organizeCommand = commands.length] = _INTL("Organize Boxes")
-        commands[widthdrawCommand = commands.length] = _INTL("Withdraw Pokémon")
+        commands[widthdrawCommand = commands.length] = _INTL("Withdraw Pokémon") 
         commands[depositCommand = commands.length] = _INTL("Deposit Pokémon")
-        commands[omniTutorCommand = commands.length] = _INTL("OmniTutor") if $PokemonGlobal.omnitutor_active
+        commands[omniTutorCommand = commands.length] = _INTL("OmniTutor") if $PokemonGlobal.omnitutor_active 
         commands[visitEstateCommand = commands.length] = _INTL("Visit PokÉstate") unless getGlobalSwitch(ESTATE_DISABLED_SWITCH)
         commands[viewRewardsCommand = commands.length] = _INTL("Check Rewards") unless getGlobalSwitch(ESTATE_DISABLED_SWITCH)
-        commands[cableClubCommand = commands.length] = _INTL("Visit Cable Club")
-        commands[teamCodeCommand = commands.length] = _INTL("View Party Online")
-        commands[commands.length] = _INTL("Log Out")
-        command = pbShowCommands(nil, commands, -1)
+        commands[cableClubCommand = commands.length] =  _INTL("Visit Cable Club")
+        commands[teamCodeCommand = commands.length] =  _INTL("View Party Online")
+        commands[logOutCommand = commands.length] = _INTL("Log Out") 
+        command = pbShowCommands(nil,commands,-1)
         if command == organizeCommand || command == widthdrawCommand || command == depositCommand
-            if command == 1 # Withdraw
+            if command==1   # Withdraw
                 if $PokemonStorage.party_full?
                     pbMessage(_INTL("Your party is full!"))
                     next
                 end
-            elsif command == 2 # Deposit
-                count = 0
-                for p in $PokemonStorage.party
-                    count += 1 if p && p.able?
-                end
-                if count <= 1
-                    pbMessage(_INTL("Can't deposit the last Pokémon!"))
+                elsif command==2   # Deposit
+                    count=0
+                    for p in $PokemonStorage.party
+                        count += 1 if p && p.able?
+                    end
+                    if count<=1
+                        pbMessage(_INTL("Can't deposit the last Pokémon!"))
                     next
                 end
             end
             pbFadeOutIn {
                 scene = PokemonStorageScene.new
-                screen = PokemonStorageScreen.new(scene, $PokemonStorage)
+                screen = PokemonStorageScreen.new(scene,$PokemonStorage)
                 return if screen.pbStartScreen(command)
             }
         elsif visitEstateCommand != -1 && command == visitEstateCommand
-            break if $PokEstate.transferToEstateOfChoice
+            break if $PokEstate.transferToEstateOfChoice()
         elsif viewRewardsCommand != -1 && command == viewRewardsCommand
             pbFadeOutIn do
                 collectionRewardsListScene = CollectionRewardsListScene.new
@@ -97,11 +103,11 @@ def pbPokeCenterPC
                 screen.pbStartScreen
             end
         elsif omniTutorCommand != -1 && command == omniTutorCommand
-            useOmniTutor
+            useOmniTutor()
         elsif cableClubCommand != -1 && command == cableClubCommand
-            pbCableClubPCMenu
+            pbCableClubPCMenu()
         elsif teamCodeCommand != -1 && command == teamCodeCommand
-            load_team_code
+            load_team_code()
         else
             break
         end

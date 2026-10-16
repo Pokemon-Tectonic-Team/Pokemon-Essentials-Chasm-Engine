@@ -10,7 +10,7 @@ BattleHandlers::EORGainItemAbility.add(:HARVEST,
 )
 
 BattleHandlers::EORGainItemAbility.add(:LARDER,
-    proc { |ability, battler, _battle|
+    proc { |ability, battler, battle|
         next unless battler.recyclableItem
         next unless GameData::Item.get(battler.recyclableItem).is_berry?
         next if battler.hasItem?(battler.recyclableItem)
@@ -25,7 +25,7 @@ BattleHandlers::EORGainItemAbility.add(:GOURMAND,
         GameData::Item.getByFlag("Pinch").each do |pinch|
             next unless GameData::Item.get(pinch).legal?
             next unless battler.canAddItem?(pinch)
-            itemsCanAdd.push(pinch)
+            itemsCanAdd.push(pinch) 
         end
         next if itemsCanAdd.length == 0
         battle.pbShowAbilitySplash(battler, ability)
@@ -46,7 +46,7 @@ BattleHandlers::EORGainItemAbility.add(:STRATAGEM,
             next unless battler.canAddItem?(gem)
             typeName = gem.to_s.chomp("GEM") # ROCKGEM -> ROCK
             next unless attackingMoves.any? { |m| m.type == typeName.to_sym }
-            itemsCanAdd.push(gem)
+            itemsCanAdd.push(gem) 
         end
         next if itemsCanAdd.length == 0
         battle.pbShowAbilitySplash(battler, ability)

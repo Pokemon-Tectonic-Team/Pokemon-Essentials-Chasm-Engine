@@ -16,7 +16,7 @@ end
 # User takes recoil damage equal to 1/3 of the damage this move dealt.
 #===============================================================================
 class PokeBattle_Move_RecoilThirdOfDamageDealt < PokeBattle_RecoilMove
-    def recoilFactor;  return 1.0 / 3.0; end
+    def recoilFactor;  return (1.0 / 3.0); end
 end
 
 # Empowered Brave Bird
@@ -29,7 +29,7 @@ end
 # May paralyze the target.
 #===============================================================================
 class PokeBattle_Move_RecoilThirdOfDamageDealtNumbTarget < PokeBattle_RecoilMove
-    def recoilFactor; return 1.0 / 3.0; end
+    def recoilFactor;  return (1.0 / 3.0); end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
@@ -46,7 +46,7 @@ end
 # May burn the target.
 #===============================================================================
 class PokeBattle_Move_RecoilThirdOfDamageDealtBurnTarget < PokeBattle_RecoilMove
-    def recoilFactor; return 1.0 / 3.0; end
+    def recoilFactor; return (1.0 / 3.0); end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
@@ -68,14 +68,14 @@ end
 # (Light of Ruin)
 #===============================================================================
 class PokeBattle_Move_RecoilHalfOfDamageDealt < PokeBattle_RecoilMove
-    def recoilFactor; return 0.5; end
+    def recoilFactor;  return 0.5; end
 end
 
 #===============================================================================
 # User takes recoil damage equal to 2/3 of the damage this move dealt.
 #===============================================================================
 class PokeBattle_Move_RecoilTwoThirdsOfDamageDealt < PokeBattle_RecoilMove
-    def recoilFactor; return 2.0 / 3.0; end
+    def recoilFactor; return (2.0 / 3.0); end
 end
 
 #===============================================================================
@@ -116,7 +116,7 @@ class PokeBattle_Move_DamageBelowHalfTakenAsRecoil < PokeBattle_Move
         user.applyRecoilDamage(recoilAmount, true, true, recoilMessage)
     end
 
-    def getDamageBasedEffectScore(user, target, damage)
+    def getDamageBasedEffectScore(user,target,damage)
         return 0 if damage >= target.totalhp / 2
         recoilDamage = (target.totalhp / 2) - damage
         score = (-recoilDamage * 2 / user.totalhp).floor
@@ -185,7 +185,7 @@ class PokeBattle_Move_UserLosesEighthOfTotalHP < PokeBattle_Move
     end
 
     def getEffectScore(user, _target)
-        return getHPLossEffectScore(user, 1.0 / 8.0)
+        return getHPLossEffectScore(user, 1.0/8.0)
     end
 end
 
@@ -212,11 +212,11 @@ end
 # But can't faint from that recoil damage.
 #===============================================================================
 class PokeBattle_Move_RecoilThirdOfDamageDealtButCantFaint < PokeBattle_RecoilMove
-    def recoilFactor; return 1.0 / 3.0; end
-
+    def recoilFactor;  return (1.0 / 3.0); end
+    
     def pbRecoilDamage(user, target)
         damage = (target.damageState.totalHPLost * finalRecoilFactor(user)).round
-        damage = [damage, (user.hp - 1)].min
+        damage = [damage,(user.hp - 1)].min
         return damage
     end
 
@@ -232,6 +232,6 @@ end
 # User takes 25% recoil damage, and always critical hits.
 #===============================================================================
 class PokeBattle_Move_RecoilQuarterOfDamageDealtCriticalHits < PokeBattle_RecoilMove
-    def recoilFactor; return 0.25; end
+    def recoilFactor;  return 0.25; end
     def pbCriticalOverride(_user, _target); return 1; end
 end

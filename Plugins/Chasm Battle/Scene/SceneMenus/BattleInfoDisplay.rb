@@ -59,12 +59,12 @@ class BattleInfoDisplay < SpriteWrapper
         if @individual
             @backgroundBitmap	= @battleInfoIndividual
             bitmap.blt(0, 0, @backgroundBitmap.bitmap,
-                  Rect.new(0, 0, @backgroundBitmap.width, @backgroundBitmap.height))
+  				Rect.new(0, 0, @backgroundBitmap.width, @backgroundBitmap.height))
             drawIndividualBattlerInfo(@individual)
         else
             @backgroundBitmap	= @battleInfoMain
             bitmap.blt(0, 0, @backgroundBitmap.bitmap,
-                  Rect.new(0, 0, @backgroundBitmap.width, @backgroundBitmap.height))
+  				Rect.new(0, 0, @backgroundBitmap.width, @backgroundBitmap.height))
             drawWholeBattleInfo
         end
     end
@@ -72,8 +72,8 @@ class BattleInfoDisplay < SpriteWrapper
     def drawWholeBattleInfo
         base        = MessageConfig.pbDefaultTextMainColor
         shadow      = MessageConfig.pbDefaultTextShadowColor
-        lightBase   = MessageConfig.pbDefaultTextMainColor(opposite: true)
-        lightShadow = MessageConfig.pbDefaultTextShadowColor(opposite: true)
+        lightBase   = MessageConfig::pbDefaultTextMainColor(opposite: true)
+        lightShadow = MessageConfig::pbDefaultTextShadowColor(opposite: true)
         fadedColor  = MessageConfig.pbDefaultFadedTextColor
 
         textToDraw = []
@@ -99,7 +99,7 @@ class BattleInfoDisplay < SpriteWrapper
             textToDraw.push([b.name, battlerNameX, yPos + battlerNameOffset, 0, base, shadow])
             cursorX = @selected == battlerIndex ? @statusCursorBitmap.width / 2 : 0
             bitmap.blt(battlerCursorX, yPos, @statusCursorBitmap.bitmap,
-                  Rect.new(cursorX, 0, @statusCursorBitmap.width / 2, @statusCursorBitmap.height / 2))
+  				Rect.new(cursorX, 0, @statusCursorBitmap.width / 2, @statusCursorBitmap.height / 2))
             if @turnOrder.key?(b.index)
                 turnDescription = @turnOrder[b.index].to_s
                 textToDraw.push([turnDescription, battlerCursorX + 140, yPos + 4, 0, base,
@@ -117,7 +117,7 @@ class BattleInfoDisplay < SpriteWrapper
             textToDraw.push([b.name, battlerNameX, yPos + battlerNameOffset, 0, base, shadow])
             cursorX = @selected == battlerIndex ? @statusCursorBitmap.width / 2 : 0
             bitmap.blt(battlerCursorX, yPos, @statusCursorBitmap.bitmap,
-                  Rect.new(cursorX, @statusCursorBitmap.height / 2, @statusCursorBitmap.width / 2, @statusCursorBitmap.height / 2))
+  				Rect.new(cursorX, @statusCursorBitmap.height / 2, @statusCursorBitmap.width / 2, @statusCursorBitmap.height / 2))
             if @turnOrder.key?(b.index)
                 turnDescription = @turnOrder[b.index].to_s
                 textToDraw.push([turnDescription, battlerCursorX + 140, yPos + 4, 0, base,
@@ -150,28 +150,28 @@ class BattleInfoDisplay < SpriteWrapper
         wholeFieldX = 320
         wholeFieldY = 54
         textToDraw.push([_INTL("Field Effects"), wholeFieldX, wholeFieldY, 0, lightBase, lightShadow])
-        drawFieldEffects(@battle.field, wholeFieldX, wholeFieldY)
+        drawFieldEffects(@battle.field,wholeFieldX,wholeFieldY)
 
         wholeFieldY += 112
         textToDraw.push([_INTL("Our Side"), wholeFieldX, wholeFieldY, 0, lightBase, lightShadow])
         ourTribesList = $Trainer.tribalBonus.getActiveBonusesList(true, false)
-        drawFieldEffects(@battle.sides[0], wholeFieldX, wholeFieldY, ourTribesList)
-
+        drawFieldEffects(@battle.sides[0],wholeFieldX,wholeFieldY,ourTribesList)
+        
         wholeFieldY += 112
         textToDraw.push([_INTL("Their Side"), wholeFieldX, wholeFieldY, 0, lightBase, lightShadow])
         theirTribesList = []
         @battle.opponent&.each do |opponent|
             theirTribesList.concat(opponent.tribalBonus.getActiveBonusesList(true, true))
         end
-        drawFieldEffects(@battle.sides[1], wholeFieldX, wholeFieldY, theirTribesList)
+        drawFieldEffects(@battle.sides[1],wholeFieldX,wholeFieldY,theirTribesList)
 
         pbDrawTextPositions(bitmap, textToDraw)
     end
 
     def drawFieldEffects(effectHolder, xStart, yStart, tribesList = [])
-        base = MessageConfig.pbDefaultTextMainColor
-        shadow = MessageConfig.pbDefaultTextShadowColor
-        fadedColor = MessageConfig.pbDefaultFadedTextColor
+        base = MessageConfig::pbDefaultTextMainColor
+        shadow = MessageConfig::pbDefaultTextShadowColor
+        fadedColor = MessageConfig::pbDefaultFadedTextColor
 
         textToDraw = []
 
@@ -183,16 +183,14 @@ class BattleInfoDisplay < SpriteWrapper
         baseEffectY = yStart + 12
         scrollingBoundYMin = yStart + 32
         scrollingBoundYMax = yStart + 70
-        if fieldEffects.length == 0
-            textToDraw.push([_INTL("None"), xStart, baseEffectY + 24, 0, fadedColor, shadow])
-        else
+        if fieldEffects.length != 0
             scrolling = true if fieldEffects.length > 2
             index = 0
             repeats = scrolling ? 2 : 1
-            for _ in 0...repeats
+            for repeat in 0...repeats
                 fieldEffects.each do |effectName|
                     index += 1
-                    calcedY = baseEffectY + (24 * index)
+                    calcedY = baseEffectY + 24 * index
                     if scrolling
                         calcedY -= @fieldScrollingValue
                         calcedY += 12
@@ -205,10 +203,12 @@ class BattleInfoDisplay < SpriteWrapper
                     textToDraw.push([effectName, xStart, calcedY, 0, textBase, textShadow])
                 end
             end
+        else
+            textToDraw.push([_INTL("None"), xStart, baseEffectY + 24, 0, fadedColor, shadow])
         end
 
         # Reset the scrolling once its scrolled through the entire list once
-        @fieldScrollingValue = 0 if @fieldScrollingValue > ((fieldEffects.length + 2) * 32) + 6
+        @fieldScrollingValue = 0 if @fieldScrollingValue > (fieldEffects.length + 2) * 32 + 6
 
         pbDrawTextPositions(bitmap, textToDraw)
     end
@@ -216,9 +216,9 @@ class BattleInfoDisplay < SpriteWrapper
     def drawIndividualBattlerInfo(battler)
         base = MessageConfig.pbDefaultTextMainColor
         shadow = MessageConfig.pbDefaultTextShadowColor
-        lightBase = MessageConfig.pbDefaultTextMainColor(opposite: true)
-        lightShadow = MessageConfig.pbDefaultTextShadowColor(opposite: true)
-        fadedColor = MessageConfig.pbDefaultFadedTextColor
+		lightBase = MessageConfig::pbDefaultTextMainColor(opposite: true)
+    	lightShadow = MessageConfig::pbDefaultTextShadowColor(opposite: true)
+        fadedColor = MessageConfig::pbDefaultFadedTextColor
         textToDraw = []
 
         battlerName = battler.name
@@ -300,14 +300,14 @@ class BattleInfoDisplay < SpriteWrapper
         end
 
         index = 0
-        calculatedStatInfo.each do |_stat, calculatedInfo|
+        calculatedStatInfo.each do |stat, calculatedInfo|
             name 		= calculatedInfo[0]
             step 		= calculatedInfo[1]
             statMult	= calculatedInfo[2]
             statValue	= calculatedInfo[3]
 
             # Calculate text display info
-            y = statStepsSectionTopY + 40 + (40 * index)
+            y = statStepsSectionTopY + 40 + 40 * index
 
             # Display the stat's name
             textToDraw.push([name, statLabelX, y, 0, base, shadow])
@@ -335,8 +335,8 @@ class BattleInfoDisplay < SpriteWrapper
         # Compile a descriptor for each effect on the battler or its position
         battlerEffects = []
         if battler.form != 0
-            formName = GameData::Species.get_species_form(battler.species_data.id, battler.form).form_name
-            battlerEffects.push(_INTL("{1} Form", formName)) unless formName.blank?
+            formName = GameData::Species.get_species_form(battler.species_data.id,battler.form).form_name
+            battlerEffects.push(_INTL("{1} Form",formName)) unless formName.blank?
         end
         pushEffectDescriptorsToArray(battler, battlerEffects)
         pushEffectDescriptorsToArray(@battle.positions[battler.index], battlerEffects)
@@ -361,13 +361,11 @@ class BattleInfoDisplay < SpriteWrapper
         scrollingBoundYMax = statStepsSectionTopY + 290
         index = 0
         repeats = scrolling ? 2 : 1
-        if battlerEffects.length == 0
-            textToDraw.push([_INTL("None"), battlerEffectsX, statStepsSectionTopY + 36, 0, fadedColor, shadow])
-        else
-            for _ in 0...repeats
+        if battlerEffects.length != 0
+            for repeat in 0...repeats
                 battlerEffects.each do |effectName|
                     index += 1
-                    calcedY = statStepsSectionTopY + 4 + (32 * index)
+                    calcedY = statStepsSectionTopY + 4 + 32 * index
                     calcedY -= @battlerScrollingValue if scrolling
                     next if calcedY < scrollingBoundYMin || calcedY > scrollingBoundYMax
                     distanceFromFade = [calcedY - scrollingBoundYMin, scrollingBoundYMax - calcedY].min
@@ -377,6 +375,8 @@ class BattleInfoDisplay < SpriteWrapper
                     textToDraw.push([effectName, battlerEffectsX, calcedY, 0, textBase, textShadow])
                 end
             end
+        else
+            textToDraw.push([_INTL("None"), battlerEffectsX, statStepsSectionTopY + 36, 0, fadedColor, shadow])
         end
 
         # Reset the scrolling once its scrolled through the entire list once
@@ -393,12 +393,12 @@ class BattleInfoDisplay < SpriteWrapper
                 effectData.info_custom_description.call(value, effectData.value_to_string(value, @battle), effectDescriptionArray)
                 descriptorsArray.push("#{effectData.name}:")
                 effectDescriptionArray.each do |effectDescriptionLine|
-                    descriptorsArray.push("  #{effectDescriptionLine}") # offset slightly
+                    descriptorsArray.push("  #{effectDescriptionLine}") # offset slightly 
                 end
             else
                 effectDescription = effectData.name
                 effectDescription = "#{effectDescription}: #{effectData.value_to_string(value, @battle)}" if effectData.type != :Boolean
-                descriptorsArray.push(effectDescription)
+                descriptorsArray.push(effectDescription)  
             end
         end
     end
@@ -408,9 +408,9 @@ class BattleInfoDisplay < SpriteWrapper
         pbUpdateSpriteHash(@sprites)
         if @individual.nil?
             @battlerScrollingValue = 0
-            @fieldScrollingValue += 1 if frameCounter.even?
+            @fieldScrollingValue += 1 if frameCounter % 2 == 0
         else
-            @battlerScrollingValue += 1 if frameCounter.even?
+            @battlerScrollingValue += 1 if frameCounter % 2 == 0
             @fieldScrollingValue = 0
         end
     end

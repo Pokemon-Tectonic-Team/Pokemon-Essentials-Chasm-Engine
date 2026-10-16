@@ -4,11 +4,13 @@ DebugMenuCommands.register("unlockallwaypoints", {
     "description" => _INTL("Unlock all waypoints."),
     "effect"      => proc { |_sprites, _viewport|
         $waypoints_tracker.eachWaypoint do |event, mapID, waypointName|
-            echoln("Unlocking: #{waypointName}")
-            $waypoints_tracker.addWaypoint(waypointName, [mapID, event.id])
-        rescue StandardError
-            pbPrintException($!) if $DEBUG
-            pbMessage(_INTL("Unable to unlock waypoint: #{waypointName}"))
+            begin
+                echoln("Unlocking: #{waypointName}")
+                $waypoints_tracker.addWaypoint(waypointName, [mapID, event.id])
+            rescue StandardError => exception
+                pbPrintException($!) if $DEBUG
+                pbMessage(_INTL("Unable to unlock waypoint: #{waypointName}"))
+            end
         end
         pbMessage(_INTL("All waypoints unlocked!"))
     },

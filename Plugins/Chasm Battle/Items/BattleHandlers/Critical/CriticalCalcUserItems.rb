@@ -1,5 +1,5 @@
 BattleHandlers::CriticalCalcUserItem.add(:RAZORCLAW,
-  proc { |_item, _user, _target, c|
+  proc { |item, _user, _target, c|
       next c + 1
   }
 )

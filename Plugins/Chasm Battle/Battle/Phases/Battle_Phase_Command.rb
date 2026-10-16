@@ -95,7 +95,7 @@ class PokeBattle_Battle
                 move = @battlers[idxBattler].getMoves[cmd]
                 next false if cmd < 0 || move.nil? || move.id.nil?
                 next false unless pbRegisterMove(idxBattler, cmd)
-                move.calculateUsageOverrides(battler, []) # only to define calcType
+                move.calculateUsageOverrides(battler,[]) # only to define calcType
                 target_data = move.pbTarget(battler)
                 next false if (!singleBattle? || target_data.id == :UserOrNearOther) &&
                               !pbChooseTarget(@battlers[idxBattler], move)
@@ -183,7 +183,7 @@ class PokeBattle_Battle
     #=============================================================================
     # Command phase
     #=============================================================================
-    def describeAction(actor, action)
+    def describeAction(actor,action)
         case action[0]
         when :None
             return "do nothing"
@@ -423,7 +423,7 @@ class PokeBattle_Battle
 
                     eachSameSideBattler do |b|
                         next unless b.pbOwnedByPlayer?
-                        describedPlayerAction = describeAction(b, @predictedActions[b.index])
+                        describedPlayerAction = describeAction(b,@predictedActions[b.index])
                         echoln("[PLAYER PREDICTION] The AI predicts that #{b.pbThis} will #{describedPlayerAction}!")
                     end
                 end
@@ -528,7 +528,7 @@ class PokeBattle_Battle
                     actioned.pop # Forget this battler was done
                     idxBattler = actioned.last - 1
                     pbCancelChoice(idxBattler + 1) # Clear the previous battler's choice
-                    actioned.pop # Forget the previous battler was done
+                    actioned.pop   # Forget the previous battler was done
                     break
                 end
                 pbCancelChoice(idxBattler)

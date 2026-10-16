@@ -174,13 +174,13 @@ class PokeBattle_Battle
                 next unless b
                 # [battler, speed, sub-priority, priority, tie-breaker order]
                 bArray = [b, b.pbSpeed, 0, 0, randomOrder[i]]
-                if [:UseMove, :Shift].include?(@choices[b.index][0])
+                if @choices[b.index][0] == :UseMove || @choices[b.index][0] == :Shift
                     # Calculate move's priority
                     if @choices[b.index][0] == :UseMove
                         move = @choices[b.index][2]
                         target_index = @choices[b.index][3]
                         if @client_id == 1
-                            target_index = CableClub.pokemon_target_order(@client_id)[target_index]
+                            target_index = CableClub::pokemon_target_order(@client_id)[target_index]                          
                         end
                         targets = b.pbFindTargets(target_index, move, b)
                         # if we're on the info screen, flag aiCheck to disable active effects like Tremorsense
@@ -267,7 +267,7 @@ class PokeBattle_Battle
 
         # Final turn of Winter Hunts
         priority += 1 if user.pbOwnSide.effectActive?(:WinterHuntsEnd)
-
+        
         user.eachAbilityShouldApply(aiCheck) do |ability|
             abilityPriorityChange = BattleHandlers.triggerPriorityChangeAbility(ability, user, move, 0, targets, aiCheck)
             priority += abilityPriorityChange
@@ -297,8 +297,8 @@ class PokeBattle_Battle
     # Pokemon with speed ties are assigned the same number
     def pbTurnOrderDisplayed
         # don't do extra random calls if recalculating for info screen, to ensure cable club sync
-        pbCalculatePriority(true, nil, true)
-
+        pbCalculatePriority(true,nil,true)
+        
         speedHash = {}
 
         @priority.each do |pArray|

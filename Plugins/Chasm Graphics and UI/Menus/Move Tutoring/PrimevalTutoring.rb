@@ -1,8 +1,8 @@
-def primevalTutor
-    if !teamEditingAllowed?
-        showNoTeamEditingMessage
-        return
-    end
+def primevalTutor()
+    if !teamEditingAllowed?()
+		showNoTeamEditingMessage()
+		return
+	end
     canPrimevalTutorProc = proc do |pkmn|
         pkmn.species_data.can_learn_sketch?
     end

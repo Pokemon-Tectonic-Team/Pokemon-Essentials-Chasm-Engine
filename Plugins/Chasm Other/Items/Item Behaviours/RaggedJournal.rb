@@ -1,34 +1,34 @@
 def raggedJournalLoot(pageNumber)
     unlockRaggedJournalPage(pageNumber)
-    setMySwitch("A")
+    setMySwitch('A')
 end
 
 # Gives the player the item if they don't yet have it
 def unlockRaggedJournalPage(pageNumber)
-    if pbHasItem?(:RAGGEDJOURNAL)
-        pbMessage(_INTL("\\i[RAGGEDJOURNAL]You've found page {1} of the {2}!", pageNumber + 1, getItemName(:RAGGEDJOURNAL)))
-        pbMessage(_INTL("You slot the page into its proper place in the journal."))
-    else
+    unless pbHasItem?(:RAGGEDJOURNAL)
         pbReceiveItem(:RAGGEDJOURNAL)
-        pbMessage(_INTL("Looking inside the journal, you see that the only page that hasn't fallen out is page {1}.", pageNumber + 1))
+        pbMessage(_INTL("Looking inside the journal, you see that the only page that hasn't fallen out is page {1}.",pageNumber+1))
         $PokemonGlobal.ragged_journal_pages_collected = []
+    else
+        pbMessage(_INTL("\\i[RAGGEDJOURNAL]You've found page {1} of the {2}!",pageNumber+1,getItemName(:RAGGEDJOURNAL)))
+        pbMessage(_INTL("You slot the page into its proper place in the journal."))
     end
 
     $PokemonGlobal.ragged_journal_pages_collected[pageNumber] = true
-
+    
     if pbConfirmMessage(_INTL("Read it now?"))
         readRaggedJournalPage(pageNumber)
     end
 end
 
 def readRaggedJournalPage(pageNumber)
-    pageTitle = _INTL("Page {1}", pageNumber + 1)
+    pageTitle = _INTL("Page {1}",pageNumber+1)
     text, date = getRaggedJournalPageTextAndDate(pageNumber)
 
-    viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
-    viewport.z = 99_999
+    viewport=Viewport.new(0,0,Graphics.width,Graphics.height)
+    viewport.z=99999
 
-    background = ColoredPlane.new(Color.new(20, 12, 8), viewport)
+    background = ColoredPlane.new(Color.new(20,12,8),viewport)
     # bitmapName = pbResolveBitmap("Graphics/Pictures/helpadventurebg")
     # background.setBitmap(bitmapName)
     pageNumberWindow = Window_UnformattedTextPokemon.newWithSize(pageTitle,
@@ -36,7 +36,7 @@ def readRaggedJournalPage(pageNumber)
     dateWindow = Window_UnformattedTextPokemon.newWithSize(date,
       Graphics.width - 150, 0, 150, 64, viewport)
     textWindow = Window_AdvancedTextPokemon.newWithSize(text,
-      0, 64, Graphics.width, Graphics.height - 64, viewport)
+      0, 64, Graphics.width, Graphics.height-64, viewport)
 
     loop do
         Graphics.update
@@ -100,7 +100,7 @@ def getRaggedJournalPageTextAndDate(pageNumber)
 
     text += _INTL("  —Oriel")
 
-    return text, date
+    return text,date
 end
 
 def openRaggedJournal
@@ -110,11 +110,11 @@ def openRaggedJournal
         valuesInOrder = []
         $PokemonGlobal.ragged_journal_pages_collected.each_with_index do |pageValue, index|
             next unless pageValue
-            choices.push(_INTL("Page {1}", index + 1))
+            choices.push(_INTL("Page {1}",index+1))
             valuesInOrder.push(index)
         end
         choices.push(_INTL("Cancel"))
-        indexChosen = pbMessage(_INTL("Which page would you like to read?"), choices, choices.length, nil, lastChoice)
+        indexChosen = pbMessage(_INTL("Which page would you like to read?"),choices,choices.length,nil,lastChoice)
         break if indexChosen == choices.length - 1
         readRaggedJournalPage(valuesInOrder[indexChosen])
         lastChoice = indexChosen
@@ -122,14 +122,14 @@ def openRaggedJournal
     return 1
 end
 
-ItemHandlers::UseFromBag.add(:RAGGEDJOURNAL, proc { |_item|
-    next openRaggedJournal
+ItemHandlers::UseFromBag.add(:RAGGEDJOURNAL,proc { |item|
+	next openRaggedJournal
 })
 
-ItemHandlers::ConfirmUseInField.add(:RAGGEDJOURNAL, proc { |_item|
-    next true
+ItemHandlers::ConfirmUseInField.add(:RAGGEDJOURNAL,proc { |item|
+  next true
 })
 
-ItemHandlers::UseInField.add(:RAGGEDJOURNAL, proc { |_item|
-    next openRaggedJournal
+ItemHandlers::UseInField.add(:RAGGEDJOURNAL,proc { |item|
+	next openRaggedJournal
 })

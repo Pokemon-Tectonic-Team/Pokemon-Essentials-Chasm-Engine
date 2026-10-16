@@ -72,7 +72,7 @@ class PokeBattle_Move_EmpoweredGravity < PokeBattle_Move_StartGravity5
         super
         user.eachOpposing do |b|
             battle.pbDisplay(_INTL("{1} was slammed into the ground!", user.pbThis))
-            b.applyFractionalDamage(1.0 / 4.0)
+            b.applyFractionalDamage(1.0/4.0)
         end
     end
 end
@@ -96,10 +96,12 @@ class PokeBattle_Move_StartAllBattlersHealEightOfMaxHPEachTurn5 < PokeBattle_Mov
         return false
     end
 
-    def getEffectScore(_user, _target)
+    def getEffectScore(user, _target)
         return 100
     end
 end
+
+
 
 #===============================================================================
 # Resets all stat steps at end of turn and at the end of the next four turns. (Grey Mist)
@@ -141,7 +143,7 @@ class PokeBattle_Move_EmpoweredGreyMist < PokeBattle_Move_StartGreyMist5
 
     def pbEffectGeneral(user)
         super
-        craftItem(user, :BLACKSLUDGE)
+        craftItem(user,:BLACKSLUDGE)
         transformType(user, :POISON)
     end
 end
@@ -150,7 +152,7 @@ end
 # Summons both hail and grey mist for 5 turns. (Diamond Dust)
 #===============================================================================
 class PokeBattle_Move_StartGreyMist5StartHail5 < PokeBattle_Move_StartGreyMist5
-    def pbMoveFailed?(_user, _targets, _show_message)
+    def pbMoveFailed?(user, _targets, show_message)
         return false
     end
 
@@ -192,7 +194,7 @@ class PokeBattle_Move_CoralOvergrowth < PokeBattle_Move
         user.pbOpposingSide.applyEffect(:CoralOvergrowth, applyEffectDurationModifiers(@coralDuration, user))
     end
 
-    def getEffectScore(_user, _target)
+    def getEffectScore(user, _target)
         return 100
     end
 end

@@ -46,7 +46,11 @@ class PokeBattle_Move_CureUserPartyStatus < PokeBattle_Move
         @battle.pbParty(user.index).each_with_index do |pkmn, i|
             next unless pkmn
             battler = @battle.pbFindBattler(i, user)
-            healStatus(battler || pkmn)
+            if battler
+                healStatus(battler)
+            else
+                healStatus(pkmn)
+            end
         end
     end
 
@@ -63,12 +67,12 @@ class PokeBattle_Move_CureUserPartyStatus < PokeBattle_Move
         return 0 if target && target.index != user.index
         score = 0
         score -= statusSpikesWeightOnSide(user.pbOwnSide) if user.alliesInReserve?
-        statusesInParty = 0
+        statusesInParty = 0 
         @battle.pbParty(user.index).each do |pkmn|
             statusesInParty += 1 if validPokemon(pkmn)
         end
         if statusesInParty > 0
-            statusScore = 70 + (statusesInParty * 40)
+            statusScore = 70 + statusesInParty * 40
             statusScore = 200 if statusScore > 200
             score += statusScore
         end
@@ -84,7 +88,7 @@ class PokeBattle_Move_EmpoweredAromatherapy < PokeBattle_Move_CureUserPartyStatu
 
     def pbEffectGeneral(user)
         super
-        user.applyFractionalHealing(1.0 / 4.0, user: user) unless user.fainted?
+        user.applyFractionalHealing(1.0/4.0, user: user) unless user.fainted?
         user.addAbility(:STABILITY, true)
         transformType(user, :GRASS)
     end
@@ -151,6 +155,7 @@ class PokeBattle_Move_CureUserPartyStatusDamagingMove < PokeBattle_Move
 
     def getEffectScore(user, _target)
         score = 0
+        statuses = 0
         @battle.pbParty(user.index).each do |pkmn|
             score += 40 if pkmn && pkmn.status != :NONE
         end

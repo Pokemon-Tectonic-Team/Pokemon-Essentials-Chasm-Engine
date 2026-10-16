@@ -12,7 +12,7 @@ def mentorCoordinator
     choices[cmdMentorMoves = choices.length] = _INTL("Mentor Moves")
     choices[cmdExplainMentorMoves = choices.length] = _INTL("What is Move Mentoring?")
     choices.push(_INTL("Cancel"))
-    choice = pbMessage(_INTL("I'm the Mentor Coordinator. How can I help?"), choices, choices.length)
+    choice = pbMessage(_INTL("I'm the Mentor Coordinator. How can I help?"),choices,choices.length)
 
     if choice == cmdMentorMoves
         canChooseForMentoringProc = proc do |pkmn|
@@ -52,7 +52,7 @@ end
 def pbMentorMoveScreen(pkmn)
     mentorableMoves = getMentorableMoves(pkmn)
     return false if mentorableMoves.empty?
-    getMentorMovesProc = proc do |_pokemon|
+    getMentorMovesProc = proc do |pokemon|
         getMentorableMoves(pkmn)
     end
     return moveLearningScreen(pkmn, getMentorMovesProc, addFirstMove: true)

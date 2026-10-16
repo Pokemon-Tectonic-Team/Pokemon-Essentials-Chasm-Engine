@@ -43,19 +43,19 @@ BattleHandlers::ItemOnSwitchIn.add(:FRAGILELOCKET,
 
 # Just to reveal item
 BattleHandlers::ItemOnSwitchIn.add(:CRYSTALVEIL,
-    proc { |item, battler, _battle|
+    proc { |item, battler, battle|
         battler.aiLearnsItem(item)
     }
 )
 
 BattleHandlers::ItemOnSwitchIn.add(:MEMORYSET,
-    proc { |item, battler, _battle|
+    proc { |item, battler, battle|
         battler.aiLearnsItem(item) if battler.isSpecies?(:SILVALLY) && battler.hasActiveAbility?(:RKSSYSTEM)
     }
 )
 
 BattleHandlers::ItemOnSwitchIn.add(:PRISMATICPLATE,
-    proc { |item, battler, _battle|
+    proc { |item, battler, battle|
         battler.aiLearnsItem(item) if battler.isSpecies?(:ARCEUS)
     }
 )

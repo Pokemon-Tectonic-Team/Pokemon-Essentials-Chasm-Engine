@@ -3,7 +3,7 @@
 # (Belly Drum)
 #===============================================================================
 class PokeBattle_Move_MaxUserAtkLoseHalfOfTotalHP < PokeBattle_Move
-    def statUp; return [:ATTACK, 12]; end
+    def statUp; return [:ATTACK,12]; end
 
     def pbMoveFailed?(user, _targets, show_message)
         if user.hp <= hpLoss(user)
@@ -36,7 +36,7 @@ end
 # Reduces the user's HP by half of max, and sets its Sp. Atk to maximum. (Bad Blood)
 #===============================================================================
 class PokeBattle_Move_MaxUserSpAtkLoseHalfOfTotalHP < PokeBattle_Move
-    def statUp; return [:SPECIAL_ATTACK, 12]; end
+    def statUp; return [:SPECIAL_ATTACK,12]; end
 
     def pbMoveFailed?(user, _targets, show_message)
         hpLoss = [user.totalhp / 2, 1].max
@@ -157,8 +157,8 @@ end
 class PokeBattle_Move_Trade6SpdForAtk < PokeBattle_StatUpDownMove
     def initialize(battle, move)
         super
-        @statUp   = [:ATTACK, 6]
-        @statDown = [:SPEED, 6]
+        @statUp   = [:ATTACK,6]
+        @statDown = [:SPEED,6]
     end
 end
 
@@ -168,8 +168,8 @@ end
 class PokeBattle_Move_Trade6SpdForSpAtk < PokeBattle_StatUpDownMove
     def initialize(battle, move)
         super
-        @statUp   = [:sPECIAL_ATTACK, 6]
-        @statDown = [:SPEED, 6]
+        @statUp   = [:sPECIAL_ATTACK,6]
+        @statDown = [:SPEED,6]
     end
 end
 

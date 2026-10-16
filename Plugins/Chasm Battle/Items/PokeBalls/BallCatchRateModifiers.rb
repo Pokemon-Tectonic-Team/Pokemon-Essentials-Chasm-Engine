@@ -5,7 +5,7 @@ BallHandlers::IsUnconditional.add(:MASTERBALL, proc { |_ball, _battle, _battler|
     next true
 })
 
-BallHandlers::IsUnconditional.copy(:MASTERBALL, :RADIANTBALL)
+BallHandlers::IsUnconditional.copy(:MASTERBALL,:RADIANTBALL)
 
 #===============================================================================
 # ModifyCatchRate
@@ -90,12 +90,9 @@ BallHandlers::ModifyCatchRate.add(:LUREBALL, proc { |_ball, catchRate, _battle, 
 BallHandlers::ModifyCatchRate.add(:HEAVYBALL, proc { |_ball, catchRate, _battle, battler|
     next 0 if catchRate == 0
     weight = battler.pbWeight
-    if weight >= 3000
-        catchRate += 30
-    elsif weight >= 2000
-        catchRate += 20
-    elsif weight < 1000
-        catchRate -= 20
+    if weight >= 3000;    catchRate += 30
+    elsif weight >= 2000; catchRate += 20
+    elsif weight < 1000;  catchRate -= 20
     end
     catchRate = [catchRate, 1].max
     next [catchRate, 255].min

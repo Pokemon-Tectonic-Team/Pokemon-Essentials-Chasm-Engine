@@ -1,61 +1,61 @@
 BattleHandlers::TypeCalcAbility.add(:HAUNTED,
-    proc { |_ability, _battler, types|
+    proc { |ability, battler, types|
         types.push(:GHOST)
         next types
     }
 )
 
 BattleHandlers::TypeCalcAbility.add(:INFECTED,
-    proc { |_ability, _battler, types|
+    proc { |ability, battler, types|
         types.push(:GRASS)
         next types
     }
 )
 
 BattleHandlers::TypeCalcAbility.add(:RUSTWRACK,
-    proc { |_ability, _battler, types|
+    proc { |ability, battler, types|
         types.push(:STEEL)
         next types
     }
 )
 
 BattleHandlers::TypeCalcAbility.add(:SLUGGISH,
-    proc { |_ability, _battler, types|
+    proc { |ability, battler, types|
         types.push(:BUG)
         next types
     }
 )
 
 BattleHandlers::TypeCalcAbility.add(:UNIDENTIFIED,
-    proc { |_ability, _battler, types|
+    proc { |ability, battler, types|
         types.push(:MUTANT) unless types.include?(:MUTANT)
         next types
     }
 )
 
 BattleHandlers::TypeCalcAbility.add(:FIERYGLOW,
-    proc { |_ability, _battler, types|
+    proc { |ability, battler, types|
         types.push(:FIRE)
         next types
     }
 )
 
 BattleHandlers::TypeCalcAbility.add(:OTHERWORLDLY,
-    proc { |_ability, _battler, types|
+    proc { |ability, battler, types|
         types.push(:FAIRY)
         next types
     }
 )
 
 BattleHandlers::TypeCalcAbility.add(:IONIZEDALLOY,
-    proc { |_ability, battler, types|
+    proc { |ability, battler, types|
         types.push(:ELECTRIC) if battler.battle.rainy?
         next types
     }
 )
 
 BattleHandlers::TypeCalcAbility.add(:COLORCOLLECTOR,
-    proc { |_ability, battler, types|
+    proc { |ability, battler, types|
         if battler.effectActive?(:ColorCollector)
             types.concat(battler.effects[:ColorCollector])
         end
@@ -64,7 +64,7 @@ BattleHandlers::TypeCalcAbility.add(:COLORCOLLECTOR,
 )
 
 BattleHandlers::TypeCalcAbility.add(:RAINBOWTRAIL,
-    proc { |_ability, battler, types|
+    proc { |ability, battler, types|
         if battler.effectActive?(:RainbowTrail)
             types.concat(battler.effects[:RainbowTrail])
         end
@@ -73,14 +73,14 @@ BattleHandlers::TypeCalcAbility.add(:RAINBOWTRAIL,
 )
 
 BattleHandlers::TypeCalcAbility.add(:MOLTENADAPTED,
-    proc { |_ability, _battler, types|
+    proc { |ability, battler, types|
         types.push(:FIRE)
         next types
     }
 )
 
 BattleHandlers::TypeCalcAbility.add(:PLASMAADAPTED,
-    proc { |_ability, _battler, types|
+    proc { |ability, battler, types|
         types.push(:ELECTRIC)
         next types
     }

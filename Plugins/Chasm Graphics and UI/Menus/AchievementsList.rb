@@ -2,32 +2,32 @@ class AchievementsListScene
     def pbStartScene
         # Set up the two viewports to hold UI elements
         @viewport1 = Viewport.new(0, 0, Graphics.width, Graphics.height)
-        @viewport1.z = 99_999
+        @viewport1.z = 99999
         @sprites = {}
 
         # Set up all the sprites
-        @sprites["background"] = IconSprite.new(0, 0, @viewport1)
+        @sprites["background"] = IconSprite.new(0,0,@viewport1)
         bg_path = "Graphics/Pictures/bg_achievements"
         bg_path += "_dark" if darkMode?
         @sprites["background"].setBitmap(_INTL(bg_path))
 
-        @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport1)
+        @sprites["overlay"] = BitmapSprite.new(Graphics.width,Graphics.height,@viewport1)
         pbSetSystemFont(@sprites["overlay"].bitmap)
 
         # Used for Tribal Info page
         @offset = 0
         @linesToShow = 9
-        @sprites["scroll_arrow_up"] = AnimatedSprite.new("Graphics/Pictures/uparrow", 8, 28, 40, 2, @viewport1)
+        @sprites["scroll_arrow_up"] = AnimatedSprite.new("Graphics/Pictures/uparrow",8,28,40,2,@viewport1)
         @sprites["scroll_arrow_up"].x = (Graphics.width - 28) / 2
         @sprites["scroll_arrow_up"].y = 34
         @sprites["scroll_arrow_up"].visible = false
         @sprites["scroll_arrow_up"].play
-        @sprites["scroll_arrow_down"] = AnimatedSprite.new("Graphics/Pictures/downarrow", 8, 28, 40, 2, @viewport1)
+        @sprites["scroll_arrow_down"] = AnimatedSprite.new("Graphics/Pictures/downarrow",8,28,40,2,@viewport1)
         @sprites["scroll_arrow_down"].x = (Graphics.width - 28) / 2
         @sprites["scroll_arrow_down"].y = (Graphics.height - 40)
         @sprites["scroll_arrow_down"].visible = false
         @sprites["scroll_arrow_down"].play
-        @sprites["scroll_bar"] = IconSprite.new(0, 0, @viewport1)
+        @sprites["scroll_bar"] = IconSprite.new(0,0,@viewport1)
         @sprites["scroll_bar"].setBitmap("Graphics/Pictures/scroll_bar")
         @sprites["scroll_bar"].x = Graphics.width - 32
         @sprites["scroll_bar"].y = 48
@@ -40,7 +40,7 @@ class AchievementsListScene
         end
 
         calculateDisplayText
-
+        
         pbFadeInAndShow(@sprites) { pbUpdate }
 
         @base   = MessageConfig.pbDefaultTextMainColor
@@ -48,12 +48,12 @@ class AchievementsListScene
 
         @titlebase = MessageConfig::LIGHT_TEXT_MAIN_COLOR
         @titleshadow = MessageConfig::LIGHT_TEXT_SHADOW_COLOR
-
-        drawPage
+        
+        drawPage()
     end
 
     def visualHeightOffset
-        return -[(@offset - 3), 0].max * 32
+        return -[(@offset - 3),0].max * 32
     end
 
     def calculateDisplayText
@@ -75,8 +75,8 @@ class AchievementsListScene
                 checkBoxFileName = "Graphics/Pictures/checkbox_inactive"
             end
 
-            checkboxY = (@displayText.size * 32) + 56
-            @checkboxesHeights.push([checkBoxFileName, checkboxY])
+            checkboxY = @displayText.size * 32 + 56
+		    @checkboxesHeights.push([checkBoxFileName,checkboxY])
 
             if achievementData.hidden && !unlocked && !isAchievementUnlocked?(:BECOME_CHAMPION)
                 @displayText << _INTL("<u>???</u>")
@@ -85,7 +85,7 @@ class AchievementsListScene
                 # Add the achievement text
                 @displayText << "<u>#{achievementData.name}</u>"
 
-                break_string(achievementData.description, 38).each { |line|
+                break_string(achievementData.description, 38).each {|line|
                     @displayText << line
                 }
             end
@@ -93,7 +93,7 @@ class AchievementsListScene
             if achievementData.disabled_in_randomizer?
                 @randomizerIconHeights.push(checkboxY)
             end
-
+        
             index += 1
         end
 
@@ -102,59 +102,60 @@ class AchievementsListScene
 
     def break_string(str, n)
         arr = []
-        pos = 0
+        pos = 0     
         loop do
             break arr if pos == str.size
-            if str[pos] == " "
+            if str[pos] == ' '
                 pos += 1
             end
-            m = str.match(/.{1,#{n}}(?= |\z)|.{,#{n - 1}} /, pos)
+            m = str.match(/.{1,#{n}}(?=[ ]|\z)|.{,#{n-1}}[ ]/, pos)
             return nil if m.nil?
             arr << m[0]
             pos += m[0].size
         end
     end
 
-    def drawPage
+    def drawPage()
         # Draw page title
         overlay = @sprites["overlay"].bitmap
         overlay.clear
 
         pageName = Settings.achievement_page_names[@page] || _INTL("Unknown")
-        drawFormattedTextEx(overlay, 32, 4, Graphics.width, _INTL("<outln2>Achievements: {1}</outln2>", pageName), @titlebase, @titleshadow, 18)
-        drawFormattedTextEx(overlay, Graphics.width - 90, 4, Graphics.width, _INTL("[{1}/{2}]", @page, @maxPage), @titlebase, @titleshadow, 18)
+        drawFormattedTextEx(overlay, 32, 4, Graphics.width, _INTL("<outln2>Achievements: {1}</outln2>",pageName), @titlebase, @titleshadow, 18)
+        drawFormattedTextEx(overlay, Graphics.width - 90, 4, Graphics.width, _INTL("[{1}/{2}]",@page,@maxPage), @titlebase, @titleshadow, 18)
 
         @sprites["scroll_arrow_up"].visible = @offset > 0
         @sprites["scroll_arrow_down"].visible = @offset < @displayText.length - @linesToShow
-
+        
         xLeft = 36
         coordinateY = 28
 
         rangeStart = @offset
-        rangeEnd = [@offset + @linesToShow, @displayText.length].min
-        @displayText[rangeStart..rangeEnd].each { |line|
+        rangeEnd = [@offset+@linesToShow,@displayText.length].min
+        @displayText[rangeStart..rangeEnd].each {|line|
             drawFormattedTextEx(overlay, xLeft, coordinateY += 30, 450, line, @base, @shadow)
         }
 
-        @sprites["scroll_bar"].y = 48 + ((Graphics.width - 192) * (@offset / @displayText.length.to_f))
+        @sprites["scroll_bar"].y = 48 + (Graphics.width - 192) * (@offset / @displayText.length.to_f)
 
         # Checkboxes
         offsetCheckboxImagePositions = []
         @checkboxesHeights.each do |checkBoxInfo|
             checkboxY = checkBoxInfo[1] - (@offset * 32)
             next unless checkboxY > 40 && checkboxY < 320
-            offsetCheckboxImagePositions.push([checkBoxInfo[0], Graphics.width - 72, checkboxY])
+            offsetCheckboxImagePositions.push([checkBoxInfo[0],Graphics.width - 72,checkboxY])
         end
-        pbDrawImagePositions(overlay, offsetCheckboxImagePositions)
-
+        pbDrawImagePositions(overlay,offsetCheckboxImagePositions)
+        
         # Disabled in randomizer icons
+        offsetRandomizerDisabledIconPositions = []
         @randomizerIconHeights.each do |height|
             icon_y = height - (@offset * 32)
             next unless icon_y > 40 && icon_y < 320
-            offsetCheckboxImagePositions.push(["Graphics/Pictures/icon_disabled_in_randomizer", Graphics.width - 116, icon_y])
+            offsetCheckboxImagePositions.push(["Graphics/Pictures/icon_disabled_in_randomizer",Graphics.width - 116,icon_y])
         end
-        pbDrawImagePositions(overlay, offsetCheckboxImagePositions)
-    end
+        pbDrawImagePositions(overlay,offsetCheckboxImagePositions)
+    end    
 
     def pbUpdate
         pbUpdateSpriteHash(@sprites)
@@ -174,8 +175,8 @@ class AchievementsListScene
         pbUpdate
         dorefresh = false
 
-        offsetMax = [@displayText.length - @linesToShow, 0].max
-
+        offsetMax = [@displayText.length - @linesToShow,0].max
+        
         if Input.repeat?(Input::UP)
             # Scroll up on the page if not already at the top
             if @offset > 0
@@ -194,7 +195,7 @@ class AchievementsListScene
             end
         elsif Input.repeat?(Input::JUMPUP) # Jump multiple lines
             if @offset > 0
-                @offset -= @linesToShow
+                @offset = @offset - @linesToShow
                 @offset = 0 if @offset < 0
                 dorefresh = true
             elsif Input.trigger?(Input::JUMPUP)
@@ -202,7 +203,7 @@ class AchievementsListScene
             end
         elsif Input.repeat?(Input::JUMPDOWN)
             if @offset < offsetMax
-                @offset += @linesToShow
+                @offset = @offset + @linesToShow
                 @offset = offsetMax if @offset > offsetMax
                 dorefresh = true
             elsif Input.trigger?(Input::JUMPDOWN)
@@ -229,13 +230,13 @@ class AchievementsListScene
                 pbPlayBuzzerSE
             end
         end
-
+        
         # If the page has changed, redraw the page
         if dorefresh
             pbPlayCursorSE
-            drawPage
+            drawPage()
         end
-
+        
         return returnIndex
     end
 end
@@ -245,14 +246,14 @@ end
 ########################################################################################################################
 class AchievementsListScreen
     def initialize(scene)
-        @scene = scene
+      @scene = scene
     end
-
+  
     def pbStartScreen
-        @scene.pbStartScene
+        @scene.pbStartScene()
         loop do
             cmd = @scene.pbScene
-            break if cmd < 0 # Cancel/Exit
+            break if cmd < 0   # Cancel/Exit
         end
         @scene.pbEndScene
     end

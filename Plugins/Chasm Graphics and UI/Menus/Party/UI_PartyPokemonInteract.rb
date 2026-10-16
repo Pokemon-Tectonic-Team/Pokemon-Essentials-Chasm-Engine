@@ -81,7 +81,7 @@ class TilingCardsPokemonMenu_Scene < TilingCardsMenu_Scene
                           $Trainer.has_pokedex || $DEBUG
                       end,
                       :press_proc => proc do |_scene|
-                          openPartyDexScreen(@pkmn, @pkmnid)
+                            openPartyDexScreen(@pkmn,@pkmnid)
                       end,
                   },
                   :SEND_PC => {
@@ -121,6 +121,8 @@ class TilingCardsPokemonMenu_Scene < TilingCardsMenu_Scene
 
     def itemCommandMenu
         itemcommands = []
+        cmdUseItem   = -1
+        cmdGiveItem  = -1
         cmdTakeItems = -1
         cmdTakeOneItem = -1
         cmdSwapItemOrder = -1
@@ -212,18 +214,20 @@ existingIndex)
     end
 
     def modifyCommandMenu
-        commands = []
+        commands   = []
+        cmdRename  = -1
+        cmdSwapPokeBall = -1
         cmdDeleteMove = -1
-        cmdEvolve = -1
+        cmdEvolve  = -1
         cmdStyle = -1
         cmdSwapAbility = -1
 
         # Build the commands
-        commands[cmdRename = commands.length] = _INTL("Rename")
-        commands[cmdSwapPokeBall = commands.length] = _INTL("Swap Ball")
+        commands[cmdRename = commands.length]       = _INTL("Rename")
+        commands[cmdSwapPokeBall = commands.length]   = _INTL("Swap Ball")
         commands[cmdDeleteMove = commands.length] = _INTL("Delete Move") if @pkmn.numMoves > 1
-        commands[cmdStyle = commands.length] = _INTL("Set Style") if pbHasItem?(:STYLINGKIT)
-        commands[cmdSwapAbility = commands.length] = _INTL("Swap Ability") if pbHasItem?(:VIRALHELIX)
+        commands[cmdStyle = commands.length]        = _INTL("Set Style") if pbHasItem?(:STYLINGKIT)
+        commands[cmdSwapAbility = commands.length]        = _INTL("Swap Ability") if pbHasItem?(:VIRALHELIX)
         newspecies = @pkmn.check_evolution_on_level_up(false)
         commands[cmdEvolve = commands.length]       = _INTL("Evolve") if newspecies
         commands[commands.length]                   = _INTL("Cancel")
@@ -232,13 +236,13 @@ existingIndex)
         if cmdRename >= 0 && modifyCommand == cmdRename
             currentName = @pkmn.name
             pbTextEntry(_INTL("{1}'s nickname?", currentName), 0, Pokemon::MAX_NAME_SIZE, 5)
-            if ["", currentName].include?(pbGet(5))
+            if pbGet(5) == "" || pbGet(5) == currentName
                 @pkmn.name = currentName
             else
                 @pkmn.name = pbGet(5)
             end
         elsif cmdSwapPokeBall >= 0 && modifyCommand == cmdSwapPokeBall
-            @pkmn.switchBall
+			@pkmn.switchBall
         elsif cmdDeleteMove >= 0 && modifyCommand == cmdDeleteMove
             moveDeletion(@pkmn)
         elsif cmdEvolve >= 0 && modifyCommand == cmdEvolve
@@ -318,10 +322,10 @@ existingIndex)
         @partyScene.pbSetHelpText(helptext)
     end
 
-    def pbChoosePokemon(helptext = nil)
+    def pbChoosePokemon(helptext=nil)
         @partyScene.pbSetHelpText(helptext) if helptext
         return @partyScene.pbChoosePokemon
-    end
+      end
 
     def supportsFusion?; return true; end
 end

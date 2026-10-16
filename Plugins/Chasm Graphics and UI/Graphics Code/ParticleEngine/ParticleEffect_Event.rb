@@ -2,7 +2,7 @@ class ParticleEffect_Event
     attr_accessor :event
     attr_reader :opacity
 
-    def initialize(event, viewport = nil)
+    def initialize(event,viewport=nil)
         @event     = event
         @viewport  = viewport
         @particles = []
@@ -15,32 +15,32 @@ class ParticleEffect_Event
     end
 
     def setParameters(params)
-        @randomhue, @fade,
-        @max_particles, @hue, @slowdown,
-        @ytop, @ybottom, @xleft, @xright,
-        @xgravity, @ygravity, @xoffset, @yoffset,
-        @opacityvar, @originalopacity = params
+        @randomhue,@fade,
+        @max_particles,@hue,@slowdown,
+        @ytop,@ybottom,@xleft,@xright,
+        @xgravity,@ygravity,@xoffset,@yoffset,
+        @opacityvar,@originalopacity = params
     end
 
-    def loadBitmap(filename, hue)
-        key = [filename, hue]
+    def loadBitmap(filename,hue)
+        key = [filename,hue]
         bitmap = @bitmaps[key]
         if !bitmap || bitmap.disposed?
-            bitmap = AnimatedBitmap.new("Graphics/Fogs/" + filename, hue).deanimate
+            bitmap = AnimatedBitmap.new("Graphics/Fogs/"+filename,hue).deanimate
             @bitmaps[key] = bitmap
         end
         return bitmap
     end
 
-    def initParticles(filename, givenOpacity = 255, zOffset = 0, blendtype = 1)
+    def initParticles(filename,givenOpacity=255,zOffset=0,blendtype=1)
         @particles = []
         @particlex = []
         @particley = []
         @opacity   = []
-        @startingx = x + @xoffset
-        @startingy = y + @yoffset
-        @screen_x  = x
-        @screen_y  = y
+        @startingx = self.x + @xoffset
+        @startingy = self.y + @yoffset
+        @screen_x  = self.x
+        @screen_y  = self.y
         @real_x    = @event.real_x
         @real_y    = @event.real_y
         @filename  = filename
@@ -48,21 +48,21 @@ class ParticleEffect_Event
         @bmwidth   = 32
         @bmheight  = 32
         for i in 0...@max_particles
-            @particles[i] = ParticleSprite.new(@viewport)
-            @particles[i].bitmap = loadBitmap(filename, @hue) if filename
-            if i == 0 && @particles[i].bitmap
-                @bmwidth  = @particles[i].bitmap.width
-                @bmheight = @particles[i].bitmap.height
-            end
-            @particles[i].blend_type = blendtype
-            @particles[i].z = z + zOffset
-            @opacity[i] = givenOpacity
+          @particles[i] = ParticleSprite.new(@viewport)
+          @particles[i].bitmap = loadBitmap(filename, @hue) if filename
+          if i==0 && @particles[i].bitmap
+            @bmwidth  = @particles[i].bitmap.width
+            @bmheight = @particles[i].bitmap.height
+          end
+          @particles[i].blend_type = blendtype
+          @particles[i].z = self.z + zOffset
+          @opacity[i] = givenOpacity
 
-            resetParticle(i)
-            initializeParticle(i)
-
-            @particles[i].opacity = @opacity[i]
-            @particles[i].update
+          resetParticle(i)
+          initializeParticle(i)
+          
+          @particles[i].opacity = @opacity[i]
+          @particles[i].update
         end
 
         @particlesEnabled = true
@@ -99,7 +99,7 @@ class ParticleEffect_Event
     end
 
     def reenableParticles
-        for i in 0...@max_particles
+        for i in 0...@max_particles 
             resetParticle(i)
         end
     end
@@ -115,9 +115,9 @@ class ParticleEffect_Event
         end
 
         # Store the pre-update viewport positions
-        selfX = x
-        selfY = y
-        selfZ = z
+        selfX = self.x
+        selfY = self.y
+        selfZ = self.z
 
         # Calculate how to move the particles to maintain the illusion
         # of spawning in the game world
@@ -144,9 +144,9 @@ class ParticleEffect_Event
 
             # Find the maximum extent of particle position
             opac = 255.0 / @opacityvar
-            minX = (opac * (-@xgravity.to_f / @slowdown).floor) + spawningMinX
-            maxX = (opac * (@xgravity.to_f / @slowdown).floor) + spawningMaxX
-            minY = (opac * (-@ygravity.to_f / @slowdown).floor) + spawningMinY
+            minX = opac * (-@xgravity.to_f / @slowdown).floor + spawningMinX
+            maxX = opac * (@xgravity.to_f / @slowdown).floor + spawningMaxX
+            minY = opac * (-@ygravity.to_f / @slowdown).floor + spawningMinY
             maxY = spawningMaxY
 
             # Account for the size of the bitmap
@@ -163,7 +163,7 @@ class ParticleEffect_Event
 
         # Update all particles
         for i in 0...@max_particles
-            updateParticle(i, particleZ)
+          updateParticle(i,particleZ)
         end
     end
 
@@ -175,7 +175,7 @@ class ParticleEffect_Event
         return 32
     end
 
-    def updateParticle(i, particleZ)
+    def updateParticle(i,particleZ)
         @particles[i].z = particleZ
         if @cullOffscreen
             if @particles[i].y <= @ytop
@@ -196,9 +196,11 @@ class ParticleEffect_Event
                 resetOpacity(i)
                 resetParticle(i)
             end
-        elsif @opacity[i] <= 0
-            @opacity[i] = 250
-            resetParticle(i)
+        else
+            if @opacity[i] <= 0
+                @opacity[i] = 250
+                resetParticle(i)
+            end
         end
         calcParticlePos(i)
         changeHue(i)
@@ -257,10 +259,10 @@ class ParticleEffect_Event
 
     def dispose
         for particle in @particles
-            particle.dispose
+          particle.dispose
         end
         for bitmap in @bitmaps.values
-            bitmap.dispose
+          bitmap.dispose
         end
         @particles.clear
         @bitmaps.clear

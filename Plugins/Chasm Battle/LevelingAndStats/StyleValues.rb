@@ -27,7 +27,7 @@ class StyleValueScene
         UIHelper.pbConfirm(@sprites["msgwindow"], msg) { pbUpdate }
     end
 
-    def pbShowCommands(helptext, commands, initcmd = 0)
+    def pbShowCommands(helptext,commands,initcmd=0)
         UIHelper.pbShowCommands(@sprites["msgwindow"], helptext, commands, initcmd) { pbUpdate }
     end
 
@@ -81,8 +81,8 @@ class StyleValueScene
         base = Color.new(248, 248, 248)
         shadow = Color.new(104, 104, 104)
 
-        subtleBase = Color.new(200, 200, 200)
-        subtleShadow = Color.new(140, 140, 140)
+        subtleBase = Color.new(200,200,200)
+        subtleShadow = Color.new(140,140,140)
 
         styleValueLabelX = BASE_X + 38
         styleValueX = styleValueLabelX + 120
@@ -90,7 +90,7 @@ class StyleValueScene
 
         # Place the pokemon's name
         textpos = []
-        textpos.push([_INTL("Adjust {1}'s Style", @pokemon.name), Graphics.width / 2, 0, 2, Color.new(88, 88, 80), Color.new(168, 184, 184)])
+        textpos.push([_INTL("Adjust {1}'s Style", @pokemon.name),Graphics.width / 2,0,2,Color.new(88,88,80),Color.new(168,184,184)])
 
         # Place the pokemon's Style Points (stored as EVs)
         numberBase = MessageConfig::DARK_TEXT_MAIN_COLOR
@@ -100,21 +100,21 @@ class StyleValueScene
                            [_INTL("HP"), styleValueLabelX, styleValueY + 40, 0, base, shadow],
                            [format("%d", @pokemon.ev[:HP]), styleValueX, styleValueY + 40, 1, numberBase,
                             numberShadow,],
-                           [_INTL("Attack"), styleValueLabelX, styleValueY + 40 + (32 * 1), 0, base, shadow],
-                           [format("%d", @pokemon.ev[:ATTACK]), styleValueX, styleValueY + 40 + (32 * 1), 1, numberBase,
+                           [_INTL("Attack"), styleValueLabelX, styleValueY + 40 + 32 * 1, 0, base, shadow],
+                           [format("%d", @pokemon.ev[:ATTACK]), styleValueX, styleValueY + 40 + 32 * 1, 1, numberBase,
                             numberShadow,],
-                           [_INTL("Defense"), styleValueLabelX, styleValueY + 40 + (32 * 2), 0, base, shadow],
-                           [format("%d", @pokemon.ev[:DEFENSE]), styleValueX, styleValueY + 40 + (32 * 2), 1, numberBase,
+                           [_INTL("Defense"), styleValueLabelX, styleValueY + 40 + 32 * 2, 0, base, shadow],
+                           [format("%d", @pokemon.ev[:DEFENSE]), styleValueX, styleValueY + 40 + 32 * 2, 1, numberBase,
                             numberShadow,],
-                           [_INTL("Sp. Atk"), styleValueLabelX, styleValueY + 40 + (32 * 3), 0, base, shadow],
-                           [format("%d", @pokemon.ev[:SPECIAL_ATTACK]), styleValueX, styleValueY + 40 + (32 * 3), 1, numberBase,
+                           [_INTL("Sp. Atk"), styleValueLabelX, styleValueY + 40 + 32 * 3, 0, base, shadow],
+                           [format("%d", @pokemon.ev[:SPECIAL_ATTACK]), styleValueX, styleValueY + 40 + 32 * 3, 1, numberBase,
                             numberShadow,],
-                           [_INTL("Sp. Def"), styleValueLabelX, styleValueY + 40 + (32 * 4), 0, base, shadow],
-                           [format("%d", @pokemon.ev[:SPECIAL_DEFENSE]), styleValueX, styleValueY + 40 + (32 * 4), 1, numberBase,
+                           [_INTL("Sp. Def"), styleValueLabelX, styleValueY + 40 + 32 * 4, 0, base, shadow],
+                           [format("%d", @pokemon.ev[:SPECIAL_DEFENSE]), styleValueX, styleValueY + 40 + 32 * 4, 1, numberBase,
                             numberShadow,],
-                           [_INTL("Speed"), styleValueLabelX, styleValueY + 40 + (32 * 5), 0, base, shadow],
-                           [format("%d", @pokemon.ev[:SPEED]), styleValueX, styleValueY + 40 + (32 * 5), 1, numberBase,
-                            numberShadow,],
+                           [_INTL("Speed"), styleValueLabelX, styleValueY + 40 + 32 * 5, 0, base, shadow],
+                           [format("%d", @pokemon.ev[:SPEED]), styleValueX, styleValueY + 40 + 32 * 5, 1, numberBase,
+                           numberShadow,],
                        ])
 
         # Place the "reset all" button
@@ -131,23 +131,23 @@ class StyleValueScene
         finalStatY = 52
         textpos.concat([
                            [_INTL("Final Stats"), finalStatLabelX, finalStatY, 0, base, shadow],
-                           [_INTL("HP"), finalStatLabelX, finalStatY + 40 + (32 * 0), 0, base, shadow],
-                           [format("%d", @pokemon.totalhp), finalStatX, finalStatY + 40 + (32 * 0), 1, numberBase,
+                           [_INTL("HP"), finalStatLabelX, finalStatY + 40 + 32 * 0, 0, base, shadow],
+                           [format("%d", @pokemon.totalhp), finalStatX, finalStatY + 40 + 32 * 0, 1, numberBase,
                             numberShadow,],
-                           [_INTL("Attack"), finalStatLabelX, finalStatY + 40 + (32 * 1), 0, base, shadow],
-                           [format("%d", @pokemon.attack), finalStatX, finalStatY + 40 + (32 * 1), 1, numberBase,
+                           [_INTL("Attack"), finalStatLabelX, finalStatY + 40 + 32 * 1, 0, base, shadow],
+                           [format("%d", @pokemon.attack), finalStatX, finalStatY + 40 + 32 * 1, 1, numberBase,
                             numberShadow,],
-                           [_INTL("Defense"), finalStatLabelX, finalStatY + 40 + (32 * 2), 0, base, shadow],
-                           [format("%d", @pokemon.defense), finalStatX, finalStatY + 40 + (32 * 2), 1, numberBase,
+                           [_INTL("Defense"), finalStatLabelX, finalStatY + 40 + 32 * 2, 0, base, shadow],
+                           [format("%d", @pokemon.defense), finalStatX, finalStatY + 40 + 32 * 2, 1, numberBase,
                             numberShadow,],
-                           [_INTL("Sp. Atk"), finalStatLabelX, finalStatY + 40 + (32 * 3), 0, base, shadow],
-                           [format("%d", @pokemon.spatk), finalStatX, finalStatY + 40 + (32 * 3), 1, numberBase,
+                           [_INTL("Sp. Atk"), finalStatLabelX, finalStatY + 40 + 32 * 3, 0, base, shadow],
+                           [format("%d", @pokemon.spatk), finalStatX, finalStatY + 40 + 32 * 3, 1, numberBase,
                             numberShadow,],
-                           [_INTL("Sp. Def"), finalStatLabelX, finalStatY + 40 + (32 * 4), 0, base, shadow],
-                           [format("%d", @pokemon.spdef), finalStatX, finalStatY + 40 + (32 * 4), 1, numberBase,
+                           [_INTL("Sp. Def"), finalStatLabelX, finalStatY + 40 + 32 * 4, 0, base, shadow],
+                           [format("%d", @pokemon.spdef), finalStatX, finalStatY + 40 + 32 * 4, 1, numberBase,
                             numberShadow,],
-                           [_INTL("Speed"), finalStatLabelX, finalStatY + 40 + (32 * 5), 0, base, shadow],
-                           [format("%d", @pokemon.speed), finalStatX, finalStatY + 40 + (32 * 5), 1, numberBase,
+                           [_INTL("Speed"), finalStatLabelX, finalStatY + 40 + 32 * 5, 0, base, shadow],
+                           [format("%d", @pokemon.speed), finalStatX, finalStatY + 40 + 32 * 5, 1, numberBase,
                             numberShadow,],
                        ])
 
@@ -157,9 +157,9 @@ class StyleValueScene
         sehp = (@pokemon.totalhp * @pokemon.spdef) / 100
         textpos.concat([
                            [_INTL("EHP"), ehpLabelX, finalStatY, 0, subtleBase, subtleShadow],
-                           [format("%d", pehp), ehpLabelX, finalStatY + 40 + (32 * 2), 0, subtleBase,
+                           [format("%d", pehp), ehpLabelX, finalStatY + 40 + 32 * 2, 0, subtleBase,
                             subtleShadow,],
-                           [format("%d", sehp), ehpLabelX, finalStatY + 40 + (32 * 4), 0, subtleBase,
+                           [format("%d", sehp), ehpLabelX, finalStatY + 40 + 32 * 4, 0, subtleBase,
                             subtleShadow,],
                        ])
 
@@ -185,16 +185,16 @@ class StyleValueScene
         # Place the quick set helper
         helperX = styleXLeft + 216
         textpos.concat([
-                           [_INTL("ACTION/Z for"), helperX, poolY + 4, 1, subtleBase, subtleShadow],
-                           [_INTL("quick set"), helperX, poolY + 36, 1, subtleBase, subtleShadow],
-                       ])
+                            [_INTL("ACTION/Z for"), helperX, poolY + 4, 1, subtleBase, subtleShadow],
+                            [_INTL("quick set"), helperX, poolY + 36, 1, subtleBase, subtleShadow],
+                        ])
 
         # Draw all the previously placed texts
         pbDrawTextPositions(overlay, textpos)
 
         # Put the arrows around the currently selected style value line
         if @index < 6
-            @sprites["leftarrow"].y = @sprites["rightarrow"].y = 100 + (32 * @index)
+            @sprites["leftarrow"].y = @sprites["rightarrow"].y = 100 + 32 * @index
         else
             @sprites["leftarrow"].y = @sprites["rightarrow"].y = -500
         end
@@ -208,10 +208,10 @@ class StyleValueScene
     end
 
     def getStyleName(evs)
-        if COMBINE_ATTACKING_STATS
-            stats = %i[HP ATTACK DEFENSE SPECIAL_DEFENSE SPEED]
-        else
+        if !COMBINE_ATTACKING_STATS
             stats = %i[HP ATTACK DEFENSE SPECIAL_ATTACK SPECIAL_DEFENSE SPEED]
+        else
+            stats = %i[HP ATTACK DEFENSE SPECIAL_DEFENSE SPEED]
         end
         largeStats = []
         stats.each do |stat|
@@ -337,12 +337,15 @@ class StyleValueScreen
         resetEVs = false
         if COMBINE_ATTACKING_STATS
             resetEVs = true if pkmn.ev[:ATTACK] != pkmn.ev[:SPECIAL_ATTACK]
-        elsif pkmn.ev[:ATTACK] == pkmn.ev[:SPECIAL_ATTACK]
-            total = 0
-            stats.each do |stat|
-                total += pkmn.ev[stat]
+        else
+            !COMBINE_ATTACKING_STATS
+            if pkmn.ev[:ATTACK] == pkmn.ev[:SPECIAL_ATTACK]
+                total = 0
+                stats.each do |stat|
+                    total += pkmn.ev[stat]
+                end
+                resetEVs = true if total > STYLE_VALUE_TOTAL
             end
-            resetEVs = true if total > STYLE_VALUE_TOTAL
         end
 
         if resetEVs
@@ -462,31 +465,31 @@ class StyleValueScreen
                 if COMBINE_ATTACKING_STATS
                     # HP, Attack, Defense, Sp. Atk, Sp. Def, Speed
                     choices = {
-                        _INTL("Fast Attacker") => [10, 20, 0, 20, 0, 20],
-                        _INTL("Bulky Attacker") => [20, 20, 0, 20, 0, 10],
-                        _INTL("Physical Tank") => [10, 20, 20, 20, 0, 0],
-                        _INTL("Special Tank") => [10, 20, 0, 20, 20, 0],
-                        _INTL("Physical Wall") => [20, 0, 20, 0, 10, 0],
-                        _INTL("Special Wall") => [20, 0, 10, 0, 20, 0],
+                        _INTL("Fast Attacker") => [10,20,0,20,0,20],
+                        _INTL("Bulky Attacker") => [20,20,0,20,0,10],
+                        _INTL("Physical Tank") => [10,20,20,20,0,0],
+                        _INTL("Special Tank") => [10,20,0,20,20,0],
+                        _INTL("Physical Wall") => [20,0,20,0,10,0],
+                        _INTL("Special Wall") => [20,0,10,0,20,0],
                     }
                 else
                     choices = {
-                        _INTL("Physical Attacker") => [10, 20, 0, 0, 0, 20],
-                        _INTL("Special Attacker") => [10, 0, 0, 20, 0, 20],
-                        _INTL("Bulky Physical") => [20, 20, 0, 0, 0, 10],
-                        _INTL("Bulky Attacker") => [20, 0, 0, 20, 0, 10],
-                        _INTL("Physical Tank") => [10, 20, 20, 0, 0, 0],
-                        _INTL("Special Tank") => [10, 0, 0, 20, 20, 0],
-                        _INTL("Physical Wall") => [20, 0, 20, 0, 10, 0],
-                        _INTL("Special Wall") => [20, 0, 10, 0, 20, 0],
+                        _INTL("Physical Attacker") => [10,20,0,0,0,20],
+                        _INTL("Special Attacker") => [10,0,0,20,0,20],
+                        _INTL("Bulky Physical") => [20,20,0,0,0,10],
+                        _INTL("Bulky Attacker") => [20,0,0,20,0,10],
+                        _INTL("Physical Tank") => [10,20,20,0,0,0],
+                        _INTL("Special Tank") => [10,0,0,20,20,0],
+                        _INTL("Physical Wall") => [20,0,20,0,10,0],
+                        _INTL("Special Wall") => [20,0,10,0,20,0],
                     }
                 end
                 windowChoices = [_INTL("Cancel")].concat(choices.keys)
                 choice = @scene.pbShowCommands(nil, windowChoices)
                 next if choice <= 0
-                statsArray = choices.values[choice - 1]
+                statsArray = choices.values[choice-1]
 
-                statIDOrder = [:HP, :ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED]
+                statIDOrder = [:HP,:ATTACK,:DEFENSE,:SPECIAL_ATTACK,:SPECIAL_DEFENSE,:SPEED]
                 statsArray.each_with_index do |value, index|
                     id = statIDOrder[index]
                     pkmn.ev[id] = value
@@ -565,7 +568,7 @@ def styleValuesTrainer
     choices[cmdAdjustStylePoints = choices.length] = _INTL("Adjust Style Points")
     choices[cmdExplainStylePoints = choices.length] = _INTL("What are Style Points?")
     choices.push(_INTL("Cancel"))
-    choice = pbMessage(_INTL("I'm the Style Points adjuster. How can I help?"), choices, choices.length)
+    choice = pbMessage(_INTL("I'm the Style Points adjuster. How can I help?"),choices,choices.length)
 
     if choice == cmdAdjustStylePoints
         while true
@@ -581,5 +584,5 @@ def styleValuesTrainer
         pbMessage(_INTL("Each stat's Style Points value can go as low as 0, and can go as high as 20."))
         pbMessage(_INTL("A Pokemon's Style Point total never changes, but Style Points give bigger stat bonuses at higher levels."))
         pbMessage(_INTL("If you need to move quickly, try using the Quick Set option!"))
-    end
+    end        
 end

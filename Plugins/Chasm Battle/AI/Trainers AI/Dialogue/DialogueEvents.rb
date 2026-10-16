@@ -6,127 +6,127 @@ end
 class PokeBattle_AI
     TrainerChoseMoveDialogue                    = TrainerDialogueHandlerHash.new
     PlayerChoseMoveDialogue	                    = TrainerDialogueHandlerHash.new
-    TrainerIsUsingMoveDialogue = TrainerDialogueHandlerHash.new
+    TrainerIsUsingMoveDialogue	                = TrainerDialogueHandlerHash.new
     PlayerIsUsingMoveDialogue	                = TrainerDialogueHandlerHash.new
     TrainerPokemonFaintedDialogue	            = TrainerDialogueHandlerHash.new
-    PlayerPokemonFaintedDialogue = TrainerDialogueHandlerHash.new
-    TrainerSendsOutPokemonDialogue = TrainerDialogueHandlerHash.new
-    PlayerSendsOutPokemonDialogue = TrainerDialogueHandlerHash.new
+    PlayerPokemonFaintedDialogue	            = TrainerDialogueHandlerHash.new
+    TrainerSendsOutPokemonDialogue	            = TrainerDialogueHandlerHash.new
+    PlayerSendsOutPokemonDialogue	            = TrainerDialogueHandlerHash.new
     TrainerPokemonTookMoveDamageDialogue		= TrainerDialogueHandlerHash.new
     PlayerPokemonTookMoveDamageDialogue			= TrainerDialogueHandlerHash.new
     TrainerPokemonImmuneDialogue				= TrainerDialogueHandlerHash.new
     PlayerPokemonImmuneDialogue					= TrainerDialogueHandlerHash.new
-    TrainerPokemonDiesToDOTDialogue = TrainerDialogueHandlerHash.new
-    PlayerPokemonDiesToDOTDialogue = TrainerDialogueHandlerHash.new
-    WeatherChangeDialogue	= TrainerDialogueHandlerHash.new
+    TrainerPokemonDiesToDOTDialogue	            = TrainerDialogueHandlerHash.new
+    PlayerPokemonDiesToDOTDialogue	            = TrainerDialogueHandlerHash.new
+    WeatherChangeDialogue						= TrainerDialogueHandlerHash.new
     BattleSurvivedDialogue	                    = TrainerDialogueHandlerHash.new
     TrainerPokemonConsumesItemDialogue	        = TrainerDialogueHandlerHash.new
-    PlayerPokemonConsumesItemDialogue = TrainerDialogueHandlerHash.new
-    TrainerAbilityTriggeredDialogue = TrainerDialogueHandlerHash.new
-    PlayerAbilityTriggeredDialogue = TrainerDialogueHandlerHash.new
+    PlayerPokemonConsumesItemDialogue	        = TrainerDialogueHandlerHash.new
+    TrainerAbilityTriggeredDialogue	            = TrainerDialogueHandlerHash.new
+    PlayerAbilityTriggeredDialogue	            = TrainerDialogueHandlerHash.new
 
     def self.triggerTrainerChoseMoveDialogue(policy, battler, move, target, trainer_speaking, dialogue_array)
         ret = TrainerChoseMoveDialogue.trigger(policy, battler, move, target, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerPlayerChoseMoveDialogue(policy, battler, move, target, trainer_speaking, dialogue_array)
         ret = PlayerChoseMoveDialogue.trigger(policy, battler, move, target, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerTrainerIsUsingMoveDialogue(policy, battler, move, target, trainer_speaking, dialogue_array)
         ret = TrainerIsUsingMoveDialogue.trigger(policy, battler, move, target, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerPlayerIsUsingMoveDialogue(policy, battler, move, target, trainer_speaking, dialogue_array)
         ret = PlayerIsUsingMoveDialogue.trigger(policy, battler, move, target, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerTrainerPokemonFaintedDialogue(policy, battler, trainer_speaking, dialogue_array)
         ret = TrainerPokemonFaintedDialogue.trigger(policy, battler, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerPlayerPokemonFaintedDialogue(policy, battler, trainer_speaking, dialogue_array)
         ret = PlayerPokemonFaintedDialogue.trigger(policy, battler, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerTrainerSendsOutPokemonDialogue(policy, battler, trainer_speaking, dialogue_array)
         ret = TrainerSendsOutPokemonDialogue.trigger(policy, battler, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerPlayerSendsOutPokemonDialogue(policy, battler, trainer_speaking, dialogue_array)
         ret = PlayerSendsOutPokemonDialogue.trigger(policy, battler, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerTrainerPokemonTookMoveDamageDialogue(policy, dealer, taker, move, trainer_speaking, dialogue_array)
         ret = TrainerPokemonTookMoveDamageDialogue.trigger(policy, dealer, taker, move, trainer_speaking,
 dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerPlayerPokemonTookMoveDamageDialogue(policy, dealer, taker, move, trainer_speaking, dialogue_array)
         ret = PlayerPokemonTookMoveDamageDialogue.trigger(policy, dealer, taker, move, trainer_speaking,
 dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerTrainerPokemonImmuneDialogue(policy, attacker, target, isImmunityAbility, trainer_speaking, dialogue_array)
         ret = TrainerPokemonImmuneDialogue.trigger(policy, attacker, target, isImmunityAbility, trainer_speaking,
 dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerPlayerPokemonImmuneDialogue(policy, attacker, target, isImmunityAbility, trainer_speaking, dialogue_array)
         ret = PlayerPokemonImmuneDialogue.trigger(policy, attacker, target, isImmunityAbility, trainer_speaking,
 dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerTrainerPokemonDiesToDOTDialogue(policy, pokemon, trainer_speaking, dialogue_array)
         ret = TrainerPokemonDiesToDOTDialogue.trigger(policy, pokemon, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerPlayerPokemonDiesToDOTDialogue(policy, pokemon, trainer_speaking, dialogue_array)
         ret = PlayerPokemonDiesToDOTDialogue.trigger(policy, pokemon, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerWeatherChangeDialogue(policy, old_weather, new_weather, trainer_speaking, dialogue_array)
         ret = WeatherChangeDialogue.trigger(policy, old_weather, new_weather, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerBattleSurvivedDialogue(policy, trainer_speaking, dialogue_array)
         ret = BattleSurvivedDialogue.trigger(policy, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerTrainerPokemonConsumesItemDialogue(policy, battler, item, trainer_speaking, dialogue_array)
         ret = TrainerChoseMoveDialogue.trigger(policy, battler, item, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerPlayerPokemonConsumesItemDialogue(policy, battler, item, trainer_speaking, dialogue_array)
         ret = PlayerChoseMoveDialogue.trigger(policy, battler, item, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerTrainerAbilityTriggeredDialogue(policy, battler, ability, trainer_speaking, dialogue_array)
         ret = TrainerAbilityTriggeredDialogue.trigger(policy, battler, ability, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 
     def self.triggerPlayerAbilityTriggeredDialogue(policy, battler, ability, trainer_speaking, dialogue_array)
         ret = PlayerAbilityTriggeredDialogue.trigger(policy, battler, ability, trainer_speaking, dialogue_array)
-        return ret.nil? ? dialogue_array : ret
+        return !ret.nil? ? ret : dialogue_array
     end
 end
 

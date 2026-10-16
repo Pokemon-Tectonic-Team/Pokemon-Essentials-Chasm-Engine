@@ -171,7 +171,7 @@ class Interpreter
             case @list[next_index].code
             when 401   # Continuation of 101 Show Text
                 text = @list[next_index].parameters[0]
-                message += " " if text != "" && message[-1, 1] != " "
+                message += " " if text != "" && message[message.length - 1, 1] != " "
                 message += text
                 @index = next_index
                 next
@@ -192,7 +192,7 @@ class Interpreter
         message = globalMessageReplacements(message)
         # Display the text, with commands/number choosing if appropriate
         @message_waiting = true # Lets parallel process events work while a message is displayed
-        showSpeaker
+		showSpeaker
         if commands
             cmd_texts = []
             for cmd in commands[0]
@@ -210,7 +210,7 @@ class Interpreter
             pbMessage(message + message_end)
         end
         @message_waiting = false
-        hideSpeaker
+		hideSpeaker
         return true
     end
 

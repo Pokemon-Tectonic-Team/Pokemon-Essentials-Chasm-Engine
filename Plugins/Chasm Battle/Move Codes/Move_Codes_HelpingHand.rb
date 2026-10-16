@@ -56,7 +56,7 @@ class PokeBattle_Move_PowerUpAndIncreaseAccOfAllyMove < PokeBattle_HelpingMove
     end
 
     def getEffectScore(user, target)
-        super
+        score = super
     end
 end
 

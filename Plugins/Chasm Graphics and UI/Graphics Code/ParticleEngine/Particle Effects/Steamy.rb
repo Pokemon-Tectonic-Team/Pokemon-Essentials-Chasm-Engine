@@ -1,23 +1,23 @@
 class Particle_Engine::Steamy < ParticleEffect_Event
-    def initialize(event, viewport)
+    def initialize(event,viewport)
         super
         setParameters([
-                          0, # Random hue
-                          0, # fade
-                          10, # max particles
-                          0, # hue
-                          5, # slowdown
-                          -Graphics.height, # ytop
-                          Graphics.height, # ybottom
-                          0, # xleft
-                          Graphics.width, # xright
-                          0, # xgravity
-                          -0.5, # ygravity
-                          0, # xoffset
-                          0, # yoffset
-                          3, # opacity var
-                          5 # original opacity
-                      ])
+            0, # Random hue
+            0, # fade
+            10, # max particles
+            0, # hue
+            5, # slowdown
+            -Graphics.height, # ytop
+            Graphics.height, # ybottom
+            0, # xleft
+            Graphics.width, # xright
+            0, # xgravity
+            -0.5, # ygravity
+            0, # xoffset
+            0, # yoffset
+            3, # opacity var
+            5 # original opacity
+            ])
         @opacityMult = 0.5
         @huerange = 10
         @cullOffscreen = false
@@ -27,7 +27,7 @@ class Particle_Engine::Steamy < ParticleEffect_Event
         @rad2 = @radius * @radius
         @maxOpacity = 80
 
-        initParticles("steam", 100)
+        initParticles("steam",100)
     end
 
     def resetParticle(i)
@@ -41,7 +41,7 @@ class Particle_Engine::Steamy < ParticleEffect_Event
         @particley[i] = yRand
         @particles[i].state = 0
 
-        hue = @hue + rand(@huerange) - (@huerange / 2)
+        hue = @hue + rand(@huerange) - @huerange / 2
         hue -= 360 if @hue >= 360
         hue += 360 if @hue <= 0
 

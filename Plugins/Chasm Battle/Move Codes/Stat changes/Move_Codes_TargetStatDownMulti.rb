@@ -134,7 +134,7 @@ class PokeBattle_Move_UserFaintsLowerTargetAtkSpAtk5 < PokeBattle_TargetMultiSta
         user.pbReduceHP(user.totalhp, false)
         user.pbItemHPHealCheck
     end
-
+    
     def getEffectScore(user, target)
         score = getSelfKOMoveScore(user, target)
         return score
@@ -152,7 +152,7 @@ class PokeBattle_Move_MinTargetSpdEvasion < PokeBattle_Move
     end
 
     def getTargetAffectingEffectScore(user, target)
-        return getMultiStatDownEffectScore([:SPEED, 4, :EVASION, 4], user, target)
+        return getMultiStatDownEffectScore([:SPEED,4,:EVASION,4], user, target)
     end
 end
 

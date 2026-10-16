@@ -1,5 +1,5 @@
 BattleHandlers::AbilityOnAllySwitchIn.add(:SWARMINSTINCT,
-    proc { |ability, _switcher, bearer, battle, aiCheck|
+    proc { |ability, switcher, bearer, battle, aiCheck|
         next getMultiStatUpEffectScore([:SPEED, 1], bearer, bearer) if aiCheck
         battle.pbShowAbilitySplash(bearer, ability)
         bearer.tryRaiseStat(:SPEED, bearer, increment: 1)
@@ -15,4 +15,4 @@ BattleHandlers::AbilityOnAllySwitchIn.add(:PROTECTIVEINSTINCT,
       battle.pbDisplay(_INTL("{1} bonds with its younger allies!", bearer.pbThis))
       battle.pbHideAbilitySplash(bearer)
   }
-)
+) 

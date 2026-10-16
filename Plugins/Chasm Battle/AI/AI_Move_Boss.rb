@@ -122,7 +122,7 @@ class PokeBattle_AI
         # if there is somehow still no choice, choose to use Struggle
         if @battle.choices[idxBattler][2].nil?
             PBDebug.log("[BOSS AI] #{user.pbThis} (#{user.index}) AI protocols have failed, picking struggle")
-            # print _INTL("Boss using struggle!") if @battle.autoTesting
+            #print _INTL("Boss using struggle!") if @battle.autoTesting
             @battle.choices[idxBattler][0] = :UseMove    # "Use move"
             @battle.choices[idxBattler][1] = -1          # Index of move to be used
             @battle.choices[idxBattler][2] = @battle.struggle # Struggle PokeBattle_Move object
@@ -316,8 +316,8 @@ class PokeBattle_AI
                 realDamage = pbTotalDamageAI(move, user, target, numTargets)
 
                 if realDamage >= target.hp
-                    willFaint = true
-                    realDamage = target.hp # Cap damage out at their current HP total
+                    willFaint = true 
+                    realDamage = target.hp  # Cap damage out at their current HP total
                 end
 
                 damageMod = (AVATAR_DAMAGE_SCORE_MAX * realDamage / target.totalhp.to_f).floor
@@ -336,5 +336,7 @@ class PokeBattle_AI
         else
             return 50
         end
+
+        
     end
 end

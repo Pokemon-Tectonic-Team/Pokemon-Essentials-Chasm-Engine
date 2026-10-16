@@ -45,11 +45,11 @@ class PokeBattle_ActiveSide
     end
 
     def applyEffect(effect, value = nil)
-        super
+        super(effect, value)
         echoln("[SIDE EFFECT] Effect #{getName(effect)} applied to side #{index}")
     end
 
-    def battlerEntry(effect, battlerIndex)
+    def battlerEntry(effect,battlerIndex)
         getData(effect).entry_side(@battle, battlerIndex, @index)
     end
 

@@ -10,7 +10,7 @@ PokeBattle_Battle::BattleStartApplyCurse.add(:CURSE_RECYCLING,
 )
 
 PokeBattle_Battle::EndOfTurnCurseEffect.add(:CURSE_RECYCLING,
-    proc { |_curse_policy, battle|
+    proc { |curse_policy, battle|
         battle.eachOtherSideBattler do |b|
             b.recycleItem
         end

@@ -37,8 +37,8 @@ def cutAlloyedVines
     pbMessage(_INTL("Strands of a strangely tough metal hang from the wall."))
     if pbConfirmMessage(_INTL("Harvest the metallic vines?"))
         pbMessage(_INTL("You slash through the metallic vines!"))
-        pbSEPlay("Cut") # Other SE
-        setMySwitch("A")
+        pbSEPlay('Cut') # Other SE
+        setMySwitch('A')
         pbWait(40)
         pbReceiveItem(:ALLOYEDWIRE)
     else
@@ -50,7 +50,7 @@ def strikeAlloyedBell?
     pbMessage(_INTL("A metal plant with a golden orb. You feel the urge to strike it."))
     if pbConfirmMessage(_INTL("Hit the golden orb?"))
         pbMessage(_INTL("With your strike, a noise emanates through the thicket!"))
-        pbSEPlay("Anim/PRSFX- Heal Order2", 120, 70)
+        pbSEPlay('Anim/PRSFX- Heal Order2',120,70)
         pbWait(80)
         return true
     else
@@ -64,11 +64,11 @@ def cutDownAlloyedTree(eventID)
     if pbHasItem?(:ALLOYEDBLADE)
         if pbConfirmMessage(_INTL("Finish chopping it down?"))
             pbMessage(_INTL("You take a swing at the tree with an alloyed blade."))
-            pbSEPlay("Cut") # Other SE
+            pbSEPlay('Cut') # Other SE
             pbWait(20)
             blackFadeOutIn {
-                setMySwitch("A")
-                pbSetSelfSwitch(eventID, "A")
+                setMySwitch('A')
+                pbSetSelfSwitch(eventID, 'A')
             }
             pbDeleteItem(:ALLOYEDBLADE)
             pbMessage(_INTL("The alloyed blade crumbles into pieces."))
@@ -85,7 +85,7 @@ def placeAlloyedTripWire
     if pbHasItem?(:ALLOYEDWIRE)
         if pbConfirmMessage(_INTL("String an alloyed wire between the posts?"))
             pbMessage(_INTL("You place a trip wire!"))
-            setMySwitch("A")
+            setMySwitch('A')
             pbDeleteItem(:ALLOYEDWIRE)
         else
             pbMessage(_INTL("You leave the posts alone."))
@@ -95,13 +95,13 @@ def placeAlloyedTripWire
     end
 end
 
-def fadeFlee(switchName = "A")
+def fadeFlee(switchName = 'A')
     blackFadeOutIn {
-        pbSEPlay("Battle flee")
+        pbSEPlay('Battle flee')
         setMySwitch(switchName)
     }
 end
 
 def playMetallicGrinding
-    pbSEPlay("Anim/PRSFX- Gear Grind", 120, 60)
+    pbSEPlay('Anim/PRSFX- Gear Grind',120,60)
 end

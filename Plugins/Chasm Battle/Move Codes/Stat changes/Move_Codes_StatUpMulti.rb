@@ -54,16 +54,16 @@ class PokeBattle_Move_RaiseUserAtkDef2CriticalHitRate1 < PokeBattle_MultiStatUpM
     def initialize(battle, move)
         super
         @statUp = [:ATTACK, 2, :DEFENSE, 2]
-    end
+	end
 
-    def pbMoveFailed?(user, _targets, show_message)
-        return super if user.effectAtMax?(:RaisedCritChance)
+	def pbMoveFailed?(user, _targets, show_message)
+        return super if user.effectAtMax?(:RaisedCritChance) 
         return false
     end
 
-    def pbEffectGeneral(user)
-        super
-        user.incrementEffect(:RaisedCritChance, 1) unless user.effectAtMax?(:RaisedCritChance)
+	def pbEffectGeneral(user)
+		super
+		user.incrementEffect(:RaisedCritChance, 1) unless user.effectAtMax?(:RaisedCritChance)
     end
 
     def getEffectScore(user, _target)
@@ -161,7 +161,7 @@ end
 # Increases the user's Attack and Speed by 2 steps each. (Shift Gear)
 #===============================================================================
 class PokeBattle_Move_RaiseUserAtkSpd2 < PokeBattle_MultiStatUpMove
-    def aiAutoKnows?(_pokemon); return true; end
+    def aiAutoKnows?(pokemon); return true; end
 
     def initialize(battle, move)
         super
@@ -184,7 +184,7 @@ end
 # (Shiver Dance)
 #===============================================================================
 class PokeBattle_Move_RaiseUserAtkDef2Spd1 < PokeBattle_MultiStatUpMove
-    def aiAutoKnows?(_pokemon); return true; end
+    def aiAutoKnows?(pokemon); return true; end
 
     def initialize(battle, move)
         super
@@ -287,8 +287,8 @@ end
 # Increases the user's Defense and Special Defense by 1 step each.
 #===============================================================================
 class PokeBattle_Move_RaiseUserDefSpDef1 < PokeBattle_MultiStatUpMove
-    def aiAutoKnows?(_pokemon); return true; end
-
+    def aiAutoKnows?(pokemon); return true; end
+    
     def initialize(battle, move)
         super
         @statUp = DEFENDING_STATS_1
@@ -300,8 +300,8 @@ end
 # (Defend Order)
 #===============================================================================
 class PokeBattle_Move_RaiseUserDefSpDef2 < PokeBattle_MultiStatUpMove
-    def aiAutoKnows?(_pokemon); return true; end
-
+    def aiAutoKnows?(pokemon); return true; end
+    
     def initialize(battle, move)
         super
         @statUp = DEFENDING_STATS_2
@@ -312,7 +312,7 @@ end
 # Increases the user's Defense and Sp. Def by 1 step. User curls up. (Curl Up)
 #===============================================================================
 class PokeBattle_Move_RaiseUserDefSpDef1CurlsUp < PokeBattle_MultiStatUpMove
-    def aiAutoKnows?(_pokemon); return true; end
+    def aiAutoKnows?(pokemon); return true; end
 
     def initialize(battle, move)
         super
@@ -380,7 +380,7 @@ end
 # Increases the user's Speed and Sp. Atk by 2 steps. (Tune Up)
 #===============================================================================
 class PokeBattle_Move_RaiseUserSpAtk2Spd2 < PokeBattle_MultiStatUpMove
-    def aiAutoKnows?(_pokemon); return true; end
+    def aiAutoKnows?(pokemon); return true; end
 
     def initialize(battle, move)
         super
@@ -403,7 +403,7 @@ end
 # (Quiver Dance)
 #===============================================================================
 class PokeBattle_Move_RaiseUserSpAtkSpDef2Spd1 < PokeBattle_MultiStatUpMove
-    def aiAutoKnows?(_pokemon); return true; end
+    def aiAutoKnows?(pokemon); return true; end
 
     def initialize(battle, move)
         super
@@ -465,16 +465,16 @@ class PokeBattle_Move_RaiseUserSpAtkSpDef2CriticalHitRate1 < PokeBattle_MultiSta
     def initialize(battle, move)
         super
         @statUp = [:SPECIAL_ATTACK, 2, :SPECIAL_DEFENSE, 2]
-    end
-
-    def pbMoveFailed?(user, _targets, show_message)
+	end
+    
+	def pbMoveFailed?(user, _targets, show_message)
         return super if user.effectAtMax?(:RaisedCritChance)
         return false
     end
-
-    def pbEffectGeneral(user)
-        super
-        user.incrementEffect(:RaisedCritChance, 1) unless user.effectAtMax?(:RaisedCritChance)
+    
+	def pbEffectGeneral(user)
+		super
+		user.incrementEffect(:RaisedCritChance, 1) unless user.effectAtMax?(:RaisedCritChance)
     end
 
     def getEffectScore(user, _target)
@@ -555,12 +555,12 @@ end
 # (Gloat)
 #===============================================================================
 class PokeBattle_Move_RaiseUserMainStats2IfFoeBelowHalf < PokeBattle_MultiStatUpMove
-    def initialize(battle, move)
+	def initialize(battle, move)
         super
         @statUp = ALL_STATS_2
     end
-
-    def pbMoveFailed?(user, targets, show_message)
+	
+	def pbMoveFailed?(user, targets, show_message)
         anyOppLow = false
         user.eachOpposing do |b|
             next if b.aboveHalfHealth?
@@ -580,12 +580,12 @@ end
 # (Foxtrot Finale)
 #===============================================================================
 class PokeBattle_Move_RaiseUserMainStats2IfFoeFaintedLastTurn < PokeBattle_MultiStatUpMove
-    def initialize(battle, move)
+	def initialize(battle, move)
         super
         @statUp = ALL_STATS_2
     end
-
-    def pbMoveFailed?(user, targets, show_message)
+	
+	def pbMoveFailed?(user, targets, show_message)
         unless user.pbOpposingSide.faintLastRound?
             @battle.pbDisplay(_INTL("But it failed, since there was no victory to celebrate!")) if show_message
             return true
@@ -692,11 +692,11 @@ class PokeBattle_Move_RaiseUserAtkSpDef2MagnetRise < PokeBattle_MultiStatUpMove
     def initialize(battle, move)
         super
         @statUp = [:ATTACK, 2, :SPECIAL_DEFENSE, 2]
-    end
+	end
 
-    def pbEffectGeneral(user)
-        super
-        user.applyEffect(:MagnetRise, applyEffectDurationModifiers(5, user))
+	def pbEffectGeneral(user)
+		super
+		user.applyEffect(:MagnetRise, applyEffectDurationModifiers(5,user))
     end
 
     def getEffectScore(user, target)

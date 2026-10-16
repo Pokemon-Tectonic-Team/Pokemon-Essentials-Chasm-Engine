@@ -2,170 +2,173 @@ class SpeciesHandlerHash < HandlerHash2
 end
 
 module MultipleForms
-    @@formSpecies = SpeciesHandlerHash.new
+  @@formSpecies = SpeciesHandlerHash.new
 
-    def self.copy(sym, *syms)
-        @@formSpecies.copy(sym, *syms)
-    end
+  def self.copy(sym,*syms)
+    @@formSpecies.copy(sym,*syms)
+  end
 
-    def self.register(sym, hash)
-        @@formSpecies.add(sym, hash)
-    end
+  def self.register(sym,hash)
+    @@formSpecies.add(sym,hash)
+  end
 
-    def self.registerIf(cond, hash)
-        @@formSpecies.addIf(cond, hash)
-    end
+  def self.registerIf(cond,hash)
+    @@formSpecies.addIf(cond,hash)
+  end
 
-    def self.hasFunction?(pkmn, func)
-        spec = pkmn.is_a?(Pokemon) ? pkmn.species : pkmn
-        sp = @@formSpecies[spec]
-        return sp && sp[func]
-    end
+  def self.hasFunction?(pkmn,func)
+    spec = (pkmn.is_a?(Pokemon)) ? pkmn.species : pkmn
+    sp = @@formSpecies[spec]
+    return sp && sp[func]
+  end
 
-    def self.getFunction(pkmn, func)
-        spec = pkmn.is_a?(Pokemon) ? pkmn.species : pkmn
-        sp = @@formSpecies[spec]
-        return (sp && sp[func]) ? sp[func] : nil
-    end
+  def self.getFunction(pkmn,func)
+    spec = (pkmn.is_a?(Pokemon)) ? pkmn.species : pkmn
+    sp = @@formSpecies[spec]
+    return (sp && sp[func]) ? sp[func] : nil
+  end
 
-    def self.call(func, pkmn, *args)
-        sp = @@formSpecies[pkmn.species]
-        return nil if !sp || !sp[func]
-        return sp[func].call(pkmn, *args)
-    end
+  def self.call(func,pkmn,*args)
+    sp = @@formSpecies[pkmn.species]
+    return nil if !sp || !sp[func]
+    return sp[func].call(pkmn,*args)
+  end
 end
 
-def drawSpot(bitmap, spotpattern, x, y, red, green, blue)
-    height = spotpattern.length
-    width  = spotpattern[0].length
-    for yy in 0...height
-        spot = spotpattern[yy]
-        for xx in 0...width
-            next unless spot[xx] == 1
-            xOrg = (x + xx) << 1
-            yOrg = (y + yy) << 1
-            color = bitmap.get_pixel(xOrg, yOrg)
-            r = color.red + red
-            g = color.green + green
-            b = color.blue + blue
-            color.red   = [[r, 0].max, 255].min
-            color.green = [[g, 0].max, 255].min
-            color.blue  = [[b, 0].max, 255].min
-            bitmap.set_pixel(xOrg, yOrg, color)
-            bitmap.set_pixel(xOrg + 1, yOrg, color)
-            bitmap.set_pixel(xOrg, yOrg + 1, color)
-            bitmap.set_pixel(xOrg + 1, yOrg + 1, color)
-        end
+
+
+def drawSpot(bitmap,spotpattern,x,y,red,green,blue)
+  height = spotpattern.length
+  width  = spotpattern[0].length
+  for yy in 0...height
+    spot = spotpattern[yy]
+    for xx in 0...width
+      if spot[xx]==1
+        xOrg = (x+xx) << 1
+        yOrg = (y+yy) << 1
+        color = bitmap.get_pixel(xOrg,yOrg)
+        r = color.red+red
+        g = color.green+green
+        b = color.blue+blue
+        color.red   = [[r,0].max,255].min
+        color.green = [[g,0].max,255].min
+        color.blue  = [[b,0].max,255].min
+        bitmap.set_pixel(xOrg,yOrg,color)
+        bitmap.set_pixel(xOrg+1,yOrg,color)
+        bitmap.set_pixel(xOrg,yOrg+1,color)
+        bitmap.set_pixel(xOrg+1,yOrg+1,color)
+      end
     end
+  end
 end
 
-def pbSpindaSpots(pkmn, bitmap)
-    spot1 = [
-        [0, 0, 1, 1, 1, 1, 0, 0],
-        [0, 1, 1, 1, 1, 1, 1, 0],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [0, 1, 1, 1, 1, 1, 1, 0],
-        [0, 0, 1, 1, 1, 1, 0, 0]
-    ]
-    spot2 = [
-        [0, 0, 1, 1, 1, 0, 0],
-        [0, 1, 1, 1, 1, 1, 0],
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1],
-        [0, 1, 1, 1, 1, 1, 0],
-        [0, 0, 1, 1, 1, 0, 0]
-    ]
-    spot3 = [
-        [0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0],
-        [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-        [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-        [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-        [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0]
-    ]
-    spot4 = [
-        [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
-        [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-        [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-        [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]
-    ]
-    id = pkmn.aestheticsID
-    h = (id >> 28) & 15
-    g = (id >> 24) & 15
-    f = (id >> 20) & 15
-    e = (id >> 16) & 15
-    d = (id >> 12) & 15
-    c = (id >> 8) & 15
-    b = (id >> 4) & 15
-    a = id & 15
-    if pkmn.shiny?
-        drawSpot(bitmap, spot1, b + 33, a + 25, -75, -10, -150)
-        drawSpot(bitmap, spot2, d + 21, c + 24, -75, -10, -150)
-        drawSpot(bitmap, spot3, f + 39, e + 7, -75, -10, -150)
-        drawSpot(bitmap, spot4, h + 15, g + 6, -75, -10, -150)
-    else
-        drawSpot(bitmap, spot1, b + 33, a + 25, 0, -115, -75)
-        drawSpot(bitmap, spot2, d + 21, c + 24, 0, -115, -75)
-        drawSpot(bitmap, spot3, f + 39, e + 7, 0, -115, -75)
-        drawSpot(bitmap, spot4, h + 15, g + 6, 0, -115, -75)
-    end
+def pbSpindaSpots(pkmn,bitmap)
+  spot1 = [
+     [0,0,1,1,1,1,0,0],
+     [0,1,1,1,1,1,1,0],
+     [1,1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1,1],
+     [0,1,1,1,1,1,1,0],
+     [0,0,1,1,1,1,0,0]
+  ]
+  spot2 = [
+     [0,0,1,1,1,0,0],
+     [0,1,1,1,1,1,0],
+     [1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1],
+     [0,1,1,1,1,1,0],
+     [0,0,1,1,1,0,0]
+  ]
+  spot3 = [
+     [0,0,0,0,0,1,1,1,1,0,0,0,0],
+     [0,0,0,1,1,1,1,1,1,1,0,0,0],
+     [0,0,1,1,1,1,1,1,1,1,1,0,0],
+     [0,1,1,1,1,1,1,1,1,1,1,1,0],
+     [0,1,1,1,1,1,1,1,1,1,1,1,0],
+     [1,1,1,1,1,1,1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1,1,1,1,1,1,1],
+     [0,1,1,1,1,1,1,1,1,1,1,1,0],
+     [0,1,1,1,1,1,1,1,1,1,1,1,0],
+     [0,0,1,1,1,1,1,1,1,1,1,0,0],
+     [0,0,0,1,1,1,1,1,1,1,0,0,0],
+     [0,0,0,0,0,1,1,1,0,0,0,0,0]
+  ]
+  spot4 = [
+     [0,0,0,0,1,1,1,0,0,0,0,0],
+     [0,0,1,1,1,1,1,1,1,0,0,0],
+     [0,1,1,1,1,1,1,1,1,1,0,0],
+     [0,1,1,1,1,1,1,1,1,1,1,0],
+     [1,1,1,1,1,1,1,1,1,1,1,0],
+     [1,1,1,1,1,1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1,1,1,1,1,1],
+     [1,1,1,1,1,1,1,1,1,1,1,0],
+     [0,1,1,1,1,1,1,1,1,1,1,0],
+     [0,0,1,1,1,1,1,1,1,1,0,0],
+     [0,0,0,0,1,1,1,1,1,0,0,0]
+  ]
+  id = pkmn.aestheticsID
+  h = (id>>28)&15
+  g = (id>>24)&15
+  f = (id>>20)&15
+  e = (id>>16)&15
+  d = (id>>12)&15
+  c = (id>>8)&15
+  b = (id>>4)&15
+  a = (id)&15
+  if pkmn.shiny?
+    drawSpot(bitmap,spot1,b+33,a+25,-75,-10,-150)
+    drawSpot(bitmap,spot2,d+21,c+24,-75,-10,-150)
+    drawSpot(bitmap,spot3,f+39,e+7,-75,-10,-150)
+    drawSpot(bitmap,spot4,h+15,g+6,-75,-10,-150)
+  else
+    drawSpot(bitmap,spot1,b+33,a+25,0,-115,-75)
+    drawSpot(bitmap,spot2,d+21,c+24,0,-115,-75)
+    drawSpot(bitmap,spot3,f+39,e+7,0,-115,-75)
+    drawSpot(bitmap,spot4,h+15,g+6,0,-115,-75)
+  end
 end
 
 #===============================================================================
 # Regular form differences
 #===============================================================================
 
-MultipleForms.register(:UNOWN, {
-  "getFormOnCreation" => proc { |_pkmn|
-      next rand(28)
+MultipleForms.register(:UNOWN,{
+  "getFormOnCreation" => proc { |pkmn|
+    next rand(28)
   }
 })
 
-MultipleForms.register(:SPINDA, {
-  "alterBitmap" => proc { |pkmn, bitmap|
-      pbSpindaSpots(pkmn, bitmap)
+MultipleForms.register(:SPINDA,{
+  "alterBitmap" => proc { |pkmn,bitmap|
+    pbSpindaSpots(pkmn,bitmap)
   }
 })
 
-MultipleForms.register(:CASTFORM, {
-  "getFormOnLeavingBattle" => proc { |_pkmn, _battle, _usedInBattle, _endBattle|
-      next 0
+MultipleForms.register(:CASTFORM,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0
   }
 })
 
-MultipleForms.register(:GROUDON, {
+MultipleForms.register(:GROUDON,{
   "getPrimalForm" => proc { |pkmn|
-      next 1 if pkmn.hasItem?(:REDORB)
-      next
+    next 1 if pkmn.hasItem?(:REDORB)
+    next
   }
 })
 
-MultipleForms.register(:KYOGRE, {
+MultipleForms.register(:KYOGRE,{
   "getPrimalForm" => proc { |pkmn|
-      next 1 if pkmn.hasItem?(:BLUEORB)
-      next
+    next 1 if pkmn.hasItem?(:BLUEORB)
+    next
   }
 })
 
@@ -175,222 +178,222 @@ MultipleForms.register(:RAYQUAZA, {
   },
 })
 
-MultipleForms.register(:CHERRIM, {
-  "getFormOnLeavingBattle" => proc { |_pkmn, _battle, _usedInBattle, _endBattle|
-      next 0
+MultipleForms.register(:CHERRIM,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0
   }
 })
 
-MultipleForms.register(:ROTOM, {
-  "onSetForm" => proc { |pkmn, form, _oldForm|
-      form_moves = GameData::Species.get(:ROTOM).form_specific_moves
+MultipleForms.register(:ROTOM,{
+  "onSetForm" => proc { |pkmn, form, oldForm|
+    form_moves = GameData::Species.get(:ROTOM).form_specific_moves
+    move_index = -1
+    pkmn.moves.each_with_index do |move, i|
+      next if !form_moves.any? { |m| m == move.id }
+      move_index = i
+      break
+    end
+    if form == 0
+      # Turned back into the base form; forget form-specific moves
+      if move_index >= 0
+        move_name = pkmn.moves[move_index].name
+        pkmn.forget_move_at_index(move_index)
+        pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
+        pbLearnMove(pkmn, :PHANTOMGATE, true)
+      end
+    else
+      # Turned into an alternate form; try learning that form's unique move
+      new_move_id = form_moves[form]
+      if move_index >= 0
+        # Knows another form's unique move; replace it
+        old_move_name = pkmn.moves[move_index].name
+        if GameData::Move.exists?(new_move_id)
+          pkmn.moves[move_index].id = new_move_id
+          new_move_name = pkmn.moves[move_index].name
+          pbMessage(_INTL("{1} forgot how to use {2}.\\nAnd...\1", pkmn.name, old_move_name))
+          pbMessage(_INTL("\\se[]{1} learned {2}!\\se[Pkmn move learnt]", pkmn.name, new_move_name))
+        else
+          pkmn.forget_move_at_index(move_index)
+          pbMessage(_INTL("{1} forgot {2}...", pkmn.name, old_move_name))
+          pbLearnMove(pkmn, :MACHINATE, true)
+        end
+      else
+        # Just try to learn this form's unique move
+        pbLearnMove(pkmn, new_move_id, true)
+      end
+    end
+  }
+})
+
+MultipleForms.register(:ARCEUS,{
+  "getForm" => proc { |pkmn|
+    next 0 unless pkmn.hasAbility?(:MULTITYPE)
+    next 0 unless pkmn.hasItem?(:PRISMATICPLATE)
+    next GameData::Type.get(pkmn.itemTypeChosen).id_number
+  }
+})
+
+MultipleForms.register(:BASCULIN,{
+  "getFormOnCreation" => proc { |pkmn|
+    next rand(2)
+  }
+})
+
+
+MultipleForms.register(:KYUREM,{
+  "getFormOnEnteringBattle" => proc { |pkmn,wild|
+    next pkmn.form+2 if pkmn.form==1 || pkmn.form==2
+  },
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next pkmn.form-2 if pkmn.form>=3   # Fused forms stop glowing
+  },
+  "onSetForm" => proc { |pkmn, form, oldForm|
+    next if form > 2 || oldForm > 2   # Glowing in-battle form changes don't affect moveset
+    form_moves = GameData::Species.get(:KYUREM).form_specific_moves
+    if form == 0
+      # Turned back into the base form; forget form-specific moves
       move_index = -1
       pkmn.moves.each_with_index do |move, i|
-          next if !form_moves.any? { |m| m == move.id }
-          move_index = i
-          break
+        next if !form_moves.any? { |m| m == move.id }
+        move_index = i
+        break
       end
-      if form == 0
-          # Turned back into the base form; forget form-specific moves
-          if move_index >= 0
-              move_name = pkmn.moves[move_index].name
-              pkmn.forget_move_at_index(move_index)
-              pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
-              pbLearnMove(pkmn, :PHANTOMGATE, true)
-          end
-      else
-          # Turned into an alternate form; try learning that form's unique move
-          new_move_id = form_moves[form]
-          if move_index >= 0
-              # Knows another form's unique move; replace it
-              old_move_name = pkmn.moves[move_index].name
-              if GameData::Move.exists?(new_move_id)
-                  pkmn.moves[move_index].id = new_move_id
-                  new_move_name = pkmn.moves[move_index].name
-                  pbMessage(_INTL("{1} forgot how to use {2}.\\nAnd...\1", pkmn.name, old_move_name))
-                  pbMessage(_INTL("\\se[]{1} learned {2}!\\se[Pkmn move learnt]", pkmn.name, new_move_name))
-              else
-                  pkmn.forget_move_at_index(move_index)
-                  pbMessage(_INTL("{1} forgot {2}...", pkmn.name, old_move_name))
-                  pbLearnMove(pkmn, :MACHINATE, true)
-              end
-          else
-              # Just try to learn this form's unique move
-              pbLearnMove(pkmn, new_move_id, true)
-          end
+      if move_index >= 0
+        move_name = pkmn.moves[move_index].name
+        pkmn.forget_move_at_index(move_index)
+        pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
+        pbLearnMove(pkmn, :ABSOLUTEZERO, true)
       end
+    else
+      # Turned into an alternate form; try learning that form's unique move
+      new_move_id = form_moves[form]
+      pbLearnMove(pkmn, new_move_id, true)
+    end
   }
 })
 
-MultipleForms.register(:ARCEUS, {
+MultipleForms.register(:KELDEO,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0
+  }
+})
+
+MultipleForms.register(:GENESECT,{
   "getForm" => proc { |pkmn|
-      next 0 unless pkmn.hasAbility?(:MULTITYPE)
-      next 0 unless pkmn.hasItem?(:PRISMATICPLATE)
-      next GameData::Type.get(pkmn.itemTypeChosen).id_number
+    next 1 if pkmn.hasItem?(:SHOCKDRIVE)
+    next 2 if pkmn.hasItem?(:BURNDRIVE)
+    next 3 if pkmn.hasItem?(:CHILLDRIVE)
+    next 4 if pkmn.hasItem?(:DOUSEDRIVE)
+    next 0
   }
 })
 
-MultipleForms.register(:BASCULIN, {
-  "getFormOnCreation" => proc { |_pkmn|
-      next rand(2)
+MultipleForms.register(:CRAMORANT,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0
   }
 })
 
-
-MultipleForms.register(:KYUREM, {
-  "getFormOnEnteringBattle" => proc { |pkmn, _wild|
-      next pkmn.form + 2 if [1, 2].include?(pkmn.form)
-  },
-  "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, _endBattle|
-      next pkmn.form - 2 if pkmn.form >= 3 # Fused forms stop glowing
-  },
-  "onSetForm" => proc { |pkmn, form, oldForm|
-      next if form > 2 || oldForm > 2 # Glowing in-battle form changes don't affect moveset
-      form_moves = GameData::Species.get(:KYUREM).form_specific_moves
-      if form == 0
-          # Turned back into the base form; forget form-specific moves
-          move_index = -1
-          pkmn.moves.each_with_index do |move, i|
-              next if !form_moves.any? { |m| m == move.id }
-              move_index = i
-              break
-          end
-          if move_index >= 0
-              move_name = pkmn.moves[move_index].name
-              pkmn.forget_move_at_index(move_index)
-              pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
-              pbLearnMove(pkmn, :ABSOLUTEZERO, true)
-          end
-      else
-          # Turned into an alternate form; try learning that form's unique move
-          new_move_id = form_moves[form]
-          pbLearnMove(pkmn, new_move_id, true)
-      end
-  }
-})
-
-MultipleForms.register(:KELDEO, {
-  "getFormOnLeavingBattle" => proc { |_pkmn, _battle, _usedInBattle, _endBattle|
-      next 0
-  }
-})
-
-MultipleForms.register(:GENESECT, {
-  "getForm" => proc { |pkmn|
-      next 1 if pkmn.hasItem?(:SHOCKDRIVE)
-      next 2 if pkmn.hasItem?(:BURNDRIVE)
-      next 3 if pkmn.hasItem?(:CHILLDRIVE)
-      next 4 if pkmn.hasItem?(:DOUSEDRIVE)
-      next 0
-  }
-})
-
-MultipleForms.register(:CRAMORANT, {
-  "getFormOnLeavingBattle" => proc { |_pkmn, _battle, _usedInBattle, _endBattle|
-      next 0
-  }
-})
-
-MultipleForms.register(:SCATTERBUG, {
-  "getFormOnCreation" => proc { |_pkmn|
-      next $Trainer.secret_ID % 18
-  }
-})
-
-MultipleForms.copy(:SCATTERBUG, :SPEWPA, :VIVILLON)
-
-MultipleForms.register(:ESPURR, {
+MultipleForms.register(:SCATTERBUG,{
   "getFormOnCreation" => proc { |pkmn|
-      next pkmn.gender
+    next $Trainer.secret_ID % 18
   }
 })
 
-MultipleForms.copy(:ESPURR, :MEOWSTIC)
+MultipleForms.copy(:SCATTERBUG,:SPEWPA,:VIVILLON)
 
-MultipleForms.register(:AEGISLASH, {
-  "getFormOnLeavingBattle" => proc { |_pkmn, _battle, _usedInBattle, _endBattle|
-      next 0
+MultipleForms.register(:ESPURR,{
+  "getFormOnCreation" => proc { |pkmn|
+    next pkmn.gender
   }
 })
 
-MultipleForms.register(:XERNEAS, {
-  "getFormOnEnteringBattle" => proc { |_pkmn, _wild|
-      next 1
+MultipleForms.copy(:ESPURR,:MEOWSTIC)
+
+MultipleForms.register(:AEGISLASH,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0
+  }
+})
+
+MultipleForms.register(:XERNEAS,{
+  "getFormOnEnteringBattle" => proc { |pkmn,wild|
+    next 1
   },
-  "getFormOnLeavingBattle" => proc { |_pkmn, _battle, _usedInBattle, _endBattle|
-      next 0
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0
   }
 })
 
-MultipleForms.register(:ZYGARDE, {
-  "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, endBattle|
-      next pkmn.form == 0 if pkmn.form == 2 && endBattle
+MultipleForms.register(:ZYGARDE,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next pkmn.form==0 if pkmn.form==2 && endBattle
   }
 })
 
-MultipleForms.register(:ORICORIO, {
-  "getFormOnCreation" => proc { |_pkmn|
-      next rand(4)   # 0=red, 1=yellow, 2=pink, 3=purple
+MultipleForms.register(:ORICORIO,{
+  "getFormOnCreation" => proc { |pkmn|
+    next rand(4)   # 0=red, 1=yellow, 2=pink, 3=purple
   },
 })
 
 
-MultipleForms.register(:WISHIWASHI, {
-  "getFormOnLeavingBattle" => proc { |_pkmn, _battle, _usedInBattle, _endBattle|
-      next 0
+MultipleForms.register(:WISHIWASHI,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0
   }
 })
 
-MultipleForms.register(:SILVALLY, {
+MultipleForms.register(:SILVALLY,{
   "getForm" => proc { |pkmn|
-      next 0 unless pkmn.hasAbility?(:RKSSYSTEM)
-      next 0 unless pkmn.hasItem?(:MEMORYSET)
-      next GameData::Type.get(pkmn.itemTypeChosen).id_number
+    next 0 unless pkmn.hasAbility?(:RKSSYSTEM)
+    next 0 unless pkmn.hasItem?(:MEMORYSET)
+    next GameData::Type.get(pkmn.itemTypeChosen).id_number
   }
 })
 
-MultipleForms.register(:MINIOR, {
-  "getFormOnCreation" => proc { |_pkmn|
-      next rand(7)   # Meteor forms are 0-6, Core forms are 7-13
+MultipleForms.register(:MINIOR,{
+  "getFormOnCreation" => proc { |pkmn|
+    next rand(7)   # Meteor forms are 0-6, Core forms are 7-13
   },
-  "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, endBattle|
-      next pkmn.form - 7 if pkmn.form >= 7 && endBattle
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next pkmn.form-7 if pkmn.form>=7 && endBattle
   }
 })
 
-MultipleForms.register(:MIMIKYU, {
-  "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, endBattle|
-      next 0 if pkmn.fainted? || endBattle
+MultipleForms.register(:MIMIKYU,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0 if pkmn.fainted? || endBattle
   }
 })
 
-MultipleForms.register(:NECROZMA, {
-  "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, endBattle|
-      # Fused forms are 1 and 2, Ultra form is 3 or 4 depending on which fusion
-      next pkmn.form - 2 if pkmn.form >= 3 && (pkmn.fainted? || endBattle)
+MultipleForms.register(:NECROZMA,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    # Fused forms are 1 and 2, Ultra form is 3 or 4 depending on which fusion
+    next pkmn.form-2 if pkmn.form>=3 && (pkmn.fainted? || endBattle)
   },
   "onSetForm" => proc { |pkmn, form, oldForm|
-      next if form > 2 || oldForm > 2 # Ultra form changes don't affect moveset
-      form_moves = GameData::Species.get(:NECROZMA).form_specific_moves
-      if form == 0
-          # Turned back into the base form; forget form-specific moves
-          move_index = -1
-          pkmn.moves.each_with_index do |move, i|
-              next if !form_moves.any? { |m| m == move.id }
-              move_index = i
-              break
-          end
-          if move_index >= 0
-              move_name = pkmn.moves[move_index].name
-              pkmn.forget_move_at_index(move_index)
-              pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
-              pbLearnMove(pkmn, :PHOTONGEYSER, true)
-          end
-      else
-          # Turned into an alternate form; try learning that form's unique move
-          new_move_id = form_moves[form]
-          pbLearnMove(pkmn, new_move_id, true)
+    next if form > 2 || oldForm > 2   # Ultra form changes don't affect moveset
+    form_moves = GameData::Species.get(:NECROZMA).form_specific_moves
+    if form == 0
+      # Turned back into the base form; forget form-specific moves
+      move_index = -1
+      pkmn.moves.each_with_index do |move, i|
+        next if !form_moves.any? { |m| m == move.id }
+        move_index = i
+        break
       end
+      if move_index >= 0
+        move_name = pkmn.moves[move_index].name
+        pkmn.forget_move_at_index(move_index)
+        pbMessage(_INTL("{1} forgot {2}...", pkmn.name, move_name))
+        pbLearnMove(pkmn, :PHOTONGEYSER, true)
+      end
+    else
+      # Turned into an alternate form; try learning that form's unique move
+      new_move_id = form_moves[form]
+      pbLearnMove(pkmn, new_move_id, true)
+    end
   }
 })
 
@@ -466,28 +469,28 @@ MultipleForms.register(:EISCUE, {
   },
 })
 
-MultipleForms.register(:URSHIFU, {
-  "onSetForm" => proc { |pkmn, form, _oldForm|
-      form_moves = GameData::Species.get(:URSHIFU).form_specific_moves
-      move_index = -1
-      pkmn.moves.each_with_index do |move, i|
-          next if !form_moves.any? { |m| m == move.id }
-          move_index = i
-          break
-      end
-      # Turned into an alternate form; try learning that form's unique move
-      new_move_id = form_moves[form]
-      if move_index >= 0
-          # Knows another form's unique move; replace it
-          old_move_name = pkmn.moves[move_index].name
-          pkmn.moves[move_index].id = new_move_id
-          new_move_name = pkmn.moves[move_index].name
-          pbMessage(_INTL("{1} forgot how to use {2}.\\nAnd...\1", pkmn.name, old_move_name))
-          pbMessage(_INTL("\\se[]{1} learned {2}!\\se[Pkmn move learnt]", pkmn.name, new_move_name))
-      else
-          # Just try to learn this form's unique move
-          pbLearnMove(pkmn, new_move_id, true)
-      end
+MultipleForms.register(:URSHIFU,{
+  "onSetForm" => proc { |pkmn, form, oldForm|
+    form_moves = GameData::Species.get(:URSHIFU).form_specific_moves
+    move_index = -1
+    pkmn.moves.each_with_index do |move, i|
+      next if !form_moves.any? { |m| m == move.id }
+      move_index = i
+      break
+    end
+    # Turned into an alternate form; try learning that form's unique move
+    new_move_id = form_moves[form]
+    if move_index >= 0
+      # Knows another form's unique move; replace it
+      old_move_name = pkmn.moves[move_index].name
+      pkmn.moves[move_index].id = new_move_id
+      new_move_name = pkmn.moves[move_index].name
+      pbMessage(_INTL("{1} forgot how to use {2}.\\nAnd...\1", pkmn.name, old_move_name))
+      pbMessage(_INTL("\\se[]{1} learned {2}!\\se[Pkmn move learnt]", pkmn.name, new_move_name))
+    else
+      # Just try to learn this form's unique move
+      pbLearnMove(pkmn, new_move_id, true)
+    end
   }
 })
 
@@ -497,16 +500,16 @@ MultipleForms.register(:MORPEKO, {
   },
 })
 
-MultipleForms.register(:INDEEDEE, {
+MultipleForms.register(:INDEEDEE,{
   "getFormOnCreation" => proc { |pkmn|
-      next pkmn.gender
+    next pkmn.gender
   },
 })
 
 MultipleForms.register(:DIANCIE, {
     "getForm" => proc { |pkmn|
-        next 1 if pkmn.hasItem?(:CRYSTALCALIBURN)
-        next 0
+      next 1 if pkmn.hasItem?(:CRYSTALCALIBURN)
+      next 0
     },
     "getFormOnLeavingBattle" => proc { |pkmn, _battle, _usedInBattle, endBattle|
         next 0 if pkmn.form == 1 && (pkmn.fainted? || endBattle)

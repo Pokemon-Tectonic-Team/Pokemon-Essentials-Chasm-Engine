@@ -4,12 +4,13 @@ def pbRegisterPartner(tr_type, tr_name, tr_id = 0)
     trainer = pbLoadTrainer(tr_type, tr_name, tr_id)
     Events.onTrainerPartyLoad.trigger(nil, trainer)
     for i in trainer.party
-        i.owner = Pokemon::Owner.new_from_trainer(trainer)
-        i.calc_stats
+      i.owner = Pokemon::Owner.new_from_trainer(trainer)
+      i.calc_stats
     end
     $PokemonGlobal.partner = [tr_type, tr_name, trainer.id, trainer.party, trainer.flags]
-end
-
-def pbDeregisterPartner
+  end
+  
+  def pbDeregisterPartner
     $PokemonGlobal.partner = nil
-end
+  end
+  

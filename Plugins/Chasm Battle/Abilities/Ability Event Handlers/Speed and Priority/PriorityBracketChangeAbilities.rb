@@ -1,13 +1,13 @@
 BattleHandlers::PriorityBracketChangeAbility.add(:STALL,
-  proc { |_ability, _battler, subPri, _battle|
+  proc { |ability, _battler, subPri, _battle|
       next -1 if subPri == 0
   }
 )
 
-BattleHandlers::PriorityBracketChangeAbility.copy(:STALL, :APATHETIC)
+BattleHandlers::PriorityBracketChangeAbility.copy(:STALL,:APATHETIC)
 
 BattleHandlers::PriorityBracketChangeAbility.add(:QUICKDRAW,
-    proc { |_ability, _battler, subPri, battle|
+    proc { |ability, _battler, subPri, battle|
         next 1 if subPri < 1 && battle.pbRandom(10) < 3
     }
 )

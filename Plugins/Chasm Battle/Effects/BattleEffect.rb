@@ -270,7 +270,7 @@ module GameData
             @others_lose_track = hash[:others_lose_track] || false
 
             @disable_effects_on_other_exit = hash[:disable_effects_on_other_exit] || []
-            @hand_off = hash[:hand_off] || false
+            @hand_off     = hash[:hand_off] || false
             @sub_effects	= hash[:sub_effects] || []
 
             @protection_effect	= hash[:protection_effect] || false
@@ -279,13 +279,13 @@ module GameData
 
             @status_applying_hazard = hash[:status_applying_hazard]
 
-            @is_room = hash[:is_room] || false
+            @is_room	            = hash[:is_room] || false
             @is_screen				= hash[:is_screen] || false
             @is_hazard				= hash[:is_hazard] || false
             @is_mental				= hash[:is_mental] || false
-            @is_spike	= hash[:is_spike] || false
+            @is_spike				= hash[:is_spike] || false
 
-            @copied_move_marker = hash[:copied_move_marker] || false
+            @copied_move_marker     = hash[:copied_move_marker] || false
 
             @avatars_purge = hash[:avatars_purge] || false
 
@@ -651,8 +651,10 @@ module GameData
             end
         end
 
-        def self.each_effect(&)
-            each(&)
+        def self.each_effect
+            each do |data|
+                yield data
+            end
         end
 
         # For translation

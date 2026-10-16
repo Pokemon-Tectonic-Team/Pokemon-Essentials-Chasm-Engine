@@ -6,12 +6,12 @@ def useChromaClarion
     end
 
     begin
-        test_species, = $PokemonEncounters.choose_wild_pokemon(encounter_type)
+        test_species, test_level = $PokemonEncounters.choose_wild_pokemon(encounter_type)
         if !test_species
             pbMessage(_INTL("There are no Pokémon responding to the Chroma Clarion here..."))
             return 0
         end
-    rescue StandardError
+    rescue
         pbMessage(_INTL("There are no Pokémon responding to the Chroma Clarion here..."))
         return 0
     end
@@ -20,12 +20,12 @@ def useChromaClarion
         pbMessage(_INTL("You must have at least 3 able Pokémon to use the Chroma Clarion!"))
         return 0
     end
-
+    
     encounters = []
-    3.times do |_i|
+    3.times do |i|
         species, level = $PokemonEncounters.choose_wild_pokemon(encounter_type)
         level += 5
-        pkmn = pbGenerateWildPokemon(species, level, false, true)
+        pkmn = pbGenerateWildPokemon(species,level,false,true)
 
         pkmn.shinyRolls *= 2
 
@@ -34,11 +34,11 @@ def useChromaClarion
             move = getRandomNonLevelMove(species)
             pkmn.learn_move(move)
         end
-
+        
         encounters.push(pkmn)
     end
 
-    pbSEPlay("Anim/PRSFX- Mega Evolution Rayquaza3", 150, 60)
+    pbSEPlay("Anim/PRSFX- Mega Evolution Rayquaza3",150,60)
 
     pbWait(40)
 
@@ -48,20 +48,20 @@ def useChromaClarion
         pbWildBattleCore(*encounters)
     end
 
-    # $PokemonGlobal.chroma_clarion_recharge_steps = 30
-    # pbMessage(_INTL("The Chroma Clarion goes silent."))
+    #$PokemonGlobal.chroma_clarion_recharge_steps = 30
+    #pbMessage(_INTL("The Chroma Clarion goes silent."))
 
     return 1
 end
 
-ItemHandlers::UseFromBag.add(:CHROMACLARION, proc { |_item|
-    next useChromaClarion
+ItemHandlers::UseFromBag.add(:CHROMACLARION,proc { |item|
+	next useChromaClarion
 })
 
-ItemHandlers::ConfirmUseInField.add(:CHROMACLARION, proc { |_item|
+ItemHandlers::ConfirmUseInField.add(:CHROMACLARION,proc { |item|
     next true
 })
 
-ItemHandlers::UseInField.add(:CHROMACLARION, proc { |_item|
-    next useChromaClarion
+ItemHandlers::UseInField.add(:CHROMACLARION,proc { |item|
+	next useChromaClarion
 })
