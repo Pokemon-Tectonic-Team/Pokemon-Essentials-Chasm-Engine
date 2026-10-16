@@ -184,7 +184,7 @@
     "effect"      => proc { |sprites, viewport|
       GameData::Species.each do |species_data|
         # Only look at pokemon that are the base of an evolutionary line
-        next if species_data.get_prevolutions.length > 0
+        next if species_data.has_previous_species?
         next if species_data.get_evolutions.length == 0
   
         # Get the list of all pokemon in that line

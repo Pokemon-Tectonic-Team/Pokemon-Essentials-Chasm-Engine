@@ -54,10 +54,7 @@ end
 
 def shiftSpeciesBitmapHue(baseBitmap, species)
     species_data = GameData::Species.get(species)
-    firstSpecies = species_data
-    while GameData::Species.get(firstSpecies.get_previous_species()) != firstSpecies do
-        firstSpecies = GameData::Species.get(firstSpecies.get_previous_species())
-    end
+    firstSpecies = species_data.get_line_start
     hueShift = hue_shift_from_id(firstSpecies.id_number)
     ret = baseBitmap.copy
     baseBitmap.dispose

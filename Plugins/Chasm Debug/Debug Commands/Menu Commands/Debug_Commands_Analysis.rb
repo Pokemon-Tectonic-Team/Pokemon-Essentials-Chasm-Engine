@@ -351,10 +351,7 @@ end
           end
   
           # Gather line moves
-          firstSpecies = species_data
-          while GameData::Species.get(firstSpecies.get_previous_species()) != firstSpecies do
-              firstSpecies = GameData::Species.get(firstSpecies.get_previous_species())
-          end
+          firstSpecies = species_data.get_line_start
           
           firstSpecies.line_moves.each do |move_id| 
               next if tutorSet.include?(move_id)
