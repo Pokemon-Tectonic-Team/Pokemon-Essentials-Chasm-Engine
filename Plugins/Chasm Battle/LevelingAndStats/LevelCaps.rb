@@ -9,9 +9,8 @@ MAX_LEVEL_CAP = 70
 # If :SAME_CAP, rare candies obey the same level cap as everything else
 # If :SEPARATE_CAP, rare candies have their own, seperate level cap which is higher than the regular level cap
 # If :IGNORE_CAP, rare candies can be used regardless of the level cap
-RARE_CANDY_LEVEL_CAP_BEHAVIOUR = :SAME_CAP
-# The below  constants are only used if :SEPARATE_CAP is the setting used
-RARE_CANDY_LEVEL_CAP_VAR = 27
+RARE_CANDY_LEVEL_CAP_BEHAVIOUR = :IGNORE_CAP
+# Only used if :SEPARATE_CAP is the setting used
 RARE_CANDY_LEVEL_CAP_OFFSET = 5 # How much higher the rare candy level cap is compared to the regular level cap
 
 def setStartingLevelCap
