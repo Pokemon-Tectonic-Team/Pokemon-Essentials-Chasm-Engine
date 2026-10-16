@@ -23,6 +23,7 @@ def battleKeywordsImportant
         "severe burn",
         "burning",
         "burned",
+        "Light That Burns the Sky",
         "burns",
         "burn",
         "frozen spikes",
@@ -46,7 +47,6 @@ def battleKeywordsImportant
         "poisoning",
         "poisoned",
         "poisons",
-        "poison",
         "leeching",
         "leeched",
         "leeches",
@@ -77,7 +77,8 @@ def battleKeywordsImportant
         "disabled",
         "disables",
         "disable",
-        "sticky",
+        "tormented",
+        "torment",
         "maximizes",
         "maximize",
         "minimized",
@@ -96,7 +97,6 @@ def battleKeywordsImportant
         "traps",
         "trap",
         "gravity",
-        "trick room",
         "puzzle room",
         "odd room",
         "polarized room",
@@ -112,7 +112,12 @@ def battleKeywordsImportant
         "critical hit chance",
         "critical hits",
         "critical hit",
+        "redirected",
+        "light screen",
         "screens",
+        "screen",
+        "reflect",
+		"sanctuary",
         "invulnerable",
         "clothing",
         "Grey Mist",
@@ -149,10 +154,26 @@ def battleKeywordsImportant
         "foretold",
         "barred",
         "bar",
+        "mental",
         "shrinks",
         "shrinking",
         "sugar rush",
         "self-destructing",
+        "revives",
+        "judgment",
+        "mega punch",
+        "breach",
+        "nuzzle",
+        "parting shot",
+        "covet",
+        "wish",
+        "power split",
+        "pain split",
+        "dragon dance",
+        "lightning dance",
+        "rapid spin",
+        "aromatherapy",
+        "fling",
     ]
 end
 
@@ -169,8 +190,12 @@ def battleKeywordsImportantCaseSensitive
         "Evasion",
         "Frost Spikes",
         "Flame Spikes",
+        "poison",
         "Poison Spikes",
         "Spikes",
+        "Rest",
+        "Gust",
+        "Snore",
     ]
 end
 
@@ -180,6 +205,7 @@ def battleKeywordsUnimportant
         "doubles",
         "double",
         "doubled",
+        "tripled",
         "three times",
         "four times",
         "five times",
@@ -226,7 +252,28 @@ def battleKeywordsUnimportantCaseSensitive
     ]
 end
 
-def addBattleKeywordHighlighting(description)
+def moveTagKeywords
+    return [
+        "biting",
+        "bite",
+        "punching",
+        "punch",
+        "kicking",
+        "kick",
+        "slice",
+        "dancing",
+        "dance",
+        "sound-based",
+        "sound",
+        "wind-based",
+        "wind",
+        "light-based",
+        "light",
+        "pulse",
+    ]
+end
+
+def addBattleKeywordHighlighting(description, isAbility: false)
     # Highlight very important words in red
     importantColorTag = getSkinColor(nil, 2, darkMode?, true)
     battleKeywordsImportant.each do |keyword|
@@ -236,13 +283,20 @@ def addBattleKeywordHighlighting(description)
         description = description.gsub(/\b(#{keyword})\b/,"#{importantColorTag}\\1</c3>")
     end
 
-    # Outline less important keywords
+    # Outline less important keywords in blue
     unimportantColorTag = getSkinColor(nil, 13, darkMode?, true)
     battleKeywordsUnimportant.each do |keyword|
         description = description.gsub(/\b(#{keyword})\b/i,"#{unimportantColorTag}\\1</c3>")
     end
     battleKeywordsUnimportantCaseSensitive.each do |keyword|
-    description = description.gsub(/\b(#{keyword})\b/,"#{unimportantColorTag}\\1</c3>")
+        description = description.gsub(/\b(#{keyword})\b/,"#{unimportantColorTag}\\1</c3>")
+    end
+
+    # Outline move tags in ability descriptions in green (not case sensitive)
+    if isAbility
+        moveTagKeywords.each do |tag|
+            description = description.gsub(/\b(#{tag})\b/i,"#{importantColorTag}\\1</c3>")
+        end
     end
 
     return description

@@ -318,9 +318,23 @@ class PokemonPartyShowcase_Scene
             pbDrawImagePositions(@overlay,[[shinyIconFileName,displayX,mainIconY,0,0,16,16]])
         end
 
-        # Display moves
-        pokemon.moves.each_with_index do |pokemonMove,moveIndex|
-            moveName = GameData::Move.get(pokemonMove.id).name
+        # Display moves (including any curse extra moves)
+        displayMoveIDs = pokemon.moves.map { |pokemonMove| pokemonMove.id }
+        displayMoveIDs += pokemon.extraMoves if pokemon.hasExtraMoves?
+        # Normally rows are 16px apart starting at +2. When extra moves push the count past
+        # the usual 4, start a little higher (just under the name) and spread the rows down to
+        # just above the ability label, using the whole available band without overlapping the
+        # top (name) or bottom (ability) text.
+        if displayMoveIDs.length > 4
+            moveTopOffset = -4                              # start just under the name
+            moveBottomRowOffset = POKEMON_ICON_SIZE - 8     # 56: last row stays clear of the ability label (+72)
+            moveLineHeight = [(moveBottomRowOffset - moveTopOffset) / (displayMoveIDs.length - 1), 16].min
+        else
+            moveTopOffset = 2
+            moveLineHeight = 16
+        end
+        displayMoveIDs.each_with_index do |displayMoveID,moveIndex|
+            moveName = GameData::Move.get(displayMoveID).name
             expectedMoveNameWidth = @overlay.text_size(moveName).width
             if expectedMoveNameWidth > MAX_MOVE_NAME_WIDTH
                 charactersToShave = 3
@@ -335,7 +349,7 @@ class PokemonPartyShowcase_Scene
                 shavedName = shavedName[0..-1] if shavedName[shavedName.length-1] == " "
                 moveName = shavedName + "..."
             end
-            drawTextEx(@overlay, displayX + POKEMON_ICON_SIZE + 8, mainIconY + 2 + moveIndex * 16, 200, 1, moveName, base, shadow)
+            drawTextEx(@overlay, displayX + POKEMON_ICON_SIZE + 8, mainIconY + moveTopOffset + moveIndex * moveLineHeight, 200, 1, moveName, base, shadow)
         end
 
         # Display ability name

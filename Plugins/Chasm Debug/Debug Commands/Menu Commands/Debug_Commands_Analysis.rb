@@ -7,7 +7,7 @@ end
 DebugMenuCommands.register("findtextinevents", {
     "parent"      => "analysis",
     "name"        => _INTL("Find Text In Events"),
-    "description" => _INTL("Find events which have a peice of text in the params of their command list."),
+    "description" => _INTL("Find events which have a piece of text in the params of their command list."),
     "effect"      => proc { |sprites, viewport|
         textEntered = pbEnterText("Enter text...", 0, 32)
 
@@ -45,7 +45,7 @@ end
 DebugMenuCommands.register("replacetextinevents", {
     "parent"      => "analysis",
     "name"        => _INTL("Replace Text In Events"),
-    "description" => _INTL("Find events which have a peice of text in the params of their command list, and replace them with a new string."),
+    "description" => _INTL("Find events with a piece of text in their command params, replace with new string."),
     "effect"      => proc { |sprites, viewport|
         textEntered = pbEnterText("Enter text to replace...", 0, 32)
 
@@ -383,7 +383,7 @@ end
           file.write("Move, Type, Category, Level Up Count, Tutor Count, Same-Type Count, Off-type Count\r\n")
           move_counts.each do |move_id,counts|
               moveData = GameData::Move.get(move_id)
-              categoryLabel = ["PHYSICAL","SPECIAL","STATUS"][moveData.category]
+              categoryLabel = ["PHYSICAL","SPECIAL","STATUS","ADAPTIVE"][moveData.category]
               file.write("#{move_id},#{moveData.type},#{categoryLabel},#{counts[0]},#{counts[1]},#{counts[2]},#{counts[3]}\r\n")
           end
       }
@@ -873,5 +873,19 @@ DebugMenuCommands.register("earliestlevels", {
             end
         }
         pbMessage(_INTL("Move learn level analysis written to Analysis/move_levels.txt"))
+    }
+})
+
+DebugMenuCommands.register("outputdexentrycsv", {
+    "parent"      => "analysis",
+    "name"        => _INTL("Output Dex Entries CSV"),
+    "description" => _INTL("Get a list of all PokeDex entries as a Comma Seperated Values file."),
+    "effect"      => proc { |sprites, viewport|
+        File.open("Analysis/dex_entries.csv","wb") { |file|
+            GameData::Species.each do |speciesData|
+                file.write("#{speciesData.name},#{speciesData.form},\"#{speciesData.pokedex_entry}\"\r\n")
+            end
+        }
+        pbMessage(_INTL("Species and dex entries written to Analysis/dex_entries.csv"))
     }
 })

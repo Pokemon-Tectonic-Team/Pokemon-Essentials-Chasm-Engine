@@ -54,9 +54,10 @@ class Trainer
   
     #=============================================================================
   
+    # Used for battled trainers, so cable_club_name is appropriate here and won't interfere with character creation.
     def trainer_type_name
-        return GameData::TrainerType.get(@trainer_type_label).name if @trainer_type_label
-        return GameData::TrainerType.get(@trainer_type).name
+        tr_type = GameData::TrainerType.get(@trainer_type_label || @trainer_type)
+        return tr_type.cable_club_name || tr_type.name
     end
     def base_money;        return GameData::TrainerType.get(@trainer_type).base_money;  end
     def gender;            return GameData::TrainerType.get(@trainer_type).gender;      end
@@ -95,6 +96,14 @@ class Trainer
     def able_pokemon_count
       ret = 0
       @party.each { |p| ret += 1 if p && p.able? }
+      return ret
+    end
+
+    # Counts party members that are alive (HP > 0, not afraid, not egg),
+    # regardless of ability-based restrictions like PACIFIST or UnableByDefault.
+    def alive_pokemon_count
+      ret = 0
+      @party.each { |p| ret += 1 if p && !p.fainted? }
       return ret
     end
   

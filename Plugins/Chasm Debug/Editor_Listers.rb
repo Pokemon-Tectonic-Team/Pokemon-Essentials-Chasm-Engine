@@ -650,7 +650,8 @@ class CCTrainerTypeLister
     cmds = []
     GameData::TrainerType.cableClubClasses.each do |id|
       tr_type = GameData::TrainerType.get(id)
-      cmds.push([id, tr_type.real_name])
+      label = tr_type.cable_club_name ? "#{tr_type.cable_club_name} (#{tr_type.real_name})" : tr_type.real_name
+      cmds.push([id, label])
     end
     for t in cmds
       @commands.push(t[1])

@@ -89,9 +89,8 @@ end
 # If attack misses, user takes crash damage of 1/2 of max HP.
 # (High Jump Kick)
 #===============================================================================
-class PokeBattle_Move_CrashDamageIfFailsUnusableInGravity < PokeBattle_Move
+class PokeBattle_Move_CrashDamageIfFails < PokeBattle_Move
     def recoilMove?;        return true; end
-    def unusableInGravity?; return true; end
 
     def pbCrashDamage(user)
         recoilDamage = user.totalhp / 2.0
@@ -158,7 +157,7 @@ class PokeBattle_Move_UserLosesThirdOfCurrentHP < PokeBattle_Move
 end
 
 #===============================================================================
-# User loses one tenth of their total hp in recoil. (Shred Shot, Shrapnel, Fragmentation)
+# User loses one tenth of their total hp in recoil.
 #===============================================================================
 class PokeBattle_Move_UserLosesTenthOfTotalHP < PokeBattle_Move
     def pbEffectAfterAllHits(user, target)
@@ -170,6 +169,22 @@ class PokeBattle_Move_UserLosesTenthOfTotalHP < PokeBattle_Move
 
     def getEffectScore(user, _target)
         return getHPLossEffectScore(user, 0.1)
+    end
+end
+
+#===============================================================================
+# User loses one eighth of their total hp in recoil.
+#===============================================================================
+class PokeBattle_Move_UserLosesEighthOfTotalHP < PokeBattle_Move
+    def pbEffectAfterAllHits(user, target)
+        return if target.damageState.unaffected
+        return unless user.takesIndirectDamage?
+        @battle.pbDisplay(_INTL("{1} lost some of its HP!", user.pbThis))
+        user.applyFractionalDamage(1.0 / 10.0, true)
+    end
+
+    def getEffectScore(user, _target)
+        return getHPLossEffectScore(user, 1.0/8.0)
     end
 end
 

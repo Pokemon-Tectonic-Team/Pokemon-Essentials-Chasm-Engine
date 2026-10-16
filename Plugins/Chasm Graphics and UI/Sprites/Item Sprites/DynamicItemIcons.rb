@@ -33,6 +33,13 @@ ItemIconEvents::ModifyItemIconFileName.add(:CELLBOOSTER,
   }
 )
 
+ItemIconEvents::ModifyItemIconFileName.add(:POKEMONLURE,
+  proc { |item, iconName|
+      iconName += "_INACTIVE" if pokemonLureInactive?    
+      next iconName
+  }
+)
+
 ##############################################
 # Modify Item Icon Bitmap
 ##############################################

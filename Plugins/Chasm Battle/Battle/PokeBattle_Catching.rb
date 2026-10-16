@@ -54,17 +54,7 @@ class PokeBattle_Battle
                 pkmn.removeItem(itemToRemove)
             end
 
-            # Record the Pokémon's species as owned in the Pokédex
-            unless pbPlayer.owned?(pkmn.species)
-                pbPlayer.pokedex.set_owned(pkmn.species)
-                if $Trainer.has_pokedex
-                    pbPlayer.pokedex.register_last_seen(pkmn)
-                    if $Options.dex_shown_register == 0
-                        pbDisplayPaused(_INTL("You register {1} as caught in the MasterDex.", pkmn.name))
-                        @scene.pbShowPokedex(pkmn.species)
-                    end
-                end
-            end
+            registerNewPokemon(pkmn)
 
             # Increase the caught count for the global metadata
             incrementDexNavCounts(true)
@@ -132,11 +122,6 @@ class PokeBattle_Battle
             playMentorshipTutorial
         end
 
-        # Enable the PokEstate with a phonecall
-        if getGlobalSwitch(ESTATE_DISABLED_SWITCH) && !getGlobalSwitch(ESTATE_PHONECALL_GLOBAL) && $Trainer.pokedex.owned_count >= 12
-            $PokemonGlobal.shouldProcEstateCall = true
-        end
-
         @caughtPokemon.clear
     end
 
@@ -167,6 +152,7 @@ class PokeBattle_Battle
         else
             pbDisplayBrief(_INTL("{1} threw a {2}!", pbPlayer.name, itemName))
         end
+        @lastUsedPokeball = ball
         if battler.fainted?
             pbDisplay(_INTL("But there was no target..."))
             return

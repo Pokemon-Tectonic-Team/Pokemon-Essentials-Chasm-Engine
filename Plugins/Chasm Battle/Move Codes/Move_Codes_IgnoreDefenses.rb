@@ -236,7 +236,7 @@ end
 
 #===============================================================================
 # This move ignores target's Defense, Special Defense and evasion stat changes.
-# It also ignores their abilities. (Rend)
+# It also ignores their abilities.
 #===============================================================================
 class PokeBattle_Move_IgnoreTargetDefSpDefEvaStatStagesAndTargetAbility < PokeBattle_Move
     def pbChangeUsageCounters(user, specialUsage)

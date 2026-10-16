@@ -144,6 +144,8 @@ module BattleHandlers
     RunFromBattleItem                   = ItemHandlerHash.new # Smoke Ball
     # Consuming items
     OnBerryConsumedAbility              = AbilityHandlerHash.new
+    OnItemActivatedAbility              = AbilityHandlerHash.new   # Juggling (own item activated)
+    OnAllyItemActivatedAbility          = AbilityHandlerHash.new   # Juggling (ally's item activated)
     # Other triggers
     ItemOnEnemyStatGain                 = ItemHandlerHash.new
     ItemOnStatLoss                      = ItemHandlerHash.new
@@ -364,8 +366,8 @@ module BattleHandlers
         AccuracyCalcTargetAbility.trigger(ability, mults, user, target, move, type)
     end
 
-    def self.triggerAccuracyCalcUserItem(item, mults, user, target, move, type, aiCheck)
-        AccuracyCalcUserItem.trigger(item, mults, user, target, move, type, aiCheck)
+    def self.triggerAccuracyCalcUserItem(item, mults, user, target, move, type, aiCheck, aiContext = nil)
+        AccuracyCalcUserItem.trigger(item, mults, user, target, move, type, aiCheck, aiContext)
     end
 
     def self.triggerAccuracyCalcTargetItem(item, mults, user, target, move, type)
@@ -382,8 +384,8 @@ module BattleHandlers
         DamageCalcUserAllyAbility.trigger(ability, user, target, move, mults, baseDmg, type, aiCheck)
     end
 
-    def self.triggerDamageCalcUserItem(item, user, target, move, mults, baseDmg, type, aiCheck = false)
-        DamageCalcUserItem.trigger(item, user, target, move, mults, baseDmg, type, aiCheck)
+    def self.triggerDamageCalcUserItem(item, user, target, move, mults, baseDmg, type, aiCheck = false, aiContext = nil)
+        DamageCalcUserItem.trigger(item, user, target, move, mults, baseDmg, type, aiCheck, aiContext)
     end
 
     #=============================================================================
@@ -638,8 +640,8 @@ module BattleHandlers
         return !ret.nil? ? ret : false
     end
 
-    def self.triggerCertainSwitchingUserItem(item, switcher, battle)
-        ret = CertainSwitchingUserItem.trigger(item, switcher, battle)
+    def self.triggerCertainSwitchingUserItem(item, switcher, battle, trappingProc)
+        ret = CertainSwitchingUserItem.trigger(item, switcher, battle, trappingProc)
         return !ret.nil? ? ret : false
     end
 
@@ -704,6 +706,16 @@ module BattleHandlers
 
     def self.triggerOnBerryConsumedAbility(ability, user, berry, ownitem, battle)
         ret = OnBerryConsumedAbility.trigger(ability, user, berry, ownitem, battle)
+        return !ret.nil? ? ret : false
+    end
+
+    def self.triggerOnItemActivatedAbility(ability, user, item, battle)
+        ret = OnItemActivatedAbility.trigger(ability, user, item, battle)
+        return !ret.nil? ? ret : false
+    end
+
+    def self.triggerOnAllyItemActivatedAbility(ability, user, consumer, item, battle)
+        ret = OnAllyItemActivatedAbility.trigger(ability, user, consumer, item, battle)
         return !ret.nil? ? ret : false
     end
 

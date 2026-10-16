@@ -51,8 +51,10 @@ class PokeBattle_Battle
     attr_accessor :specialUsage     # True if a special usage is happening
     attr_reader   :endOfRound       # True during the end of round
     attr_accessor :moldBreaker      # True if Mold Breaker applies
+    attr_accessor :jugglingItemTaken # True if a Juggling catch has claimed an item this activation
     attr_reader   :struggle         # The Struggle move
     attr_accessor :ballsUsed # Number of balls thrown without capture
+    attr_accessor :lastUsedPokeball
     attr_accessor :messagesBlocked
     attr_accessor :commandPhasesThisRound
     attr_accessor :battleAI
@@ -126,7 +128,7 @@ class PokeBattle_Battle
         @moneyGain         = true
         @rules             = {}
         @priority          = []
-        @priorityTrickRoom = false
+        @priorityTrickstersDomain = false
         @choices           = []
         @megaEvolution     = [
             [-1] * (@player ? @player.length : 1),
@@ -151,9 +153,11 @@ class PokeBattle_Battle
         @specialUsage      = false
         @endOfRound        = false
         @moldBreaker       = false
+        @jugglingItemTaken = false
         @runCommand        = 0
         @nextPickupUse     = 0
         @ballsUsed = 0
+        @lastUsedPokeball = nil
         @messagesBlocked = false
         @bossBattle		   = false
         @autoTesting	   = false

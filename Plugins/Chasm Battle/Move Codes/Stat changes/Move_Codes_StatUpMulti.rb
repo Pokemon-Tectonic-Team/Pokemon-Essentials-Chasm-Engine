@@ -615,7 +615,7 @@ class PokeBattle_Move_RaiseUserWorstStat4SecondWorstStat2 < PokeBattle_Move
         statsUserCanRaise = user.finalStats.select do |stat, _finalValue|
             next user.pbCanRaiseStatStep?(stat, user, self)
         end
-        statsRanked = statsUserCanRaise.sort_by { |_s, v| v }
+        statsRanked = statsUserCanRaise.stable_sort_by { |_s, v| v }
         user.tryRaiseStat(statsRanked[0][0], user, increment: 3, move: self) if statsRanked.length > 0
         user.tryRaiseStat(statsRanked[1][0], user, increment: 3, move: self) if statsRanked.length > 1
     end
@@ -677,11 +677,15 @@ end
 # Empowered Deep Breathing
 class PokeBattle_Move_EmpoweredDeepBreathing < PokeBattle_Move_RaiseUserSpd2CriticalHitRate2
     include EmpoweredMove
+
+    def pbEffectGeneral(user)
+        super
+        transformType(user, :FIGHTING)
+    end
 end
 
 #===============================================================================
-# Increases Atk and Sp. Def by 2 steps, and applies Magnet Rise unless in Gravity.
-# (Magnetic Coil)
+# Increases Atk and Sp. Def by 2 steps, and applies Magnet Rise. (Magnetic Coil)
 #===============================================================================
 class PokeBattle_Move_RaiseUserAtkSpDef2MagnetRise < PokeBattle_MultiStatUpMove
     def initialize(battle, move)

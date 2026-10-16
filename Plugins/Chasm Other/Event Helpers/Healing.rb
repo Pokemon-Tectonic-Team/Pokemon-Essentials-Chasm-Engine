@@ -101,5 +101,4 @@ def pokeCenterHealing(pokeBallsEventID = nil, mode: :NURSE, respawn: false, push
     setGlobalSwitch(Settings::STARTING_OVER_SWITCH,false) if respawn
 
     unstowFollowerIfAllowed
-    autoSave
 end

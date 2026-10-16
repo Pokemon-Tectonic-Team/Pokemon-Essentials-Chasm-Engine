@@ -418,6 +418,32 @@ end
       return _INTL("No identical hold items.")
     end
   end
+
+  #===============================================================================
+  #
+  #===============================================================================
+  class BannedMoveRestriction
+    def initialize(*movelist)
+      @movelist = movelist.clone
+    end
+
+    def isValid?(pkmn)
+      return pkmn.moves.none? { |m| @movelist.include?(m.id) }
+    end
+  end
+
+  #===============================================================================
+  #
+  #===============================================================================
+  class PrimevalMoveRestriction
+    def isValid?(pkmn)
+      return pkmn.moves.none? { |m| GameData::Move.get(m.id).empoweredMove? }
+    end
+
+    def errorMessage
+      return _INTL("Primeval moves are not allowed.")
+    end
+  end
   
   #===============================================================================
   #

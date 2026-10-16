@@ -44,6 +44,39 @@ class PokeBattle_Move_StartPreventCriticalHitsAndReduceDamageAgainstUserSide5 < 
 end
 
 #===============================================================================
+# User falls asleep and sets up Sanctuary for 8 turns. (Dreamscape)
+#===============================================================================
+class PokeBattle_Move_SleepUserSetupSanctuary8 < PokeBattle_Move
+    def pbMoveFailed?(user, targets, show_message)
+        if user.asleep?
+            @battle.pbDisplay(_INTL("But it failed, since {1} is already asleep!", user.pbThis(true))) if show_message
+            return true
+        end
+        return true unless user.canSleep?(user, show_message, self, true)
+        return false
+    end
+
+    def pbMoveFailedAI?(user, targets)
+        return true if user.willStayAsleepAI?
+        return true unless user.canSleep?(user, false, self, true)
+        return false
+    end
+
+    def pbEffectGeneral(user)
+        user.applySleepSelf
+        user.pbOwnSide.applyEffect(:Sanctuary, user.getScreenDuration(8))
+    end
+
+    def getEffectScore(user, target)
+        score = 0
+        score += getSanctuaryEffectScore(user, nil, self)
+        score -= getSleepEffectScore(nil, user) * 0.45
+        score += 25 if user.hasStatusNoSleep?
+        return score
+    end
+end
+
+#===============================================================================
 # For 5 rounds, lowers power of physical attacks against the user's side.
 # (Reflect)
 #===============================================================================

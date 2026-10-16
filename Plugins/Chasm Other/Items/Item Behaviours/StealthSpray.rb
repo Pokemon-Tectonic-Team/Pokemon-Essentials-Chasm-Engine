@@ -12,7 +12,7 @@ def pbStealthSpray(item,steps)
 end
   
 ItemHandlers::UseInField.add(:STEALTHSPRAY,proc { |item|
-  next pbStealthSpray(item,30)
+  next pbStealthSpray(item,15)
 })
 
 def stealthSprayActive?

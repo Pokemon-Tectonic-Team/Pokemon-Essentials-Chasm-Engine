@@ -527,8 +527,12 @@ class PokeBattle_Battle
         @scene.lastMove[battlerIndexNew] = 0
         @scene.lastCmd[battlerIndexNew] = 0
 
-        # Create any missing battler slots
+        # Create any missing battler slots on the same side only.
+        # Filling gaps on the opposite side creates dummy battlers (hp=0, no pokemon)
+        # that pbEORSwitch treats as fainted, causing spurious switch prompts in
+        # Cable Club battles and boss battles with reserve party members.
         0.upto(battlerIndexNew) do |idxBattler|
+            next unless idxBattler % 2 == sideIndex
             next unless @battlers[idxBattler].nil?
             pbCreateBattler(idxBattler)
             scene.pbCreatePokemonSprite(idxBattler)

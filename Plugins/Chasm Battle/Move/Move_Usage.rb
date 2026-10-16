@@ -41,10 +41,10 @@ class PokeBattle_Move
     def calculateCategoryOverride(user, targets)
         return selectBestCategory(user, targets[0]) if punchingMove? && user.hasActiveAbility?(:MYSTICFIST)
         return selectBestCategory(user, targets[0]) if rampagingMove? && user.hasActiveAbility?(:WREAKHAVOC)
+        return selectBestCategory(user, targets[0]) if pulseMove? && user.hasActiveAbility?(:MANIFESTATION)
         return 0 if @category == 1 && user.hasActiveItem?(:STRENGTHHERB)
         return 1 if @category == 0 && user.hasActiveItem?(:INTELLECTHERB)
         return selectBestCategory(user) if adaptiveMove?
-        return 0 if @category == 1 && user.hasActiveAbility?(:BRUTEFORCE)
         return 1 if @category == 0 && user.hasActiveAbility?(%i[TIMEINTERLOPER SPACEINTERLOPER])
         return nil
     end
@@ -136,8 +136,7 @@ class PokeBattle_Move
 
     def canParentalBond?(user, targets, checkingForAI = false)
         return false unless damagingMove?
-        return false if chargingTurnMove?
-        return false unless targets.length == 1
+        return false if multiHitMove?
         return true if user.shouldAbilityApply?(:PARENTALBOND,checkingForAI)
         return true if user.shouldAbilityApply?(:STRIKETWICE,checkingForAI) && @battle.rainy?
         return false
@@ -145,8 +144,7 @@ class PokeBattle_Move
 
     def canDiffract?(user, targets, checkingForAI = false)
         return false unless damagingMove?
-        return false if chargingTurnMove?
-        return false unless targets.length == 1
+        return false if multiHitMove?
         return false unless lightMove?
         return true if user.shouldAbilityApply?(:DIFFRACTION,checkingForAI) && user.protectedByScreen?
         return false
@@ -178,6 +176,13 @@ class PokeBattle_Move
     # The maximum number of hits in a round this move will actually perform. This
     # can be 1 for Beat Up, and can be 2 for any moves affected by Parental Bond.
     def pbNumHits(user, targets, checkingForAI = false)
+        if user.shouldAbilityApply?(:FICKLEUNION, checkingForAI) && pulseMove?
+            if checkingForAI
+                return getRandomFickleUnionNumberAI(user, targets)
+            else
+                return getRandomFickleUnionNumber(user, targets)
+            end
+        end
         return 2 if canParentalBond?(user, targets, checkingForAI)
         return 2 if canDiffract?(user, targets, checkingForAI)
         numHits = 1
@@ -310,7 +315,7 @@ class PokeBattle_Move
             return
         end
         # Disguise will take the damage
-        if !@battle.moldBreaker && target.isSpecies?(:MIMIKYU) && target.form == 0 && target.hasActiveAbility?(:DISGUISE)
+        if disguiseIntact?(target)
             target.damageState.disguise = true
             return
         end
@@ -319,6 +324,12 @@ class PokeBattle_Move
             target.damageState.thiefsDiversion = true
             return
         end 
+    end
+
+    def disguiseIntact?(target, aiCheck = false)
+        return false if @battle.moldBreaker
+        return false unless target.isSpecies?(:MIMIKYU) && target.form == 0
+        return aiCheck ? target.hasActiveAbilityAI?(:DISGUISE) : target.hasActiveAbility?(:DISGUISE)
     end
 
     def damageNegated?(user, target, aiCheck = false)
@@ -421,7 +432,7 @@ class PokeBattle_Move
             end
         end
 
-        if user.hasActiveAbility?(:STAYOFEXECUTION) && bladeMove?
+        if user.hasActiveAbility?(:STAYOFEXECUTION) && sliceMove?
             delayedDamage = damage
             if delayedDamage > 0
                 target.effects[:DelayedDamage] = [] unless target.effectActive?(:DelayedDamage)

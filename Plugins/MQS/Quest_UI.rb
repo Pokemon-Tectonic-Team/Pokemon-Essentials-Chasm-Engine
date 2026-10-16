@@ -307,7 +307,13 @@ class QuestList_Scene
   end
 
   def drawOtherInfo(quest)
+    @sprites["overlay2"].bitmap.clear
     @sprites["overlay3"].bitmap.clear
+    # Quest name
+    questName = $quest_data.getName(quest.id)
+    pbDrawTextPositions(@sprites["overlay2"].bitmap,[
+      ["#{questName}",Graphics.width/2 - 12,-2,2,Color.new(248,248,248),Color.new(0,0,0),true]
+    ])
     # Guest giver
     questGiver = $quest_data.getQuestGiver(quest.id)
     # If 'nil' or missing, set to '???'
@@ -319,7 +325,8 @@ class QuestList_Scene
     # Vary text according to map name
     loc = originalMap.include?("Route") ? "on" : "in"
     # Format time
-    time = quest.time.strftime("%B %d %Y %H:%M")
+    time = _INTL("{1} {2} {3} {4}:{5}", pbGetMonthName(quest.time.mon), quest.time.day, quest.time.year, 
+      quest.time.hour.to_s.rjust(2, "0"), quest.time.min.to_s.rjust(2, "0"))
     if getActiveQuests.include?(quest.id)
       time_text = _INTL("start")
     elsif getCompletedQuests.include?(quest.id)

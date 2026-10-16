@@ -87,11 +87,6 @@ class PokeBattle_Battle
     def pbGainExpOne(idxParty, defeatedBattler, numPartic, expShare, expAll, hasExpJAR, showMessages = true)
         pkmn = pbParty(0)[idxParty] # The Pokémon gaining exp from defeatedBattler
         growth_rate = pkmn.growth_rate
-        # Don't bother calculating if gainer is already at max Exp
-        if pkmn.exp >= growth_rate.maximum_exp
-            pkmn.calc_stats
-            return
-        end
         isPartic    = defeatedBattler.participants.include?(idxParty)
         hasExpShare = expShare.include?(idxParty)
         level = defeatedBattler.level
@@ -116,16 +111,11 @@ class PokeBattle_Battle
         end
         return if exp <= 0
         # Pokémon gain more Exp from trainer battles
-        if trainerBattle? || defeatedBattler.boss?
+        if trainerBattle? || (defeatedBattler.boss? && defeatedBattler.species_data.isLegendary?)
             exp *= 1.5
-            if $PokemonBag.pbHasItem?(:PERFORMANCEANALYZER2)
-                exp *= 1.1
-            elsif $PokemonBag.pbHasItem?(:PERFORMANCEANALYZER)
-                exp *= 1.0
-            end
-            exp = exp.floor
         end
-        exp /= 5
+        exp *= 1.1 if $PokemonBag.pbHasItem?(:PERFORMANCEANALYZER2)
+        exp = (exp/5.0).floor
         # Scale the gained Exp based on the gainer's level (or not)
         if Settings::SCALED_EXP_FORMULA
             levelAdjust = (2 * level + 10.0) / (pkmn.level + level + 10.0)
@@ -155,18 +145,18 @@ class PokeBattle_Battle
             return
         end
         # Make sure Exp doesn't exceed the maximum
-        level_cap = LEVEL_CAPS_USED ? getLevelCap : growth_rate.max_level
-        expFinal = growth_rate.add_exp(pkmn.exp, exp)
-        expLeftovers = expFinal.clamp(0, growth_rate.minimum_exp_for_level(level_cap))
+        level_cap = LEVEL_CAPS_USED ? getLevelCap : GameData::GrowthRate.max_level
+        expRaw = pkmn.exp + exp
+        expFinal = expRaw.clamp(0, growth_rate.minimum_exp_for_level(level_cap))
         # Calculates if there is excess exp and if it can be stored
-        if (expFinal > expLeftovers) && hasExpJAR
-            expLeftovers = expFinal.clamp(0, growth_rate.minimum_exp_for_level(level_cap + 1))
+        if (expRaw > expFinal) && hasExpJAR
+            expLeftovers = expRaw
         else
             expLeftovers = 0
         end
-        expFinal = expFinal.clamp(0, growth_rate.minimum_exp_for_level(level_cap))
+        expFinal = expRaw.clamp(0, growth_rate.minimum_exp_for_level(level_cap))
         expGained = expFinal - pkmn.exp
-        expLeftovers -= pkmn.exp
+        expLeftovers -= expFinal
         expLeftovers = (expLeftovers * EXP_JAR_BASE_EFFICIENCY).floor
         @expStored += expLeftovers if expLeftovers > 0
         curLevel = pkmn.level

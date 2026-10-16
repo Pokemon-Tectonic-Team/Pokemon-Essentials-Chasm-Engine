@@ -2,8 +2,6 @@
 # For 5 rounds, user becomes airborne. (Magnet Rise)
 #===============================================================================
 class PokeBattle_Move_StartUserAirborne5 < PokeBattle_Move
-    def unusableInGravity?; return true; end
-
     def pbMoveFailed?(user, _targets, show_message)
         if user.effectActive?(:Ingrain) || user.effectActive?(:EvilRoots)
             if show_message
@@ -142,7 +140,8 @@ class PokeBattle_Move_StartUserShedTypeWeaknesses < PokeBattle_Move
 end
 
 #===============================================================================
-# User is protected from random additional effects for a number of turns, by consuming coins (Wishing Well)
+# User is protected from random additional effects for a number of turns, by consuming coins. 
+# (Wishing Well)
 #===============================================================================
 class PokeBattle_Move_WishingWellScalesWithMoney < PokeBattle_Move
     def initialize(battle, move)
@@ -165,7 +164,7 @@ class PokeBattle_Move_WishingWellScalesWithMoney < PokeBattle_Move
     def getEffectScore(user, _target)
         if user.pbOwnSide.effectActive?(:WishingWell)
             remainingTurns = user.pbOwnSide.countEffect(:WishingWell)
-            if remainingTurns > (applyEffectDurationModifiers([user.pbOwnSide.countEffect(:PayDay),1000].min )/ 100).floor
+            if remainingTurns > (applyEffectDurationModifiers([user.pbOwnSide.countEffect(:PayDay),1000].min, user) / 100).floor
                 return 0
             end
         end
@@ -185,7 +184,7 @@ class PokeBattle_Move_WishingWellScalesWithMoney < PokeBattle_Move
             worthRatio += 5 unless b.healthCapped?
         end
 
-        return [worthRatio * (applyEffectDurationModifiers([user.pbOwnSide.countEffect(:PayDay),1000].min) / 100).floor, 200].min
+        return [worthRatio * (applyEffectDurationModifiers([user.pbOwnSide.countEffect(:PayDay),1000].min, user) / 100).floor, 200].min
     end
 
     def pbEffectGeneral(user)
@@ -195,7 +194,7 @@ class PokeBattle_Move_WishingWellScalesWithMoney < PokeBattle_Move
         actualCoinAmountConsumed = beforeCoins - user.pbOwnSide.effects[:PayDay]
         if actualCoinAmountConsumed > 0
             @battle.pbDisplay(_INTL("{1} coins were thrown in the Wishing Well!", actualCoinAmountConsumed))
-            user.pbOwnSide.applyEffect(:WishingWell, applyEffectDurationModifiers((actualCoinAmountConsumed / 100).floor))
+            user.pbOwnSide.applyEffect(:WishingWell, applyEffectDurationModifiers((actualCoinAmountConsumed / 100).floor, user))
         else
             @battle.pbDisplay(_INTL("There were no coins to throw in the Wishing Well..."))
         end
@@ -215,7 +214,7 @@ class PokeBattle_Move_EmpoweredWorkUp < PokeBattle_Move
 end
 
 #===============================================================================
-# User transforms into Gulping or Gorging form (Gulp Missile)
+# User transforms into Gulping or Gorging form. (Gulping Dive)
 #===============================================================================
 
 class PokeBattle_Move_GulpingDive < PokeBattle_Move
@@ -237,5 +236,15 @@ class PokeBattle_Move_GulpingDive < PokeBattle_Move
             end
             @battle.scene.pbChangePokemon(user, user.pokemon)
         end
+    end
+
+    def getDetailsForMoveDex(detailsList = [])
+        detailsList << _INTL("<u>Gulping Form:</u> HP above 50%.")
+        detailsList << _INTL("<u>Gorging Form:</u> HP 50% or below.")
+        detailsList << _INTL("If Cramorant is attacked while in the Gulping- or Gorging Form, the attacker")
+        detailsList << _INTL("will lose 25% max HP and:")
+        detailsList << _INTL("<u>Gulping Form:</u> get their Defense/Sp. Defense lowered.")
+        detailsList << _INTL("<u>Gorging Form:</u> get numbed.")
+        detailsList << _INTL("Afterwards, Cramorant will return to its base Form.")
     end
 end

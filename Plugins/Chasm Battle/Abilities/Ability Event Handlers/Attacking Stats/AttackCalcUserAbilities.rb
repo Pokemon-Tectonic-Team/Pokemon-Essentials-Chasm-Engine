@@ -33,22 +33,6 @@ BattleHandlers::AttackCalcUserAbility.add(:TOUGHCLAWS,
   }
 )
 
-BattleHandlers::AttackCalcUserAbility.add(:TOXICBOOST,
-  proc { |ability, user, _battle, attackMult|
-      attackMult *= 1.5 if user.poisoned?
-      next attackMult
-  }
-)
-
-BattleHandlers::AttackCalcUserAbility.add(:HUGEPOWER,
-  proc { |ability, _user, _battle, attackMult|
-      attackMult *= 1.5
-      next attackMult
-  }
-)
-
-BattleHandlers::AttackCalcUserAbility.copy(:HUGEPOWER, :PUREPOWER)
-
 BattleHandlers::AttackCalcUserAbility.add(:FLUSTERFLOCK,
   proc { |ability, _user, _battle, attackMult|
       attackMult *= 2.0
@@ -73,13 +57,6 @@ BattleHandlers::AttackCalcUserAbility.add(:ARCHVILLAIN,
 BattleHandlers::AttackCalcUserAbility.add(:DEEPSTING,
   proc { |ability, _user, _battle, attackMult|
       attackMult *= 1.5
-      next attackMult
-  }
-)
-
-BattleHandlers::AttackCalcUserAbility.add(:BIGTHORNS,
-  proc { |ability, _user, battle, attackMult|
-      attackMult *= 1.3 if battle.sunny?
       next attackMult
   }
 )
@@ -133,13 +110,6 @@ BattleHandlers::AttackCalcUserAbility.add(:SLIPSTREAM,
   }
 )
 
-BattleHandlers::AttackCalcUserAbility.add(:ROBUST,
-  proc { |ability, _user, _battle, attackMult|
-      attackMult *= 1.2
-      next attackMult
-  }
-)
-
 BattleHandlers::AttackCalcUserAbility.add(:MIDDLEWAY,
   proc { |ability, user, _battle, attackMult|
       attackMult *= 1.5 if user.lastRoundMoveCategory == 1
@@ -181,10 +151,10 @@ BattleHandlers::AttackCalcUserAbility.add(:EXTREMEPOWER,
   }
 )
 
-BattleHandlers::AttackCalcAllyAbility.add(:CASTELLAN,
-  proc { |ability, _user, battle, spAtkMult|
+BattleHandlers::AttackCalcUserAbility.add(:CASTELLAN,
+  proc { |ability, _user, battle, attackMult|
       attackMult *= 1.3 if battle.roomActive?
-      next spAtkMult
+      next attackMult
   }
 )
 
@@ -202,5 +172,39 @@ BattleHandlers::AttackCalcUserAbility.add(:TOOTHANDCLAW,
     next if currentMoveData.bitingMove?
     attackMult *= 1.5 if previousMoveData.bitingMove?
     next attackMult
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::AttackCalcUserAbility.add(:TOXICBOOST,
+  proc { |ability, user, _battle, attackMult|
+      attackMult *= 1.5 if user.poisoned?
+      next attackMult
+  }
+)
+
+BattleHandlers::AttackCalcUserAbility.add(:HUGEPOWER,
+  proc { |ability, _user, _battle, attackMult|
+      attackMult *= 1.5
+      next attackMult
+  }
+)
+
+BattleHandlers::AttackCalcUserAbility.copy(:HUGEPOWER, :PUREPOWER)
+
+BattleHandlers::AttackCalcUserAbility.add(:BIGTHORNS,
+  proc { |ability, _user, battle, attackMult|
+      attackMult *= 1.3 if battle.sunny?
+      next attackMult
+  }
+)
+
+BattleHandlers::AttackCalcUserAbility.add(:ROBUST,
+  proc { |ability, _user, _battle, attackMult|
+      attackMult *= 1.2
+      next attackMult
   }
 )

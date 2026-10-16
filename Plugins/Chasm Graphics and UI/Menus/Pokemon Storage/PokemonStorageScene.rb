@@ -753,11 +753,10 @@ class PokemonStorageScene
 
         # Switch boxes
         possibleboxes = {}
-        unless found.empty?
-            for i in 0..found.length - 1
-                opt = @storage.boxes[found[i][0]].getName(i)
-                possibleboxes[opt] = found[i][0]
-            end
+        found.each do |result|
+            boxIndex = result[0]
+            boxName = @storage.boxes[boxIndex].getName(boxIndex)
+            possibleboxes[boxName] = boxIndex
         end
 
         if possibleboxes.length > 0

@@ -114,7 +114,7 @@ class PokeBattle_Battle
 
     def damageFromDOTStatus(battler, status, aiCheck = false)
         if battler.takesIndirectDamage? && !battler.hasActiveAbility?(:PLACIDITY)
-            if status == :LEECHED || status == :POISON
+            if status == :LEECHED || status == :POISON || status == :BURN || status == :FROSTBITE
                 fraction = 1.0 / 12.0
             else
                 fraction = 1.0 / 8.0
@@ -169,7 +169,7 @@ class PokeBattle_Battle
             damageDealt = damageFromDOTStatus(b, :POISON)
 
             # Venom Gorger
-            if b.getStatusCount(:POISON) % POISON_DOUBLING_TURNS == 0 && !b.fainted?
+            if damageDealt > 0 && b.getStatusCount(:POISON) % POISON_DOUBLING_TURNS == 0 && !b.fainted?
                 b.eachOpposing do |opposingB|
                     next unless opposingB.hasActiveAbility?(:VENOMGORGER)
                     healingMessage = _INTL("{1} slurped up venom leaking from {2}.", opposingB.pbThis, b.pbThis(true))

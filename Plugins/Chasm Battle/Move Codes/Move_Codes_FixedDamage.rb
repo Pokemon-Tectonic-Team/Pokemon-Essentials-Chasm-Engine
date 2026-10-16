@@ -10,6 +10,26 @@ class PokeBattle_Move_FixedDamageHalfTargetHP < PokeBattle_FixedDamageMove
 end
 
 #===============================================================================
+# User gets waterlogged and takes 1/8th max. HP damage. (Sticky Spines)
+#===============================================================================
+class PokeBattle_Move_FixedDamageOneEighthWaterlogTarget < PokeBattle_FixedDamageMove
+    def pbFixedDamage(_user, target)
+        damage = target.hp / 8.0
+        damage *= target.hpBasedEffectResistance if target.boss?
+        return damage.round
+    end
+
+    def pbEffectAgainstTarget(user, target)
+        return unless target.canWaterlog?(user, false, self)
+        target.applyWaterlog(user)
+    end
+
+    def getEffectScore(user, target)
+        return getWaterlogEffectScore(user, target)
+    end
+end
+
+#===============================================================================
 # Halves the target's current HP. (Mouthful)
 # User gains half the HP it inflicts as damage.
 #===============================================================================
@@ -39,6 +59,20 @@ class PokeBattle_Move_FixedDamageHalfTargetHealUserByHalfOfDamageDone < PokeBatt
         score *= 2 if user.belowHalfHealth?
         score *= -1 if target.hasActiveAbilityAI?(:LIQUIDOOZE) || user.healingReversed?
         return score
+    end
+end
+
+#===============================================================================
+# Deals 50 fixed damage. (Eggschange)
+# User gains the HP it inflicts as damage.
+#===============================================================================
+class PokeBattle_Move_FixedDamage50TargetHealUserByDamageDone < PokeBattle_Move_FixedDamageHalfTargetHealUserByHalfOfDamageDone
+    def drainFactor(_user, _target); return 1.0; end
+
+    def pbFixedDamage(_user, target)
+        damage = 50
+        damage *= target.hpBasedEffectResistance if target.boss?
+        return damage.round
     end
 end
 

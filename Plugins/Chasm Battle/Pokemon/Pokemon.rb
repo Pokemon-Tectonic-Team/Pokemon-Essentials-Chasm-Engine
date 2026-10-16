@@ -101,7 +101,7 @@ class Pokemon
     # Max EVs that a single stat can have
     EV_STAT_LIMIT = 20
     # Maximum length a Pokémon's nickname can be
-    MAX_NAME_SIZE = 10
+    MAX_NAME_SIZE = 13
     # Maximum number of moves a Pokémon can know at once
     MAX_MOVES     = 4
     # How much the pokemon's hue can vary (+/- half of this value)
@@ -617,6 +617,19 @@ class Pokemon
     def extraAbilities
         @extraAbilities = [] if @extraAbilities.nil?
         return @extraAbilities
+    end
+
+    def addExtraMove(move)
+        extraMoves.push(move) unless extraMoves.include?(move)
+    end
+
+    def hasExtraMoves?
+        return extraMoves.length > 0
+    end
+
+    def extraMoves
+        @extraMoves = [] if @extraMoves.nil?
+        return @extraMoves
     end
 
     def immuneToWeatherDownsides?
@@ -1430,7 +1443,7 @@ class Pokemon
         stats = getCalculatedStats
         hpDiff = @totalhp - @hp
         @totalhp = stats[:HP]
-        @hp      = (fainted? ? 0 : (@totalhp - hpDiff))
+        @hp      = (fainted? ? 0 : [(@totalhp - hpDiff), 1].max)
         @attack  = stats[:ATTACK]
         @defense = stats[:DEFENSE]
         @spatk   = stats[:SPECIAL_ATTACK]
@@ -1527,6 +1540,7 @@ class Pokemon
         @ability_index    = nil
         @ability          = nil
         @extraAbilities   = []
+        @extraMoves       = []
         @nature           = nil
         @nature_for_stats = nil
         @items            = []

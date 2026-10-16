@@ -96,11 +96,16 @@ move, false, true)
         return false if @battle.foretoldMove
         return false if move.hitsInvulnerable?
 
+        # Skip the expensive speed/priority check when the target is not semi-invulnerable at all.
+        return false if !target.effectActive?(:TwoTurnAttack) && !target.effectActive?(:SkyDrop)
+
         return false if aiCheck && !user.boss? && !@battle.battleAI.userMovesFirst?(move, user, target)
 
         if target.inTwoTurnSkyAttack?
             return true unless move.hitsFlyingTargets?
         elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderground") # Dig
+            return true unless move.hitsDiggingTargets?
+        elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUndergroundHitThreeTimes") # Rotary Headbutt
             return true unless move.hitsDiggingTargets?
         elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderwater") # Dive
             return true unless move.hitsDivingTargets?
@@ -108,7 +113,9 @@ move, false, true)
             return true unless move.hitsHidingTargets?
         elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableInFoliage") # Camouflage
             return true unless move.hitsCamouflagedTargets?
-        elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableRemoveProtections")	# PHANTOMFORCE/SHADOWFORCE in case we have a move that hits them
+        elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableRemoveProtections")	# Shadow Force in case we have a move that should hit it
+            return true
+        elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableVerminCloud") # Vermin Cloud in case we have a move that should hit it
             return true
         end
         
@@ -171,6 +178,10 @@ move, false, true)
         # White Knight
         if move.damagingMove? && move.baseDamage >= 100
             targets = pbChangeTargetByAbility(:WHITEKNIGHT, move, user, targets, priority, nearOnly)
+        end
+        # Luring Maw
+        if user.pbHasAnyStatus?
+            targets = pbChangeTargetByAbility(:LURINGMAW, move, user, targets, priority, nearOnly)
         end
         # Bait Fish
         targets = pbChangeTargetByAbility(:BAITFISH, move, user, targets, priority, nearOnly)

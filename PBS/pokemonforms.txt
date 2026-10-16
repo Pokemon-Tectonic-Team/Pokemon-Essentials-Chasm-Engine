@@ -115,37 +115,37 @@ Pokedex = This is the form Castform takes when an eclipse covers the sky. It mov
 FormName = Attack
 BaseStats = 50,180,20,150,180,20
 # Total = 600
-Moves = 1,GRAVITY,1,LEER,5,RETREAT,10,PULSAR,15,TAUNT,20,PURSUIT,25,PSYCHIC,30,SUPERPOWER,35,PSYCHESWITCH,40,ZENHEADBUTT,45,WORKUP,50,ZAPCANNON,55,PSYCHOBOOST,60,HYPERBEAM
+Moves = 1,GRAVITY,1,LEER,5,RETREAT,10,PULSAR,15,TAUNT,20,PURSUIT,25,NEURALPULSE,30,SUPERPOWER,35,PSYCHESWITCH,40,ZENHEADBUTT,45,WORKUP,50,ZAPCANNON,55,PSYCHOBOOST,60,HYPERBEAM
 #-------------------------------
 [DEOXYS,2]
 FormName = Defense
 BaseStats = 50,70,160,90,70,160
 # Total = 600
-Moves = 1,GRAVITY,1,LEER,5,RETREAT,10,PULSAR,15,KNOCKOFF,20,SPIKES,25,PSYCHIC,30,SNATCH,35,PSYCHESWITCH,40,ZENHEADBUTT,45,HELPINGHAND,50,AMNESIA,55,RECOVER,60,PSYCHOBOOST,65,COUNTER,65,MIRRORCOAT
+Moves = 1,GRAVITY,1,LEER,5,RETREAT,10,PULSAR,15,KNOCKOFF,20,SPIKES,25,NEURALPULSE,30,SNATCH,35,PSYCHESWITCH,40,ZENHEADBUTT,45,HELPINGHAND,50,AMNESIA,55,RECOVER,60,PSYCHOBOOST,65,COUNTER,65,MIRRORCOAT
 #-------------------------------
 [DEOXYS,3]
 FormName = Speed
 BaseStats = 50,95,90,180,95,90
 # Total = 600
-Moves = 1,GRAVITY,1,LEER,5,RETREAT,10,PULSAR,15,KNOCKOFF,20,PURSUIT,25,PSYCHIC,30,SWIFT,35,PSYCHESWITCH,40,ZENHEADBUTT,45,AGILITY,50,RECOVER,55,PSYCHOBOOST,60,EXTREMESPEED
+Moves = 1,GRAVITY,1,LEER,5,RETREAT,10,PULSAR,15,KNOCKOFF,20,PURSUIT,25,NEURALPULSE,30,SWIFT,35,PSYCHESWITCH,40,ZENHEADBUTT,45,AGILITY,50,RECOVER,55,PSYCHOBOOST,60,EXTREMESPEED
 #-------------------------------
 [BURMY,1]
-FormName = Sand
+FormName = Sand Cloak
 Type1 = BUG
 Type2 = GROUND
 #-------------------------------
 [BURMY,2]
-FormName = Trash
+FormName = Trash Cloak
 Type1 = BUG
 Type2 = STEEL
 #-------------------------------
 [WORMADAM,1]
-FormName = Sand
+FormName = Sand Cloak
 Type1 = BUG
 Type2 = GROUND
 #-------------------------------
 [WORMADAM,2]
-FormName = Trash
+FormName = Trash Cloak
 Type1 = BUG
 Type2 = STEEL
 #-------------------------------
@@ -272,42 +272,38 @@ FormName = Steel Type
 Type1 = STEEL
 #-------------------------------
 [ARCEUS,9]
-FormName = Unknown Type
-Type1 = QMARKS
-#-------------------------------
-[ARCEUS,10]
 FormName = Fire Type
 Type1 = FIRE
 #-------------------------------
-[ARCEUS,11]
+[ARCEUS,10]
 FormName = Water Type
 Type1 = WATER
 #-------------------------------
-[ARCEUS,12]
+[ARCEUS,11]
 FormName = Grass Type
 Type1 = GRASS
 #-------------------------------
-[ARCEUS,13]
+[ARCEUS,12]
 FormName = Electric Type
 Type1 = ELECTRIC
 #-------------------------------
-[ARCEUS,14]
+[ARCEUS,13]
 FormName = Psychic Type
 Type1 = PSYCHIC
 #-------------------------------
-[ARCEUS,15]
+[ARCEUS,14]
 FormName = Ice Type
 Type1 = ICE
 #-------------------------------
-[ARCEUS,16]
+[ARCEUS,15]
 FormName = Dragon Type
 Type1 = DRAGON
 #-------------------------------
-[ARCEUS,17]
+[ARCEUS,16]
 FormName = Dark Type
 Type1 = DARK
 #-------------------------------
-[ARCEUS,18]
+[ARCEUS,17]
 FormName = Fairy Type
 Type1 = FAIRY
 #-------------------------------
@@ -321,7 +317,7 @@ Type1 = NORMAL
 Type2 = GRASS
 BaseStats = 60,80,50,70,40,80
 # Total = 380
-Moves = 1,GROWL,1,TACKLE,4,LEAFAGE,8,SMIRK,12,ANESTHETIZE,16,RAZORLEAF,20,HEADBUTT,24,DOUBLEKICK,28,TAKEDOWN,32,WHIRLWINDKICK,36,WHIPKICK,40,AROMATHERAPY,44,TAUNT,48,DOUBLEEDGE,52,SOLARGLIDE,56,SYNTHESIS,60,NATURALGIFT
+Moves = 1,GROWL,1,TACKLE,4,LEAFAGE,8,SMIRK,12,ANESTHETIZE,16,RAZORLEAF,20,HEADBUTT,24,DOUBLEKICK,28,TAKEDOWN,32,AROMATHERAPY,36,WHIPKICK,40,WHIRLWINDKICK,44,TAUNT,48,DOUBLEEDGE,52,SOLARGLIDE,56,SYNTHESIS,60,NATURALGIFT,64,CAMOUFLAGE
 #-------------------------------
 [DEERLING,2]
 FormName = Autumn
@@ -329,7 +325,7 @@ Type1 = NORMAL
 Type2 = GROUND
 BaseStats = 60,50,50,85,40,95
 # Total = 380
-Moves = 1,GROWL,1,TACKLE,4,TREADON,8,LEER,12,BESTOW,16,TREMOR,20,HEADBUTT,24,DOUBLEKICK,28,TAKEDOWN,32,WHIRLWINDKICK,36,TRAMPLE,40,SYMBIOSIS,44,SPIKES,48,DOUBLEEDGE,52,EARTHQUAKE,56,SHOREUP,60,NATURALGIFT
+Moves = 1,GROWL,1,TACKLE,4,TREADON,8,LEER,12,BESTOW,16,BULLDOZE,20,HEADBUTT,24,DOUBLEKICK,28,TAKEDOWN,32,SYMBIOSIS,36,TRAMPLE,40,WHIRLWINDKICK,44,SPIKES,48,DOUBLEEDGE,52,EARTHQUAKE,56,SHOREUP,60,NATURALGIFT,64,EARTHSPLITTER
 #-------------------------------
 [DEERLING,3]
 FormName = Winter
@@ -337,7 +333,7 @@ Type1 = NORMAL
 Type2 = ICE
 BaseStats = 60,65,95,55,45,60
 # Total = 380
-Moves = 1,GROWL,1,TACKLE,4,COLDEMBRACE,8,DAZZLE,12,CHILL,16,FROSTBARB,20,HEADBUTT,24,DOUBLEKICK,28,TAKEDOWN,32,WHIRLWINDKICK,36,ICECALIBUR,40,CHARM,44,SHIVERDANCE,48,DOUBLEEDGE,52,GLACIALRAM,56,WISH,60,NATURALGIFT
+Moves = 1,GROWL,1,TACKLE,4,COLDEMBRACE,8,DAZZLE,12,CHILL,16,FROSTBARB,20,HEADBUTT,24,DOUBLEKICK,28,TAKEDOWN,32,CHARM,36,ICECALIBUR,40,WHIRLWINDKICK,44,SHIVERDANCE,48,DOUBLEEDGE,52,GLACIALRAM,56,WISH,60,NATURALGIFT,64,ICEBERGBASH
 #-------------------------------
 [SAWSBUCK,1]
 FormName = Summer
@@ -362,15 +358,15 @@ BaseStats = 80,105,125,70,60,80
 #-------------------------------
 [TORNADUS,1]
 FormName = Therian
-BaseStats = 80,100,80,120,110,90
-# Total = 580
+BaseStats = 90,100,80,120,110,100
+# Total = 600
 Abilities = REGENERATOR,MENDINGFEATHERCHARM
 Height = 1.4
 #-------------------------------
 [THUNDURUS,1]
 FormName = Therian
-BaseStats = 80,105,70,100,145,80
-# Total = 580
+BaseStats = 90,105,70,110,145,80
+# Total = 600
 Abilities = VOLTABSORB,RAGINGSCALECHARM
 Height = 3.0
 #-------------------------------
@@ -382,12 +378,18 @@ Abilities = INTIMIDATE,RENDINGFANGCHARM
 Height = 1.3
 Flags = Grounded
 #-------------------------------
+[ENAMORUS,1]
+FormName = Therian
+BaseStats = 90,115,115,45,135,100
+# Total = 600
+Abilities = WEATHERED,CALMINGSCUTECHARM
+#-------------------------------
 [KYUREM,1]
 FormName = White
 BaseStats = 120,110,80,85,155,90
 # Total = 640
-Abilities = JUGGERNAUT
-Moves = 1,DRAGONBREATH,1,NOBLEROAR,4,ANCIENTPOWER,8,POWDERSNOW,12,SLASH,16,ENDEAVOR,20,CHILL,24,DRAGONPULSE,28,ICEBEAM,32,HYPERVOICE,36,SCARYFACE,40,BLIZZARD,44,OUTRAGE,48,ICEBURN,52,GLACIALRAM
+Abilities = MOLTENADAPTED,COLDFUSION
+FormMove = CLEANSINGFLAMES
 Height = 3.6
 Pokedex = It has foreseen that a world of truth will arrive for people and Pokémon. It strives to protect that future.
 #-------------------------------
@@ -395,8 +397,8 @@ Pokedex = It has foreseen that a world of truth will arrive for people and Poké
 FormName = Black
 BaseStats = 120,155,90,85,110,80
 # Total = 640
-Abilities = JUGGERNAUT
-Moves = 1,DRAGONBREATH,1,NOBLEROAR,4,ANCIENTPOWER,8,POWDERSNOW,12,SLASH,16,ENDEAVOR,20,CHILL,24,DRAGONPULSE,28,ICEBEAM,32,HYPERVOICE,36,SCARYFACE,40,BLIZZARD,44,OUTRAGE,48,FREEZESHOCK,52,GLACIALRAM
+Abilities = PLASMAADAPTED,COLDFUSION
+FormMove = ADVANCINGVOLTAGE
 Height = 3.3
 Pokedex = It's said that this Pokémon battles in order to protect the ideal world that will exist in the future for people and Pokémon.
 #-------------------------------
@@ -404,22 +406,20 @@ Pokedex = It's said that this Pokémon battles in order to protect the ideal wor
 FormName = White
 BaseStats = 120,110,80,85,155,90
 # Total = 640
-Abilities = JUGGERNAUT
-Moves = 1,CLASH,1,ICYWIND,8,BAR,15,ANCIENTPOWER,22,ICEBEAM,29,DRAGONBREATH,36,SLASH,43,FUSIONFLARE,50,ICEBURN,57,DRAGONPULSE,64,NOBLEROAR,71,ENDEAVOR,78,BLIZZARD,85,OUTRAGE,92,HYPERVOICE
+Abilities = MOLTENADAPTED,COLDFUSION
 Height = 3.6
 #-------------------------------
 [KYUREM,4]
 FormName = Black
 BaseStats = 120,155,90,85,110,80
 # Total = 640
-Abilities = JUGGERNAUT
-Moves = 1,CLASH,1,ICYWIND,8,BAR,15,ANCIENTPOWER,22,ICEBEAM,29,DRAGONBREATH,36,SLASH,43,FUSIONBOLT,50,FREEZESHOCK,57,DRAGONPULSE,64,NOBLEROAR,71,ENDEAVOR,78,BLIZZARD,85,OUTRAGE,92,HYPERVOICE
+Abilities = PLASMAADAPTED,COLDFUSION
 Height = 3.3
 #-------------------------------
 [KELDEO,1]
 FormName = Resolute
-BaseStats = 90,70,120,120,160,120
-# Total = 680
+BaseStats = 90,70,120,118,160,120
+# Total = 678
 Abilities = HEARTOFJUSTICE
 Pokedex = The power that lay hidden in its body now covers its horn, turning it into a sword that can slice through anything.
 #-------------------------------
@@ -563,9 +563,6 @@ FormName = Kabuki Trim
 [FURFROU,9]
 FormName = Pharaoh Trim
 #-------------------------------
-[MEOWSTIC,1]
-FormName = Female
-#-------------------------------
 [AEGISLASH,1]
 FormName = Blade
 BaseStats = 60,140,50,60,140,50
@@ -575,6 +572,8 @@ BaseStats = 60,140,50,60,140,50
 FormName = Average Size
 BaseStats = 75,55,65,75,70,65
 # Total = 405
+Height = 0.4
+Weight = 5.0
 Pokedex = Spirits that wander this world are placed into Pumpkaboo's body. They're then moved on to the afterlife.
 #-------------------------------
 [PUMPKABOO,2]
@@ -597,6 +596,8 @@ Pokedex = Massive Pumpkaboo are said to be the product of areas where a great nu
 FormName = Average Size
 BaseStats = 105,80,85,100,100,85
 # Total = 555
+Height = 0.9
+Weight = 12.5
 Pokedex = Eerie cries emanate from its body in the dead of night. The sounds are said to be the wails of spirits who are suffering in the afterlife.
 #-------------------------------
 [GOURGEIST,2]
@@ -620,6 +621,8 @@ FormName = Royal
 BaseStats = 75,120,100,95,120,100
 # Total = 610
 Abilities = MAGICBOUNCE
+Height = 1.1
+Weight = 27.8
 #-------------------------------
 [XERNEAS,1]
 FormName = Active Mode
@@ -648,7 +651,7 @@ Type2 = DARK
 BaseStats = 70,140,55,70,150,115
 # Total = 600
 Abilities = BREAKTHROUGH,JUGGERNAUT
-Moves = 1,HELPINGHAND,1,MINDWAVES,4,ASTONISH,8,MAGICCOAT,12,LIGHTSCREEN,16,PSYBEAM,20,SKILLSWAP,24,POWERSPLIT,28,GUARDSPLIT,32,GHOSTLYTALE,36,ZENHEADBUTT,40,SHADOWBALL,44,SWITCHEROO,48,DESTINYBOND,52,DREAMDANCE,56,PSYCHIC,60,HYPERSPACEFURY,70,TRICKROOM
+Moves = 1,HELPINGHAND,1,MINDWAVES,5,PURSUIT,10,MAGICCOAT,15,LIGHTSCREEN,20,PSYBEAM,25,SKILLSWAP,30,GUARDSPLIT,30,POWERSPLIT,35,SWITCHEROO,40,KNOCKOFF,45,NEURALPULSE,50,FUTURESIGHT,55,DESTINYBOND,60,HYPERSPACEFURY,65,DREAMDANCE,70,TRICKSTERSDOMAIN
 Height = 6.5
 Weight = 490.0
 #-------------------------------
@@ -712,42 +715,38 @@ FormName = Type: Steel
 Type1 = STEEL
 #-------------------------------
 [SILVALLY,9]
-FormName = Type: Unknown
-Type1 = QMARKS
-#-------------------------------
-[SILVALLY,10]
 FormName = Type: Fire
 Type1 = FIRE
 #-------------------------------
-[SILVALLY,11]
+[SILVALLY,10]
 FormName = Type: Water
 Type1 = WATER
 #-------------------------------
-[SILVALLY,12]
+[SILVALLY,11]
 FormName = Type: Grass
 Type1 = GRASS
 #-------------------------------
-[SILVALLY,13]
+[SILVALLY,12]
 FormName = Type: Electric
 Type1 = ELECTRIC
 #-------------------------------
-[SILVALLY,14]
+[SILVALLY,13]
 FormName = Type: Psychic
 Type1 = PSYCHIC
 #-------------------------------
-[SILVALLY,15]
+[SILVALLY,14]
 FormName = Type: Ice
 Type1 = ICE
 #-------------------------------
-[SILVALLY,16]
+[SILVALLY,15]
 FormName = Type: Dragon
 Type1 = DRAGON
 #-------------------------------
-[SILVALLY,17]
+[SILVALLY,16]
 FormName = Type: Dark
 Type1 = DARK
 #-------------------------------
-[SILVALLY,18]
+[SILVALLY,17]
 FormName = Type: Fairy
 Type1 = FAIRY
 #-------------------------------
@@ -808,8 +807,8 @@ Pokedex = Sad that its true identity may be exposed, Mimikyu will mercilessly se
 FormName = Dusk Mane
 Type1 = ROCK
 Type2 = STEEL
-BaseStats = 90,140,115,70,105,100
-# Total = 620
+BaseStats = 90,140,115,69,105,100
+# Total = 619
 Abilities = PURESTLIGHT,PRISMARMOR
 FormMove = SUNSTEELSTRIKE
 Height = 3.8
@@ -820,8 +819,8 @@ Pokedex = This is Necrozma's form while it's absorbing the power of Solgaleo, ma
 FormName = Dawn Wings
 Type1 = ROCK
 Type2 = GHOST
-BaseStats = 90,105,100,70,140,115
-# Total = 620
+BaseStats = 90,105,100,69,140,115
+# Total = 619
 Abilities = PURESTLIGHT,PRISMARMOR
 FormMove = MOONGEISTBEAM
 Height = 4.2
@@ -832,8 +831,8 @@ Pokedex = Lunala no longer has a will of its own. Now under the control of Necro
 FormName = Ultra
 Type1 = ROCK
 Type2 = DRAGON
-BaseStats = 90,145,95,110,145,95
-# Total = 680
+BaseStats = 90,145,95,109,145,95
+# Total = 679
 Abilities = NEUROFORCE
 Height = 7.5
 Pokedex = The light pouring out from all over its body affects living things and nature, impacting them in various ways.
@@ -842,8 +841,8 @@ Pokedex = The light pouring out from all over its body affects living things and
 FormName = Ultra
 Type1 = ROCK
 Type2 = DRAGON
-BaseStats = 90,145,95,110,145,95
-# Total = 680
+BaseStats = 90,145,95,109,145,95
+# Total = 679
 Abilities = NEUROFORCE
 Height = 7.5
 Pokedex = The light pouring out from all over its body affects living things and nature, impacting them in various ways.
@@ -877,11 +876,9 @@ Pokedex = Hunger hormones affect its temperament. Until its hunger is appeased, 
 FormName = Crowned
 Type1 = FAIRY
 Type2 = STEEL
-BaseStats = 85,160,110,140,75,110
-# Total = 680
+BaseStats = 85,160,110,139,75,110
+# Total = 679
 Abilities = STAINLESSSTEEL
-Moves = 1,BEHEMOTHBLADE
-FormMove = BEHEMOTHBLADE
 Weight = 355.0
 Pokedex = Able to cut down anything with a single strike, it became known as the Fairy King's Sword, and it inspired awe in friend and foe alike.
 #-------------------------------
@@ -889,11 +886,9 @@ Pokedex = Able to cut down anything with a single strike, it became known as the
 FormName = Crowned
 Type1 = FIGHTING
 Type2 = STEEL
-BaseStats = 85,125,135,125,75,135
-# Total = 680
+BaseStats = 85,125,135,124,75,135
+# Total = 679
 Abilities = STAINLESSSTEEL
-Moves = 1,BEHEMOTHBASH
-FormMove = BEHEMOTHBASH
 Weight = 785.0
 Pokedex = Now that it's equipped with its shield, it can shrug off impressive blows, including the attacks of Dynamax Pokémon.
 #-------------------------------
@@ -906,24 +901,28 @@ FormMove = SURGINGSTRIKES
 Pokedex = This form of Urshifu is a strong believer in defeating foes by raining many blows down on them. Its strikes are nonstop, flowing like a river.
 #-------------------------------
 [CALYREX,1]
-FormName = Ice
+FormName = Ice Rider
 Type1 = PSYCHIC
 Type2 = ICE
 BaseStats = 90,150,135,45,80,120
 # Total = 620
 Abilities = ASONEICE
-Moves = 1,BODYSLAM,1,DOUBLEEDGE,1,DOUBLEKICK,1,GLACIALLANCE,1,GREYMIST,1,ICECALIBUR,1,IRONDEFENSE,1,LEER,1,MEGADRAIN,1,POUND,1,SCRUTINIZE,1,SUPERCOOL,1,SWORDSDANCE,1,TACKLE,1,TAKEDOWN,1,TAUNT,1,THRASH,1,TORMENT,5,GROWTH,10,LIFEDEW,15,GIGADRAIN,20,EXPLOIT,25,HELPINGHAND,30,AROMATHERAPY,35,ENERGYBALL,40,TOTALCONTROL,45,LEECHSEED,50,HEALPULSE,55,SOLARBEAM,60,FUTURESIGHT
+Moves = 1,BODYSLAM,1,DOUBLEEDGE,1,ESSENCEARROW,1,GLACIALLANCE,1,GREYMIST,1,ICECALIBUR,1,IRONDEFENSE,1,MINDWAVES,1,POUND,1,SUPERCOOL,1,SWORDSDANCE,1,TACKLE,1,TAKEDOWN,1,TAUNT,1,THRASH,1,TORMENT,5,GROWTH,10,LIFEDEW,15,HELPINGHAND,20,EXPLOIT,25,AROMATHERAPY,30,GIGADRAIN,35,NEURALPULSE,40,ENERGYBALL,45,LEECHSEED,50,HEALPULSE,55,SOLARBEAM,60,FUTURESIGHT
+Height = 2.4
+Weight = 809.1
 Kind = High King
 Pokedex = It's said that this Pokémon once moved a large forest—and all the Pokémon living there—to a new location overnight.
 #-------------------------------
 [CALYREX,2]
-FormName = Shadow
+FormName = Shadow Rider
 Type1 = PSYCHIC
 Type2 = GHOST
 BaseStats = 90,80,75,135,150,90
 # Total = 620
 Abilities = ASONEGHOST
-Moves = 1,AGILITY,1,ASTRALBARRAGE,1,CONFUSERAY,1,DISABLE,1,DOUBLEEDGE,1,DOUBLEKICK,1,DREAMDANCE,1,GREYMIST,1,HEX,1,LEER,1,MEGADRAIN,1,POUND,1,RUIN,1,SCRUTINIZE,1,SHADOWBALL,1,TACKLE,1,TAKEDOWN,1,THRASH,5,GROWTH,10,LIFEDEW,15,GIGADRAIN,20,EXPLOIT,25,HELPINGHAND,30,AROMATHERAPY,35,ENERGYBALL,40,TOTALCONTROL,45,LEECHSEED,50,HEALPULSE,55,SOLARBEAM,60,FUTURESIGHT
+Moves = 1,AGILITY,1,ASTRALBARRAGE,1,CONFUSERAY,1,DISABLE,1,DOUBLEEDGE,1,DREAMDANCE,1,ESSENCEARROW,1,GREYMIST,1,HEX,1,MINDWAVES,1,POUND,1,RUIN,1,SHADOWBALL,1,TACKLE,1,TAKEDOWN,1,THRASH,5,GROWTH,10,LIFEDEW,15,HELPINGHAND,20,EXPLOIT,25,AROMATHERAPY,30,GIGADRAIN,35,NEURALPULSE,40,ENERGYBALL,45,LEECHSEED,50,HEALPULSE,55,SOLARBEAM,60,FUTURESIGHT
+Height = 2.4
+Weight = 53.6
 Kind = High King
 Pokedex = Legend says that by using its power to see all events from past to future, this Pokémon saved the creatures of a forest from a meteorite strike.
 #-------------------------------
@@ -975,15 +974,17 @@ Pokedex = This form has gotten enough energy to go further beyond a normal Ampha
 #-------------------------------
 [GARCHOMP,1]
 FormName = Reaper
-BaseStats = 110,155,125,95,100,75
-# Total = 660
+BaseStats = 110,155,125,97,100,75
+# Total = 662
+Abilities = SANDSHROUD
 Pokedex = Garchomp taking this form are rare due to its specific conditions required. This is good as it can turn a house into splinters if left unchecked.
 #-------------------------------
 [GYARADOS,1]
 FormName = Rampage
-BaseStats = 95,155,110,85,85,115
-# Total = 645
+BaseStats = 95,155,110,86,85,115
+# Total = 646
 Abilities = JUGGERNAUT
+Weight = 305.0
 Pokedex = The already aggressive Gyarados is only amplified by this form. All it can feel in this form is pure rage. Cruise ships have been bisected for getting in its path.
 #-------------------------------
 [GARDEVOIR,1]
@@ -999,14 +1000,15 @@ MegaStone = GALLADITE
 BaseStats = 90,125,100,110,75,160
 # Total = 660
 Abilities = INNERFOCUS
+Weight = 56.4
 Pokedex = The pain of seeing those it wishes to protect fall has causes this form to emerge. Its red blades are powered by pure heart.
 #-------------------------------
 [MEWTWO,1]
 FormName = Overmatter
 Type1 = PSYCHIC
 Type2 = FIGHTING
-BaseStats = 100,170,90,115,135,90
-# Total = 700
+BaseStats = 100,170,90,117,135,90
+# Total = 702
 Abilities = INNERFOCUS
 Height = 2.3
 Weight = 127.0
@@ -1014,18 +1016,12 @@ Pokedex = Psychic power has augmented its muscles. Its arms are able to stretch 
 #-------------------------------
 [MEWTWO,2]
 FormName = Overmind
-BaseStats = 100,135,60,125,170,110
-# Total = 700
+BaseStats = 100,135,60,127,170,110
+# Total = 702
 Abilities = VITALSPIRIT
 Height = 1.5
 Weight = 33.0
 Pokedex = The DNA from the original Mew has grown exponentially in this form. It has gained enough psychic power to control the minds of even the strongest willed people.
-#-------------------------------
-[ENAMORUS,1]
-FormName = Therian
-BaseStats = 75,115,110,45,135,100
-# Total = 580
-Abilities = WEATHERED,CALMINGSCUTECHARM
 #-------------------------------
 [MAROMATISSE,1]
 FormName = Harvest

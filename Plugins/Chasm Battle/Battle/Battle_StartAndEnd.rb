@@ -385,14 +385,14 @@ class PokeBattle_Battle
             end
         end
         # Curses apply if at all
-        if @opponent && $PokemonGlobal.tarot_amulet_active
+        if @opponent
             @statItemsAreMetagameRevealed = false
             @opponent.each do |opponent|
                 opponent.policies.each do |policy|
                     cursesToAdd = triggerBattleStartApplyCurse(policy, self, [])
                     curses.concat(cursesToAdd)
 
-                    @metaGamingStatItems = true if policy == :METAGAMES_STAT_ITEMS
+                    @statItemsAreMetagameRevealed = true if policy == :METAGAMES_STAT_ITEMS
                 end
             end
         end
@@ -535,6 +535,7 @@ class PokeBattle_Battle
                 # End of round phase
                 PBDebug.logonerr { pbEndOfRoundPhase }
                 break if @decision > 0
+                recordSkippedTurn
                 @turnCount += 1
             end
 
@@ -636,6 +637,13 @@ class PokeBattle_Battle
         return moneyMult
     end
 
+    # money multiplier only for end of battle rewards, not affecting scattered coins
+    def endOfBattleMoneyMult
+        mult = moneyMult
+        mult *= 1.5 if @field.effectActive?(:TreasureTracker)
+        return mult
+    end
+
     def pbGainMoney
         return if !@internalBattle || !@moneyGain
         # Money rewarded from opposing trainers
@@ -646,7 +654,7 @@ class PokeBattle_Battle
                 baseMoney = 10 + baseMoney / 2
                 tMoney += pbMaxLevelInTeam(1, i) * baseMoney
             end
-            tMoney = (tMoney * moneyMult).floor
+            tMoney = (tMoney * endOfBattleMoneyMult).floor
             oldMoney = pbPlayer.money
             pbPlayer.money += tMoney
             moneyGained = pbPlayer.money - oldMoney
@@ -793,6 +801,7 @@ class PokeBattle_Battle
         end
 
         restoreInitialItems
+        restorePartyMembers
 
         # Remove avatars from the trainer's party
         pbParty(0).reject! { |pkmn|
@@ -810,6 +819,25 @@ class PokeBattle_Battle
         pbParty(0).each_with_index do |pkmn, i|
             next unless pkmn
             pkmn.setItems(@initialItems[0][i])
+        end
+    end
+
+    def restorePartyMembers
+        party = pbParty(0)
+        has_party_restorer = party.any? do |pkmn|
+            next false unless pkmn
+            next false if pkmn.fainted?
+            party_restorer_ability?(pkmn.ability)
+        end
+        return unless has_party_restorer
+        revived_any = false
+        party.each do |pkmn|
+            next unless pkmn
+            next unless pkmn.fainted?
+            next if party_restorer_ability?(pkmn.ability)
+            pkmn.heal
+            pkmn.hp = 1
+            revived_any = true
         end
     end
 

@@ -7,7 +7,7 @@ def moveDeletion(pokemon)
     if pbConfirmMessageSerious(_INTL("Are you sure you want {1} to forget {2}?",pokemon.name,chosenMove.name))
       pbPlayDecisionSE
       pokemon.forget_move_at_index(chosenMoveIndex)
-      pbMessage(_INTL("Success! {1} forget {2} completely.",pokemon.name,chosenMove.name))
+      pbMessage(_INTL("Success! {1} forgot {2} completely.",pokemon.name,chosenMove.name))
     end
   end
 end

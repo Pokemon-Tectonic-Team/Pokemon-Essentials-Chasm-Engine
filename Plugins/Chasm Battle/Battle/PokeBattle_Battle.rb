@@ -231,6 +231,8 @@ class PokeBattle_Battle
     end
 
     def getAbleParameters(idxPokemon, side, idxTrainer)
+        # Wild Pokémon appear in battle unconditionally — all UnableByDefault restrictions are bypassed.
+        return GameData::Ability.getByFlag("UnableByDefault") if wildBattle? && side == 1
         ret = []
         ret.push(:EXOSPHERICDESCENT) if isLastAboveHalfHealthInTeam?(idxPokemon, side, idxTrainer)
         ret.push(:SLUMBERINGSWORD) if @field.effectActive?(:SlumberingSwordReady)
@@ -242,6 +244,11 @@ class PokeBattle_Battle
     # Runs the getAbleParameters for the pokemon at idxParty in the context of switching for the battler at idxBattler
     def getAbleParametersByBattlerIndex(idxParty, idxBattler)
         return getAbleParameters(idxParty, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler))
+    end
+
+    def party_restorer_ability?(ability)
+        return false unless ability
+        GameData::Ability.get(ability).flags.include?("BattleEndReviver")
     end
 
     # Used for Illusion.

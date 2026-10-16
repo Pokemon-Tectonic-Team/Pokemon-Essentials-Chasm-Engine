@@ -38,7 +38,10 @@ class PokemonGlobalMetadata
 end
 
 def pbTestPass(follower, x, y, _direction = nil)
-    return $MapFactory.isPassableStrict?(follower.map.map_id, x, y, follower)
+	# removed line to fix follower jank:
+    # return $MapFactory.isPassableStrict?(follower.map.map_id, x, y, follower)
+	# added line to fix follower jank:
+	return true
 end
 
 # Same map only
@@ -296,7 +299,7 @@ class DependentEvents
             # Fall back on making current position into leader's position
             mapTile ||= [leader.map.map_id, leader.x, leader.y]
             follower = moveFollowerToDifferentMap(follower, leader, mapTile) if follower.map.map_id != mapTile[0]
-            moveFollowerToNearbySpot(follower, leader, mapTile)
+            moveFollowerToNearbySpot(follower, leader, mapTile, true)
         end
     end
 
@@ -340,7 +343,7 @@ class DependentEvents
         return [xDistance, yDistance].max
     end
 
-    def moveFollowerToNearbySpot(follower, leader, _mapTile)
+    def moveFollowerToNearbySpot(follower, leader, _mapTile, careAboutCollision = false)
         # Follower is on same map as leader
         newPosX = leader.x
         newPosY = leader.y
@@ -360,7 +363,12 @@ class DependentEvents
         end
 
         nearbySpotOffsets.each do |spot|
-            passable = $MapFactory.isPassable?(leader.map.map_id, leader.x + spot[0], leader.y + spot[1], follower)
+			passable = nil
+			if careAboutCollision
+				passable = $MapFactory.isPassable?(leader.map.map_id, leader.x + spot[0], leader.y + spot[1], follower)
+			else
+				passable = true
+			end
             next unless passable
             newPosX += spot[0]
             newPosY += spot[1]

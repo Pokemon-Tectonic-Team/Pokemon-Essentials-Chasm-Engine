@@ -3,6 +3,8 @@ module GameData
         DEFAULT_GROWTH_RATE = :Medium
         DEFAULT_GENDER_RATIO = :Female50Percent
         DEFAULT_BASE_HAPPINESS = 70
+        DEFAULT_STAT_ROUNDING = 5
+        UNROUNDED_STATS = [:SPEED]
 
         attr_reader :id
         attr_reader :id_number
@@ -16,6 +18,7 @@ module GameData
         attr_reader :type1
         attr_reader :type2
         attr_reader :base_stats
+        attr_reader :stat_rounding
         attr_reader :base_exp
         attr_reader :growth_rate
         attr_reader :gender_ratio
@@ -81,6 +84,7 @@ module GameData
               "Type1"             => [0, "e", :Type],
               "Type2"             => [0, "e", :Type],
               "BaseStats"         => [0, "vvvvvv"],
+              "StatRounding"      => [0, "u"],
               "BaseEXP"           => [0, "v"],
               "Rareness"          => [0, "u"],
               "Happiness"         => [0, "u"],
@@ -141,25 +145,7 @@ module GameData
             @type1                 = hash[:type1]                 || :NORMAL
             @type2                 = hash[:type2]                 || @type1
             @base_stats            = hash[:base_stats]            || {}
-            oldBST = 0
-            newBST = 0
-            GameData::Stat.each_main do |s|
-                @base_stats[s.id] = 1 if !@base_stats[s.id] || @base_stats[s.id] <= 0
-                next if @base_stats[s.id] % 5 == 0 || @base_stats[s.id] == 1
-                oldValue = @base_stats[s.id]
-                newValue = (oldValue / 5.0).round(0) * 5
-
-                @base_stats[s.id] = newValue
-
-                oldBST += oldValue
-                newBST += newValue
-            end
-            if newBST > oldBST + 5
-                echoln("[STAT ROUNDING] #{@id} BST increased by #{newBST - oldBST} due to base stats rounding to nearest 5")  
-            end
-            if newBST < oldBST - 5
-                echoln("[STAT ROUNDING] #{@id} BST decreased by #{newBST - oldBST} due to base stats rounding to nearest 5")
-            end
+            @stat_rounding         = hash[:stat_rounding]         || DEFAULT_STAT_ROUNDING
             @base_exp              = hash[:base_exp]              || 100
             @growth_rate           = hash[:growth_rate]           || DEFAULT_GROWTH_RATE
             @gender_ratio          = hash[:gender_ratio]          || DEFAULT_GENDER_RATIO
@@ -195,6 +181,29 @@ module GameData
             @flags                 = hash[:flags]                 || []
             @formalizer            = hash[:formalizer]            || []
             @sticky_items          = hash[:sticky_items]          || []
+
+            unless @stat_rounding == 0 
+                oldBST = 0
+                newBST = 0
+                GameData::Stat.each_main do |s|
+                    next if UNROUNDED_STATS.include?(s.id)
+                    @base_stats[s.id] = 1 if !@base_stats[s.id] || @base_stats[s.id] <= 0
+                    next if @base_stats[s.id] % @stat_rounding == 0 || @base_stats[s.id] == 1
+                    oldValue = @base_stats[s.id]
+                    newValue = (oldValue / @stat_rounding.to_f).round(0) * @stat_rounding
+
+                    @base_stats[s.id] = newValue
+
+                    oldBST += oldValue
+                    newBST += newValue
+                end
+                if newBST > oldBST + @stat_rounding
+                    echoln("[STAT ROUNDING] #{@id} BST increased by #{newBST - oldBST} due to base stats rounding to nearest #{@stat_rounding}")  
+                end
+                if newBST < oldBST - @stat_rounding
+                    echoln("[STAT ROUNDING] #{@id} BST decreased by #{newBST - oldBST} due to base stats rounding to nearest #{@stat_rounding}")
+                end
+            end
 
             legalityChecks
         end
@@ -792,6 +801,7 @@ module Compiler
                       :type1                 => contents["Type1"],
                       :type2                 => contents["Type2"],
                       :base_stats            => contents["BaseStats"],
+                      :stat_rounding         => contents["StatRounding"],
                       :base_exp              => contents["BaseEXP"],
                       :growth_rate           => contents["GrowthRate"],
                       :gender_ratio          => contents["GenderRate"],
@@ -1002,6 +1012,7 @@ module Compiler
                     :type1                 => contents["Type1"] || base_data.type1,
                     :type2                 => contents["Type2"] || base_data.type2,
                     :base_stats            => contents["BaseStats"] || base_data.base_stats,
+                    :stat_rounding         => contents["StatRounding"] || base_data.stat_rounding,
                     :base_exp              => contents["BaseEXP"] || base_data.base_exp,
                     :growth_rate           => base_data.growth_rate,
                     :gender_ratio          => base_data.gender_ratio,
@@ -1240,6 +1251,7 @@ module Compiler
         f.write(format("# HP, Attack, Defense, Speed, Sp. Atk, Sp. Def\r\n", total))
         f.write(format("BaseStats = %s\r\n", stats_array.join(",")))
         f.write(format("# Total = %s\r\n", total))
+        f.write(format("StatRounding = %s\r\n", species.stat_rounding)) unless species.stat_rounding == GameData::Species::DEFAULT_STAT_ROUNDING
         f.write(format("GenderRate = %s\r\n", species.gender_ratio)) unless species.gender_ratio == GameData::Species::DEFAULT_GENDER_RATIO
         f.write(format("GrowthRate = %s\r\n", species.growth_rate)) unless species.growth_rate == GameData::Species::DEFAULT_GROWTH_RATE
         f.write(format("BaseEXP = %d\r\n", species.base_exp))
@@ -1300,6 +1312,9 @@ module Compiler
         end
         all_abilities.uniq!
         all_moves.uniq!
+        # Expand form_list to include all forms between min and max,
+        # so indistinguished forms (e.g. Minior forms 1-6) are covered
+        form_list = (form_list.min..form_list.max).to_a
         f.write(format("[%s]\r\n", species.species))
         f.write(format("forms = %s\r\n", form_list.join(",")))
         f.write(format("gender_ratio = %s\r\n", species.gender_ratio))

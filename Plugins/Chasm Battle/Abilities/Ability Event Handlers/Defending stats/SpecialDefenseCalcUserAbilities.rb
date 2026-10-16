@@ -1,10 +1,3 @@
-BattleHandlers::SpecialDefenseCalcUserAbility.add(:MARVELSKIN,
-    proc { |ability, user, _battle, spDefMult|
-        spDefMult *= 2 if user.pbHasAnyStatus?
-        next spDefMult
-    }
-)
-
 BattleHandlers::SpecialDefenseCalcUserAbility.add(:SOLARCELL,
     proc { |ability, _user, battle, spDefMult|
         spDefMult *= 1.3 if battle.sunny?
@@ -89,13 +82,6 @@ BattleHandlers::SpecialDefenseCalcUserAbility.add(:SUDDENCHILL,
     }
 )
 
-BattleHandlers::SpecialDefenseCalcUserAbility.add(:BEGUILING,
-    proc { |ability, _user, _battle, spDefMult|
-        spDefMult *= 1.2
-        next spDefMult
-    }
-)
-
 BattleHandlers::SpecialDefenseCalcUserAbility.add(:PUNISHER,
     proc { |ability, _user, _battle, spDefMult|
         spDefMult *= 1.2
@@ -104,6 +90,24 @@ BattleHandlers::SpecialDefenseCalcUserAbility.add(:PUNISHER,
 )
 
 BattleHandlers::SpecialDefenseCalcUserAbility.add(:BACKWASH,
+    proc { |ability, _user, _battle, spDefMult|
+        spDefMult *= 1.2
+        next spDefMult
+    }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::SpecialDefenseCalcUserAbility.add(:MARVELSKIN,
+    proc { |ability, user, _battle, spDefMult|
+        spDefMult *= 2 if user.pbHasAnyStatus?
+        next spDefMult
+    }
+)
+
+BattleHandlers::SpecialDefenseCalcUserAbility.add(:BEGUILING,
     proc { |ability, _user, _battle, spDefMult|
         spDefMult *= 1.2
         next spDefMult

@@ -48,9 +48,6 @@ class PokeBattle_Move
     end
 
     def canKnockOffItems?(user, target, checkingForAI = false, ignoreTargetFainted = false)
-        if @battle.wildBattle? && user.opposes? && !user.boss # Wild Pokémon can't knock off, but bosses can
-            return false
-        end
         return false if user.fainted?
         return false if target.fainted? && !ignoreTargetFainted
         if checkingForAI
@@ -59,7 +56,6 @@ class PokeBattle_Move
             return false
         end
         return false unless target.hasAnyItem?
-        return false if target.shouldAbilityApply?(:STICKYHOLD, checkingForAI) && !@battle.moldBreaker
         return true
     end
 
@@ -76,14 +72,15 @@ class PokeBattle_Move
     # Can pass a block to overwrite the removal message and do other effects at the same time
     def knockOffItems(remover, victim, ability: nil, firstItemOnly: false, validItemProc: nil)
         return false unless canKnockOffItems?(remover, victim)
-        battle.pbShowAbilitySplash(remover, ability) if ability
-        if victim.hasActiveAbility?(:STICKYHOLD)
-            battle.pbShowAbilitySplash(victim, :STICKYHOLD) if remover.opposes?(victim)
-            battle.pbDisplay(_INTL("{1}'s {2} cannot be removed!", victim.pbThis, user.itemCountD))
-            battle.pbHideAbilitySplash(victim) if remover.opposes?(victim)
-            battle.pbHideAbilitySplash(remover) if ability
-            return false
+        hasValidItem = false
+        victim.eachItemWithName do |item, _itemName|
+            next if victim.unlosableItem?(item)
+            next unless validItemProc.nil? || validItemProc.call(item)
+            hasValidItem = true
+            break
         end
+        return false unless hasValidItem
+        battle.pbShowAbilitySplash(remover, ability) if ability
         victim.eachItemWithName do |item, itemName|
             next if victim.unlosableItem?(item)
             next unless validItemProc.nil? || validItemProc.call(item)
@@ -105,13 +102,6 @@ class PokeBattle_Move
     def stealItem(stealer, victim, item, ability: nil)
         return false unless canStealItem?(stealer, victim, item)
         @battle.pbShowAbilitySplash(stealer, ability) if ability
-        if victim.hasActiveAbility?(:STICKYHOLD)
-            @battle.pbShowAbilitySplash(victim, :STICKYHOLD) if stealer.opposes?(victim)
-            @battle.pbDisplay(_INTL("{1}'s item cannot be stolen!", victim.pbThis))
-            @battle.pbHideAbilitySplash(victim) if stealer.opposes?(victim)
-            @battle.pbHideAbilitySplash(stealer) if ability
-            return false
-        end
         oldVictimItemName = getItemName(item)
         victim.removeItem(item)
         if @battle.stolenItemTurnsToDust?(item)
@@ -224,6 +214,113 @@ class PokeBattle_Move
             return pokemon, partyIndex if selectableProc.call(pokemon)
         end
         return nil
+    end
+
+    #==========================================================================
+    # Shared Spoils - give a removed foe item to a chosen party member
+    #==========================================================================
+
+    # Returns true if the given party member (bench pokemon) can legally receive item.
+    def sharedspoilsBenchCanReceive?(pkmn, item)
+        return false if pkmn.egg? || pkmn.fainted?
+        return pkmn.canHaveSecondItem?(item)
+    end
+
+    # Returns true if any party member of user can legally receive item.
+    def sharedspoilsAnyoneCanReceive?(user, item)
+        party = @battle.pbParty(user.index)
+        party.each_with_index do |pkmn, partyIndex|
+            next if !pkmn
+            battler = @battle.pbFindBattler(partyIndex, user.index)
+            if battler
+                return true if battler.canAddItem?(item)
+            else
+                return true if sharedspoilsBenchCanReceive?(pkmn, item)
+            end
+        end
+        return false
+    end
+
+    def sharedspoilsChoosePartyMember(user, item, itemName)
+        if @battle.pbOwnedByPlayer?(user.index)
+            sharedspoilsPlayerChoose(user, item, itemName)
+        else
+            sharedspoilsAIChoose(user, item, itemName)
+        end
+    end
+
+    def sharedspoilsPlayerChoose(user, item, itemName)
+        party      = @battle.pbParty(user.index)
+        partyOrder = @battle.pbPartyOrder(user.index)
+        partyStart = @battle.pbTeamIndexRangeFromBattlerIndex(user.index)[0]
+        modParty   = @battle.pbPlayerDisplayParty(user.index)
+        selectableProc = proc { |pkmn|
+            partyIdxForPkmn = modParty.index(pkmn)
+            next false if partyIdxForPkmn.nil?
+            realPartyIndex = -1
+            partyOrder.each_with_index do |pos, i|
+                next if pos != partyIdxForPkmn + partyStart
+                realPartyIndex = i
+                break
+            end
+            next false if realPartyIndex < 0
+            battler = @battle.pbFindBattler(realPartyIndex, user.index)
+            if battler
+                next battler.canAddItem?(item)
+            else
+                next sharedspoilsBenchCanReceive?(pkmn, item)
+            end
+        }
+        pkmnScene  = PokemonParty_Scene.new
+        pkmnScreen = PokemonPartyScreen.new(pkmnScene, modParty)
+        @battle.pbDisplay(_INTL("Choose a party member to hold the {1}!", itemName))
+        loop do
+            displayPartyIndex = pkmnScreen.pbChooseAblePokemon(selectableProc)
+            next if displayPartyIndex < 0
+            partyIndex = -1
+            partyOrder.each_with_index do |pos, i|
+                next if pos != displayPartyIndex + partyStart
+                partyIndex = i
+                break
+            end
+            next if partyIndex < 0
+            pkmn = party[partyIndex]
+            next if !pkmn || pkmn.egg?
+            pkmnScene.pbEndScene
+            battler = @battle.pbFindBattler(partyIndex, user.index)
+            if battler
+                battler.giveItem(item, true)
+                battler.pbHeldItemTriggerCheck
+            else
+                pkmn.giveItem(item)
+            end
+            @battle.pbDisplay(_INTL("{1} is now holding the {2}!", pkmn.name, itemName))
+            return
+        end
+    end
+
+    def sharedspoilsAIChoose(user, item, itemName)
+        party = @battle.pbParty(user.index)
+        # Prefer a bench member that can receive the item
+        party.each_with_index do |pkmn, partyIndex|
+            next if !pkmn
+            next if @battle.pbFindBattler(partyIndex, user.index)
+            next unless sharedspoilsBenchCanReceive?(pkmn, item)
+            pkmn.giveItem(item)
+            @battle.pbDisplay(_INTL("{1} is now holding the {2}!", pkmn.name, itemName))
+            return
+        end
+        # Then any battler that can receive the item
+        party.each_with_index do |pkmn, partyIndex|
+            next if !pkmn
+            battler = @battle.pbFindBattler(partyIndex, user.index)
+            next unless battler
+            next unless battler.canAddItem?(item)
+            battler.giveItem(item, true)
+            battler.pbHeldItemTriggerCheck
+            @battle.pbDisplay(_INTL("{1} is now holding the {2}!", pkmn.name, itemName))
+            return
+        end
     end
 
     def removeProtections(target)
@@ -356,14 +453,6 @@ class PokeBattle_Move
         end
         if user.firstItem == :PEARLOFWISDOM
              @battle.pbDisplay(_INTL("But it failed, since the Pearl of Fate cannot be exchanged!")) if show_message
-            return false
-        end
-        if target.hasActiveAbility?(:STICKYHOLD) && !@battle.moldBreaker
-            if show_message
-                @battle.pbShowAbilitySplash(target, ability)
-                @battle.pbDisplay(_INTL("But it failed to affect {1}!", target.pbThis(true)))
-                @battle.pbHideAbilitySplash(target)
-            end
             return false
         end
         return true

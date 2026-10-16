@@ -380,7 +380,7 @@ class OverworldWeather
     def update_flashes
         return if @strength == 0
         # Storm flashes
-        if %i[Storm DryLightning].include?(@type) && $Options.flashing_weather == 0
+        if %i[Storm DryLightning].include?(@type) && $Options.flashing != 1
             if @time_until_flash > 0
                 @time_until_flash -= Graphics.delta_s
                 if @time_until_flash <= 0
@@ -568,7 +568,6 @@ class OverworldWeather
 
     def applyDefaultFog
         darknessOpacity = 0
-        darknessOpacity = 100 if DARK_MAPS.include?($game_map.map_id)
         applyFog('darkness', 0, darknessOpacity)
     end
 end

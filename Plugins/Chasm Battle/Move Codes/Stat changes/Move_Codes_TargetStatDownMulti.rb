@@ -24,6 +24,36 @@ class PokeBattle_Move_LowerTargetAtkSpAtk2 < PokeBattle_TargetMultiStatDownMove
 end
 
 #===============================================================================
+# User falls asleep and decreases all target's
+# Defense and Special Defense by 4 steps each. (Play Dead)
+#===============================================================================
+class PokeBattle_Move_SleepUserLowerDefSpdef4 < PokeBattle_TargetMultiStatDownMove
+    def initialize(battle, move)
+        super
+        @statDown = DEFENDING_STATS_4
+    end
+
+    def pbMoveFailed?(user, targets, show_message)
+        if user.asleep?
+            @battle.pbDisplay(_INTL("But it failed, since {1} is already asleep!", user.pbThis(true))) if show_message
+            return true
+        end
+        return true unless user.canSleep?(user, show_message, self, true)
+        return super
+    end
+
+    def pbMoveFailedAI?(user, targets)
+        return true if user.willStayAsleepAI?
+        return true unless user.canSleep?(user, false, self, true)
+        return super
+    end
+
+    def pbEffectGeneral(user)
+        user.applySleepSelf(_INTL("{1} played dead!", user.pbThis), 2)
+    end
+end
+
+#===============================================================================
 # Debuff's target's attacking stats in hail. (Cold Shoulder)
 #===============================================================================
 class PokeBattle_Move_LowerTargetAtkSpAtk2IfInHail < PokeBattle_Move

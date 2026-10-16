@@ -13,11 +13,7 @@ class PokeBattle_Move
         end
         if ret == :FLEX
             userTypes = user.pbTypes(true)
-            if userTypes.empty?
-                ret = :NORMAL
-            else
-                ret = userTypes[0]
-            end
+            ret = userTypes[0]
         end
         return ret
     end
@@ -41,6 +37,7 @@ class PokeBattle_Move
     #=============================================================================
     # Type effectiveness calculation
     #=============================================================================
+
     def pbCalcTypeModSingle(moveType, defType, user = nil, target = nil)
         ret = Effectiveness.calculate_one(moveType, defType)
         # Ring Target
@@ -55,8 +52,8 @@ class PokeBattle_Move
         ret = Effectiveness::NORMAL_EFFECTIVE if !target&.airborne? && (defType == :FLYING && moveType == :GROUND)
         # Inured
         ret /= 2 if target&.effectActive?(:Inured) && Effectiveness.super_effective_type?(moveType, defType)
-        # Break Through
-        if GameData::Ability.getByFlag("BypassTypeImmunity").any? { |abil| user&.hasActiveAbility?(abil)} && Effectiveness.ineffective_type?(moveType, defType)
+        # Break Through — check immunity first (cheap) before iterating the ability list.
+        if Effectiveness.ineffective_type?(moveType, defType) && GameData::Ability.getByFlag("BypassTypeImmunity").any? { |abil| user&.hasActiveAbility?(abil) }
             ret = Effectiveness::NORMAL_EFFECTIVE
         end
         return ret
@@ -154,7 +151,7 @@ class PokeBattle_Move
         return @battle.pbRandom(100) < modifiers[:base_accuracy] * calc
     end
 
-    def pbCalcAccuracyModifiers(user, target, modifiers, aiCheck = false, aiType = nil)
+    def pbCalcAccuracyModifiers(user, target, modifiers, aiCheck = false, aiType = nil, aiContext = nil)
         typeToUse = aiCheck ? aiType : @calcType
         # Ability effects that alter accuracy calculation
         user.eachAbilityShouldApply(aiCheck) do |ability|
@@ -172,7 +169,7 @@ class PokeBattle_Move
         end
         # Item effects that alter accuracy calculation
         user.eachActiveItem do |item|
-            BattleHandlers.triggerAccuracyCalcUserItem(item, modifiers, user, target, self, typeToUse, aiCheck)
+            BattleHandlers.triggerAccuracyCalcUserItem(item, modifiers, user, target, self, typeToUse, aiCheck, aiContext)
         end
         target.eachActiveItem do |item|
             BattleHandlers.triggerAccuracyCalcTargetItem(item, modifiers, user, target, self, typeToUse)
@@ -216,9 +213,7 @@ class PokeBattle_Move
             rate = criticalHitRate(user, target)
             random_crit = false
             random_crit = isRandomCrit?(user, target, rate) unless checkingForAI #Avoids needlessly calling pbRandom on AI checks
-            if random_crit
-                crit = true
-            end
+            crit = true if random_crit
         end
 
         if crit && critsPrevented?(user, target, checkingForAI)
@@ -227,18 +222,19 @@ class PokeBattle_Move
         end
 
         if checkingForAI
-            if forced
-                return crit
-            elsif allowedToRandomCrit
+            return crit if forced
+            if allowedToRandomCrit
                 # If the rate is high enough,
                 # A "random" crit is actually guaranteed
-                return rate >= CRITICAL_HIT_RATIOS.length - 1
-            else
-                return false
+                guaranteed_random_crit = (rate >= CRITICAL_HIT_RATIOS.length - 1)
+                if guaranteed_random_crit
+                    return false if critsPrevented?(user, target, true)
+                    return true
+                end
             end
-        else
-            return crit, forced
+            return false
         end
+        return crit, forced
     end
 
     def isRandomCrit?(user, target, rate)
@@ -397,7 +393,7 @@ showMessages)
         return true
     end
 
-    def pbAdditionalEffectChance(user, target, type, effectChance = 0, aiCheck = false)
+    def pbAdditionalEffectChance(user, target, type, effectChance = 0, aiCheck = false, aiContext = nil)
         return 100 if @battle.pbCheckGlobalAbility(:WISHMAKER)
         # Abilities ensure effect chance
         user.eachAbilityShouldApply(aiCheck) do |ability|
@@ -431,6 +427,7 @@ showMessages)
         if ret < 100 && user.shouldItemApply?(:LUCKHERB, aiCheck)
             ret = 100
             user.applyEffect(:LuckHerbConsumed) unless aiCheck
+            aiContext[:item_consumed] = true if aiContext
         end
         return ret
     end

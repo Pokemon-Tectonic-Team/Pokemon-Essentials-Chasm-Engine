@@ -34,7 +34,16 @@ class PokeBattle_Battle
     end
 
     def maxBattlerIndex
-        return (pbSideSize(0) > pbSideSize(1)) ? (pbSideSize(0) - 1) * 2 : pbSideSize(1) * 2 - 1
+        player = 0
+        opp = 1
+        # cable club messes with the order of battlers to ensure consistency
+        # so we have to do the same here to get the sides right
+        # doesn't matter in balanced matches but comes up with avatar summons
+        if (@client_id == 1)
+            player = 1
+            opp = 0
+        end
+        return (pbSideSize(player) > pbSideSize(opp)) ? (pbSideSize(player) - 1) * 2 : pbSideSize(opp) * 2 - 1
     end
 
     def bossBattle?
@@ -157,7 +166,8 @@ class PokeBattle_Battle
             b.pbCancelMoves # Cancels multi-turn moves
 
             # Use each empowered status move
-            b.eachEmpoweredStatusMove do |move, index|               
+            b.phaseTransitioning = true
+            b.eachEmpoweredStatusMove do |move, index|
                 if showMessages
                   if usedEmpoweredMove
                     pbDisplaySlower(_INTL("What?! Even more energy rises up from inside {1}!!", b.pbThis(true)))
@@ -165,10 +175,11 @@ class PokeBattle_Battle
                     pbDisplaySlower(_INTL("A great energy rises up from inside {1}!", b.pbThis(true)))
                   end
                 end
-                
+
                 b.pbUseMove([:UseMove, index, move, -1, 0])
                 usedEmpoweredMove = true
             end
+            b.phaseTransitioning = false
             
             next unless usedEmpoweredMove
 

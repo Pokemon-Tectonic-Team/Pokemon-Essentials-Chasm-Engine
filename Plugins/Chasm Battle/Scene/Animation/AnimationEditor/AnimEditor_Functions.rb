@@ -34,6 +34,13 @@ def pbSelectAnim(canvas,animwin)
   bmpwin.viewport=canvas.viewport
   ctlwin.viewport=canvas.viewport
   ctlwin.addSlider(_INTL("Hue:"),0,359,0)
+
+  # Find the currently selected spritesheet, if any
+  cmdwin.commands.each_with_index do |command, index|
+    next unless command == canvas.animation.graphic
+    cmdwin.index = index
+  end
+
   loop do
     bmpwin.bitmapname=cmdwin.commands[cmdwin.index]
     Graphics.update
@@ -539,9 +546,15 @@ def pbTimingList(canvas)
   return
 end
 
+def stripSEFileExtensions(soundEffectFileName)
+  soundEffectFileName = File.basename(soundEffectFileName,".wav")
+  soundEffectFileName = File.basename(soundEffectFileName,".mp3")
+  soundEffectFileName = File.basename(soundEffectFileName,".ogg")
+  soundEffectFileName = File.basename(soundEffectFileName,".wma")
+  return soundEffectFileName
+end
+
 def pbSelectSE(canvas,audio)
-  filename=(audio.name!="") ? audio.name : ""
-  displayname=(filename!="") ? filename : _INTL("<user's cry>")
   animfiles=[]
   ret=false
   pbRgssChdir(File.join("Audio", "SE", "Anim")) {
@@ -556,6 +569,16 @@ def pbSelectSE(canvas,audio)
   cmdwin.height=480
   cmdwin.opacity=200
   cmdwin.viewport=canvas.viewport
+
+  # Find the currently selected spritesheet, if any
+  cmdwin.commands.each_with_index do |command, index|
+    next unless stripSEFileExtensions(command) == stripSEFileExtensions(audio.name)
+    cmdwin.index = index
+  end
+
+  filename=(cmdwin.index==0) ? "" : cmdwin.commands[cmdwin.index]
+  displayname=(filename!="") ? filename : _INTL("<user's cry>")
+
   maxsizewindow=ControlWindow.new(320,0,320,32*8)
   maxsizewindow.addLabel(_INTL("File: \"{1}\"",displayname))
   maxsizewindow.addSlider(_INTL("Volume:"),0,100,audio.volume)
@@ -566,6 +589,7 @@ def pbSelectSE(canvas,audio)
   maxsizewindow.addButton(_INTL("Cancel"))
   maxsizewindow.opacity=200
   maxsizewindow.viewport=canvas.viewport
+
   loop do
     Graphics.update
     Input.update
@@ -582,10 +606,7 @@ def pbSelectSE(canvas,audio)
       pbSEStop
     end
     if maxsizewindow.changed?(5) # OK
-      filename = File.basename(filename,".wav")
-      filename = File.basename(filename,".mp3")
-      filename = File.basename(filename,".ogg")
-      filename = File.basename(filename,".wma")
+      filename = stripSEFileExtensions(filename)
       audio.name=filename
       audio.volume=maxsizewindow.value(1)
       audio.pitch=maxsizewindow.value(2)
@@ -1070,8 +1091,7 @@ def pbEntireSlide(canvas)
 end
 
 def pbAnimEditorHelpWindow
-  helptext=""+
-     "To add a cel to the scene, click on the canvas. The selected cel will have a black "+
+  helptext= "To add a cel to the scene, click on the canvas. The selected cel will have a black "+
      "frame. After a cel is selected, you can modify its properties using the keyboard:\n"+
      "E, R - Rotate left/right;\nP - Open properties screen;\nArrow keys - Move cel 8 pixels "+
      "(hold ALT for 2 pixels);\n+/- : Zoom in/out;\nL - Lock a cel. Locking a cel prevents it "+
@@ -1101,7 +1121,6 @@ def animationEditorMain(animation)
   sidewin=ControlWindow.new(512+128,0,160,384+128)
   sidewin.addButton(_INTL("SE and BG..."))
   sidewin.addButton(_INTL("Cel Focus..."))
-  sidewin.addSpace
   sidewin.addButton(_INTL("Paste Last"))
   sidewin.addButton(_INTL("Copy Frames..."))
   sidewin.addButton(_INTL("Clear Frames..."))
@@ -1111,6 +1130,7 @@ def animationEditorMain(animation)
   sidewin.addSpace
   sidewin.addButton(_INTL("Play Animation"))
   sidewin.addButton(_INTL("Play Opp Anim"))
+  sidewin.addControl(SwapUserTargetButton.new(canvas))
   sidewin.addButton(_INTL("Import Anim..."))
   sidewin.addButton(_INTL("Export Anim..."))
   sidewin.addButton(_INTL("Help"))
@@ -1272,14 +1292,18 @@ def animationEditorMain(animation)
         canvas.update
       end
     end
-    canvas.pasteLast if sidewin.changed?(3)
-    pbCopyFrames(canvas) if sidewin.changed?(4)
-    pbClearFrames(canvas) if sidewin.changed?(5)
-    pbTweening(canvas) if sidewin.changed?(6)
-    pbCellBatch(canvas) if sidewin.changed?(7)
-    pbEntireSlide(canvas) if sidewin.changed?(8)
-    canvas.play if sidewin.changed?(10)
-    canvas.play(true) if sidewin.changed?(11)
+    canvas.pasteLast if sidewin.changed?(2)
+    pbCopyFrames(canvas) if sidewin.changed?(3)
+    pbClearFrames(canvas) if sidewin.changed?(4)
+    pbTweening(canvas) if sidewin.changed?(5)
+    pbCellBatch(canvas) if sidewin.changed?(6)
+    pbEntireSlide(canvas) if sidewin.changed?(7)
+    canvas.play if sidewin.changed?(9)
+    canvas.play(true) if sidewin.changed?(10)
+    if sidewin.changed?(11)
+      canvas.swapUserTarget
+      sidewin.controls[11].invalidate
+    end
     if sidewin.changed?(12)
       pbImportAnim(animation,canvas,animwin)
       sliderwin.controls[0].curvalue=canvas.currentframe+1

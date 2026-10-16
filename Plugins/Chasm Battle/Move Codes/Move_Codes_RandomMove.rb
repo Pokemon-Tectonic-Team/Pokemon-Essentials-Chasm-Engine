@@ -176,7 +176,7 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureStatusMoves < PokeBattle_Mov
         elsif !replayed_choice.nil?
             @chosenMove = replayed_choice
         else
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
             @chosenMove = validMoves[chosenIndex]
             return @chosenMove
         end
@@ -303,7 +303,7 @@ class PokeBattle_Move_UseChoiceOf3RandomNonSignatureNonPsychicDamagingMoves < Po
         elsif !replayed_choice.nil?
             @chosenMove = replayed_choice
         else
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
             @chosenMove = validMoves[chosenIndex]
             return @chosenMove
         end

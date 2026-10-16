@@ -23,6 +23,8 @@ class PokeBattle_AI
 
     def pbCalcTypeModAI(moveType, user, target, move)
         return Effectiveness::NORMAL_EFFECTIVE unless moveType
+        cache_key = [moveType, move.id, user.personalID, target.personalID]
+        return @typeModCache[cache_key] if @typeModCache.key?(cache_key)
         # Determine types
         allowIllusion = !target.aiKnowsIllusion?
         tTypes = target.pbTypes(true, allowIllusion)
@@ -34,6 +36,7 @@ class PokeBattle_AI
         end
         # Modify effectiveness for bosses
         ret = Effectiveness.modify_boss_effectiveness(ret, user, target)
+        @typeModCache[cache_key] = ret
         return ret
     end
 
@@ -46,6 +49,20 @@ class PokeBattle_AI
         # Falsify the turn count so that the AI is calculated as though we are actually
         # in the midst of performing the move (turnCount is incremented as the attack phase begins)
         user.turnCount += 1
+
+        # Short-circuit for type-immune moves. Computing typeMod here also
+        # populates @typeModCache so the later pbSuccessCheckAgainstTarget
+        # call and pbGetMoveScoreDamage both reuse the cached result for free.
+        precomputedTypeMod = nil
+        if user.index != target.index
+            moveType = pbRoughType(move, user)
+            precomputedTypeMod = pbCalcTypeModAI(moveType, user, target, move)
+            if precomputedTypeMod == 0
+                echoln("\t\t[AI FAILURE CHECK] #{user.pbThis} rejects #{move.id} -- completely ineffective against #{target.pbThis(false)}")
+                user.turnCount -= 1
+                return true
+            end
+        end
 
         fails = !(boss || user.pbTryUseMove(move, false, false, true))
 
@@ -79,8 +96,7 @@ class PokeBattle_AI
 
         # Check for ineffective because of abilities or effects on the target
         if !fails && user.index != target.index
-            type = pbRoughType(move, user)
-            typeMod = pbCalcTypeModAI(type, user, target, move)
+            typeMod = precomputedTypeMod
             unless user.pbSuccessCheckAgainstTarget(move, user, target, typeMod, false, true)
                 fails = true
                 echoln("\t\t[AI FAILURE CHECK] #{user.pbThis} rejects #{move.id} -- thinks will fail against #{target.pbThis(false)} due to abilities, effects, or typemod.")
@@ -120,7 +136,7 @@ class PokeBattle_AI
     #=============================================================================
     # Damage calculation
     #=============================================================================
-    def pbTotalDamageAI(move, user, target, numTargets = 1)
+    def pbTotalDamageAI(move, user, target, numTargets = 1, aiContext = nil)
         return 0, false if move.damageNegated?(user, target, true)
 
         # Get the move's type
@@ -129,7 +145,7 @@ class PokeBattle_AI
         baseDmg = pbMoveBaseDamageAI(move, user, target)
 
         # Calculate the damage for one hit
-        damage = move.calculateDamageForHitAI(user, target, type, baseDmg, numTargets)
+        damage = move.calculateDamageForHitAI(user, target, type, baseDmg, numTargets, aiContext)
 
         # Estimate how many hits the move will do
         numHits = move.numberOfHits(user, [target], true)
@@ -160,7 +176,7 @@ class PokeBattle_AI
     #===========================================================================
     # Accuracy calculation
     #===========================================================================
-    def pbRoughAccuracy(move, user, target)
+    def pbRoughAccuracy(move, user, target, aiContext = nil)
         return 100 if target.effectActive?(:Telekinesis)
         baseAcc = move.accuracy
         return 100 if baseAcc == 0
@@ -175,7 +191,7 @@ class PokeBattle_AI
         modifiers[:evasion_step]  = target.steps[:EVASION]
         modifiers[:accuracy_multiplier] = 1.0
         modifiers[:evasion_multiplier]  = 1.0
-        move.pbCalcAccuracyModifiers(user, target, modifiers, true, type)
+        move.pbCalcAccuracyModifiers(user, target, modifiers, true, type, aiContext)
         # Calculation
         statBoundary = PokeBattle_Battler::STAT_STEP_BOUND
         accStep = modifiers[:accuracy_step].clamp(-statBoundary, statBoundary)
@@ -218,7 +234,7 @@ class PokeBattle_AI
             userSpeed = user.pbSpeed(true, move: move)
             opposingSpeed = killInfo&.speed || target.pbSpeed(true)
             movesFirst = userSpeed > opposingSpeed
-            movesFirst = !movesFirst if user.battle.field.effectActive?(:TrickRoom)
+            movesFirst = !movesFirst if user.battle.field.effectActive?(:TrickstersDomain)
             orderDescriptor = movesFirst ? "BEFORE" : "AFTER"
 
             message = "\t[ORDER CALC] #{user.pbThis}'s #{move.id} will have speed #{userSpeed}, so will move #{orderDescriptor} #{foeChecking.pbThis(true)}"

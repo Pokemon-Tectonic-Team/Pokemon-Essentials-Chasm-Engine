@@ -3,6 +3,7 @@
 def pbBattleMoveImmunityHealAbility(ability, user, target, move, moveType, immuneType, battle, showMessages, aiCheck = false, canOverheal: false)
     return false if user.index == target.index
     return false if moveType != immuneType
+    return false if move.empoweredMove? && user.boss?
     return true if aiCheck
     if target.applyFractionalHealing(1.0 / 4.0, ability: ability, canOverheal: canOverheal) <= 0 && showMessages
         battle.pbShowAbilitySplash(target, ability)
@@ -15,7 +16,7 @@ end
 
 def applyEffectDurationModifiers(value, user)
     value = (value.to_f * 1.5).floor if user.hasTribeBonus?(:SERENE)
-    value = (value.to_f * 1.5).floor if user.hasAbility?(:LONGTERMVIEW)
+    value = (value.to_f * 1.5).floor if user.hasActiveAbility?(:LONGTERMVIEW)
     return value
 end
 
@@ -23,7 +24,12 @@ end
 # one of the ability's bearer's stats instead.
 def pbBattleMoveImmunityStatAbility(ability, user, target, move, moveType, immuneType, stat, increment, battle, showMessages, aiCheck = false)
     return false if user.index == target.index
-    return false if moveType != immuneType
+    return false if move.empoweredMove? && user.boss?
+    if immuneType.is_a?(Array)
+        return false unless immuneType.include?(moveType)
+    else
+        return false unless moveType == immuneType
+    end
     return true if aiCheck
     battle.pbShowAbilitySplash(target, ability) if showMessages
     if stat.is_a?(Array)

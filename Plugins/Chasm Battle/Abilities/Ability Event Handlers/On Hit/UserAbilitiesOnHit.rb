@@ -147,19 +147,6 @@ BattleHandlers::UserAbilityOnHit.add(:SATURATER,
 #########################################
 # Dizzy abilities
 #########################################
-BattleHandlers::UserAbilityOnHit.add(:STAGGERINGSLAPS,
-  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-    next unless move.physicalMove?
-    randomStatusProcUserAbility(ability, :DIZZY, 30, user, target, move, battle, aiCheck, aiNumHits)
-  }
-)
-
-BattleHandlers::UserAbilityOnHit.add(:BRAINSCRAMBLE,
-  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-    next unless move.specialMove?
-    randomStatusProcUserAbility(ability, :DIZZY, 30, user, target, move, battle, aiCheck, aiNumHits)
-  }
-)
 
 #########################################
 # Leech abilities
@@ -254,20 +241,6 @@ BattleHandlers::UserAbilityOnHit.add(:SHELLCRACKER,
   }
 )
 
-BattleHandlers::UserAbilityOnHit.add(:BIZARRE,
-  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-    next unless move.specialMove?
-    if aiCheck
-      ret = 0
-      aiNumHits.times do |i|
-          ret += getMultiStatDownEffectScore([:SPECIAL_DEFENSE,1], target, user, fakeStepModifier: i)
-      end
-      next ret
-    end
-    target.tryLowerStat(:SPECIAL_DEFENSE, user, ability: ability)
-  }
-)
-
 BattleHandlers::UserAbilityOnHit.add(:RENDINGCLAWS,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
     next unless target.damageState.critical
@@ -313,7 +286,6 @@ BattleHandlers::UserAbilityOnHit.add(:POWERPINCH,
     trappingDuration = 3
     trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
     score = 30
-    score *= 2 if user.hasActiveItemAI?(:BINDINGBAND)
     score *= 2 if user.hasActiveItemAI?(:GRIPCLAW)
     next score if aiCheck
 		battle.pbShowAbilitySplash(user, ability)
@@ -336,7 +308,6 @@ BattleHandlers::UserAbilityOnHit.add(:LAUOHOLASSO,
     trappingDuration = 3
     trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
     score = 30
-    score *= 2 if user.hasActiveItemAI?(:BINDINGBAND)
     score *= 2 if user.hasActiveItemAI?(:GRIPCLAW)
     next score if aiCheck
     battle.pbShowAbilitySplash(user,ability)
@@ -360,5 +331,37 @@ BattleHandlers::UserAbilityOnHit.add(:COREPROVENANCE,
         next (user.aboveHalfHealth? ? 10 : 5) * aiNumHits
     end
     user.pbOwnSide.incrementEffect(:ErodedRock)
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::UserAbilityOnHit.add(:STAGGERINGSLAPS,
+  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    next unless move.physicalMove?
+    randomStatusProcUserAbility(ability, :DIZZY, 30, user, target, move, battle, aiCheck, aiNumHits)
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:BRAINSCRAMBLE,
+  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    next unless move.specialMove?
+    randomStatusProcUserAbility(ability, :DIZZY, 30, user, target, move, battle, aiCheck, aiNumHits)
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:BIZARRE,
+  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    next unless move.specialMove?
+    if aiCheck
+      ret = 0
+      aiNumHits.times do |i|
+          ret += getMultiStatDownEffectScore([:SPECIAL_DEFENSE,1], target, user, fakeStepModifier: i)
+      end
+      next ret
+    end
+    target.tryLowerStat(:SPECIAL_DEFENSE, user, ability: ability)
   }
 )

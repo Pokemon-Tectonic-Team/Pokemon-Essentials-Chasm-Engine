@@ -143,6 +143,13 @@ class PokeBattle_Battler
         @pokemon.moves.each_with_index do |m, i|
             @moves[i] = PokeBattle_Move.from_pokemon_move(@battle, m)
         end
+        # Extra moves (from curses and avatar shenanigans), mirroring extra abilities.
+        # Added to @moves directly so the AI (which enumerates @moves) can choose them
+        # and the fight menu's >MAX_MOVES handling can display them.
+        @pokemon.extraMoves.each do |moveID|
+            next if @moves.any? { |mv| mv && mv.id == moveID }
+            @moves.push(@battle.getBattleMoveInstanceFromID(moveID))
+        end
     end
 
     def pbInitialize(pkmn, idxParty, batonPass = false)
@@ -246,6 +253,8 @@ class PokeBattle_Battler
         @tookPhysicalHitLastRound = false
         @tookSpecialHitLastRound = false
         @moveUsageHistory      = []
+        @movesUsedThisTurn     = []
+        @movesUsedLastTurn     = []
         @lastMoveUsed          = nil
         @lastMoveUsedType      = nil
         @lastMoveUsedCategory  = -1
@@ -263,6 +272,7 @@ class PokeBattle_Battler
 
         # Boss stuff
         @avatarPhase           = 1
+        @phaseTransitioning    = false
         @empoweredTimer		   = 0
         @extraMovesPerTurn = 0
         @indicesTargetedRoundBeforeLast = []

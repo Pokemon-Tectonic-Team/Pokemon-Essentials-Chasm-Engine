@@ -158,7 +158,7 @@ class PokeBattle_Move
     def punchingMove?;          return @flags.include?("Punch"); end
     def kickingMove?;           return @flags.include?("Kick"); end
     def bitingMove?;            return @flags.include?("Biting"); end
-    def bladeMove?;             return @flags.include?("Blade"); end
+    def sliceMove?;             return @flags.include?("Slice"); end
     
     def soundMove?;             return @flags.include?("Sound"); end
     def windMove?;              return @flags.include?("Wind"); end
@@ -171,7 +171,7 @@ class PokeBattle_Move
       return true if punchingMove?
       return true if kickingMove?
       return true if bitingMove?
-      return true if bladeMove?
+      return true if sliceMove?
 
       return true if windMove?
       return true if windMove?
@@ -199,6 +199,7 @@ class PokeBattle_Move
     def screenRemovalMove?; return false; end
     def rampagingMove?; return false; end
     def exhaustingMove?; return false; end
+    def consumesItem?(_user); return false; end
   
     def ignoresSubstitute?(user)   # user is the Pokémon using this move
       return true if soundMove?

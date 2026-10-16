@@ -4,14 +4,18 @@ BattleHandlers::CertainAddedEffectUserAbility.add(:STARSALIGN,
     }
 )
 
-BattleHandlers::CertainAddedEffectUserAbility.add(:TERRORIZE,
-    proc { |ability, battle, user, target, move|
-        next move.flinchingMove?
-    }
-)
-
 BattleHandlers::CertainAddedEffectUserAbility.add(:CATASTROPHIC,
     proc { |ability, battle, user, target, move|
         next true
+    }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::CertainAddedEffectUserAbility.add(:TERRORIZE,
+    proc { |ability, battle, user, target, move|
+        next move.flinchingMove?
     }
 )

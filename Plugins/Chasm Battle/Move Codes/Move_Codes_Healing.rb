@@ -130,7 +130,7 @@ class PokeBattle_Move_EmpoweredShoreUp < PokeBattle_HalfHealingMove
 end
 
 #===============================================================================
-# Heals user by 2/3 of its max HP.
+# Heals user by 2/3 of its max HP. (Lounge)
 #===============================================================================
 class PokeBattle_Move_HealUserTwoThirdsOfTotalHP < PokeBattle_HealingMove
     def healRatio(_user)
@@ -204,7 +204,7 @@ end
 
 #===============================================================================
 # Rings the user. Ringed Pokémon gain 1/16 of max HP at the end of each round.
-# (Aqua Ring)
+# (Mending Sprit, Wetland Waltz)
 #===============================================================================
 class PokeBattle_Move_StartHealUserEachTurn < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
@@ -236,7 +236,7 @@ end
 
 #===============================================================================
 # Ingrains the user. Ingrained Pokémon gain 1/16 of max HP at the end of each
-# round, and cannot flee or switch out. (Ingrain)
+# round, and cannot flee or switch out.
 #===============================================================================
 class PokeBattle_Move_StartHealUserEachTurnTrapUser < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
@@ -848,16 +848,16 @@ end
 class PokeBattle_Move_HealUserHalfOfTotalHPExtendScreens1 < PokeBattle_HalfHealingMove
     def pbEffectGeneral(user)
         super
-        pbOwnSide.eachEffect(true) do |effect, value, data|
+        user.pbOwnSide.eachEffect(true) do |effect, value, data|
             next unless data.is_screen?
-            pbOwnSide.effects[effect] += 1
-            @battle.pbDisplay(_INTL("{1}'s {2} was extended 1 turn!", pbTeam, data.name))
+            user.pbOwnSide.effects[effect] += 1
+            @battle.pbDisplay(_INTL("{1}'s {2} was extended 1 turn!", user.pbTeam, data.name))
         end
     end
 
     def getEffectScore(user, target)
         score = super
-        pbOwnSide.eachEffect(true) do |effect, value, data|
+        user.pbOwnSide.eachEffect(true) do |effect, value, data|
             next unless data.is_screen?
             score += 30
         end
@@ -951,7 +951,7 @@ class PokeBattle_Move_UserLosesQuarterHPPartyMembersHealQuarterHP < PokeBattle_M
     end
 
     def getEffectScore(user, _target)
-        score += getHPLossEffectScore(user, @hpFraction * 1.5) # intentionally higher than it looks like it should be
+        score = getHPLossEffectScore(user, @hpFraction * 1.5) # intentionally higher than it looks like it should be
         healableMembers = healableMembers(user)
         if healableMembers > 0
             score += 30 + healableMembers * 50

@@ -7,33 +7,44 @@ def pbItemBall(item, quantity = 1)
     itemname = (quantity > 1) ? item.name_plural : item.name
     pocket = item.pocket
     move = item.move
-    if $PokemonBag.pbStoreItem(item, quantity) # If item can be picked up
-        meName = item.is_key_item? ? "Key item get" : "Item get"
-        if item == :LEFTOVERS
-            pbMessage(_INTL("\\me[{1}]You found some \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
-        elsif quantity > 1
-            pbMessage(_INTL("\\me[{1}]You found {2} \\c[1]{3}\\c[0]!\\wtnp[30]", meName, quantity, itemname))
+    meName = item.is_key_item? ? "Key item get" : "Item get"
+    if item.is_exp_candy? && pbHasItem?(:EXPEZDISPENSER)
+        if quantity > 1
+            pbMessage(_INTL("\\i[EXPEZDISPENSER]\\me[{1}]You found {2} \\c[1]{3}\\c[0], and put them into the \\c[1]{4}\\c[0]!\\wtnp[30]", meName, quantity, itemname, getItemName(:EXPEZDISPENSER)))
         elsif itemname.starts_with_vowel?
-            pbMessage(_INTL("\\me[{1}]You found an \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
+            pbMessage(_INTL("\\i[EXPEZDISPENSER]\\me[{1}]You found an \\c[1]{2}\\c[0], and put it into the \\c[1]{3}\\c[0]!\\wtnp[30]", meName, itemname, getItemName(:EXPEZDISPENSER)))
         else
-            pbMessage(_INTL("\\me[{1}]You found a \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
+            pbMessage(_INTL("\\i[EXPEZDISPENSER]\\me[{1}]You found a \\c[1]{2}\\c[0], and put it into the \\c[1]{3}\\c[0]!\\wtnp[30]", meName, itemname, getItemName(:EXPEZDISPENSER)))
         end
-        showItemDescription(item.id)
-        pocketAlert(item)
-        return true
-    end
-    # Can't add the item
-    if item == :LEFTOVERS
-        pbMessage(_INTL("You found some \\c[1]{1}\\c[0]!\\wtnp[30]", itemname))
-    elsif quantity > 1
-        pbMessage(_INTL("You found {1} \\c[1]{2}\\c[0]!\\wtnp[30]", quantity, itemname))
-    elsif itemname.starts_with_vowel?
-        pbMessage(_INTL("You found an \\c[1]{1}\\c[0]!\\wtnp[30]", itemname))
+        addEXPCandyToDispenser(item.id, quantity)
     else
-        pbMessage(_INTL("You found a \\c[1]{1}\\c[0]!\\wtnp[30]", itemname))
+        if $PokemonBag.pbStoreItem(item, quantity) # If item can be picked up
+            if item == :LEFTOVERS
+                pbMessage(_INTL("\\me[{1}]You found some \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
+            elsif quantity > 1
+                pbMessage(_INTL("\\me[{1}]You found {2} \\c[1]{3}\\c[0]!\\wtnp[30]", meName, quantity, itemname))
+            elsif itemname.starts_with_vowel?
+                pbMessage(_INTL("\\me[{1}]You found an \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
+            else
+                pbMessage(_INTL("\\me[{1}]You found a \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
+            end
+            showItemDescription(item.id)
+            pocketAlert(item)
+            return true
+        end
+        # Can't add the item
+        if item == :LEFTOVERS
+            pbMessage(_INTL("You found some \\c[1]{1}\\c[0]!\\wtnp[30]", itemname))
+        elsif quantity > 1
+            pbMessage(_INTL("You found {1} \\c[1]{2}\\c[0]!\\wtnp[30]", quantity, itemname))
+        elsif itemname.starts_with_vowel?
+            pbMessage(_INTL("You found an \\c[1]{1}\\c[0]!\\wtnp[30]", itemname))
+        else
+            pbMessage(_INTL("You found a \\c[1]{1}\\c[0]!\\wtnp[30]", itemname))
+        end
+        pbMessage(_INTL("But your Bag is full..."))
+        return false
     end
-    pbMessage(_INTL("But your Bag is full..."))
-    return false
 end
 
 def candyRock(level,multiplier = 2)
@@ -44,6 +55,14 @@ def candyRock(level,multiplier = 2)
         command_end # Exit event processing
         return
     end
+    pbSEPlay('Mining pick')
+    pbWait(10)
+    pbSEPlay('Mining pick')
+    pbWait(10)
+    pbSEPlay('Mining pick')
+    pbWait(10)
+    pbSEPlay('Anim/PRSFX- Rock Throw2')
+    pbWait(20)
     receiveCandyBatch(level,multiplier)
 end
 
@@ -65,21 +84,32 @@ def pbReceiveItem(item, quantity = 1)
     pocket = item.pocket
     move = item.move
     meName = item.is_key_item? ? "Key item get" : "Item get"
-    if item.id == :LEFTOVERS
-        pbMessage(_INTL("\\me[{1}]You obtained some \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
-    elsif quantity > 1
-        pbMessage(_INTL("\\me[{1}]You obtained {2} \\c[1]{3}\\c[0]!\\wtnp[30]", meName, quantity, itemname))
-    elsif itemname.starts_with_vowel?
-        pbMessage(_INTL("\\me[{1}]You obtained an \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
+    if item.is_exp_candy? && pbHasItem?(:EXPEZDISPENSER)
+        if quantity > 1
+            pbMessage(_INTL("\\i[EXPEZDISPENSER]\\me[{1}]You got {2} \\c[1]{3}\\c[0], and put them into the \\c[1]{4}\\c[0]!\\wtnp[30]", meName, quantity, itemname, getItemName(:EXPEZDISPENSER)))
+        elsif itemname.starts_with_vowel?
+            pbMessage(_INTL("\\i[EXPEZDISPENSER]\\me[{1}]You got an \\c[1]{2}\\c[0], and put it into the \\c[1]{3}\\c[0]!\\wtnp[30]", meName, itemname, getItemName(:EXPEZDISPENSER)))
+        else
+            pbMessage(_INTL("\\i[EXPEZDISPENSER]\\me[{1}]You got a \\c[1]{2}\\c[0], and put it into the \\c[1]{3}\\c[0]!\\wtnp[30]", meName, itemname, getItemName(:EXPEZDISPENSER)))
+        end
+        addEXPCandyToDispenser(item.id, quantity)
     else
-        pbMessage(_INTL("\\me[{1}]You obtained a \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
+        if item.id == :LEFTOVERS
+            pbMessage(_INTL("\\me[{1}]You obtained some \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
+        elsif quantity > 1
+            pbMessage(_INTL("\\me[{1}]You obtained {2} \\c[1]{3}\\c[0]!\\wtnp[30]", meName, quantity, itemname))
+        elsif itemname.starts_with_vowel?
+            pbMessage(_INTL("\\me[{1}]You obtained an \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
+        else
+            pbMessage(_INTL("\\me[{1}]You obtained a \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
+        end
+        showItemDescription(item.id)
+        if $PokemonBag.pbStoreItem(item, quantity) # If item can be added
+            pocketAlert(item)
+            return true
+        end
+        return false # Can't add the item
     end
-    showItemDescription(item.id)
-    if $PokemonBag.pbStoreItem(item, quantity) # If item can be added
-        pocketAlert(item)
-        return true
-    end
-    return false # Can't add the item
 end
 
 def combineSigil
@@ -88,6 +118,22 @@ def combineSigil
         pbReceiveItem(:CARNATIONSIGIL)
         $PokemonBag.pbDeleteItem(:SIGILLEFTHALF)
         $PokemonBag.pbDeleteItem(:SIGILRIGHTHALF)
+    end
+end
+
+def useKitExpansionAuto
+    if pbHasItem?(:AIDKIT) && pbHasItem?(:KITEXPANSION)
+        if pbConfirmMessage(_INTL("\\i[KITEXPANSION]Use the Kit Expansion immediately?"))
+		    pbUseItem($PokemonBag,:KITEXPANSION)
+        end
+    end
+end
+
+def useMedicalUpgradeAuto
+    if pbHasItem?(:AIDKIT) && pbHasItem?(:MEDICALUPGRADE)
+        if pbConfirmMessage(_INTL("\\i[MEDICALUPGRADE]Use the Medical Upgrade immediately?"))
+		    pbUseItem($PokemonBag,:MEDICALUPGRADE)
+        end
     end
 end
 

@@ -78,6 +78,10 @@ class PokeBattle_Move_TransformUserIntoTarget < PokeBattle_Move
             end
             return true
         end
+        if GameData::Ability.getByFlag("UnableByDefault").include?(target.pokemon.ability_id)
+            @battle.pbDisplay(_INTL("But it failed, since {1} cannot be transformed into!", target.pbThis(true))) if show_message
+            return true
+        end
         return false
     end
 
@@ -161,7 +165,7 @@ class PokeBattle_Move_UseChoiceOf3LastUsedMoves < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenMoveID = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),moveNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),moveNames)
                 @chosenMoveID = moveChoices[chosenIndex]
                 return @chosenMoveID
             end

@@ -17,7 +17,7 @@ class PokeBattle_Move_StartSunshine8 < PokeBattle_WeatherMove
 end
 
 # Empowered Sunshine
-class PokeBattle_Move_EmpoweredSunshine < PokeBattle_Move_StartSunshine8
+class PokeBattle_Move_EmpoweredSunshine < PokeBattle_Move_StartSunshine6
     include EmpoweredMove
 
     def pbEffectGeneral(user)
@@ -58,7 +58,7 @@ class PokeBattle_Move_StartRainstorm8 < PokeBattle_WeatherMove
 end
 
 # Empowered Rain
-class PokeBattle_Move_EmpoweredRainstorm < PokeBattle_Move_StartRainstorm8
+class PokeBattle_Move_EmpoweredRainstorm < PokeBattle_Move_StartRainstorm6
     include EmpoweredMove
 
     def pbEffectGeneral(user)
@@ -100,7 +100,7 @@ class PokeBattle_Move_StartSandstorm8 < PokeBattle_WeatherMove
 end
 
 # Empowered Sandstorm
-class PokeBattle_Move_EmpoweredSandstorm < PokeBattle_Move_StartSandstorm8
+class PokeBattle_Move_EmpoweredSandstorm < PokeBattle_Move_StartSandstorm6
     include EmpoweredMove
 
     def pbEffectGeneral(user)
@@ -141,7 +141,7 @@ class PokeBattle_Move_StartHail8 < PokeBattle_WeatherMove
 end
 
 # Empowered Hail
-class PokeBattle_Move_EmpoweredHail < PokeBattle_Move_StartHail8
+class PokeBattle_Move_EmpoweredHail < PokeBattle_Move_StartHail6
     include EmpoweredMove
 
     def pbEffectGeneral(user)
@@ -225,7 +225,7 @@ class PokeBattle_Move_StartMoonglow8 < PokeBattle_WeatherMove
 end
 
 # Empowered Moonglow
-class PokeBattle_Move_EmpoweredMoonglow < PokeBattle_Move_StartMoonglow8
+class PokeBattle_Move_EmpoweredMoonglow < PokeBattle_Move_StartMoonglow6
     include EmpoweredMove
 
     def pbEffectGeneral(user)

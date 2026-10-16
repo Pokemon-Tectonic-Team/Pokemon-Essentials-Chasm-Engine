@@ -5,6 +5,20 @@ def aquaRingHealingFraction(battler)
 end
 
 GameData::BattleEffect.register_effect(:Battler, {
+    :id => :JugglingThrown,
+    :real_name => "Juggling Thrown",
+    :resets_battlers_eot => true,
+    :resets_battlers_sot => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :JugglingCaught,
+    :real_name => "Juggling Caught",
+    :resets_battlers_eot => true,
+    :resets_battlers_sot => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
     :id => :AquaRing,
     :real_name => "Aqua Ring",
     :baton_passed => true,
@@ -175,7 +189,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Numb-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will numb.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will numb.", battler.pbThis(true)))
     end,
 })
 
@@ -184,7 +198,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Numb-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will numb.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will numb.", battler.pbThis(true)))
     end,
 })
 
@@ -193,7 +207,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Poison-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will poison.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will poison.", battler.pbThis(true)))
     end,
 })
 
@@ -202,7 +216,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Poison-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will poison.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will poison.", battler.pbThis(true)))
     end,
 })
 
@@ -211,7 +225,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Burn-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will burn.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will burn.", battler.pbThis(true)))
     end,
 })
 
@@ -220,7 +234,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Burn-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will burn.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will burn.", battler.pbThis(true)))
     end,
 })
 
@@ -229,7 +243,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Frost-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will frostbite.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will frostbite.", battler.pbThis(true)))
     end,
 })
 
@@ -238,7 +252,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Frost-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will frostbite.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will frostbite.", battler.pbThis(true)))
     end,
 })
 
@@ -247,7 +261,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Dizzy-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will dizzy.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will dizzy.", battler.pbThis(true)))
     end,
 })
 
@@ -256,7 +270,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Dizzy-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will dizzy.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will dizzy.", battler.pbThis(true)))
     end,
 })
 
@@ -265,7 +279,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Leech-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will leech.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will leech.", battler.pbThis(true)))
     end,
 })
 
@@ -274,7 +288,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Leech-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will leech.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will leech.", battler.pbThis(true)))
     end,
 })
 
@@ -283,7 +297,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Waterlog-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next physical hit from {1} will waterlog.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next physical hit from {1} will waterlog.", battler.pbThis(true)))
     end,
 })
 
@@ -292,7 +306,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Waterlog-Warned",
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("The next special hit from {1} will waterlog.", battler.pbThis))
+        battle.pbDisplay(_INTL("The next special hit from {1} will waterlog.", battler.pbThis(true)))
     end,
 })
 
@@ -325,14 +339,30 @@ GameData::BattleEffect.register_effect(:Battler, {
     end
 })
 
+PHARAOHS_CURSE_DAMAGE_FRACTION = 0.125
+
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :PharaohsCurse,
     :real_name => "Pharoah's Curse",
     :baton_passed => true,
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("It's pain becomes golden coins!"))
+        battle.pbDisplay(_INTL("{1} is turning into gold!",battler.pbThis))
     end,
+    :eor_proc => proc do |battle, battler, _value|
+        if battler.takesIndirectDamage?
+            battle.pbDisplay(_INTL("{1} is afflicted by the pharaoh's curse!", battler.pbThis))
+            curseDamage = battler.applyFractionalDamage(PHARAOHS_CURSE_DAMAGE_FRACTION, false)
+
+            moneyEarned = curseDamage * 10
+            moneyEarned = (battle.moneyMult * moneyEarned).floor
+            battler.pbOpposingSide.incrementEffect(:PayDay, moneyEarned)
+        end
+    end,
+    :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
+        stay_in_rating -= 15
+        next stay_in_rating
+    end
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -356,6 +386,24 @@ GameData::BattleEffect.register_effect(:Battler, {
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :Snorer,
     :real_name => "Snorer",
+    :copied_move_marker => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :LoudSleeper,
+    :real_name => "LoudSleeper",
+    :copied_move_marker => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :FrigidReflection,
+    :real_name => "FrigidReflection",
+    :copied_move_marker => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :GutPunch,
+    :real_name => "GutPunch",
     :copied_move_marker => true,
 })
 
@@ -664,6 +712,9 @@ GameData::BattleEffect.register_effect(:Battler, {
     :multi_turn_tracker => true,
     :apply_proc => proc do |_battle, battler, _value|
         battler.currentMove = battler.lastMoveUsed
+    end,
+    :expire_proc => proc do |battle, battler|
+        battler.disableEffect(:BypassExhaustion) if battler.effectActive?(:BypassExhaustion)
     end,
 })
 
@@ -1035,6 +1086,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :expire_proc => proc do |battle, battler|
         battle.pbDisplay(_INTL("{1} spun down from its rampage.", battler.pbThis))
         battler.currentMove = nil
+        battler.disableEffect(:RampageLocked) if battler.effectActive?(:RampageLocked)
         if battler.effectActive?(:WillFaintAfterRampage)
             battle.pbDisplay(_INTL("Exhaustion finally catches up with {1}!", battler.pbThis(true)))
             battler.pbReduceHP(battler.hp,false,false)
@@ -1055,7 +1107,6 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :RampageLocked,
     :real_name => "Rampage Locked",
     :info_displayed => false,
-    :sub_effects => [:Rampaging]
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -1183,6 +1234,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Base Attack Set",
     :type => :Integer,
     :baton_passed => true,
+    :default => -1,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -1190,6 +1242,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Base Sp. Atk Set",
     :type => :Integer,
     :baton_passed => true,
+    :default => -1,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -1197,6 +1250,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Base Defense Set",
     :type => :Integer,
     :baton_passed => true,
+    :default => -1,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -1204,6 +1258,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Base Sp. Def Set",
     :type => :Integer,
     :baton_passed => true,
+    :default => -1,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -1211,6 +1266,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Base Speed Set",
     :type => :Integer,
     :baton_passed => true,
+    :default => -1,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -1452,11 +1508,11 @@ GameData::BattleEffect.register_effect(:Battler, {
 
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :DisarmingShot,
-    :real_name => "Blade Disarming Turns",
+    :real_name => "Slice Disarming Turns",
     :type => :Integer,
     :ticks_down_eor => true,
     :apply_proc => proc do |battle, battler, value|
-        battle.pbDisplay(_INTL("{1} can't use blade-based moves for the next {2} turns!", battler.pbThis, value - 1))
+        battle.pbDisplay(_INTL("{1} can't use slice-based moves for the next {2} turns!", battler.pbThis, value - 1))
     end,
 })
 
@@ -1483,7 +1539,6 @@ GameData::BattleEffect.register_effect(:Battler, {
 
 def trappingDamageFraction(battler)
     fraction = 1.0 / 8.0
-    fraction *= 2 if battler.getBattlerPointsTo(:TrappingUser)&.hasActiveItem?(:BINDINGBAND)
     return fraction
 end
 
@@ -1607,6 +1662,22 @@ GameData::BattleEffect.register_effect(:Battler, {
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
+    :id => :TremorSensed,
+    :real_name => "Sensed By",
+    :type => :Array,
+    :eor_proc => proc do |battle, battler, value|
+        value.each { |entry| entry[0] -= 1 }
+        value.reject! { |entry| entry[0] <= 0 }
+        battler.disableEffect(:TremorSensed) if value.empty?
+    end,
+    :info_custom_description => proc do |value, _string, descriptionArray|
+        value.each do |entry|
+            descriptionArray.push(entry[2])
+        end
+    end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
     :id => :Type3,
     :real_name => "Added Type",
     :type => :Type,
@@ -1663,6 +1734,12 @@ GameData::BattleEffect.register_effect(:Battler, {
     end,
     :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
         stay_in_rating -= 25
+        battler.eachOpposing do |opponent|
+            if opponent.canChooseProtect?
+                stay_in_rating -= 25
+                PBDebug.log("[STAY-IN RATING] #{battler.pbThis} expects a Protect/Yawn trap (-25)")
+            end
+        end
         next stay_in_rating
     end
 })
@@ -2088,9 +2165,6 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :ShimmeringHeat,
     :real_name => "Shimmering Heat",
     :resets_eor	=> true,
-    :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("{1} is obscured by the shimmering haze!", battler.pbThis))
-    end,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -2150,6 +2224,18 @@ GameData::BattleEffect.register_effect(:Battler, {
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :KickbackSwap,
     :real_name => "Swapping to Cushion",
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :HitAndRunSwitch,
+    :real_name => "Hit and Run Switch",
+    :info_displayed => false,
+    :resets_eor => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :MisdirectingFogSelected,
+    :real_name => "Selected for Misdirecting Fog Switch",
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -2486,11 +2572,37 @@ GameData::BattleEffect.register_effect(:Battler, {
         battle.pbDisplay(_INTL("{1} is cured of its shrinking!", battler.pbThis))
     end,
     :expire_proc => proc do |battle, battler|
-        battle.pbDisplay(_INTL("{1} is no longer shrinking down!", battler.pbThis(true)))
+        battle.pbDisplay(_INTL("{1} is no longer shrinking down!", battler.pbThis))
     end,
     :eor_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("{1} got smaller! Its highest stat is going down!", battler.pbThis(true)))
+        battle.pbDisplay(_INTL("{1} got smaller! Its highest stat is going down!", battler.pbThis))
         battler.pbLowerStatStep(battler.highestStat, 2)
+        battler.pbItemStatRestoreCheck
+    end,
+})
+
+DEFAULT_ERODINGFOAM_DURATION = 2
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ErodingFoam,
+    :real_name => "Eroding Foam",
+    :type => :Integer,
+    :ticks_down_eor => true,
+    :baton_passed => true,
+    :avatars_purge => true,
+    :apply_proc => proc do |battle, battler, value|
+        battle.pbDisplay(_INTL("{1} is covered in foam!", battler.pbThis))
+        battle.pbDisplay(_INTL("It'll last for {1} more turns!", value-1))
+    end,
+    :disable_proc => proc do |battle, battler|
+        battle.pbDisplay(_INTL("The foam around {1} is cleared!", battler.pbThis(true)))
+    end,
+    :expire_proc => proc do |battle, battler|
+        battle.pbDisplay(_INTL("{1} is no longer covered in foam!", battler.pbThis))
+    end,
+    :eor_proc => proc do |battle, battler, _value|
+        battle.pbDisplay(_INTL("The Eroding Foam is melting {1}'s Defense!", battler.pbThis(true)))
+        battler.tryLowerStat(:DEFENSE, battler, increment: 2)
         battler.pbItemStatRestoreCheck
     end,
 })
@@ -2642,7 +2754,6 @@ GameData::BattleEffect.register_effect(:Battler, {
     :apply_proc => proc do |_battle, battler, _value|
         battler.currentMove = nil
     end,
-    :sub_effects => [:HyperBeam],
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -2683,9 +2794,9 @@ GameData::BattleEffect.register_effect(:Battler, {
 def checkHerosJourney(battle, battler)
     return unless battler.hasActiveAbility?(:HEROSJOURNEY)
     return unless battler.countsAs?(:KELDEO)
-    return unless battler.effectActive?(:HerosJourneyKO)
-    return unless battler.effectActive?(:HerosJourneyStatus)
-    return unless battler.effectActive?(:HerosJourneyRevenge)
+    return unless battler.pbOwnSide.effectActive?(:HerosJourneyKO)
+    return unless battler.pbOwnSide.effectActive?(:HerosJourneyStatus)
+    return unless battler.pbOwnSide.effectActive?(:HerosJourneyRevenge)
     battler.showMyAbilitySplash(:HEROSJOURNEY)
     battle.pbDisplay(_INTL("A fierce resolution gathers around {1}!", battler.pbThis))
     battler.applyFractionalHealing(1.0)
@@ -2715,5 +2826,28 @@ GameData::BattleEffect.register_effect(:Battler, {
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :SwordHorn,
     :real_name => "Sword Horn First Hit",
+    :info_displayed => false
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :FleetingFootwork,
+    :real_name => "Fleeting Footwork",
+    :type => :Integer,
+    :ticks_down_eor => true,
+    :apply_proc => proc do |battle, battler, value|
+        battle.pbDisplay(_INTL("{1} will tire out in {2} turns!", battler.pbThis, value - 1))
+    end,
+    :expire_proc => proc do |battle, battler|
+        battle.pbDisplay(_INTL("{1} is too tired to keep up the footwork!", battler.pbThis))
+        if battler.hasAlteredStatSteps?
+            battler.pbResetStatSteps
+            battle.pbDisplay(_INTL("{1}'s stat changes were eliminated!", battler.pbThis))
+        end
+    end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :BattleHardened,
+    :real_name => "Battle-Hardened",
     :info_displayed => false
 })

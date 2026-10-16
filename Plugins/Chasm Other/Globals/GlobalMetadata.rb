@@ -72,6 +72,8 @@ class PokemonGlobalMetadata
     attr_accessor :chroma_clarion_recharge_steps
     # Cell booster
     attr_accessor :cell_booster_inactive
+    # Pokemon lure
+    attr_accessor :pokemon_lure_inactive
     # Ragged journal
     attr_accessor :ragged_journal_pages_collected
     # Randomizer
@@ -321,7 +323,7 @@ class PokemonGlobalMetadata
     
     def expJAR=(value)
         @expJAR = value
-        unlockAchievement(:STORE_LOTS_OF_EXP) if @expJAR >= 1_000_000
+        unlockAchievement(:STORE_LOTS_OF_EXP) if @expJAR >= 3_000_000
     end
 
     def circuitPuzzleStateTracker

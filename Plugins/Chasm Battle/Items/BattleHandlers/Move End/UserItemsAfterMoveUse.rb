@@ -41,7 +41,7 @@ BattleHandlers::UserItemAfterMoveUse.add(:THROATSPRAY,
 BattleHandlers::UserItemAfterMoveUse.add(:WHETSTONE,
     proc { |item, user, _targets, move, numHits, battle|
         next if battle.pbAllFainted?(user.idxOwnSide) || battle.pbAllFainted?(user.idxOpposingSide)
-        next unless move.bladeMove?
+        next unless move.sliceMove?
         next if numHits == 0
         user.pbHeldItemTriggered(item) if user.tryRaiseStat(:ATTACK, user, item: item, increment: 2)
     }

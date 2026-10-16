@@ -248,12 +248,12 @@ class PokeBattle_Battler
             if move.damagingMove?
                 if @form != 1
                     @battle.pbCommonAnimation("StanceAttack", self)
-                    pbChangeForm(1, _INTL("{1} changed to Blade Forme!", pbThis))
+                    pbChangeForm(1, _INTL("{1} changed to Blade Form!", pbThis))
                 end
             elsif move.id == :KINGSSHIELD
                 if @form != 0
                     @battle.pbCommonAnimation("StanceProtect", self)
-                    pbChangeForm(0, _INTL("{1} changed to Shield Forme!", pbThis))
+                    pbChangeForm(0, _INTL("{1} changed to Shield Form!", pbThis))
                 end
             end
         end
@@ -387,7 +387,8 @@ class PokeBattle_Battler
         #---------------------------------------------------------------------------
         magicCoater  = -1
         magicBouncer = -1
-        warder = -1
+        warder       = -1
+        realNumHits  = 0
         if targets.length == 0 && move.pbTarget(user).num_targets > 0 && !move.worksWithNoTargets?
             # def pbFindTargets should have found a target(s), but it didn't because
             # they were all fainted
@@ -455,7 +456,10 @@ class PokeBattle_Battler
             user.applyEffect(:Diffraction, 3) if move.canDiffract?(user, targets)
             # Process each hit in turn
             # Skip all hits if the move is being magic coated, magic bounced, or magic shielded
-            realNumHits = 0
+            # Capture original user before any hit effects that might trigger Eject Pack
+            # (e.g. user self-lowers stats via Close Combat). Used to suppress end-of-move
+            # item/ability effects that should not fire on the replacement Pokemon.
+            originalUserPokemon = user.pokemon
             moveIsBlocked = magicCoater >= 0 || magicBouncer >= 0 || warder >= 0
             unless moveIsBlocked
                 for i in 0...numHits
@@ -614,7 +618,7 @@ class PokeBattle_Battler
             user.pbFaint if user.fainted?
 
             # External/general effects after all hits. Eject Button, Shell Bell, etc.
-            pbEffectsAfterMove(user, targets, move, realNumHits)
+            pbEffectsAfterMove(user, targets, move, realNumHits, originalUserPokemon)
         end
 
         # End effect of Mold Breaker
@@ -648,7 +652,7 @@ class PokeBattle_Battler
             @lastMoveUsed     = move.id
             @lastMoveUsedType = move.calcType # For Conversion 2
             @lastMoveUsedCategory = move.calculatedCategory
-            
+            @movesUsedThisTurn.push(move.id)
             @usedDamagingMove = true if move.damagingMove?
             unless specialUsage
                 @lastRegularMoveUsed = move.id # For Disable, Encore, Instruct, Mimic, Mirror Move, Sketch, Spite
@@ -707,6 +711,7 @@ class PokeBattle_Battler
                     end
                     while dancers.length > 0
                         nextUser = dancers.pop
+                        next if nextUser.effectActive?(:Flinch)
                         preTarget = choice[3]
                         preTarget = user.index if nextUser.opposes?(user) || !nextUser.opposes?(preTarget)
                         @battle.forceUseMove(nextUser, move.id, preTarget, moveUsageEffect: :Dancer, ability: :DANCER)
@@ -720,6 +725,7 @@ class PokeBattle_Battler
                     end
                     while echoers.length > 0
                         nextUser = echoers.pop
+                        next if nextUser.effectActive?(:Flinch)
                         preTarget = choice[3]
                         preTarget = user.index if nextUser.opposes?(user) || !nextUser.opposes?(preTarget)
                         @battle.forceUseMove(nextUser, move.id, preTarget, moveUsageEffect: :Echo, ability: :ECHO)
@@ -733,6 +739,7 @@ class PokeBattle_Battler
                     end
                     while discipliners.length > 0
                         nextUser = discipliners.pop
+                        next if nextUser.effectActive?(:Flinch)
                         preTarget = choice[3]
                         preTarget = user.index if nextUser.opposes?(user) || !nextUser.opposes?(preTarget)
                         @battle.forceUseMove(nextUser, move.id, preTarget, moveUsageEffect: :MartialDiscipline, ability: :MARTIALDISCIPLINE)
@@ -943,14 +950,19 @@ class PokeBattle_Battler
             end
             # Close Combat/Superpower's stat-lowering, Flame Burst's splash damage,
             # and Incinerate's berry destruction
+            originalUserForHit = user.pokemon
             targets.each do |b|
                 next if b.damageState.unaffected
                 move.pbEffectWhenDealingDamage(user, b)
             end
             # Ability/item effects such as Static/Rocky Helmet, and Grudge, etc.
-            targets.each do |b|
-                next if b.damageState.unaffected
-                pbEffectsOnMakingHit(move, user, b)
+            # Skip if the user switched mid-hit (e.g. Eject Pack from a self-stat drop),
+            # so the replacement Pokemon does not inherit on-hit effects like Rapid Onset.
+            if user.pokemon.equal?(originalUserForHit)
+                targets.each do |b|
+                    next if b.damageState.unaffected
+                    pbEffectsOnMakingHit(move, user, b)
+                end
             end
             # Disguise/Endure/Sturdy/Focus Sash/Focus Band messages
             targets.each do |b|
@@ -1016,7 +1028,7 @@ class PokeBattle_Battler
             if b.pbOwnSide.effectActive?(:CoralOvergrowth)
                 unless b.damageState.hpLost <= 0
                     hpGain = (b.damageState.hpLost / 3.0).round
-                    user.pbRecoverHPFromDrain(hpGain, b, user: user)
+                    user.pbRecoverHPFromDrain(hpGain, b, user: user, canOverheal: true)
                 end
             end
         end

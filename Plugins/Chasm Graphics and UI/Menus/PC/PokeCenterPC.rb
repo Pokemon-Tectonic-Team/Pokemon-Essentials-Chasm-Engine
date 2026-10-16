@@ -59,6 +59,7 @@ def pbPokeCenterPC
         depositCommand = -1
         omniTutorCommand = -1
         visitEstateCommand = -1
+        viewRewardsCommand = -1
         cableClubCommand = -1
         teamCodeCommand = -1
         logOutCommand = -1
@@ -67,6 +68,7 @@ def pbPokeCenterPC
         commands[depositCommand = commands.length] = _INTL("Deposit Pokémon")
         commands[omniTutorCommand = commands.length] = _INTL("OmniTutor") if $PokemonGlobal.omnitutor_active 
         commands[visitEstateCommand = commands.length] = _INTL("Visit PokÉstate") unless getGlobalSwitch(ESTATE_DISABLED_SWITCH)
+        commands[viewRewardsCommand = commands.length] = _INTL("Check Rewards") unless getGlobalSwitch(ESTATE_DISABLED_SWITCH)
         commands[cableClubCommand = commands.length] =  _INTL("Visit Cable Club")
         commands[teamCodeCommand = commands.length] =  _INTL("View Party Online")
         commands[logOutCommand = commands.length] = _INTL("Log Out") 
@@ -94,6 +96,12 @@ def pbPokeCenterPC
             }
         elsif visitEstateCommand != -1 && command == visitEstateCommand
             break if $PokEstate.transferToEstateOfChoice()
+        elsif viewRewardsCommand != -1 && command == viewRewardsCommand
+            pbFadeOutIn do
+                collectionRewardsListScene = CollectionRewardsListScene.new
+                screen = CollectionRewardsListScreen.new(collectionRewardsListScene)
+                screen.pbStartScreen
+            end
         elsif omniTutorCommand != -1 && command == omniTutorCommand
             useOmniTutor()
         elsif cableClubCommand != -1 && command == cableClubCommand

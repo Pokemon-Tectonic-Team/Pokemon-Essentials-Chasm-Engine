@@ -462,3 +462,21 @@ class PokeBattle_Move_VenomDrench < PokeBattle_Move
         return 0
     end
 end
+
+#===============================================================================
+# Set the target's Speed to 0. (Absolute Zero)
+#===============================================================================
+class PokeBattle_Move_SetTargetSpeedZero < PokeBattle_Move
+    def pbAdditionalEffect(user, target)
+        return if target.damageState.substitute
+        return if target.pbSpeed == 0
+        target.applyEffect(:BaseSpeed,0)
+        @battle.pbDisplay(_INTL("{1} was slowed to zero!",target.pbThis))
+    end
+
+    def getEffectScore(user, target)
+        score = [30,60,90][target.getSpeedTier] || 0
+        score = stepAgnosticStatReductionScoreMods(target, score)
+        return score
+    end
+end

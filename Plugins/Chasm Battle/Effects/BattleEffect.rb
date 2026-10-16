@@ -120,7 +120,7 @@ module GameData
             return @is_screen
         end
 
-        # Trick Room, etc
+        # Puzzle Room, etc
         def is_room?
             return @is_room
         end
@@ -325,7 +325,7 @@ module GameData
                 when :Boolean
                     active = value
                 when :Integer
-                    active = value > 0
+                    active = value != @default
                 when :Position, :PartyPosition
                     active = value >= 0
                 when :String

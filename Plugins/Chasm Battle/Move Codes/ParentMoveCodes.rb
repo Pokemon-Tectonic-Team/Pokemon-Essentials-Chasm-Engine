@@ -387,6 +387,10 @@ class PokeBattle_MultiStatUpMove < PokeBattle_Move
 end
 
 class PokeBattle_StatDownMove < PokeBattle_Move
+    def consumesItem?(user)
+        user.hasActiveItemAI?(:WHITEHERB)
+    end
+
     def pbEffectWhenDealingDamage(user, target)
         return if @battle.pbAllFainted?(target.idxOwnSide)
         user.pbLowerMultipleStatSteps(@statDown, user, move: self)
@@ -396,7 +400,7 @@ class PokeBattle_StatDownMove < PokeBattle_Move
         if user.hasActiveItemAI?(:EJECTPACK)
             return getSwitchOutEffectScore(user)
         elsif user.hasActiveItemAI?(:WHITEHERB)
-            return -5 # Uses up the white herb
+            return 0 # Item consumption penalty handled by consumesItem?
         else
             statDownAI = []
             for i in 0...@statDown.length / 2
@@ -517,7 +521,7 @@ class PokeBattle_FixedDamageMove < PokeBattle_Move
         end
     end
 
-    def calculateDamageForHit(user, target, type, baseDmg, numTargets, aiCheck = false)
+    def calculateDamageForHit(user, target, type, baseDmg, numTargets, aiCheck = false, aiContext = nil)
         fixedDamage = pbFixedDamage(user, target)
         return fixedDamage if fixedDamage
         super
@@ -531,6 +535,12 @@ end
 #===============================================================================
 class PokeBattle_TwoTurnMove < PokeBattle_Move
     def chargingTurnMove?; return true; end
+
+    def worksWithNoTargets?(user = nil)
+        return false if user.nil?
+        return true if @chargingTurn && !@damagingTurn
+        return false
+    end
 
     # :TwoTurnAttack is set to the move's ID if this
     # method returns true, or nil if false.
@@ -574,29 +584,33 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
         return super
     end
 
-    def pbInitialEffect(user, targets, _hitNum)
-        pbChargingTurnMessage(user, targets) if @chargingTurn
-        if @chargingTurn && @damagingTurn # Move only takes one turn to use
-            pbShowAnimation(@id, user, targets, 1) # Charging anim
-            pbChargingTurnGeneralEffect(user)
-            if @powerHerb
-                # Moves that would make the user semi-invulnerable will hide the user
-                # after the charging animation, so the "UseItem" animation shouldn't show
-                # for it
-                @battle.pbCommonAnimation("UseItem", user) unless %w[
-                    TwoTurnAttackInvulnerableInSky
-                    TwoTurnAttackInvulnerableUnderground
-                    TwoTurnAttackInvulnerableUnderwater
-                    TwoTurnAttackInvulnerableHiding
-                    TwoTurnAttackInvulnerableInFoliage
-                    TwoTurnAttackInvulnerableScalesFaster
-                    TwoTurnAttackInvulnerableJinxFrostbite
-                    TwoTurnAttackInvulnerableRemoveProtections].include?(@function)
-                @battle.pbDisplay(_INTL("{1} became fully charged due to its Power Herb!", user.pbThis))
-                user.consumeItem(:POWERHERB)
+    def pbInitialEffect(user, targets, hitNum)
+        if hitNum == 0
+            pbChargingTurnMessage(user, targets) if @chargingTurn
+            if @chargingTurn && @damagingTurn # Move only takes one turn to use
+                pbShowAnimation(@id, user, targets, 1) # Charging anim
+                pbChargingTurnGeneralEffect(user)
+                if @powerHerb
+                    # Moves that would make the user semi-invulnerable will hide the user
+                    # after the charging animation, so the "UseItem" animation shouldn't show
+                    # for it
+                    @battle.pbCommonAnimation("UseItem", user) unless %w[
+                        TwoTurnAttackInvulnerableInSky
+                        TwoTurnAttackInvulnerableUnderground
+					    TwoTurnAttackInvulnerableUndergroundHitThreeTimes
+                        TwoTurnAttackInvulnerableUnderwater
+                        TwoTurnAttackInvulnerableHiding
+                        TwoTurnAttackInvulnerableInFoliage
+                        TwoTurnAttackInvulnerableScalesFaster
+                        TwoTurnAttackInvulnerableJinxFrostbite
+                        TwoTurnAttackInvulnerableRemoveProtections
+                        TwoTurnAttackInvulnerableVerminCloud].include?(@function)
+                    @battle.pbDisplay(_INTL("{1} became fully charged due to its Power Herb!", user.pbThis))
+                    user.consumeItem(:POWERHERB)
+                end
             end
+            pbAttackingTurnMessage(user, targets) if @damagingTurn
         end
-        pbAttackingTurnMessage(user, targets) if @damagingTurn
     end
 
     def pbChargingTurnMessage(user, _targets)
@@ -638,6 +652,10 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
             score -= 30 if user.belowHalfHealth?
         end
         return score
+    end
+
+    def consumesItem?(user)
+        user.hasActiveItemAI?(:POWERHERB) && !skipChargingTurn?(user)
     end
 
     def skipChargingTurn?(user); return false; end
@@ -1044,11 +1062,11 @@ class PokeBattle_RoomMove < PokeBattle_Move
     end
 
     def pbEffectGeneral(user)
-        @battle.pbStartRoom(@roomEffect, user, @short)
+        @battle.pbStartRoom(@roomEffect, user, @short, false, duration: @duration)
     end
 
     def getEffectScore(user, _target)
-        return @battle.pbStartRoom(@roomEffect, user, @short, true)
+        return @battle.pbStartRoom(@roomEffect, user, @short, true, duration: @duration)
     end
 end
 
@@ -1182,7 +1200,7 @@ class PokeBattle_StatUpDownMove < PokeBattle_Move
 
     def pbMoveFailed?(user, _targets, show_message)
         return false if user.pbCanRaiseAnyOfStats?(@statUp, user, move: self)
-        return false if user.pbCanRaiseAnyOfStats?(@statDown, user, move: self)
+        return false if user.pbCanLowerAnyOfStats?(@statDown, user, move: self)
         @battle.pbDisplay(_INTL("{1}'s stats can't be changed further!", user.pbThis)) if show_message
         return true
     end
@@ -1354,6 +1372,7 @@ class PokeBattle_ForetoldMove < PokeBattle_Move
     end
 
     def pbOnStartUse(user, targets)
+        return if targets.any? { |t| t.position.effectActive?(:ForetoldMoveCounter) }
         if user.hasActiveAbility?(:FOREWARNING) && !@battle.foretoldMove
             user.showMyAbilitySplash(:FOREWARNING)
             @battle.pbDisplay(_INTL("{1} gives a taste of what's to come!", user.pbThis))

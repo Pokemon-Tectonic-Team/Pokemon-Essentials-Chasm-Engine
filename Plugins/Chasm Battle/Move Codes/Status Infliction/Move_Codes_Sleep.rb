@@ -125,7 +125,7 @@ class PokeBattle_Move_SleepTargetIfSlowerThanUserMinUserSpeed < PokeBattle_Sleep
 end
 
 #===============================================================================
-# Target falls asleep. Can only be used during the Full Moon. (Bedtime)
+# Target falls asleep. Can only be used during the Full Moon. (Bed Time)
 #===============================================================================
 class PokeBattle_Move_SleepTargetIfInFullMoonglow < PokeBattle_SleepMove
     def pbMoveFailed?(user, _targets, show_message)
@@ -182,6 +182,10 @@ end
 # Empowered Yawn
 class PokeBattle_Move_EmpoweredYawn < PokeBattle_Move_SleepTargetNextTurn
     include EmpoweredMove
+
+    def pbEffectGeneral(user)
+        super
+    end
 end
 
 #===============================================================================

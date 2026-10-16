@@ -93,8 +93,11 @@ end
 def pbPokemonFound(item,quantity = 1,message = "")
   return false if !$PokemonGlobal.follower_hold_item
   pokename = $Trainer.first_able_pokemon.name
-  message = "{1} seems to be holding something..." if nil_or_empty?(message)
-  pbMessage(_INTL(message,pokename))
+  if nil_or_empty?(message)
+    pbMessage(_INTL("{1} seems to be holding something...", pokename))
+  else
+    pbMessage(_INTL(message, pokename))
+  end
   item = GameData::Item.get(item)
   return false if !item || quantity<1
   itemname = (quantity>1) ? item.name_plural : item.name

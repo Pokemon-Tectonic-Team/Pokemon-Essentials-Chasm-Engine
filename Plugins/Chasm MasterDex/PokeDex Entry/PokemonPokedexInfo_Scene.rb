@@ -341,14 +341,14 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 drawFormattedTextEx(overlay, abilityTextX, ability1Y, 450, abilityNameText, abilityNameColor,
               abilityNameShadow)
 
-                ability1Description = addBattleKeywordHighlighting(ability1.description)
+                ability1Description = addBattleKeywordHighlighting(ability1.description, isAbility: true)
                 drawFormattedTextEx(overlay, abilityTextX, ability1Y + 34, 450, ability1Description, base, shadow)
                 
                 # add mutability labels
                 if ability1.is_immutable_ability?
-                    drawFormattedTextEx(overlay, mutabilityLabelsX, ability1Y + 134, 450, "Immutable", base, shadow)
+                    drawFormattedTextEx(overlay, mutabilityLabelsX, ability1Y + 134, 450, _INTL("Immutable"), base, shadow)
                 elsif ability1.is_uncopyable_ability?
-                    drawFormattedTextEx(overlay, mutabilityLabelsX, ability1Y + 134, 450, "Uncopyable", base, shadow)
+                    drawFormattedTextEx(overlay, mutabilityLabelsX, ability1Y + 134, 450, _INTL("Uncopyable"), base, shadow)
                 end
             else
                 drawTextEx(overlay, abilityTextX, 128, 450, 1, _INTL("None"), base, shadow)
@@ -369,14 +369,14 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 drawFormattedTextEx(overlay, abilityTextX, ability2Y, 450, abilityNameText, abilityNameColor,
               abilityNameShadow)
 
-                ability2Description = addBattleKeywordHighlighting(ability2.description)
+                ability2Description = addBattleKeywordHighlighting(ability2.description, isAbility: true)
                 drawFormattedTextEx(overlay, abilityTextX, ability2Y + 34, 450, ability2Description, base, shadow)
                 
                 # add mutability labels
                 if ability2.is_immutable_ability?
-                    drawFormattedTextEx(overlay, mutabilityLabelsX, ability2Y + 134, 450, "Immutable", base, shadow)
+                    drawFormattedTextEx(overlay, mutabilityLabelsX, ability2Y + 134, 450, _INTL("Immutable"), base, shadow)
                 elsif ability2.is_uncopyable_ability?
-                    drawFormattedTextEx(overlay, mutabilityLabelsX, ability2Y + 134, 450, "Uncopyable", base, shadow)
+                    drawFormattedTextEx(overlay, mutabilityLabelsX, ability2Y + 134, 450, _INTL("Uncopyable"), base, shadow)
                 end
             else
                 drawTextEx(overlay, abilityTextX, ability2Y, 450, 1, _INTL("None"), base, shadow)
@@ -1230,7 +1230,16 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
             Input.update
             pbUpdate
             doRefresh = false
-            if Input.repeat?(Input::UP)
+            if Input.trigger?(Input::USE)
+                selection = @scrollableLists[@horizontalScroll][@scroll]
+                if selection
+                    selection = selection[1] if selection.is_a?(Array)
+                    $dex_cross_link = { type: :move, id: selection }
+                    break
+                else
+                    pbPlayBuzzerSE
+                end
+            elsif Input.repeat?(Input::UP)
                 if @scroll > 0
                     pbPlayCursorSE
                     @scroll -= 1
@@ -1432,12 +1441,12 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
     end
 
     def drawPageDEBUG
-        @bg_path = "Graphics/Pictures/Pokedex/bg_evolution"
+        bg_path = "Graphics/Pictures/Pokedex/bg_evolution"
         bg_path += "_dark" if darkMode?
         @sprites["background"].setBitmap(_INTL(bg_path))
         overlay = @sprites["overlay"].bitmap
-        base = MessageConfig::DARK_TEXT_MAIN_COLOR
-        shadow = MessageConfig::DARK_TEXT_SHADOW_COLOR
+        base   = MessageConfig.pbDefaultTextMainColor
+        shadow = MessageConfig.pbDefaultTextShadowColor
         xLeft = 36
         for i in @available
             next unless i[2] == @form
@@ -1449,7 +1458,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
             coordinateY += 34
 
             # Use count
-            useCount = @speciesUseData[entry[:species]]
+            useCount = $SpeciesUseData[@species]
             drawTextEx(overlay, xLeft, coordinateY, 450, 1, _INTL("Use count: {1}, {2}", useCount[0], useCount[1]), base, shadow)
             coordinateY += 32
 
@@ -1567,6 +1576,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
                 elsif @page == LEVEL_MOVES_PAGE_ID || @page == OTHER_MOVES_PAGE_ID
                     pbPlayDecisionSE
                     pbScroll
+                    break if $dex_cross_link
                     dorefresh = true
                 elsif @page == 8 && @evolutionsArray.length > 0   # Evolutions
                     if @linksEnabled

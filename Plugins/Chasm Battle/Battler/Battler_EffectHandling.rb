@@ -37,6 +37,9 @@ class PokeBattle_Battler
             eachActiveAbility do |ability|
                 BattleHandlers.triggerCertainSwitchingUserAbility(ability, self, @battle, true)
             end
+            eachActiveItem do |item|
+                BattleHandlers.triggerCertainSwitchingUserItem(item, self, @battle, true)
+            end
             refreshDataBox
         end
     end
@@ -98,5 +101,8 @@ class PokeBattle_Battler
         @lastRoundMove 			= @lastMoveUsed
         @lastRoundMoveType	    = @lastMoveUsedType
         @lastRoundMoveCategory	= @lastMoveUsedCategory
+
+        @movesUsedLastTurn      = @movesUsedThisTurn.clone
+        @movesUsedThisTurn.clear
     end
 end

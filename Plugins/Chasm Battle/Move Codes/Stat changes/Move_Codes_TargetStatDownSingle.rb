@@ -226,6 +226,11 @@ class PokeBattle_Move_LowerTargetSpAtk3 < PokeBattle_TargetStatDownMove
     end
 end
 
+# Empowered Moonblast
+class PokeBattle_Move_EmpoweredMoonblast < PokeBattle_Move_LowerTargetSpAtk3
+    include EmpoweredMove
+end
+
 #===============================================================================
 # Decreases the target's Special Attack by 4 steps. (Eerie Impulse)
 #===============================================================================
@@ -325,7 +330,7 @@ class PokeBattle_Move_EmpoweredLoomOver < PokeBattle_Move_LowerTargetHighestStat
 end
 
 #===============================================================================
-# Reduce's the target's highest attacking stat. (Hiss)
+# Reduce's the target's highest attacking stat. (Hiss, Clash)
 #===============================================================================
 class PokeBattle_Move_LowerTargetHighestStat1 < PokeBattle_Move
     def pbAdditionalEffect(user, target)
@@ -344,5 +349,38 @@ class PokeBattle_Move_LowerTargetHighestStat1 < PokeBattle_Move
             statDownArray = [:SPECIAL_ATTACK,1]
         end
         return getMultiStatDownEffectScore(statDownArray, user, target)
+    end
+end
+
+#===============================================================================
+# Reduce's the target's highest attacking stat by two steps. (Breaking Swipe)
+#===============================================================================
+class PokeBattle_Move_LowerTargetHighestStat2 < PokeBattle_Move
+    def pbAdditionalEffect(user, target)
+        return if target.damageState.substitute
+        if target.pbAttack > target.pbSpAtk
+            target.pbLowerMultipleStatSteps([:ATTACK,2], user, move: self)
+        else
+            target.pbLowerMultipleStatSteps([:SPECIAL_ATTACK,2], user, move: self)
+        end
+    end
+
+    def getTargetAffectingEffectScore(user, target)
+        if target.pbAttack > target.pbSpAtk
+            statDownArray = [:ATTACK,2]
+        else
+            statDownArray = [:SPECIAL_ATTACK,2]
+        end
+        return getMultiStatDownEffectScore(statDownArray, user, target)
+    end
+end
+
+#===============================================================================
+# Decreases the target's Evasion by 4 steps.
+#===============================================================================
+class PokeBattle_Move_LowerTargetEvasion4 < PokeBattle_TargetStatDownMove
+    def initialize(battle, move)
+        super
+        @statDown = [:EVASION, 4]
     end
 end

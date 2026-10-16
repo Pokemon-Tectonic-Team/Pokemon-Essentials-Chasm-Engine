@@ -13,27 +13,10 @@ def useOmniTutor()
     pbChoosePokemonRepeatedly(learnFromOmniTutorProc, canOmniTutorProc)
 end
 
-def getTMLearnableMoves
-    moves = []
-    $PokemonBag.pockets.each do |pocket|
-        pocket.each do |itemEntry|
-            itemID = itemEntry[0]
-            itemData = GameData::Item.get(itemID)
-            next unless itemData.is_machine?
-            moves.push(itemData.move)
-        end
-    end
-
-    moves.uniq!
-    moves.compact!
-
-    return moves
-end
-
 def getOmniMoves(pkmn)
     relearnableMoves = getRelearnableMoves(pkmn)
     mentorableMoves = getMentorableMoves(pkmn)
-    tmLearnableMoves = getTMLearnableMoves
+    tmLearnableMoves = getTMLearnableMoves(pkmn)
 
     omniMoves = [relearnableMoves, mentorableMoves, tmLearnableMoves].reduce([], :concat)
     omniMoves = omniMoves & pkmn.learnable_moves

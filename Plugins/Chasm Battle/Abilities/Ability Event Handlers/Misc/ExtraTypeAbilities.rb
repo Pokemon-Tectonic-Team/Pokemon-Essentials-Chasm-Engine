@@ -71,3 +71,17 @@ BattleHandlers::TypeCalcAbility.add(:RAINBOWTRAIL,
         next types
     }
 )
+
+BattleHandlers::TypeCalcAbility.add(:MOLTENADAPTED,
+    proc { |ability, battler, types|
+        types.push(:FIRE)
+        next types
+    }
+)
+
+BattleHandlers::TypeCalcAbility.add(:PLASMAADAPTED,
+    proc { |ability, battler, types|
+        types.push(:ELECTRIC)
+        next types
+    }
+)

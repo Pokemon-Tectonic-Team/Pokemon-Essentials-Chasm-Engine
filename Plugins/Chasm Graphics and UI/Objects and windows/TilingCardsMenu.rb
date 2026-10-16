@@ -99,6 +99,10 @@ class TilingCardsMenu_Scene
 		$viewport4 = @viewport
 
 		@buttonSelectionIndex = defaultCursorPosition
+		buttonCount = @cardButtons.keys.length
+		if buttonCount > 0
+			@buttonSelectionIndex = @buttonSelectionIndex.clamp(0, buttonCount - 1)
+		end
 
 		drawButtons
 	end

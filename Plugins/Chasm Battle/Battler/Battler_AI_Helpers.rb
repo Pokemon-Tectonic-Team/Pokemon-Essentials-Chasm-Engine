@@ -49,7 +49,8 @@ class PokeBattle_Battler
     # AI method to predict if user can act this turn
     def canActThisTurn?
         return false if effectActive?(:HyperBeam) && !effectActive?(:BypassExhaustion)
-        return false if effectActive?(:Attached) && !effectActive?(:BypassExhaustion)
+        return false if effectActive?(:Attached)
+        return false if effectActive?(:IceSculpture)
         return false if effectActive?(:Truant)
         return false if refusesToFight?
         return false if willStayAsleepAI?
@@ -61,10 +62,14 @@ class PokeBattle_Battler
         return asleep? && getStatusCount(:SLEEP) > 1
     end
 
+    OVERHEAL_AI_WEIGHT = 0.25
+
     def getHealingEffectScore(healingAmount)
-        healingScore = 0
-        healingScore += healingAmount * pbDefense
-        healingScore += healingAmount * pbSpDef
+        normalMissing = [@totalhp - @hp, 0].max
+        normalHeal = [healingAmount, normalMissing].min
+        overhealHeal = [healingAmount - normalHeal, 0].max
+        effectiveHealing = normalHeal + overhealHeal * OVERHEAL_AI_WEIGHT
+        healingScore = effectiveHealing * (pbDefense + pbSpDef)
         healingScore /= (3 * level)
         healingPercentage = (100 * healingAmount / @totalhp.to_f).round(1)
         echoln("\t\t[EFFECT SCORING] #{pbThis} scores the value of healing #{healingAmount} HP (#{healingPercentage} percent) at #{healingScore}")
@@ -168,9 +173,9 @@ class PokeBattle_Battler
         return false
     end
 
-    def hasBladeMove?
+    def hasSliceMove?
         eachAIKnownMove do |m|
-            next unless m.bladeMove?
+            next unless m.sliceMove?
             return true
         end
         return false

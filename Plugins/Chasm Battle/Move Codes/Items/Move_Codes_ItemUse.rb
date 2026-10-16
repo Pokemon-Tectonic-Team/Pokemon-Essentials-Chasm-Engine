@@ -2,6 +2,7 @@
 # User gives one of its items to the target. (Bestow)
 #===============================================================================
 class PokeBattle_Move_GiftItem < PokeBattle_Move
+    def consumesItem?(_user); return true; end
     def ignoresSubstitute?(_user); return true; end
 
     def validItem(user,item)
@@ -50,7 +51,7 @@ class PokeBattle_Move_GiftItem < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} give away?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} give away?", user.pbThis(true)),validItemNames)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end
@@ -127,6 +128,8 @@ end
 # User flings its item at the target. Power/effect depend on the item. (Fling)
 #===============================================================================
 class PokeBattle_Move_Fling < PokeBattle_Move
+    def consumesItem?(_user); return true; end
+
     def validItem(user,item)
         return !(user.unlosableItem?(item) || GameData::Item.get(item).is_mega_stone?)
     end
@@ -180,7 +183,7 @@ class PokeBattle_Move_Fling < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} fling?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} fling?", user.pbThis(true)),validItemNames)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end
@@ -224,8 +227,6 @@ class PokeBattle_Move_Fling < PokeBattle_Move
             target.applyFrostbite(user) if target.canFrostbite?(user, false, self)
         when :BIGROOT
             target.applyLeeched(user) if target.canLeech?(user, false, self)
-        when :BINDINGBAND
-            target.applyLeeched(user) if target.canLeech?(user, false, self)
         when :WATERBALLOON
             target.applyWaterlog(user) if target.canWaterlog?(user, false, self)
         else
@@ -238,7 +239,9 @@ class PokeBattle_Move_Fling < PokeBattle_Move
         #       missed. The item is not consumed if the target was switched out by
         #       an effect like a target's Red Card.
         # NOTE: There is no item consumption animation.
-        user.consumeItem(@chosenItem, belch: false) if user.hasItem?(@chosenItem)
+        consumed = user.hasItem?(@chosenItem)
+        user.consumeItem(@chosenItem, belch: false) if consumed
+        @battle.triggerThrownIn(user) if consumed
     end
 
     def resetMoveUsageState
@@ -253,7 +256,7 @@ class PokeBattle_Move_Fling < PokeBattle_Move
         detailsList << _INTL("<u>Poison</u>: Poison Orb")
         detailsList << _INTL("<u>Burn</u>: Flame Orb")
         detailsList << _INTL("<u>Frostbite</u>: Frost Orb")
-        detailsList << _INTL("<u>Leech</u>: Big Root, Binding Band")
+        detailsList << _INTL("<u>Leech</u>: Big Root")
         detailsList << _INTL("<u>Waterlog</u>: Water Balloon")
     end
 end
@@ -263,6 +266,8 @@ end
 # (Natural Gift, Evernalize)
 #===============================================================================
 class PokeBattle_Move_NaturalGift < PokeBattle_Move
+    def consumesItem?(user); return user.hasAnyBerry?; end
+
     def initialize(battle, move)
         super
         @typeArray = {
@@ -335,7 +340,7 @@ class PokeBattle_Move_NaturalGift < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} use?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} use?", user.pbThis(true)),validItemNames)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end
@@ -421,6 +426,7 @@ end
 # Consumes berry and raises the user's Defense and Sp. Def by 1 step. (Stuff Cheeks)
 #===============================================================================
 class PokeBattle_Move_EatBerryRaiseDefenses1 < PokeBattle_Move
+    def consumesItem?(user); return user.hasAnyBerry?; end
     def pbMoveFailed?(user, _targets, show_message)
         unless user.hasAnyBerry?
             @battle.pbDisplay(_INTL("But it failed, because {1} has no berries!", user.pbThis(true))) if show_message
@@ -497,7 +503,11 @@ end
 #===============================================================================
 class PokeBattle_Move_GrantUserPearlOfWisdom < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
-        return !user.canAddItem?(:PEARLOFWISDOM)
+        if !user.canAddItem?(:PEARLOFWISDOM)
+            @battle.pbDisplay(_INTL("{1} cannot form a {2}!", user.pbThis, getItemName(:PEARLOFWISDOM))) if show_message
+            return true
+        end
+        return false
     end
 
     def pbEffectGeneral(user)
