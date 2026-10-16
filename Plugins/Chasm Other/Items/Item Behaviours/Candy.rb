@@ -9,7 +9,7 @@ def pbLevelGivingItem(pkmn, item, scene)
     return false
   elsif rareCandiesLevelCapped? && (pkmn.level + 1) > getRareCandyLevelCap
       if RARE_CANDY_LEVEL_CAP_BEHAVIOUR == :SEPARATE_CAP
-        pbSceneDefaultDisplay(_INTL("It won't have any effect due to the rare candy level cap at {1}.", getLevelCap),scene)
+        pbSceneDefaultDisplay(_INTL("It won't have any effect due to the rare candy level cap at {1}.", getRareCandyLevelCap),scene)
       else
         pbSceneDefaultDisplay(_INTL("It won't have any effect due to the level cap at {1}.", getLevelCap),scene)
       end
