@@ -71,7 +71,7 @@ end
 alias speciesEntry openSingleDexScreen
 
 def openPartyDexScreen(pokemon,index)
-	species = resolveDexSpecies(pokemon)
+	resolveDexSpecies(pokemon) # don't need to return the species but this updates important values
 	$dex_cross_link = nil
 	ret = nil
 	pbFadeOutIn {

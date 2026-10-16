@@ -18,7 +18,6 @@
       for id in mapData.mapinfos.keys.sort
           map = mapData.getMap(id)
           next if !map || !mapData.mapinfos[id]
-          mapName = mapData.mapinfos[id].name
           map_metadata = GameData::MapMetadata.try_get(id)
           if map_metadata
             metadata_hash = {

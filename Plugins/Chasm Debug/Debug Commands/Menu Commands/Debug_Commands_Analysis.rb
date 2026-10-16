@@ -1,7 +1,7 @@
 if $DEBUG
     if !safeIsDirectory?("Analysis")
-		Dir.mkdir("Analysis") rescue nil
-	end
+        Dir.mkdir("Analysis") rescue nil
+    end
 end
 
 DebugMenuCommands.register("findtextinevents", {
@@ -750,7 +750,6 @@ end
     "description" => _INTL("Check all trainer and avatar battles to find illegal elements."),
     "effect"      => proc { |sprites, viewport|
       GameData::Trainer.each do |trainerData|
-          name = trainerData.real_name
           trainer = trainerData.to_trainer
           trainerInfo = trainerData.trainer_type.to_s + "," + trainerData.real_name + "," + trainerData.version.to_s
           trainer.party.each do |pokemon|

@@ -727,9 +727,9 @@ module GameData
 
         def canFloat?
             if hasType?(:FLYING)
-		        exception = @flags.include?("Grounded")
-		        return !exception
-	        end
+                exception = @flags.include?("Grounded")
+                return !exception
+            end
             return true if @abilities.include?(:LEVITATE)
 	        return true if @abilities.include?(:DESERTSPIRIT)
             return true if @flags.include?("Floating")
