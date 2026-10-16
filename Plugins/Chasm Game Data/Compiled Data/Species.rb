@@ -314,6 +314,16 @@ module GameData
             return ret
         end
 
+        def get_prevolutions(exclude_invalid = true)
+            ret = []
+            @evolutions.each do |evo|
+                next unless evo[3] # Is the prevolution
+                next if evo[1] == :None && exclude_invalid
+                ret.push([evo[0], evo[1], evo[2]]) # [Species, method, parameter]
+            end
+            return ret
+        end
+
         def get_family_evolutions(exclude_invalid = true)
             evos = get_evolutions(exclude_invalid)
             evos = evos.sort { |a, b| GameData::Species.get(a[0]).id_number <=> GameData::Species.get(b[0]).id_number }
@@ -327,9 +337,8 @@ module GameData
         end
 
         def get_previous_species
-            return @species if @evolutions.length == 0
-            @evolutions.each { |evo| return evo[0] if evo[3] } # Is the prevolution
-            return @species
+            prevo = get_prevolutions.first
+            return prevo ? prevo[0] : @species
         end
 
         def get_previous_species_data
@@ -341,9 +350,7 @@ module GameData
         end
 
         def has_previous_species?
-            return false if @evolutions.length == 0
-            @evolutions.each { |evo| return true if evo[3] } # Is the prevolution
-            return false
+            return !get_prevolutions.empty?
         end
 
         # @return [Array<GameData::Species>] the prevolutions of this species, nearest first
@@ -636,16 +643,6 @@ module GameData
             query = normal ? earliest_available_normal : earliest_available
             return false unless query
             return level >= query
-        end
-
-        def get_prevolutions(exclude_invalid = true)
-            ret = []
-            @evolutions.each do |evo|
-                next unless evo[3] # Is an evolution
-                next if evo[1] == :None && exclude_invalid
-                ret.push([evo[0], evo[1], evo[2]]) # [Species, method, parameter]
-            end
-            return ret
         end
 
         def physical_ehp
