@@ -1,11 +1,3 @@
-BattleHandlers::MoveBaseTypeModifierAbility.add(:AERILATE,
-    proc { |ability, _user, move, type|
-        next if type != :NORMAL || !GameData::Type.exists?(:FLYING)
-        move.powerBoost = true
-        next :FLYING
-    }
-)
-
 BattleHandlers::MoveBaseTypeModifierAbility.add(:GALVANIZE,
   proc { |ability, _user, move, type|
       next if type != :NORMAL || !GameData::Type.exists?(:ELECTRIC)
@@ -14,17 +6,38 @@ BattleHandlers::MoveBaseTypeModifierAbility.add(:GALVANIZE,
   }
 )
 
-BattleHandlers::MoveBaseTypeModifierAbility.add(:LIQUIDVOICE,
-  proc { |ability, _user, move, _type|
-      next :WATER if GameData::Type.exists?(:WATER) && move.soundMove?
-  }
-)
-
 BattleHandlers::MoveBaseTypeModifierAbility.add(:NORMALIZE,
   proc { |ability, _user, move, _type|
       next unless GameData::Type.exists?(:NORMAL)
       move.powerBoost = true
       next :NORMAL
+  }
+)
+
+BattleHandlers::MoveBaseTypeModifierAbility.add(:ARCTICARIETTE,
+    proc { |ability, _user, move, _type|
+        next unless move.soundMove?
+        next unless GameData::Type.exists?(:ICE)
+        move.powerBoost = true
+        next :ICE
+    }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::MoveBaseTypeModifierAbility.add(:AERILATE,
+    proc { |ability, _user, move, type|
+        next if type != :NORMAL || !GameData::Type.exists?(:FLYING)
+        move.powerBoost = true
+        next :FLYING
+    }
+)
+
+BattleHandlers::MoveBaseTypeModifierAbility.add(:LIQUIDVOICE,
+  proc { |ability, _user, move, _type|
+      next :WATER if GameData::Type.exists?(:WATER) && move.soundMove?
   }
 )
 
@@ -42,15 +55,6 @@ BattleHandlers::MoveBaseTypeModifierAbility.add(:REFRIGERATE,
       move.powerBoost = true
       next :ICE
   }
-)
-
-BattleHandlers::MoveBaseTypeModifierAbility.add(:ARCTICARIETTE,
-    proc { |ability, _user, move, _type|
-        next unless move.soundMove?
-        next unless GameData::Type.exists?(:ICE)
-        move.powerBoost = true
-        next :ICE
-    }
 )
 
 BattleHandlers::MoveBaseTypeModifierAbility.add(:BLADETRAINED,

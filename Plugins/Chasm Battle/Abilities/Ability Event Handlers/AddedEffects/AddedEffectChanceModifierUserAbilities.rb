@@ -12,13 +12,6 @@ BattleHandlers::AddedEffectChanceModifierUserAbility.add(:GNAWING,
     }
 )
 
-BattleHandlers::AddedEffectChanceModifierUserAbility.add(:RATTLEEM,
-    proc { |ability, user, target, move, chance|
-        chance *= 1.5 if move.flinchingMove?
-        next chance
-    }
-)
-
 BattleHandlers::AddedEffectChanceModifierUserAbility.add(:SERENEGRACE,
     proc { |ability, user, target, move, chance|
         chance *= 2.0
@@ -36,6 +29,17 @@ BattleHandlers::AddedEffectChanceModifierUserAbility.add(:SILVERLINING,
 BattleHandlers::AddedEffectChanceModifierUserAbility.add(:VICTORYSTAR,
     proc { |ability, user, target, move, chance|
         chance *= 2.0
+        next chance
+    }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::AddedEffectChanceModifierUserAbility.add(:RATTLEEM,
+    proc { |ability, user, target, move, chance|
+        chance *= 1.5 if move.flinchingMove?
         next chance
     }
 )

@@ -390,6 +390,24 @@ GameData::BattleEffect.register_effect(:Battler, {
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
+    :id => :LoudSleeper,
+    :real_name => "LoudSleeper",
+    :copied_move_marker => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :FrigidReflection,
+    :real_name => "FrigidReflection",
+    :copied_move_marker => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :GutPunch,
+    :real_name => "GutPunch",
+    :copied_move_marker => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
     :id => :SprayAndPray,
     :real_name => "Spray and Pray",
     :copied_move_marker => true,
@@ -694,6 +712,9 @@ GameData::BattleEffect.register_effect(:Battler, {
     :multi_turn_tracker => true,
     :apply_proc => proc do |_battle, battler, _value|
         battler.currentMove = battler.lastMoveUsed
+    end,
+    :expire_proc => proc do |battle, battler|
+        battler.disableEffect(:BypassExhaustion) if battler.effectActive?(:BypassExhaustion)
     end,
 })
 
@@ -1065,6 +1086,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :expire_proc => proc do |battle, battler|
         battle.pbDisplay(_INTL("{1} spun down from its rampage.", battler.pbThis))
         battler.currentMove = nil
+        battler.disableEffect(:RampageLocked) if battler.effectActive?(:RampageLocked)
         if battler.effectActive?(:WillFaintAfterRampage)
             battle.pbDisplay(_INTL("Exhaustion finally catches up with {1}!", battler.pbThis(true)))
             battler.pbReduceHP(battler.hp,false,false)
@@ -1085,7 +1107,6 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :RampageLocked,
     :real_name => "Rampage Locked",
     :info_displayed => false,
-    :sub_effects => [:Rampaging]
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -1518,7 +1539,6 @@ GameData::BattleEffect.register_effect(:Battler, {
 
 def trappingDamageFraction(battler)
     fraction = 1.0 / 8.0
-    fraction *= 2 if battler.getBattlerPointsTo(:TrappingUser)&.hasActiveItem?(:BINDINGBAND)
     return fraction
 end
 
@@ -1714,6 +1734,12 @@ GameData::BattleEffect.register_effect(:Battler, {
     end,
     :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
         stay_in_rating -= 25
+        battler.eachOpposing do |opponent|
+            if opponent.canChooseProtect?
+                stay_in_rating -= 25
+                PBDebug.log("[STAY-IN RATING] #{battler.pbThis} expects a Protect/Yawn trap (-25)")
+            end
+        end
         next stay_in_rating
     end
 })
@@ -2139,9 +2165,6 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :ShimmeringHeat,
     :real_name => "Shimmering Heat",
     :resets_eor	=> true,
-    :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("{1} is obscured by the shimmering haze!", battler.pbThis))
-    end,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -2549,11 +2572,37 @@ GameData::BattleEffect.register_effect(:Battler, {
         battle.pbDisplay(_INTL("{1} is cured of its shrinking!", battler.pbThis))
     end,
     :expire_proc => proc do |battle, battler|
-        battle.pbDisplay(_INTL("{1} is no longer shrinking down!", battler.pbThis(true)))
+        battle.pbDisplay(_INTL("{1} is no longer shrinking down!", battler.pbThis))
     end,
     :eor_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("{1} got smaller! Its highest stat is going down!", battler.pbThis(true)))
+        battle.pbDisplay(_INTL("{1} got smaller! Its highest stat is going down!", battler.pbThis))
         battler.pbLowerStatStep(battler.highestStat, 2)
+        battler.pbItemStatRestoreCheck
+    end,
+})
+
+DEFAULT_ERODINGFOAM_DURATION = 2
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ErodingFoam,
+    :real_name => "Eroding Foam",
+    :type => :Integer,
+    :ticks_down_eor => true,
+    :baton_passed => true,
+    :avatars_purge => true,
+    :apply_proc => proc do |battle, battler, value|
+        battle.pbDisplay(_INTL("{1} is covered in foam!", battler.pbThis))
+        battle.pbDisplay(_INTL("It'll last for {1} more turns!", value-1))
+    end,
+    :disable_proc => proc do |battle, battler|
+        battle.pbDisplay(_INTL("The foam around {1} is cleared!", battler.pbThis(true)))
+    end,
+    :expire_proc => proc do |battle, battler|
+        battle.pbDisplay(_INTL("{1} is no longer covered in foam!", battler.pbThis))
+    end,
+    :eor_proc => proc do |battle, battler, _value|
+        battle.pbDisplay(_INTL("The Eroding Foam is melting {1}'s Defense!", battler.pbThis(true)))
+        battler.tryLowerStat(:DEFENSE, battler, increment: 2)
         battler.pbItemStatRestoreCheck
     end,
 })
@@ -2705,7 +2754,6 @@ GameData::BattleEffect.register_effect(:Battler, {
     :apply_proc => proc do |_battle, battler, _value|
         battler.currentMove = nil
     end,
-    :sub_effects => [:HyperBeam],
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -2796,4 +2844,10 @@ GameData::BattleEffect.register_effect(:Battler, {
             battle.pbDisplay(_INTL("{1}'s stat changes were eliminated!", battler.pbThis))
         end
     end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :BattleHardened,
+    :real_name => "Battle-Hardened",
+    :info_displayed => false
 })

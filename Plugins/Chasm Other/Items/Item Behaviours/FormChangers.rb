@@ -10,7 +10,7 @@ ItemHandlers::UseOnPokemon.add(:GRACIDEA,proc { |item,pkmn,scene|
     formToSet = pkmn.form == 0 ? 1 : 0
     pkmn.setForm(formToSet) {
         scene&.pbRefresh
-        pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+        pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
     }
     next true
 })
@@ -30,7 +30,7 @@ ItemHandlers::UseOnPokemon.add(:REVEALGLASS,proc { |item,pkmn,scene|
     newForm = (pkmn.form==0) ? 1 : 0
     pkmn.setForm(newForm) {
         scene&.pbRefresh
-        pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+        pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
     }
     next true
 })
@@ -46,7 +46,7 @@ ItemHandlers::UseOnPokemon.add(:PRISONBOTTLE,proc { |item,pkmn,scene|
     newForm = (pkmn.form==0) ? 1 : 0
     pkmn.setForm(newForm) {
         scene&.pbRefresh
-        pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+        pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
     }
     next true
 })
@@ -90,7 +90,7 @@ ItemHandlers::UseOnPokemon.add(:DNASPLICERS,proc { |item,pkmn,scene|
             pkmn.fused = poke2
             $Trainer.remove_pokemon_at_index(chosen)
             scene&.pbHardRefresh
-            pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+            pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
         }
         next true
     end
@@ -103,7 +103,7 @@ ItemHandlers::UseOnPokemon.add(:DNASPLICERS,proc { |item,pkmn,scene|
         $Trainer.party[$Trainer.party.length] = pkmn.fused
         pkmn.fused = nil
         scene&.pbHardRefresh
-        pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+        pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
     }
     next true
 })
@@ -143,7 +143,7 @@ ItemHandlers::UseOnPokemon.add(:NSOLARIZER,proc { |item,pkmn,scene|
             pkmn.fused = poke2
             $Trainer.remove_pokemon_at_index(chosen)
             scene&.pbHardRefresh
-            pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+            pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
         }
         next true
     end
@@ -156,7 +156,7 @@ ItemHandlers::UseOnPokemon.add(:NSOLARIZER,proc { |item,pkmn,scene|
         $Trainer.party[$Trainer.party.length] = pkmn.fused
         pkmn.fused = nil
         scene&.pbHardRefresh
-        pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+        pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
     }
     next true
 })
@@ -196,7 +196,7 @@ ItemHandlers::UseOnPokemon.add(:NLUNARIZER,proc { |item,pkmn,scene|
             pkmn.fused = poke2
             $Trainer.remove_pokemon_at_index(chosen)
             scene&.pbHardRefresh
-            pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+            pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
         }
         next true
     end
@@ -209,7 +209,7 @@ ItemHandlers::UseOnPokemon.add(:NLUNARIZER,proc { |item,pkmn,scene|
         $Trainer.party[$Trainer.party.length] = pkmn.fused
         pkmn.fused = nil
         scene&.pbHardRefresh
-        pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+        pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
     }
     next true
 })
@@ -256,7 +256,7 @@ ItemHandlers::UseOnPokemon.add(:REINSOFUNITY, proc { |item, pkmn, scene|
             pkmn.fused = other_pkmn
             $Trainer.remove_pokemon_at_index(chosen)
             scene.pbHardRefresh
-            pbSceneDefaultDisplay(_INTL("{1} changed Forme!", pkmn.name),scene)
+            pbSceneDefaultDisplay(_INTL("{1} changed Form!", pkmn.name),scene)
         }
         next true
     end
@@ -273,7 +273,7 @@ ItemHandlers::UseOnPokemon.add(:REINSOFUNITY, proc { |item, pkmn, scene|
         $Trainer.party[$Trainer.party.length] = pkmn.fused
         pkmn.fused = nil
         scene.pbHardRefresh
-        pbSceneDefaultDisplay(_INTL("{1} changed Forme!", pkmn.name))
+        pbSceneDefaultDisplay(_INTL("{1} changed Form!", pkmn.name))
     }
     next true
 })
@@ -290,7 +290,7 @@ ItemHandlers::UseOnPokemon.add(:GRISEOUSCORE,proc { |item,pkmn,scene|
     formToSet = pkmn.form == 0 ? 1 : 0
     pkmn.setForm(formToSet) {
         scene&.pbRefresh
-        pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+        pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
     }
     next true
 })
@@ -307,7 +307,7 @@ ItemHandlers::UseOnPokemon.add(:LUSTROUSGLOBE,proc { |item,pkmn,scene|
     formToSet = pkmn.form == 0 ? 1 : 0
     pkmn.setForm(formToSet) {
         scene&.pbRefresh
-        pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+        pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
     }
     next true
 })
@@ -324,7 +324,7 @@ ItemHandlers::UseOnPokemon.add(:ADAMANTCRYSTAL,proc { |item,pkmn,scene|
     formToSet = pkmn.form == 0 ? 1 : 0
     pkmn.setForm(formToSet) {
         scene&.pbRefresh
-        pbSceneDefaultDisplay(_INTL("{1} changed Forme!",pkmn.name),scene)
+        pbSceneDefaultDisplay(_INTL("{1} changed Form!",pkmn.name),scene)
     }
     next true
 })

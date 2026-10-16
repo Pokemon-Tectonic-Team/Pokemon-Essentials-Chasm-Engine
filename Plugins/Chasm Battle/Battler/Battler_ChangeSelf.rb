@@ -374,23 +374,28 @@ class PokeBattle_Battler
             end
 
             # On-faint effect items
-            if hasActiveItem?(:HOOHSASHES)
+            if hasItem?(:HOOHSASHES)
                 faintedPartyMembers = []
                 ownerParty.each do |partyPokemon|
                     next unless partyPokemon
-                    next if @battle.pbFindBattler(partyIndex, @index)
                     next unless partyPokemon.fainted?
+                    next if @battle.pbFindBattler(partyPokemon, @index)
+                    next if partyPokemon == @pokemon
                     faintedPartyMembers.push(partyPokemon)
                 end
-                pbDisplay(_INTL("{1}'s scattered its {2} when fainting.", pbThis, getItemName(:HOOHSASHES)))
-                if faintedPartyMembers.length == 0
-                    pbDisplay(_INTL("But there was no one to revive!"))
+                @battle.pbDisplay(_INTL("{1}'s scattered its {2} when fainting!", pbThis, getItemName(:HOOHSASHES)))
+                if faintedPartyMembers.empty?
+                    @battle.pbDisplay(_INTL("But there was no one to revive!"))
                 else
                     reviver = faintedPartyMembers.sample
-                    reviver.heal_HP
-                    reviver.heal_status
-                    pbDisplay(_INTL("Its allied {1} was revived to full health!", reviver.name))
+                    reviver.heal
+                    @battle.pbDisplay(_INTL("Its allied {1} was revived to full health!", reviver.name))
                 end
+            end
+
+            unless @dummy
+                # Check other battlers' abilities that trigger upon a battler fainting
+                pbAbilitiesOnFainting
             end
 
             pbInitEffects(false)
@@ -413,9 +418,6 @@ class PokeBattle_Battler
             # Do other things
             @battle.pbClearChoice(@index) # Reset choice
             pbOwnSide.effects[:LastRoundFainted] = @battle.turnCount
-
-            # Check other battlers' abilities that trigger upon a battler fainting
-            pbAbilitiesOnFainting
 
             # Check for end of primordial weather
             @battle.pbEndPrimordialWeather
@@ -616,12 +618,12 @@ class PokeBattle_Battler
             end
         end
         # Zygarde - Power Construct
-        if isSpecies?(:ZYGARDE) && hasAbility?(:POWERCONSTRUCT) && endOfRound && (@hp <= @totalhp / 2 && @form <= 1) # Turn into Complete Forme
+        if isSpecies?(:ZYGARDE) && hasAbility?(:POWERCONSTRUCT) && endOfRound && (@hp <= @totalhp / 2 && @form <= 1) # Turn into Complete Form
             @battle.pbDisplay(_INTL("You sense the presence of many!"))
             showMyAbilitySplash(:POWERCONSTRUCT, true)
             hideMyAbilitySplash
             @battle.pbCommonAnimation("ZygardeForms", self)
-            pbChangeForm(@form + 2, _INTL("{1} transformed into its Complete Forme!", pbThis))
+            pbChangeForm(@form + 2, _INTL("{1} transformed into its Complete Form!", pbThis))
         end
     end
 

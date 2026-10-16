@@ -352,6 +352,7 @@ class PokeBattle_Scene
       startExpLevel = tempExp1-startExp
       endExpLevel   = tempExp2-startExp
       expRange      = endExp-startExp
+      return if expRange <= 0
       dataBox = @sprites["dataBox_#{battler.index}"]
       dataBox.animateExp(startExpLevel,endExpLevel,expRange)
       while dataBox.animatingExp; pbUpdate; end

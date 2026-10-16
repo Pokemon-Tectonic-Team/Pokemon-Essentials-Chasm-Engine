@@ -161,6 +161,39 @@ class WaypointsTracker
 		
 		unless @activeWayPoints.has_key?(waypointName)
 			pbMessage(waypointRegisterMessage)
+
+			totemGlowSprite = $scene.spriteset.getAnimationForEvent(waypointEvent.id)
+
+			totemGlowSprite.switchAnimationMode(2)
+
+			# Pause for fading
+			loop do
+				Graphics.update
+				Input.update
+				pbUpdateSceneMap
+				break if totemGlowSprite.animationComplete?
+			end
+
+			totemGlowSprite.switchAnimationMode(1)
+
+			# Pause for cool animation
+			framesWaited = 0
+			loop do
+				Graphics.update
+				Input.update
+				# Intentionally duplicated
+				Graphics.update
+				Input.update
+				pbUpdateSceneMap
+				pbSEPlay("Totem activation") if framesWaited == 2
+				framesWaited += 1
+				break if totemGlowSprite.animationComplete?
+			end
+
+			totemGlowSprite.switchAnimationMode(0)
+
+			pbWait(10)
+			
 			addWaypoint(waypointName,waypointEvent)
 
             checkForWaypointsAchievement
@@ -258,6 +291,7 @@ class WaypointsTracker
             for key in map.events.keys
                 event = map.events[key]
                 next if !event || event.pages.length == 0
+				next if event.name == "AvatarTotem_NoAchievement"
                 next if event.name != WAYPOINT_EVENT_NAME
                 event.pages.each do |page|
                     page.list.each do |eventCommand|
@@ -283,6 +317,17 @@ def accessWaypoint(waypointName,avatarSpecies=nil)
 	alternate = false
 
 	if avatarSpecies
+		# Multiple possible avatars: let the player pick which one to attune to.
+		# "I'm thinking..." is the first option and the cancel target, so choosing
+		# it (or backing out) aborts without summoning anything.
+		if avatarSpecies.is_a?(Array)
+			commands = [_INTL("I'm thinking...")]
+			avatarSpecies.each { |sp| commands.push(GameData::Species.get(sp).name) }
+			choice = pbMessage(_INTL("Several presences stir here. Which do you attune to?"), commands, 1)
+			return false if choice <= 0
+			avatarSpecies = avatarSpecies[choice - 1]
+		end
+
 		alternate = true
 
 		speciesName = GameData::Species.get(avatarSpecies).name
@@ -380,7 +425,7 @@ def waypointAccessMessageAlternative
 end
 
 def waypointRegisterMessage
-    return _INTL("\\i[SPANNINGBAND]The Spanning Bands glow in sync with the totem. You sense that some sort of connection has been created.")
+    return _INTL("\\i[SPANNINGBAND]The Spanning Bands glow in sync with the totem.")
 end
 
 def waypointUnableMessage

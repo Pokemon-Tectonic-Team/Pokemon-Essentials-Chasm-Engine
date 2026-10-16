@@ -51,7 +51,7 @@ class PokeBattle_Move_GiftItem < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} give away?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} give away?", user.pbThis(true)),validItemNames)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end
@@ -183,7 +183,7 @@ class PokeBattle_Move_Fling < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} fling?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} fling?", user.pbThis(true)),validItemNames)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end
@@ -227,8 +227,6 @@ class PokeBattle_Move_Fling < PokeBattle_Move
             target.applyFrostbite(user) if target.canFrostbite?(user, false, self)
         when :BIGROOT
             target.applyLeeched(user) if target.canLeech?(user, false, self)
-        when :BINDINGBAND
-            target.applyLeeched(user) if target.canLeech?(user, false, self)
         when :WATERBALLOON
             target.applyWaterlog(user) if target.canWaterlog?(user, false, self)
         else
@@ -241,7 +239,9 @@ class PokeBattle_Move_Fling < PokeBattle_Move
         #       missed. The item is not consumed if the target was switched out by
         #       an effect like a target's Red Card.
         # NOTE: There is no item consumption animation.
-        user.consumeItem(@chosenItem, belch: false) if user.hasItem?(@chosenItem)
+        consumed = user.hasItem?(@chosenItem)
+        user.consumeItem(@chosenItem, belch: false) if consumed
+        @battle.triggerThrownIn(user) if consumed
     end
 
     def resetMoveUsageState
@@ -256,7 +256,7 @@ class PokeBattle_Move_Fling < PokeBattle_Move
         detailsList << _INTL("<u>Poison</u>: Poison Orb")
         detailsList << _INTL("<u>Burn</u>: Flame Orb")
         detailsList << _INTL("<u>Frostbite</u>: Frost Orb")
-        detailsList << _INTL("<u>Leech</u>: Big Root, Binding Band")
+        detailsList << _INTL("<u>Leech</u>: Big Root")
         detailsList << _INTL("<u>Waterlog</u>: Water Balloon")
     end
 end
@@ -340,7 +340,7 @@ class PokeBattle_Move_NaturalGift < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenItem = replayed_choice
             else
-                chosenIndex = @battle.scene.pbShowCommands(_INTL("Which item should {1} use?", user.pbThis(true)),validItemNames,0)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which item should {1} use?", user.pbThis(true)),validItemNames)
                 @chosenItem = validItems[chosenIndex]
                 return @chosenItem
             end

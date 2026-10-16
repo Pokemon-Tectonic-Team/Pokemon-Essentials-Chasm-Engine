@@ -26,13 +26,13 @@ BattleHandlers::AbilityChangeOnBattlerFainting.add(:ALLCONSUMING,
         end
 
         GameData::Stat.each_main_battle do |s|
-            statValue = battler.steps[s.id]
+            statValue = fainted.steps[s.id]
             next if statValue == 0
             if statValue > 0
-                battler.tryLowerStat(s.id, battler, increment: statValue)
+                battler.tryRaiseStat(s.id, battler, increment: statValue)
             end
             if statValue < 0
-                battler.tryLowerStat(s.id, battler, increment: statValue)
+                battler.tryLowerStat(s.id, battler, increment: -statValue)
             end
         end
 

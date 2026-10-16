@@ -13,6 +13,7 @@ module GameData
       attr_reader :skill_code
       attr_reader :policies
       attr_reader :cable_club
+      attr_reader :cable_club_name
   
       DATA = {}
       DATA_FILENAME = "trainer_types.dat"
@@ -31,7 +32,8 @@ module GameData
       "BattleBGM"  => [:battle_BGM,  "s"],
       "CursedBGM"  => [:cursed_battle_BGM,  "s"],
       "VictoryBGM" => [:victory_ME, "s"],
-      "CableClub" => [:cable_club, "b"]
+      "CableClub"     => [:cable_club,      "b"],
+      "CableClubName" => [:cable_club_name, "s"]
     }
   
       extend ClassMethodsSymbols
@@ -116,13 +118,18 @@ module GameData
         @skill_level = hash[:skill_level] || @base_money
         @skill_code  = hash[:skill_code]
         @policies	   = hash[:policies]	|| []
-        @cable_club  = hash[:cable_club] || false
+        @cable_club      = hash[:cable_club]      || false
+        @cable_club_name = hash[:cable_club_name]
         @defined_in_extension   = hash[:defined_in_extension] || false
       end
   
       # @return [String] the translated name of this trainer type
       def name
         return pbGetMessageFromHash(MessageTypes::TrainerTypes, @real_name)
+      end
+
+      def cable_club_display_name
+        return @cable_club_name || @real_name
       end
   
       def male?;   return @gender == 0; end
@@ -208,6 +215,7 @@ module Compiler
             f.write(sprintf("CursedBGM = %s\r\n", t.cursed_battle_BGM)) if !nil_or_empty?(t.cursed_battle_BGM)
             f.write(sprintf("VictoryME = %s\r\n", t.victory_ME)) if !nil_or_empty?(t.victory_ME)
             f.write(sprintf("CableClub = true\r\n")) if t.cable_club
+            f.write(sprintf("CableClubName = %s\r\n", t.cable_club_name)) if t.cable_club_name
           end
         }
         Graphics.update

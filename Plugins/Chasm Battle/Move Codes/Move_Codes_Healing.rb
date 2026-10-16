@@ -130,7 +130,7 @@ class PokeBattle_Move_EmpoweredShoreUp < PokeBattle_HalfHealingMove
 end
 
 #===============================================================================
-# Heals user by 2/3 of its max HP.
+# Heals user by 2/3 of its max HP. (Lounge)
 #===============================================================================
 class PokeBattle_Move_HealUserTwoThirdsOfTotalHP < PokeBattle_HealingMove
     def healRatio(_user)
@@ -204,7 +204,7 @@ end
 
 #===============================================================================
 # Rings the user. Ringed Pokémon gain 1/16 of max HP at the end of each round.
-# (Aqua Ring)
+# (Mending Sprit, Wetland Waltz)
 #===============================================================================
 class PokeBattle_Move_StartHealUserEachTurn < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
@@ -951,7 +951,7 @@ class PokeBattle_Move_UserLosesQuarterHPPartyMembersHealQuarterHP < PokeBattle_M
     end
 
     def getEffectScore(user, _target)
-        score += getHPLossEffectScore(user, @hpFraction * 1.5) # intentionally higher than it looks like it should be
+        score = getHPLossEffectScore(user, @hpFraction * 1.5) # intentionally higher than it looks like it should be
         healableMembers = healableMembers(user)
         if healableMembers > 0
             score += 30 + healableMembers * 50

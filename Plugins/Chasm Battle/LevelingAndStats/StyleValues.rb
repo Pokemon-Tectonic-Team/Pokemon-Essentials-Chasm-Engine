@@ -360,7 +360,7 @@ class StyleValueScreen
             next if stat == :SPECIAL_ATTACK && COMBINE_ATTACKING_STATS
             @pool -= pkmn.ev[stat]
         end
-        raise _INTL("{1} has more EVs than its supposed to be able to!", pkmn.name) if @pool < 0
+        raise _INTL("{1} has more EVs than it's supposed to be able to!", pkmn.name) if @pool < 0
         @scene.pool = @pool
         updateStats(pkmn)
         loop do

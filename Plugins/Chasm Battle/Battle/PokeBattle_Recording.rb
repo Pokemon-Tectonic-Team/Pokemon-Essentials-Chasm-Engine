@@ -108,7 +108,9 @@ module PokeBattle_BattleRecorder
 	end
 
 	def registerRecordedChoice(index)
-		@recorded_choices[@turnCount][index][@commandPhasesThisRound-1].push(@recorded_choice) unless @recorded_choices[@turnCount][index].length < @commandPhasesThisRound
+    	return if @recorded_choices[@turnCount][index].length < @commandPhasesThisRound
+    	@recorded_choices[@turnCount][index][@commandPhasesThisRound-1] ||= []
+    	@recorded_choices[@turnCount][index][@commandPhasesThisRound-1].push(@recorded_choice)
 	end
 
 	def registerRules

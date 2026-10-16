@@ -395,8 +395,8 @@ class PokEstate
 		firstPage.graphic.character_name = caretakerSprite
 		firstPage.trigger = 0 # Action button
 		firstPage.list = []
-		push_text(firstPage.list,"Welcome back to the PokÉstate, young master.")
 		push_script(firstPage.list,sprintf("setSpeaker(CARETAKER)",))
+		push_text(firstPage.list,"Welcome back to the PokÉstate, young master.")
 		push_script(firstPage.list,sprintf("$PokEstate.careTakerInteraction",))
 		firstPage.list.push(RPG::EventCommand.new(0,0,[]))
 		
@@ -522,17 +522,17 @@ class PokEstate
 		cmdOmnitutor = -1
 		cmdCancel = -1
 
+		# Build the commands
+		commands[cmdStyle = commands.length]  	= _INTL("Set Style") if pbHasItem?(:STYLINGKIT)
+		commands[cmdSwapAbility = commands.length]  	= _INTL("Swap Ability") if pbHasItem?(:VIRALHELIX)
+		if $PokemonGlobal.omnitutor_active && !getOmniMoves(pokemon).empty?
+			commands[cmdOmnitutor = commands.length]	= _INTL("OmniTutor")
+		end
 		commands[cmdRename = commands.length] 	= _INTL("Rename") unless donationBox
 		commands[cmdSwapPokeBall = commands.length]   = _INTL("Swap Ball")
 		commands[cmdDeleteMove = commands.length] = _INTL("Delete Move") if pokemon.numMoves > 1
 		newspecies = pokemon.check_evolution_on_level_up(false)
 		commands[cmdEvolve = commands.length]   = _INTL("Evolve") if newspecies
-		commands[cmdStyle = commands.length]  	= _INTL("Set Style") if pbHasItem?(:STYLINGKIT)
-		commands[cmdSwapAbility = commands.length]  	= _INTL("Swap Ability") if pbHasItem?(:VIRALHELIX)
-
-		if $PokemonGlobal.omnitutor_active && !getOmniMoves(pokemon).empty?
-			commands[cmdOmnitutor = commands.length]	= _INTL("OmniTutor")
-		end
 		commands[cmdCancel = commands.length] = _INTL("Cancel")
 
 		modifyCommand = 0

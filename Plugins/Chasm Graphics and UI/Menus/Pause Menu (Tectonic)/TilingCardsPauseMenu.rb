@@ -123,13 +123,11 @@ class TilingCardsPauseMenu_Scene < TilingCardsMenu_Scene
 					screen = PokemonSaveScreen.new(saveScene)
           quitResult = screen.pbSaveScreen(true)
           if [1, 3].include?(quitResult) # Quit to menu
-            # Make the following Pokemon refresh as if moving to a new map,
-            # even if the next loaded save is on the same map
-            $game_player.map.map_id = -1
-
             pbBGMStop(0.25)
             $scene.disposeSpritesets if $scene.is_a?(Scene_Map)
             scene.pbEndScene
+            $PokemonTemp.reset_session_data # purge transient data to avoid bugs on loading other saves
+            $scene = nil
             loadScene = PokemonLoad_Scene.new
             loadScreen = PokemonLoadScreen.new(loadScene)
             loadScreen.pbStartLoadScreen

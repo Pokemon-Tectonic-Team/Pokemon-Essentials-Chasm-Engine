@@ -1,4 +1,4 @@
-DOWNSIDE_ABILITIES = %i[SLOWSTART PRIMEVALSLOWSTART DEFEATIST TRUANT AUTUMNAL]
+DOWNSIDE_ABILITIES = %i[SLOWSTART PRIMEVALSLOWSTART DEFEATIST TRUANT AUTUMNAL APATHETIC PERFECTIONIST]
 
 ALL_STATUS_SCORE_BONUS = 0
 STATUS_UPSIDE_MALUS = 60
@@ -147,7 +147,7 @@ def getFrostbiteEffectScore(user, target, ignoreCheck: false)
             score += 30 unless target.hasPhysicalAttack?
         end
 
-        score += STATUS_PUNISHMENT_BONUS if user && (user.hasStatusPunishMove? || user.pbHasMoveFunction?("DoubleDamageAgainstFrostbitten")) # Ice Impact
+        score += STATUS_PUNISHMENT_BONUS if user && (user.hasStatusPunishMove? || user.pbHasMoveFunction?("DoubleDamageAgainstFrostbitten")) # Ice Pick
         score -= getNaturalCureScore(user, target, score) if target.hasActiveAbilityAI?(:NATURALCURE)
     else
         return 0
@@ -202,7 +202,7 @@ def getSleepEffectScore(user, target, _policies = [])
     return 0 if target.hasActiveAbilityAI?(:OXYGENATION) && target.battle.sunny?
     score = 150
     score -= 100 if target.hasSleepAttack?
-    score += STATUS_PUNISHMENT_BONUS if user&.hasStatusPunishMove?
+    score += STATUS_PUNISHMENT_BONUS if user && (user.hasStatusPunishMove? || user.pbHasMoveFunction?("HealUserByHalfOfDamageDoneDoubleDamageIfTargetAsleep","50DamageIfTargetAsleep")) # Dream Absorb/Possession
     score -= 60 if target.hasActiveAbilityAI?(%i[LOUDSLEEPER SNOOZEFEST])
     if target.hasActiveAbilityAI?(:DREAMWEAVER)
         score -= getMultiStatUpEffectScore([:SPECIAL_ATTACK, 2],target,target)
@@ -327,7 +327,7 @@ def statStepsValueScore(battler)
 end
 
 def getExchangeItemEffectScore(user, target)
-    if user.hasActiveItemAI?(%i[FLAMEORB FROSTORB POISONORB STICKYBARB IRONBALL])
+    if user.hasActiveItemAI?(%i[FLAMEORB FROSTORB POISONORB STICKYBARB IRONBALL LAGGINGTAIL])
         return 150
     elsif user.hasActiveItemAI?(GameData::Item.getByFlag("ChoiceLocking"))
         return 120
@@ -451,12 +451,12 @@ def getMultiStatUpEffectScore(statUpArray, user, target, fakeStepModifier: 0, ev
         if target.pbHasAnyStatus? && !target.hasActiveAbilityAI?(:VICTORYMOLT)
             if target.burned?
                 if statSymbol == :ATTACK
-                    totalIncrease *= 0.66 unless target.pbHasMoveFunction?("DoubleDamageUserStatused") # Facade / Hard Feelings
+                    totalIncrease *= 0.66 unless target.pbHasMoveFunction?("DoubleDamageUserStatused") # Facade
                 end
                 damageStatus = 1
             elsif target.frostbitten?
                 if statSymbol == :SPECIAL_ATTACK
-                    totalIncrease *= 0.66 unless target.pbHasMoveFunction?("DoubleDamageUserStatused") # Facade / Hard Feelings
+                    totalIncrease *= 0.66 unless target.pbHasMoveFunction?("DoubleDamageUserStatused") # Facade
                 end
                 damageStatus = 1
             elsif target.numbed? || target.waterlogged?
@@ -845,16 +845,21 @@ def predictedEOTDamage(battle,battler)
         damage += battler.getFractionalDamageAmount(BAD_DREAMS_DAMAGE_FRACTION, aiCheck: true)
     end
     
-    # Pain Presence
+    # Noxious
     damage += battler.getFractionalDamageAmount(NOXIOUS_DAMAGE_FRACTION, aiCheck: true) if battle.pbCheckOtherAbility(:NOXIOUS, battler.index)
 
-    # Extreme Energy, Extreme Power, Solar Power, Night Stalker
+    # Extreme Voltage, Extreme Power, Solar Power, Night Stalker, Burdened, Live Fast, Fading Fury
     damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:EXTREMEVOLTAGE)
     damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:EXTREMEPOWER)
     damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:SOLARPOWER) && battle.sunny?
     damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:NIGHTSTALKER) && battle.moonGlowing?
     damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:BURDENED)
     damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:LIVEFAST)
+    damage += battler.getFractionalDamageAmount(EOR_SELF_HARM_ABILITY_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:FADINGFURY)
+
+    # Dry Skin, Fine Sugar
+    damage += battler.getFractionalDamageAmount(WEATHER_ABILITY_HEALING_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:DRYSKIN) && battle.sunny?
+    damage += battler.getFractionalDamageAmount(WEATHER_ABILITY_HEALING_FRACTION, aiCheck: true) if battler.hasActiveAbilityAI?(:FINESUGAR) && battle.rainy?
 
     # Sticky Barb
     damage += battler.getFractionalDamageAmount(STICKY_BARB_DAMAGE_FRACTION, aiCheck: true) if battler.hasActiveItemAI?(:STICKYBARB)
@@ -879,11 +884,28 @@ def predictedEOTHealing(battle,battler)
         healing += battler.position.effects[:WishAmount]
     end
 
-    # Grotesque Vitals, Fighting Vigor, Well Supplied, Living Armor
+    # Grotesque Vitals, Fighting Vigor, Thermostasis
     healing += battler.getFractionalHealingAmount(EOT_ABILITY_HEALING_FRACTION) if battler.hasActiveAbilityAI?(:GROTESQUEVITALS)
     healing += battler.getFractionalHealingAmount(EOT_ABILITY_HEALING_FRACTION) if battler.hasActiveAbilityAI?(:FIGHTINGVIGOR)
-    healing += battler.getFractionalHealingAmount(EOT_ABILITY_HEALING_FRACTION) if battler.hasActiveAbilityAI?(:SELFSUFFICIENT)
-    healing += battler.getFractionalHealingAmount(EOT_ABILITY_HEALING_FRACTION) if battler.hasActiveAbilityAI?(:LIVINGARMOR)
+    healing += battler.getFractionalHealingAmount(EOT_ABILITY_HEALING_FRACTION) if battler.hasActiveAbilityAI?(:THERMOSTASIS)
+
+    # Primeval Regenerator
+    if battler.hasActiveAbilityAI?(:PRIMEVALREGENERATOR)
+        healing += battler.getFractionalHealingAmount(1.0 / 4.0)
+    end
+
+    # Luxury Taste
+    if battler.hasActiveAbilityAI?(:LUXURYTASTE) && battler.hasActiveItemAI?(GameData::Item.getByFlag("Clothing"))
+        healing += battler.getFractionalHealingAmount(1.0 / 12.0)
+    end
+
+    # Living Armor, Rapid Refresh
+    if battler.hasActiveAbilityAI?(:LIVINGARMOR) && !battler.lastAttacker.empty?
+        healing += battler.getFractionalHealingAmount(1.0 / 12.0)
+    end
+    if battler.hasActiveAbilityAI?(:RAPIDREFRESH) && !battler.lastAttacker.empty?
+        healing += battler.getFractionalHealingAmount(1.0 / 8.0)
+    end
 
     # Weather healing abilities
     if battler.hasActiveAbilityAI?(:RAINDISH) && battler.battle.rainy?
@@ -901,7 +923,7 @@ def predictedEOTHealing(battle,battler)
     if battler.hasActiveAbilityAI?(:ROCKBODY) && battler.battle.sandy?
         healing += battler.getFractionalHealingAmount(WEATHER_ABILITY_HEALING_FRACTION)
     end
-    if battler.hasActiveAbilityAI?(:ICEBODY) && battler.battle.icy?
+    if battler.hasActiveAbilityAI?(:MOUNTINGCHILL) && battler.battle.icy?
         healing += battler.getFractionalHealingAmount(WEATHER_ABILITY_HEALING_FRACTION)
     end
     if battler.hasActiveAbilityAI?(:MOONBASKING) && battler.battle.moonGlowing?

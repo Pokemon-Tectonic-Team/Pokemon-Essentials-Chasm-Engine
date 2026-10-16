@@ -101,7 +101,7 @@ class PokeBattle_Move_TypeDependsOnUserSpecialItem < PokeBattle_Move
 end
 
 #===============================================================================
-# Type depends on the user's form, and can be chosen if the Pokémon has the Modus Switch ability. (Techno Blast)
+# Type depends on the user's form, and can be chosen if the Pokémon has the Modus Switch ability.
 #===============================================================================
 class PokeBattle_Move_TechnoBlast < PokeBattle_Move_TypeDependsOnUserSpecialItem
     def initialize(battle, move)
@@ -119,7 +119,7 @@ class PokeBattle_Move_TechnoBlast < PokeBattle_Move_TypeDependsOnUserSpecialItem
             @chosenDrive = drivesToChooseFrom[0]
         else
             driveNames = drivesToChooseFrom.map { |drive| GameData::Item.get(drive).name }
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which drive should {1} use?", user.pbThis(true)), driveNames, 0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which drive should {1} use?", user.pbThis(true)), driveNames)
             @chosenDrive = drivesToChooseFrom[chosenIndex]
         end
         newForm = @itemTypes.keys.index(@chosenDrive) + 1

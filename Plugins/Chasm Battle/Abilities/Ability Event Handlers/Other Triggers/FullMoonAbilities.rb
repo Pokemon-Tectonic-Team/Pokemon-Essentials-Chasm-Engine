@@ -1,13 +1,3 @@
-BattleHandlers::FullMoonAbility.add(:LYCANTHROPE,
-    proc { |ability, battler, battle|
-        next unless battler.species == :LYCANROC
-        next unless battler.form == 0
-        battle.pbShowAbilitySplash(battler, ability)
-        battler.pbChangeForm(1, _INTL("{1}'s transforms with exposure to the Full Moon!", battler.pbThis))
-        battle.pbHideAbilitySplash(battler)
-    }
-)
-
 BattleHandlers::FullMoonAbility.add(:WANINGWILLPOWER,
     proc { |ability, battler, battle|
         battle.pbShowAbilitySplash(battler, ability)
@@ -24,6 +14,20 @@ BattleHandlers::FullMoonAbility.add(:MOONPRISMPOWER,
         battle.pbShowAbilitySplash(battler, ability)
         battle.pbDisplay(_INTL("{1} is restored by the full moon!", battler.pbThis))
         battler.pbRecoverHP(battler.totalhp / 2.0, canOverheal: true)
+        battle.pbHideAbilitySplash(battler)
+    }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::FullMoonAbility.add(:LYCANTHROPE,
+    proc { |ability, battler, battle|
+        next unless battler.species == :LYCANROC
+        next unless battler.form == 0
+        battle.pbShowAbilitySplash(battler, ability)
+        battler.pbChangeForm(1, _INTL("{1}'s transforms with exposure to the Full Moon!", battler.pbThis))
         battle.pbHideAbilitySplash(battler)
     }
 )

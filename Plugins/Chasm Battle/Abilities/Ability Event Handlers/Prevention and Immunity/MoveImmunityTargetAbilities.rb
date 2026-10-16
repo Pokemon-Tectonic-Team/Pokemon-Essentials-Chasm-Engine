@@ -188,18 +188,6 @@ BattleHandlers::MoveImmunityTargetAbility.add(:MINDLESS,
   }
 )
 
-BattleHandlers::MoveImmunityTargetAbility.add(:SLICKSURFACE,
-  proc { |ability, _user, target, move, _type, battle, showMessages|
-      next false unless move.healingMove? && move.damagingMove?
-      if showMessages
-          battle.pbShowAbilitySplash(target, ability)
-          battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
-          battle.pbHideAbilitySplash(target)
-      end
-      next true
-  }
-)
-
 BattleHandlers::MoveImmunityTargetAbility.add(:TELEPATHY,
   proc { |ability, user, target, move, _type, battle, showMessages|
       next false if move.statusMove?
@@ -227,18 +215,6 @@ BattleHandlers::MoveImmunityTargetAbility.add(:WONDERGUARD,
       next false if move.statusMove?
       next false if !type
       next false if Effectiveness.super_effective?(typeModToCheck(battle, type, user, target, move, aiCheck))
-      if showMessages
-          battle.pbShowAbilitySplash(target, ability)
-          battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
-          battle.pbHideAbilitySplash(target)
-      end
-      next true
-  }
-)
-
-BattleHandlers::MoveImmunityTargetAbility.add(:SOUNDPROOF,
-  proc { |ability, _user, target, move, _type, battle, showMessages|
-      next false unless move.soundMove?
       if showMessages
           battle.pbShowAbilitySplash(target, ability)
           battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
@@ -287,19 +263,6 @@ BattleHandlers::MoveImmunityTargetAbility.add(:FULLBLUBBER,
   }
 )
 
-BattleHandlers::MoveImmunityTargetAbility.add(:CYNIC,
-  proc { |ability, user, target, _move, type, battle, showMessages, aiCheck|
-      next false if user.index == target.index
-      next false unless %i[FAIRY DRAGON GHOST].include?(type)
-      if showMessages
-          battle.pbShowAbilitySplash(target, ability)
-          battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
-          battle.pbHideAbilitySplash(target)
-      end
-      next true
-  }
-)
-
 BattleHandlers::MoveImmunityTargetAbility.add(:RESOLUTE,
   proc { |ability, user, target, _move, type, battle, showMessages, aiCheck|
       next false if user.index == target.index
@@ -337,6 +300,47 @@ BattleHandlers::MoveImmunityTargetAbility.add(:MUPROTOCOL,
           battle.pbHideAbilitySplash(target)
           
           target.aiLearnsItem(:MEMORYSET)
+      end
+      next true
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::MoveImmunityTargetAbility.add(:SLICKSURFACE,
+  proc { |ability, _user, target, move, _type, battle, showMessages|
+      next false unless move.healingMove? && move.damagingMove?
+      if showMessages
+          battle.pbShowAbilitySplash(target, ability)
+          battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
+          battle.pbHideAbilitySplash(target)
+      end
+      next true
+  }
+)
+
+BattleHandlers::MoveImmunityTargetAbility.add(:SOUNDPROOF,
+  proc { |ability, _user, target, move, _type, battle, showMessages|
+      next false unless move.soundMove?
+      if showMessages
+          battle.pbShowAbilitySplash(target, ability)
+          battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
+          battle.pbHideAbilitySplash(target)
+      end
+      next true
+  }
+)
+
+BattleHandlers::MoveImmunityTargetAbility.add(:CYNIC,
+  proc { |ability, user, target, _move, type, battle, showMessages, aiCheck|
+      next false if user.index == target.index
+      next false unless %i[FAIRY DRAGON GHOST].include?(type)
+      if showMessages
+          battle.pbShowAbilitySplash(target, ability)
+          battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
+          battle.pbHideAbilitySplash(target)
       end
       next true
   }

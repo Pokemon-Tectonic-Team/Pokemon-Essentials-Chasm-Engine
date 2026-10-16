@@ -903,6 +903,36 @@ class PokeBattle_Move_ApplyShrinkingToTarget < PokeBattle_Move
 end
 
 #===============================================================================
+# User applies the Eroding Foam effect for 2 turns. (Eroding Foam)
+#===============================================================================
+class PokeBattle_Move_ApplyErodingFoamToTarget < PokeBattle_Move
+    def pbFailsAgainstTarget?(user, target, show_message)
+        return false if damagingMove?
+        if target.effectActive?(:ErodingFoam)
+            @battle.pbDisplay(_INTL("But it failed, since {1} is already covered in foam!", target.pbThis(true))) if show_message
+            return true
+        end
+        return false
+    end
+
+    def pbEffectAgainstTarget(user, target)
+        return if damagingMove?
+        target.applyEffect(:ErodingFoam, applyEffectDurationModifiers(DEFAULT_ERODINGFOAM_DURATION, user))
+    end
+
+    def pbAdditionalEffect(user, target)
+        return if target.damageState.substitute
+        return if target.effectActive?(:ErodingFoam)
+        target.applyEffect(:ErodingFoam, applyEffectDurationModifiers(DEFAULT_ERODINGFOAM_DURATION, user))
+    end
+
+    def getEffectScore(user, target)
+        return 0 if target.effectActive?(:ErodingFoam)
+        return getMultiStatDownEffectScore([:DEFENSE, 2], user, target) * 1.30 # 100% on first turn, 30% on second
+    end
+end
+
+#===============================================================================
 # Applies a damaging effect to the targeted slot, causing 1/8th HP damage to
 # the Pokemon in that slot for the next 3 turns. (Stormshards)
 #===============================================================================

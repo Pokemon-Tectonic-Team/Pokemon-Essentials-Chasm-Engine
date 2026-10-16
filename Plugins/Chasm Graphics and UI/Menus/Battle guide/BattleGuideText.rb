@@ -48,8 +48,10 @@ def battleGuideMovesHash
         _INTL("Physical vs Special") => _INTL("Attacking moves are split into Physical moves, and Special moves. Each of these categories uses different stats to determine how much damage is dealt to the target."),
         _INTL("Physical Moves") => _INTL("Physical moves are notated by the symbol of a smashing fist. Their damage is based on the Attack (Atk) stat of the attacker and the Defense (Def) stat of the target."),
         _INTL("Special Moves") => _INTL("Special moves are notated by the symbol of a splash. Their damage is based on the Special Attack (Sp. Atk) of the attacker and the Special Defense (Sp. Def) of the target."),
+        _INTL("Adaptive Moves") => _INTL("Adaptive moves are notated by the symbol split between physical and special. Their damage is based on whichever Attacking stat is higher of the attacker. If both are the same, the default is Attack."),
         _INTL("Targeting") => _INTL("Most moves target only a single Pokémon, but many can target multiple Pokémon at once. Some moves differ in how far they can target in the bigger battle styles (doubles, triples)."),
         _INTL("Move Types") => _INTL("Every move has a type. Attacking moves deal different amounts of damage to different Pokémon based on those Pokémon's types. This is called 'type effectiveness'."),
+        _INTL("Flex-type Moves") => _INTL("Flex-type moves when used, change type to be the first type of the Pokémon the uses them. So a Flex move used by a Fire/Ground Pokémon will become a Fire-type move."),
         _INTL("Same-Type Bonus") => _INTL("Pokémon deal 50% more damage with moves they share a type with. For example, a Raichu deals 50% more damage with an Electric move than a Normal move."),
         _INTL("Learning Moves") => _INTL("Pokémon learn new moves as they level up. They can also learn moves from the 'Move Tutors' who sit in the left side of every PokéCenter."),
         _INTL("Base Power") => _INTL("Moves with higher Base Power deal more damage. Some moves deal variable Base Power depending on the situation. Status moves have no base power."),
@@ -175,6 +177,7 @@ def battleGuideVolatileStatusesHash
         _INTL("Grounded") => _INTL("A grounded Pokémon loses their immunity to ground moves (from being Flying-type or having a Levitate ability)."),
         _INTL("Shrinking") => _INTL("The affected Pokémon's highest stat becomes reduced by 2 steps for each turn of the effect."),
         _INTL("Sugar Rush") => _INTL("The affected Pokémon's speed is doubled, but they also take double damage from attacks."),
+        _INTL("Overhealing") => _INTL("Certain abilities, moves or items can cause overhealing. A Pokémon can get up to double of its max HP via overhealing."),
     }
 end
 
@@ -204,7 +207,7 @@ def battleGuideTrainersHash
         _INTL("Trainer Inactivity") => _INTL("When you defeat a Trainer, they will become inactive until the next time you heal at a PokéCenter. This is indicated by them returning their companion Pokémon to its Poké Ball."),
         _INTL("Perfecting Fights") => _INTL("If you defeat a Trainer without any of your Pokémon fainting, you've 'perfected' the fight. They will leave forever and drop experience candy as a reward."),
         _INTL("Enemy Teams") => _INTL("Enemy Trainers have their own teams of Pokémon with their own moves and held items. It's important to pay attention to these possibilities to win battles."),
-        _INTL("Differences") => _INTL("The typical trainer has 3 Pokémon, but Gym Leaders will have more. Trainers with more Pokémon also have more move variety and more items on their Pokémon."),
+        _INTL("Differences") => _INTL("The typical trainer has 4 Pokémon, but Gym Leaders will have more. Trainers with more Pokémon also have more move variety and more items on their Pokémon."),
         _INTL("Pro Trainers") => _INTL("Pro Trainers are special Trainers, noted by their grey hair and black clothes. Their teams are always 6 Pokémon, all with items, and built around a Tribal Bonus. They're hard!"),
         _INTL("Trainer Behaviour") => _INTL("Individual Trainers will always react to the same in-battle circumstances the same way. You can learn how to beat or even perfect a Trainer through trial and error."),
     }
@@ -221,7 +224,7 @@ def battleGuideAvatarsHash
         _INTL("Clean Slate") => _INTL("Before an Avatar uses a Primeval Move, they will also heal from any status conditions and reset any of their stat steps that have been lowered."),
         _INTL("Shields") => _INTL("The top of Avatars health bars starts Shielded. Shielded bars take 75% less damage. A shield is removed when the Avatar uses a Primeval Move."),
         _INTL("Attack Choice") => _INTL("Avatars usually only have a few moves to choose from. They usually alternate between their moves on successive attacks."),
-        _INTL("Target Choice") => _INTL("A targeting reticle shows which of your battles the Avatar wants to attack. It will switch to another battler, however, if their attack is made impossible."),
+        _INTL("Target Choice") => _INTL("A targeting reticle shows which of your battlers the Avatar wants to attack. It will switch to another battler, however, if their attack is made impossible."),
         _INTL("Empowered Moves") => _INTL("Some Avatars have Empowered attacks, which are powered-up versions of other attacks. They take up both of an Avatar's moves on that turn."),
         _INTL("Experience Reward") => _INTL("When an Avatar is destroyed, every Pokémon on your team is given experience, even those that are fainted."),
         _INTL("Legendary Avatars") => _INTL("Legendary Avatars are unique. You fight them with 3 Pokémon, they have 3 HP bars, and they have more moves with more smarts about how to use them."),
@@ -248,8 +251,8 @@ def battleGuideWeathersHash
         _INTL("Weather Duration") => _INTL("Weathers last a certain number of turns. The length differs depending on what move or ability summoned the weather. The duration can be extended by certain items."),
         _INTL("Sunshine") => _INTL("Sunshine lowers attack damage by 15%. Fire and Grass-type moves/Pokémon are immune to this. Fire-type attacks are boosted by 30%."),
         _INTL("Rain") => _INTL("Rainstorm lowers attack damage by 15%. Water and Electric-type moves/Pokémon are immune to this. Water-type attacks are boosted by 30%."),
-        _INTL("Sandstorm") => _INTL("Sandstorm deals damage to all Pokémon at the end of each turn. Rock and Ground-types are immune to this. Additionally, Rock-types get +50% Special Defense."),
-        _INTL("Hail") => _INTL("Hail deals damage to all Pokémon at the end of each turn. Ice and Ghost-types are immune to this. Additionally, Ice-types get +50% Defense."),
+        _INTL("Sandstorm") => _INTL("Sandstorm deals 1/16th max HP damage to all Pokémon at the end of each turn. Rock and Ground-types are immune to this. Additionally, Rock-types get +50% Special Defense."),
+        _INTL("Hail") => _INTL("Hail deals 1/16th max HP damage to all Pokémon at the end of each turn. Ice and Ghost-types are immune to this. Additionally, Ice-types get +50% Defense."),
         _INTL("Eclipse") => _INTL("Eclipse lowers all stats of all Pokémon every 4 turns (by 2 steps). Psychic and Dragon-types are immune to this. Additionally, Psychic-type attacks are boosted by 30%."),
         _INTL("Moonglow") => _INTL("Moonglow flinches all Pokémon every 4 turns. Fairy and Dark-types are immune to this. Additionally, Fairy-type attacks are boosted by 30%."),
         _INTL("Weather Downsides") => _INTL("Each weather has both an upside and a downside. There are items and abilities that make your Pokémon immune to these downsides regardless of type."),
@@ -260,7 +263,7 @@ end
 
 def battleGuideFieldEffectsHash
     return {
-        _INTL("What are field effects?") => _INTL("Field effects are special effects that affect the entire battlefield. Multiple field effects can be active at the same time."),
+        _INTL("What are Field effects?") => _INTL("Field effects are special effects that affect the entire battlefield. Multiple field effects can be active at the same time."),
         _INTL("Field Effect Duration") => _INTL("Field effects last a certain number of turns. The length differs depending on what move or ability summoned the field effect. Some durations can be enhanced by certain items."),
         _INTL("Room Effects") => _INTL("Puzzle Room, Odd Room and Polarized Room are rooms. Multiple can be active at the same time. Their duration can be doubled with the Reinforcing Rod item."),
         _INTL("Puzzle Room") => _INTL("Puzzle Room swaps each Pokémon's Attack and Sp. Attack stats."),
@@ -274,8 +277,8 @@ end
 
 def battleGuideSideEffectsHash
     return {
-        _INTL("What are field effects?") => _INTL("Side effects are special effects that affect only one side. Multiple side effects can be active at the same time."),
-        _INTL("Field Effect Duration") => _INTL("Side effects last a certain number of turns. The length differs depending on what move or ability summoned the field effect. Some durations can be enhanced by certain items."),
+        _INTL("What are Side effects?") => _INTL("Side effects are special effects that affect only one side. Multiple side effects can be active at the same time."),
+        _INTL("Side Effect Duration") => _INTL("Side effects last a certain number of turns. The length differs depending on what move or ability summoned the field effect. Some durations can be enhanced by certain items."),
         _INTL("Screen Effects") => _INTL("Reflect, Light Screen, Aurora Veil, Sanctuary and Repulsion Field are screens. These effects do not stack with one another. Their duration can be enhanced with the Light Clay item."),
         _INTL("Reflect") => _INTL("Reflect lowers damage from incoming physical moves by 50% in a Singles battle or 33% in a Doubles/Triples battle."),
         _INTL("Light Screen") => _INTL("Light Screen lowers damage from incoming special moves by 50% in a Singles battle or 33% in a Doubles/Triples battle."),
@@ -304,12 +307,12 @@ def battleGuideLegendaryAbilitiesHash
         _INTL("Articuno: Glacial Wings") => _INTL("Severe Frostbite: The same as Frostbite, but its end-of-turn chip deals double damage if the afflicted Pokémon is below half health."),
         _INTL("Moltres: Searing Wings") => _INTL("Severe Burn: The same as Burn, but the afflicted Pokémon also takes 33% recoil from their attacks."),
         _INTL("Zapdos: Galvanic Wings") => _INTL("Severe Numb: The same as Numb, but the afflicted Pokémon's highest stat is reduced at the end of each turn."),
-        _INTL("Kyogre: Primordial Sea") => _INTL("Boosts the damage of Water- and Electric-type attacks by 50%. Prevents Pokémon not immune to Rain from activating moves' random added effects."),
-        _INTL("Groudon: Desolate Land") => _INTL("Boosts the damage of Fire- and Grass-type attacks by 50%. Prevents Pokémon not immune to Sun from activating critical hits."),
+        _INTL("Kyogre: Primordial Sea") => _INTL("Boosts the damage of Electric- and Water-type attacks by 50%. Lowers attack damage of non-immune types or moves by 15%. Pokémon not immune to Rain can't cause moves' random added effects."),
+        _INTL("Groudon: Desolate Land") => _INTL("Boosts the damage of Fire- and Grass-type attacks by 50%. Lowers attack damage of non-immune types or moves by 15%. Pokémon not immune to Sun can't cause critical hits."),
         _INTL("Necrozma: Event Horizon") => _INTL("Rock- and Ground-types gain a 50% boost to Special Defense. Deals sandstorm damage at end of turn. Pokémon not immune to Sandstorm take 50% more HP-fraction-based damage."),
         _INTL("Kyurem: Heat Death") => _INTL("Ice- and Ghost-types gain a 50% boost to Defense. Deals hail damage at end of turn. Pokémon struck by the hail become unable to heal."),
         _INTL("Cresselia: Saturnal Sky") => _INTL("Boosts the damage of Psychic- and Dragon-type attacks by 50%. When the debuff applies from the Ring Eclipse effect, it lowers stats by 3 steps instead of 2."),
-        _INTL("Darkrai: Stygian Night") => _INTL("Boosts the damage of Fairy- and Dark-type attacks by 50%. When the flinch happens from Blood Moon, it also damages targets by 25% of their Max HP."),
+        _INTL("Darkrai: Stygian Night") => _INTL("Boosts the damage of Fairy- and Dark-type attacks by 50%. When the flinch happens from Blood Moon, it also damages targets by 25% of their max HP."),
         _INTL("Giratina: Distorted Gravity") => _INTL("All foes take 1/16th damage at the end of the round. While the user is on the field, gravity does not decay."),
         _INTL("Tornadus: Wish of Winter") => _INTL("Raises the side's Accuracy by 50%. On the final turn, that side has +1 priority."),
         _INTL("Thundurus: Wish of Summer") => _INTL("Raises the side's Speed by 50%. On the final turn, that side deals 50% more move damage, but takes 25% recoil."),

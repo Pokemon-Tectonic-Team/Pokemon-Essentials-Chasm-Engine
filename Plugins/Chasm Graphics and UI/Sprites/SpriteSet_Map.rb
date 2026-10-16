@@ -33,6 +33,7 @@ class Spriteset_Map
       end
 
       @usersprites = []
+      @spritesByEvent = {}
       @map = (map) ? map : $game_map
   
       if $scene.is_a?(Scene_Map)
@@ -79,10 +80,16 @@ class Spriteset_Map
           @usersprites[i].dispose
       end
       @usersprites.clear
+      @spritesByEvent.clear
     end
   
     def getAnimations
       return @usersprites
+    end
+
+    def getAnimationForEvent(eventID)
+      return nil unless @spritesByEvent.key?(eventID)
+      return @spritesByEvent[eventID]
     end
   
     def restoreAnimations(anims)
@@ -95,7 +102,7 @@ class Spriteset_Map
       return sprite
     end
   
-    def addUserSprite(sprite)
+    def addUserSprite(sprite, eventID = nil)
       for i in 0...@usersprites.length
         if @usersprites[i]==nil || @usersprites[i].disposed?
           @usersprites[i]=sprite
@@ -103,6 +110,7 @@ class Spriteset_Map
         end
       end
       @usersprites.push(sprite)
+      @spritesByEvent[eventID] = sprite if eventID
     end
 
     def addParticleEngine(sprite)

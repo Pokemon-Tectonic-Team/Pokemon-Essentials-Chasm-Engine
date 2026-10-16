@@ -875,3 +875,17 @@ DebugMenuCommands.register("earliestlevels", {
         pbMessage(_INTL("Move learn level analysis written to Analysis/move_levels.txt"))
     }
 })
+
+DebugMenuCommands.register("outputdexentrycsv", {
+    "parent"      => "analysis",
+    "name"        => _INTL("Output Dex Entries CSV"),
+    "description" => _INTL("Get a list of all PokeDex entries as a Comma Seperated Values file."),
+    "effect"      => proc { |sprites, viewport|
+        File.open("Analysis/dex_entries.csv","wb") { |file|
+            GameData::Species.each do |speciesData|
+                file.write("#{speciesData.name},#{speciesData.form},\"#{speciesData.pokedex_entry}\"\r\n")
+            end
+        }
+        pbMessage(_INTL("Species and dex entries written to Analysis/dex_entries.csv"))
+    }
+})

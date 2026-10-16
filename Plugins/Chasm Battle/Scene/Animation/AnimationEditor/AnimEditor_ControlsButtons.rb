@@ -611,6 +611,19 @@ end
 
 
 
+class SwapUserTargetButton < Button
+  def label
+    return _INTL("User: {1}",@canvas.userSlot)
+  end
+
+  def initialize(canvas)
+    @canvas=canvas
+    super(self.label)
+  end
+end
+
+
+
 class TextSlider < UIControl
   attr_reader :minvalue
   attr_reader :maxvalue

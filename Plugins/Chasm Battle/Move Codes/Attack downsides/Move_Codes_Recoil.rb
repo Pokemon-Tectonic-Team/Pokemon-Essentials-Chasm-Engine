@@ -89,9 +89,8 @@ end
 # If attack misses, user takes crash damage of 1/2 of max HP.
 # (High Jump Kick)
 #===============================================================================
-class PokeBattle_Move_CrashDamageIfFailsUnusableInGravity < PokeBattle_Move
+class PokeBattle_Move_CrashDamageIfFails < PokeBattle_Move
     def recoilMove?;        return true; end
-    def unusableInGravity?; return true; end
 
     def pbCrashDamage(user)
         recoilDamage = user.totalhp / 2.0

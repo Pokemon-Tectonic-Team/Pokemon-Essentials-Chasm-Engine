@@ -80,12 +80,12 @@ class Window_PokemonBag < Window_DrawableCommand
             [@adapter.getDisplayName(item),rect.x,rect.y-2,false,baseColor,shadowColor]
         )
         itemData = GameData::Item.get(item)
-        if itemData.is_important? && !itemData.is_consumable_key_item?
+        if pbCanRegisterItem?(item)
           if @bag.pbIsRegistered?(item)
             pbDrawImagePositions(self.contents,[
                 [addLanguageSuffix("Graphics/Pictures/Bag/icon_register"),rect.x+rect.width-72,rect.y+8,0,0,-1,24]
             ])
-          elsif pbCanRegisterItem?(item)
+          else
             pbDrawImagePositions(self.contents,[
                 [addLanguageSuffix("Graphics/Pictures/Bag/icon_register"),rect.x+rect.width-72,rect.y+8,0,24,-1,24]
             ])

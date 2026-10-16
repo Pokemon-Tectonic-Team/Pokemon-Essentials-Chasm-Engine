@@ -1,4 +1,20 @@
 #=============================================================================
+# Stable sort methods for consistent AI behaviour across platforms
+# Automatically factors in the original index as a tiebreaker
+#=============================================================================
+module Enumerable
+    def stable_sort_by
+        each_with_index.sort_by { |item, index| [yield(item), index] }.map(&:first)
+    end
+end
+
+class Array
+    def stable_sort_by!
+        replace(stable_sort_by { |item| yield(item) })
+    end
+end
+
+#=============================================================================
 # Get approximate properties for a battler
 #=============================================================================
 def pbRoughType(move, user)
@@ -18,7 +34,7 @@ def getUrgency
         urgency += 2 if b.hasSetupMove? && b.lastRoundMoveCategory == 2 # Actively setting up
         urgency += 2 if b.hasUseableHazardMove?
         urgency += 1 if b.hasUseableHazardMove? && b.lastRoundMoveCategory == 2 # Actively hazard stacking
-        urgency += 2 if b.hasActiveAbilityAI?(:CONTRARY) || b.hasActiveAbilityAI?(:INVERSION) || b.hasActiveAbilityAI?(:PERSISTENTGROWTH)
+        urgency += 2 if b.hasActiveAbilityAI?(:CONTRARY) || b.hasActiveAbilityAI?(:INVERSION)
     end
     if inWeatherTeam && urgency = 0
         weatherInfo = [

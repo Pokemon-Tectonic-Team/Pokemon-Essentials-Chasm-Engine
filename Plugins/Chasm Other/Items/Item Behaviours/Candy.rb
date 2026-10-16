@@ -13,7 +13,7 @@ def pbLevelGivingItem(pkmn, item, scene)
   end
 
   # Ask the player how many they'd like to apply
-  level_cap = LEVEL_CAPS_USED ? getLevelCap : growth_rate.max_level
+  level_cap = LEVEL_CAPS_USED ? getLevelCap : GameData::GrowthRate.max_level
   maxLevelIncrease = level_cap - pkmn.level
   maximum = [maxLevelIncrease, $PokemonBag.pbQuantity(item)].min # Max items which can be used
   if maximum > 1
@@ -38,22 +38,46 @@ end
 
 ItemHandlers::UseOnPokemon.copy(:RARECANDY)
 
+EXP_PER_EXTRA_SMALL = 250
+EXP_PER_SMALL = EXP_PER_EXTRA_SMALL * 4
+EXP_PER_MEDIUM = EXP_PER_SMALL * 4
+EXP_PER_LARGE = EXP_PER_MEDIUM * 4
+EXP_PER_EXTRA_LARGE = EXP_PER_LARGE * 4
+
+EXP_CANDY_IDS = %i[EXPCANDYXL EXPCANDYL EXPCANDYM EXPCANDYS EXPCANDYXS]
+
+def getEXPAmountForCandy(candyID)
+  case candyID
+  when :EXPCANDYXS
+    return EXP_PER_EXTRA_SMALL
+  when :EXPCANDYS
+    return EXP_PER_SMALL
+  when :EXPCANDYM
+    return EXP_PER_MEDIUM
+  when :EXPCANDYL
+    return EXP_PER_LARGE
+  when :EXPCANDYXL
+    return EXP_PER_EXTRA_LARGE
+  end
+  return 0
+end
+
 ItemHandlers::UseOnPokemon.add(:EXPCANDYXS,proc { |item,pkmn,scene|
-  pbEXPAdditionItem(pkmn,250,item,scene)
+  pbEXPAdditionItem(pkmn,EXP_PER_EXTRA_SMALL,item,scene)
 })
 
 ItemHandlers::UseOnPokemon.add(:EXPCANDYS,proc { |item,pkmn,scene|
-  pbEXPAdditionItem(pkmn,1000,item,scene)
+  pbEXPAdditionItem(pkmn,EXP_PER_SMALL,item,scene)
 })
 
 ItemHandlers::UseOnPokemon.add(:EXPCANDYM,proc { |item,pkmn,scene|
-  pbEXPAdditionItem(pkmn,4000,item,scene)
+  pbEXPAdditionItem(pkmn,EXP_PER_MEDIUM,item,scene)
 })
 
 ItemHandlers::UseOnPokemon.add(:EXPCANDYL,proc { |item,pkmn,scene|
-  pbEXPAdditionItem(pkmn,16000,item,scene)
+  pbEXPAdditionItem(pkmn,EXP_PER_LARGE,item,scene)
 })
 
 ItemHandlers::UseOnPokemon.add(:EXPCANDYXL,proc { |item,pkmn,scene|
-  pbEXPAdditionItem(pkmn,64000,item,scene)
+  pbEXPAdditionItem(pkmn,EXP_PER_EXTRA_LARGE,item,scene)
 })

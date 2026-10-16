@@ -322,7 +322,7 @@ NamePlural = Heat Sashes
 Pocket = 12
 Price = 0
 Flags = Clothing,Endure
-Description = The user summons Sunshine for twice as long. The holder will endure one potential KO.
+Description = The user summons sunshine for 50% longer. The holder will endure one potential KO.
 #-------------------------------
 [DAMPSASH]
 Name = Damp Sash
@@ -330,7 +330,7 @@ NamePlural = Damp Sashes
 Pocket = 12
 Price = 0
 Flags = Clothing,Endure
-Description = The user summons Rain for twice as long. The holder will endure one potential KO.
+Description = The user summons rain for 50% longer. The holder will endure one potential KO.
 #-------------------------------
 [SMOOTHSASH]
 Name = Smooth Sash
@@ -338,7 +338,7 @@ NamePlural = Smooth Sashes
 Pocket = 12
 Price = 0
 Flags = Clothing,Endure
-Description = The user summons Sandstorm for twice as long. The holder will endure one potential KO.
+Description = The user summons sandstorm for 50% longer. The holder will endure one potential KO.
 #-------------------------------
 [ICYSASH]
 Name = Icy Sash
@@ -346,7 +346,23 @@ NamePlural = Icy Sashes
 Pocket = 12
 Price = 0
 Flags = Clothing,Endure
-Description = The user summons Hail for twice as long. The holder will endure one potential KO.
+Description = The user summons hail for 50% longer. The holder will endure one potential KO.
+#-------------------------------
+[PINPOINTSASH]
+Name = Pin-Point Sash
+NamePlural = Pin-Point Sashes
+Pocket = 12
+Price = 0
+Flags = Clothing,Endure
+Description = The user summons eclipse for 50% longer. The holder will endure one potential KO.
+#-------------------------------
+[MIRROREDSASH]
+Name = Mirrored Sash
+NamePlural = Mirrored Sashes
+Pocket = 12
+Price = 0
+Flags = Clothing,Endure
+Description = The user summons moonglow for 50% longer. The holder will endure one potential KO.
 #-------------------------------
 [HOOHSASHES]
 Name = Ho-oh's Ashes

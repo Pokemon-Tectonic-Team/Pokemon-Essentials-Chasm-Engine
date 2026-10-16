@@ -65,16 +65,6 @@ BattleHandlers::TargetAbilityKnockedBelowHalf.add(:MALICE,
     }
 )
 
-BattleHandlers::TargetAbilityKnockedBelowHalf.add(:SWORDBREAKER,
-    proc { |ability, target, user, move, _switched, battle|
-        next if user.dummy
-        next if user.effectActive?(:Fracture)
-        battle.pbShowAbilitySplash(target, ability)
-        user.applyEffect(:Fracture, applyEffectDurationModifiers(DEFAULT_FRACTURE_DURATION, target))
-        battle.pbHideAbilitySplash(target)
-    }
-)
-
 BattleHandlers::TargetAbilityKnockedBelowHalf.add(:KARMA,
     proc { |ability, target, user, move, _switched, battle|
         next if user.dummy
@@ -96,6 +86,12 @@ BattleHandlers::TargetAbilityKnockedBelowHalf.add(:DREAMYHAZE,
     }
 )
 
+BattleHandlers::TargetAbilityKnockedBelowHalf.add(:AROMATIC,
+    proc { |ability, target, user, move, _switched, battle|
+        battle.forceUseMove(target, :AROMATHERAPY, ability: ability)
+    }
+)
+
 BattleHandlers::TargetAbilityKnockedBelowHalf.add(:SUDDENTURN,
     proc { |ability, target, user, move, _switched, battle|
         battle.forceUseMove(target, :RAPIDSPIN, ability: ability)
@@ -108,6 +104,20 @@ BattleHandlers::TargetAbilityKnockedBelowHalf.add(:SUGARCOATED,
         next if user.effectActive?(:SugarRush)
         battle.pbShowAbilitySplash(target, ability)
         user.applyEffect(:SugarRush, applyEffectDurationModifiers(DEFAULT_SUGAR_RUSH_DURATION, target))
+        battle.pbHideAbilitySplash(target)
+    }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::TargetAbilityKnockedBelowHalf.add(:SWORDBREAKER,
+    proc { |ability, target, user, move, _switched, battle|
+        next if user.dummy
+        next if user.effectActive?(:Fracture)
+        battle.pbShowAbilitySplash(target, ability)
+        user.applyEffect(:Fracture, applyEffectDurationModifiers(DEFAULT_FRACTURE_DURATION, target))
         battle.pbHideAbilitySplash(target)
     }
 )

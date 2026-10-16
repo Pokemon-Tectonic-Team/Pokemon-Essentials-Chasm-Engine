@@ -198,6 +198,25 @@ module EffectHolder
         end
     end
 
+    # Cached per-location list of protection effect IDs, built once on first use.
+    # Avoids iterating all 259+ effects every time protection is checked.
+    PROTECTION_IDS_BY_LOCATION = {}
+
+    # Yields only active protection effects, skipping the full effects hash scan.
+    def eachActiveProtectionEffect
+        unless PROTECTION_IDS_BY_LOCATION.key?(@location)
+            ids = []
+            @effects.each_key { |id| ids << id if GameData::BattleEffect.get(id).is_protection? }
+            PROTECTION_IDS_BY_LOCATION[@location] = ids.freeze
+        end
+        PROTECTION_IDS_BY_LOCATION[@location].each do |effect_id|
+            effectData = GameData::BattleEffect.get(effect_id)
+            value = @effects[effect_id]
+            next unless effectData.active_value?(value)
+            yield effect_id, value, effectData
+        end
+    end
+
     def processEffectsSOR
         eachEffect(true) do |effect, value, data|
             # Active end of round effects

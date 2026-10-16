@@ -33,6 +33,24 @@ SKETCH_MOVE_IDS = ["SKETCH"]
 
 EBDX_INSTALLED = False
 
+# TCP keepalive to prevent NAT/firewall idle-connection drops during long turns.
+# Probes start after KEEPALIVE_IDLE seconds of silence and repeat every
+# KEEPALIVE_INTERVAL seconds for up to KEEPALIVE_COUNT probes before the OS
+# declares the connection dead.
+TCP_KEEPALIVE_IDLE = 30
+TCP_KEEPALIVE_INTERVAL = 10
+TCP_KEEPALIVE_COUNT = 6
+
+
+def enable_keepalive(s):
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+    if hasattr(socket, "TCP_KEEPIDLE"):
+        s.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, TCP_KEEPALIVE_IDLE)
+    if hasattr(socket, "TCP_KEEPINTVL"):
+        s.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, TCP_KEEPALIVE_INTERVAL)
+    if hasattr(socket, "TCP_KEEPCNT"):
+        s.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, TCP_KEEPALIVE_COUNT)
+
 
 class Server:
     def __init__(self, host, port, pbs_dir, rules_dir):
@@ -97,6 +115,7 @@ class Server:
             if s is self.socket:
                 s, address = self.socket.accept()
                 s.setblocking(False)
+                enable_keepalive(s)
                 st = self.clients[s] = State(address)
                 logging.info("%s: connect", st)
             else:
@@ -579,7 +598,7 @@ def make_party_validator(pbs_dir):
                     # fused
                     if record.bool():
                         logging.debug("Fused Mon")
-                        errors.append(f"{species} | Fused Mon", species)
+                        errors.append(f"{species} | Fused Mon")
                         validate_pokemon()
                     if EBDX_INSTALLED:
                         superhue = record.str()

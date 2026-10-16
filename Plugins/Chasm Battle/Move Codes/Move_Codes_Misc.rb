@@ -86,7 +86,7 @@ end
 
 #===============================================================================
 # Interrupts a foe switching out or using U-turn/Volt Switch/Parting Shot. Power
-# is doubled in that case. (Pursuit)
+# is doubled in that case. (Pursuit, Stalking)
 # (Handled in Battle's pbAttackPhase): Makes this attack happen before switching.
 #===============================================================================
 class PokeBattle_Move_PursueSwitchingFoe < PokeBattle_Move
@@ -121,7 +121,7 @@ class PokeBattle_Move_ChangeUserMewtwoChoiceOfForm < PokeBattle_Move
             form1Name = GameData::Species.get_species_form(:MEWTWO,1).form_name
             form2Name = GameData::Species.get_species_form(:MEWTWO,2).form_name
             formNames = [form1Name,form2Name]
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which form should {1} take?", user.pbThis(true)),formNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)),formNames)
             @chosenForm = chosenIndex + 1
             return @chosenForm
         end
@@ -393,7 +393,7 @@ end
 #===============================================================================
 # Transforms the user into one of its forms. (Mutate)
 #===============================================================================
-class PokeBattle_Move_ChangeUserDeoxusChoiceOfForm < PokeBattle_Move
+class PokeBattle_Move_ChangeUserDeoxysChoiceOfForm < PokeBattle_Move
     def resolutionChoice(user, replayed_choice)
         if @battle.autoTesting
             @chosenForm = rand(3) + 1
@@ -406,7 +406,7 @@ class PokeBattle_Move_ChangeUserDeoxusChoiceOfForm < PokeBattle_Move
             form2Name = GameData::Species.get_species_form(:DEOXYS,2).form_name
             form3Name = GameData::Species.get_species_form(:DEOXYS,3).form_name
             formNames = [form1Name,form2Name,form3Name]
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which form should {1} take?", user.pbThis(true)),formNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)),formNames)
             @chosenForm = chosenIndex + 1
             return @chosenForm
         end
@@ -582,11 +582,16 @@ end
 
 #===============================================================================
 # The user takes 33% less damage until end of this turn.
-# (Shimmering Heat)
+# (Shimmering Heat, Weaseling)
 #===============================================================================
 class PokeBattle_Move_UserTakesThirdLessDamageThisTurn < PokeBattle_Move
     def pbEffectAfterAllHits(user, _target)
         user.applyEffect(:ShimmeringHeat)
+        if @id == :SHIMMERINGHEAT
+            @battle.pbDisplay(_INTL("{1} is obscured by the shimmering haze!", user.pbThis))
+        else
+            @battle.pbDisplay(_INTL("{1} slinks into the water!", user.pbThis))
+        end
     end
 
     def getEffectScore(user, target)
@@ -697,7 +702,7 @@ class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
         elsif !user.pbOwnedByPlayer? # Trainer AI
             @chosenMove = @validMoves[0]
         else
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
             @chosenMove = @validMoves[chosenIndex]
         end
     end
@@ -716,7 +721,8 @@ class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
 end
 
 #===============================================================================
-# The user chooses one of Searing Crunch, Glacial Crunch, Aquatic Crunch, and Volt Crunch to use. (Elemental Crunch)
+# The user chooses one of Searing Crunch, Glacial Crunch, Aquatic Crunch, and Volt Crunch to use.
+# (Elemental Crunch)
 #===============================================================================
 class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
     def callsAnotherMove?; return true; end
@@ -744,7 +750,7 @@ class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
         elsif !replayed_choice.nil?
             @chosenMove = replayed_choice
         else
-            chosenIndex = @battle.scene.pbShowCommands(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames,0)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
             @chosenMove = @validMoves[chosenIndex]
             return @chosenMove
         end
@@ -764,7 +770,8 @@ class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
 end
 
 #===============================================================================
-# Fails if the user is not asleep. (Snore)
+# Fails if the user is not asleep. 
+# (Snore, Stertor, Sleepwalk Strike, REM Burst, Slumbering Roar, Toss n' Turn)
 #===============================================================================
 class PokeBattle_Move_FailsIfUserNotAsleep < PokeBattle_Move
     def usableWhenAsleep?; return true; end

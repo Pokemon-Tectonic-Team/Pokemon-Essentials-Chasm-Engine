@@ -78,6 +78,10 @@ class PokeBattle_Move_TransformUserIntoTarget < PokeBattle_Move
             end
             return true
         end
+        if GameData::Ability.getByFlag("UnableByDefault").include?(target.pokemon.ability_id)
+            @battle.pbDisplay(_INTL("But it failed, since {1} cannot be transformed into!", target.pbThis(true))) if show_message
+            return true
+        end
         return false
     end
 

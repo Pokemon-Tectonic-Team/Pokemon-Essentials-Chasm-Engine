@@ -58,11 +58,11 @@ class PokeBattle_Battle
             partyScene.pbDisplay(_INTL("Avatars can't be switched out!")) if partyScene
             return false
         end
-        if @battlers[idxBattler].effectActive?(:RampageLocked)
+        if @battlers[idxBattler].effectActive?(:RampageLocked)  && @battlers[idxBattler].effectActive?(:Rampaging)
             partyScene.pbDisplay(_INTL("Rampaging Pokémon can't be switched out!")) if partyScene
             return false
         end
-        if @battlers[idxBattler].effectActive?(:BypassExhaustion)
+        if @battlers[idxBattler].effectActive?(:HyperBeam)
             partyScene.pbDisplay(_INTL("Exhausted Pokémon can't be switched out!")) if partyScene
             return false
         end
@@ -234,6 +234,9 @@ class PokeBattle_Battle
                             next if switched.include?(playerBattler.index)
                             next unless pbCanChooseNonActive?(playerBattler.index)
                             next if playerBattler.effectActive?(:Rampaging)
+                            if playerBattler.hasActiveAbility?(:EMPATHFINDER)
+                                next unless pbCanSwitch?(playerBattler.index)
+                            end
 
                             idxPartyForName = idxPartyNew
                             enemyParty = pbParty(idxBattler)
@@ -391,6 +394,29 @@ class PokeBattle_Battle
             pbSetSeen(@battlers[b[0]])
             @usedInBattle[b[0] & 1][b[0] / 2] = true
         end
+    end
+
+    def triggerThrownIn(user)
+        side = user.idxOwnSide
+        pyukuPartyIndex = nil
+        pbParty(side).each_with_index do |pkmn, i|
+            next if !pkmn
+            next if pkmn.fainted?
+            next if !pkmn.hasAbility?(:THROWNIN)
+            next if pokemonIsActiveBattler?(pkmn)
+            pyukuPartyIndex = i
+            break
+        end
+        return if pyukuPartyIndex.nil?
+        pyuku = pbParty(side)[pyukuPartyIndex]
+        pbShowPokemonAbilitySplash(pyuku, side, :THROWNIN)
+        pbDisplayPaused(_INTL("{1} was thrown into battle!", pbThisEx(side, pyukuPartyIndex)))
+        battlerIndex = user.index
+        pbRecallAndReplace(battlerIndex, pyukuPartyIndex)
+        pbPriority(true).each do |b|
+            b.pbEffectsOnSwitchIn(true) if b.index == battlerIndex
+        end
+        pbHidePokemonAbilitySplash(side)
     end
 
     #=============================================================================

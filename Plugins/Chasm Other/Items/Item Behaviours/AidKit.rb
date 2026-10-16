@@ -100,6 +100,7 @@ ItemHandlers::UseFromBag.add(:KITEXPANSION,proc { |item|
 		next 0
 	else
 		charges = $PokemonGlobal.teamHealerMaxUses
+		pbSEPlay("Mining found all",80,100)
 		pbMessage(_INTL("Your Aid Kit has been increased to {1} charges.", charges + 1))
 		$PokemonGlobal.teamHealerMaxUses	 	+= 1
 		$PokemonGlobal.teamHealerCurrentUses 	+= 1
@@ -118,6 +119,7 @@ ItemHandlers::UseFromBag.add(:MEDICALUPGRADE,proc { |item|
 		pbMessage(_INTL("Your Aid Kit already has the maximum healing amount."))
 		next 0
 	else
+		pbSEPlay("Mining found all",80,100)
 		pbMessage(_INTL("Your Aid Kit now heals an additional {1} HP per charge.", HEALING_UPGRADE_AMOUNT))
 		$PokemonGlobal.teamHealerUpgrades	 	+= 1
         checkForAidKitAchievement

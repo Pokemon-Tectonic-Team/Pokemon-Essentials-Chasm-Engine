@@ -423,25 +423,11 @@ class PokeBattle_Battle
         damageDoubled = pbCheckGlobalAbility(:IRONSTORM)
         if showMessages && !aiCheck
             if pbWeather == :StarStorm
-                if @field.specialTimer >= 5
-                    if damageDoubled
-                        pbDisplay(_INTL("{1} is shredded by gigantic particles of iron stardust!", battler.pbThis))
-                    else
-                        pbDisplay(_INTL("{1} is buffeted by gigantic particles of stardust!", battler.pbThis))
-                    end 
-                elsif @field.specialTimer >= 3
-                    if damageDoubled
-                        pbDisplay(_INTL("{1} is shredded by large particles of iron stardust!", battler.pbThis))
-                    else
-                        pbDisplay(_INTL("{1} is buffeted by large particles of stardust!", battler.pbThis))
-                    end 
+                if damageDoubled
+                    pbDisplay(_INTL("{1} is shredded by iron stardust!", battler.pbThis))
                 else
-                    if damageDoubled
-                        pbDisplay(_INTL("{1} is shredded by iron stardust!", battler.pbThis))
-                    else
-                        pbDisplay(_INTL("{1} is buffeted by stardust!", battler.pbThis))
-                    end  
-                end
+                    pbDisplay(_INTL("{1} is buffeted by stardust!", battler.pbThis))
+                end  
             else
                 if damageDoubled
                     pbDisplay(_INTL("{1} is shredded by the iron-infused sandstorm!", battler.pbThis))

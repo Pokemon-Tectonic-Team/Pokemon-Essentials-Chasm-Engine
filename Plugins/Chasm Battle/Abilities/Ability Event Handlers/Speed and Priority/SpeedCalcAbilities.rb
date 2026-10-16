@@ -4,12 +4,6 @@ BattleHandlers::SpeedCalcAbility.add(:CHLOROPHYLL,
   }
 )
 
-BattleHandlers::SpeedCalcAbility.add(:QUICKFEET,
-  proc { |ability, battler, mult|
-      next mult * 2.0 if battler.pbHasAnyStatus?
-  }
-)
-
 BattleHandlers::SpeedCalcAbility.add(:HYPERSPEED,
   proc { |ability, battler, mult|
       next mult * 2.0
@@ -144,12 +138,6 @@ BattleHandlers::SpeedCalcAbility.add(:FROSTFANGED,
   }
 )
 
-BattleHandlers::SpeedCalcAbility.add(:LIGHTNINGRIDE,
-  proc { |ability, battler, mult|
-      next mult * 2.0 if battler.effectActive?(:EnergyCharge)
-  }
-)
-
 BattleHandlers::SpeedCalcAbility.add(:METEORIC,
   proc { |ability, battler, mult|
       next mult * 1.5 if %i[Sandstorm Hail].include?(battler.battle.pbWeather)
@@ -208,5 +196,21 @@ BattleHandlers::SpeedCalcAbility.add(:HAILSTONEHELM,
 BattleHandlers::SpeedCalcAbility.add(:SUNCHASER,
   proc { |ability, battler, mult|
       next mult * 1.5 if battler.battle.sunny?
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::SpeedCalcAbility.add(:QUICKFEET,
+  proc { |ability, battler, mult|
+      next mult * 2.0 if battler.pbHasAnyStatus?
+  }
+)
+
+BattleHandlers::SpeedCalcAbility.add(:LIGHTNINGRIDE,
+  proc { |ability, battler, mult|
+      next mult * 2.0 if battler.effectActive?(:EnergyCharge)
   }
 )

@@ -49,17 +49,6 @@ BattleHandlers::EORHealingAbility.add(:HYDRATION,
     }
 )
 
-BattleHandlers::EORHealingAbility.add(:HEALER,
-    proc { |ability, battler, battle|
-        battler.eachAlly do |b|
-            next unless b.hasAnyStatusNoTrigger
-            battle.pbShowAbilitySplash(battler, ability)
-            b.pbCureStatus
-            battle.pbHideAbilitySplash(battler)
-        end
-    }
-)
-
 BattleHandlers::EORHealingAbility.add(:OXYGENATION,
     proc { |ability, battler, battle|
         next unless battler.hasAnyStatusNoTrigger
@@ -170,7 +159,7 @@ BattleHandlers::EORHealingAbility.add(:DIRECTCURRENT,
       elsif !battler.pbOwnedByPlayer? # Trainer AI
         choice = 0
       else
-        choice = battle.scene.pbShowCommands(_INTL("Where to direct power?"),choices,0)
+        choice = battle.scene.pbChooseWithThinkingLoop(_INTL("Where to direct power?"),choices)
       end
       if choice == 0
         battler.tryRaiseStat(:SPEED, battler)
@@ -180,4 +169,19 @@ BattleHandlers::EORHealingAbility.add(:DIRECTCURRENT,
       battler.hideMyAbilitySplash
     end
   }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::EORHealingAbility.add(:HEALER,
+    proc { |ability, battler, battle|
+        battler.eachAlly do |b|
+            next unless b.hasAnyStatusNoTrigger
+            battle.pbShowAbilitySplash(battler, ability)
+            b.pbCureStatus
+            battle.pbHideAbilitySplash(battler)
+        end
+    }
 )

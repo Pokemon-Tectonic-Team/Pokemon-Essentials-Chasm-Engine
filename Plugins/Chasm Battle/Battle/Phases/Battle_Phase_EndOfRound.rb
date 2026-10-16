@@ -114,7 +114,7 @@ class PokeBattle_Battle
 
     def damageFromDOTStatus(battler, status, aiCheck = false)
         if battler.takesIndirectDamage? && !battler.hasActiveAbility?(:PLACIDITY)
-            if status == :LEECHED || status == :POISON
+            if status == :LEECHED || status == :POISON || status == :BURN || status == :FROSTBITE
                 fraction = 1.0 / 12.0
             else
                 fraction = 1.0 / 8.0

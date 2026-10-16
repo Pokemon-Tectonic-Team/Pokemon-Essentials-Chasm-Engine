@@ -208,6 +208,14 @@ class PokeBattle_Move_StartSwapSpeedOrder5 < PokeBattle_Move
         @trickstersdomainDuration = 5
     end
 
+    def pbMoveFailed?(user, _targets, show_message)
+        if !user.countsAs?(:HOOPA)
+            @battle.pbDisplay(_INTL("But {1} can't use the move!", user.pbThis(true))) if show_message
+            return true
+        end
+        return false
+    end
+
     def pbEffectGeneral(_user)
         @battle.field.applyEffect(:TrickstersDomain, applyEffectDurationModifiers(@trickstersdomainDuration, _user))
     end

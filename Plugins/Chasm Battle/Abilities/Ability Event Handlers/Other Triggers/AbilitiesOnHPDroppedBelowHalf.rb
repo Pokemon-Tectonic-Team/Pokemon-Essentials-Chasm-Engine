@@ -56,13 +56,6 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:PRIMEVALDISGUISE,
     }
 )
 
-BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BATTLEHARDENED,
-  proc { |ability, battler, _battle|
-      battler.pbRaiseMultipleStatSteps([:DEFENSE, 3, :SPECIAL_DEFENSE, 3], battler, ability: ability)
-      next false
-  }
-)
-
 BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:RATSNEST,
   proc { |ability, battler, battle|
       battle.pbShowAbilitySplash(battler, ability)
@@ -112,3 +105,17 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:VOIDWARRANTY,
       battle.pbHideAbilitySplash(battler)
   }
 )
+
+BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BATTLEHARDENED,
+  proc { |ability, battler, _battle|
+      next if battler.effectActive?(:BattleHardened)
+      battler.pbRaiseMultipleStatSteps([:DEFENSE, 3, :SPECIAL_DEFENSE, 3], battler, ability: ability)
+      battler.applyEffect(:BattleHardened)
+      next false
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+

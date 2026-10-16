@@ -246,6 +246,11 @@ class PokeBattle_Battle
         return getAbleParameters(idxParty, idxBattler % 2, pbGetOwnerIndexFromBattlerIndex(idxBattler))
     end
 
+    def party_restorer_ability?(ability)
+        return false unless ability
+        GameData::Ability.get(ability).flags.include?("BattleEndReviver")
+    end
+
     # Used for Illusion.
     # NOTE: This cares about the temporary rearranged order of the team. That is,
     #       if you do some switching, the last Pokémon in the team could change

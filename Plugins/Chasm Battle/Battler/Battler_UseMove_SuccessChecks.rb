@@ -173,7 +173,7 @@ class PokeBattle_Battler
             echoln(msg)
             return false
         end
-        # Belch
+        # Moves that restrict when they can be used
         return false unless move.pbCanChooseMove?(self, commandPhase, showMessages)
         # Turbulent Sky
         if pbOwnSide.effectActive?(:TurbulentSky) && !effectActive?(:Instructed) &&
@@ -186,7 +186,7 @@ class PokeBattle_Battler
             return false
         end
         # Rampage Locked
-        if effectActive?(:RampageLocked) && !move.rampagingMove?
+        if effectActive?(:RampageLocked) && effectActive?(:Rampaging) && !move.rampagingMove?
             msg = _INTL("{1} can't use this attack while rampaging!", pbThis)
             if showMessages
                 commandPhase ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
@@ -419,8 +419,7 @@ target.pbThis(true)))
         holdersToCheck = [target]
         holdersToCheck.push(target.pbOwnSide) if target.index != user.index
         holdersToCheck.each do |effectHolder|
-            effectHolder.eachEffect(true) do |effect, _value, data|
-                next unless data.is_protection?
+            effectHolder.eachActiveProtectionEffect do |effect, _value, data|
                 if data.protection_info&.has_key?(:does_negate_proc) && !data.protection_info[:does_negate_proc].call(
                     user, target, move, @battle)
                     next

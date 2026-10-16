@@ -1,3 +1,19 @@
+BattleHandlers::TrappingTargetAbility.add(:CLINGY,
+  proc { |ability, switcher, _bearer, _battle|
+      next true if switcher.pbHasAnyStatus?
+  }
+)
+
+BattleHandlers::TrappingTargetAbility.add(:NOHOPE,
+  proc { |ability, switcher,  _bearer, _battle|
+      next true if switcher.belowHalfHealth?
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
 BattleHandlers::TrappingTargetAbility.add(:ARENATRAP,
     proc { |ability, switcher, _bearer, _battle|
         next true unless switcher.airborne?
@@ -10,12 +26,6 @@ BattleHandlers::TrappingTargetAbility.add(:SHADOWTAG,
   }
 )
 
-BattleHandlers::TrappingTargetAbility.add(:CLINGY,
-  proc { |ability, switcher, _bearer, _battle|
-      next true if switcher.pbHasAnyStatus?
-  }
-)
-
 BattleHandlers::TrappingTargetAbility.add(:FROSTPITALITY,
   proc { |ability, switcher, _bearer, battle|
       next true if battle.icy?
@@ -25,11 +35,5 @@ BattleHandlers::TrappingTargetAbility.add(:FROSTPITALITY,
 BattleHandlers::TrappingTargetAbility.add(:TRACTORBEAM,
   proc { |ability, switcher, _bearer, battle|
       next true if battle.eclipsed?
-  }
-)
-
-BattleHandlers::TrappingTargetAbility.add(:NOHOPE,
-  proc { |ability, switcher,  _bearer, _battle|
-      next true if switcher.belowHalfHealth?
   }
 )

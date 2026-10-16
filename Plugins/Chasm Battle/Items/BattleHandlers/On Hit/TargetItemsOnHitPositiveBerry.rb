@@ -9,7 +9,7 @@ BattleHandlers::TargetItemOnHitPositiveBerry.add(:KEEBERRY,
         next false if !forced && !battler.canConsumeBerry?
         next false unless battler.pbCanRaiseStatStep?(:DEFENSE, battler)
         itemName = GameData::Item.get(item).name
-        increment = 4
+        increment = 3
         increment *= 2 if battler.hasActiveAbility?(:RIPEN)
         unless forced
             battle.pbCommonAnimation("Nom", battler)
@@ -24,7 +24,7 @@ BattleHandlers::TargetItemOnHitPositiveBerry.add(:MARANGABERRY,
       next false if !forced && !battler.canConsumeBerry?
       next false unless battler.pbCanRaiseStatStep?(:SPECIAL_DEFENSE, battler)
       itemName = GameData::Item.get(item).name
-      increment = 4
+      increment = 3
       increment *= 2 if battler.hasActiveAbility?(:RIPEN)
       unless forced
           battle.pbCommonAnimation("Nom", battler)
@@ -38,7 +38,7 @@ BattleHandlers::TargetItemOnHitPositiveBerry.add(:ENIGMABERRY,
   proc { |item, battler, battle, forced|
       next false unless battler.canHeal?
       next false if !forced && !battler.canConsumeBerry?
-      healFromBerry(battler, 1.0 / 4.0, item, forced = false)
+      healFromBerry(battler, 1.0 / 3.0, item, forced = false)
       next true
   }
 )

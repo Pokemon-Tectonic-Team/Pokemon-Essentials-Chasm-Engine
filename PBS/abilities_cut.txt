@@ -98,10 +98,6 @@ Name = Battle Armor
 Description = The Pokémon is protected against critical hits.
 Flags = CritImmunity
 #-------------------------------
-[BATTLEHARDENED]
-Name = Battle-Hardened
-Description = Raises Defense and Sp. Def by three steps when its HP is lowered below half.
-#-------------------------------
 [BEASTBOOST]
 Name = Beast Boost
 Description = Boosts its best stat each time it deals a KO.
@@ -140,7 +136,7 @@ Name = Blaze
 Description = Powers up Fire-type moves in a pinch.
 #-------------------------------
 [BLIZZBOXER]
-Name = Sleetshaker
+Name = Blizz Boxer
 Description = Boosts Attack by 30% in hailstorms.
 #-------------------------------
 [BRAINSCRAMBLE]
@@ -356,6 +352,10 @@ Description = At low health, eats other battlers' low-health triggered berries.
 [EXTREMEENERGY]
 Name = Extreme Voltage
 Description = Increases Sp. Atk by 50%, but the Pokémon is hurt for 1/10th HP each turn.
+#-------------------------------
+[FAEVEIL]
+Name = Fae Veil
+Description = Prevents itself and allies from being burned, frostbitten, or numbed.
 #-------------------------------
 [FAIRYSURGE]
 Name = Fairy Surge
@@ -576,6 +576,14 @@ Flags = IgnoreScreens,IgnoreSubstitute
 Name = Infinite Source
 Description = Pokémon that swap in for this have their Speed raised and their PP fully restored.
 #-------------------------------
+[INNARDSOUT]
+Name = Innards Out
+Description = When this Pokémon is knocked out by an attack, the attacker takes damage equal to this Pokémon's previous HP.
+#-------------------------------
+[INNARDSPUNCH]
+Name = Innards Punch
+Description = When hit with an attacking move, hits back instantly with Mega Punch.
+#-------------------------------
 [INNERLIGHT]
 Name = Inner Light
 Description = Summons sunshine for four turns when hit by an attack.
@@ -600,6 +608,10 @@ Description = Raises Attack when hit by a Dark-type move.
 [KEENEYE]
 Name = Keen Eye
 Description = Prevents other Pokémon from lowering accuracy.
+#-------------------------------
+[KLEPTOMANIAC]
+Name = Kleptomaniac
+Description = Uses Snatch upon entry, stealing self-targeting status moves.
 #-------------------------------
 [KLUMSYKINESIS]
 Name = Clumsy Kinesis
@@ -748,6 +760,11 @@ Description = Sets Fairy Terrain for five turns when hit by an attack.
 Name = Misty Surge
 Description = Turns the ground into Fairy Terrain for 5 turns when entering battle.
 #-------------------------------
+[MODUSSWITCH]
+Name = Modus Switch
+Description = When using Techno Blast, the user can choose the move's type, switching to that form.
+Flags = Immutable
+#-------------------------------
 [MOLDBREAKER]
 Name = Mold Breaker
 Description = Ignores Abilities that would affect its moves.
@@ -773,6 +790,10 @@ Description = After being attacked, gains immunity to that move's type but loses
 [MOTHBURGLAR]
 Name = Moth Burglar
 Description = Hits opponent with Thief when switched out.
+#-------------------------------
+[MULTIHEADED]
+Name = Multiheaded
+Description = While this Pokémon is below half health, takes 33% less damage from attacks.
 #-------------------------------
 [MYSTICTAP]
 Name = Mystic Tap
@@ -1143,6 +1164,10 @@ Description = Can't be statused due to its hard shell. Boosts Sp. Atk and Speed 
 Name = Dreamy Haze
 Description = If an attack lowers its HP to half or less, the attacker becomes drowsy.
 #-------------------------------
+[SLICKSURFACE]
+Name = Slick Surface
+Description = Can't be leeched, drained, or trapped.
+#-------------------------------
 [SMOKEREFLEX]
 Name = Pressure Valve
 Description = Right before the Pokémon is attacked, the attacker's stat changes are reset.
@@ -1284,6 +1309,10 @@ Description = Has a 30% chance to leech targets when using physical moves.
 [SWEETVEIL]
 Name = Sweet Veil
 Description = Prevents itself and allies from falling asleep.
+#-------------------------------
+[SWORDBREAKER]
+Name = Sword Breaker
+Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
 #-------------------------------
 [SYMBIOSIS]
 Name = Symbiosis
