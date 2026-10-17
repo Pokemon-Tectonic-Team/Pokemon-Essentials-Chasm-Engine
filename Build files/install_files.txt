@@ -3,11 +3,11 @@ Data
 Fonts
 Graphics
 lib64
+OnlinePresets
 PBS
 Plugins
 zlib1.dll
 x64-msvcrt-ruby310.dll
-townmapgen.html
 soundfont.sf2
 selpoint.bmp
 RGSS104E.dll
@@ -16,15 +16,16 @@ Your Game Name Here.rxproj
 Your Game Name Here.ini
 mkxp.json
 LICENSE
-knownpoints.bmp
+knownpoint.bmp
 GitIgnored Files.zip
 Game.ini
 Game.exe
 extendtext.txt
 extendtext.exe
 Essentials Docs Wiki.URL
-animaker.exe
+animmaker.exe
+animmaker.txt
+cable_club_v19.py
 Game Linux.x86_64
 Debug Game.bat
 Debug Game With PBS Compile.bat
-release_version.txt
