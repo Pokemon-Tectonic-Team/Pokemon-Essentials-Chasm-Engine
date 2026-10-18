@@ -53,7 +53,7 @@ class HelperTrainer
         target_data = GameData::Target.get(moveData.target)
 
 		targetIndex = -1
-		if target_data.single_target? && target_data.targets_ally
+		if target_data.single_target? && !target_data.targets_foe && target_data.targets_ally
 			targetIndex = sideIndex
 			echoln("Helper move has been set to target index #{targetIndex}")
 		end
