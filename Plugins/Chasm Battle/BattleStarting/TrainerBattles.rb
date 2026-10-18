@@ -75,6 +75,8 @@ def pbTrainerBattleCore(*args)
     battle.party2starts = foePartyStarts
     battle.items        = foeItems
     battle.endSpeeches  = foeEndSpeeches
+    battle.playerHelper = loadPlayerHelperTrainer
+    battle.opponentHelper = loadOpponentHelperTrainer
     # Set various other properties in the battle class
     pbPrepareBattle(battle)
     battle.registerRules
@@ -123,6 +125,27 @@ def loadPartnerTrainer(playerTrainers, playerParty, playerPartyStarts)
     end
     return playerParty
 end
+
+def loadPlayerHelperTrainer
+    if $PokemonGlobal.helperTrainer && !$PokemonTemp.battleRules["noHelper"]
+        trainerData = GameData::Trainer.get(*$PokemonGlobal.helperTrainer) # Splat operator
+        trainer = trainerData.to_trainer
+        helper = HelperTrainer.new(trainer, turnsPerAction: 0) # TO DO: un-set this from 0, only is this for testing
+        return helper
+    end
+    return nil
+end
+
+def loadOpponentHelperTrainer
+    if $PokemonTemp.opponentHelperTrainer
+        trainerData = GameData::Trainer.get(*$PokemonTemp.opponentHelperTrainer) # Splat operator
+        trainer = trainerData.to_trainer
+        helper = HelperTrainer.new(trainer, turnsPerAction: 0) # TO DO: un-set this from 0, only is this for testing
+        return helper
+    end
+    return nil
+end
+
 
 #===============================================================================
 # Standard methods that start a trainer battle of various sizes
