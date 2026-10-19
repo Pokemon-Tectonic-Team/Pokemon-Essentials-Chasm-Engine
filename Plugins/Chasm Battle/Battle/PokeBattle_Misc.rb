@@ -254,11 +254,17 @@ class PokeBattle_Battle
         end
 
         unless cantForceMove
-            PBDebug.logonerr do
-                forcedMoveUser.effects[moveUsageEffect] = true unless moveUsageEffect.nil?
-                forcedMoveUser.pbUseMoveSimple(moveID, target, moveIndex, specialUsage)
-                forcedMoveUser.effects[moveUsageEffect] = false unless moveUsageEffect.nil?
-            end
+            oldIgnoreChoiceLock = forcedMoveUser.ignoreChoiceLock
+            forcedMoveUser.ignoreChoiceLock = true
+
+            begin
+                PBDebug.logonerr do
+                    forcedMoveUser.effects[moveUsageEffect] = true unless moveUsageEffect.nil?
+                    forcedMoveUser.pbUseMoveSimple(moveID, target, moveIndex, specialUsage)
+                    forcedMoveUser.effects[moveUsageEffect] = false unless moveUsageEffect.nil?
+                end
+            ensure
+                forcedMoveUser.ignoreChoiceLock = oldIgnoreChoiceLock
         end
 
         forcedMoveUser.lastRoundMoved = oldLastRoundMoved
