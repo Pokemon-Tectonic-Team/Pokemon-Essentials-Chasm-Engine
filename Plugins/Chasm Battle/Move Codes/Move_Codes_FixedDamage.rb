@@ -63,6 +63,20 @@ class PokeBattle_Move_FixedDamageHalfTargetHealUserByHalfOfDamageDone < PokeBatt
 end
 
 #===============================================================================
+# Deals 50 fixed damage. (Eggschange)
+# User gains the HP it inflicts as damage.
+#===============================================================================
+class PokeBattle_Move_FixedDamage50TargetHealUserByDamageDone < PokeBattle_Move_FixedDamageHalfTargetHealUserByHalfOfDamageDone
+    def drainFactor(_user, _target); return 1.0; end
+
+    def pbFixedDamage(_user, target)
+        damage = 50
+        damage *= target.hpBasedEffectResistance if target.boss?
+        return damage.round
+    end
+end
+
+#===============================================================================
 # Inflicts damage to bring the target's HP down to equal the user's HP. (Endeavor)
 #===============================================================================
 class PokeBattle_Move_LowerTargetHPToUserHP < PokeBattle_FixedDamageMove

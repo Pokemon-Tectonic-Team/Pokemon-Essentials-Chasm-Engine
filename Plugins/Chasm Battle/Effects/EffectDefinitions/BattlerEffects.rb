@@ -607,7 +607,7 @@ GameData::BattleEffect.register_effect(:Battler, {
 
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :AbilitySupressed,
-    :real_name => "Ability Surpressed",
+    :real_name => "Ability Suppressed",
     :baton_passed => true,
     :pass_value_proc => proc do |battler, value|
         next false if battler.immutableAbility?
@@ -2572,11 +2572,37 @@ GameData::BattleEffect.register_effect(:Battler, {
         battle.pbDisplay(_INTL("{1} is cured of its shrinking!", battler.pbThis))
     end,
     :expire_proc => proc do |battle, battler|
-        battle.pbDisplay(_INTL("{1} is no longer shrinking down!", battler.pbThis(true)))
+        battle.pbDisplay(_INTL("{1} is no longer shrinking down!", battler.pbThis))
     end,
     :eor_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("{1} got smaller! Its highest stat is going down!", battler.pbThis(true)))
+        battle.pbDisplay(_INTL("{1} got smaller! Its highest stat is going down!", battler.pbThis))
         battler.pbLowerStatStep(battler.highestStat, 2)
+        battler.pbItemStatRestoreCheck
+    end,
+})
+
+DEFAULT_ERODINGFOAM_DURATION = 2
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ErodingFoam,
+    :real_name => "Eroding Foam",
+    :type => :Integer,
+    :ticks_down_eor => true,
+    :baton_passed => true,
+    :avatars_purge => true,
+    :apply_proc => proc do |battle, battler, value|
+        battle.pbDisplay(_INTL("{1} is covered in foam!", battler.pbThis))
+        battle.pbDisplay(_INTL("It'll last for {1} more turns!", value-1))
+    end,
+    :disable_proc => proc do |battle, battler|
+        battle.pbDisplay(_INTL("The foam around {1} is cleared!", battler.pbThis(true)))
+    end,
+    :expire_proc => proc do |battle, battler|
+        battle.pbDisplay(_INTL("{1} is no longer covered in foam!", battler.pbThis))
+    end,
+    :eor_proc => proc do |battle, battler, _value|
+        battle.pbDisplay(_INTL("The Eroding Foam is melting {1}'s Defense!", battler.pbThis(true)))
+        battler.tryLowerStat(:DEFENSE, battler, increment: 2)
         battler.pbItemStatRestoreCheck
     end,
 })
@@ -2818,4 +2844,10 @@ GameData::BattleEffect.register_effect(:Battler, {
             battle.pbDisplay(_INTL("{1}'s stat changes were eliminated!", battler.pbThis))
         end
     end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :BattleHardened,
+    :real_name => "Battle-Hardened",
+    :info_displayed => false
 })

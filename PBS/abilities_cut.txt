@@ -98,10 +98,6 @@ Name = Battle Armor
 Description = The Pokémon is protected against critical hits.
 Flags = CritImmunity
 #-------------------------------
-[BATTLEHARDENED]
-Name = Battle-Hardened
-Description = Raises Defense and Sp. Def by three steps when its HP is lowered below half.
-#-------------------------------
 [BEASTBOOST]
 Name = Beast Boost
 Description = Boosts its best stat each time it deals a KO.
@@ -795,6 +791,10 @@ Description = After being attacked, gains immunity to that move's type but loses
 Name = Moth Burglar
 Description = Hits opponent with Thief when switched out.
 #-------------------------------
+[MULTIHEADED]
+Name = Multiheaded
+Description = While this Pokémon is below half health, takes 33% less damage from attacks.
+#-------------------------------
 [MYSTICTAP]
 Name = Mystic Tap
 Description = Gets double healing from all sources during moonglow.
@@ -1309,6 +1309,10 @@ Description = Has a 30% chance to leech targets when using physical moves.
 [SWEETVEIL]
 Name = Sweet Veil
 Description = Prevents itself and allies from falling asleep.
+#-------------------------------
+[SWORDBREAKER]
+Name = Sword Breaker
+Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
 #-------------------------------
 [SYMBIOSIS]
 Name = Symbiosis

@@ -690,7 +690,7 @@ Name = Loaded Dice
 NamePlural = Loaded Dices
 Pocket = 13
 Price = 4000
-Description = A held item. It makes multi-hit attacks consistently hit 4 or 5 times.
+Description = A held item. It makes "two to five" multi-hit attacks consistently hit 4 or 5 times.
 #-------------------------------
 [FRAGILELOCKET]
 Name = Fragile Locket

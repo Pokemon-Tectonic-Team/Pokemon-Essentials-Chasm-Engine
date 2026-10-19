@@ -106,13 +106,16 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:VOIDWARRANTY,
   }
 )
 
+BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BATTLEHARDENED,
+  proc { |ability, battler, _battle|
+      next if battler.effectActive?(:BattleHardened)
+      battler.pbRaiseMultipleStatSteps([:DEFENSE, 3, :SPECIAL_DEFENSE, 3], battler, ability: ability)
+      battler.applyEffect(:BattleHardened)
+      next false
+  }
+)
+
 ############################################
 # Ability Code for cut or unused abilities
 ############################################
 
-BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BATTLEHARDENED,
-  proc { |ability, battler, _battle|
-      battler.pbRaiseMultipleStatSteps([:DEFENSE, 3, :SPECIAL_DEFENSE, 3], battler, ability: ability)
-      next false
-  }
-)

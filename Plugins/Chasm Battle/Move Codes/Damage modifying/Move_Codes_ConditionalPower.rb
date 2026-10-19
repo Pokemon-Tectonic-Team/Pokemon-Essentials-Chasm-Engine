@@ -16,6 +16,23 @@ class PokeBattle_Move_652 < PokeBattle_Move_HitsDiggers
 end
 
 #===============================================================================
+# Power is doubled if the target is using Dive. Hits diving targets. (Surf)
+#===============================================================================
+class PokeBattle_Move_HitsDivers < PokeBattle_Move
+    def hitsDivingTargets?; return true; end
+
+    def pbBaseDamage(baseDmg, _user, target)
+        baseDmg *= 2 if target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderwater") # Dive
+        return baseDmg
+    end
+end
+
+# Empowered Surf
+class PokeBattle_Move_653 < PokeBattle_Move_HitsDivers
+    include EmpoweredMove
+end
+
+#===============================================================================
 # Deals double damage on the first turn out. (Play Bite)
 #===============================================================================
 class PokeBattle_Move_DoubleDamageFirstTurn < PokeBattle_Move

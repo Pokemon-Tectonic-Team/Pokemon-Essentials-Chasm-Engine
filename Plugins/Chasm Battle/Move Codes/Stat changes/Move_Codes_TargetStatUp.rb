@@ -130,7 +130,7 @@ class PokeBattle_Move_RaiseTargetWorstThreeStats1 < PokeBattle_Move
         statsTargetCanRaise = target.finalStats.select do |stat, _finalValue|
             next target.pbCanRaiseStatStep?(stat, user, self)
         end
-        statsRanked = statsTargetCanRaise.sort_by { |_s, v| v }.to_h.keys
+        statsRanked = statsTargetCanRaise.stable_sort_by { |_s, v| v }.to_h.keys
         statUp = []
         statsRanked.each_with_index do |stat, index|
             break if index > 2

@@ -584,31 +584,33 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
         return super
     end
 
-    def pbInitialEffect(user, targets, _hitNum)
-        pbChargingTurnMessage(user, targets) if @chargingTurn
-        if @chargingTurn && @damagingTurn # Move only takes one turn to use
-            pbShowAnimation(@id, user, targets, 1) # Charging anim
-            pbChargingTurnGeneralEffect(user)
-            if @powerHerb
-                # Moves that would make the user semi-invulnerable will hide the user
-                # after the charging animation, so the "UseItem" animation shouldn't show
-                # for it
-                @battle.pbCommonAnimation("UseItem", user) unless %w[
-                    TwoTurnAttackInvulnerableInSky
-                    TwoTurnAttackInvulnerableUnderground
-					TwoTurnAttackInvulnerableUndergroundHitThreeTimes
-                    TwoTurnAttackInvulnerableUnderwater
-                    TwoTurnAttackInvulnerableHiding
-                    TwoTurnAttackInvulnerableInFoliage
-                    TwoTurnAttackInvulnerableScalesFaster
-                    TwoTurnAttackInvulnerableJinxFrostbite
-                    TwoTurnAttackInvulnerableRemoveProtections
-                    TwoTurnAttackInvulnerableVerminCloud].include?(@function)
-                @battle.pbDisplay(_INTL("{1} became fully charged due to its Power Herb!", user.pbThis))
-                user.consumeItem(:POWERHERB)
+    def pbInitialEffect(user, targets, hitNum)
+        if hitNum == 0
+            pbChargingTurnMessage(user, targets) if @chargingTurn
+            if @chargingTurn && @damagingTurn # Move only takes one turn to use
+                pbShowAnimation(@id, user, targets, 1) # Charging anim
+                pbChargingTurnGeneralEffect(user)
+                if @powerHerb
+                    # Moves that would make the user semi-invulnerable will hide the user
+                    # after the charging animation, so the "UseItem" animation shouldn't show
+                    # for it
+                    @battle.pbCommonAnimation("UseItem", user) unless %w[
+                        TwoTurnAttackInvulnerableInSky
+                        TwoTurnAttackInvulnerableUnderground
+					    TwoTurnAttackInvulnerableUndergroundHitThreeTimes
+                        TwoTurnAttackInvulnerableUnderwater
+                        TwoTurnAttackInvulnerableHiding
+                        TwoTurnAttackInvulnerableInFoliage
+                        TwoTurnAttackInvulnerableScalesFaster
+                        TwoTurnAttackInvulnerableJinxFrostbite
+                        TwoTurnAttackInvulnerableRemoveProtections
+                        TwoTurnAttackInvulnerableVerminCloud].include?(@function)
+                    @battle.pbDisplay(_INTL("{1} became fully charged due to its Power Herb!", user.pbThis))
+                    user.consumeItem(:POWERHERB)
+                end
             end
+            pbAttackingTurnMessage(user, targets) if @damagingTurn
         end
-        pbAttackingTurnMessage(user, targets) if @damagingTurn
     end
 
     def pbChargingTurnMessage(user, _targets)

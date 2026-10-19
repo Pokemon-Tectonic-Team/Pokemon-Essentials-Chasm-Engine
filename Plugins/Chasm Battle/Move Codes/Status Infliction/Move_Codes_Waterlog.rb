@@ -18,8 +18,7 @@ class PokeBattle_Move_EmpoweredWaterlog < PokeBattle_Move
 end
 
 #===============================================================================
-# Power is doubled if the target is using Dive. Hits some semi-invulnerable
-# targets. (Surf)
+# Power is doubled if the target is using Dive. Hits diving targets. Can waterlog.
 #===============================================================================
 class PokeBattle_Move_WaterlogTargetHitsDivers < PokeBattle_WaterlogMove
     def hitsDivingTargets?; return true; end
@@ -28,11 +27,6 @@ class PokeBattle_Move_WaterlogTargetHitsDivers < PokeBattle_WaterlogMove
         baseDmg *= 2 if target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderwater") # Dive
         return baseDmg
     end
-end
-
-# Empowered Surf
-class PokeBattle_Move_653 < PokeBattle_Move_WaterlogTargetHitsDivers
-    include EmpoweredMove
 end
 
 #===============================================================================

@@ -197,6 +197,19 @@ FunctionCode = Drainage
 Flags = CanProtect
 Description = This attack inflicts double damage on a waterlogged foe. It also cures the target's waterlogging, however.
 #-------------------------------
+[EGGSCHANGE]
+Name = Eggschange
+Type = NORMAL
+Category = Physical
+Power = 1
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = FixedDamage50TargetHealUserByDamageDone
+Flags = CanProtect
+Description = The user gifts the target a bad egg, damaging them, and draining their vital essence. This move deals 50 damage. The user's HP is restored by 100% of the damage dealt.
+Animation = EGGBOMB
+#-------------------------------
 [ELEMENTALCRUNCH]
 Name = Elemental Crunch
 Type = NORMAL
@@ -1692,7 +1705,7 @@ Target = NearOther
 Priority = 1
 FunctionCode = Basic
 Flags = CanProtect
-Description = The user shoots the target with a dart made of poison. This move always goes first.
+Description = The user shoots the target with a dart made of toxins. This move always goes first.
 Animation = POISONSTING
 #-------------------------------
 [POISONSPIKES]
@@ -4797,15 +4810,15 @@ Animation = BRINE
 [ERODINGFOAM]
 Name = Eroding Foam
 Type = WATER
-Category = Special
-Power = 80
+Category = Physical
+Power = 60
 Accuracy = 100
-TotalPP = 20
+TotalPP = 15
 Target = NearOther
-FunctionCode = LowerTargetDef3
+FunctionCode = ApplyErodingFoamToTarget
 Flags = CanProtect
 EffectChance = 100
-Description = The user spews alkaline bubbles that melt the target, lowering their Defense by three steps.
+Description = The user spews alkaline bubbles that melt the target. For the next two turns, the target's Defense will be lowered by two steps.
 Animation = BUBBLEBEAM
 #-------------------------------
 [FLOODGATE]
@@ -4918,7 +4931,7 @@ Power = 30
 Accuracy = 100
 TotalPP = 25
 Target = NearOther
-FunctionCode = WaterlogTargetHitsDivers
+FunctionCode = Waterlog
 Flags = CanProtect
 EffectChance = 30
 Description = The target is immersed in water. This has a 30% chance to waterlog.
@@ -4960,6 +4973,20 @@ Target = NearOther
 FunctionCode = DamageBoost50PercentTargetHitUser
 Flags = CanProtect
 Description = Attacks with pressurized water. Deals 50% more damage if the user has been hurt by the foe in the same turn.
+#-------------------------------
+[PRESSURESTREAM]
+Name = Pressure Stream
+Type = WATER
+Category = Special
+Power = 90
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Waterlog
+Flags = CanProtect
+EffectChance = 10
+Description = The target is struck with a stream of pressurized water. This has a 10% chance to waterlog.
+Animation = HYDROPUMP
 #-------------------------------
 [RAINSTORM]
 Name = Rainstorm
@@ -5200,7 +5227,7 @@ Power = 60
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
-FunctionCode = WaterlogTargetHitsDivers
+FunctionCode = Waterlog
 Flags = CanProtect
 EffectChance = 30
 Description = The target is inundated with a wave of seaweater. This has a 30% chance to waterlog.
@@ -5270,7 +5297,7 @@ Target = NearOther
 FunctionCode = RaiseUserSpAtk2
 Flags = CanProtect
 EffectChance = 100
-Description = Flowers blooms with intensity, damaging the target and raising the user's Sp. Atk by two steps.
+Description = Flowers bloom with intensity, damaging the target and raising the user's Sp. Atk by two steps.
 Animation = GRASSPLEDGE
 #-------------------------------
 [BREATHELIFE]
@@ -5605,7 +5632,7 @@ Animation = HOLDHANDS
 [SINISTERSPINES]
 Name = Sinister Spines
 Type = GRASS
-Category = Physical
+Category = Special
 Power = 90
 Accuracy = 100
 TotalPP = 5
@@ -7168,17 +7195,6 @@ EffectChance = 100
 Description = Injects supercold liquid into the target, damaging them and halving all future healing.
 Animation = FROSTBARB
 #-------------------------------
-[INURE]
-Name = Inure
-Type = ICE
-Category = Status
-Accuracy = 0
-TotalPP = 10
-Target = User
-FunctionCode = StartUserShedTypeWeaknesses
-Flags = CanSnatch
-Description = The user inures themselves to a harsh environment, shedding their type weaknesses.
-#-------------------------------
 [INVITEHAIL]
 Name = Invite Hail
 Type = ICE
@@ -7810,9 +7826,9 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = User
-FunctionCode = MaxUserSpAtkLoseHalfOfTotalHP
+FunctionCode = MaxUserSpAtkLoseThirdOfTotalHP
 Flags = CanSnatch
-Description = The user maximizes its Sp. Atk in exchange for HP equal to half its max HP.
+Description = The user maximizes its Sp. Atk in exchange for 33% of its max HP.
 Animation = NASTYPLOT
 #-------------------------------
 [BLACKHOLE]

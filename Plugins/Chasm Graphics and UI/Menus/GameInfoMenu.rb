@@ -82,9 +82,22 @@ class PokemonGameInfoMenu < PokemonPauseMenu
 				cap = getLevelCap
 				msgwindow = pbCreateMessageWindow
 				pbMessageDisplay(msgwindow, _INTL("The current level cap is {1}.", cap))
-				pbMessageDisplay(msgwindow, _INTL("Once at level {1}, your Pokémon cannot gain experience or have Candies used on them.", cap))
-				pbMessageDisplay(msgwindow, _INTL("The level cap can be raised by reading Battle Reports (a consumable item)."))
-				pbMessageDisplay(msgwindow, _INTL("You'll earn Battle Reports after defeating Gym Leaders and major story battles."))
+				if cap == GameData::GrowthRate.max_level
+					pbMessageDisplay(msgwindow, _INTL("This is the final level cap. It cannot be raised.", cap))
+				else
+					case RARE_CANDY_LEVEL_CAP_BEHAVIOUR
+					when :SAME_CAP
+						pbMessageDisplay(msgwindow, _INTL("Once at level {1}, your Pokémon cannot gain experience or have Candies used on them.", cap))
+					when :SEPARATE_CAP
+						pbMessageDisplay(msgwindow, _INTL("Once at level {1}, your Pokémon cannot gain experience or have EXP Candies used on them.", cap))
+						pbMessageDisplay(msgwindow, _INTL("Rare Candies can be used, but only {1} times, up to level {2}.", RARE_CANDY_LEVEL_CAP_OFFSET, getRareCandyLevelCap))
+					when :IGNORE_CAP
+						pbMessageDisplay(msgwindow, _INTL("Once at level {1}, your Pokémon cannot gain experience or have EXP Candies used on them.", cap))
+						pbMessageDisplay(msgwindow, _INTL("Rare Candies can still be used, however."))
+					end
+					pbMessageDisplay(msgwindow, _INTL("The level cap can be raised by reading Battle Reports (a consumable item)."))
+					pbMessageDisplay(msgwindow, _INTL("You'll earn Battle Reports after defeating Gym Leaders and major story battles."))
+				end
 				pbDisposeMessageWindow(msgwindow)
 			elsif cmdMainQuestHelp > - 1 && infoCommand == cmdMainQuestHelp
 				pbMessage("\\l[7]<b>" + $main_quest_tracker.getCurrentStageName() + "</b>\n" + $main_quest_tracker.getCurrentStageHelp())

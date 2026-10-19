@@ -30,9 +30,9 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = User
-FunctionCode = MaxUserAtkLoseHalfOfTotalHP
+FunctionCode = MaxUserAtkLoseThirdOfTotalHP
 Flags = CanSnatch
-Description = The user maximizes its Attack in exchange for HP equal to half its max HP.
+Description = The user maximizes its Attack in exchange for 33% of its max HP.
 #-------------------------------
 [BESTOW]
 Name = Bestow
@@ -1080,7 +1080,7 @@ TotalPP = 8
 Target = NearOther
 FunctionCode = SleepTargetNextTurn
 Flags = CanProtect,CanMagicCoat,Sound
-Description = The user yawns, making the target drowsy. They'll fall asleep at end of the next turn.
+Description = The user yawns, making the target drowsy. They'll fall asleep at the end of the next turn.
 #-------------------------------
 #		FIGHTING MOVES
 #-------------------------------
@@ -1813,7 +1813,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = Poison
 Flags = CanProtect,CanMagicCoat,Wind
-Description = A cloud of poison gas is sprayed in the face of the target, poisoning it.
+Description = A cloud of noxious gas is sprayed in the face of the target, poisoning it.
 #-------------------------------
 [POISONJAB]
 Name = Poison Jab
@@ -1826,7 +1826,7 @@ Target = NearOther
 FunctionCode = Poison
 Flags = CanProtect,Punch
 EffectChance = 10
-Description = The target is stabbed with a tentacle or arm seeped with poison. It has a 10% chance to poison.
+Description = The target is stabbed with a tentacle or arm seeped with toxins. It has a 10% chance to poison.
 #-------------------------------
 [POISONSTING]
 Name = Poison Sting
@@ -3491,19 +3491,6 @@ Flags = CanProtect
 Description = The user rampages and attacks while spewing flames for two turns.
 Animation = FLAREBLITZ
 #-------------------------------
-[SEARINGSHOT]
-Name = Searing Shot
-Type = FIRE
-Category = Special
-Power = 100
-Accuracy = 100
-TotalPP = 5
-Target = AllNearOthers
-FunctionCode = Burn
-Flags = CanProtect
-EffectChance = 30
-Description = An inferno of scarlet flames torches everything around the user. It has a 30% chance to burn.
-#-------------------------------
 [SHELLTRAP]
 Name = Shell Trap
 Type = FIRE
@@ -3769,14 +3756,13 @@ Description = The user immerses the target in superheated steam. This has a 30% 
 Name = Surf
 Type = WATER
 Category = Special
-Power = 90
+Power = 95
 Accuracy = 100
 TotalPP = 10
 Target = AllNearOthers
-FunctionCode = WaterlogTargetHitsDivers
+FunctionCode = HitsDivers
 Flags = CanProtect
-EffectChance = 10
-Description = It swamps the area with a giant wave, hitting every battler nearby and underwater. Has a 10% chance to waterlog.
+Description = It swamps the area with a giant wave, hitting every battler nearby and underwater.
 #-------------------------------
 [SURGINGSTRIKES]
 Name = Surging Strikes

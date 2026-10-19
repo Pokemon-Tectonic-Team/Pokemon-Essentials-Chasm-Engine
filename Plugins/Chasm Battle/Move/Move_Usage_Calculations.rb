@@ -13,11 +13,7 @@ class PokeBattle_Move
         end
         if ret == :FLEX
             userTypes = user.pbTypes(true)
-            if userTypes.empty?
-                ret = :NORMAL
-            else
-                ret = userTypes[0]
-            end
+            ret = userTypes[0]
         end
         return ret
     end

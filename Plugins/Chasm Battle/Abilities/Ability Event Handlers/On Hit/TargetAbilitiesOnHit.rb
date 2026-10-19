@@ -228,6 +228,28 @@ BattleHandlers::TargetAbilityOnHit.add(:FEEDBACK,
         battle.pbHideAbilitySplash(target)
     }
 )
+
+BattleHandlers::TargetAbilityOnHit.add(:KNAPPINGSTONES,
+    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next if user.dummy
+        next unless Effectiveness.super_effective?(target.damageState.typeMod)
+        if aiCheck
+            next -10 * aiNumHits if user.takesIndirectDamage?
+            next 0
+        end
+        battle.pbShowAbilitySplash(target, ability)
+        if user.takesIndirectDamage?(true)
+            battle.pbDisplay(_INTL("{1} is hurt!", user.pbThis))
+            damageTaken = target.damageState.hpLost
+            recoil = (damageTaken / 3.0).floor
+            recoil = 1 if recoil < 1
+            user.damageState.displayedDamage = recoil
+            battle.scene.pbDamageAnimation(user)
+            user.pbReduceHP(recoil, false)
+        end
+        battle.pbHideAbilitySplash(target)
+    }
+)
   
 BattleHandlers::TargetAbilityOnHit.add(:ARCCONDUCTOR,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|

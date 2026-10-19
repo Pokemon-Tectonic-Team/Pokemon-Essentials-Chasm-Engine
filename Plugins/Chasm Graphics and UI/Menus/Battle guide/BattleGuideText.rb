@@ -224,7 +224,7 @@ def battleGuideAvatarsHash
         _INTL("Clean Slate") => _INTL("Before an Avatar uses a Primeval Move, they will also heal from any status conditions and reset any of their stat steps that have been lowered."),
         _INTL("Shields") => _INTL("The top of Avatars health bars starts Shielded. Shielded bars take 75% less damage. A shield is removed when the Avatar uses a Primeval Move."),
         _INTL("Attack Choice") => _INTL("Avatars usually only have a few moves to choose from. They usually alternate between their moves on successive attacks."),
-        _INTL("Target Choice") => _INTL("A targeting reticle shows which of your battles the Avatar wants to attack. It will switch to another battler, however, if their attack is made impossible."),
+        _INTL("Target Choice") => _INTL("A targeting reticle shows which of your battlers the Avatar wants to attack. It will switch to another battler, however, if their attack is made impossible."),
         _INTL("Empowered Moves") => _INTL("Some Avatars have Empowered attacks, which are powered-up versions of other attacks. They take up both of an Avatar's moves on that turn."),
         _INTL("Experience Reward") => _INTL("When an Avatar is destroyed, every Pokémon on your team is given experience, even those that are fainted."),
         _INTL("Legendary Avatars") => _INTL("Legendary Avatars are unique. You fight them with 3 Pokémon, they have 3 HP bars, and they have more moves with more smarts about how to use them."),

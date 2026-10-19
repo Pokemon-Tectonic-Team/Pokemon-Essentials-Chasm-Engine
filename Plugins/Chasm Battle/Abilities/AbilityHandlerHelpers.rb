@@ -3,6 +3,7 @@
 def pbBattleMoveImmunityHealAbility(ability, user, target, move, moveType, immuneType, battle, showMessages, aiCheck = false, canOverheal: false)
     return false if user.index == target.index
     return false if moveType != immuneType
+    return false if move.empoweredMove? && user.boss?
     return true if aiCheck
     if target.applyFractionalHealing(1.0 / 4.0, ability: ability, canOverheal: canOverheal) <= 0 && showMessages
         battle.pbShowAbilitySplash(target, ability)
@@ -23,6 +24,7 @@ end
 # one of the ability's bearer's stats instead.
 def pbBattleMoveImmunityStatAbility(ability, user, target, move, moveType, immuneType, stat, increment, battle, showMessages, aiCheck = false)
     return false if user.index == target.index
+    return false if move.empoweredMove? && user.boss?
     if immuneType.is_a?(Array)
         return false unless immuneType.include?(moveType)
     else
