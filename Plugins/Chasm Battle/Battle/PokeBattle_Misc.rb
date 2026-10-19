@@ -265,6 +265,7 @@ class PokeBattle_Battle
                 end
             ensure
                 forcedMoveUser.ignoreChoiceLock = oldIgnoreChoiceLock
+            end
         end
 
         forcedMoveUser.lastRoundMoved = oldLastRoundMoved
