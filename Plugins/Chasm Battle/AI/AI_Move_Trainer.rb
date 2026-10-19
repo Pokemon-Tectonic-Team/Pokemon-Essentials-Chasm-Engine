@@ -54,7 +54,7 @@ class PokeBattle_AI
         slowerDead = false
         fasterDead = false
         killInfoPerChoice = []
-        user.eachAIKnownMoveWithIndex do |move, i|
+        user.eachOwnMoveWithIndex do |move, i|
             next unless @battle.pbCanChooseMove?(user, i, false)
             targets = []
             targets.push(opposingBattler) if opposingBattler
@@ -116,6 +116,48 @@ class PokeBattle_AI
             end
         end
         return choices,bestKillInfo
+    end
+
+    # Scores the AI's best guess at what a player-owned battler can do.
+    # Uses guessed moves rather than actual moves. Applies the same observable
+    # battle-state checks a human spectator could make: PP (starts full, counts
+    # down per use; refills each fight) and encore (visible in the status menu).
+    # Returns [maxScore, bestMoveID, bestKillInfo].
+    def pbScorePredictedPlayerMoves(user, opposingBattler: nil, killInfoArray: [])
+        maxScore = 0
+        bestMoveID = nil
+        bestKillInfo = nil
+        targets = opposingBattler ? [opposingBattler] : []
+        # Build a lookup of the player's real moves for PP checking
+        realMovesByID = {}
+        user.getMoves.each { |m| realMovesByID[m.id] = m if m }
+        # Resolve the encored move ID once if applicable
+        encored_id = nil
+        if user.effectActive?(:Encore)
+            encored_move = user.getMoves[user.pbEncoredMoveIndex]
+            encored_id = encored_move&.id
+        end
+        user.eachGuessedMove do |move|
+            # If we know the player actually has this move, respect its tracked PP
+            real = realMovesByID[move.id]
+            next if real && real.pp == 0 && real.total_pp > 0
+            # Encore locks the player to the encored move
+            next if encored_id && move.id != encored_id
+            newChoice, killInfo, _, _ = pbEvaluateMoveTrainer(user, move, targets: targets, killInfoArray: killInfoArray)
+            next unless newChoice
+            if newChoice[0] > maxScore
+                maxScore = newChoice[0]
+                bestMoveID = move.id
+            end
+            if killInfo && opposingBattler
+                if bestKillInfo.nil? ||
+                   killInfo.priority > bestKillInfo.priority ||
+                   (killInfo.priority == bestKillInfo.priority && killInfo.speed > bestKillInfo.speed)
+                    bestKillInfo = killInfo
+                end
+            end
+        end
+        return maxScore, bestMoveID, bestKillInfo
     end
 
     def pbEvaluateMoveTrainer(user, move, targets: [], killInfoArray: [], random: false)
