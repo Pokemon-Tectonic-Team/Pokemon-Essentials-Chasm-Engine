@@ -514,6 +514,17 @@ class PokeBattle_Move_RaiseUserSpAtkDefAcc2 < PokeBattle_MultiStatUpMove
     end
 end
 
+# Empowered Bird's-Eye View
+class PokeBattle_Move_EmpoweredBirdsEyeView < PokeBattle_Move_RaiseUserSpAtkDefAcc2
+    include EmpoweredMove
+
+    def pbEffectGeneral(user)
+        user.pbMaximizeStatStep(:ACCURACY, user, self)
+        super
+        transformType(user, :FLYING)
+    end
+end
+
 #===============================================================================
 # Raises the user's Attack, Defense, Speed, Special Attack and Special Defense
 # by 1 step each. (Ancient Power, Ominous Wind, Silver Wind)

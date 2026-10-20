@@ -168,6 +168,18 @@ Flags = CanProtect,Empowered
 Description = The user tucks in its wings and charges from a low altitude. The user also takes 33% recoil.
 Animation = BRAVEBIRD
 #-------------------------------
+[PRIMEVALBIRDSEYEVIEW]
+Name = Primeval Bird's-Eye View
+Type = FLYING
+Category = Status
+Accuracy = 0
+TotalPP = 1
+Target = User
+FunctionCode = EmpoweredBirdsEyeView
+Flags = Empowered
+Description = The user raises its Sp. Atk and Defense by two steps and maximizes its Accuracy. User becomes Flying-type.
+Animation = BIRDSEYEVIEW
+#-------------------------------
 [PRIMEVALTAILWIND]
 Name = Primeval Tailwind
 Type = FLYING
