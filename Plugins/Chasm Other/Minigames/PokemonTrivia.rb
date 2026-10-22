@@ -11,16 +11,22 @@ class PokemonTriviaScene
         @sprites = {}
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
         @viewport.z = 99_999
-        addBackgroundPlane(@sprites, "bg", addLanguageSuffix("Pokegear/bg"), @viewport)
+        addBackgroundPlane(@sprites, "bg", addLanguageSuffix("triviabg"), @viewport)
 
         @sprites["species_silhoette"] = PokemonSprite.new(@viewport)
         @sprites["species_silhoette"].setOffset(PictureOrigin::Center)
         @sprites["species_silhoette"].x = Graphics.width / 2
-        @sprites["species_silhoette"].y = Graphics.height / 2 - 40
+        @sprites["species_silhoette"].y = Graphics.height / 2
         @sprites["species_silhoette"].tone = Tone.new(-255,-255,-255)
 
-        @sprites["question_box"] = pbCreateMessageWindow
-        pbBottomLeftLines(@sprites["question_box"], 2)
+        questionSectionHeight = 64
+        @sprites["question_text"] = BitmapSprite.new(Graphics.width, questionSectionHeight, @viewport)
+        @questionTextOverlay = @sprites["question_text"].bitmap
+        pbSetSystemFont(@questionTextOverlay)
+
+        @sprites["clues"] = BitmapSprite.new(Graphics.width, Graphics.height - questionSectionHeight, @viewport)
+        @sprites["clues"].y = questionSectionHeight
+        @clueOverlay = @sprites["clues"].bitmap
 
         @triviaQuestions = triviaQuestions
         @questionIndex = 0
@@ -30,8 +36,6 @@ class PokemonTriviaScene
     end
 
     def pbMain
-        presentNextQuestion = true
-
         nextQuestionType = nil
         nextQuestionSpecies = nil
 
@@ -41,14 +45,17 @@ class PokemonTriviaScene
             nextQuestionType, nextQuestionSpecies = nextQuestion
             presentQuestion(nextQuestionType, nextQuestionSpecies)
 
+            pbWait(20)
+
             loop do
                 Graphics.update
                 Input.update
                 update
 
                 if Input.trigger?(Input::USE)
-                    result = checkAnswer(nextQuestionSpecies)
-                    gameVictory = false if !result
+                    result = checkAnswer(nextQuestionType, nextQuestionSpecies)
+                    next if result.nil?
+                    return false unless result
                     break
                 end
             end
@@ -56,17 +63,17 @@ class PokemonTriviaScene
             break if gameVictory
         end
 
-        pbDisposeMessageWindow(@sprites["question_box"])
-
         return gameVictory
     end
 
     def presentQuestion(nextQuestionType, nextQuestionSpecies)
+        @clueOverlay.clear
+
         case nextQuestionType
         when :SILHOUETTE
             presentSilhoetteQuestion(nextQuestionSpecies)
-        when :CRY
-            presentCryQuestion(nextQuestionSpecies)
+        when :TYPING_AND_STATS
+            presentTypingStatsQuestion(nextQuestionSpecies)
         when :SIGNATURE_ABILITY
             presentSignatureAbilityQuestion(nextQuestionSpecies)
         when :SIGNATURE_MOVE
@@ -77,39 +84,42 @@ class PokemonTriviaScene
     end
 
     def setQuestionText(text)
-        pbMessageDisplay(@sprites["question_box"],text)
+        base = MessageConfig::LIGHT_TEXT_MAIN_COLOR
+        shadow = MessageConfig::LIGHT_TEXT_SHADOW_COLOR
+        @questionTextOverlay.clear
+        drawFormattedTextEx(@questionTextOverlay,16,24,Graphics.width,text,base,shadow)
     end
 
     def presentSilhoetteQuestion(questionSpecies)
         @sprites["species_silhoette"].setSpeciesBitmap(questionSpecies)
-        setQuestionText(_INTL("Which Pokemon species has this silhoette?"))
+        setQuestionText(_INTL("Which species has this silhoette?"))
     end
 
-    def presentCryQuestion(questionSpecies)
-        setQuestionText(_INTL("The following cry belongs to which Pokemon species?"))
+    def presentTypingStatsQuestion(questionSpecies)
+        setQuestionText(_INTL("Which species has this typing and base stats?"))
     end
 
     def presentSignatureAbilityQuestion(questionSpecies)
-        setQuestionText(_INTL("This Signature Ability belongs to which Pokemon species?"))
+        setQuestionText(_INTL("This Signature Ability belongs to which species?"))
     end
 
     def presentSignatureMoveQuestion(questionSpecies)
-        setQuestionText(_INTL("This Signature Move belongs to which Pokemon species?"))
+        setQuestionText(_INTL("This Signature Move belongs to which species?"))
     end
 
     def presentSignatureMoveQuestion(questionSpecies)
-        setQuestionText(_INTL("Which Pokemon species has these moves on its level up learnset, in this order?"))
+        setQuestionText(_INTL("Which species learns these moves at these levels?"))
     end
 
-    def checkAnswer(questionSpecies)
+    def checkAnswer(questionType, questionSpecies)
         matchingSpecies = nil
 
         loop do
-            inputText = pbEnterText(_INTL("Enter species name"),0,20).downcase
+            inputText = pbEnterText(_INTL("Enter species name."),0,20).downcase
 
-            if inputText.length <= 2
-                pbMessage(_INTL("Invalid input."))
-                next
+            # Return player to question
+            if inputText.length == 0
+                return nil
             end
 
             # Look for exact matches
@@ -139,6 +149,9 @@ class PokemonTriviaScene
 
         answerName = GameData::Species.get(questionSpecies).name
         if matchingSpecies == questionSpecies
+            pbWait(5)
+            @sprites["species_silhoette"].tone = Tone.new(0,0,0,0) if questionType            
+            pbWait(5)
             pbMessage(_INTL("Correct! The answer was {1}!", answerName))
             return true
         else  
@@ -174,7 +187,7 @@ class PokemonTrivia
         numberOfQuestions = [1,1,2,2,3][difficulty-1]
 
         # Higher difficulties have more trivia types
-        possibleQuestionTypes = [:SILHOUETTE, :CRY, :SIGNATURE_ABILITY, :SIGNATURE_MOVE, :LEVEL_MOVES][0...difficulty]
+        possibleQuestionTypes = [:SILHOUETTE, :TYPING_AND_STATS, :SIGNATURE_ABILITY, :SIGNATURE_MOVE, :LEVEL_MOVES][0...difficulty]
 
         questions = []
         speciesUtilized = []
