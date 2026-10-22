@@ -649,6 +649,10 @@ module GameData
             return @flags&.include?("Legendary")
         end
 
+        def isStarter?
+            return @flags&.include?("Starter")
+        end
+
         def isTest?
             return @flags&.include?("Test")
         end
