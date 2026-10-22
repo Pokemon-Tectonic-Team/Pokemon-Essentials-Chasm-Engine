@@ -13,6 +13,15 @@ class PokemonTriviaScene
         @viewport.z = 99_999
         addBackgroundPlane(@sprites, "bg", addLanguageSuffix("Pokegear/bg"), @viewport)
 
+        @sprites["species_silhoette"] = PokemonSprite.new(@viewport)
+        @sprites["species_silhoette"].setOffset(PictureOrigin::Center)
+        @sprites["species_silhoette"].x = Graphics.width / 2
+        @sprites["species_silhoette"].y = Graphics.height / 2 - 40
+        @sprites["species_silhoette"].tone = Tone.new(-255,-255,-255)
+
+        @sprites["question_box"] = pbCreateMessageWindow
+        pbBottomLeftLines(@sprites["question_box"], 2)
+
         @triviaQuestions = triviaQuestions
         @questionIndex = 0
 
@@ -21,24 +30,38 @@ class PokemonTriviaScene
     end
 
     def pbMain
-        loop do
-            Graphics.update
-            Input.update
-            update
+        presentNextQuestion = true
 
-            result = presentNextQuestion
+        nextQuestionType = nil
+        nextQuestionSpecies = nil
 
-            return false if !result
+        gameVictory = true
 
-            break if @questionIndex >= @triviaQuestions.length
+        @triviaQuestions.each do |nextQuestion|
+            nextQuestionType, nextQuestionSpecies = nextQuestion
+            presentQuestion(nextQuestionType, nextQuestionSpecies)
+
+            loop do
+                Graphics.update
+                Input.update
+                update
+
+                if Input.trigger?(Input::USE)
+                    result = checkAnswer(nextQuestionSpecies)
+                    gameVictory = false if !result
+                    break
+                end
+            end
+
+            break if gameVictory
         end
 
-        return true
+        pbDisposeMessageWindow(@sprites["question_box"])
+
+        return gameVictory
     end
 
-    def presentNextQuestion
-        nextQuestion = @triviaQuestions[@questionIndex]
-        nextQuestionType, nextQuestionSpecies = nextQuestion
+    def presentQuestion(nextQuestionType, nextQuestionSpecies)
         case nextQuestionType
         when :SILHOUETTE
             presentSilhoetteQuestion(nextQuestionSpecies)
@@ -51,29 +74,31 @@ class PokemonTriviaScene
         when :LEVEL_MOVES
             presentLevelMovesQuestion(nextQuestionSpecies)
         end
-        result = checkAnswer(nextQuestionSpecies)
-        @questionIndex += 1
-        return result
+    end
+
+    def setQuestionText(text)
+        pbMessageDisplay(@sprites["question_box"],text)
     end
 
     def presentSilhoetteQuestion(questionSpecies)
-        pbMessage(_INTL("Which Pokemon species has this silhoette?"))
+        @sprites["species_silhoette"].setSpeciesBitmap(questionSpecies)
+        setQuestionText(_INTL("Which Pokemon species has this silhoette?"))
     end
 
     def presentCryQuestion(questionSpecies)
-        pbMessage(_INTL("The following cry belongs to which Pokemon species?"))
+        setQuestionText(_INTL("The following cry belongs to which Pokemon species?"))
     end
 
     def presentSignatureAbilityQuestion(questionSpecies)
-        pbMessage(_INTL("This Signature Ability belongs to which Pokemon species?"))
+        setQuestionText(_INTL("This Signature Ability belongs to which Pokemon species?"))
     end
 
     def presentSignatureMoveQuestion(questionSpecies)
-        pbMessage(_INTL("This Signature Move belongs to which Pokemon species?"))
+        setQuestionText(_INTL("This Signature Move belongs to which Pokemon species?"))
     end
 
     def presentSignatureMoveQuestion(questionSpecies)
-        pbMessage(_INTL("Which Pokemon species has these moves on its level up learnset, in this order?"))
+        setQuestionText(_INTL("Which Pokemon species has these moves on its level up learnset, in this order?"))
     end
 
     def checkAnswer(questionSpecies)
