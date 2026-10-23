@@ -958,6 +958,24 @@ BattleHandlers::DamageCalcUserAbility.add(:FUELHUNGRY,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:BARRENBLOOD,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if user.battle.sandy?
+      mults[:base_damage_multiplier] *= 3 / 2.0
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:DEBRISFIELD,
+  proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
+    if user.battle.sandy? && type == :ROCK
+      mults[:base_damage_multiplier] *= 3 / 2.0
+      user.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
 ############################################
 # Ability Code for cut or unused abilities
 ############################################

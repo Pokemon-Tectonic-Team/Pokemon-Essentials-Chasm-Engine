@@ -267,6 +267,22 @@ BattleHandlers::TargetAbilityOnHit.add(:ARCCONDUCTOR,
     }
 )
 
+BattleHandlers::TargetAbilityOnHit.add(:DEBRISFIELD,
+    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next unless battle.sandy?
+        if aiCheck
+            next -10 * aiNumHits if user.takesIndirectDamage?
+            next 0
+        end
+        battle.pbShowAbilitySplash(target, ability)
+        if user.takesIndirectDamage?(true)
+            battle.pbDisplay(_INTL("{1} is hurt!", user.pbThis))
+            user.applyFractionalDamage(1.0 / 6.0)
+        end
+        battle.pbHideAbilitySplash(target)
+    }
+)
+
 BattleHandlers::TargetAbilityOnHit.add(:SPINTENSITY,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
         next unless target.steps[:SPEED] > 0

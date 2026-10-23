@@ -26,13 +26,6 @@ BattleHandlers::SpecialAttackCalcUserAbility.add(:CLOUDBURST,
   }
 )
 
-BattleHandlers::SpecialAttackCalcUserAbility.add(:DEBRISFIELD,
-  proc { |ability, _user, battle, spAtkMult|
-      spAtkMult *= 1.3 if battle.sandy?
-      next spAtkMult
-  }
-)
-
 BattleHandlers::SpecialAttackCalcUserAbility.add(:SOLARCELL,
   proc { |ability, _user, battle, spAtkMult|
       spAtkMult *= 1.3 if battle.sunny?

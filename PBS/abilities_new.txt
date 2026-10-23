@@ -160,6 +160,11 @@ Description = Deals more damage to targets the faster it is than them. Up to a 5
 Name = Ball Mimic
 Description = Your Poké Balls are 50% more effective.
 #-------------------------------
+[BARRENBLOOD]
+Name = Barren Blood
+Description = During sandstorm, deal and take 50% more damage.
+Flags = SandstormSynergy
+#-------------------------------
 [BARRIERMAKER]
 Name = Barrier Maker
 Description = Sets a Reflect for four turns upon entry.
@@ -441,7 +446,7 @@ Flags = HailSynergy
 #-------------------------------
 [DEBRISFIELD]
 Name = Debris Field
-Description = Immune to non-volatile status conditions due to its hard shell. Boosts Sp. Atk and Speed by 30% in sandstorm.
+Description = Immune to non-volatile status conditions due to its hard shell. In sandstorm, powers up Rock-type moves by 50% and inflicts 1/6th max HP damage when damaged.
 Flags = SandstormSynergy
 #-------------------------------
 [DEBUGGER]
@@ -472,7 +477,7 @@ Flags = SandstormSynergy
 #-------------------------------
 [DESERTSCAVENGER]
 Name = Desert Scavenger
-Description = Restores this Pokémon's HP based on damage taken by others from sandstorm.
+Description = Restores this Pokémon's HP based on damage taken by others from sandstorm, and increases sandstorm damage by 50%.
 Flags = SandstormSynergy
 #-------------------------------
 [DESERTSPIRIT]
@@ -2639,7 +2644,7 @@ Flags = HailSynergy
 #-------------------------------
 [WINTERSWAGES]
 Name = Winter's Wages
-Description = Restores HP based on damage taken by others from hail.
+Description = Restores HP based on damage taken by others from hail, and increases hail damage by 50%.
 Flags = HailSynergy
 #-------------------------------
 [WISEHUNTER]
