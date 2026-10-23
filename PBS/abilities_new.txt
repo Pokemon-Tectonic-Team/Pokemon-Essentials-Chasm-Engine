@@ -1385,6 +1385,10 @@ Flags = MoonglowSynergy
 Name = Manifestation
 Description = Boosts the power of pulse moves by 50%, and makes them physical when that would be more effective.
 #-------------------------------
+[MARIACHI]
+Name = Mariachi
+Description = Boosts Sp. Atk after using a sound move. Heals for 1/5th max HP after using a dance move.
+#-------------------------------
 [MARINE]
 Name = Marine
 Description = Physical moves have a 30% chance to waterlog targets.
@@ -1945,6 +1949,11 @@ Description = This Pokémon is also Steel-type, but it takes 15% more damage fro
 Name = Safe Passage
 Description = Doubles this Pokémon's Defense in rainstorm.
 Flags = RainstormSynergy
+#-------------------------------
+[SANDBANKBRUTE]
+Name = Sandbank Brute
+Description = During sandstorm, its attacks can't miss and restore HP equal to 25% of the damage dealt.
+Flags = SandstormSynergy
 #-------------------------------
 [SANDBURST]
 Name = Sand Burst

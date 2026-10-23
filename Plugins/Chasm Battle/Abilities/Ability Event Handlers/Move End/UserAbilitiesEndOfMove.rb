@@ -359,6 +359,15 @@ BattleHandlers::UserAbilityEndOfMove.add(:ICEQUEEN,
   }
 )
 
+BattleHandlers::UserAbilityEndOfMove.add(:SANDBANKBRUTE,
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
+      next if user.dummy
+      next unless move.damagingMove?
+      next unless battle.sandy?
+      user.pbRecoverHPFromMultiDrain(targets, 0.25, user:user, ability: ability)
+  }
+)
+
 BattleHandlers::UserAbilityEndOfMove.add(:ASTRALHARVEST,
   proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
@@ -839,6 +848,17 @@ BattleHandlers::UserAbilityEndOfMove.add(:PRIMEVALMEGALAUNCHER,
       t.applyEffect(:IncomingDamageTurns, 2)
       t.applyEffect(:IncomingDamageAmount, (t.damageState.totalHPLost/10.0).ceil)
     end
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:MARIACHI,
+  proc { |ability, user, _targets, move, _battle, _switchedBattlers|
+      if move.danceMove?
+        healingMessage = _INTL("{1} dances a healing rhythm!", user.pbThis)
+        user.applyFractionalHealing(1.0 / 5.0, ability: ability, customMessage: healingMessage, canOverheal: true)
+      elsif move.soundMove?
+        user.tryRaiseStat(:SPECIAL_ATTACK, user, increment: 1, ability: ability)
+      end
   }
 )
 
