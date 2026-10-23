@@ -1946,6 +1946,10 @@ Name = Sand Burst
 Description = Summons a sandstorm for four turns when hit by an attack.
 Flags = SandstormSynergy
 #-------------------------------
+[SANDRECONSTRUCTION]
+Name = Sand Reconstruction
+Description = Prevents 75% of the self-damage from recoil and self-destructing during sandstorm.
+#-------------------------------
 [SANDSHROUD]
 Name = Sand Shroud
 Description = Takes 30% less damage in a sandstorm.
@@ -2508,10 +2512,6 @@ Description = Takes half damage from Dark- and Bug-type moves.
 [UNASSUMING]
 Name = Unassuming
 Description = Before using a status move against a single foe, lowers their Defense by two steps.
-#-------------------------------
-[UNBREAKABLE]
-Name = Unbreakable
-Description = Prevents half the self-damage from recoil and self-destructing.
 #-------------------------------
 [UNCANNYLUCK]
 Name = Uncanny Luck
