@@ -3345,6 +3345,18 @@ Flags = CanProtect,CanMagicCoat
 Description = The user soothes the target, lowering its Speed by four steps. If in hail, they also become drowsy.
 Animation = YAWN
 #-------------------------------
+[ENTOMB]
+Name = Entomb
+Type = GHOST
+Category = Status
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = FractureCurseTargetUserPaysQuarterOfHP
+Flags = CanProtect,CanMagicCoat
+Description = The user sacrifices 25% of their HP to put the target in an early grave, cursing and fracturing them.
+Animation = ROCKTOMB
+#-------------------------------
 [FROMBEYOND]
 Name = From Beyond
 Type = GHOST
