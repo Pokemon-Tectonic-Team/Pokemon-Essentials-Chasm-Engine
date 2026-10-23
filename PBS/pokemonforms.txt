@@ -976,7 +976,7 @@ Pokedex = This form has gotten enough energy to go further beyond a normal Ampha
 FormName = Reaper
 BaseStats = 110,155,125,97,100,75
 # Total = 662
-Abilities = SANDSHROUD
+Abilities = EARTHSHAKER
 Pokedex = Garchomp taking this form are rare due to its specific conditions required. This is good as it can turn a house into splinters if left unchecked.
 #-------------------------------
 [GYARADOS,1]

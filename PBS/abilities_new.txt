@@ -1799,11 +1799,6 @@ Name = Rain Prism
 Description = Powers up Fairy-type moves by 50% in rainstorm.
 Flags = RainstormSynergy
 #-------------------------------
-[RAMPROW]
-Name = Ram Prow
-Description = Ignores screens, Substitute, and Abilities that would affect its moves.
-Flags = MoldBreaking,IgnoreScreens,IgnoreSubstitute
-#-------------------------------
 [RAPIDONSET]
 Name = Rapid Onset
 Description = On the first turn, its attacks poison the target.

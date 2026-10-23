@@ -988,6 +988,10 @@ Description = Doubles the Speed of kicking moves.
 Name = Ramming Speed
 Description = Doubles the speed of recoil moves.
 #-------------------------------
+[RAMPROW]
+Name = Ram Prow
+Description = Ignores screens, Substitute, and Abilities that would affect its moves.
+#-------------------------------
 [RATTLED]
 Name = Rattled
 Description = Bug-, Dark- and Ghost-type moves scare it and boost its Speed.
