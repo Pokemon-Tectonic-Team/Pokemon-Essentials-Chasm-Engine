@@ -1953,19 +1953,6 @@ Flags = CanProtect
 Description = The user cracks the earth under the target with a massive strike. This lowers the user's Attack by four steps.
 Animation = FISSURE
 #-------------------------------
-[ERODE]
-Name = Erode
-Type = GROUND
-Category = Special
-Power = 70
-Accuracy = 100
-TotalPP = 15
-Target = NearOther
-FunctionCode = IncreasedPriorityInSandstorm
-Flags = CanProtect
-Description = Attacks by blasting dirt and debris at the target. This move always goes first in sandstorm.
-Animation = SANDATTACK
-#-------------------------------
 [EXTREMEEFFORT]
 Name = Extreme Effort
 Type = GROUND
@@ -2355,6 +2342,19 @@ FunctionCode = FractureTarget
 Flags = CanProtect,CanMagicCoat
 Description = The user weakens the target's bones, making them fracture. They deal 33% less damage.
 Animation = TARSHOT
+#-------------------------------
+[ERODE]
+Name = Erode
+Type = ROCK
+Category = Special
+Power = 70
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = IncreasedPriorityInSandstorm
+Flags = CanProtect
+Description = Attacks by blasting rocks and debris at the target. This move always goes first in sandstorm.
+Animation = SANDATTACK
 #-------------------------------
 [GORMANDIZE]
 Name = Gormandize
