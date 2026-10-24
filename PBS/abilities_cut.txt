@@ -1422,6 +1422,10 @@ Name = Unbound
 Description = Moves ignore Abilities that would affect its moves or activate after hitting the target, and immunities due to typing.
 Flags = MoldBreaking,BypassTypeImmunity
 #-------------------------------
+[UNBREAKABLE]
+Name = Unbreakable
+Description = Prevents half the self-damage from recoil and self-destructing.
+#-------------------------------
 [UNCANNYCOLD]
 Name = Uncanny Cold
 Description = Powers up Ice-type moves by 50%.

@@ -552,6 +552,7 @@ class PokeBattle_Move_FractureCurseTargetUserPaysQuarterOfHP < PokeBattle_Move_C
     def getEffectScore(user, target)
         score = super
         score += getHPLossEffectScore(user, 0.25)
+        score += getFractureEffectScore(user, target)
         return score
     end
 end
