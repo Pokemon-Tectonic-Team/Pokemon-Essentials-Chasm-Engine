@@ -145,6 +145,53 @@ class PokeBattle_Move_RemovesHazardsBothSides < PokeBattle_Move
 end
 
 #===============================================================================
+# Removes all hazards on both sides and destroys Rooms. (Mountain Crush)
+#===============================================================================
+class PokeBattle_Move_DestroyRoomsRemovesHazardsBothSides < PokeBattle_RecoilMove
+    def hazardRemovalMove?; return true; end
+    def recoilFactor;  return (1.0 / 3.0); end
+
+    def eachHazard(side, isOurSide)
+        side.eachEffect(true) do |effect, _value, data|
+            next unless data.is_hazard?
+            yield effect, data
+        end
+    end
+
+    def removeEffect(user, side, effect, data)
+        side.disableEffect(effect)
+        if data.is_hazard?
+            hazardName = data.name
+            @battle.pbDisplay(_INTL("{1} destroyed {2}!", user.pbThis, hazardName)) unless data.has_expire_proc?
+        end
+    end
+
+    def pbEffectGeneral(user)
+        targetSide = user.pbOpposingSide
+        ourSide = user.pbOwnSide
+        eachHazard(targetSide, false) do |effect, data|
+            removeEffect(user, targetSide, effect, data)
+        end
+        eachHazard(ourSide, true) do |effect, data|
+            removeEffect(user, ourSide, effect, data)
+        end
+        @battle.field.eachEffect(true) do |effect, _value, effectData|
+            next unless effectData.is_room?
+            @battle.field.disableEffect(effect)
+        end
+    end
+
+    def getEffectScore(user, target)
+        score = super
+        # Dislike removing hazards that affect the enemy
+        score -= 0.8 * hazardWeightOnSide(target.pbOwnSide) if target.alliesInReserve?
+        # Like removing hazards that affect us
+        score += hazardWeightOnSide(user.pbOwnSide) if user.alliesInReserve?
+        return score
+    end
+end
+
+#===============================================================================
 # Removes entry hazards on user's side. 33% Recoil.
 # (Icebreaker)
 #===============================================================================

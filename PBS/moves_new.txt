@@ -2472,6 +2472,19 @@ EffectChance = 100
 Description = The user drops a single piece of solid bedrock on the target, fracturing them.
 Animation = CONTINENTALCRUSH
 #-------------------------------
+[MOUNTAINCRUSH]
+Name = Mountain Crush
+Type = ROCK
+Category = Physical
+Power = 120
+Accuracy = 100
+TotalPP = 10
+Target = AllNearFoes
+FunctionCode = DestroyRoomsRemovesHazardsBothSides
+Flags = CanProtect
+Description = The user crushes the surrounding area, destroying all hazards and active rooms. The user takes 33% recoil.
+Animation = CONTINENTALCRUSH
+#-------------------------------
 [OMNISHELTER]
 Name = Omnishelter
 Type = ROCK

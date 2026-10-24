@@ -465,7 +465,7 @@ class PokeBattle_Battle
         fraction = 1.0 / 16.0
         fraction *= 2 if damageDoubled
         fraction *= 2 if curseActive?(:CURSE_BOOSTED_HAIL)
-        fraction *=1.5 if pbCheckGlobalAbility(:WINTERSWAGES)
+        fraction *= 1.5 if pbCheckGlobalAbility(:WINTERSWAGES)
         hailDamage = battler.applyFractionalDamage(fraction, aiCheck: aiCheck)
         # Ice Age anti-healing effect
         if hailDamage > 0 && pbWeather == :IceAge && !battler.effectActive?(:HealBlock)
