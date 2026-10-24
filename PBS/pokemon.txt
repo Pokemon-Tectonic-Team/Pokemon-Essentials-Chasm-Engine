@@ -14121,8 +14121,8 @@ Formalizer = 0,1
 Name = Maractus
 Type1 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 75,65,100,60,85,100
-# Total = 485
+BaseStats = 75,65,110,60,100,110
+# Total = 520
 BaseEXP = 161
 Rareness = 195
 Happiness = 50
