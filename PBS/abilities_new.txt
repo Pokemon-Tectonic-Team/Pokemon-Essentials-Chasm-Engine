@@ -446,7 +446,7 @@ Flags = HailSynergy
 #-------------------------------
 [DEBRISFIELD]
 Name = Debris Field
-Description = Immune to non-volatile status conditions due to its hard shell. In sandstorm, powers up Rock-type moves by 50% and inflicts 1/6th max HP damage when damaged.
+Description = Immune to non-volatile status conditions. In sandstorm, powers up Rock-type moves by 50% and deals 1/6th max HP when hit.
 Flags = SandstormSynergy
 #-------------------------------
 [DEBUGGER]
