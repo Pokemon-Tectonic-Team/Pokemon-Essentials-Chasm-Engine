@@ -2356,6 +2356,19 @@ Flags = CanProtect,CanMagicCoat
 Description = The user weakens the target's bones, making them fracture. They deal 33% less damage.
 Animation = TARSHOT
 #-------------------------------
+[GORMANDIZE]
+Name = Gormandize
+Type = ROCK
+Category = Physical
+Power = 80
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = ConsumesTargetBerriesHerbs
+Flags = CanProtect,Biting
+Description = The user bites down on the target’s held item, destroying it. Destroyed Berries and Herbs are consumed.
+Animation = JAWLOCK
+#-------------------------------
 [GRANITEHEAD]
 Name = Granite Head
 Type = ROCK

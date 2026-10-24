@@ -36,6 +36,61 @@ class PokeBattle_Move_RemovesTargetItem < PokeBattle_Move
 end
 
 #===============================================================================
+# Renders item unusable, consumes item if it's a Berry or Herb (Gormandize)
+#===============================================================================
+class PokeBattle_Move_ConsumesTargetBerriesHerbs < PokeBattle_Move_RemovesTargetItem
+    def pbEffectAgainstTarget(user, target)
+        return if damagingMove?
+        gormandizeItems(user, target)
+    end
+
+    def pbEffectWhenDealingDamage(user, target)
+        gormandizeItems(user, target)
+    end
+
+    def gormandizeItems(user, target)
+        knockOffItems(user, target) do |item, itemName|
+            itemData = GameData::Item.get(item)
+            if itemData.is_berry? || itemData.is_herb?
+                if @battle.stolenItemTurnsToDust?(item)
+                    @battle.pbDisplay(_INTL("{1}'s {2} turned to dust.",target.pbThis, itemName))
+                else
+                    @battle.pbDisplay(_INTL("{1} gormandized {2}'s {3}!",user.pbThis, target.pbThis(true), itemName))
+                    user.pbHeldItemTriggerCheck(item, false)
+                end
+            else
+                @battle.pbDisplay(_INTL("{1} forced {2} to drop their {3}!",user.pbThis, target.pbThis(true), itemName))
+            end
+        end
+    end
+
+    def getTargetAffectingEffectScore(user, target)
+        return 0 unless canKnockOffItems?(user, target, true)
+        score = 0
+        target.eachItem do |item|
+            next if target.unlosableItem?(item)
+            itemData = GameData::Item.get(item)
+            score += 50
+            if itemData.is_berry?
+                score += 30
+            elsif itemData.is_herb?
+                score += 10
+            end
+        end
+        target.eachAIKnownItem do |item|
+            case item
+            when :EVIOLITE
+                score += 50
+            when :CRYSTALVEIL,:POWERLOCK,:ENERGYLOCK
+                score += 20
+            end
+        end
+        score /= 2 unless target.itemActive?
+        return score
+    end
+end
+
+#===============================================================================
 # Knocks off an opponents item and puts it on the user or a party member (Shared Spoils)
 #===============================================================================
 class PokeBattle_Move_StealsTargetItemForSelfOrPartyMember < PokeBattle_Move_RemovesTargetItem

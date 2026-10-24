@@ -14358,6 +14358,7 @@ BaseStats = 85,100,110,32,70,145
 BaseEXP = 173
 Rareness = 60
 Abilities = SANDBANKBRUTE,TOUGH
+Moves = 0,GORMANDIZE
 StepsToHatch = 7905
 Height = 1.2
 Weight = 81.0
