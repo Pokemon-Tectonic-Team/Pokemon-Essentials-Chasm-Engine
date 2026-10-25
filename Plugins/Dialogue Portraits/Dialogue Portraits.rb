@@ -3,7 +3,7 @@
 # \mr[ImageName in Graphics/Face]
 # Ex. \mr[TestImage]Hello.
 # mr can be other commands too, like ml for the left side of the screen.
-# Accepted images are 192x160 pixel size. If you input a bigger image, it shows the top left of the image.
+# Accepted images are 192x256 pixel size. If you input a bigger image, it shows the top left of the image.
 
 #===============================================================================
 # Message variables
@@ -804,10 +804,13 @@ def pbChooseNumber(msgwindow,params)
   return ret
 end
 
+FACE_WIDTH  = 192
+FACE_HEIGHT = 256
+
 #===================GELA FACE1=======================================                             
     class FaceWindowVXNew < SpriteWindow_Base
   def initialize(face)
-    super(0,0,192,192)
+    super(0,0,FACE_WIDTH + 32,FACE_HEIGHT + 32)
     self.windowskin=nil
     faceinfo=face.split(",")
     facefile=pbResolveBitmap("Graphics/Faces/"+faceinfo[0])
@@ -815,10 +818,10 @@ end
     self.contents.dispose if self.contents
     @faceIndex=faceinfo[1].to_i
     @facebitmaptmp=AnimatedBitmap.new(facefile)
-    @facebitmap=BitmapWrapper.new(160,160)
+    @facebitmap=BitmapWrapper.new(FACE_WIDTH,FACE_HEIGHT)
     @facebitmap.blt(0,0,@facebitmaptmp.bitmap,Rect.new(
-       (@faceIndex % 4) * 160,
-       (@faceIndex / 4) * 160, 160, 160
+       (@faceIndex % 4) * FACE_WIDTH,
+       (@faceIndex / 4) * FACE_HEIGHT, FACE_WIDTH, FACE_HEIGHT
     ))
     self.contents=@facebitmap
   end
@@ -828,8 +831,8 @@ end
     if @facebitmaptmp.totalFrames>77 #This should be 1. Adjust accordingly
       @facebitmaptmp.update
       @facebitmap.blt(0,0,@facebitmaptmp.bitmap,Rect.new(
-         (@faceIndex % 4) * 160,
-         (@faceIndex / 4) * 160, 160, 160
+         (@faceIndex % 4) * FACE_WIDTH,
+         (@faceIndex / 4) * FACE_WIDTH, FACE_HEIGHT, FACE_WIDTH
       ))
     end
   end
@@ -931,7 +934,7 @@ def pbDisplayGoldWindow(msgwindow)
   goldwindow=Window_AdvancedTextPokemon.new(_INTL("Money:\n<ar>{1}</ar>",moneyString))
   goldwindow.setSkin("Graphics/Windowskins/goldskin")
   goldwindow.resizeToFit(goldwindow.text,Graphics.width)
-  goldwindow.width=160 if goldwindow.width<=160
+  goldwindow.width=256 if goldwindow.width<=256
   if msgwindow.y==0
     goldwindow.y=Graphics.height-goldwindow.height
   else
@@ -947,7 +950,7 @@ def pbDisplayCoinsWindow(msgwindow,goldwindow)
   coinwindow=Window_AdvancedTextPokemon.new(_INTL("Coins:\n<ar>{1}</ar>",coinString))
   coinwindow.setSkin("Graphics/Windowskins/goldskin")
   coinwindow.resizeToFit(coinwindow.text,Graphics.width)
-  coinwindow.width=160 if coinwindow.width<=160
+  coinwindow.width=256 if coinwindow.width<=256
   if msgwindow.y==0
     coinwindow.y=(goldwindow) ? goldwindow.y-coinwindow.height : Graphics.height-coinwindow.height
   else
@@ -1117,7 +1120,7 @@ def pbMessageDisplay(msgwindow,message,letterbyletter=true,commandProc=nil)
   textchunks=[]
   controls=[]
   #==========GELA FACE, ADDING PORTRAIT CATCH, BASICALLY MR, ML ETC===========
-  while text[/(?:\\(w|f|ff|ts|xn|cl|me|ml|mr|se|wt|wtnp|ch)\[([^\]]*)\]|\\(g|cn|wd|wm|op|cl|wu|\.|\||\!|\^))/i]
+  while text[/(?:\\(w|f|ff|ts|xn|cl|me|ml|mr|mc|se|wt|wtnp|ch)\[([^\]]*)\]|\\(g|cn|wd|wm|op|cl|wu|\.|\||\!|\^))/i]
     textchunks.push($~.pre_match)
   #==========GELA FACE, ADDING PORTRAIT CODES===========
     if $~[1]
@@ -1256,7 +1259,7 @@ if facewindowL
           facewindowL=FaceWindowVXNew.new(param)
           facewindowL.windowskin=nil
           facewindowL.x=8
-          facewindowL.y=148-32  #changes in Y position. Adjust accordingly
+          facewindowL.y=50-32  #changes in Y position. Adjust accordingly
           facewindowL.viewport=msgwindow.viewport
           facewindowL.z=msgwindow.z
         when "mr" # Mug Shot (Right)
@@ -1264,14 +1267,22 @@ if facewindowL
           facewindowR=FaceWindowVXNew.new(param)
           facewindowR.windowskin=nil
           facewindowR.x=320
-          facewindowR.y=148-32  #changes in Y position. Adjust accordingly
+          facewindowR.y=50-32  #changes in Y position. Adjust accordingly
+          facewindowR.viewport=msgwindow.viewport
+          facewindowR.z=msgwindow.z
+        when "mc" # Mug Shot (Center)
+          facewindowR.dispose if facewindowR
+          facewindowR=FaceWindowVXNew.new(param)
+          facewindowR.windowskin=nil
+          facewindowR.x=152
+          facewindowR.y=50-32  #changes in Y position. Adjust accordingly
           facewindowR.viewport=msgwindow.viewport
           facewindowR.z=msgwindow.z
         when "ff"
           facewindow.dispose if facewindow
           facewindow = FaceWindowVX.new(param)
           facewindow.x=320
-          facewindow.y=148-32  #changes in Y position. Adjust accordingly
+          facewindow.y=50-32  #changes in Y position. Adjust accordingly
 #==================GELA FACE4=======================
 
 
