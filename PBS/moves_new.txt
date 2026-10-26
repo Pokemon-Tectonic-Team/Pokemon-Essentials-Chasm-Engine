@@ -2199,6 +2199,19 @@ EffectChance = 40
 Description = The user slams the earth with its tail, creating a shockwave to damage the target. It has a 40% chance to lower Attack.
 Animation = SLAM
 #-------------------------------
+[TERRASLIDE]
+Name = Terraslide
+Type = GROUND
+Category = Physical
+Power = 120
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = TwoTurnAttackOneTurnInSand
+Flags = CanProtect
+Description = The user charges, then attacks on the second turn. Charges instantly in sandstorm.
+Animation = SOLARBEAM
+#-------------------------------
 [TRAMPLE]
 Name = Trample
 Type = GROUND
