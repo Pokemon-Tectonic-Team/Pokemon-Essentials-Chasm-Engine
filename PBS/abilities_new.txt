@@ -2241,7 +2241,7 @@ Description = Takes 50% less damage from Water-type moves. Raises Speed by four 
 #-------------------------------
 [STEEPMOMENTUM]
 Name = Steep Momentum
-Description = Gain two steps of Attack and Speed if this Pokémon didn’t deal attack damage this turn. After dealing attack damage, reset all positive stat changes.
+Description = Gains two steps of Attack and Speed if it didn’t deal attack damage this turn. When it does, reset its positive stat changes.
 #-------------------------------
 [STERN]
 Name = Stern
