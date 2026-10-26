@@ -478,6 +478,7 @@ class PokeBattle_Battler
             return false if @hp >= @totalhp
         end
         return false if effectActive?(:HealBlock)
+        return false if pbOwnSide.effectActive?(:Dustbowl)
         return true
     end
 

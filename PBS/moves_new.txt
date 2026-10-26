@@ -1914,6 +1914,17 @@ Flags = CanProtect
 Description = The target is consumed by a desert storm, trapping and binding it for three turns.
 Animation = SANDTOMB
 #-------------------------------
+[DUSTBOWL]
+Name = Dustbowl
+Type = GROUND
+Category = Status
+Accuracy = 0
+TotalPP = 15
+Target = FoeSide
+FunctionCode = OppSide30MoreDamageCantHealIfInSand5
+Flags = CanSnatch
+Description = For five turns, Pokémon on the opposing side take 30% more move damage and cannot heal. Only usable in sandstorm.
+#-------------------------------
 [DUSTDEVIL]
 Name = Dust Devil
 Type = GROUND
