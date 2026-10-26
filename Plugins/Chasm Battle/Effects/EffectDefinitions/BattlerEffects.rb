@@ -2851,3 +2851,9 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Battle-Hardened",
     :info_displayed => false
 })
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :SteepMomentumDealtDamage,
+    :real_name => "Steep Momentum",
+    :info_displayed => false
+})

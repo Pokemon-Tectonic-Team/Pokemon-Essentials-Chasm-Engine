@@ -2239,6 +2239,10 @@ Description = Slice moves always crit. However, their damage is dealt at the end
 Name = Steam Power
 Description = Takes 50% less damage from Water-type moves. Raises Speed by four steps when hit by one.
 #-------------------------------
+[STEEPMOMENTUM]
+Name = Steep Momentum
+Description = Gain two steps of Attack and Speed if this Pokémon didn’t deal attack damage this turn. After dealing attack damage, reset all positive stat changes.
+#-------------------------------
 [STERN]
 Name = Stern
 Description = Its attacks are critical against waterlogged targets.

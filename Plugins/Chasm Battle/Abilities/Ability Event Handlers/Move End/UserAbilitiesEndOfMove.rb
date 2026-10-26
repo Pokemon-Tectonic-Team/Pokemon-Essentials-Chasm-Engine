@@ -469,6 +469,26 @@ BattleHandlers::UserAbilityEndOfMove.add(:COLDCALCULATION,
   }
 )
 
+BattleHandlers::UserAbilityEndOfMove.add(:STEEPMOMENTUM,
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
+      next if user.dummy
+      next unless move.damagingMove?
+      hitAnything = false
+      targets.each do |b|
+        next if b.damageState.unaffected
+        hitAnything = true
+        break
+      end
+      next unless hitAnything
+      user.effects[:SteepMomentumDealtDamage] = true
+      next unless user.hasRaisedStatSteps?
+      battle.pbShowAbilitySplash(user, ability)
+      user.pbResetRaisedStatSteps
+      battle.pbDisplay(_INTL("{1}'s stat changes were reset!", user.pbThis))
+      battle.pbHideAbilitySplash(user)
+  }
+)
+
 BattleHandlers::UserAbilityEndOfMove.add(:IRREFUTABLE,
   proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
