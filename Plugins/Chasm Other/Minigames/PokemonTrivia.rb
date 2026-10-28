@@ -11,7 +11,7 @@ class PokemonTriviaScene
         @sprites = {}
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
         @viewport.z = 99_999
-        addBackgroundPlane(@sprites, "bg", addLanguageSuffix("triviabg"), @viewport)
+        addBackgroundPlane(@sprites, "bg", addLanguageSuffix("Trivia/triviabg"), @viewport)
 
         @sprites["species_silhoette"] = PokemonSprite.new(@viewport)
         @sprites["species_silhoette"].setOffset(PictureOrigin::Center)
@@ -27,6 +27,9 @@ class PokemonTriviaScene
         @sprites["clues"] = BitmapSprite.new(Graphics.width, Graphics.height - questionSectionHeight, @viewport)
         @sprites["clues"].y = questionSectionHeight
         @clueOverlay = @sprites["clues"].bitmap
+        pbSetSystemFont(@clueOverlay)
+
+        @typebitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Pokedex/icon_types")))
 
         @triviaQuestions = triviaQuestions
         @questionIndex = 0
@@ -72,8 +75,8 @@ class PokemonTriviaScene
         case nextQuestionType
         when :SILHOUETTE
             presentSilhoetteQuestion(nextQuestionSpecies)
-        when :TYPING_AND_STATS
-            presentTypingStatsQuestion(nextQuestionSpecies)
+        when :CHARACTERISTICS
+            presentCharacteristicsQuestion(nextQuestionSpecies)
         when :SIGNATURE_ABILITY
             presentSignatureAbilityQuestion(nextQuestionSpecies)
         when :SIGNATURE_MOVE
@@ -91,12 +94,67 @@ class PokemonTriviaScene
     end
 
     def presentSilhoetteQuestion(questionSpecies)
+        @sprites["bg"].setBitmap("Graphics/Pictures/Trivia/triviabg_silhoette")
         @sprites["species_silhoette"].setSpeciesBitmap(questionSpecies)
         setQuestionText(_INTL("Which species has this silhoette?"))
     end
 
-    def presentTypingStatsQuestion(questionSpecies)
-        setQuestionText(_INTL("Which species has this typing and base stats?"))
+    def presentCharacteristicsQuestion(questionSpecies)
+        @sprites["bg"].setBitmap("Graphics/Pictures/Trivia/triviabg_characteristics")
+        base = MessageConfig::LIGHT_TEXT_MAIN_COLOR
+        shadow = MessageConfig::LIGHT_TEXT_SHADOW_COLOR
+        species_data = GameData::Species.get(questionSpecies)
+
+        clueX = 20
+
+        # Write the category
+        drawTextEx(@clueOverlay, clueX, 68, 300, 1, _INTL("{1} Pokémon", species_data.category), base, shadow)
+
+        # Draw the type icon(s)
+        type1 = species_data.type1
+        type2 = species_data.type2
+        type1_number = GameData::Type.get(type1).id_number
+        type2_number = GameData::Type.get(type2).id_number
+        type1rect = Rect.new(0, type1_number * 32, 96, 32)
+        type2rect = Rect.new(0, type2_number * 32, 96, 32)
+        @clueOverlay.blt(clueX, 120, @typebitmap.bitmap, type1rect)
+        @clueOverlay.blt(clueX + 100, 120, @typebitmap.bitmap, type2rect) if type1 != type2
+
+        # Write the tribes
+        if species_data.tribes.length == 0
+            tribesDescription = _INTL("None")
+        else
+            tribes = []
+            species_data.tribes.each do |tribe|
+                tribes.push(getTribeName(tribe))
+            end
+            tribesDescription = tribes.join(", ")
+        end
+        drawTextEx(@clueOverlay, clueX+32, 166, 224, 2, tribesDescription, base, shadow)
+        pbDrawImagePositions(@clueOverlay,[["Graphics/Pictures/icon_tribal_bonus",clueX,166+12]])
+
+        # Write the stats
+        baseStatHash = species_data.base_stats
+        baseStats = []
+        total = 0
+        baseStatHash.each_with_index do |stat, index|
+            next unless stat
+            statValue = stat[1]
+            total += statValue
+            baseStats.push(statValue)
+        end
+        baseStatsX = 316
+        baseStatsY = 28
+        baseStatNames = [_INTL("HP"), _INTL("Attack"), _INTL("Defense"),  _INTL("Sp. Atk"), _INTL("Sp. Def"), _INTL("Speed")]
+        baseStats.each_with_index do |statValue, index|
+            # Draw stat line
+            drawTextEx(@clueOverlay, baseStatsX, baseStatsY + 32 * index, 450, 1, baseStatNames[index], base, shadow)
+            drawTextEx(@clueOverlay, baseStatsX + 106, baseStatsY + 32 * index, 450, 1, statValue.to_s, base, shadow)
+        end
+        drawTextEx(@clueOverlay, baseStatsX, baseStatsY + 32 * 6 + 16, 450, 1, _INTL("Total"), base, shadow)
+        drawTextEx(@clueOverlay, baseStatsX + 106, baseStatsY + 32 * 6 + 16, 450, 1, total.to_s, base, shadow)
+
+        setQuestionText(_INTL("Which species has these attributes?"))
     end
 
     def presentSignatureAbilityQuestion(questionSpecies)
@@ -152,10 +210,10 @@ class PokemonTriviaScene
             pbWait(5)
             @sprites["species_silhoette"].tone = Tone.new(0,0,0,0) if questionType            
             pbWait(5)
-            pbMessage(_INTL("Correct! The answer was {1}!", answerName))
+            pbMessage(_INTL("Correct! The answer was <imp>{1}</imp>!", answerName))
             return true
         else  
-            pbMessage(_INTL("Incorrect... the correct answer was {1}.", answerName))
+            pbMessage(_INTL("Incorrect... the correct answer was <imp>{1}</imp>.", answerName))
             return false
         end
     end
@@ -164,6 +222,7 @@ class PokemonTriviaScene
         pbFadeOutAndHide(@sprites)
         pbDisposeSpriteHash(@sprites)
         @viewport.dispose
+        @typebitmap.dispose
     end
 end
 
@@ -187,15 +246,12 @@ class PokemonTrivia
         numberOfQuestions = [1,1,2,2,3][difficulty-1]
 
         # Higher difficulties have more trivia types
-        possibleQuestionTypes = [:SILHOUETTE, :TYPING_AND_STATS, :SIGNATURE_ABILITY, :SIGNATURE_MOVE, :LEVEL_MOVES][0...difficulty]
+        possibleQuestionTypes = [:SILHOUETTE, :CHARACTERISTICS, :SIGNATURE_ABILITY, :SIGNATURE_MOVE, :LEVEL_MOVES][0...difficulty]
 
         questions = []
         speciesUtilized = []
         numberOfQuestions.times do |i|
             questionType = possibleQuestionTypes.sample
-
-            speciesDifficulty = difficulty + [-1,0,0,0,1].sample
-            speciesDifficulty = speciesDifficulty.clamp(1,TRIVIA_MAX_DIFFICULTY)
 
             # Choose a random pokemon at the select species difficulty
             # but re-generate if it's already been picked for this set of trivia questions
@@ -204,7 +260,7 @@ class PokemonTrivia
             speciesForQuestion = :PIKACHU
             loop do
                 attempts += 1
-                speciesForQuestion = $PokemonTriviaMetadata[speciesDifficulty-1].sample
+                speciesForQuestion = $PokemonTriviaMetadata[difficulty-1].sample
                 break if !speciesUtilized.include?(speciesForQuestion) || attempts > 3
             end
 
@@ -258,7 +314,7 @@ def generatePokemonTriviaMetadata
 end
 
 def triviaMachine(difficulty = 1)
-    if getMySwitch("A")
+    if getMySwitch("A") && false # TO DO: Remove this line
         pbMessage(_INTL("Thank you for playing Pokemon Trivia!"))
     else
         pbFadeOutIn do
