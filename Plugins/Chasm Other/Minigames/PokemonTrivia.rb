@@ -10,7 +10,7 @@ class PokemonTriviaScene
         pbUpdateSpriteHash(@sprites)
     end
 
-    def pbStartScene(triviaQuestions)
+    def pbStartScene(difficulty, triviaQuestions)
         @sprites = {}
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
         @viewport.z = 99_999
@@ -35,7 +35,7 @@ class PokemonTriviaScene
         @typebitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Pokedex/icon_types")))
 
         @triviaQuestions = triviaQuestions
-        @questionIndex = 0
+        @difficulty = difficulty
 
         update
         pbFadeInAndShow(@sprites)
@@ -44,6 +44,8 @@ class PokemonTriviaScene
     def pbMain
         nextQuestionType = nil
         nextQuestionSpecies = nil
+
+        pbMessage(_INTL("Welcome to Pokemon Trivia, difficulty level {1}!",@difficulty))
 
         @triviaQuestions.each do |nextQuestion|
             nextQuestionType, nextQuestionSpecies = nextQuestion
@@ -256,7 +258,7 @@ class PokemonTrivia
         generatePokemonTriviaMetadata
         triviaQuestions = generatePokemonTriviaQuestions(difficulty)
 
-        @scene.pbStartScene(triviaQuestions)
+        @scene.pbStartScene(difficulty,triviaQuestions)
         result = @scene.pbMain
         @scene.pbEndScene
 
@@ -353,6 +355,7 @@ def generatePokemonTriviaMetadata
 end
 
 def triviaMachine(difficulty = 1)
+    return unless playerFacingNorth? # Player has to be facing the screen
     if getMySwitch("A") && false # TO DO: Remove this line
         pbMessage(_INTL("Thank you for playing Pokemon Trivia!"))
     else
