@@ -1,6 +1,9 @@
 TRIVIA_MAX_DIFFICULTY = 5
 TRIVIA_CANDY_LEVELS_BY_DIFFICULTY = [10,25,40,55,70]
+TRIVIA_NUMBER_QUESTIONS_BY_DIFFICULTY = [1,1,2,2,3]
 TRIVIA_CANDY_MULTIPLIER = 4
+TRIVIA_QUESTION_TYPES = [:SILHOUETTE, :CHARACTERISTICS, :SIGNATURE_ABILITY, :SIGNATURE_MOVE, :LEVEL_MOVES]
+TRIVIA_LEVEL_MOVES_AMOUNT = 4 # How many level moves to show for that type of trivia question
 
 class PokemonTriviaScene
     def update
@@ -19,7 +22,7 @@ class PokemonTriviaScene
         @sprites["species_silhoette"].y = Graphics.height / 2
         @sprites["species_silhoette"].tone = Tone.new(-255,-255,-255)
 
-        questionSectionHeight = 64
+        questionSectionHeight = 86
         @sprites["question_text"] = BitmapSprite.new(Graphics.width, questionSectionHeight, @viewport)
         @questionTextOverlay = @sprites["question_text"].bitmap
         pbSetSystemFont(@questionTextOverlay)
@@ -42,8 +45,6 @@ class PokemonTriviaScene
         nextQuestionType = nil
         nextQuestionSpecies = nil
 
-        gameVictory = true
-
         @triviaQuestions.each do |nextQuestion|
             nextQuestionType, nextQuestionSpecies = nextQuestion
             presentQuestion(nextQuestionType, nextQuestionSpecies)
@@ -62,15 +63,14 @@ class PokemonTriviaScene
                     break
                 end
             end
-
-            break if gameVictory
         end
 
-        return gameVictory
+        return true
     end
 
     def presentQuestion(nextQuestionType, nextQuestionSpecies)
         @clueOverlay.clear
+        @sprites["species_silhoette"].visible = false
 
         case nextQuestionType
         when :SILHOUETTE
@@ -87,22 +87,24 @@ class PokemonTriviaScene
     end
 
     def setQuestionText(text)
-        base = MessageConfig::LIGHT_TEXT_MAIN_COLOR
-        shadow = MessageConfig::LIGHT_TEXT_SHADOW_COLOR
+        base   = MessageConfig.pbDefaultTextMainColor
+        shadow = MessageConfig.pbDefaultTextShadowColor
         @questionTextOverlay.clear
-        drawFormattedTextEx(@questionTextOverlay,16,24,Graphics.width,text,base,shadow)
+        drawTextEx(@questionTextOverlay, 16, 16, Graphics.width-32, 2, text, base, shadow)
     end
 
     def presentSilhoetteQuestion(questionSpecies)
         @sprites["bg"].setBitmap("Graphics/Pictures/Trivia/triviabg_silhoette")
+        @sprites["species_silhoette"].tone = Tone.new(-255,-255,-255)
+        @sprites["species_silhoette"].visible = true
         @sprites["species_silhoette"].setSpeciesBitmap(questionSpecies)
         setQuestionText(_INTL("Which species has this silhoette?"))
     end
 
     def presentCharacteristicsQuestion(questionSpecies)
         @sprites["bg"].setBitmap("Graphics/Pictures/Trivia/triviabg_characteristics")
-        base = MessageConfig::LIGHT_TEXT_MAIN_COLOR
-        shadow = MessageConfig::LIGHT_TEXT_SHADOW_COLOR
+        base   = MessageConfig.pbDefaultTextMainColor
+        shadow = MessageConfig.pbDefaultTextShadowColor
         species_data = GameData::Species.get(questionSpecies)
 
         clueX = 20
@@ -130,7 +132,7 @@ class PokemonTriviaScene
             end
             tribesDescription = tribes.join(", ")
         end
-        drawTextEx(@clueOverlay, clueX+32, 166, 224, 2, tribesDescription, base, shadow)
+        drawTextEx(@clueOverlay, clueX+32, 166, 240, 3, tribesDescription, base, shadow)
         pbDrawImagePositions(@clueOverlay,[["Graphics/Pictures/icon_tribal_bonus",clueX,166+12]])
 
         # Write the stats
@@ -157,16 +159,35 @@ class PokemonTriviaScene
         setQuestionText(_INTL("Which species has these attributes?"))
     end
 
+    SIGNATURE_COLOR = Color.new(211, 175, 44)
+    SIGNATURE_COLOR_LIGHTER = Color.new(228, 207, 128)
+
     def presentSignatureAbilityQuestion(questionSpecies)
-        setQuestionText(_INTL("This Signature Ability belongs to which species?"))
+        @sprites["bg"].setBitmap("Graphics/Pictures/Trivia/triviabg_ability")
+        base   = MessageConfig.pbDefaultTextMainColor
+        shadow = MessageConfig.pbDefaultTextShadowColor
+        species_data = GameData::Species.get(questionSpecies)
+
+        abilityTextX = 30
+        abilityTextY = 52
+
+        chosenAbility = species_data.signature_abilities.sample
+        chosenAbilityData = GameData::Ability.get(chosenAbility)
+        abilityNameText = "<outln2>" + chosenAbilityData.name + "</outln2>"
+        drawFormattedTextEx(@clueOverlay, abilityTextX, abilityTextY, 450, abilityNameText, SIGNATURE_COLOR_LIGHTER, darkMode? ? shadow : base)
+
+        abilityDescription = addBattleKeywordHighlighting(chosenAbilityData.description, isAbility: true)
+        drawFormattedTextEx(@clueOverlay, abilityTextX, abilityTextY + 34, 450, abilityDescription, base, shadow)
+    
+        setQuestionText(_INTL("This Signature Ability belongs to which fully evolved species?"))
     end
 
     def presentSignatureMoveQuestion(questionSpecies)
-        setQuestionText(_INTL("This Signature Move belongs to which species?"))
+        setQuestionText(_INTL("This Signature Move belongs to which fully evolved species?"))
     end
 
     def presentSignatureMoveQuestion(questionSpecies)
-        setQuestionText(_INTL("Which species learns these moves at these levels?"))
+        setQuestionText(_INTL("Which fully evolved species learns these moves at these levels?"))
     end
 
     def checkAnswer(questionType, questionSpecies)
@@ -243,10 +264,10 @@ class PokemonTrivia
     end
 
     def generatePokemonTriviaQuestions(difficulty)
-        numberOfQuestions = [1,1,2,2,3][difficulty-1]
+        numberOfQuestions = TRIVIA_NUMBER_QUESTIONS_BY_DIFFICULTY[difficulty-1]
 
         # Higher difficulties have more trivia types
-        possibleQuestionTypes = [:SILHOUETTE, :CHARACTERISTICS, :SIGNATURE_ABILITY, :SIGNATURE_MOVE, :LEVEL_MOVES][0...difficulty]
+        possibleQuestionTypes = TRIVIA_QUESTION_TYPES[0...difficulty]
 
         questions = []
         speciesUtilized = []
@@ -260,7 +281,7 @@ class PokemonTrivia
             speciesForQuestion = :PIKACHU
             loop do
                 attempts += 1
-                speciesForQuestion = $PokemonTriviaMetadata[difficulty-1].sample
+                speciesForQuestion = $PokemonTriviaMetadata[questionType][difficulty-1].sample
                 break if !speciesUtilized.include?(speciesForQuestion) || attempts > 3
             end
 
@@ -274,11 +295,20 @@ class PokemonTrivia
     end
 end
 
+# PokemonTriviaMetadata is created as a hash
+# With entries for each type of question, which are arrays covering all difficulty levels
+# Those arrays contain a list of pokemon species IDs
+# E.g. you could access $PokemonTriviaMetadata[:SILHOUETTE][0] to get an array of all of the
+# easiest Pokemon that are eligible for Silhoette trivia question
 def generatePokemonTriviaMetadata
     return if $PokemonTriviaMetadata
-    $PokemonTriviaMetadata = []
-    for score in 0...TRIVIA_MAX_DIFFICULTY
-        $PokemonTriviaMetadata[score] = []
+    $PokemonTriviaMetadata = {}
+
+    TRIVIA_QUESTION_TYPES.each do |questionType|
+        $PokemonTriviaMetadata[questionType] = []
+        for score in 0...TRIVIA_MAX_DIFFICULTY
+            $PokemonTriviaMetadata[questionType][score] = []
+        end
     end
 
     echoln("GENERATING POKEMON TRIVIA METADATA")
@@ -307,7 +337,16 @@ def generatePokemonTriviaMetadata
         # Pokemon introduced in the Chasm Engine are more difficult
         speciesDifficulty += 1 if species.generation == 0
 
-        $PokemonTriviaMetadata[speciesDifficulty].push(species.id)
+        TRIVIA_QUESTION_TYPES.each do |questionType|
+            hasEvolutions = !species.get_evolutions.empty?
+            next if questionType == :SIGNATURE_MOVE && (species.signature_moves.empty? || hasEvolutions)
+            next if questionType == :SIGNATURE_ABILITY && (species.signature_abilities.empty? || hasEvolutions)
+            next if questionType == :LEVEL_MOVES && (species.moves.length < TRIVIA_LEVEL_MOVES_AMOUNT || hasEvolutions)
+            # Push to all difficulties at or above the determined species difficulty
+            for difficultyToPush in speciesDifficulty...TRIVIA_MAX_DIFFICULTY
+                  $PokemonTriviaMetadata[questionType][difficultyToPush].push(species.id)
+            end
+        end
 
         echoln("#{species.name}: #{speciesDifficulty}")
     end
