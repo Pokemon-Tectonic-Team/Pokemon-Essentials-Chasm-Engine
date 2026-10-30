@@ -905,6 +905,17 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = Type based on weather, and double damage if any. Physical or special based on user's stats.
 #-------------------------------
+[WISHINGWELL]
+Name = Wishing Well
+Type = NORMAL
+Category = Status
+Accuracy = 0
+TotalPP = 10
+Target = UserSide
+FunctionCode = Invalid
+Description = The user throws away up to 1000 scattered coins to bless its side, blocking random added effects and healing for 1/16th HP each turn. Lasts one turn per 100 coins.
+Animation = PAYDAY
+#-------------------------------
 [WRAP]
 Name = Wrap
 Type = NORMAL

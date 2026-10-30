@@ -196,6 +196,7 @@ def battleKeywordsImportantCaseSensitive
         "Rest",
         "Gust",
         "Snore",
+        "Rainbow",
     ]
 end
 

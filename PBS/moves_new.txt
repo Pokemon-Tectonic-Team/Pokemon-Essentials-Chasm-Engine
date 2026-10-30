@@ -700,17 +700,6 @@ Flags = CanProtect
 Description = The user causes the air around the target to explode. The move's type is changed based on the active weather.
 Animation = WEATHERBALL
 #-------------------------------
-[WISHINGWELL]
-Name = Wishing Well
-Type = NORMAL
-Category = Status
-Accuracy = 0
-TotalPP = 10
-Target = UserSide
-FunctionCode = WishingWellScalesWithMoney
-Description = The user throws away up to 1000 scattered coins to bless its side, blocking random added effects and healing for 1/16th HP each turn. Lasts one turn per 100 coins.
-Animation = PAYDAY
-#-------------------------------
 [WORLDREVOLVING]
 Name = World Revolving
 Type = NORMAL
@@ -5193,6 +5182,18 @@ Flags = CanProtect
 EffectChance = 40
 Description = The user crashes into the target with the force of a large wave. This has a 40% chance to lower Defense.
 Animation = SPATTERINGRAM
+#-------------------------------
+[WELLWISHES]
+Name = Well Wishes
+Type = WATER
+Category = Status
+Accuracy = 0
+TotalPP = 5
+Target = User
+FunctionCode = HealUserHalfOfTotalHPSetupRainbow
+Flags = CanSnatch,Sound
+Description = The user throws away 500 scattered coins to heal itself by half of its max HP and bless its side with a Rainbow for eight turns.
+Animation = PAYDAY
 #-------------------------------
 [WETLANDWALTZ]
 Name = Wetland Waltz
