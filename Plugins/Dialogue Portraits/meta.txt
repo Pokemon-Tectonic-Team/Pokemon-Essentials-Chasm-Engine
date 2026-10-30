@@ -1,0 +1,3 @@
+﻿Name      = Dialogue Portraits
+Requires  = Chasm Modding Base
+Credits   = AenaonDogsky, Mr. Gela
