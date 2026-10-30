@@ -6,6 +6,7 @@ TRIVIA_QUESTION_TYPES = [:SILHOUETTE, :CHARACTERISTICS, :SIGNATURE_ABILITY, :SIG
 TRIVIA_LEVEL_MOVES_AMOUNT = 4 # How many level moves to show for that type of trivia question
 
 class PokemonTriviaScene
+    include MoveInfoDisplay
 
     def update
         pbUpdateSpriteHash(@sprites)
