@@ -6,6 +6,7 @@ TRIVIA_QUESTION_TYPES = [:SILHOUETTE, :CHARACTERISTICS, :SIGNATURE_ABILITY, :SIG
 TRIVIA_LEVEL_MOVES_AMOUNT = 4 # How many level moves to show for that type of trivia question
 
 class PokemonTriviaScene
+
     def update
         pbUpdateSpriteHash(@sprites)
     end
@@ -32,26 +33,45 @@ class PokemonTriviaScene
         @clueOverlay = @sprites["clues"].bitmap
         pbSetSystemFont(@clueOverlay)
 
+        # Create overlay for move info (shows move's BP, description)
+        moveInfoDisplayFileName = addLanguageSuffix(("Graphics/Pictures/move_info_display_3x3"))
+        moveInfoDisplayFileName += "_dark" if darkMode?
+        @moveInfoDisplayBitmap  = AnimatedBitmap.new(moveInfoDisplayFileName)
+        moveInfoDisplay = SpriteWrapper.new(@viewport)
+        moveInfoDisplay.bitmap = @moveInfoDisplayBitmap.bitmap
+        moveInfoDisplay.x      = 0
+        moveInfoDisplay.y      = Graphics.height - @moveInfoDisplayBitmap.height
+        @sprites["move_info_display"] = moveInfoDisplay
+        # Create overlay for selected move's extra info (shows move's BP, description)
+        moveInfoSprite = BitmapSprite.new(Graphics.width, @moveInfoDisplayBitmap.height, @viewport)
+        moveInfoSprite.y = moveInfoDisplay.y
+        pbSetNarrowFont(moveInfoSprite.bitmap)
+        @sprites["move_info_overlay"] = moveInfoSprite
+        @moveInfoOverlay = moveInfoSprite.bitmap
+
         @typebitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Pokedex/icon_types")))
 
         @triviaQuestions = triviaQuestions
         @difficulty = difficulty
 
-        update
-        pbFadeInAndShow(@sprites)
+        wipeQuestionGraphics
+
+        pbMessage(_INTL("Welcome to Pokemon Trivia, tier {1}!",@difficulty))
+        pbMessage(_INTL("Answer {1} questions correctly to earn a prize!",@triviaQuestions.length))
     end
 
     def pbMain
         nextQuestionType = nil
         nextQuestionSpecies = nil
 
-        pbMessage(_INTL("Welcome to Pokemon Trivia, difficulty level {1}!",@difficulty))
+        visibleSprites = nil
+        @triviaQuestions.each_with_index do |nextQuestion, index|
+            pbMessage(_INTL("Question {1}...", index + 1))
 
-        @triviaQuestions.each do |nextQuestion|
             nextQuestionType, nextQuestionSpecies = nextQuestion
             presentQuestion(nextQuestionType, nextQuestionSpecies)
 
-            pbWait(20)
+            pbFadeInAndShow(@sprites, visibleSprites)
 
             loop do
                 Graphics.update
@@ -59,21 +79,29 @@ class PokemonTriviaScene
                 update
 
                 if Input.trigger?(Input::USE)
+                    pbPlayDecisionSE
                     result = checkAnswer(nextQuestionType, nextQuestionSpecies)
                     next if result.nil?
                     return false unless result
                     break
                 end
             end
+
+            wipeQuestionGraphics
+            visibleSprites = pbFadeOutAndHide(@sprites)
         end
 
         return true
     end
 
-    def presentQuestion(nextQuestionType, nextQuestionSpecies)
+    def wipeQuestionGraphics
         @clueOverlay.clear
+        @moveInfoOverlay.clear
         @sprites["species_silhoette"].visible = false
+        @sprites["move_info_display"].visible = false
+    end
 
+    def presentQuestion(nextQuestionType, nextQuestionSpecies)
         case nextQuestionType
         when :SILHOUETTE
             presentSilhoetteQuestion(nextQuestionSpecies)
@@ -92,7 +120,8 @@ class PokemonTriviaScene
         base   = MessageConfig.pbDefaultTextMainColor
         shadow = MessageConfig.pbDefaultTextShadowColor
         @questionTextOverlay.clear
-        drawTextEx(@questionTextOverlay, 16, 16, Graphics.width-32, 2, text, base, shadow)
+        sideBuffer = 24
+        drawTextEx(@questionTextOverlay, sideBuffer, 8, Graphics.width - sideBuffer * 2, 2, text, base, shadow)
     end
 
     def presentSilhoetteQuestion(questionSpecies)
@@ -171,7 +200,7 @@ class PokemonTriviaScene
         species_data = GameData::Species.get(questionSpecies)
 
         abilityTextX = 30
-        abilityTextY = 52
+        abilityTextY = 54
 
         chosenAbility = species_data.signature_abilities.sample
         chosenAbilityData = GameData::Ability.get(chosenAbility)
@@ -185,10 +214,25 @@ class PokemonTriviaScene
     end
 
     def presentSignatureMoveQuestion(questionSpecies)
+        @sprites["bg"].setBitmap("Graphics/Pictures/Trivia/triviabg_move")
+                base   = MessageConfig.pbDefaultTextMainColor
+        shadow = MessageConfig.pbDefaultTextShadowColor
+
+        signatureMove = GameData::Species.get(questionSpecies).signature_moves.sample
+        signatureMoveData = GameData::Move.get(signatureMove)
+
+        moveTextX = 30
+        moveTextY = 54
+
+        moveNameText = "<outln2>" + signatureMoveData.name + "</outln2>"
+        drawFormattedTextEx(@clueOverlay, moveTextX, moveTextY, 600, moveNameText, SIGNATURE_COLOR_LIGHTER, darkMode? ? shadow : base)
+        writeMoveInfoToInfoOverlay3x3(@moveInfoOverlay, signatureMove)
+        @sprites["move_info_display"].visible = true
+
         setQuestionText(_INTL("This Signature Move belongs to which fully evolved species?"))
     end
 
-    def presentSignatureMoveQuestion(questionSpecies)
+    def presentLevelMovesQuestion(questionSpecies)
         setQuestionText(_INTL("Which fully evolved species learns these moves at these levels?"))
     end
 
@@ -246,6 +290,7 @@ class PokemonTriviaScene
         pbDisposeSpriteHash(@sprites)
         @viewport.dispose
         @typebitmap.dispose
+        @moveInfoDisplayBitmap.dispose
     end
 end
 
@@ -356,20 +401,19 @@ end
 
 def triviaMachine(difficulty = 1)
     return unless playerFacingNorth? # Player has to be facing the screen
-    if getMySwitch("A") && false # TO DO: Remove this line
-        pbMessage(_INTL("Thank you for playing Pokemon Trivia!"))
+    victorious = false
+    pbFadeOutIn do
+        scene = PokemonTriviaScene.new
+        screen = PokemonTrivia.new(scene)
+        victorious = screen.pbStartScreen(difficulty)
+    end
+    if victorious
+        pbMessage(_INTL("Congratulations! You've earned a prize!"))
+        pbMEPlay("Slots win")
+        candyLevel = TRIVIA_CANDY_LEVELS_BY_DIFFICULTY[difficulty-1]
+        receiveCandyBatch(candyLevel,TRIVIA_CANDY_MULTIPLIER)
+        setMySwitch('A')
     else
-        pbFadeOutIn do
-            scene = PokemonTriviaScene.new
-            screen = PokemonTrivia.new(scene)
-            victorious = screen.pbStartScreen(difficulty)
-            if victorious
-                candyLevel = TRIVIA_CANDY_LEVELS_BY_DIFFICULTY[difficulty-1]
-                receiveCandyBatch(candyLevel,TRIVIA_CANDY_MULTIPLIER)
-                setMySwitch('A')
-            else
-                pbMessage(_INTL("Feel free to try again!"))
-            end
-        end
+        pbMessage(_INTL("Better luck next time..."))
     end
 end

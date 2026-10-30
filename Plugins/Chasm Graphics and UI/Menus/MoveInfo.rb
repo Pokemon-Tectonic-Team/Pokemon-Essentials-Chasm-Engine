@@ -14,7 +14,8 @@ module MoveInfoDisplay
    ]
 
     def writeMoveInfoToInfoOverlay3x3(overlay,move,skipTutorial = false)
-        moveData = GameData::Move.get(move.id)
+        moveID = move.is_a?(Symbol) ? move : move.id
+        moveData = GameData::Move.get(moveID)
 
         base   = darkMode? ? Color.new(248, 248, 248) : MessageConfig::DARK_TEXT_MAIN_COLOR
         shadow = darkMode? ? Color.new(104, 104, 104) : MessageConfig::DARK_TEXT_SHADOW_COLOR
@@ -87,9 +88,13 @@ module MoveInfoDisplay
         end
         # PP
         if moveData.total_pp > 0
-          ppFraction = [(4.0*move.pp/move.total_pp).ceil,3].min
-          color_map = darkMode? ? PP_COLORS_DARK : PP_COLORS
-          textpos.push([_INTL("{1}/{2}",move.pp,move.total_pp),moveInfoColumn2ValueX, 32, 2, color_map[ppFraction*2], color_map[ppFraction*2+1]])
+          if move.is_a?(PokeBattle_Move)
+            ppFraction = [(4.0*move.pp/move.total_pp).ceil,3].min
+            color_map = darkMode? ? PP_COLORS_DARK : PP_COLORS
+            textpos.push([_INTL("{1}/{2}",move.pp,move.total_pp),moveInfoColumn2ValueX, 32, 2, color_map[ppFraction*2], color_map[ppFraction*2+1]])
+          else
+            textpos.push([_INTL("{1}",moveData.total_pp),moveInfoColumn2ValueX, 32, 2, base, shadow])
+          end
         else
           textpos.push(["---", moveInfoColumn2ValueX, 32, 2, faded_base, shadow])
         end
@@ -99,7 +104,7 @@ module MoveInfoDisplay
       
         # Column 3
         # Priority
-        textpos.push([moveData.priorityLabel,moveInfoColumn3ValueX + 6, 0, 2, move.priority != 0 ? base : faded_base, shadow])
+        textpos.push([moveData.priorityLabel,moveInfoColumn3ValueX + 6, 0, 2, moveData.priority != 0 ? base : faded_base, shadow])
         # Targeting
         targetingData = GameData::Target.get(moveData.target)
         textpos.push([targetingData.get_targeting_label,moveInfoColumn3LabelX + 4, 64, 0, base, shadow])
@@ -144,9 +149,11 @@ module MoveInfoDisplay
     end
 
     def writeMoveInfoToInfoOverlayBackwardsL(overlay,move,drawName=true)
+      moveID = move.is_a?(Symbol) ? move : move.id
+      moveData = GameData::Move.get(moveID)
+
       # Extra move info display
       overlay.clear
-      moveData = GameData::Move.get(move)
 
       # Prepare values
       base       = MessageConfig::LIGHT_TEXT_MAIN_COLOR # This is the same in light and dark mode
