@@ -1,8 +1,13 @@
-TRIVIA_MAX_DIFFICULTY = 5
-TRIVIA_CANDY_LEVELS_BY_DIFFICULTY = [10,25,40,55,70]
-TRIVIA_NUMBER_QUESTIONS_BY_DIFFICULTY = [1,1,2,2,3]
+# At each of these difficulty levels, an additional trivia question is asked
+TRIVIA_DIFFICULTY_THRESHOLDS_FOR_MORE_QUESTIONS = [25,55]
 TRIVIA_CANDY_MULTIPLIER = 4
-TRIVIA_QUESTION_TYPES = [:SILHOUETTE, :CHARACTERISTICS, :SIGNATURE_ABILITY, :SIGNATURE_MOVE, :LEVEL_MOVES]
+TRIVIA_DIFFICULTY_THRESHOLDS_PER_TRIVIA_TYPE =
+    {
+        0 => :SILHOUETTE,
+        25 => :CHARACTERISTICS,
+        40 => :SIGNATURE_ABILITY,
+        55 => :SIGNATURE_MOVE
+    }
 TRIVIA_LEVEL_MOVES_AMOUNT = 4 # How many level moves to show for that type of trivia question
 
 class PokemonTriviaScene
@@ -12,7 +17,7 @@ class PokemonTriviaScene
         pbUpdateSpriteHash(@sprites)
     end
 
-    def pbStartScene(difficulty, triviaQuestions)
+    def pbStartScene(difficultyLevel, triviaQuestions)
         @sprites = {}
         @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
         @viewport.z = 99_999
@@ -53,12 +58,16 @@ class PokemonTriviaScene
         @typebitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Pokedex/icon_types")))
 
         @triviaQuestions = triviaQuestions
-        @difficulty = difficulty
+        @difficultyLevel = difficultyLevel
 
         wipeQuestionGraphics
 
-        pbMessage(_INTL("Welcome to Pokemon Trivia, tier {1}!",@difficulty))
-        pbMessage(_INTL("Answer {1} questions correctly to earn a prize!",@triviaQuestions.length))
+        pbMessage(_INTL("Welcome to Pokemon Trivia, tier {1}!",@difficultyLevel))
+        if @triviaQuestions.length == 1
+            pbMessage(_INTL("Answer a question correctly to earn a prize!",@triviaQuestions.length))
+        else
+            pbMessage(_INTL("Answer {1} questions correctly to earn a prize!",@triviaQuestions.length))
+        end
     end
 
     def pbMain
@@ -300,36 +309,54 @@ class PokemonTrivia
         @scene=scene
     end
 
-    def pbStartScreen(difficulty)
+    def pbStartScreen(difficultyLevel)
+        # Round up to the nearest multiple of 5
+        difficultyLevel = (difficultyLevel.to_f / 5).ceil * 5
+        
         generatePokemonTriviaMetadata
-        triviaQuestions = generatePokemonTriviaQuestions(difficulty)
+        triviaQuestions = generatePokemonTriviaQuestions(difficultyLevel)
 
-        @scene.pbStartScene(difficulty,triviaQuestions)
+        @scene.pbStartScene(difficultyLevel,triviaQuestions)
         result = @scene.pbMain
         @scene.pbEndScene
 
         return result
     end
 
-    def generatePokemonTriviaQuestions(difficulty)
-        numberOfQuestions = TRIVIA_NUMBER_QUESTIONS_BY_DIFFICULTY[difficulty-1]
+    def generatePokemonTriviaQuestions(difficultyLevel)
+        # Determine how many questions should be asked
+        numberOfQuestions = 1
+        TRIVIA_DIFFICULTY_THRESHOLDS_FOR_MORE_QUESTIONS.each do |threshold|
+            if difficultyLevel >= threshold
+                numberOfQuestions += 1
+            else
+                break
+            end
+        end
 
         # Higher difficulties have more trivia types
-        possibleQuestionTypes = TRIVIA_QUESTION_TYPES[0...difficulty]
+        possibleQuestionTypes = []
+        TRIVIA_DIFFICULTY_THRESHOLDS_PER_TRIVIA_TYPE.each_pair do |level, type|
+            if difficultyLevel >= level
+                possibleQuestionTypes.push(type)
+            else
+                break
+            end
+        end
 
         questions = []
         speciesUtilized = []
         numberOfQuestions.times do |i|
             questionType = possibleQuestionTypes.sample
 
-            # Choose a random pokemon at the select species difficulty
+            # Choose a random pokemon at the select species difficultyLevel
             # but re-generate if it's already been picked for this set of trivia questions
             # but give up if you re-roll the same mon 3 times (infinite loop avoidance)
             attempts = 0
             speciesForQuestion = :PIKACHU
             loop do
                 attempts += 1
-                speciesForQuestion = $PokemonTriviaMetadata[questionType][difficulty-1].sample
+                speciesForQuestion = $PokemonTriviaMetadata[questionType][difficultyLevel].sample
                 break if !speciesUtilized.include?(speciesForQuestion) || attempts > 3
             end
 
@@ -344,7 +371,7 @@ class PokemonTrivia
 end
 
 # PokemonTriviaMetadata is created as a hash
-# With entries for each type of question, which are arrays covering all difficulty levels
+# With entries for each type of question, which are arrays covering all difficultyLevel levels
 # Those arrays contain a list of pokemon species IDs
 # E.g. you could access $PokemonTriviaMetadata[:SILHOUETTE][0] to get an array of all of the
 # easiest Pokemon that are eligible for Silhoette trivia question
@@ -352,10 +379,12 @@ def generatePokemonTriviaMetadata
     return if $PokemonTriviaMetadata
     $PokemonTriviaMetadata = {}
 
-    TRIVIA_QUESTION_TYPES.each do |questionType|
-        $PokemonTriviaMetadata[questionType] = []
-        for score in 0...TRIVIA_MAX_DIFFICULTY
-            $PokemonTriviaMetadata[questionType][score] = []
+    highestDifficultyLevel = LEVEL_CAPS_USED ? MAX_LEVEL_CAP : GameData::GrowthRate.max_level
+
+    TRIVIA_DIFFICULTY_THRESHOLDS_PER_TRIVIA_TYPE.each_pair do |level, type|
+        $PokemonTriviaMetadata[type] = []
+        (0..highestDifficultyLevel).step(5) do |level|
+            $PokemonTriviaMetadata[type][level] = []
         end
     end
 
@@ -385,14 +414,18 @@ def generatePokemonTriviaMetadata
         # Pokemon introduced in the Chasm Engine are more difficult
         speciesDifficulty += 1 if species.generation == 0
 
-        TRIVIA_QUESTION_TYPES.each do |questionType|
+        speciesDifficultyLevel = speciesDifficulty * 10
+
+        TRIVIA_DIFFICULTY_THRESHOLDS_PER_TRIVIA_TYPE.each_pair do |level, questionType|
             hasEvolutions = !species.get_evolutions.empty?
             next if questionType == :SIGNATURE_MOVE && (species.signature_moves.empty? || hasEvolutions)
             next if questionType == :SIGNATURE_ABILITY && (species.signature_abilities.empty? || hasEvolutions)
             next if questionType == :LEVEL_MOVES && (species.moves.length < TRIVIA_LEVEL_MOVES_AMOUNT || hasEvolutions)
-            # Push to all difficulties at or above the determined species difficulty
-            for difficultyToPush in speciesDifficulty...TRIVIA_MAX_DIFFICULTY
-                  $PokemonTriviaMetadata[questionType][difficultyToPush].push(species.id)
+            
+            # Push to all difficulties at or above the determined species difficultyLevel
+            # (in increments of 5)
+            (speciesDifficultyLevel..highestDifficultyLevel).step(5) do |difficultyToPush|
+                $PokemonTriviaMetadata[questionType][difficultyToPush].push(species.id)
             end
         end
 
@@ -400,20 +433,40 @@ def generatePokemonTriviaMetadata
     end
 end
 
-def triviaMachine(difficulty = 1)
+def triviaMachine(difficultyLevel = 10)
     return unless playerFacingNorth? # Player has to be facing the screen
     victorious = false
     pbFadeOutIn do
         scene = PokemonTriviaScene.new
         screen = PokemonTrivia.new(scene)
-        victorious = screen.pbStartScreen(difficulty)
+        victorious = screen.pbStartScreen(difficultyLevel)
     end
     if victorious
-        pbMessage(_INTL("\\me[Slots win]Congratulations! You've earned a prize!\\wtnp[40]"))
-        candyLevel = TRIVIA_CANDY_LEVELS_BY_DIFFICULTY[difficulty-1]
-        receiveCandyBatch(candyLevel,TRIVIA_CANDY_MULTIPLIER)
+        pbMessage(_INTL("\\me[Slots win]Congratulations! You've earned a prize!\\wtnp[50]"))
+        receiveCandyBatch(difficultyLevel,TRIVIA_CANDY_MULTIPLIER)
         setMySwitch('A')
     else
         pbMessage(_INTL("Better luck next time..."))
     end
+end
+
+def triviaMachineAnimation()
+	new_move_route = getNewMoveRoute()
+	new_move_route.repeat = true
+
+    fastPartWait = 5
+    slowPartyWait = 20
+
+    new_move_route.list.push(RPG::MoveCommand.new(PBMoveRoute::Wait,[slowPartyWait]))
+
+    [PBMoveRoute::TurnLeft, PBMoveRoute::TurnRight, PBMoveRoute::TurnUp, PBMoveRoute::TurnDown].each do |dir|
+        new_move_route.list.push(RPG::MoveCommand.new(PBMoveRoute::DirectionFixOff))
+        new_move_route.list.push(RPG::MoveCommand.new(dir))
+        new_move_route.list.push(RPG::MoveCommand.new(PBMoveRoute::DirectionFixOn))
+        new_move_route.list.push(RPG::MoveCommand.new(PBMoveRoute::Wait,[fastPartWait]))  
+    end
+	
+	new_move_route.list.push(RPG::MoveCommand.new(0))
+	
+	self.set_move_route(new_move_route)
 end
