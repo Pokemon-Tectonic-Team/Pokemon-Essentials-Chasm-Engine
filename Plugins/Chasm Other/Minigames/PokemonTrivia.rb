@@ -409,8 +409,7 @@ def triviaMachine(difficulty = 1)
         victorious = screen.pbStartScreen(difficulty)
     end
     if victorious
-        pbMessage(_INTL("Congratulations! You've earned a prize!"))
-        pbMEPlay("Slots win")
+        pbMessage(_INTL("\\me[Slots win]Congratulations! You've earned a prize!\\wtnp[40]"))
         candyLevel = TRIVIA_CANDY_LEVELS_BY_DIFFICULTY[difficulty-1]
         receiveCandyBatch(candyLevel,TRIVIA_CANDY_MULTIPLIER)
         setMySwitch('A')
