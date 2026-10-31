@@ -84,6 +84,36 @@ class PokeBattle_AI
         return false
     end
 
+    def pivotMoveRating(battler)
+        bestRating = 0
+        bestMove = nil
+
+        battler.eachAIKnownMoveWithIndex do |move, i|
+            next unless move.switchOutMove?
+            next unless @battle.pbCanChooseMove?(battler, i, false)
+
+            battler.eachOpposing do |opponent|
+                next unless @battle.pbMoveCanTarget?(battler.index, opponent.index, move.pbTarget(battler))
+                next unless safePivotMove?(battler, move, opponent)
+                rating = 60
+                # Give additional value based on how good the actual pivot move is.
+                moveScore = pbGetMoveScore(move, battler, opponent, battler.ownersPolicies, 1, true, [])[0]
+                rating += (moveScore / EFFECT_SCORE_TO_SWITCH_SCORE_CONVERSION_RATIO).round
+
+                if rating > bestRating
+                    bestRating = rating
+                    bestMove = move
+                end
+            end
+        end
+
+        if bestMove
+            PBDebug.log("[STAY-IN RATING] #{battler.pbThis} has a safe pivot #{bestMove.id} (+#{bestRating})")
+        end
+
+        return bestRating
+    end
+
     def pbDetermineSwitch(idxBattler)
         battler = @battle.battlers[idxBattler]
         owner = @battle.pbGetOwnerFromBattlerIndex(idxBattler)
@@ -115,6 +145,7 @@ class PokeBattle_AI
 
         # Other things that affect the stay in rating
         stayInRating += miscStayInRatingModifiers(battler)
+        stayInRating += pivotMoveRating(battler)
         stayInRating += speedTierRating(battler)
         stayInRating += battler.levelNerfSwitch(0.4).round # AI nerf
 
