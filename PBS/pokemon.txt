@@ -20,6 +20,7 @@ Weight = 6.9
 Kind = Seed
 Pokedex = While it is young, it uses the nutrients that are stored in the seed on its back in order to grow.
 Generation = 1
+Flags = Starter
 Evolutions = IVYSAUR,Level,16
 #-------------------------------
 [IVYSAUR]
@@ -40,6 +41,7 @@ Weight = 13.0
 Kind = Seed
 Pokedex = To support its weight, Ivysaur's legs and trunk grow thick and strong. If it spends more time lying in the sunlight, it's a sign that the bud will bloom soon.
 Generation = 1
+Flags = Starter
 Evolutions = VENUSAUR,Level,36
 #-------------------------------
 [VENUSAUR]
@@ -60,6 +62,7 @@ Weight = 100.0
 Kind = Seed
 Pokedex = Its plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.
 Generation = 1
+Flags = Starter
 #-------------------------------
 [CHARMANDER]
 Name = Charmander
@@ -81,6 +84,7 @@ Weight = 8.5
 Kind = Lizard
 Pokedex = From the time it is born, a flame burns at the tip of its tail. Its life would end if the flame were to go out.
 Generation = 1
+Flags = Starter
 Evolutions = CHARMELEON,Level,16
 #-------------------------------
 [CHARMELEON]
@@ -100,6 +104,7 @@ Weight = 19.0
 Kind = Flame
 Pokedex = In the rocky mountains where Charmeleon live, their fiery tails shine at night like stars.
 Generation = 1
+Flags = Starter
 Evolutions = CHARIZARD,Level,36
 #-------------------------------
 [CHARIZARD]
@@ -120,6 +125,7 @@ Weight = 90.5
 Kind = Flame
 Pokedex = If Charizard becomes furious, the flame at the tip of its tail flares up in a whitish-blue color.
 Generation = 1
+Flags = Starter
 #-------------------------------
 [SQUIRTLE]
 Name = Squirtle
@@ -141,6 +147,7 @@ Weight = 9.0
 Kind = Tiny Turtle
 Pokedex = Its shell is not just for protection. Its rounded shape and the grooves on its surface minimize resistance in water, enabling Squirtle to swim at high speeds.
 Generation = 1
+Flags = Starter
 Evolutions = WARTORTLE,Level,16
 #-------------------------------
 [WARTORTLE]
@@ -160,6 +167,7 @@ Weight = 22.5
 Kind = Turtle
 Pokedex = Its large tail is covered with rich, thick fur that deepens in color with age. The scratches on its shell are evidence of this Pokémon's toughness in battle.
 Generation = 1
+Flags = Starter
 Evolutions = BLASTOISE,Level,36
 #-------------------------------
 [BLASTOISE]
@@ -180,6 +188,7 @@ Weight = 85.5
 Kind = Shellfish
 Pokedex = The jets of water it spouts from the rocket cannons on its shell can punch through thick steel.
 Generation = 1
+Flags = Starter
 #-------------------------------
 [CATERPIE]
 Name = Caterpie
@@ -5087,6 +5096,7 @@ Weight = 6.4
 Kind = Leaf
 Pokedex = It uses the leaf on its head to determine the temperature and humidity. It loves to sunbathe.
 Generation = 2
+Flags = Starter
 Evolutions = BAYLEEF,Level,16
 #-------------------------------
 [BAYLEEF]
@@ -5104,6 +5114,7 @@ Weight = 15.8
 Kind = Leaf
 Pokedex = The buds that ring its neck give off a spicy aroma that perks people up.
 Generation = 2
+Flags = Starter
 Evolutions = MEGANIUM,Level,36
 #-------------------------------
 [MEGANIUM]
@@ -5122,6 +5133,7 @@ Weight = 100.5
 Kind = Herb
 Pokedex = Meganium's breath has the power to revive dead grass and plants. It can make them healthy again.
 Generation = 2
+Flags = Starter
 #-------------------------------
 [CYNDAQUIL]
 Name = Cyndaquil
@@ -5141,6 +5153,7 @@ Weight = 7.9
 Kind = Fire Mouse
 Pokedex = It has a timid nature. If it is startled, the flames on its back burn more vigorously.
 Generation = 2
+Flags = Starter
 Evolutions = QUILAVA,Level,16
 #-------------------------------
 [QUILAVA]
@@ -5158,6 +5171,7 @@ Weight = 19.0
 Kind = Volcano
 Pokedex = Be careful if it turns its back during battle. It means that it will attack with the fire on its back.
 Generation = 2
+Flags = Starter
 Evolutions = HTYPHLOSION,Originize,36,TYPHLOSION,Level,36
 #-------------------------------
 [TYPHLOSION]
@@ -5178,6 +5192,7 @@ Weight = 79.5
 Kind = Volcano
 Pokedex = It has a secret, devastating move. It rubs its blazing fur together to cause huge explosions.
 Generation = 2
+Flags = Starter
 #-------------------------------
 [HTYPHLOSION]
 Name = H. Typhlosion
@@ -5217,6 +5232,7 @@ Weight = 9.5
 Kind = Big Jaw
 Pokedex = Its powerful, well-developed jaws are capable of crushing anything. Even its Trainer must be careful.
 Generation = 2
+Flags = Starter
 Evolutions = CROCONAW,Level,16
 #-------------------------------
 [CROCONAW]
@@ -5234,6 +5250,7 @@ Weight = 25.0
 Kind = Big Jaw
 Pokedex = Once it bites down, it won't let go until it loses its fangs. New fangs quickly grow into place.
 Generation = 2
+Flags = Starter
 Evolutions = FERALIGATR,Level,36
 #-------------------------------
 [FERALIGATR]
@@ -5252,6 +5269,7 @@ Weight = 88.8
 Kind = Big Jaw
 Pokedex = When it bites with its massive and powerful jaws, it shakes its head and savagely tears its victim up.
 Generation = 2
+Flags = Starter
 #-------------------------------
 [SENTRET]
 Name = Sentret
@@ -7320,6 +7338,7 @@ Weight = 5.0
 Kind = Wood Gecko
 Pokedex = Treecko has small hooks on the bottom of its feet that enable it to scale vertical walls. This Pokémon attacks by slamming foes with its thick tail.
 Generation = 3
+Flags = Starter
 Evolutions = GROVYLE,Level,16
 #-------------------------------
 [GROVYLE]
@@ -7338,6 +7357,7 @@ Weight = 21.6
 Kind = Wood Gecko
 Pokedex = The leaves growing out of Grovyle's body are convenient for camouflaging it from enemies in the forest. This Pokémon is a master at climbing trees in jungles.
 Generation = 3
+Flags = Starter
 Evolutions = SCEPTILE,Level,36
 #-------------------------------
 [SCEPTILE]
@@ -7357,6 +7377,7 @@ Weight = 52.2
 Kind = Forest
 Pokedex = The leaves growing on Sceptile's body are very sharp. This Pokémon is very agile - it leaps all over the branches of trees and jumps on its foe from above or behind.
 Generation = 3
+Flags = Starter
 #-------------------------------
 [MTREECKO]
 Name = M. Treecko
@@ -7432,6 +7453,7 @@ Weight = 2.5
 Kind = Chick
 Pokedex = Torchic has a place inside its body where it keeps its flame. Give it a hug - it will be glowing with warmth. This Pokémon is covered all over by a fluffy coat of down.
 Generation = 3
+Flags = Starter
 Evolutions = COMBUSKEN,Level,16
 #-------------------------------
 [COMBUSKEN]
@@ -7450,6 +7472,7 @@ Weight = 19.5
 Kind = Young Fowl
 Pokedex = Combusken battles with the intensely hot flames it spews from its beak and with outstandingly destructive kicks.
 Generation = 3
+Flags = Starter
 Evolutions = BLAZIKEN,Level,36
 #-------------------------------
 [BLAZIKEN]
@@ -7469,6 +7492,7 @@ Weight = 52.0
 Kind = Blaze
 Pokedex = Blaziken has incredibly strong legs - it can easily clear a 30-story building in one leap. This Pokémon's blazing punches leave its foes scorched and blackened.
 Generation = 3
+Flags = Starter
 #-------------------------------
 [MTORCHIC]
 Name = M. Torchic
@@ -7543,6 +7567,7 @@ Weight = 7.6
 Kind = Mud Fish
 Pokedex = In water, Mudkip breathes using the gills on its cheeks. If it is faced with a tight situation in battle, this Pokémon will unleash its amazing power.
 Generation = 3
+Flags = Starter
 Evolutions = MARSHTOMP,Level,16
 #-------------------------------
 [MARSHTOMP]
@@ -7562,6 +7587,7 @@ Weight = 28.0
 Kind = Mud Fish
 Pokedex = The surface of Marshtomp's body is enveloped by a thin, sticky film that enables it to live on land. This Pokémon plays in mud on beaches.
 Generation = 3
+Flags = Starter
 Evolutions = SWAMPERT,Level,36
 #-------------------------------
 [SWAMPERT]
@@ -7581,6 +7607,7 @@ Weight = 81.9
 Kind = Mud Fish
 Pokedex = It can swim while towing a large ship. It bashes down foes with a swing of its thick arms.
 Generation = 3
+Flags = Starter
 #-------------------------------
 [MMUDKIP]
 Name = M. Mudkip
@@ -10913,6 +10940,7 @@ Weight = 10.2
 Kind = Tiny Leaf
 Pokedex = It relies heavily on water to keep its plant healthy, and thus it spends most of its time near lakes. When thirsty, the plant on its head wilts.
 Generation = 4
+Flags = Starter
 Evolutions = GROTLE,Level,16
 #-------------------------------
 [GROTLE]
@@ -10931,6 +10959,7 @@ Weight = 97.0
 Kind = Grove
 Pokedex = It knows where pure water wells up. It carries fellow Pokémon there on its back.
 Generation = 4
+Flags = Starter
 Evolutions = TORTERRA,Level,36
 #-------------------------------
 [TORTERRA]
@@ -10950,6 +10979,7 @@ Weight = 310.0
 Kind = Continent
 Pokedex = Small Pokémon occasionally gather on its unmoving back to begin building their nests.
 Generation = 4
+Flags = Starter
 #-------------------------------
 [CHIMCHAR]
 Name = Chimchar
@@ -10970,6 +11000,7 @@ Weight = 6.2
 Kind = Chimp
 Pokedex = The gas made in its belly burns from its rear end. The fire burns weakly when it feels sick.
 Generation = 4
+Flags = Starter
 Evolutions = MONFERNO,Level,16
 #-------------------------------
 [MONFERNO]
@@ -10989,6 +11020,7 @@ Weight = 22.0
 Kind = Playful
 Pokedex = It uses ceilings and walls to launch aerial attacks. Its fiery tail is but one weapon.
 Generation = 4
+Flags = Starter
 Evolutions = INFERNAPE,Level,36
 #-------------------------------
 [INFERNAPE]
@@ -11008,6 +11040,7 @@ Weight = 55.0
 Kind = Flame
 Pokedex = It tosses its enemies around with agility. It uses all its limbs to fight in its own unique style.
 Generation = 4
+Flags = Starter
 #-------------------------------
 [PIPLUP]
 Name = Piplup
@@ -11028,6 +11061,7 @@ Weight = 5.2
 Kind = Penguin
 Pokedex = Because it is very proud, it hates accepting food from people. Its thick down guards it from cold.
 Generation = 4
+Flags = Starter
 Evolutions = PRINPLUP,Level,16
 #-------------------------------
 [PRINPLUP]
@@ -11047,6 +11081,7 @@ Weight = 23.0
 Kind = Penguin
 Pokedex = It lives a solitary life. Its wings deliver wicked blows that can snap even the thickest of trees.
 Generation = 4
+Flags = Starter
 Evolutions = EMPOLEON,Level,36
 #-------------------------------
 [EMPOLEON]
@@ -11066,6 +11101,7 @@ Weight = 84.5
 Kind = Emperor
 Pokedex = The three horns that extend from its beak attest to its power. The leader has the biggest horns.
 Generation = 4
+Flags = Starter
 #-------------------------------
 [STARLY]
 Name = Starly
@@ -12651,6 +12687,7 @@ Weight = 8.1
 Kind = Grass Snake
 Pokedex = They photosynthesize by bathing their tails in sunlight. When they are not feeling well, their tails droop.
 Generation = 5
+Flags = Starter
 Evolutions = SERVINE,Level,16
 #-------------------------------
 [SERVINE]
@@ -12669,6 +12706,7 @@ Weight = 16.0
 Kind = Grass Snake
 Pokedex = When it gets dirty, its leaves can't be used in photosynthesis, so it always keeps itself clean.
 Generation = 5
+Flags = Starter
 Evolutions = SERPERIOR,Level,36
 #-------------------------------
 [SERPERIOR]
@@ -12688,6 +12726,7 @@ Weight = 63.0
 Kind = Regal
 Pokedex = It can stop its opponents' movements with just a glare. It takes in solar energy and boosts it internally.
 Generation = 5
+Flags = Starter
 #-------------------------------
 [TEPIG]
 Name = Tepig
@@ -12708,6 +12747,7 @@ Weight = 9.9
 Kind = Fire Pig
 Pokedex = It loves to eat roasted berries, but sometimes it gets too excited and burns them to a crisp.
 Generation = 5
+Flags = Starter
 Evolutions = PIGNITE,Level,16
 #-------------------------------
 [PIGNITE]
@@ -12726,6 +12766,7 @@ Weight = 55.5
 Kind = Fire Pig
 Pokedex = When its internal fire flares up, its movements grow sharper and faster. When in trouble, it emits smoke.
 Generation = 5
+Flags = Starter
 Evolutions = EMBOAR,Level,36
 #-------------------------------
 [EMBOAR]
@@ -12745,6 +12786,7 @@ Weight = 150.0
 Kind = Mega Fire Pig
 Pokedex = It has mastered fast and powerful fighting moves. It grows a beard of fire.
 Generation = 5
+Flags = Starter
 #-------------------------------
 [OSHAWOTT]
 Name = Oshawott
@@ -12765,6 +12807,7 @@ Weight = 5.9
 Kind = Sea Otter
 Pokedex = It fights using the scalchop on its stomach. In response to an attack, it retaliates immediately by slashing.
 Generation = 5
+Flags = Starter
 Evolutions = DEWOTT,Level,16
 #-------------------------------
 [DEWOTT]
@@ -12783,6 +12826,7 @@ Weight = 24.5
 Kind = Discipline
 Pokedex = As a result of strict training, each Dewott learns different forms for using the scalchops.
 Generation = 5
+Flags = Starter
 Evolutions = HSAMUROTT,Originize,36,SAMUROTT,Level,36
 #-------------------------------
 [SAMUROTT]
@@ -12804,6 +12848,7 @@ Weight = 94.6
 Kind = Formidable
 Pokedex = One swing of the sword incorporated in its armor can fell an opponent. A simple glare from one of them quiets everybody.
 Generation = 5
+Flags = Starter
 #-------------------------------
 [HSAMUROTT]
 Name = H. Samurott
@@ -16431,6 +16476,7 @@ Weight = 9.0
 Kind = Spiky Nut
 Pokedex = Such a thick shell of wood covers its head and back that even a direct hit from a truck wouldn't faze it.
 Generation = 6
+Flags = Starter
 Evolutions = QUILLADIN,Level,16
 #-------------------------------
 [QUILLADIN]
@@ -16450,6 +16496,7 @@ Weight = 29.0
 Kind = Spiky Armor
 Pokedex = They strengthen their lower bodies by running into one another. They are very kind and won't start fights.
 Generation = 6
+Flags = Starter
 Evolutions = CHESNAUGHT,Level,36
 #-------------------------------
 [CHESNAUGHT]
@@ -16469,6 +16516,7 @@ Weight = 90.0
 Kind = Spiky Armor
 Pokedex = When it takes a defensive posture with its fists guarding its face, it could withstand a bomb blast.
 Generation = 6
+Flags = Starter
 #-------------------------------
 [FENNEKIN]
 Name = Fennekin
@@ -16489,6 +16537,7 @@ Weight = 9.4
 Kind = Fox
 Pokedex = As it walks, it munches on a twig in place of a snack. It intimidates opponents by puffing hot air out of its ears.
 Generation = 6
+Flags = Starter
 Evolutions = BRAIXEN,Level,16
 #-------------------------------
 [BRAIXEN]
@@ -16507,6 +16556,7 @@ Weight = 14.5
 Kind = Fox
 Pokedex = When the twig is plucked from its tail, friction sets the twig alight. The flame is used to send signals to its allies.
 Generation = 6
+Flags = Starter
 Evolutions = DELPHOX,Level,36
 #-------------------------------
 [DELPHOX]
@@ -16526,6 +16576,7 @@ Weight = 39.0
 Kind = Fox
 Pokedex = Using psychic power, it generates a fiery vortex of 5,400 degrees Fahrenheit, incinerating foes swept into this whirl of flame.
 Generation = 6
+Flags = Starter
 #-------------------------------
 [FROAKIE]
 Name = Froakie
@@ -16546,6 +16597,7 @@ Weight = 7.0
 Kind = Bubble Frog
 Pokedex = It protects its skin by covering its body in delicate bubbles. Beneath its happy-go-lucky air, it keeps a watchful eye on its surroundings.
 Generation = 6
+Flags = Starter
 Evolutions = FROGADIER,Level,16
 #-------------------------------
 [FROGADIER]
@@ -16565,6 +16617,7 @@ Weight = 10.9
 Kind = Bubble Frog
 Pokedex = Its swiftness is unparalleled. It can scale a tower of more than 2,000 feet in a minute's time.
 Generation = 6
+Flags = Starter
 Evolutions = GRENINJA,Level,36
 #-------------------------------
 [GRENINJA]
@@ -16584,6 +16637,7 @@ Weight = 40.0
 Kind = Ninja
 Pokedex = It appears and vanishes with a ninja's grace. It toys with its enemies using swift movements, while slicing them with throwing stars of sharpest water.
 Generation = 6
+Flags = Starter
 #-------------------------------
 [BUNNELBY]
 Name = Bunnelby
@@ -18031,7 +18085,7 @@ Weight = 1.5
 Kind = Grass Quill
 Pokedex = It sends its feathers, which are as sharp as blades, flying in attack. Its legs are strong, so its kicks are also formidable.
 Generation = 7
-Flags = Grounded
+Flags = Starter
 Evolutions = DARTRIX,Level,16
 #-------------------------------
 [DARTRIX]
@@ -18051,7 +18105,7 @@ Weight = 16.0
 Kind = Blade Quill
 Pokedex = This narcissistic Pokémon is a clean freak. If you don't groom it diligently, it will stop listening to you.
 Generation = 7
-Flags = Grounded
+Flags = Starter
 Evolutions = HDECIDUEYE,Originize,36,DECIDUEYE,Level,36
 #-------------------------------
 [DECIDUEYE]
@@ -18074,6 +18128,7 @@ Weight = 36.6
 Kind = Arrow Quill
 Pokedex = It nocks its arrow quills and shoots them at opponents. When it simply can't afford to miss, it tugs the vine on its head to improve its focus.
 Generation = 7
+Flags = Starter
 #-------------------------------
 [HDECIDUEYE]
 Name = H. Decidueye
@@ -18115,6 +18170,7 @@ Weight = 4.3
 Kind = Fire Cat
 Pokedex = If you try too hard to get close to it, it won't open up to you. Even if you do grow close, giving it too much affection is still a no-no.
 Generation = 7
+Flags = Starter
 Evolutions = TORRACAT,Level,16
 #-------------------------------
 [TORRACAT]
@@ -18135,6 +18191,7 @@ Weight = 25.0
 Kind = Fire Cat
 Pokedex = It can act spoiled if it grows close to its Trainer. A powerful Pokémon, its sharp claws can leave its Trainer's whole body covered in scratches.
 Generation = 7
+Flags = Starter
 Evolutions = INCINEROAR,Level,36
 #-------------------------------
 [INCINEROAR]
@@ -18155,6 +18212,7 @@ Weight = 83.0
 Kind = Heel
 Pokedex = Although it's rough mannered and egotistical, it finds beating down unworthy opponents boring. It gets motivated for stronger opponents.
 Generation = 7
+Flags = Starter
 #-------------------------------
 [POPPLIO]
 Name = Popplio
@@ -18176,6 +18234,7 @@ Weight = 7.5
 Kind = Sea Lion
 Pokedex = The balloons it inflates with its nose grow larger and larger as it practices day by day.
 Generation = 7
+Flags = Starter
 Evolutions = BRIONNE,Level,16
 #-------------------------------
 [BRIONNE]
@@ -18196,6 +18255,7 @@ Weight = 17.5
 Kind = Pop Star
 Pokedex = It gets excited when it sees a dance it doesn't know. This hard worker practices diligently until it can learn that dance.
 Generation = 7
+Flags = Starter
 Evolutions = PRIMARINA,Level,36
 #-------------------------------
 [PRIMARINA]
@@ -18216,6 +18276,7 @@ Weight = 44.0
 Kind = Soloist
 Pokedex = To Primarina, every battle is a stage. It takes down its prey with beautiful singing and dancing.
 Generation = 7
+Flags = Starter
 #-------------------------------
 [PIKIPEK]
 Name = Pikipek
@@ -19976,6 +20037,7 @@ Weight = 5.0
 Kind = Chimp
 Pokedex = It attacks with rapid beats of its stick. As it strikes with amazing speed, it gets more and more pumped.
 Generation = 8
+Flags = Starter
 Evolutions = THWACKEY,Level,16
 #-------------------------------
 [THWACKEY]
@@ -19994,6 +20056,7 @@ Weight = 14.0
 Kind = Beat
 Pokedex = When it's drumming out rapid beats in battle, it gets so caught up in the rhythm that it won't even notice that it's already knocked out its opponent.
 Generation = 8
+Flags = Starter
 Evolutions = RILLABOOM,Level,36
 #-------------------------------
 [RILLABOOM]
@@ -20013,6 +20076,7 @@ Weight = 90.0
 Kind = Drummer
 Pokedex = By drumming, it taps into the power of its special tree stump. The roots of the stump follow its direction in battle.
 Generation = 8
+Flags = Starter
 #-------------------------------
 [SCORBUNNY]
 Name = Scorbunny
@@ -20033,6 +20097,7 @@ Weight = 4.5
 Kind = Rabbit
 Pokedex = It has special pads on the backs of its feet, and one on its nose. Once it's raring to fight, these pads radiate tremendous heat.
 Generation = 8
+Flags = Starter
 Evolutions = RABOOT,Level,16
 #-------------------------------
 [RABOOT]
@@ -20051,6 +20116,7 @@ Weight = 9.0
 Kind = Rabbit
 Pokedex = It kicks berries right off the branches of trees and then juggles them with its feet, practicing its footwork.
 Generation = 8
+Flags = Starter
 Evolutions = CINDERACE,Level,36
 #-------------------------------
 [CINDERACE]
@@ -20070,6 +20136,7 @@ Weight = 33.0
 Kind = Striker
 Pokedex = It's skilled at both offense and defense, and it gets pumped up when cheered on. But if it starts showboating, it could put itself in a tough spot.
 Generation = 8
+Flags = Starter
 #-------------------------------
 [SOBBLE]
 Name = Sobble
@@ -20090,6 +20157,7 @@ Weight = 4.0
 Kind = Water Lizard
 Pokedex = When it gets wet, its skin changes color, and this Pokémon becomes invisible as if it were camouflaged.
 Generation = 8
+Flags = Starter
 Evolutions = DRIZZILE,Level,16
 #-------------------------------
 [DRIZZILE]
@@ -20108,6 +20176,7 @@ Weight = 11.5
 Kind = Water Lizard
 Pokedex = Highly intelligent but also very lazy, it keeps enemies out of its territory by laying traps everywhere.
 Generation = 8
+Flags = Starter
 Evolutions = INTELEON,Level,36
 #-------------------------------
 [INTELEON]
@@ -20127,6 +20196,7 @@ Weight = 45.2
 Kind = Secret Agent
 Pokedex = Its nictitating membranes let it pick out foes' weak points so it can precisely blast them with water that shoots from its fingertips at Mach 3.
 Generation = 8
+Flags = Starter
 #-------------------------------
 [SKWOVET]
 Name = Skwovet
