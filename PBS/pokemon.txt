@@ -9407,8 +9407,8 @@ Name = Cacnea
 Type1 = GRASS
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 50,90,50,40,90,40
-# Total = 360
+BaseStats = 60,85,55,45,85,40
+# Total = 370
 BaseEXP = 67
 Rareness = 145
 Happiness = 35
@@ -15659,8 +15659,8 @@ Name = Golett
 Type1 = GROUND
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,75,40,55,75,40
-# Total = 345
+BaseStats = 55,85,45,55,85,45
+# Total = 370
 GenderRate = Genderless
 BaseEXP = 61
 Rareness = 145
