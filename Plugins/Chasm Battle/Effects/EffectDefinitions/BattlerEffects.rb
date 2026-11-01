@@ -1943,9 +1943,13 @@ GameData::BattleEffect.register_effect(:Battler, {
 
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :Inured,
-    :real_name => "No Weaknesses",
-    :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("{1} shed its weaknesses!", battler.pbThis))
+    :real_name => "Inured Hits",
+    :type => :Integer,
+    :apply_proc => proc do |battle, battler, value|
+        battle.pbDisplay(_INTL("{1} protects its weak points ! It cannot take super-effective damage for the next {2} hits!", battler.pbThis, value))
+    end,
+    :expire_proc => proc do |battle, battler|
+        battle.pbDisplay(_INTL("{1}'s weaknesses are revealed again!", battler.pbThis))
     end,
 })
 

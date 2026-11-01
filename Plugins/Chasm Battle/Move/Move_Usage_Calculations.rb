@@ -51,7 +51,7 @@ class PokeBattle_Move
         # Grounded Flying-type Pokémon become susceptible to Ground moves
         ret = Effectiveness::NORMAL_EFFECTIVE if !target&.airborne? && (defType == :FLYING && moveType == :GROUND)
         # Inured
-        ret /= 2 if target&.effectActive?(:Inured) && Effectiveness.super_effective_type?(moveType, defType)
+        ret = Effectiveness::NORMAL_EFFECTIVE if target&.effectActive?(:Inured) && Effectiveness.super_effective_type?(moveType, defType)
         # Break Through — check immunity first (cheap) before iterating the ability list.
         if Effectiveness.ineffective_type?(moveType, defType) && GameData::Ability.getByFlag("BypassTypeImmunity").any? { |abil| user&.hasActiveAbility?(abil) }
             ret = Effectiveness::NORMAL_EFFECTIVE

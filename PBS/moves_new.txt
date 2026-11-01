@@ -2444,19 +2444,6 @@ FunctionCode = RecoilFifthOfDamageDealt
 Flags = CanProtect
 Description = The user slams the target with blunt force, taking 20% recoil.
 #-------------------------------
-[ICEBREAKER]
-Name = Icebreaker
-Type = ROCK
-Category = Physical
-Power = 120
-Accuracy = 100
-TotalPP = 10
-Target = NearOther
-FunctionCode = Icebreaker
-Flags = CanProtect
-Description = The user sweeps away hazards afflicting your side while lunging forward. User also takes 33% recoil.
-Animation = HEADSMASH
-#-------------------------------
 [INVITESANDSTORM]
 Name = Invite Sandstorm
 Type = ROCK
@@ -7256,6 +7243,17 @@ Flags = CanProtect
 EffectChance = 100
 Description = Injects supercold liquid into the target, damaging them and halving all future healing.
 Animation = FROSTBARB
+#-------------------------------
+[INURE]
+Name = Inure
+Type = ICE
+Category = Status
+Accuracy = 0
+TotalPP = 3
+Target = User
+FunctionCode = StartUserShedTypeWeaknesses3
+Flags = CanSnatch
+Description = The user readies for the harshest environments. The next 3 hits against it cannot be super effective or hyper effective.
 #-------------------------------
 [INVITEHAIL]
 Name = Invite Hail

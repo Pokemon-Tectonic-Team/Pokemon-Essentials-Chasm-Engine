@@ -898,6 +898,13 @@ class PokeBattle_Battler
         if user.effectActive?(:Blindness) && move.damagingMove?
             @battle.pbDisplay(_INTL("{1} is blinded, and partially misses!", user.pbThis))
         end
+        #Inure decrement
+        if move.damagingMove?
+            targets.each do |t|
+                next if t.damageState.unaffected
+                t.tickDownAndProc(:Inured)
+            end
+        end
         # Messages about missed target(s) (relevant for multi-target moves only)
         unless move.pbRepeatHit?
             targets.each do |b|
