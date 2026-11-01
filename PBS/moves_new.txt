@@ -8682,7 +8682,7 @@ TotalPP = 5
 Target = User
 FunctionCode = HealUserFullHPBindsTarget
 Flags = CanSnatch
-Description = The user uses honey to fully restore its HP. However, this lures swarming insects, trapping and binding the user for three turns.
+Description = The user uses honey to fully restore its HP. This can overheal. However, swarming insects trap and bind the user for two turns.
 Animation = RECOVER
 #-------------------------------
 [HUMBLE]
