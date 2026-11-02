@@ -7,8 +7,8 @@ class HelperTrainer
 
     DEFAULT_TURNS_PER_ACTION = 5
 
-    def initialize(trainer, turnsPerAction: DEFAULT_TURNS_PER_ACTION)
-      	@trainer = trainer
+	def initialize(trainer, turnsPerAction: DEFAULT_TURNS_PER_ACTION)
+        @trainer = trainer
 		@turnsPerAction = turnsPerAction
 		@turnTimer = 0
 		@moveToUse = nil
@@ -36,11 +36,10 @@ class HelperTrainer
 	def announceSelectedMove(battle, forOpponent: false)
 		if @moveToUse
 			if forOpponent
-				battle.pbDisplayBossNarration(_INTL("{1} is ready to help your foe!", full_name))
-				battle.pbDisplayBossNarration(_INTL("Their {1} will use {2}!",@pokemonToUseMove.name,@moveToUse.name))
+				battle.pbDisplayBossNarration(_INTL("Oh no! {1} will help your foe this turn!", full_name))
 			else
 				battle.pbDisplayBossNarration(_INTL("{1} is ready to help you this turn!", full_name))
-				battle.pbDisplayBossNarration(_INTL("Their {1} will use {2}!",@pokemonToUseMove.name,@moveToUse.name))
+				battle.pbDisplayBossNarration(_INTL("The {1} will use {2}!",@pokemonToUseMove.name,@moveToUse.name))
 			end
 		end
 	end
@@ -50,13 +49,15 @@ class HelperTrainer
 		moveUser.pbInitDummyPokemon(@pokemonToUseMove, @partyIndex, true)
 
 		moveData = GameData::Move.get(@moveToUse.id)
-        target_data = GameData::Target.get(moveData.target)
+		target_data = GameData::Target.get(moveData.target)
 
 		targetIndex = -1
 		if target_data.single_target? && !target_data.targets_foe && target_data.targets_ally
 			targetIndex = sideIndex
 			echoln("Helper move has been set to target index #{targetIndex}")
 		end
+
+        pbHelperTrainerMoveAnimation(@pokemonToUseMove, sideIndex == 1)
 		
 		moveUser.pbUseMoveSimple(@moveToUse.id,targetIndex)
 		incrementMoveIndex
