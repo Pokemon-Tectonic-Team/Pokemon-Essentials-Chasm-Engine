@@ -217,6 +217,27 @@ Generation = 9
 Flags = Paradox
 WildItemUncommon = BOOSTERENERGY
 #-------------------------------
+[IRONTREADS]
+Name = Iron Treads
+Type1 = GROUND
+Type2 = STEEL
+BaseStats = 90,112,120,106,72,70
+GenderRate = Genderless
+BaseExp = 285
+Rareness = 30
+Happiness = 0
+Abilities = SCHADENFREUDE
+Moves = 1,HEADBUTT,1,DEFENSECURL,1,ROLLOUT,7,BULLDOZE,21,RAPIDSPIN,28,IRONHEAD,35,STOMPINGTANTRUM,42,KNOCKOFF,49,EARTHQUAKE,56,HEAVYSLAM,63,WILDCHARGE,70,ENDEAVOR,70,MEGAHORN,70,GIGAIMPACT,70,STEELROLLER
+LineMoves = BODYPRESS,BODYSLAM,BULLDOZE,DOUBLEEDGE,EARTHPOWER,EARTHQUAKE,ELECTROBALL,ENDEAVOR,FACADE,FLASHCANNON,GIGAIMPACT,GYROBALL,HARDPRESS,HEAVYSLAM,TRAMPLE,HYPERBEAM,ICEFANG,GLACIALRAM,IRONDEFENSE,IRONHEAD,KNOCKOFF,METALSOUND,MUDSHOT,SANDTOSS,PROTECT,REST,ROCKSLIDE,ROCKTOMB,SANDSTORM,SCARYFACE,SMARTSTRIKE,STEALTHROCK,STEELBEAM,STOMPINGTANTRUM,STONEEDGE,SUBSTITUTE,SUPERCELLSLAM,TAKEDOWN,THUNDER,THUNDERFANG,VOLTSWITCH,WILDCHARGE,ZENHEADBUTT
+Tribes = Undiscovered
+StepsToHatch = 12800
+Height = 0.9
+Weight = 240.0
+Kind = Paradox
+Pokedex = This Pokémon closely resembles a scientific weapon that a paranormal magazine claimed was sent to this planet by aliens.
+Generation = 9
+Flags = Paradox
+#-------------------------------
 [IRONBUNDLE]
 Name = Iron Bundle
 Type1 = ICE
@@ -408,51 +429,6 @@ Kind = Paradox
 Pokedex = According to the few eyewitness accounts that exist, it used its shining blades to julienne large trees and boulders.
 Generation = 9
 Flags = Paradox
-#-------------------------------
-[POLTCHAGEIST]
-Name = Poltchageist
-FormName = Counterfeit Form
-Type1 = GRASS
-Type2 = GHOST
-BaseStats = 40,45,45,50,74,54
-GenderRate = Genderless
-BaseExp = 62
-Rareness = 120
-Happiness = 50
-Abilities = HOSPITALITY
-HiddenAbilities = HEATPROOF
-Moves = 1,STUNSPORE,1,ASTONISH,1,WITHDRAW,6,ABSORB,12,LIFEDEW,18,FOULPLAY,24,MEGADRAIN,30,HEX,36,RAGEPOWDER,42,GIGADRAIN,48,SHADOWBALL,54,MEMENTO,60,LEAFSTORM
-TutorMoves = CALMMIND,CURSE,ENDURE,ENERGYBALL,FOULPLAY,GIGADRAIN,GRASSYTERRAIN,HEX,IMPRISON,IRONDEFENSE,LEAFSTORM,MAGICALLEAF,NASTYPLOT,NIGHTSHADE,PAINSPLIT,PHANTOMFORCE,POLTERGEIST,PROTECT,PSYCHUP,REFLECT,REST,SCALD,SHADOWBALL,SLEEPTALK,SOLARBEAM,SPITE,SUBSTITUTE,TRICKROOM,UPROAR
-Tribes = Mineral,Amorphous
-StepsToHatch = 5120
-Height = 0.1
-Weight = 1.1
-Kind = Matcha
-Pokedex = Supposedly, the regrets of a tea ceremony master who died before perfecting his craft lingered in some matcha and became a Pokémon.
-Generation = 9
-Evolutions = SINISTCHA,Item,UNREMARKABLETEACUP
-#-------------------------------
-[SINISTCHA]
-Name = Sinistcha
-FormName = Unremarkable Form
-Type1 = GRASS
-Type2 = GHOST
-BaseStats = 71,60,106,70,121,80
-GenderRate = Genderless
-BaseExp = 178
-Rareness = 60
-Happiness = 50
-Abilities = HOSPITALITY
-HiddenAbilities = HEATPROOF
-Moves = 0,MATCHAGOTCHA,1,ASTONISH,1,WITHDRAW,1,STUNSPORE,6,ABSORB,12,LIFEDEW,18,FOULPLAY,24,MEGADRAIN,30,HEX,36,RAGEPOWDER,42,STRENGTHSAP,48,SHADOWBALL,54,MEMENTO,60,LEAFSTORM
-TutorMoves = CALMMIND,CURSE,ENDURE,ENERGYBALL,FOULPLAY,GIGADRAIN,GRASSYTERRAIN,HEX,HYPERBEAM,IMPRISON,IRONDEFENSE,LEAFSTORM,MAGICALLEAF,NASTYPLOT,NIGHTSHADE,PAINSPLIT,PHANTOMFORCE,POLTERGEIST,PROTECT,PSYCHUP,REFLECT,REST,SCALD,SHADOWBALL,SLEEPTALK,SOLARBEAM,SPITE,SUBSTITUTE,TRICKROOM,UPROAR
-Tribes = Mineral,Amorphous
-StepsToHatch = 5120
-Height = 0.2
-Weight = 2.2
-Kind = Matcha
-Pokedex = It pretends to be tea, trying to fool people into drinking it so it can drain their life-force. Its ruse is generally unsuccessful.
-Generation = 9
 #-------------------------------
 [OKIDOGI]
 Name = Okidogi
