@@ -1043,7 +1043,7 @@ Flags = AllWeatherSynergy
 #-------------------------------
 [HITANDRUN]
 Name = Hit and Run
-Description = When this Pokémon knocks a foe below half health, this Pokémon switches out.
+Description = When this Pokémon's attacks deal less than 50% of the target's max HP, this Pokémon switches out.
 #-------------------------------
 [HIVEMIND]
 Name = Hive Mind
