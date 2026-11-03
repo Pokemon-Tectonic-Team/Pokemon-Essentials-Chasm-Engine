@@ -1046,103 +1046,36 @@ Height = 2.7
 Weight = 330.0
 Pokedex = This special Ursaluna can see in the dark with its left eye and protects itself with mud that is as hard as iron.
 #-------------------------------
-[TAUROS,1]
-FormName = Paldean (Combat Breed)
-Types = FIGHTING
-BaseStats = 75,110,105,100,30,70
-EVs = ATTACK,2
-HiddenAbilities = CUDCHEW
-Moves = 1,TAILWHIP,1,TACKLE,5,WORKUP,10,DOUBLEKICK,15,ASSURANCE,20,HEADBUTT,25,SCARYFACE,30,ZENHEADBUTT,35,RAGINGBULL,40,REST,45,SWAGGER,50,THRASH,55,DOUBLEEDGE,60,CLOSECOMBAT
-TutorMoves = BODYPRESS,BODYSLAM,BULKUP,BULLDOZE,CLOSECOMBAT,CURSE,DIG,DOUBLEEDGE,DRILLRUN,EARTHQUAKE,ENDEAVOR,ENDURE,FACADE,GIGAIMPACT,HIGHHORSEPOWER,HYPERBEAM,IRONHEAD,LASHOUT,OUTRAGE,PROTECT,RAINDANCE,REST,REVERSAL,ROCKSLIDE,ROCKTOMB,SANDSTORM,SCARYFACE,SLEEPTALK,SMARTSTRIKE,STOMPINGTANTRUM,STONEEDGE,SUBSTITUTE,SUNNYDAY,SURF,TAKEDOWN,THIEF,THROATCHOP,TRAILBLAZE,WILDCHARGE,ZENHEADBUTT
-Weight = 115.0
-Color = Black
-Pokedex = This kind of Tauros, known as the Combat Breed, is distinguished by its thick, powerful muscles and its fierce disposition.
-Generation = 9
-#-------------------------------
-[TAUROS,2]
-FormName = Paldean (Blaze Breed)
-Types = FIGHTING,FIRE
-BaseStats = 75,110,105,100,30,70
-EVs = ATTACK,2
-HiddenAbilities = CUDCHEW
-Moves = 1,TAILWHIP,1,TACKLE,5,WORKUP,10,DOUBLEKICK,15,FLAMECHARGE,20,HEADBUTT,25,SCARYFACE,30,ZENHEADBUTT,35,RAGINGBULL,40,REST,45,SWAGGER,50,THRASH,55,FLAREBLITZ,60,CLOSECOMBAT
-TutorMoves = BODYPRESS,BODYSLAM,BULKUP,BULLDOZE,CLOSECOMBAT,CURSE,DIG,DOUBLEEDGE,DRILLRUN,EARTHQUAKE,ENDEAVOR,ENDURE,FACADE,FIREBLAST,FIRESPIN,FLAMECHARGE,FLAMETHROWER,FLAREBLITZ,GIGAIMPACT,HIGHHORSEPOWER,HYPERBEAM,IRONHEAD,LASHOUT,OUTRAGE,OVERHEAT,PROTECT,RAINDANCE,REST,REVERSAL,ROCKSLIDE,ROCKTOMB,SANDSTORM,SCARYFACE,SLEEPTALK,SMARTSTRIKE,STOMPINGTANTRUM,STONEEDGE,SUBSTITUTE,SUNNYDAY,TAKEDOWN,TEMPERFLARE,THIEF,TRAILBLAZE,WILDCHARGE,WILLOWISP,ZENHEADBUTT
-Weight = 85.0
-Color = Black
+[PTAUROS,1]
+FormName = Blaze Breed
+Moves = 1,LEER,1,TACKLE,5,WORKUP,10,DOUBLEKICK,15,FLAMECHARGE,20,HEADBUTT,25,SCARYFACE,30,ZENHEADBUTT,40,REST,45,BACKHAND,50,THRASH,55,FLAREBLITZ,60,SUPERPOWER
 Pokedex = People call this kind of Tauros the Blaze Breed due to the hot air it snorts from its nostrils. Its three tails are intertwined.
-Generation = 9
 #-------------------------------
-[TAUROS,3]
-FormName = Paldean (Aqua Breed)
-Types = FIGHTING,WATER
-BaseStats = 75,110,105,100,30,70
-EVs = ATTACK,2
-HiddenAbilities = CUDCHEW
-Moves = 1,TAILWHIP,1,TACKLE,5,WORKUP,10,DOUBLEKICK,15,AQUAJET,20,HEADBUTT,25,SCARYFACE,30,ZENHEADBUTT,35,RAGINGBULL,40,REST,45,SWAGGER,50,THRASH,55,WAVECRASH,60,CLOSECOMBAT
-TutorMoves = BODYPRESS,BODYSLAM,BULKUP,BULLDOZE,CHILLINGWATER,CLOSECOMBAT,CURSE,DIG,DOUBLEEDGE,DRILLRUN,EARTHQUAKE,ENDEAVOR,ENDURE,FACADE,GIGAIMPACT,HIGHHORSEPOWER,HYDROPUMP,HYPERBEAM,IRONHEAD,LASHOUT,LIQUIDATION,OUTRAGE,PROTECT,RAINDANCE,REST,REVERSAL,ROCKSLIDE,ROCKTOMB,SANDSTORM,SCARYFACE,SLEEPTALK,SMARTSTRIKE,STOMPINGTANTRUM,STONEEDGE,SUBSTITUTE,SURF,TAKEDOWN,THIEF,TRAILBLAZE,WATERPULSE,WHIRLPOOL,WILDCHARGE,ZENHEADBUTT
-Weight = 110.0
-Color = Black
+[PTAUROS,2]
+FormName = Aqua Breed
+Moves = 1,LEER,1,TACKLE,5,WORKUP,10,DOUBLEKICK,15,AQUAJET,20,HEADBUTT,25,SCARYFACE,30,ZENHEADBUTT,40,REST,45,BACKHAND,50,THRASH,55,HARBORBREAKER,60,SUPERPOWER
 Pokedex = It swims by jetting water from its horns. The most notable characteristic of the Aqua Breed is its high body fat, which allows it to float easily.
-Generation = 9
-#-------------------------------
-[WOOPER,1]
-FormName = Paldean
-Types = POISON,GROUND
-Abilities = POISONPOINT,WATERABSORB
-Moves = 1,MUDSHOT,1,TAILWHIP,4,TACKLE,8,POISONTAIL,12,TOXICSPIKES,16,SLAM,21,YAWN,24,POISONJAB,28,SLUDGEWAVE,32,AMNESIA,36,TOXIC,40,EARTHQUAKE
-TutorMoves = ACIDSPRAY,AMNESIA,BODYPRESS,BODYSLAM,BULLDOZE,CHILLINGWATER,CURSE,DIG,DOUBLEEDGE,EARTHPOWER,EARTHQUAKE,ENDURE,FACADE,GUNKSHOT,HAZE,HELPINGHAND,HYDROPUMP,LIQUIDATION,LOWKICK,MUDSHOT,MUDSLAP,POISONJAB,POISONTAIL,PROTECT,RAINDANCE,REST,ROCKSLIDE,ROCKTOMB,SANDSTORM,SLEEPTALK,SLUDGEBOMB,SLUDGEWAVE,SPIKES,STEALTHROCK,STOMPINGTANTRUM,STONEEDGE,SUBSTITUTE,SURF,TAKEDOWN,TOXIC,TOXICSPIKES,TRAILBLAZE,VENOSHOCK,WATERFALL,WATERPULSE
-EggMoves = ACIDSPRAY,AFTERYOU,ANCIENTPOWER,COUNTER,CURSE,DOUBLEKICK,HAZE,MIST,RECOVER,SPITUP,STOCKPILE,SWALLOW
-Weight = 11.0
-Color = Brown
-Category = Poison Fish
-Pokedex = After losing a territorial struggle, Wooper began living on land. The Pokémon changed over time, developing a poisonous film to protect its body.
-Generation = 9
-Flags = InheritFormWithEverStone
-Evolutions = CLODSIRE,Level,20
 #-------------------------------
 [OINKOLOGNE,1]
 FormName = Female
-BaseStats = 115,90,70,65,59,90
-Abilities = AROMAVEIL,GLUTTONY
-Color = Brown
-Moves = 1,TAILWHIP,1,TACKLE,3,DISARMINGVOICE,6,ECHOEDVOICE,9,MUDSHOT,12,COVET,15,DIG,17,HEADBUTT,23,YAWN,28,TAKEDOWN,30,WORKUP,34,UPROAR,39,DOUBLEEDGE,45,EARTHPOWER,51,BELCH
 Pokedex = This is a meticulous Pokémon that likes to keep things tidy. It shrouds itself in a floral aroma that soothes the Pokémon around it.
 #-------------------------------
 [TATSUGIRI,1]
 FormName = Droopy Form
-Color = Pink
 Pokedex = This species’ differing colors and patterns are apparently the result of Tatsugiri changing itself to suit the preferences of the prey it lures in.
 #-------------------------------
 [TATSUGIRI,2]
 FormName = Stretchy Form
-Color = Yellow
 Pokedex = Bird Pokémon are its main prey. This Pokémon knows it’s weak, so it hunts with a partner.
 #-------------------------------
 [SQUAWKABILLY,1]
 FormName = Blue Plumage
-Color = Blue
 Pokedex = Blue-feathered Squawkabilly view their green- feathered counterparts as rivals, since the latter make up the largest, most powerful groups.
 #-------------------------------
 [SQUAWKABILLY,2]
 FormName = Yellow Plumage
-HiddenAbilities = SHEERFORCE
-Color = Yellow
 Pokedex = The yellow Squawkabilly are especially fierce. They've even been known to drive other bird Pokémon out of town.
 #-------------------------------
 [SQUAWKABILLY,3]
 FormName = White Plumage
-HiddenAbilities = SHEERFORCE
-Color = White
 Pokedex = Though these Squawkabilly are the fewest in number, they have no trouble living in towns since they blend in with the white buildings.
-#-------------------------------
-[GIMMIGHOUL,1]
-FormName = Roaming Form
-BaseStats = 45,30,25,80,75,45
-Abilities = RUNAWAY
-Height = 0.1
-Weight = 0.1
-Color = Gray
-Shape = Bipedal
-Category = Coin Hunter
-Pokedex = It wanders around, carrying an old coin on its back. It survives by draining the life-force from humans who try to pick up its coin.
-Evolutions = GHOLDENGO,None,

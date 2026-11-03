@@ -150,6 +150,24 @@ FieldUse = OnPokemon
 Flags = EvolutionItem,Clothing
 Description = A cool scarf. It makes a certain Pokémon evolve.
 #-------------------------------
+[AUSPICIOUSARMOR]
+Name = Auspicious Armor
+NamePlural = Auspicious Armors
+Pocket = 4
+Price = 3000
+FieldUse = OnPokemon
+Flags = EvolutionItem,Clothing
+Description = A peculiar set of armor that can make a certain Pokémon evolve. Auspicious wishes live within it.
+#-------------------------------
+[MALICIOUSARMOR]
+Name = Malicious Armor
+NamePlural = Malicious Armors
+Pocket = 4
+Price = 3000
+FieldUse = OnPokemon
+Flags = EvolutionItem,Clothing
+Description = A peculiar set of armor that can make a certain Pokémon evolve. Malicious will lurks within it.
+#-------------------------------
 [ALOLANWREATH]
 Name = Alolan Wreath
 NamePlural = Alolan Wreathes
