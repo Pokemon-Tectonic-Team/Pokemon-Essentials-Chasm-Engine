@@ -21898,7 +21898,7 @@ Flags = Legendary,Floating
 Name = Sprigatito
 Type1 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 40,60,55,65,45,45
+BaseStats = 45,65,40,70,50,40
 # Total = 310
 BaseEXP = 100
 Rareness = 45
@@ -21919,7 +21919,7 @@ Evolutions = FLORAGATO,Level,20
 Name = Floragato
 Type1 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,80,65,83,60,65
+BaseStats = 60,85,55,93,65,55
 # Total = 413
 BaseEXP = 100
 Rareness = 45
@@ -22072,8 +22072,8 @@ Name = Lechonk
 Type1 = NORMAL
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 55,45,40,35,35,45
-# Total = 255
+BaseStats = 95,80,45,80,65,50
+# Total = 415
 BaseEXP = 100
 Rareness = 255
 Happiness = 50
@@ -22094,8 +22094,8 @@ Name = Oinkologne
 Type1 = NORMAL
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 110,100,75,65,60,80
-# Total = 490
+BaseStats = 130,110,60,110,90,65
+# Total = 565
 BaseEXP = 100
 Rareness = 100
 Happiness = 50
@@ -22112,8 +22112,8 @@ Generation = 9
 Name = Tarountula
 Type1 = BUG
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 35,40,45,20,30,40
-# Total = 210
+BaseStats = 55,75,85,35,50,80
+# Total = 380
 BaseEXP = 100
 Rareness = 255
 Happiness = 50
@@ -22133,8 +22133,8 @@ Evolutions = SPIDOPS,Level,30
 Name = Spidops
 Type1 = BUG
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,80,90,35,50,85
-# Total = 400
+BaseStats = 75,100,115,45,65,110
+# Total = 510
 BaseEXP = 100
 Rareness = 120
 Happiness = 50
@@ -22172,8 +22172,8 @@ Name = Lokix
 Type1 = BUG
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 70,100,80,92,50,55
-# Total = 447
+BaseStats = 60,80,65,75,45,50
+# Total = 375
 BaseEXP = 100
 Rareness = 30
 Happiness = 0
@@ -22190,8 +22190,8 @@ Generation = 9
 Name = Pawmi
 Type1 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 45,50,20,60,40,25
-# Total = 240
+BaseStats = 50,75,50,70,40,40
+# Total = 325
 BaseEXP = 100
 Rareness = 190
 Happiness = 50
@@ -22212,8 +22212,8 @@ Name = Pawmo
 Type1 = ELECTRIC
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,75,40,85,50,40
-# Total = 350
+BaseStats = 65,100,65,90,55,50
+# Total = 425
 BaseEXP = 100
 Rareness = 80
 Happiness = 50
@@ -22231,8 +22231,8 @@ Name = Pawmot
 Type1 = ELECTRIC
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 70,115,70,105,70,60
-# Total = 490
+BaseStats = 80,125,80,115,70,60
+# Total = 530
 BaseEXP = 100
 Rareness = 45
 Happiness = 50
@@ -22348,8 +22348,8 @@ Name = Squawkabilly
 Type1 = NORMAL
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 80,95,50,92,45,50
-# Total = 412
+BaseStats = 80,95,70,92,70,100
+# Total = 507
 BaseEXP = 100
 Rareness = 190
 Happiness = 50
@@ -22369,8 +22369,8 @@ Generation = 9
 Name = Nacli
 Type1 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 55,55,75,25,35,35
-# Total = 280
+BaseStats = 60,60,80,20,40,55
+# Total = 315
 BaseEXP = 100
 Rareness = 255
 Happiness = 50
@@ -22390,8 +22390,8 @@ Evolutions = NACLSTACK,Level,26
 Name = Naclstack
 Type1 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,60,100,35,35,65
-# Total = 355
+BaseStats = 75,75,100,25,50,70
+# Total = 395
 BaseEXP = 100
 Rareness = 120
 Happiness = 50
@@ -22408,8 +22408,8 @@ Evolutions = GARGANACL,Level,41
 Name = Garganacl
 Type1 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 100,100,130,35,45,90
-# Total = 500
+BaseStats = 100,100,130,35,65,90
+# Total = 520
 BaseEXP = 100
 Rareness = 45
 Happiness = 50
@@ -22425,8 +22425,8 @@ Generation = 9
 Name = Charcadet
 Type1 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 40,50,40,35,50,40
-# Total = 255
+BaseStats = 60,70,65,35,70,65
+# Total = 365
 BaseEXP = 100
 Rareness = 90
 Happiness = 50
@@ -22488,8 +22488,8 @@ Generation = 9
 Name = Tadbulb
 Type1 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,30,40,45,60,35
-# Total = 270
+BaseStats = 85,45,70,85,65,35
+# Total = 385
 BaseEXP = 100
 Rareness = 190
 Happiness = 50
@@ -22509,8 +22509,8 @@ Evolutions = BELLIBOLT,Item,THUNDERSTONE
 Name = Bellibolt
 Type1 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 110,65,90,45,105,85
-# Total = 500
+BaseStats = 120,65,100,120,90,45
+# Total = 540
 BaseEXP = 100
 Rareness = 50
 Happiness = 50
@@ -22527,8 +22527,8 @@ Name = Wattrel
 Type1 = ELECTRIC
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 40,40,35,70,55,40
-# Total = 280
+BaseStats = 55,50,70,85,70,60
+# Total = 390
 BaseEXP = 100
 Rareness = 180
 Happiness = 50
@@ -22549,8 +22549,8 @@ Name = Kilowattrel
 Type1 = ELECTRIC
 Type2 = FLYING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 70,70,60,125,105,60
-# Total = 490
+BaseStats = 75,70,100,115,100,80
+# Total = 540
 BaseEXP = 100
 Rareness = 90
 Happiness = 50
@@ -22566,8 +22566,8 @@ Generation = 9
 Name = Maschiff
 Type1 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 60,80,60,51,40,50
-# Total = 341
+BaseStats = 65,85,80,50,60,40
+# Total = 380
 BaseEXP = 100
 Rareness = 150
 Happiness = 50
@@ -22587,8 +22587,8 @@ Evolutions = MABOSSTIFF,Level,30
 Name = Mabosstiff
 Type1 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 80,120,90,85,60,70
-# Total = 505
+BaseStats = 90,120,110,70,80,55
+# Total = 525
 BaseEXP = 100
 Rareness = 75
 Happiness = 50
@@ -22605,8 +22605,8 @@ Name = Bramblin
 Type1 = GRASS
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 40,65,30,60,45,35
-# Total = 275
+BaseStats = 55,80,50,65,80,50
+# Total = 380
 BaseEXP = 100
 Rareness = 190
 Happiness = 50
@@ -22627,8 +22627,8 @@ Name = Brambleghast
 Type1 = GRASS
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 55,115,70,90,80,70
-# Total = 480
+BaseStats = 75,115,70,90,115,60
+# Total = 525
 BaseEXP = 100
 Rareness = 45
 Happiness = 50
@@ -22645,8 +22645,8 @@ Name = Toedscool
 Type1 = GROUND
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 40,40,35,70,50,100
-# Total = 335
+BaseStats = 60,50,50,75,60,80
+# Total = 375
 BaseEXP = 100
 Rareness = 190
 Happiness = 50
@@ -22686,8 +22686,8 @@ WildItemCommon = TINYMUSHROOM
 Name = Klawf
 Type1 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 70,100,115,75,35,55
-# Total = 450
+BaseStats = 100,105,120,35,80,75
+# Total = 515
 BaseEXP = 100
 Rareness = 120
 Happiness = 50
@@ -22721,15 +22721,15 @@ Weight = 3.0
 Kind = Spicy Pepper
 Pokedex = The more sunlight this Pokémon bathes in, the more spicy chemicals are produced by its body, and thus the spicier its moves become.
 Generation = 9
-Evolutions = SCOVILLAIN,Item,FIRESTONE
+Evolutions = SCOVILLAIN,Level,19
 #-------------------------------
 [SCOVILLAIN]
 Name = Scovillain
 Type1 = GRASS
 Type2 = FIRE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 65,110,65,75,110,65
-# Total = 490
+BaseStats = 65,110,55,75,110,55
+# Total = 470
 BaseEXP = 100
 Rareness = 75
 Happiness = 50
@@ -22740,13 +22740,32 @@ Weight = 15.0
 Kind = Spicy Pepper
 Pokedex = The red head converts spicy chemicals into fire energy and blasts the surrounding area with a super spicy stream of flame.
 Generation = 9
+Evolutions = CHILLIONAIRE,Item,FIRESTONE
+#-------------------------------
+[CHILLIONAIRE]
+Name = Chillionaire
+Type1 = GRASS
+Type2 = FIRE
+# HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+BaseStats = 65,135,85,75,135,85
+# Total = 580
+BaseEXP = 100
+Rareness = 75
+Happiness = 50
+Abilities = STUBBORN,CHLOROPHYLL
+StepsToHatch = 5120
+Height = 1.2
+Weight = 22.0
+Kind = Spicy Pepper
+Pokedex = The green head has turned vicious due to the spicy chemicals stimulating its brain. Once it goes on a rampage, there is no stopping it.
+Generation = 9
 #-------------------------------
 [RELLOR]
 Name = Rellor
 Type1 = BUG
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 40,50,60,30,30,60
-# Total = 270
+BaseStats = 55,35,70,100,90,30
+# Total = 380
 BaseEXP = 100
 Rareness = 190
 Happiness = 50
@@ -22767,8 +22786,8 @@ Name = Rabsca
 Type1 = BUG
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 75,50,85,45,115,100
-# Total = 470
+BaseStats = 75,50,100,145,125,45
+# Total = 540
 BaseEXP = 100
 Rareness = 45
 Happiness = 50
@@ -22785,8 +22804,8 @@ Generation = 9
 Name = Flittle
 Type1 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 30,35,30,75,55,30
-# Total = 255
+BaseStats = 65,60,45,80,90,45
+# Total = 385
 BaseEXP = 100
 Rareness = 120
 Happiness = 50
@@ -22806,8 +22825,8 @@ Evolutions = ESPATHRA,Level,35
 Name = Espathra
 Type1 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 95,60,60,105,100,60
-# Total = 480
+BaseStats = 95,80,60,105,120,60
+# Total = 520
 BaseEXP = 100
 Rareness = 60
 Happiness = 50
@@ -22824,8 +22843,8 @@ Name = Tinkatink
 Type1 = FAIRY
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 50,45,45,58,35,65
-# Total = 298
+BaseStats = 50,60,45,55,40,60
+# Total = 310
 GenderRate = AlwaysFemale
 BaseEXP = 100
 Rareness = 190
@@ -22847,8 +22866,8 @@ Name = Tinkatuff
 Type1 = FAIRY
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 65,55,55,78,45,80
-# Total = 378
+BaseStats = 65,80,60,75,55,80
+# Total = 415
 GenderRate = AlwaysFemale
 BaseEXP = 100
 Rareness = 90
@@ -22867,8 +22886,8 @@ Name = Tinkaton
 Type1 = FAIRY
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 85,75,75,94,70,105
-# Total = 504
+BaseStats = 85,100,75,94,70,105
+# Total = 529
 GenderRate = AlwaysFemale
 BaseEXP = 100
 Rareness = 45
@@ -22886,8 +22905,8 @@ Name = Wiglett
 Type1 = DRAGON
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 10,55,25,95,35,25
-# Total = 245
+BaseStats = 45,90,45,45,65,95
+# Total = 385
 BaseEXP = 100
 Rareness = 255
 Happiness = 50
@@ -22908,8 +22927,8 @@ Name = Wugtrio
 Type1 = DRAGON
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 35,100,50,120,50,70
-# Total = 425
+BaseStats = 65,125,60,60,90,135
+# Total = 535
 BaseEXP = 100
 Rareness = 50
 Happiness = 50
@@ -22926,8 +22945,8 @@ Name = Bombirdier
 Type1 = FLYING
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 70,105,85,82,60,85
-# Total = 487
+BaseStats = 80,115,95,72,95,95
+# Total = 552
 BaseEXP = 100
 Rareness = 25
 Happiness = 50
@@ -22947,8 +22966,8 @@ Name = Varoom
 Type1 = STEEL
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 45,70,65,47,30,45
-# Total = 302
+BaseStats = 55,95,65,70,40,55
+# Total = 380
 BaseEXP = 100
 Rareness = 190
 Happiness = 50
@@ -22969,8 +22988,8 @@ Name = Revavroom
 Type1 = STEEL
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 80,120,90,90,55,65
-# Total = 500
+BaseStats = 80,130,90,100,55,75
+# Total = 530
 BaseEXP = 100
 Rareness = 75
 Happiness = 50
@@ -22988,8 +23007,8 @@ Name = Orthworm
 Type1 = STEEL
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 70,85,145,65,60,55
-# Total = 480
+BaseStats = 70,85,145,65,60,100
+# Total = 525
 BaseEXP = 100
 Rareness = 25
 Happiness = 50
@@ -23009,8 +23028,8 @@ Name = Glimmet
 Type1 = ROCK
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 50,35,40,60,105,60
-# Total = 350
+BaseStats = 50,35,55,55,80,50
+# Total = 325
 BaseEXP = 100
 Rareness = 70
 Happiness = 50
@@ -23031,8 +23050,8 @@ Name = Glimmora
 Type1 = ROCK
 Type2 = POISON
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 85,55,90,86,130,80
-# Total = 526
+BaseStats = 65,45,70,70,105,65
+# Total = 420
 BaseEXP = 100
 Rareness = 25
 Happiness = 50
@@ -23041,7 +23060,25 @@ StepsToHatch = 7680
 Height = 1.5
 Weight = 45.0
 Kind = Ore
-Pokedex = When this Pokémon PROTECTs danger, it will open up its crystalline petals and fire beams from its conical body.
+Pokedex = When this Pokémon detects danger, it will open up its crystalline petals and fire beams from its conical body.
+Generation = 9
+#-------------------------------
+[GLIMMORBIT]
+Name = Glimmorbit
+Type1 = ROCK
+Type2 = POISON
+# HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+BaseStats = 85,55,90,86,130,80
+# Total = 526
+BaseEXP = 100
+Rareness = 25
+Happiness = 50
+Abilities = MERCILESS
+StepsToHatch = 7680
+Height = 2.8
+Weight = 77.0
+Kind = Ore
+Pokedex = Glimmora’s petals are made of crystallized poison energy. It has recently become evident that these petals resemble Tera Jewels.
 Generation = 9
 #-------------------------------
 [GREAVARD]
@@ -23049,8 +23086,8 @@ Name = Greavard
 Type1 = GHOST
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 50,60,60,34,30,55
-# Total = 289
+BaseStats = 55,75,65,55,80,50
+# Total = 380
 BaseEXP = 100
 Rareness = 120
 Happiness = 50
@@ -23071,8 +23108,8 @@ Name = Houndstone
 Type1 = GHOST
 Type2 = ROCK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 70,100,100,68,50,95
-# Total = 483
+BaseStats = 80,105,90,75,115,70
+# Total = 535
 BaseEXP = 100
 Rareness = 60
 Happiness = 50
@@ -23089,8 +23126,8 @@ Name = Flamigo
 Type1 = FLYING
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 80,115,75,90,75,65
-# Total = 500
+BaseStats = 80,115,75,100,75,75
+# Total = 520
 BaseEXP = 100
 Rareness = 100
 Happiness = 50
@@ -23109,8 +23146,8 @@ Generation = 9
 Name = Cetoddle
 Type1 = ICE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 110,70,45,43,30,40
-# Total = 338
+BaseStats = 125,85,45,55,35,40
+# Total = 385
 BaseEXP = 100
 Rareness = 150
 Happiness = 50
@@ -23148,8 +23185,8 @@ Name = Veluza
 Type1 = WATER
 Type2 = STEEL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 90,100,75,70,80,65
-# Total = 480
+BaseStats = 95,115,70,115,70,95
+# Total = 560
 BaseEXP = 100
 Rareness = 100
 Happiness = 50
@@ -23205,6 +23242,27 @@ Kind = Mimicry
 Pokedex = This is a small dragon Pokémon. It lives inside the mouth of Dondozo to protect itself from enemies on the outside.
 FormName = Curly Form
 Generation = 9
+Evolutions = NIJIGIRI,Level,41
+#-------------------------------
+[NIJIGIRI]
+Name = Nijigiri
+Type1 = DRAGON
+Type2 = WATER
+# HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
+BaseStats = 70,65,90,92,135,125
+# Total = 577
+BaseEXP = 100
+Rareness = 100
+Happiness = 50
+Abilities = ADAPTED
+Tribes = LOYAL
+StepsToHatch = 8960
+Height = 0.6
+Weight = 24.0
+Kind = Mimicry
+Pokedex = Tatsugiri is an extremely cunning Pokémon. It feigns weakness to lure in prey, then orders its partner to attack.
+FormName = Curly Form
+Generation = 9
 #-------------------------------
 [PWOOPER]
 Name = P. Wooper
@@ -23233,8 +23291,8 @@ Name = Clodsire
 Type1 = POISON
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 130,75,60,20,45,100
-# Total = 430
+BaseStats = 150,95,80,20,65,120
+# Total = 530
 BaseEXP = 100
 Rareness = 90
 Happiness = 50
@@ -23251,8 +23309,8 @@ Name = Scream Tail
 Type1 = DRAGON
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 115,65,100,111,65,115
-# Total = 571
+BaseStats = 115,65,95,65,95,105
+# Total = 540
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 50
@@ -23274,8 +23332,8 @@ Name = Brute Bonnet
 Type1 = GRASS
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 110,125,100,55,80,100
-# Total = 570
+BaseStats = 110,90,80,60,80,65
+# Total = 485
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 50
@@ -23297,8 +23355,8 @@ Name = Sandy Shocks
 Type1 = ELECTRIC
 Type2 = GROUND
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 85,80,95,101,120,85
-# Total = 566
+BaseStats = 80,75,105,120,40,125
+# Total = 545
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 30
@@ -23320,8 +23378,8 @@ Name = Handroid
 Type1 = FIGHTING
 Type2 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 155,140,110,50,50,70
-# Total = 575
+BaseStats = 150,140,110,50,65,50
+# Total = 565
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 50
@@ -23343,8 +23401,8 @@ Name = Mekaterrax
 Type1 = ROCK
 Type2 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 100,135,110,72,70,85
-# Total = 572
+BaseStats = 95,125,70,125,80,80
+# Total = 575
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 30
@@ -23366,7 +23424,7 @@ Name = Frigibax
 Type1 = DRAGON
 Type2 = ICE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 65,75,45,55,35,45
+BaseStats = 60,75,45,60,35,45
 # Total = 320
 BaseEXP = 100
 Rareness = 45
@@ -23388,8 +23446,8 @@ Name = Arctibax
 Type1 = DRAGON
 Type2 = ICE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 90,95,65,62,45,65
-# Total = 422
+BaseStats = 85,100,65,80,50,65
+# Total = 445
 BaseEXP = 100
 Rareness = 25
 Happiness = 50
@@ -23407,7 +23465,7 @@ Name = Baxcalibur
 Type1 = DRAGON
 Type2 = ICE
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 115,145,90,87,75,85
+BaseStats = 115,135,90,107,65,85
 # Total = 597
 BaseEXP = 100
 Rareness = 10
@@ -23424,8 +23482,8 @@ Generation = 9
 Name = Gimmighoul
 Type1 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 45,30,70,10,75,70
-# Total = 300
+BaseStats = 50,35,55,49,80,55
+# Total = 324
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 45
@@ -23446,8 +23504,8 @@ Evolutions = GILDEGHAST,Level,20
 Name = Gildeghast
 Type1 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 45,30,70,10,75,70
-# Total = 300
+BaseStats = 70,50,75,69,110,75
+# Total = 449
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 45
@@ -23487,8 +23545,8 @@ Name = Roaring Moon
 Type1 = DRAGON
 Type2 = DARK
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 105,140,70,119,55,100
-# Total = 589
+BaseStats = 135,85,70,70,105,100
+# Total = 565
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 10
@@ -23510,8 +23568,8 @@ Name = Syntinel
 Type1 = FIGHTING
 Type2 = PSYCHIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 75,130,90,116,120,60
-# Total = 591
+BaseStats = 90,115,90,116,50,110
+# Total = 571
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 10
@@ -23533,8 +23591,8 @@ Name = Cyclizar
 Type1 = DRAGON
 Type2 = NORMAL
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 70,95,65,121,85,65
-# Total = 501
+BaseStats = 60,95,60,111,95,60
+# Total = 481
 BaseEXP = 100
 Rareness = 190
 Happiness = 50
@@ -23554,13 +23612,13 @@ Name = Koraidon
 Type1 = DRAGON
 Type2 = FIGHTING
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 100,135,115,135,85,100
-# Total = 670
+BaseStats = 100,135,80,110,95,100
+# Total = 620
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 3
 Happiness = 0
-Abilities = ADAPTED
+Abilities = REGENERATOR,ADAPTED
 Moves = 1,BREAKINGSWIPE,1,SUNSHINE,7,SMASH,14,ANCIENTPOWER,21,DRAINPUNCH,28,BRICKBREAK,35,AGILITY,42,DRAGONCLAW,49,FLAMETHROWER,63,BARETEETH,70,COUNTER,70,FLAREBLITZ,70,GIGAIMPACT,70,OUTRAGE,70,SUPERPOWER
 LineMoves = ACROBATICS,AGILITY,BODYPRESS,BODYSLAM,BREAKINGSWIPE,BRICKBREAK,BULKUP,BULLDOZE,CRUNCH,DIG,DOUBLEEDGE,DRACOMETEOR,DRAGONCLAW,DRAGONPULSE,DRAGONTAIL,DRAINPUNCH,DUALWINGBEAT,FACADE,FIREBLAST,FIREFANG,FIRESPIN,FLAMECHARGE,FLAMETHROWER,FLAREBLITZ,FOCUSBLAST,FOCUSPUNCH,GIGAIMPACT,HEATCRASH,HEATWAVE,HEAVYSLAM,HELPINGHAND,HYPERBEAM,ICEFANG,IRONHEAD,LOWSWEEP,METEORBEAM,MUDSHOT,OUTRAGE,OVERHEAT,ROAR,SCARYFACE,SHADOWCLAW,SNARL,SOLARBEAM,STOMPINGTANTRUM,SUNSHINE,SUPERPOWER,SWORDSDANCE,TAKEDOWN,TAUNT,THUNDERFANG,UPROAR,UTURN,WILDCHARGE,ZENHEADBUTT
 Tribes = ESOTERIC,STAMPEDE
@@ -23577,8 +23635,8 @@ Name = Miraidon
 Type1 = DRAGON
 Type2 = ELECTRIC
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 100,85,100,135,135,115
-# Total = 670
+BaseStats = 100,65,100,120,135,80
+# Total = 600
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 3
@@ -23600,8 +23658,8 @@ Name = Poltchageist
 Type1 = GRASS
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 40,45,45,50,75,55
-# Total = 310
+BaseStats = 65,45,75,50,85,60
+# Total = 380
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 120
@@ -23624,8 +23682,8 @@ Name = Sinistcha
 Type1 = GRASS
 Type2 = GHOST
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 70,60,105,70,120,80
-# Total = 505
+BaseStats = 90,60,105,70,120,80
+# Total = 525
 GenderRate = Genderless
 BaseEXP = 100
 Rareness = 60
