@@ -69,3 +69,35 @@ end
 class PokeBattle_Move_HitTwoToFiveTimesPoison < PokeBattle_PoisonMove
     include RandomHitable
 end
+
+#===============================================================================
+# Poisons the target. If already poisoned, worsens the Poison and lowers Speed. (Noxious Barbs)
+#===============================================================================
+class PokeBattle_Move_PoisonMoveWorsenPoisonLowerSpeed1 < PokeBattle_PoisonMove
+    def pbFailsAgainstTarget?(user, target, show_message)
+        return false if target.poisoned?
+        return super
+    end
+
+    def pbEffectAgainstTarget(user, target)
+        if target.poisoned?
+            target.increaseStatusCount(:POISON)
+            newPoisonCount = target.getStatusCount(:POISON)
+            showMessages = $Options.status_effect_messages.zero?
+            if showMessages
+                if newPoisonCount == POISON_DOUBLING_TURNS
+                    @battle.pbDisplaySlower(_INTL("{1}'s poison worsened! The damage will be doubled until it leaves the field.", target.pbThis))
+                elsif newPoisonCount % POISON_DOUBLING_TURNS == 0
+                    @battle.pbDisplaySlower(_INTL("{1}'s poison doubled yet again!", target.pbThis))
+                else
+                    @battle.pbDisplay(_INTL("{1}'s poison worsened!", target.pbThis))
+                end
+            else
+                @battle.pbDisplay(_INTL("{1}'s poison worsened!", target.pbThis))
+            end
+            target.tryLowerStat(:SPEED, user, increment: 1)
+        else
+            target.applyPoison(user)
+        end
+    end
+end

@@ -1657,6 +1657,20 @@ EffectChance = 100
 Description = The user attacks while slathered in grime. This poisons the user.
 Animation = POISONJAB
 #-------------------------------
+[HAZARDCLAW]
+Name = Hazard Claw
+Type = POISON
+Category = Physical
+Power = 90
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = Numb
+Flags = CanProtect,Slice
+EffectChance = 100
+Description = The user releases a potent venom through its claws, numbing the target.
+Animation = CROSSPOISON
+#-------------------------------
 [MIASMA]
 Name = Miasma
 Type = POISON
@@ -1682,6 +1696,18 @@ FunctionCode = Poison
 Flags = CanProtect,Punch
 EffectChance = 10
 Description = The user stabs the opponent with a toxin-infused limb. It has a 10% chance to poison.
+#-------------------------------
+[NOXIOUSBARBS]
+Name = Noxious Barbs
+Type = POISON
+Category = Status
+Accuracy = 100
+TotalPP = 8
+Target = NearOther
+FunctionCode = PoisonMoveWorsenPoisonLowerSpeed1
+Flags = CanProtect,CanMagicCoat
+Description = This poisons the target. If the target is already poisoned, their poison worsens and their Speed is lowered.
+Animation = POISONSTING
 #-------------------------------
 [POISONDART]
 Name = Poison Dart

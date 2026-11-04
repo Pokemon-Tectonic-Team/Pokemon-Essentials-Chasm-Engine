@@ -1534,10 +1534,6 @@ Description = Deals no damage to a target while they are using a status move.
 Name = No Hope
 Description = Traps foes when they are below half health.
 #-------------------------------
-[NOXIOUS]
-Name = Noxious
-Description = Reduces each other Pokémon's HP by 1/12th at the end of each turn.
-#-------------------------------
 [NUMBINGTOUCH]
 Name = Numbing Touch
 Description = Physical moves have a 30% chance to numb targets.
@@ -1731,6 +1727,10 @@ Flags = SetupCounterAI
 Name = Primordial Seal
 Description = This Pokémon cannot enter the battle before Regidrago, Regice, Regirock, Registeel and Regieleki have.
 Flags = Immutable,UnableByDefault,BattleEndReviver
+#-------------------------------
+[PROBEWEAKNESS]
+Name = Probe Weakness
+Description = Doubles this Pokémon's crit chance, if it lands a move that could crit but doesn't. Powers up critical hits by another 50%.
 #-------------------------------
 [PROTECTIVEINSTINCT]
 Name = Protective Instinct
