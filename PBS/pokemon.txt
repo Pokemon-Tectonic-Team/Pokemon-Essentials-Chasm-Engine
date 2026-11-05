@@ -17703,8 +17703,8 @@ Name = Phantump
 Type1 = GHOST
 Type2 = GRASS
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 45,70,50,38,50,75
-# Total = 328
+BaseStats = 75,80,55,38,50,80
+# Total = 378
 BaseEXP = 62
 Rareness = 115
 Happiness = 50
