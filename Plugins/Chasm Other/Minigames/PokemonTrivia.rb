@@ -23,11 +23,11 @@ class PokemonTriviaScene
         @viewport.z = 99_999
         addBackgroundPlane(@sprites, "bg", addLanguageSuffix("Trivia/triviabg"), @viewport)
 
-        @sprites["species_silhoette"] = PokemonSprite.new(@viewport)
-        @sprites["species_silhoette"].setOffset(PictureOrigin::Center)
-        @sprites["species_silhoette"].x = Graphics.width / 2
-        @sprites["species_silhoette"].y = Graphics.height / 2
-        @sprites["species_silhoette"].tone = Tone.new(-255,-255,-255)
+        @sprites["species_silhouette"] = PokemonSprite.new(@viewport)
+        @sprites["species_silhouette"].setOffset(PictureOrigin::Center)
+        @sprites["species_silhouette"].x = Graphics.width / 2
+        @sprites["species_silhouette"].y = Graphics.height / 2
+        @sprites["species_silhouette"].tone = Tone.new(-255,-255,-255)
 
         questionSectionHeight = 86
         @sprites["question_text"] = BitmapSprite.new(Graphics.width, questionSectionHeight, @viewport)
@@ -107,14 +107,14 @@ class PokemonTriviaScene
     def wipeQuestionGraphics
         @clueOverlay.clear
         @moveInfoOverlay.clear
-        @sprites["species_silhoette"].visible = false
+        @sprites["species_silhouette"].visible = false
         @sprites["move_info_display"].visible = false
     end
 
     def presentQuestion(nextQuestionType, nextQuestionSpecies)
         case nextQuestionType
         when :SILHOUETTE
-            presentSilhoetteQuestion(nextQuestionSpecies)
+            presentSilhouetteQuestion(nextQuestionSpecies)
         when :CHARACTERISTICS
             presentCharacteristicsQuestion(nextQuestionSpecies)
         when :SIGNATURE_ABILITY
@@ -134,12 +134,12 @@ class PokemonTriviaScene
         drawTextEx(@questionTextOverlay, sideBuffer, 8, Graphics.width - sideBuffer * 2, 2, text, base, shadow)
     end
 
-    def presentSilhoetteQuestion(questionSpecies)
-        @sprites["bg"].setBitmap("Graphics/Pictures/Trivia/triviabg_silhoette")
-        @sprites["species_silhoette"].tone = Tone.new(-255,-255,-255)
-        @sprites["species_silhoette"].visible = true
-        @sprites["species_silhoette"].setSpeciesBitmap(questionSpecies)
-        setQuestionText(_INTL("Which species has this silhoette?"))
+    def presentSilhouetteQuestion(questionSpecies)
+        @sprites["bg"].setBitmap("Graphics/Pictures/Trivia/triviabg_silhouette")
+        @sprites["species_silhouette"].tone = Tone.new(-255,-255,-255)
+        @sprites["species_silhouette"].visible = true
+        @sprites["species_silhouette"].setSpeciesBitmap(questionSpecies)
+        setQuestionText(_INTL("Which species has this silhouette?"))
     end
 
     def presentCharacteristicsQuestion(questionSpecies)
@@ -285,7 +285,7 @@ class PokemonTriviaScene
         answerName = GameData::Species.get(questionSpecies).name
         if matchingSpecies == questionSpecies
             pbWait(5)
-            @sprites["species_silhoette"].tone = Tone.new(0,0,0,0) if questionType            
+            @sprites["species_silhouette"].tone = Tone.new(0,0,0,0) if questionType            
             pbWait(5)
             pbMessage(_INTL("Correct! The answer was <imp>{1}</imp>!", answerName))
             return true
@@ -374,7 +374,7 @@ end
 # With entries for each type of question, which are arrays covering all difficultyLevel levels
 # Those arrays contain a list of pokemon species IDs
 # E.g. you could access $PokemonTriviaMetadata[:SILHOUETTE][0] to get an array of all of the
-# easiest Pokemon that are eligible for Silhoette trivia question
+# easiest Pokemon that are eligible for Silhouette trivia question
 def generatePokemonTriviaMetadata
     return if $PokemonTriviaMetadata
     $PokemonTriviaMetadata = {}
