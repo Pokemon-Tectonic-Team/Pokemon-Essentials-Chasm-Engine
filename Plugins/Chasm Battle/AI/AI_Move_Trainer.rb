@@ -59,7 +59,14 @@ class PokeBattle_AI
             targets = []
             targets.push(opposingBattler) if opposingBattler
             newChoice,killInfo,isSlowerDead,isFasterDead = pbEvaluateMoveTrainer(user, move, targets: targets, killInfoArray: killInfoArray)
-
+            
+            if newChoice && move.switchOutMove? && opposingBattler
+                if safePivotMove?(user, move, opposingBattler)
+                    pivotBonus = 60
+                    newChoice[0] += pivotBonus
+                    PBDebug.log("\t[MOVE SCORING] #{user.pbThis}'s #{move.id} is a safe pivot (+#{pivotBonus})")
+                end
+            end
             # If the move would kill the opposing battler, mark as such
             # But only if its better than any kill seen thus far
             if killInfo && opposingBattler
