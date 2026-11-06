@@ -782,6 +782,15 @@ class PokeBattle_Battler
         return @battle.pbOwnedByPlayer?(@index)
     end
 
+    # Returns whether a human player is actively controlling this battler
+    # (i.e. player-owned AND not overridden by AI via controlPlayer/autoTesting).
+    def humanControlled?
+        return false unless pbOwnedByPlayer?
+        return false if @battle.controlPlayer
+        return false if @battle.autoTesting
+        return true
+    end
+
     def wildParty?
         return owner&.wild?
     end
