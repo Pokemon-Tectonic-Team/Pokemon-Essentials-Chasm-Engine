@@ -75,7 +75,7 @@ end
 #===============================================================================
 class PokeBattle_Move_PoisonMoveWorsenPoisonLowerSpeed1 < PokeBattle_PoisonMove
     def pbFailsAgainstTarget?(user, target, show_message)
-        return false if target.poisoned?
+        return false if target.poisoned? # Don't fail the move because it has more effects ontop of causing poison
         return super
     end
 
@@ -83,18 +83,7 @@ class PokeBattle_Move_PoisonMoveWorsenPoisonLowerSpeed1 < PokeBattle_PoisonMove
         if target.poisoned?
             target.increaseStatusCount(:POISON)
             newPoisonCount = target.getStatusCount(:POISON)
-            showMessages = $Options.status_effect_messages.zero?
-            if showMessages
-                if newPoisonCount == POISON_DOUBLING_TURNS
-                    @battle.pbDisplaySlower(_INTL("{1}'s poison worsened! The damage will be doubled until it leaves the field.", target.pbThis))
-                elsif newPoisonCount % POISON_DOUBLING_TURNS == 0
-                    @battle.pbDisplaySlower(_INTL("{1}'s poison doubled yet again!", target.pbThis))
-                else
-                    @battle.pbDisplay(_INTL("{1}'s poison worsened!", target.pbThis))
-                end
-            else
-                @battle.pbDisplay(_INTL("{1}'s poison worsened!", target.pbThis))
-            end
+            target.pbDisplayPoisonWorsenedMessage(newPoisonCount, true)
             target.tryLowerStat(:SPEED, user, increment: 1)
         else
             target.applyPoison(user)
