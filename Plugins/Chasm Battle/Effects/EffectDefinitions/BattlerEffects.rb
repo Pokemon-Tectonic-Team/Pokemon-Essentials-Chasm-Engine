@@ -586,6 +586,14 @@ GameData::BattleEffect.register_effect(:Battler, {
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ProbeWeakness,
+    :real_name => "Probe Weakness",
+    :type => :Integer,
+    :maximum => 4,
+    :critical_rate_buff => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
     :id => :FocusPunch,
     :real_name => "Focus Punch",
     :resets_eor	=> true,

@@ -842,6 +842,21 @@ BattleHandlers::UserAbilityEndOfMove.add(:PRIMEVALMEGALAUNCHER,
   }
 )
 
+BattleHandlers::UserAbilityEndOfMove.add(:PROBEWEAKNESS,
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
+    next if user.dummy
+    next unless move.damagingMove?
+    targets.each do |b|
+      next if b.damageState.unaffected
+      next if b.damageState.critical
+      next unless move.allowedToRandomCrit?(user, b)
+      user.incrementEffect(:ProbeWeakness)
+      battle.pbDisplay(_INTL("{1} sharpens its instincts, doubling its critical hit chance!", user.pbThis))
+      break
+    end
+  }
+)
+
 #########################################
 # Swords of Justice Abilities
 #########################################

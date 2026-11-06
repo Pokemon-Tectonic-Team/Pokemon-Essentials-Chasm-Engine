@@ -718,7 +718,7 @@ def getCriticalRateBuffEffectScore(user, steps = 1)
     return 0 unless user.hasRandomCritAttack?
     score = 20
     score += 15 if user.firstTurn?
-    score += 30 if user.hasActiveAbilityAI?(%i[SUPERLUCK SNIPER])
+    score += 30 if user.hasActiveAbilityAI?(%i[SUPERLUCK SNIPER PROBEWEAKNESS])
     score += 15 if user.hasHighCritAttack?
     score *= steps
     return score
