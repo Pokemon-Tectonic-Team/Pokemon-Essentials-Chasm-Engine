@@ -18084,7 +18084,7 @@ Weight = 1.5
 Kind = Grass Quill
 Pokedex = It sends its feathers, which are as sharp as blades, flying in attack. Its legs are strong, so its kicks are also formidable.
 Generation = 7
-Flags = Starter
+Flags = Starter,Grounded
 Evolutions = DARTRIX,Level,16
 #-------------------------------
 [DARTRIX]
@@ -18104,7 +18104,7 @@ Weight = 16.0
 Kind = Blade Quill
 Pokedex = This narcissistic Pokémon is a clean freak. If you don't groom it diligently, it will stop listening to you.
 Generation = 7
-Flags = Starter
+Flags = Starter,Grounded
 Evolutions = HDECIDUEYE,Originize,36,DECIDUEYE,Level,36
 #-------------------------------
 [DECIDUEYE]
