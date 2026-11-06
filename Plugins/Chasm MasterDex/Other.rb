@@ -71,7 +71,7 @@ end
 alias speciesEntry openSingleDexScreen
 
 def openPartyDexScreen(pokemon,index)
-	species = resolveDexSpecies(pokemon)
+	resolveDexSpecies(pokemon) # don't need to return the species but this updates important values
 	$dex_cross_link = nil
 	ret = nil
 	pbFadeOutIn {
@@ -131,37 +131,21 @@ def describeEvolutionMethod(method,parameter=0)
 	return _INTL("via a method the programmer was too lazy to describe")
 end
 
+# Only certain catch rates are expected per DEFAULT_CATCH_RATES etc
+# So we design the thresholds to include them
+CATCH_DIFFICULTY_TIERS = [
+	[20, "S"],  # Hardest expected catch rate, 5
+	[30, "A+"], # Expected catch rate 25 - close to A and niche cases only
+	[40, "A"],  # Expected catch rate 35
+	[70, "B"],  # Expected catch rate 60
+	[100, "C"], # Expected catch rate 95
+	[150, "D"], # Expected catch rate 145
+	[200, "F"], # Easiest expected catch rate, 195
+]
+
 def catchDifficultyFromRareness(rareness)
-	if rareness>= 250
-		return "F"
-	elsif rareness>= 230
-		return "D-"
-	elsif rareness>= 210
-		return "D"
-	elsif rareness>= 190
-		return "D+"
-	elsif rareness>= 170
-		return "C-"
-	elsif rareness>= 150
-		return "C"
-	elsif rareness>= 130
-		return "C+"
-	elsif rareness>= 110
-		return "B-"
-	elsif rareness>= 90
-		return "B"
-	elsif rareness >= 70
-		return "B+"
-	elsif rareness >= 50
-		return "A-"
-	elsif rareness >= 30
-		return "A"
-	elsif rareness >= 10
-		return "A+"
-	else
-		return "S"
-	end
-	return "-"
+	tier = CATCH_DIFFICULTY_TIERS.find { |upper_bound, _| rareness <= upper_bound }
+	return tier ? tier[1] : "F-" # Easier than any expected catch rate
 end
 
 def get_bnb_coverage(species_data)	

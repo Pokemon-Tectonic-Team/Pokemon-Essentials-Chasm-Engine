@@ -6,6 +6,24 @@ module GameData
         DEFAULT_STAT_ROUNDING = 5
         UNROUNDED_STATS = [:SPEED]
 
+        # Indexed by [max_stage][evo_stage]
+        DEFAULT_CATCH_RATES = [
+            [95],
+            [145, 60],
+            [195, 95, 35, 25], # 4-stagers share values with 3-stagers
+        ]
+
+        UB_CATCH_RATES = [
+            [35],
+            [60, 35]
+        ]
+
+        LEGENDARY_CATCH_RATES = [
+            [5],
+            [15, 5],
+            [25, 15, 5]
+        ]
+
         attr_reader :id
         attr_reader :id_number
         attr_reader :species
@@ -22,7 +40,7 @@ module GameData
         attr_reader :base_exp
         attr_reader :growth_rate
         attr_reader :gender_ratio
-        attr_reader :catch_rate
+        attr_reader :catch_rate_override
         attr_reader :happiness
         attr_reader :moves
         attr_reader :form_move
@@ -149,7 +167,7 @@ module GameData
             @base_exp              = hash[:base_exp]              || 100
             @growth_rate           = hash[:growth_rate]           || DEFAULT_GROWTH_RATE
             @gender_ratio          = hash[:gender_ratio]          || DEFAULT_GENDER_RATIO
-            @catch_rate            = hash[:catch_rate]            || 255
+            @catch_rate_override   = hash[:catch_rate]
             @happiness             = hash[:happiness]             || DEFAULT_BASE_HAPPINESS
             @moves                 = hash[:moves]                 || []
             @form_move             = hash[:form_move]
@@ -296,6 +314,16 @@ module GameData
             return ret
         end
 
+        def get_prevolutions(exclude_invalid = true)
+            ret = []
+            @evolutions.each do |evo|
+                next unless evo[3] # Is the prevolution
+                next if evo[1] == :None && exclude_invalid
+                ret.push([evo[0], evo[1], evo[2]]) # [Species, method, parameter]
+            end
+            return ret
+        end
+
         def get_family_evolutions(exclude_invalid = true)
             evos = get_evolutions(exclude_invalid)
             evos = evos.sort { |a, b| GameData::Species.get(a[0]).id_number <=> GameData::Species.get(b[0]).id_number }
@@ -309,9 +337,8 @@ module GameData
         end
 
         def get_previous_species
-            return @species if @evolutions.length == 0
-            @evolutions.each { |evo| return evo[0] if evo[3] } # Is the prevolution
-            return @species
+            prevo = get_prevolutions.first
+            return prevo ? prevo[0] : @species
         end
 
         def get_previous_species_data
@@ -323,17 +350,34 @@ module GameData
         end
 
         def has_previous_species?
-            return false if @evolutions.length == 0
-            @evolutions.each { |evo| return true if evo[3] } # Is the prevolution
-            return false
+            return !get_prevolutions.empty?
+        end
+
+        # @return [Array<GameData::Species>] the prevolutions of this species, nearest first
+        def prevolution_chain
+            chain = []
+            prevo = get_previous_species_data
+            while prevo
+                chain.push(prevo)
+                prevo = prevo.get_previous_species_data
+            end
+            return chain
         end
 
         def get_line_start
-            prevoSpecies = self
-            while prevoSpecies.has_previous_species?
-                prevoSpecies = prevoSpecies.get_previous_species_data
-            end
-            return prevoSpecies
+            return prevolution_chain.last || self
+        end
+
+        # i.e. the number of prevos
+        def evo_stage
+            return prevolution_chain.length
+        end
+
+        # @return [Integer] the evo_stage of the final evolution of this species' line
+        def max_stage(longest = true)
+            family = [self].concat(get_family_evolutions.map { |evo| GameData::Species.get(evo[1]) })
+            final_stages = family.select { |s| s.get_evolutions.empty? }.map { |s| s.evo_stage }
+            return longest ? final_stages.max : final_stages.min
         end
 
         def is_solitary?
@@ -385,6 +429,23 @@ module GameData
                 return true if check_item.nil? || evo[3] == check_item
             end
             return false
+        end
+
+        def default_catch_rate
+            rate_dictionary = DEFAULT_CATCH_RATES
+            stage_cap = 2 # 4-stagers use the same list as 3-stagers
+            if isUltraBeast?
+                rate_dictionary = UB_CATCH_RATES
+                stage_cap = 1 # UBs are assumed not to evolve except Poipole, once. If this proves untrue, the index stays in-bounds
+            elsif isLegendary?
+                rate_dictionary = LEGENDARY_CATCH_RATES
+            end
+            capped_stage = [max_stage, stage_cap].min
+            return rate_dictionary[capped_stage][evo_stage] || 255 # fallback should only occur if evo_stave > capped_stage, and not for Wornet/Papellumen
+        end
+
+        def catch_rate
+            return @catch_rate_override || default_catch_rate
         end
 
         def minimum_level
@@ -584,16 +645,6 @@ module GameData
             return level >= query
         end
 
-        def get_prevolutions(exclude_invalid = true)
-            ret = []
-            @evolutions.each do |evo|
-                next unless evo[3] # Is an evolution
-                next if evo[1] == :None && exclude_invalid
-                ret.push([evo[0], evo[1], evo[2]]) # [Species, method, parameter]
-            end
-            return ret
-        end
-
         def physical_ehp
             hpCalc = calcStatGlobal(base_stats[:HP], EHP_LEVEL, DEFAULT_STYLE_VALUE, hp: true)
             defenseCalc = calcStatGlobal(base_stats[:DEFENSE], EHP_LEVEL, DEFAULT_STYLE_VALUE)
@@ -676,9 +727,9 @@ module GameData
 
         def canFloat?
             if hasType?(:FLYING)
-		        exception = @flags.include?("Grounded")
-		        return !exception
-	        end
+                exception = @flags.include?("Grounded")
+                return !exception
+            end
             return true if @abilities.include?(:LEVITATE)
 	        return true if @abilities.include?(:DESERTSPIRIT)
             return true if @flags.include?("Floating")
@@ -1016,7 +1067,7 @@ module Compiler
                     :base_exp              => contents["BaseEXP"] || base_data.base_exp,
                     :growth_rate           => base_data.growth_rate,
                     :gender_ratio          => base_data.gender_ratio,
-                    :catch_rate            => contents["Rareness"] || base_data.catch_rate,
+                    :catch_rate            => contents["Rareness"],
                     :happiness             => contents["Happiness"] || base_data.happiness,
                     :moves                 => moves,
                     :form_move             => contents["FormMove"], # intentionally does not inherit from base form if absent
@@ -1255,7 +1306,7 @@ module Compiler
         f.write(format("GenderRate = %s\r\n", species.gender_ratio)) unless species.gender_ratio == GameData::Species::DEFAULT_GENDER_RATIO
         f.write(format("GrowthRate = %s\r\n", species.growth_rate)) unless species.growth_rate == GameData::Species::DEFAULT_GROWTH_RATE
         f.write(format("BaseEXP = %d\r\n", species.base_exp))
-        f.write(format("Rareness = %d\r\n", species.catch_rate))
+        f.write(format("Rareness = %d\r\n", species.catch_rate_override)) unless species.catch_rate_override.nil?
         f.write(format("Happiness = %d\r\n", species.happiness)) unless species.happiness == GameData::Species::DEFAULT_BASE_HAPPINESS
         f.write(format("Abilities = %s\r\n", species.abilities.join(","))) if species.abilities.length > 0
         f.write(format("Moves = %s\r\n", species.non_inherited_level_moves.join(","))) if species.non_inherited_level_moves.length > 0
@@ -1368,7 +1419,7 @@ module Compiler
         f.write(format("BaseStats = %s\r\n", stats_array.join(","))) if species.base_stats != base_species.base_stats
         f.write(format("# Total = %s\r\n", total)) if species.base_stats != base_species.base_stats
         f.write(format("BaseEXP = %d\r\n", species.base_exp)) if species.base_exp != base_species.base_exp
-        f.write(format("Rareness = %d\r\n", species.catch_rate)) if species.catch_rate != base_species.catch_rate
+        f.write(format("Rareness = %d\r\n", species.catch_rate_override)) unless species.catch_rate_override.nil?
         f.write(format("Happiness = %d\r\n", species.happiness)) if species.happiness != base_species.happiness
         if species.abilities.length > 0 && species.abilities != base_species.abilities
             f.write(format("Abilities = %s\r\n", species.abilities.join(",")))

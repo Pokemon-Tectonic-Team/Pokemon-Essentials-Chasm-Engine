@@ -1,10 +1,7 @@
 class Pokemon
 	def can_egg_move?
 		return false if egg?
-		firstSpecies = GameData::Species.get(@species)
-		while GameData::Species.get(firstSpecies.get_previous_species()) != firstSpecies do
-			firstSpecies = GameData::Species.get(firstSpecies.get_previous_species())
-		end
+		firstSpecies = GameData::Species.get(@species).get_line_start
 		firstSpecies.line_moves.each { |m| 
 			return true if !hasMove?(m)
 		}
@@ -15,10 +12,7 @@ end
 def getEggMoves(pkmn)
 	moves = []
 
-    firstSpecies = GameData::Species.get(pkmn.species)
-	while GameData::Species.get(firstSpecies.get_previous_species()) != firstSpecies do
-		firstSpecies = GameData::Species.get(firstSpecies.get_previous_species())
-	end
+    firstSpecies = GameData::Species.get(pkmn.species).get_line_start
 
     firstSpecies.line_moves.each do |m|
       next if pkmn.hasMove?(m)
