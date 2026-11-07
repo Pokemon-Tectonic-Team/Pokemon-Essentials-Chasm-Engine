@@ -228,13 +228,12 @@ end
 #===============================================================================
 # Shows one frame of a face sheet, where frames are laid out four to a row.
 # face is "name" or "name,index", looked up in Graphics/Faces, then
-# Graphics/Pictures.
+# Graphics/Pictures, or only in Graphics/Faces shiny if this save flags it shiny.
 class FaceWindowVX < SpriteWindow_Base
     def initialize(face, frameWidth = 96, frameHeight = 96)
         super(0, 0, frameWidth + 32, frameHeight + 32)
         name, index = parseFaceSpec(face)
-        facefile = pbResolveBitmap("Graphics/Faces/#{name}")
-        facefile ||= pbResolveBitmap("Graphics/Pictures/#{name}")
+        facefile = resolveFaceFile(name)
         contents&.dispose
         @frameWidth = frameWidth
         @frameHeight = frameHeight
@@ -263,6 +262,15 @@ class FaceWindowVX < SpriteWindow_Base
     end
 
     private
+
+    def resolveFaceFile(name)
+        unless $shiny_faces.shiny?(name)
+            return pbResolveBitmap("Graphics/Faces/#{name}") || pbResolveBitmap("Graphics/Pictures/#{name}")
+        end
+        file = pbResolveBitmap("Graphics/Faces shiny/#{name}")
+        raise "Face #{name} is flagged shiny but has no sheet in Graphics/Faces shiny" unless file
+        return file
+    end
 
     def redraw
         @facebitmap.clear
