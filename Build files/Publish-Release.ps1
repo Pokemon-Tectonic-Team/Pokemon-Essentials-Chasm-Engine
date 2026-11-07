@@ -159,6 +159,9 @@ $zipsToPublish = @(@($installZipPath, $patchZipPath) | Where-Object { Test-Path 
 
 $deployScript = Join-Path $RepoRoot "deploy_cableclub.ps1"
 
+# Filled in by Assert-Prerequisites; workflows are dispatched on each repo's default branch.
+$defaultBranches = @{}
+
 $OnlySteps = @{
     Upload        = $OnlyUpload
     VersionList   = $OnlyVersionList
@@ -224,11 +227,14 @@ function Assert-Prerequisites {
                 # Pinning PUBLIC_VERSION_COMMIT and triggering workflows both need write access.
                 $repos = @($DataRepo) + @($ToolsWebsiteTargets | ForEach-Object { $_.Repo }) | Select-Object -Unique
                 foreach ($repo in $repos) {
-                    $canPush = & gh api "repos/$repo" --jq .permissions.push 2>$null
+                    $repoJson = & gh api "repos/$repo" 2>$null
                     if ($LASTEXITCODE -ne 0) {
                         $problems.Add("Could not read $repo with gh. Check the repo name and that your GitHub account can see it.")
+                        continue
                     }
-                    elseif ("$canPush".Trim() -ne 'true') {
+                    $repoInfo = ($repoJson -join "`n") | ConvertFrom-Json
+                    $script:defaultBranches[$repo] = $repoInfo.default_branch
+                    if (-not $repoInfo.permissions.push) {
                         $problems.Add("Your GitHub account has no write access to $repo, which the tools-website step needs.")
                     }
                 }
@@ -354,20 +360,19 @@ function Update-DataVersionPin {
     }
 }
 
-function Wait-ForWorkflowRun([string]$Workflow, [string]$Repo, [DateTimeOffset]$Since) {
-    Write-Step "Waiting for '$Workflow' on $Repo to start..."
-    $runId = $null
-    for ($i = 0; $i -lt 30; $i++) {
-        $runs = & gh run list --workflow $Workflow --repo $Repo --limit 5 --json databaseId,createdAt | ConvertFrom-Json
-        $match = $runs | Where-Object { [DateTimeOffset]$_.createdAt -ge $Since.AddSeconds(-5) } | Select-Object -First 1
-        if ($match) { $runId = $match.databaseId; break }
-        Start-Sleep -Seconds 2
-    }
-    if (-not $runId) { throw "Timed out waiting for a new run of '$Workflow' on $Repo to appear." }
+# Returns the new run's ID, or $null if GitHub didn't send run details back.
+function Start-WorkflowRun([string]$Workflow, [string]$Repo) {
+    $response = & gh api -X POST "repos/$Repo/actions/workflows/$Workflow/dispatches" `
+        -f "ref=$($defaultBranches[$Repo])" -F return_run_details=true
+    if ($LASTEXITCODE -ne 0) { throw "Failed to trigger '$Workflow' on $Repo (exit $LASTEXITCODE)" }
+    if (-not $response) { return $null }
+    return (($response -join "`n") | ConvertFrom-Json).workflow_run_id
+}
 
-    Write-Step "Watching run $runId ('$Workflow' on $Repo) until it completes..."
-    & gh run watch $runId --repo $Repo --exit-status
-    if ($LASTEXITCODE -ne 0) { throw "'$Workflow' on $Repo failed (run $runId, exit $LASTEXITCODE) -- see https://github.com/$Repo/actions/runs/$runId" }
+function Wait-WorkflowRun([string]$Workflow, [string]$Repo, [long]$RunId) {
+    Write-Step "Watching run $RunId ('$Workflow' on $Repo) until it completes..."
+    & gh run watch $RunId --repo $Repo --exit-status
+    if ($LASTEXITCODE -ne 0) { throw "'$Workflow' on $Repo failed (run $RunId, exit $LASTEXITCODE) -- see https://github.com/$Repo/actions/runs/$RunId" }
 }
 
 function Publish-ToolsWebsite {
@@ -387,15 +392,19 @@ function Publish-ToolsWebsite {
         }
         else {
             Write-Step "Triggering '$($target.Workflow)' on $($target.Repo)..."
-            $triggeredAt = [DateTimeOffset]::UtcNow
-            & gh workflow run $target.Workflow --repo $target.Repo
-            if ($LASTEXITCODE -ne 0) { throw "Failed to trigger '$($target.Workflow)' on $($target.Repo) (exit $LASTEXITCODE)" }
+            $runId = Start-WorkflowRun -Workflow $target.Workflow -Repo $target.Repo
+            if ($runId) { Write-Host "    https://github.com/$($target.Repo)/actions/runs/$runId" }
 
             # tectonic-tools' deploy reads tectonic-data's build output, so it
             # can't start until tectonic-data's run actually finishes -- wait
             # on every step but the last, where nothing downstream depends on it.
             if (-not $isLast) {
-                Wait-ForWorkflowRun -Workflow $target.Workflow -Repo $target.Repo -Since $triggeredAt
+                if (-not $runId) {
+                    $remaining = @($ToolsWebsiteTargets[($i + 1)..($ToolsWebsiteTargets.Count - 1)] |
+                        ForEach-Object { "gh workflow run $($_.Workflow) --repo $($_.Repo)" })
+                    throw "Triggered '$($target.Workflow)' on $($target.Repo), but GitHub didn't return its run ID, so its completion can't be awaited. Once it finishes (https://github.com/$($target.Repo)/actions/workflows/$($target.Workflow)), run: $($remaining -join '; ')"
+                }
+                Wait-WorkflowRun -Workflow $target.Workflow -Repo $target.Repo -RunId $runId
             }
         }
     }
