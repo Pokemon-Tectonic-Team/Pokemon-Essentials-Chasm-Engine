@@ -155,7 +155,7 @@ Description = Protects Grass-type allies from non-volatile status conditions or 
 #-------------------------------
 [FLUFFY]
 Name = Fluffy
-Description = Doubles Defense. This Pokémon takes double damage from Fire-type moves.
+Description = Doubles this Pokémon's Defense and takes double damage from Fire-type moves.
 #-------------------------------
 [FORECAST]
 Name = Forecast
@@ -280,7 +280,7 @@ Description = Bounces back stat-lowering effects.
 #-------------------------------
 [MOTORDRIVE]
 Name = Motor Drive
-Description = Immune to Electric-type moves and boosts Speed when hit by one.
+Description = Immune to Electric-type moves and boosts Speed instead.
 #-------------------------------
 [MOXIE]
 Name = Moxie
@@ -410,7 +410,7 @@ Flags = SandstormSynergy
 #-------------------------------
 [SAPSIPPER]
 Name = Sap Sipper
-Description = Immune to Grass-type moves and raises Attack and Sp. Atk when hit by one.
+Description = Immune to Grass-type moves and raises Attack and Sp. Atk instead.
 #-------------------------------
 [SCHOOLING]
 Name = Schooling
@@ -578,7 +578,7 @@ Description = Prevents this Pokémon from falling asleep.
 #-------------------------------
 [VOLTABSORB]
 Name = Volt Absorb
-Description = Immune to Electric-type moves and restores 25% of max HP when hit by one.
+Description = Immune to Electric-type moves and restores 25% of max HP instead.
 #-------------------------------
 [WANDERINGSPIRIT]
 Name = Wandering Spirit
@@ -586,7 +586,7 @@ Description = When this Pokémon is hit by an attack, this Pokémon and the atta
 #-------------------------------
 [WATERABSORB]
 Name = Water Absorb
-Description = Immune to Water-type moves and restores 25% of max HP when hit by one.
+Description = Immune to Water-type moves and restores 25% of max HP instead.
 #-------------------------------
 [WATERBUBBLE]
 Name = Water Bubble

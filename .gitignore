@@ -29,3 +29,4 @@ server.log
 .idea/
 Build files/Releases/
 .env
+.rubocop-https*

@@ -40,6 +40,7 @@ BattleHandlers::UserAbilityStartOfMove.add(:RAINBOWTRAIL,
       user.hideMyAbilitySplash
     end
     next if user.pbHasType?(type)
+    next if move.id == :STRUGGLE
     if user.effectActive?(:RainbowTrail)
         user.effects[:RainbowTrail].push(type)
     else

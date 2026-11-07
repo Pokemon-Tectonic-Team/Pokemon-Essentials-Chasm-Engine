@@ -68,6 +68,7 @@ class Game_Screen
     #     duration : time
     #-----------------------------------------------------------------------------
     def start_flash(color, duration)
+        return if $Options.flashing == 1
         @flash_color    = color.clone
         @flash_duration = duration
     end
@@ -79,7 +80,7 @@ class Game_Screen
     #     duration : time
     #-----------------------------------------------------------------------------
     def start_shake(power, speed, duration)
-        return if $Options.screenshake != 0
+        return if $Options.screenshake == 1
         @shake_power    = power
         @shake_speed    = speed
         @shake_duration = duration

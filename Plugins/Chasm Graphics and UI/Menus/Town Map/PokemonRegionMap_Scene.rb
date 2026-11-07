@@ -193,7 +193,7 @@ class PokemonRegionMap_Scene
             if loc[0] == x && loc[1] == y
                 if !loc[7] || (!@wallmap && $game_switches[loc[7]])
                     maploc = pbGetMessageFromHash(MessageTypes::PlaceNames, loc[2])
-                    return @editor ? loc[2] : maploc
+                    return _INTL(@editor ? loc[2] : maploc)
                 else
                     return ""
                 end

@@ -44,6 +44,7 @@ class PokeBattle_Scene
       initIndex = @lastCmd[idxBattler]
       initIndex = 0 if @lastCmd[idxBattler] == 3
       cw.setIndexAndMode(initIndex,mode)
+      cw.refreshLastBallReminder
       pbSelectBattler(idxBattler)
       ret = -1
       loop do
@@ -114,6 +115,12 @@ class PokeBattle_Scene
           pbPlayDecisionSE
           ret = 5
           @lastCmd[idxBattler] = 5
+          break
+        # Repeat last pokeball button
+        elsif Input.trigger?(Input::SPECIAL) && @battle.canRepeatLastPokeball? && ![1,5].include?(mode)
+          pbPlayDecisionSE
+          ret = 7
+          @lastCmd[idxBattler] = 0
           break
         end
       end
@@ -419,6 +426,16 @@ class PokeBattle_Scene
       itemScene.pbEndScene
       # Fade back into battle screen (if not already showing it)
       pbFadeInAndShow(@sprites,visibleSprites) if !wasTargeting
+    end
+
+    def chooseTargetForItemFromBattleScreen(idxBattler)
+      idxTarget = -1
+      if @battle.pbOpposingBattlerCount(idxBattler)==1
+        @battle.eachOtherSideBattler(idxBattler) { |b| idxTarget = b.index }
+      else
+        idxTarget = pbChooseTarget(idxBattler,GameData::Target.get(:Foe))
+      end
+      return idxTarget
     end
 
     def pbBattleInfoMenu

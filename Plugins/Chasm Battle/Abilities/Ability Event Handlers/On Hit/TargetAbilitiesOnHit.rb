@@ -228,6 +228,28 @@ BattleHandlers::TargetAbilityOnHit.add(:FEEDBACK,
         battle.pbHideAbilitySplash(target)
     }
 )
+
+BattleHandlers::TargetAbilityOnHit.add(:KNAPPINGSTONES,
+    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next if user.dummy
+        next unless Effectiveness.super_effective?(target.damageState.typeMod)
+        if aiCheck
+            next -10 * aiNumHits if user.takesIndirectDamage?
+            next 0
+        end
+        battle.pbShowAbilitySplash(target, ability)
+        if user.takesIndirectDamage?(true)
+            battle.pbDisplay(_INTL("{1} is hurt!", user.pbThis))
+            damageTaken = target.damageState.hpLost
+            recoil = (damageTaken / 3.0).floor
+            recoil = 1 if recoil < 1
+            user.damageState.displayedDamage = recoil
+            battle.scene.pbDamageAnimation(user)
+            user.pbReduceHP(recoil, false)
+        end
+        battle.pbHideAbilitySplash(target)
+    }
+)
   
 BattleHandlers::TargetAbilityOnHit.add(:ARCCONDUCTOR,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
@@ -325,11 +347,12 @@ BattleHandlers::TargetAbilityOnHit.add(:COUNTERFLOW,
   }
 )
 
-BattleHandlers::TargetAbilityOnHit.add(:INNARDSPUNCH,
+BattleHandlers::TargetAbilityOnHit.add(:GUTPUNCH,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
         next if target.fainted?
         next -30 * aiNumHits if aiCheck
-        battle.forceUseMove(target, :MEGAPUNCH, user.index, ability: ability)
+        next if target.hasCopiedMoveMarker?
+        battle.forceUseMove(target, :MEGAPUNCH, user.index, moveUsageEffect: :GutPunch, ability: ability)
   }
 )
 
@@ -370,7 +393,8 @@ BattleHandlers::TargetAbilityOnHit.add(:LOUDSLEEPER,
           next if target.fainted?
           next unless target.asleep?
           next -30 * aiNumHits if aiCheck
-          battle.forceUseMove(target, :SNORE, user.index, ability: ability)
+          next if target.hasCopiedMoveMarker?
+          battle.forceUseMove(target, :SNORE, user.index, moveUsageEffect: :LoudSleeper, ability: ability)
     }
 )
 
@@ -379,7 +403,8 @@ BattleHandlers::TargetAbilityOnHit.add(:SNORER,
           next if target.fainted?
           next unless target.asleep?
           next -15 * aiNumHits if aiCheck
-          battle.forceUseMove(target, :SNORE, user.index, ability: ability, moveUsageEffect: :Snorer)
+          next if target.hasCopiedMoveMarker?
+          battle.forceUseMove(target, :SNORE, user.index, moveUsageEffect: :Snorer, ability: ability)
     }
 )
 
@@ -825,7 +850,7 @@ BattleHandlers::TargetAbilityOnHit.add(:CALMINGSCUTECHARM,
             end
 
             # Attacker effect
-            if user.canSleep?(target, true)
+            if user.canSleep?(target, false) && !user.effectActive?(:Yawn)
                 battle.pbAnimation(:YAWN, target, [user])
                 user.applyEffect(:Yawn, 2)
             end
@@ -870,8 +895,7 @@ BattleHandlers::TargetAbilityOnHit.add(:WANDERINGSPIRIT,
         oldAbil = user.firstAbility
         next unless oldAbil
         next -5 if aiCheck
-        target.replaceAbility(oldAbil, user.opposes?(target))
-        user.replaceAbility(ability, user.opposes?(target))
+        target.swapAbilities(user, user.opposes?(target))
     }
 )
 

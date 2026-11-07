@@ -809,6 +809,36 @@ class PokeBattle_Battler
         pbEffectsOnSwitchIn
     end
 
+    def swapAbilities(swapper, showSplashes = true, replacementMsg: nil)
+        myOldAbility = firstAbility
+        swapperOldAbility = swapper.firstAbility
+        return if !myOldAbility || !swapperOldAbility
+        myOldAbilities = abilities.clone
+        myOldAbilities.delete(swapperOldAbility)
+        swapperOldAbilities = swapper.abilities.clone
+        swapperOldAbilities.delete(myOldAbility)
+        if showSplashes
+            @battle.pbShowAbilitySplash(self, myOldAbility)
+            @battle.pbShowAbilitySplash(swapper, swapperOldAbility)
+        end
+        setAbility(swapperOldAbility)
+        swapper.setAbility(myOldAbility)
+        if showSplashes
+            @battle.pbReplaceAbilitySplash(self, swapperOldAbility)
+            @battle.pbReplaceAbilitySplash(swapper, myOldAbility)
+        end
+        replacementMsg ||= _INTL("{1} and {2} swapped Abilities!",pbThis, swapper.pbThis(true))
+        @battle.pbDisplay(replacementMsg)
+        if showSplashes
+            @battle.pbHideAbilitySplash(self)
+            @battle.pbHideAbilitySplash(swapper)
+        end
+        pbOnAbilitiesLost(myOldAbilities)
+        swapper.pbOnAbilitiesLost(swapperOldAbilities)
+        pbEffectsOnSwitchIn
+        swapper.pbEffectsOnSwitchIn
+    end
+
     #=============================================================================
     # Disabling of various effects
     #=============================================================================

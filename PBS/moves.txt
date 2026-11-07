@@ -30,9 +30,9 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = User
-FunctionCode = MaxUserAtkLoseHalfOfTotalHP
+FunctionCode = MaxUserAtkLoseThirdOfTotalHP
 Flags = CanSnatch
-Description = The user maximizes its Attack in exchange for HP equal to half its max HP.
+Description = The user maximizes its Attack in exchange for 33% of its max HP.
 #-------------------------------
 [BESTOW]
 Name = Bestow
@@ -619,7 +619,7 @@ Name = Recover
 Type = NORMAL
 Category = Status
 Accuracy = 0
-TotalPP = 8
+TotalPP = 5
 Target = User
 FunctionCode = HealUserHalfOfTotalHP
 Flags = CanSnatch
@@ -756,7 +756,7 @@ Name = Slack Off
 Type = NORMAL
 Category = Status
 Accuracy = 0
-TotalPP = 8
+TotalPP = 5
 Target = User
 FunctionCode = HealUserHalfOfTotalHP
 Flags = CanSnatch
@@ -894,7 +894,7 @@ Name = Swallow
 Type = NORMAL
 Category = Status
 Accuracy = 0
-TotalPP = 10
+TotalPP = 8
 Target = User
 FunctionCode = HealUserDependingOnUserStockpile
 Flags = CanSnatch
@@ -1080,7 +1080,7 @@ TotalPP = 8
 Target = NearOther
 FunctionCode = SleepTargetNextTurn
 Flags = CanProtect,CanMagicCoat,Sound
-Description = The user yawns, making the target drowsy. They'll fall asleep at end of the next turn.
+Description = The user yawns, making the target drowsy. They'll fall asleep at the end of the next turn.
 #-------------------------------
 #		FIGHTING MOVES
 #-------------------------------
@@ -1182,7 +1182,7 @@ Description = The user delivers a chop with its forearms crossed. Can random cri
 Name = Double Kick
 Type = FIGHTING
 Category = Physical
-Power = 30
+Power = 40
 Accuracy = 100
 TotalPP = 25
 Target = NearOther
@@ -1236,7 +1236,7 @@ TotalPP = 5
 Target = NearOther
 FunctionCode = Basic
 Flags = CanProtect
-Description = The user heightens its mental focus and unleashes its power.
+Description = The user focuses its energy and unleashes its power.
 #-------------------------------
 [FOCUSPUNCH]
 Name = Focus Punch
@@ -1813,7 +1813,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = Poison
 Flags = CanProtect,CanMagicCoat,Wind
-Description = A cloud of poison gas is sprayed in the face of the target, poisoning it.
+Description = A cloud of noxious gas is sprayed in the face of the target, poisoning it.
 #-------------------------------
 [POISONJAB]
 Name = Poison Jab
@@ -1826,7 +1826,7 @@ Target = NearOther
 FunctionCode = Poison
 Flags = CanProtect,Punch
 EffectChance = 10
-Description = The target is stabbed with a tentacle or arm seeped with poison. It has a 10% chance to poison.
+Description = The target is stabbed with a tentacle or arm seeped with toxins. It has a 10% chance to poison.
 #-------------------------------
 [POISONSTING]
 Name = Poison Sting
@@ -2410,7 +2410,7 @@ Name = Heal Order
 Type = BUG
 Category = Status
 Accuracy = 0
-TotalPP = 8
+TotalPP = 5
 Target = User
 FunctionCode = HealUserThreeFifthsOfTotalHP
 Flags = CanSnatch
@@ -3491,19 +3491,6 @@ Flags = CanProtect
 Description = The user rampages and attacks while spewing flames for two turns.
 Animation = FLAREBLITZ
 #-------------------------------
-[SEARINGSHOT]
-Name = Searing Shot
-Type = FIRE
-Category = Special
-Power = 100
-Accuracy = 100
-TotalPP = 5
-Target = AllNearOthers
-FunctionCode = Burn
-Flags = CanProtect
-EffectChance = 30
-Description = An inferno of scarlet flames torches everything around the user. It has a 30% chance to burn.
-#-------------------------------
 [SHELLTRAP]
 Name = Shell Trap
 Type = FIRE
@@ -3709,7 +3696,7 @@ Type = WATER
 Category = Special
 Power = 80
 Accuracy = 100
-TotalPP = 12
+TotalPP = 10
 Target = NearOther
 FunctionCode = Burn
 Flags = CanProtect
@@ -3769,14 +3756,13 @@ Description = The user immerses the target in superheated steam. This has a 30% 
 Name = Surf
 Type = WATER
 Category = Special
-Power = 90
+Power = 95
 Accuracy = 100
 TotalPP = 10
 Target = AllNearOthers
-FunctionCode = WaterlogTargetHitsDivers
+FunctionCode = HitsDivers
 Flags = CanProtect
-EffectChance = 10
-Description = It swamps the area with a giant wave, hitting every battler nearby and underwater. Has a 10% chance to waterlog.
+Description = It swamps the area with a giant wave, hitting every battler nearby and underwater.
 #-------------------------------
 [SURGINGSTRIKES]
 Name = Surging Strikes

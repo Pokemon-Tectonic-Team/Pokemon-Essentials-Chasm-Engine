@@ -182,6 +182,10 @@ end
 # Empowered Yawn
 class PokeBattle_Move_EmpoweredYawn < PokeBattle_Move_SleepTargetNextTurn
     include EmpoweredMove
+
+    def pbEffectGeneral(user)
+        super
+    end
 end
 
 #===============================================================================

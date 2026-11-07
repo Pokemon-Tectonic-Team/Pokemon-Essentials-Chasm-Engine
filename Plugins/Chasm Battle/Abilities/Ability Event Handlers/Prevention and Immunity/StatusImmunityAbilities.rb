@@ -22,27 +22,27 @@ BattleHandlers::StatusImmunityAbility.add(:LEVIATHAN,
   }
 )
 
-BattleHandlers::StatusImmunityAbility.add(:FAEVEIL,
+BattleHandlers::StatusImmunityAbility.add(:SCALEVEIL,
   proc { |ability, _battler, status|
-      next true if %i[BURN FROSTBITE NUMB].include?(status)
+      next true if %i[BURN FROSTBITE WATERLOG].include?(status)
   }
 )
 
-BattleHandlers::StatusImmunityAllyAbility.add(:FAEVEIL,
+BattleHandlers::StatusImmunityAllyAbility.add(:SCALEVEIL,
   proc { |ability, _battler, status|
-      next true if %i[BURN FROSTBITE NUMB].include?(status)
+      next true if %i[BURN FROSTBITE WATERLOG].include?(status)
   }
 )
 
 BattleHandlers::StatusImmunityAbility.add(:CANDYVEIL,
   proc { |ability, _battler, status|
-      next true if %i[POISON LEECHED WATERLOG].include?(status)
+      next true if %i[POISON LEECHED NUMB].include?(status)
   }
 )
 
 BattleHandlers::StatusImmunityAllyAbility.add(:CANDYVEIL,
   proc { |ability, _battler, status|
-      next true if %i[POISON LEECHED WATERLOG].include?(status)
+      next true if %i[POISON LEECHED NUMB].include?(status)
   }
 )
 

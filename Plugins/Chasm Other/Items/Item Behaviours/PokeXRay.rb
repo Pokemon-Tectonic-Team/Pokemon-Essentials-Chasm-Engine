@@ -6,6 +6,8 @@ ItemHandlers::UseFromBag.add(:POKEXRAY,proc { |item|
     next 2
 })
 
+ItemHandlers::UseFromBag.copy(:POKEXRAY,:POKEXRAY2)
+
 POKE_XRAY_WIDTH = 8
 POKE_XRAY_HEIGHT = 6
 
@@ -65,6 +67,8 @@ ItemHandlers::UseInField.add(:POKEXRAY,proc { |item|
     
     next 1
 })
+
+ItemHandlers::UseInField.copy(:POKEXRAY,:POKEXRAY2)
 
 def showPokeXRayForTrainer(chosenTrainer, chosenPartyIndex = 0)
     trainerShowcase(chosenTrainer, npcTrainer: true, illusionsFool: true, startWithIndex: chosenPartyIndex)

@@ -207,7 +207,7 @@ def battleGuideTrainersHash
         _INTL("Trainer Inactivity") => _INTL("When you defeat a Trainer, they will become inactive until the next time you heal at a PokéCenter. This is indicated by them returning their companion Pokémon to its Poké Ball."),
         _INTL("Perfecting Fights") => _INTL("If you defeat a Trainer without any of your Pokémon fainting, you've 'perfected' the fight. They will leave forever and drop experience candy as a reward."),
         _INTL("Enemy Teams") => _INTL("Enemy Trainers have their own teams of Pokémon with their own moves and held items. It's important to pay attention to these possibilities to win battles."),
-        _INTL("Differences") => _INTL("The typical trainer has 3 Pokémon, but Gym Leaders will have more. Trainers with more Pokémon also have more move variety and more items on their Pokémon."),
+        _INTL("Differences") => _INTL("The typical trainer has 4 Pokémon, but Gym Leaders will have more. Trainers with more Pokémon also have more move variety and more items on their Pokémon."),
         _INTL("Pro Trainers") => _INTL("Pro Trainers are special Trainers, noted by their grey hair and black clothes. Their teams are always 6 Pokémon, all with items, and built around a Tribal Bonus. They're hard!"),
         _INTL("Trainer Behaviour") => _INTL("Individual Trainers will always react to the same in-battle circumstances the same way. You can learn how to beat or even perfect a Trainer through trial and error."),
     }
@@ -224,7 +224,7 @@ def battleGuideAvatarsHash
         _INTL("Clean Slate") => _INTL("Before an Avatar uses a Primeval Move, they will also heal from any status conditions and reset any of their stat steps that have been lowered."),
         _INTL("Shields") => _INTL("The top of Avatars health bars starts Shielded. Shielded bars take 75% less damage. A shield is removed when the Avatar uses a Primeval Move."),
         _INTL("Attack Choice") => _INTL("Avatars usually only have a few moves to choose from. They usually alternate between their moves on successive attacks."),
-        _INTL("Target Choice") => _INTL("A targeting reticle shows which of your battles the Avatar wants to attack. It will switch to another battler, however, if their attack is made impossible."),
+        _INTL("Target Choice") => _INTL("A targeting reticle shows which of your battlers the Avatar wants to attack. It will switch to another battler, however, if their attack is made impossible."),
         _INTL("Empowered Moves") => _INTL("Some Avatars have Empowered attacks, which are powered-up versions of other attacks. They take up both of an Avatar's moves on that turn."),
         _INTL("Experience Reward") => _INTL("When an Avatar is destroyed, every Pokémon on your team is given experience, even those that are fainted."),
         _INTL("Legendary Avatars") => _INTL("Legendary Avatars are unique. You fight them with 3 Pokémon, they have 3 HP bars, and they have more moves with more smarts about how to use them."),
@@ -263,7 +263,7 @@ end
 
 def battleGuideFieldEffectsHash
     return {
-        _INTL("What are field effects?") => _INTL("Field effects are special effects that affect the entire battlefield. Multiple field effects can be active at the same time."),
+        _INTL("What are Field effects?") => _INTL("Field effects are special effects that affect the entire battlefield. Multiple field effects can be active at the same time."),
         _INTL("Field Effect Duration") => _INTL("Field effects last a certain number of turns. The length differs depending on what move or ability summoned the field effect. Some durations can be enhanced by certain items."),
         _INTL("Room Effects") => _INTL("Puzzle Room, Odd Room and Polarized Room are rooms. Multiple can be active at the same time. Their duration can be doubled with the Reinforcing Rod item."),
         _INTL("Puzzle Room") => _INTL("Puzzle Room swaps each Pokémon's Attack and Sp. Attack stats."),
@@ -277,8 +277,8 @@ end
 
 def battleGuideSideEffectsHash
     return {
-        _INTL("What are field effects?") => _INTL("Side effects are special effects that affect only one side. Multiple side effects can be active at the same time."),
-        _INTL("Field Effect Duration") => _INTL("Side effects last a certain number of turns. The length differs depending on what move or ability summoned the field effect. Some durations can be enhanced by certain items."),
+        _INTL("What are Side effects?") => _INTL("Side effects are special effects that affect only one side. Multiple side effects can be active at the same time."),
+        _INTL("Side Effect Duration") => _INTL("Side effects last a certain number of turns. The length differs depending on what move or ability summoned the field effect. Some durations can be enhanced by certain items."),
         _INTL("Screen Effects") => _INTL("Reflect, Light Screen, Aurora Veil, Sanctuary and Repulsion Field are screens. These effects do not stack with one another. Their duration can be enhanced with the Light Clay item."),
         _INTL("Reflect") => _INTL("Reflect lowers damage from incoming physical moves by 50% in a Singles battle or 33% in a Doubles/Triples battle."),
         _INTL("Light Screen") => _INTL("Light Screen lowers damage from incoming special moves by 50% in a Singles battle or 33% in a Doubles/Triples battle."),
@@ -307,8 +307,8 @@ def battleGuideLegendaryAbilitiesHash
         _INTL("Articuno: Glacial Wings") => _INTL("Severe Frostbite: The same as Frostbite, but its end-of-turn chip deals double damage if the afflicted Pokémon is below half health."),
         _INTL("Moltres: Searing Wings") => _INTL("Severe Burn: The same as Burn, but the afflicted Pokémon also takes 33% recoil from their attacks."),
         _INTL("Zapdos: Galvanic Wings") => _INTL("Severe Numb: The same as Numb, but the afflicted Pokémon's highest stat is reduced at the end of each turn."),
-        _INTL("Kyogre: Primordial Sea") => _INTL("Boosts the damage of Water- and Electric-type attacks by 50%. Prevents Pokémon not immune to Rain from activating moves' random added effects."),
-        _INTL("Groudon: Desolate Land") => _INTL("Boosts the damage of Fire- and Grass-type attacks by 50%. Prevents Pokémon not immune to Sun from activating critical hits."),
+        _INTL("Kyogre: Primordial Sea") => _INTL("Boosts the damage of Electric- and Water-type attacks by 50%. Lowers attack damage of non-immune types or moves by 15%. Pokémon not immune to Rain can't cause moves' random added effects."),
+        _INTL("Groudon: Desolate Land") => _INTL("Boosts the damage of Fire- and Grass-type attacks by 50%. Lowers attack damage of non-immune types or moves by 15%. Pokémon not immune to Sun can't cause critical hits."),
         _INTL("Necrozma: Event Horizon") => _INTL("Rock- and Ground-types gain a 50% boost to Special Defense. Deals sandstorm damage at end of turn. Pokémon not immune to Sandstorm take 50% more HP-fraction-based damage."),
         _INTL("Kyurem: Heat Death") => _INTL("Ice- and Ghost-types gain a 50% boost to Defense. Deals hail damage at end of turn. Pokémon struck by the hail become unable to heal."),
         _INTL("Cresselia: Saturnal Sky") => _INTL("Boosts the damage of Psychic- and Dragon-type attacks by 50%. When the debuff applies from the Ring Eclipse effect, it lowers stats by 3 steps instead of 2."),

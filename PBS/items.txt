@@ -548,7 +548,7 @@ Name = Red Card
 NamePlural = Red Cards
 Pocket = 13
 Price = 4000
-Description = A card with a mysterious power. When the holder is struck by a foe, the attacker is removed from battle.
+Description = A card with a mysterious power. When the holder is hit by an attack, the attacker is forced to switch.
 #-------------------------------
 [SHEDSHELL]
 Name = Shed Shell
@@ -591,7 +591,7 @@ NamePlural = Choice Bands
 Pocket = 12
 Price = 8000
 Flags = Clothing,ChoiceLocking
-Description = Held item which ups Attack by 40%, but allows the use of only one move.
+Description = Held item which boosts Attack by 40%, but allows the use of only one move.
 #-------------------------------
 [CHOICESPECS]
 Name = Choice Specs
@@ -599,7 +599,7 @@ NamePlural = Choice Specs
 Pocket = 12
 Price = 8000
 Flags = Clothing,ChoiceLocking
-Description = Held item which ups Sp. Atk by 40%, but allows the use of only one move.
+Description = Held item which boosts Sp. Atk by 40%, but allows the use of only one move.
 #-------------------------------
 [CHOICESCARF]
 Name = Choice Scarf
@@ -607,7 +607,7 @@ NamePlural = Choice Scarves
 Pocket = 12
 Price = 8000
 Flags = Clothing,ChoiceLocking
-Description = Held item which boosts Speed by 40% but allows the use of only one move.
+Description = Held item which boosts Speed by 40%, but allows the use of only one move.
 #-------------------------------
 [LUMBERAXE]
 Name = Lumber Axe
@@ -690,7 +690,7 @@ Name = Loaded Dice
 NamePlural = Loaded Dices
 Pocket = 13
 Price = 4000
-Description = A held item. It makes multi-hit attacks consistently hit 4 or 5 times.
+Description = A held item. It makes "two to five" multi-hit attacks consistently hit 4 or 5 times.
 #-------------------------------
 [FRAGILELOCKET]
 Name = Fragile Locket
@@ -866,7 +866,7 @@ NamePlural = Muscle Bands
 Pocket = 12
 Price = 4000
 Flags = Clothing
-Description = A held item. It is a headband that boosts the power of physical moves by 15%.
+Description = A held item. It is a headband that boosts Attack by 15%.
 #-------------------------------
 [WISEGLASSES]
 Name = Wise Glasses
@@ -874,7 +874,7 @@ NamePlural = Wise Glasses
 Pocket = 12
 Price = 4000
 Flags = Clothing
-Description = A held item. It is a thick pair of glasses that boosts the power of special moves by 15%.
+Description = A held item. It is a thick pair of glasses that boosts Special Attack by 15%.
 #-------------------------------
 [SEVENLEAGUEBOOTS]
 Name = 7-League Boots
@@ -2718,6 +2718,15 @@ Price = 0
 FieldUse = Direct
 Flags = KeyItem
 Description = A high tech surveillance device. Use it to scout out the teams of nearby trainers or mid-battle.
+#-------------------------------
+[POKEXRAY2]
+Name = Poké X-Ray 2
+NamePlural = Poké X-Rays 2
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = Used to scout the teams of nearby trainers and the behaviour of nearby Avatars. Can also be used mid-battle.
 #-------------------------------
 [CELLBOOSTER]
 Name = Cell Booster

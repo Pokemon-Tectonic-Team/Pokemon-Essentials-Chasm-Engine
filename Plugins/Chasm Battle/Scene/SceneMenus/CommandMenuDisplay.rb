@@ -45,17 +45,30 @@ class CommandMenuDisplay < BattleMenuBase
             @buttonBitmap = AnimatedBitmap.new(addLanguageSuffix("Graphics/Pictures/Battle/cursor_command"))
             # Create action buttons
             @buttons = Array.new(6) do |i|   # 4 command options, therefore 4 buttons
-            button = SpriteWrapper.new(viewport)
-            button.bitmap = @buttonBitmap.bitmap
-            button.x      = self.x+Graphics.width-490
-            button.x      += (i%3) * (@buttonBitmap.width/2+4)
-            button.y      = self.y+6
-            button.y      += (((i/3)==0) ? 0 : BUTTON_HEIGHT-4)
-            button.src_rect.width  = @buttonBitmap.width/2
-            button.src_rect.height = BUTTON_HEIGHT
-            addSprite("button_#{i}",button)
-            next button
+                button = SpriteWrapper.new(viewport)
+                button.bitmap = @buttonBitmap.bitmap
+                button.x      = self.x+Graphics.width-490
+                button.x      += (i%3) * (@buttonBitmap.width/2+4)
+                button.y      = self.y+6
+                button.y      += (((i/3)==0) ? 0 : BUTTON_HEIGHT-4)
+                button.src_rect.width  = @buttonBitmap.width/2
+                button.src_rect.height = BUTTON_HEIGHT
+                addSprite("button_#{i}",button)
+                next button
             end
+
+            # Create reminder for the "last pokeball" button
+            @lastBallReminderBitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Battle/last_ball_reminder")))
+            @lastBallReminder = SpriteWrapper.new(viewport)
+            @lastBallReminder.bitmap = @lastBallReminderBitmap.bitmap
+            @lastBallReminder.x = 0
+            @lastBallReminder.y = Graphics.height / 2 - 32
+            @lastBallReminder.visible = @visibility["lastBallReminder"] = false
+            addSprite("lastBallReminder",@lastBallReminder)
+            
+            @lastBallIcon = ItemIconSprite.new(20,@lastBallReminder.y + 26,:POKEBALL,viewport)
+            @lastBallIcon.visible = @visibility["lastBallIcon"] = false
+            addSprite("lastBallIcon",@lastBallIcon)
         else
             # Create command window (shows Fight/Bag/Pokémon/Run)
             @cmdWindow = Window_CommandPokemon.newWithSize([],
@@ -72,6 +85,7 @@ class CommandMenuDisplay < BattleMenuBase
     def dispose
         super
         @buttonBitmap.dispose if @buttonBitmap
+        @lastBallReminderBitmap.dispose if @lastBallReminderBitmap
     end
   
     def z=(value)
@@ -93,16 +107,24 @@ class CommandMenuDisplay < BattleMenuBase
     def refreshButtons
         return if !USE_GRAPHICS
         for i in 0...@buttons.length
-        button = @buttons[i]
-        button.src_rect.x = (i==@index) ? @buttonBitmap.width/2 : 0
-        button.src_rect.y = MODES[@mode][i]*BUTTON_HEIGHT
-        button.z          = self.z + ((i==@index) ? 3 : 2)
+            button = @buttons[i]
+            button.src_rect.x = (i==@index) ? @buttonBitmap.width/2 : 0
+            button.src_rect.y = MODES[@mode][i]*BUTTON_HEIGHT
+            button.z          = self.z + ((i==@index) ? 3 : 2)
         end
+    end
+
+    def refreshLastBallReminder
+        lastBallVisible = !@mode.nil? && ![1,5].include?(@mode) && @battle.canRepeatLastPokeball?
+        @lastBallReminder.visible = @visibility["lastBallReminder"] = lastBallVisible
+        @lastBallIcon.visible = @visibility["lastBallIcon"] = lastBallVisible
+        @lastBallIcon.item = @battle.lastUsedPokeball if lastBallVisible
     end
   
     def refresh
         @msgBox.refresh
         @cmdWindow.refresh if @cmdWindow
         refreshButtons
+        refreshLastBallReminder
     end
 end

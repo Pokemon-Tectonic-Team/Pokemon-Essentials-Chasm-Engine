@@ -485,6 +485,7 @@ immuneTypeRealName))
 
     def canSleepYawn?
         return false unless hasSpotsForStatus
+        return false if asleep?
         unless hasActiveAbility?(:SOUNDPROOF)
             @battle.eachBattler do |b|
                 return false if b.effectActive?(:Uproar)

@@ -520,6 +520,11 @@ class PokeBattle_Battle
                     end
                 when 6 # Documentation menu
                     showDocumentationMenu(self)
+                when 7
+                    if repeatLastPokeBall(idxBattler, actioned.length == 1)
+                        commandsEnd = true if pbItemUsesAllActions?(@choices[idxBattler][1])
+                        break
+                    end
                 when -2   # Debug
                     pbDebugMenu
                     next
@@ -535,6 +540,25 @@ class PokeBattle_Battle
             end
             break if commandsEnd
         end
+    end
+
+    def canRepeatLastPokeball?
+        return false if @lastUsedPokeball.nil?
+        return pbHasItem?(@lastUsedPokeball)
+    end
+
+    def repeatLastPokeBall(idxBattler, firstAction)
+        item = @lastUsedPokeball
+        idxTarget = @scene.chooseTargetForItemFromBattleScreen(idxBattler)
+        return false if idxTarget < 0
+        battler = @battlers[idxTarget]
+        pkmn    = battler.pokemon if battler
+        return false unless pkmn
+        return false unless ItemHandlers.triggerCanUseInBattle(item,
+           pkmn, battler, nil, firstAction, self, @scene)
+        return false unless pbRegisterItem(idxBattler, item, idxTarget)
+        ret = true
+        return true
     end
 
     def pbBattleInfoMenu

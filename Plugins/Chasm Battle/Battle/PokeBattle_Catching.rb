@@ -152,6 +152,7 @@ class PokeBattle_Battle
         else
             pbDisplayBrief(_INTL("{1} threw a {2}!", pbPlayer.name, itemName))
         end
+        @lastUsedPokeball = ball
         if battler.fainted?
             pbDisplay(_INTL("But there was no target..."))
             return

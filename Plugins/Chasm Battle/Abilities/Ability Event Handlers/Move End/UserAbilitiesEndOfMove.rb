@@ -147,7 +147,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:ASONEGHOST,
       next if battle.pbAllFainted?(user.idxOpposingSide)
       numFainted = 0
       targets.each { |b| numFainted += 1 if b.damageState.fainted }
-      next if numFainted == 0 || !user.pbCanRaiseStatStep?(:ATTACK, user) || user.fainted?
+      next if numFainted == 0 || !user.pbCanRaiseStatStep?(:SPECIAL_ATTACK, user) || user.fainted?
       battle.pbShowAbilitySplash(user, :GRIMNEIGH)
       user.pbRaiseStatStep(:SPECIAL_ATTACK, numFainted, user)
       battle.pbHideAbilitySplash(user)
@@ -736,7 +736,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:HITANDRUN,
   proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
-      next unless targets.any? { |b| b.knockedBelowHalf? }
+      next unless targets.any? { |b| !b.damageState.unaffected && b.damageState.totalCalcedDamage < b.totalhp / 2 }
       user.applyEffect(:HitAndRunSwitch)
   }
 )

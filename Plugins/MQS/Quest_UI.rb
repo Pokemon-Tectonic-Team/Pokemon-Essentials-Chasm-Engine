@@ -325,7 +325,8 @@ class QuestList_Scene
     # Vary text according to map name
     loc = originalMap.include?("Route") ? "on" : "in"
     # Format time
-    time = quest.time.strftime("%B %d %Y %H:%M")
+    time = _INTL("{1} {2} {3} {4}:{5}", pbGetMonthName(quest.time.mon), quest.time.day, quest.time.year, 
+      quest.time.hour.to_s.rjust(2, "0"), quest.time.min.to_s.rjust(2, "0"))
     if getActiveQuests.include?(quest.id)
       time_text = _INTL("start")
     elsif getCompletedQuests.include?(quest.id)
