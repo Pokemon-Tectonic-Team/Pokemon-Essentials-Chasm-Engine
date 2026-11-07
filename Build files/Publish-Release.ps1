@@ -1,28 +1,28 @@
 <#
 .SYNOPSIS
-    Publishes a built release: uploads zips to Google Drive, mints Short.io
-    shortlinks for them, updates the public version-list blob, deploys the
-    Cable Club server to live, and kicks off the tools-website rebuild.
+    Publishes a built release: uploads zips to Google Drive, updates the
+    public version-list blob, deploys the Cable Club server to live, and
+    kicks off the tools-website rebuild.
 
 .DESCRIPTION
     Separate from Zip-Release.ps1 on purpose: Zip-Release.ps1 stays
     dependency-free so any dev can build a release zip with nothing but
     PowerShell, while this script carries the extra setup cost (rclone,
-    Short.io, Azure, SSH access, gh CLI) and is only expected
-    to be run by whoever is actually publishing a release.
+    Azure, SSH access, gh CLI) and is only expected to be run by whoever is
+    actually publishing a release.
 
-    Five steps, all run by default. Pass one or more -Only<Step> switches to
-    isolate just those steps (e.g. to mint shortlinks for zips already
-    uploaded in a prior run), or one or more -Skip<Step> switches to run
-    everything except those (e.g. to publish while a step's credentials
+    Four steps, all run by default. Pass one or more -Only<Step> switches to
+    isolate just those steps (e.g. to update the version list for zips
+    already uploaded in a prior run), or one or more -Skip<Step> switches to
+    run everything except those (e.g. to publish while a step's credentials
     aren't set up yet). -Only<Step> takes precedence if both are given.
 
     -DryRun makes every step perform a real, read-only verification instead
     of just logging intent -- a missing tool, bad credentials, or a wrong
     ID/URL surfaces as a real error here, not silently: Drive upload passes
-    rclone's own --dry-run through; shortlinks call Short.io's domain-list
-    endpoint; the version-list step HEADs the SAS URL; Cable Club runs
-    `-Status` against live instead of deploying; tools-website reads
+    rclone's own --dry-run through; the version-list step HEADs the SAS
+    URL; Cable Club runs `-Status` against live instead of deploying;
+    tools-website reads
     tectonic-data's current PUBLIC_VERSION_COMMIT instead of writing it, and
     runs `gh workflow view` instead of `gh workflow run`.
 
@@ -45,29 +45,14 @@
     `rclone config` once to create a remote with this name, authorized
     against their own Google account.
 
-.PARAMETER ShortIoApiKey
-    Short.io API key. Falls back to $env:SHORTIO_API_KEY, then a
-    SHORTIO_API_KEY line in Build files/.env (gitignored).
-    Required for the shortlinks step.
-
-.PARAMETER ShortIoDomain
-    Short.io domain the links are created under (e.g. go.example.com),
-    configured in your Short.io account. Falls back to $env:SHORTIO_DOMAIN,
-    then a SHORTIO_DOMAIN line in .env. Required for the shortlinks step.
-
 .PARAMETER AzureBlobSasUrl
     A SAS URL granting write access to the version_order.txt blob read by
     IntroScene.rb (VERSION_SERVER_FILE_URL in GameSettings.rb). Falls back to
-    $env:VERSION_LIST_SAS_URL, then a VERSION_LIST_SAS_URL line in .env.
-    Required for the version-list step.
+    $env:VERSION_LIST_SAS_URL, then a VERSION_LIST_SAS_URL line in
+    Build files/.env (gitignored). Required for the version-list step.
 
 .PARAMETER OnlyUpload
     Run only the Google Drive upload step.
-
-.PARAMETER OnlyShortlinks
-    Run only the Short.io shortlink step. Requires the zips to already be
-    uploaded to Drive -- it looks up each one's share URL via `rclone link`
-    rather than re-uploading.
 
 .PARAMETER OnlyVersionList
     Run only the public version-list blob update.
@@ -84,9 +69,6 @@
 .PARAMETER SkipUpload
     Run every step except the Google Drive upload.
 
-.PARAMETER SkipShortlinks
-    Run every step except the Short.io shortlink step.
-
 .PARAMETER SkipVersionList
     Run every step except the public version-list blob update.
 
@@ -98,13 +80,13 @@
     triggers).
 
 .EXAMPLE
-    ./Publish-Release.ps1 -Version 3.2.4 -ShortIoDomain go.example.com -AzureBlobSasUrl "https://..."
+    ./Publish-Release.ps1 -Version 3.2.4 -AzureBlobSasUrl "https://..."
 .EXAMPLE
-    ./Publish-Release.ps1 -Version 3.2.4 -ShortIoDomain go.example.com -AzureBlobSasUrl "https://..." -DryRun
+    ./Publish-Release.ps1 -Version 3.2.4 -AzureBlobSasUrl "https://..." -DryRun
 .EXAMPLE
     ./Publish-Release.ps1 -Version 3.2.4 -OnlyUpload
 .EXAMPLE
-    ./Publish-Release.ps1 -Version 3.2.4 -AzureBlobSasUrl "https://..." -SkipShortlinks
+    ./Publish-Release.ps1 -Version 3.2.4 -AzureBlobSasUrl "https://..." -SkipCableClubLive
 #>
 param(
     [Parameter(Mandatory = $true)]
@@ -116,19 +98,14 @@ param(
     [string]$DriveFolderId = "1ZkpLqyPlt8fqeff9kqFWYBcIpzwESE8_",
     [string]$RcloneRemote = "gdrive",
 
-    [string]$ShortIoApiKey,
-    [string]$ShortIoDomain,
-
     [string]$AzureBlobSasUrl,
 
     [switch]$OnlyUpload,
-    [switch]$OnlyShortlinks,
     [switch]$OnlyVersionList,
     [switch]$OnlyCableClubLive,
     [switch]$OnlyToolsWebsite,
 
     [switch]$SkipUpload,
-    [switch]$SkipShortlinks,
     [switch]$SkipVersionList,
     [switch]$SkipCableClubLive,
     [switch]$SkipToolsWebsite,
@@ -155,8 +132,6 @@ if (Test-Path $dotEnvPath) {
     }
 }
 
-if (-not $ShortIoApiKey) { $ShortIoApiKey = $env:SHORTIO_API_KEY }
-if (-not $ShortIoDomain) { $ShortIoDomain = $env:SHORTIO_DOMAIN }
 if (-not $AzureBlobSasUrl) { $AzureBlobSasUrl = $env:VERSION_LIST_SAS_URL }
 
 $VersionListUrl = "https://tectonicstorage.blob.core.windows.net/tectonicstorage/version_order.txt"
@@ -180,14 +155,12 @@ $patchZipPath = Join-Path $OutputDir "$GameTitle $major.$minor -- Patch $patch.z
 
 $OnlySteps = @{
     Upload        = $OnlyUpload
-    Shortlinks    = $OnlyShortlinks
     VersionList   = $OnlyVersionList
     CableClubLive = $OnlyCableClubLive
     ToolsWebsite  = $OnlyToolsWebsite
 }
 $SkipSteps = @{
     Upload        = $SkipUpload
-    Shortlinks    = $SkipShortlinks
     VersionList   = $SkipVersionList
     CableClubLive = $SkipCableClubLive
     ToolsWebsite  = $SkipToolsWebsite
@@ -224,60 +197,6 @@ function Publish-ToDrive {
         if ($DryRun) { $rcloneArgs += '--dry-run' }
         & rclone @rcloneArgs
         if ($LASTEXITCODE -ne 0) { throw "rclone upload failed for $zipName (exit $LASTEXITCODE)" }
-    }
-}
-
-function Get-DriveShareUrl([string]$ZipName) {
-    if (-not (Get-Command rclone -ErrorAction SilentlyContinue)) {
-        throw "rclone not found on PATH. Install it and run 'rclone config' to create a remote named '$RcloneRemote' authorized against your Google account."
-    }
-    $url = & rclone link "${RcloneRemote}:$ZipName" --drive-root-folder-id $DriveFolderId
-    if ($LASTEXITCODE -ne 0 -or -not $url) {
-        throw "Could not get a Drive share link for $ZipName -- has it been uploaded yet? (run without -OnlyShortlinks first)"
-    }
-    return $url.Trim()
-}
-
-function New-ShortIoLink([string]$OriginalUrl) {
-    $headers = @{
-        Authorization = $ShortIoApiKey
-        Accept        = 'application/json'
-    }
-    $body = @{
-        domain      = $ShortIoDomain
-        originalURL = $OriginalUrl
-    } | ConvertTo-Json
-    $response = Invoke-RestMethod -Uri 'https://api.short.io/links' -Method Post -Headers $headers -ContentType 'application/json' -Body $body
-    return $response.shortURL
-}
-
-function Test-ShortIoAuth {
-    $headers = @{ Authorization = $ShortIoApiKey; Accept = 'application/json' }
-    Invoke-RestMethod -Uri 'https://api.short.io/api/domains' -Method Get -Headers $headers | Out-Null
-}
-
-function Publish-Shortlinks {
-    if (-not (Test-StepEnabled 'Shortlinks')) { Write-Step "Skipping shortlinks"; return }
-
-    if (-not $ShortIoApiKey) { throw "No Short.io API key given. Pass -ShortIoApiKey, set `$env:SHORTIO_API_KEY, or add SHORTIO_API_KEY to Build files/.env." }
-    if (-not $ShortIoDomain) { throw "No Short.io domain given. Pass -ShortIoDomain, set `$env:SHORTIO_DOMAIN, or add SHORTIO_DOMAIN to Build files/.env." }
-
-    if ($DryRun) {
-        Write-DryRun "Verifying Short.io API key/domain via a real API call (GET /api/domains)..."
-        Test-ShortIoAuth
-    }
-
-    foreach ($zipPath in (Get-ZipsToPublish)) {
-        $zipName = Split-Path -Leaf $zipPath
-        $driveUrl = Get-DriveShareUrl -ZipName $zipName
-        if ($DryRun) {
-            Write-DryRun "Would create Short.io link on $ShortIoDomain for $zipName -> $driveUrl"
-        }
-        else {
-            Write-Step "Creating Short.io link for $zipName..."
-            $shortUrl = New-ShortIoLink -OriginalUrl $driveUrl
-            Write-Host "    $zipName -> $shortUrl"
-        }
     }
 }
 
@@ -436,7 +355,6 @@ function Publish-ToolsWebsite {
 # ---- main ----
 
 Publish-ToDrive
-Publish-Shortlinks
 Publish-VersionList
 Publish-CableClubLive
 Publish-ToolsWebsite
