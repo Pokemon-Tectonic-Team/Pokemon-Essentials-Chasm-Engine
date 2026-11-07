@@ -1,7 +1,9 @@
 #===============================================================================
 # Dialogue portraits
 # Based on the "Dialogue Portraits" plugin by AenaonDogsky and Mr. Gela, with
-# the slide and fade animation of rainefall's rainefallPortraits.
+# the slide and fade animation of rainefall's rainefallPortraits, and the
+# speaker dimming, speaker name tag placement, script commands and standing on
+# the skin's visible frame of ___beta___'s "Dialogue Portraits v1.0".
 #
 # In a message, \ml[face], \mc[face] and \mr[face] show a large portrait on
 # the left, centre or right, standing on the message window's visible frame
