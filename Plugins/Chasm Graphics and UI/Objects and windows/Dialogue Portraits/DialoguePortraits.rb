@@ -15,6 +15,10 @@
 # another frame of the same file swaps it in place, for expression changes; a
 # different file slides the old portrait out as the new one slides in.
 # Portraits only show on the map.
+#
+# The side last given a face is the speaker. While two or more portraits are
+# up, every one but the speaker's is dimmed. Clearing the speaker's side leaves
+# nobody speaking, and nothing is dimmed.
 #===============================================================================
 PORTRAIT_FRAME_WIDTH    = 192
 PORTRAIT_FRAME_HEIGHT   = 256
@@ -22,9 +26,17 @@ PORTRAIT_EDGE_MARGIN    = 8
 PORTRAIT_SLIDE_DISTANCE = 128
 PORTRAIT_SLIDE_SECONDS  = 0.15
 PORTRAIT_FADE_SECONDS   = 0.1
+PORTRAIT_DIM_SECONDS    = 0.1
+PORTRAIT_DIM_COLOR      = Color.new(0, 0, 0, 110)
 # Level with message windows, so screen tone and cave darkness don't cover it
 PORTRAIT_Z = 99_999
 PORTRAIT_SIDES = { "ml" => :left, "mc" => :centre, "mr" => :right }.freeze
+
+# Raises ArgumentError unless side is one of PORTRAIT_SIDES.
+def checkPortraitSide(side)
+    return if PORTRAIT_SIDES.value?(side)
+    raise ArgumentError, "portrait side must be one of #{PORTRAIT_SIDES.values.inspect}, not #{side.inspect}"
+end
 
 # Where portraits stand: a message window's position and size, and how far its
 # visible frame sits inside its top and bottom edges.
@@ -84,6 +96,9 @@ class DialoguePortrait
         @slide = 0.0
         @fade = 0.0
         @target = 1.0
+        @dim = 0.0
+        @dimTarget = 0.0
+        @dimAlpha = nil
         @restX = 0
         @restY = 0
         refresh
@@ -91,6 +106,10 @@ class DialoguePortrait
 
     def frame=(index)
         @window.frame = index
+    end
+
+    def dimmed=(value)
+        @dimTarget = value ? 1.0 : 0.0
     end
 
     def close
@@ -108,8 +127,9 @@ class DialoguePortrait
     end
 
     def update
-        @slide = approach(@slide, PORTRAIT_SLIDE_SECONDS)
-        @fade = approach(@fade, PORTRAIT_FADE_SECONDS)
+        @slide = approach(@slide, @target, PORTRAIT_SLIDE_SECONDS)
+        @fade = approach(@fade, @target, PORTRAIT_FADE_SECONDS)
+        @dim = approach(@dim, @dimTarget, PORTRAIT_DIM_SECONDS)
         @window.update
         refresh
     end
@@ -120,29 +140,43 @@ class DialoguePortrait
 
     private
 
-    # Moves value one frame's step towards the target, taking the given
-    # number of seconds to cover the whole way.
-    def approach(value, seconds)
+    # Moves value one frame's step towards target, taking the given number of
+    # seconds to cover the whole way from 0 to 1.
+    def approach(value, target, seconds)
         step = 1.0 / (seconds * Graphics.frame_rate)
-        return [value + step, @target].min if value < @target
-        return [value - step, @target].max
+        return [value + step, target].min if value < target
+        return [value - step, target].max
     end
 
     def refresh
         @window.x = @restX + portraitSlideOffset(@side, @slide)
         @window.y = @restY
         @window.contents_opacity = (255 * @fade).round
+        refreshDim
+    end
+
+    # Setting a window's color redraws all its sprites, so only on a change.
+    def refreshDim
+        alpha = (PORTRAIT_DIM_COLOR.alpha * @dim).round
+        return if alpha == @dimAlpha
+        @dimAlpha = alpha
+        @window.color = Color.new(PORTRAIT_DIM_COLOR.red, PORTRAIT_DIM_COLOR.green,
+            PORTRAIT_DIM_COLOR.blue, alpha)
     end
 end
 
 # The portraits on screen, one per side, plus any still sliding out.
 class DialoguePortraitSet
+    attr_reader :speaker
+
     def initialize
         @shown = {}
         @leaving = []
+        @speaker = nil
     end
 
-    # Shows face on side, standing on anchor. An empty face clears the side.
+    # Shows face on side, standing on anchor, and makes side the speaker. An
+    # empty face clears the side.
     def show(side, face, anchor)
         current = @shown[side]
         name, index = parseFaceSpec(face)
@@ -152,7 +186,14 @@ class DialoguePortraitSet
             leave(side)
             @shown[side] = DialoguePortrait.new(side, face) unless face.empty?
         end
+        @speaker = side unless face.empty?
         anchor(anchor)
+    end
+
+    # side is one of PORTRAIT_SIDES, or nil for nobody.
+    def speaker=(side)
+        checkPortraitSide(side) unless side.nil?
+        @speaker = side
     end
 
     def anchor(anchor)
@@ -163,6 +204,8 @@ class DialoguePortraitSet
     # which sends them all out.
     def update(inConversation)
         @shown.each_key { |side| leave(side) } unless inConversation
+        dimOthers = !@speaker.nil? && @shown.length > 1
+        @shown.each { |side, portrait| portrait.dimmed = dimOthers && side != @speaker }
         portraits.each(&:update)
         finished, @leaving = @leaving.partition(&:closed?)
         finished.each(&:dispose)
@@ -181,6 +224,7 @@ class DialoguePortraitSet
     end
 
     def leave(side)
+        @speaker = nil if side == @speaker
         portrait = @shown.delete(side)
         return unless portrait
         portrait.close
