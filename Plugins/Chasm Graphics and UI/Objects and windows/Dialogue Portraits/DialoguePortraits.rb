@@ -148,7 +148,7 @@ class DialoguePortraitSet
     # inConversation is false once no event or message needs the portraits,
     # which sends them all out.
     def update(inConversation)
-        @shown.keys.each { |side| leave(side) } unless inConversation
+        @shown.each_key { |side| leave(side) } unless inConversation
         portraits.each(&:update)
         finished, @leaving = @leaving.partition(&:closed?)
         finished.each(&:dispose)
