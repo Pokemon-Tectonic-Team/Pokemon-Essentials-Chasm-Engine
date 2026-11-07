@@ -658,13 +658,8 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     Graphics.frame_reset if Graphics.frame_rate > 40
     iconFadeInCount = iconFadeInTime
     loop do
-        if $SpeakerNameWindow
-            pbPositionNearMsgWindow($SpeakerNameWindow, msgwindow, :left)
-            $SpeakerNameWindow.y += 12
-            $SpeakerNameWindow.x += 12
-            $SpeakerNameWindow.z = msgwindow.z + 1
-        end
         portraits&.anchor(PortraitAnchor.of(msgwindow))
+        positionSpeakerWindow(msgwindow, portraits&.speakerPlacement)
         if iconFadeInCount > 0
             fadeProgress = (iconFadeInTime - iconFadeInCount) / iconFadeInTime.to_f
             iconwindow.opacity = (fadeProgress * 255).ceil

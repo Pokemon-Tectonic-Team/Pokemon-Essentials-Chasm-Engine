@@ -22,6 +22,8 @@
 #===============================================================================
 PORTRAIT_FRAME_WIDTH    = 192
 PORTRAIT_FRAME_HEIGHT   = 256
+# A window draws its contents this far inside its edges
+PORTRAIT_WINDOW_PADDING = 16
 PORTRAIT_EDGE_MARGIN    = 8
 PORTRAIT_SLIDE_DISTANCE = 128
 PORTRAIT_SLIDE_SECONDS  = 0.15
@@ -49,8 +51,8 @@ end
 
 # Returns the [x, y] of a portrait window at rest. It stands on the anchor's
 # visible top edge, or hangs under its visible bottom edge when the message
-# window is at the top of the screen. The 16px window padding means the image
-# itself touches the edge.
+# window is at the top of the screen. Allowing for the window padding means
+# the image itself touches the edge.
 def portraitWindowPosition(side, portraitWidth, portraitHeight, anchor, screenWidth)
     x = case side
         when :left   then PORTRAIT_EDGE_MARGIN
@@ -58,9 +60,9 @@ def portraitWindowPosition(side, portraitWidth, portraitHeight, anchor, screenWi
         when :right  then screenWidth - portraitWidth - PORTRAIT_EDGE_MARGIN
         end
     y = if anchor.y <= 0
-            anchor.y + anchor.height - 16 - anchor.bottomInset
+            anchor.y + anchor.height - PORTRAIT_WINDOW_PADDING - anchor.bottomInset
         else
-            anchor.y - portraitHeight + 16 + anchor.topInset
+            anchor.y - portraitHeight + PORTRAIT_WINDOW_PADDING + anchor.topInset
         end
     return [x, y]
 end
@@ -124,6 +126,12 @@ class DialoguePortrait
         @restX, @restY = portraitWindowPosition(@side, @window.width, @window.height,
             anchor, Graphics.width)
         refresh
+    end
+
+    # Where the image stands once fully in, wherever the slide has it now.
+    def restImageRect
+        return Rect.new(@restX + PORTRAIT_WINDOW_PADDING, @restY + PORTRAIT_WINDOW_PADDING,
+            PORTRAIT_FRAME_WIDTH, PORTRAIT_FRAME_HEIGHT)
     end
 
     def update
@@ -194,6 +202,14 @@ class DialoguePortraitSet
     def speaker=(side)
         checkPortraitSide(side) unless side.nil?
         @speaker = side
+    end
+
+    # [side, restImageRect] of the speaker's portrait, or nil while no shown
+    # portrait is speaking.
+    def speakerPlacement
+        portrait = @shown[@speaker]
+        return nil unless portrait
+        return [@speaker, portrait.restImageRect]
     end
 
     def anchor(anchor)
