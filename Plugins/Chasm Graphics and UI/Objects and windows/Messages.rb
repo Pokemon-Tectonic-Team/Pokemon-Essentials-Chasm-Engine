@@ -234,7 +234,7 @@ class FaceWindowVX < SpriteWindow_Base
         super(0, 0, frameWidth + 32, frameHeight + 32)
         name, index = parseFaceSpec(face)
         facefile = resolveFaceFile(name)
-        contents&.dispose
+        contents.dispose
         @frameWidth = frameWidth
         @frameHeight = frameHeight
         @facebitmaptmp = AnimatedBitmap.new(facefile)
@@ -257,7 +257,7 @@ class FaceWindowVX < SpriteWindow_Base
 
     def dispose
         @facebitmaptmp.dispose
-        @facebitmap&.dispose
+        @facebitmap.dispose
         super
     end
 
@@ -664,7 +664,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
             $SpeakerNameWindow.x += 12
             $SpeakerNameWindow.z = msgwindow.z + 1
         end
-        portraits&.anchor(msgwindow)
+        portraits&.anchor(PortraitAnchor.of(msgwindow))
         if iconFadeInCount > 0
             fadeProgress = (iconFadeInTime - iconFadeInCount) / iconFadeInTime.to_f
             iconwindow.opacity = (fadeProgress * 255).ceil
@@ -753,7 +753,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 facewindow.viewport = msgwindow.viewport
                 facewindow.z        = msgwindow.z
             when "ml", "mc", "mr"
-                portraits&.show(PORTRAIT_SIDES[control], param, msgwindow)
+                portraits&.show(PORTRAIT_SIDES[control], param, PortraitAnchor.of(msgwindow))
             when "g"      # Display gold window
                 goldwindow&.dispose
                 goldwindow = pbDisplayGoldWindow(msgwindow)
@@ -861,7 +861,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
             pbUpdateSceneMap
             msgwindow.update
             facewindow&.update
-            portraits&.anchor(msgwindow)
+            portraits&.anchor(PortraitAnchor.of(msgwindow))
         end
     end
     facewindow&.dispose

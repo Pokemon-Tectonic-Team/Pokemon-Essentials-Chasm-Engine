@@ -4,7 +4,8 @@
 # the slide and fade animation of rainefall's rainefallPortraits.
 #
 # In a message, \ml[face], \mc[face] and \mr[face] show a large portrait on
-# the left, centre or right, standing on the message window. face is a file in
+# the left, centre or right, standing on the message window's visible frame
+# (below any transparent space its skin leaves). face is a file in
 # Graphics/Faces (or Graphics/Pictures), optionally with a frame index:
 # \ml[Val,2] shows the third 192x256 frame of a sheet laid out four to a row.
 #
@@ -25,17 +26,30 @@ PORTRAIT_FADE_SECONDS   = 0.1
 PORTRAIT_Z = 99_999
 PORTRAIT_SIDES = { "ml" => :left, "mc" => :centre, "mr" => :right }.freeze
 
-# Returns the [x, y] of a portrait window at rest. It stands on the message
-# window's top edge, or hangs under its bottom edge when the message window is
-# at the top of the screen. The 16px window padding means the image itself
-# touches the edge.
-def portraitWindowPosition(side, portraitWidth, portraitHeight, msgY, msgHeight, screenWidth)
+# Where portraits stand: a message window's position and size, and how far its
+# visible frame sits inside its top and bottom edges.
+PortraitAnchor = Struct.new(:y, :height, :topInset, :bottomInset) do
+    def self.of(window)
+        topInset, bottomInset = window.frameInsets
+        return new(window.y, window.height, topInset, bottomInset)
+    end
+end
+
+# Returns the [x, y] of a portrait window at rest. It stands on the anchor's
+# visible top edge, or hangs under its visible bottom edge when the message
+# window is at the top of the screen. The 16px window padding means the image
+# itself touches the edge.
+def portraitWindowPosition(side, portraitWidth, portraitHeight, anchor, screenWidth)
     x = case side
         when :left   then PORTRAIT_EDGE_MARGIN
         when :centre then (screenWidth - portraitWidth) / 2
         when :right  then screenWidth - portraitWidth - PORTRAIT_EDGE_MARGIN
         end
-    y = (msgY <= 0) ? msgY + msgHeight - 16 : msgY - portraitHeight + 16
+    y = if anchor.y <= 0
+            anchor.y + anchor.height - 16 - anchor.bottomInset
+        else
+            anchor.y - portraitHeight + 16 + anchor.topInset
+        end
     return [x, y]
 end
 
@@ -87,9 +101,9 @@ class DialoguePortrait
         return @target == 0 && @slide == 0 && @fade == 0
     end
 
-    def anchor(msgY, msgHeight)
+    def anchor(anchor)
         @restX, @restY = portraitWindowPosition(@side, @window.width, @window.height,
-            msgY, msgHeight, Graphics.width)
+            anchor, Graphics.width)
         refresh
     end
 
@@ -128,8 +142,8 @@ class DialoguePortraitSet
         @leaving = []
     end
 
-    # Shows face on side, standing on msgwindow. An empty face clears the side.
-    def show(side, face, msgwindow)
+    # Shows face on side, standing on anchor. An empty face clears the side.
+    def show(side, face, anchor)
         current = @shown[side]
         name, index = parseFaceSpec(face)
         if current && current.file == name
@@ -138,11 +152,11 @@ class DialoguePortraitSet
             leave(side)
             @shown[side] = DialoguePortrait.new(side, face) unless face.empty?
         end
-        anchor(msgwindow)
+        anchor(anchor)
     end
 
-    def anchor(msgwindow)
-        portraits.each { |portrait| portrait.anchor(msgwindow.y, msgwindow.height) }
+    def anchor(anchor)
+        portraits.each { |portrait| portrait.anchor(anchor) }
     end
 
     # inConversation is false once no event or message needs the portraits,
