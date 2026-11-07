@@ -10,7 +10,9 @@
     they extract correctly on Linux). All steps run by default; pass one or
     more -Only<Step> switches to isolate just those steps (e.g. to resume
     after a failure partway through, or to test one step). -DryRun logs
-    every action without touching the repo or filesystem.
+    every action without touching the repo or filesystem. The selected
+    steps' prerequisites (Game.exe, git, the diff-base tag, etc.) are all
+    checked before any step runs, dry run included.
 
     This script is intentionally dependency-free so any dev can run it with
     nothing but PowerShell. Publishing the built zips (Drive upload, etc.)
@@ -67,6 +69,12 @@ $patchZipName = "$GameTitle $major.$minor -- Patch $patch.zip"
 $installZipPath = Join-Path $OutputDir $installZipName
 $patchZipPath = Join-Path $OutputDir $patchZipName
 
+$settingsPath = Join-Path $RepoRoot "Plugins/_Settings/GameSettings.rb"
+$gameVersionPattern = 'GAME_VERSION\s*=\s*"[^"]*"'
+$devVersionPattern = 'DEV_VERSION\s*=\s*(true|false)'
+$gameExePath = Join-Path $RepoRoot "Game.exe"
+$installFilesListPath = Join-Path $BuildFilesDir "install_files.txt"
+
 $OnlySteps = @{
     VersionBump = $OnlyVersionBump
     Compile     = $OnlyCompile
@@ -84,8 +92,57 @@ function Test-StepEnabled([string]$Name) {
 function Write-Step($msg) { Write-Host "==> $msg" -ForegroundColor Cyan }
 function Write-DryRun($msg) { Write-Host "[DryRun] $msg" -ForegroundColor Yellow }
 
+function Assert-Prerequisites {
+    # Windows PowerShell 5.1 turns redirected native stderr into a terminating
+    # error under 'Stop'; a failing check must be collected, not thrown.
+    $ErrorActionPreference = 'Continue'
+    $problems = [System.Collections.Generic.List[string]]::new()
+    $needsGit = (Test-StepEnabled 'PatchZip') -or (Test-StepEnabled 'Tag')
+    $hasGit = [bool](Get-Command git -ErrorAction SilentlyContinue)
+    if ($needsGit -and -not $hasGit) { $problems.Add("git not found on PATH.") }
+
+    if (Test-StepEnabled 'VersionBump') {
+        if (-not (Test-Path $settingsPath)) {
+            $problems.Add("GameSettings.rb not found at $settingsPath")
+        }
+        else {
+            $content = Get-Content $settingsPath -Raw
+            if ($content -notmatch $gameVersionPattern -or $content -notmatch $devVersionPattern) {
+                $problems.Add("Could not find the GAME_VERSION and DEV_VERSION lines in $settingsPath")
+            }
+        }
+    }
+
+    if ((Test-StepEnabled 'Compile') -and -not (Test-Path $gameExePath)) {
+        $problems.Add("Game.exe not found at $gameExePath")
+    }
+
+    if (((Test-StepEnabled 'InstallZip') -or (Test-StepEnabled 'PatchZip')) -and -not (Test-Path $installFilesListPath)) {
+        $problems.Add("install_files.txt not found at $installFilesListPath")
+    }
+
+    if ((Test-StepEnabled 'PatchZip') -and $hasGit) {
+        $existingTags = @(git -C $RepoRoot tag -l | Where-Object { $_ -match '^v?\d+\.\d+\.\d+$' })
+        $baseVersion = if ($patch -gt 0) { "$major.$minor.0" } else { "$major.$($minor - 1).0" }
+        $script:baseTag = @("v$baseVersion", $baseVersion) | Where-Object { $existingTags -contains $_ } | Select-Object -First 1
+        if (-not $script:baseTag) {
+            $problems.Add("Diff-base tag 'v$baseVersion' (or '$baseVersion') for the patch zip not found. Existing tags: $(if ($existingTags) { $existingTags -join ', ' } else { '(none)' }). To build without a patch zip, pass -Only<Step> switches for the other steps.")
+        }
+    }
+
+    if ((Test-StepEnabled 'Tag') -and $hasGit) {
+        git -C $RepoRoot rev-parse --verify --quiet "refs/tags/$tagName" | Out-Null
+        if ($LASTEXITCODE -eq 0) { $problems.Add("Tag $tagName already exists.") }
+        if (@(git -C $RepoRoot remote) -notcontains 'origin') { $problems.Add("No 'origin' remote to push tag $tagName to.") }
+    }
+
+    if ($problems.Count -gt 0) {
+        foreach ($problem in $problems) { Write-Host "  - $problem" -ForegroundColor Red }
+        throw "Can't start the release: $($problems.Count) prerequisite(s) missing, listed above."
+    }
+}
+
 function Update-GameVersion {
-    $settingsPath = Join-Path $RepoRoot "Plugins/_Settings/GameSettings.rb"
     $devValue = if ($Dev) { 'true' } else { 'false' }
 
     if ($DryRun) {
@@ -93,8 +150,8 @@ function Update-GameVersion {
     }
     else {
         $content = Get-Content $settingsPath -Raw
-        $content = $content -replace 'GAME_VERSION\s*=\s*"[^"]*"', "GAME_VERSION = `"$Version`""
-        $content = $content -replace 'DEV_VERSION\s*=\s*(true|false)', "DEV_VERSION  = $devValue"
+        $content = $content -replace $gameVersionPattern, "GAME_VERSION = `"$Version`""
+        $content = $content -replace $devVersionPattern, "DEV_VERSION  = $devValue"
         Set-Content -Path $settingsPath -Value $content -NoNewline
     }
 }
@@ -104,13 +161,11 @@ function Invoke-GameCompile {
     if ($DryRun) { Write-DryRun "Would launch Game.exe debug compile and wait for manual confirmation"; return }
 
     Write-Step "Launching Game.exe debug compile..."
-    $exePath = Join-Path $RepoRoot "Game.exe"
-    if (-not (Test-Path $exePath)) { throw "Game.exe not found at $exePath" }
 
     # Game.exe's debug console is its own AllocConsole window; redirecting stdout from here
     # is unreliable (output never arrives, and it can crash the game with EBADF), so launch
     # it exactly like "Debug Game With PBS Compile.bat" does and confirm manually instead.
-    $proc = Start-Process -FilePath $exePath -ArgumentList "debug", "compile" -WorkingDirectory $RepoRoot -PassThru
+    $proc = Start-Process -FilePath $gameExePath -ArgumentList "debug", "compile" -WorkingDirectory $RepoRoot -PassThru
 
     Write-Host ""
     $response = Read-Host "Press Enter once the compile finished successfully (or type 'n' to abort)"
@@ -190,20 +245,9 @@ function New-ZipFromRelativePaths {
     }
 }
 
-function Get-DiffBaseTag {
-    $existingTags = git -C $RepoRoot tag -l | Where-Object { $_ -match '^v?\d+\.\d+\.\d+$' }
-    $baseVersion = if ($patch -gt 0) { "$major.$minor.0" } else { "$major.$($minor - 1).0" }
-    $candidate = @("v$baseVersion", $baseVersion) | Where-Object { $existingTags -contains $_ } | Select-Object -First 1
-    if (-not $candidate) {
-        throw "Diff-base tag 'v$baseVersion' (or '$baseVersion') not found. Existing tags: $(if ($existingTags) { $existingTags -join ', ' } else { '(none)' })"
-    }
-    return $candidate
-}
-
 function Get-PatchFileList {
     param([string]$BaseTag)
 
-    $installFilesListPath = Join-Path $BuildFilesDir "install_files.txt"
     $installEntries = Get-Content $installFilesListPath | Where-Object { $_.Trim() -ne '' }
     $installEntryPattern = ($installEntries | ForEach-Object { [regex]::Escape($_) }) -join '|'
     # Only files under an install_files.txt entry are shippable; without this filter,
@@ -227,12 +271,16 @@ function New-ReleaseTag {
     if ($DryRun) { Write-DryRun "Would create and push tag $tagName"; return }
     Write-Step "Tagging release: $tagName"
     git -C $RepoRoot tag $tagName
+    if ($LASTEXITCODE -ne 0) { throw "git tag $tagName failed (exit $LASTEXITCODE)" }
     git -C $RepoRoot push origin $tagName
+    if ($LASTEXITCODE -ne 0) { throw "Pushing tag $tagName to origin failed (exit $LASTEXITCODE). The tag exists locally; push it with 'git push origin $tagName' once fixed." }
 }
 
 # ---- main ----
 
 Write-Step "Releasing $GameTitle $Version (tag $tagName)$(if ($Dev) { ' [DEV]' })"
+
+Assert-Prerequisites
 
 if (-not (Test-StepEnabled 'VersionBump')) { Write-Step "Skipping version bump" } else { Update-GameVersion }
 
@@ -244,7 +292,6 @@ if (-not (Test-StepEnabled 'InstallZip')) {
     Write-Step "Skipping install zip"
 }
 else {
-    $installFilesListPath = Join-Path $BuildFilesDir "install_files.txt"
     $installPaths = Get-Content $installFilesListPath | Where-Object { $_.Trim() -ne '' }
     if ($DryRun) {
         Write-DryRun "Would create install zip '$installZipName' from $($installPaths.Count) entries in install_files.txt"
@@ -259,20 +306,13 @@ if (-not (Test-StepEnabled 'PatchZip')) {
     Write-Step "Skipping patch zip"
 }
 else {
-    try {
-        $baseTag = Get-DiffBaseTag
-        if ($DryRun) {
-            $patchFiles = Get-PatchFileList -BaseTag $baseTag
-            Write-DryRun "Would create patch zip '$patchZipName' diffing against $baseTag ($($patchFiles.Count) entries, Plugins/ and Data/ included wholesale)"
-        }
-        else {
-            $patchFiles = Get-PatchFileList -BaseTag $baseTag
-            Write-Step "Building patch zip: $patchZipName (diff base: $baseTag)"
-            New-ZipFromRelativePaths -Paths $patchFiles -OutputZipPath $patchZipPath
-        }
+    $patchFiles = Get-PatchFileList -BaseTag $baseTag
+    if ($DryRun) {
+        Write-DryRun "Would create patch zip '$patchZipName' diffing against $baseTag ($($patchFiles.Count) entries, Plugins/ and Data/ included wholesale)"
     }
-    catch {
-        Write-Warning "Skipping patch zip: $_"
+    else {
+        Write-Step "Building patch zip: $patchZipName (diff base: $baseTag)"
+        New-ZipFromRelativePaths -Paths $patchFiles -OutputZipPath $patchZipPath
     }
 }
 

@@ -16,6 +16,9 @@
     already uploaded in a prior run), or one or more -Skip<Step> switches to
     run everything except those (e.g. to publish while a step's credentials
     aren't set up yet). -Only<Step> takes precedence if both are given.
+    The selected steps' prerequisites (tools on PATH, the zips, credentials,
+    the release tag, etc.) are all checked before any step runs, dry run
+    included.
 
     -DryRun makes every step perform a real, read-only verification instead
     of just logging intent -- a missing tool, bad credentials, or a wrong
@@ -152,6 +155,9 @@ $DataRepoVersionFile = 'src/loadTectonicRepoData.ts'
 
 $installZipPath = Join-Path $OutputDir "$GameTitle $Version.zip"
 $patchZipPath = Join-Path $OutputDir "$GameTitle $major.$minor -- Patch $patch.zip"
+$zipsToPublish = @(@($installZipPath, $patchZipPath) | Where-Object { Test-Path $_ })
+
+$deployScript = Join-Path $RepoRoot "deploy_cableclub.ps1"
 
 $OnlySteps = @{
     Upload        = $OnlyUpload
@@ -175,22 +181,62 @@ function Test-StepEnabled([string]$Name) {
 function Write-Step($msg) { Write-Host "==> $msg" -ForegroundColor Cyan }
 function Write-DryRun($msg) { Write-Host "[DryRun] $msg" -ForegroundColor Yellow }
 
-function Get-ZipsToPublish {
-    $zips = @($installZipPath, $patchZipPath) | Where-Object { Test-Path $_ }
-    if (-not $zips) {
-        throw "No release zips found in $OutputDir matching version $Version. Run Zip-Release.ps1 first."
+function Assert-Prerequisites {
+    # Windows PowerShell 5.1 turns redirected native stderr into a terminating
+    # error under 'Stop'; a failing check must be collected, not thrown.
+    $ErrorActionPreference = 'Continue'
+    $problems = [System.Collections.Generic.List[string]]::new()
+    function Test-Tool([string]$Name, [string]$Hint) {
+        if (Get-Command $Name -ErrorAction SilentlyContinue) { return $true }
+        $problems.Add("$Name not found on PATH. $Hint")
+        return $false
     }
-    return $zips
+
+    if (Test-StepEnabled 'Upload') {
+        if ($zipsToPublish.Count -eq 0) {
+            $problems.Add("No release zips found in $OutputDir matching version $Version. Run Zip-Release.ps1 first.")
+        }
+        $rcloneSetup = "run 'rclone config' to create a remote named '$RcloneRemote' authorized against your Google account."
+        if (Test-Tool 'rclone' "Install it and $rcloneSetup") {
+            if (@(& rclone listremotes) -notcontains "${RcloneRemote}:") {
+                $problems.Add("rclone has no remote named '$RcloneRemote'. To fix, $rcloneSetup")
+            }
+        }
+    }
+
+    if ((Test-StepEnabled 'VersionList') -and -not $AzureBlobSasUrl) {
+        $problems.Add("No Azure blob SAS URL given. Pass -AzureBlobSasUrl, set `$env:VERSION_LIST_SAS_URL, or add VERSION_LIST_SAS_URL to Build files/.env.")
+    }
+
+    if (Test-StepEnabled 'CableClubLive') {
+        if (-not (Test-Path $deployScript)) { $problems.Add("deploy_cableclub.ps1 not found at $deployScript") }
+        Test-Tool 'ssh' "Install the Windows OpenSSH client." | Out-Null
+        Test-Tool 'scp' "Install the Windows OpenSSH client." | Out-Null
+    }
+
+    if (Test-StepEnabled 'ToolsWebsite') {
+        if (Test-Tool 'gh' "Install it and run 'gh auth login'.") {
+            & gh auth status *> $null
+            if ($LASTEXITCODE -ne 0) { $problems.Add("gh is not logged in. Run 'gh auth login'.") }
+        }
+        if (Test-Tool 'git' "Install Git for Windows.") {
+            $script:tagCommit = git -C $RepoRoot rev-parse --verify --quiet "$tagName^{commit}"
+            if ($LASTEXITCODE -ne 0 -or -not $script:tagCommit) {
+                $problems.Add("Tag '$tagName' not found in $RepoRoot. Zip-Release.ps1's Tag step creates it.")
+            }
+        }
+    }
+
+    if ($problems.Count -gt 0) {
+        foreach ($problem in $problems) { Write-Host "  - $problem" -ForegroundColor Red }
+        throw "Can't start publishing: $($problems.Count) prerequisite(s) missing, listed above."
+    }
 }
 
 function Publish-ToDrive {
     if (-not (Test-StepEnabled 'Upload')) { Write-Step "Skipping Drive upload"; return }
 
-    if (-not (Get-Command rclone -ErrorAction SilentlyContinue)) {
-        throw "rclone not found on PATH. Install it and run 'rclone config' to create a remote named '$RcloneRemote' authorized against your Google account."
-    }
-
-    foreach ($zipPath in (Get-ZipsToPublish)) {
+    foreach ($zipPath in $zipsToPublish) {
         $zipName = Split-Path -Leaf $zipPath
         Write-Step "$(if ($DryRun) { '[DryRun] ' })Uploading $zipName to Drive folder $DriveFolderId..."
         $rcloneArgs = @('copy', $zipPath, "${RcloneRemote}:", '--drive-root-folder-id', $DriveFolderId, '--progress')
@@ -202,7 +248,6 @@ function Publish-ToDrive {
 
 function Publish-VersionList {
     if (-not (Test-StepEnabled 'VersionList')) { Write-Step "Skipping version-list update"; return }
-    if (-not $AzureBlobSasUrl) { throw "No Azure blob SAS URL given. Pass -AzureBlobSasUrl, set `$env:VERSION_LIST_SAS_URL, or add VERSION_LIST_SAS_URL to Build files/.env." }
 
     $currentBody = (Invoke-WebRequest -Uri $VersionListUrl -UseBasicParsing).Content
     $lines = @($currentBody -split "`r`n" | Where-Object { $_ -ne '' })
@@ -227,9 +272,6 @@ function Publish-VersionList {
 function Publish-CableClubLive {
     if (-not (Test-StepEnabled 'CableClubLive')) { Write-Step "Skipping Cable Club live deploy"; return }
 
-    $deployScript = Join-Path $RepoRoot "deploy_cableclub.ps1"
-    if (-not (Test-Path $deployScript)) { throw "deploy_cableclub.ps1 not found at $deployScript" }
-
     Push-Location $RepoRoot
     try {
         if ($DryRun) {
@@ -249,11 +291,7 @@ function Publish-CableClubLive {
 }
 
 function Update-DataVersionPin {
-    $commitSha = git -C $RepoRoot rev-parse "$tagName^{commit}" 2>$null
-    if ($LASTEXITCODE -ne 0 -or -not $commitSha) {
-        throw "Could not resolve tag '$tagName' to a commit in $RepoRoot -- has it been created yet? (Zip-Release.ps1's Tag step creates it)"
-    }
-    $commitSha = $commitSha.Trim()
+    $commitSha = $tagCommit.Trim()
 
     $fileJson = & gh api "repos/$DataRepo/contents/$DataRepoVersionFile" | ConvertFrom-Json
     if ($LASTEXITCODE -ne 0) { throw "Failed to read $DataRepoVersionFile from $DataRepo (exit $LASTEXITCODE)" }
@@ -320,10 +358,6 @@ function Wait-ForWorkflowRun([string]$Workflow, [string]$Repo, [DateTimeOffset]$
 function Publish-ToolsWebsite {
     if (-not (Test-StepEnabled 'ToolsWebsite')) { Write-Step "Skipping tools-website triggers"; return }
 
-    if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
-        throw "gh CLI not found on PATH. Install it and run 'gh auth login'."
-    }
-
     Update-DataVersionPin
 
     for ($i = 0; $i -lt $ToolsWebsiteTargets.Count; $i++) {
@@ -353,6 +387,8 @@ function Publish-ToolsWebsite {
 }
 
 # ---- main ----
+
+Assert-Prerequisites
 
 Publish-ToDrive
 Publish-VersionList
