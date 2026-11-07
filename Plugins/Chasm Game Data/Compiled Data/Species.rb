@@ -433,15 +433,13 @@ module GameData
 
         def default_catch_rate
             rate_dictionary = DEFAULT_CATCH_RATES
-            stage_cap = 2 # 4-stagers use the same list as 3-stagers
             if isUltraBeast?
                 rate_dictionary = UB_CATCH_RATES
-                stage_cap = 1 # UBs are assumed not to evolve except Poipole, once. If this proves untrue, the index stays in-bounds
             elsif isLegendary?
                 rate_dictionary = LEGENDARY_CATCH_RATES
             end
-            capped_stage = [max_stage, stage_cap].min
-            return rate_dictionary[capped_stage][evo_stage] || 255 # fallback should only occur if evo_stave > capped_stage, and not for Wornet/Papellumen
+            capped_stage = [max_stage, rate_dictionary.length - 1].min
+            return rate_dictionary[capped_stage][evo_stage] || 255 # fallback should only occur if evo_stage > capped_stage, and not for Wornet/Papellumen
         end
 
         def catch_rate
