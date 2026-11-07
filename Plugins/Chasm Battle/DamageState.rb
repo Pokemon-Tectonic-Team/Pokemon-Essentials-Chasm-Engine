@@ -36,6 +36,7 @@ class PokeBattle_DamageState
 	attr_accessor :bubbleBarrier   		# How much damage was prevented by bubble barrier
 	attr_accessor :thiefsDiversion 		# Thief's Diversion ability activated
 	attr_accessor :trapped 						# For Bottom Feeder
+    attr_accessor :recalcTypeMod	# Recalculate type effectiveness at the start of the next hit (if Inure expired, etc.)
 
 	def initialize; reset; end
 
@@ -55,7 +56,7 @@ class PokeBattle_DamageState
 		@partiallyProtected	= false
 		@fear								= false
 		@trapped			= false
-		resetPerHit
+        @recalcTypeMod	= false
 	end
 
 	def resetPerHit

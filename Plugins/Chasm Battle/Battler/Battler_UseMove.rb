@@ -898,13 +898,6 @@ class PokeBattle_Battler
         if user.effectActive?(:Blindness) && move.damagingMove?
             @battle.pbDisplay(_INTL("{1} is blinded, and partially misses!", user.pbThis))
         end
-        #Inure decrement
-        if move.damagingMove?
-            targets.each do |t|
-                next if t.damageState.unaffected
-                t.tickDownAndProc(:Inured)
-            end
-        end
         # Messages about missed target(s) (relevant for multi-target moves only)
         unless move.pbRepeatHit?
             targets.each do |b|
@@ -1102,6 +1095,14 @@ class PokeBattle_Battler
         end
         targets.each { |b| b.pbFaint if b && b.fainted? }
         user.pbFaint if user.fainted?
+        # Inure decrement
+        if move.damagingMove?
+            targets.each do |b|
+                next if b.damageState.unaffected || b.fainted?
+                next unless b.effectActive?(:Inured)
+                b.damageState.recalcTypeMod = true unless b.tickDownAndProc(:Inured)
+            end
+        end
         # Dragon Darts' second half of attack
         if move.pbRepeatHit?(hitNum) && all_targets.any? { |b| !b.fainted? && !b.damageState.unaffected }
             pbProcessMoveHit(move, user, all_targets, hitNum + 1, skipAccuracyCheck, fastHitAnimation)
