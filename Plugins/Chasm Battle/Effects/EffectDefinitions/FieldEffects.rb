@@ -209,7 +209,7 @@ GameData::BattleEffect.register_effect(:Field, {
         # AI learns of the battler's possible insight room move
         # It either has it from insight room or has it already
         battle.eachBattler do |b|
-            b.aiSeesMove(b.getHighestLearnsetMoveID)
+            b.aiSeesMove(b.getInsightRoomMove)
         end
     end,
     :disable_proc => proc do |battle, _battler|
@@ -297,7 +297,7 @@ GameData::BattleEffect.register_effect(:Field, {
     :eor_proc => proc do |battle, value|
         battle.eachBattler do |b|
             next unless b.canHeal?
-            b.applyFractionalHealing(1.0/8.0, customMessage: _INTL("{1} was healed by the field of flowers!",b.pbThis))
+            b.applyFractionalHealing(1.0 / 8.0, customMessage: _INTL("{1} was healed by the field of flowers!", b.pbThis))
         end
     end,
 })
@@ -310,11 +310,10 @@ GameData::BattleEffect.register_effect(:Field, {
         slumberingShieldParties = []
         [battle.party1, battle.party2].each_with_index do |party, partyIndex|
             party.each do |pkmn|
-                if pkmn.hasAbility?(:SLUMBERINGSHIELD)
-                    slumberingShieldParties.push(partyIndex)
-                    battle.pbShowPokemonAbilitySplash(pkmn, partyIndex, :SLUMBERINGSHIELD)
-                    break
-                end
+                next unless pkmn.hasAbility?(:SLUMBERINGSHIELD)
+                slumberingShieldParties.push(partyIndex)
+                battle.pbShowPokemonAbilitySplash(pkmn, partyIndex, :SLUMBERINGSHIELD)
+                break
             end
         end
         if slumberingShieldParties.length <= 1
@@ -336,11 +335,10 @@ GameData::BattleEffect.register_effect(:Field, {
         slumberingSwordParties = []
         [battle.party1, battle.party2].each_with_index do |party, partyIndex|
             party.each do |pkmn|
-                if pkmn.hasAbility?(:SLUMBERINGSWORD)
-                    slumberingSwordParties.push(partyIndex)
-                    battle.pbShowPokemonAbilitySplash(pkmn, partyIndex, :SLUMBERINGSWORD)
-                    break
-                end
+                next unless pkmn.hasAbility?(:SLUMBERINGSWORD)
+                slumberingSwordParties.push(partyIndex)
+                battle.pbShowPokemonAbilitySplash(pkmn, partyIndex, :SLUMBERINGSWORD)
+                break
             end
         end
         if slumberingSwordParties.length <= 1
