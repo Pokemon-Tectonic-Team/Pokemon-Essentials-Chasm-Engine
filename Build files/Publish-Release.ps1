@@ -217,10 +217,25 @@ function Assert-Prerequisites {
     if (Test-StepEnabled 'ToolsWebsite') {
         if (Test-Tool 'gh' "Install it and run 'gh auth login'.") {
             & gh auth status *> $null
-            if ($LASTEXITCODE -ne 0) { $problems.Add("gh is not logged in. Run 'gh auth login'.") }
+            if ($LASTEXITCODE -ne 0) {
+                $problems.Add("gh is not logged in. Run 'gh auth login'.")
+            }
+            else {
+                # Pinning PUBLIC_VERSION_COMMIT and triggering workflows both need write access.
+                $repos = @($DataRepo) + @($ToolsWebsiteTargets | ForEach-Object { $_.Repo }) | Select-Object -Unique
+                foreach ($repo in $repos) {
+                    $canPush = & gh api "repos/$repo" --jq .permissions.push 2>$null
+                    if ($LASTEXITCODE -ne 0) {
+                        $problems.Add("Could not read $repo with gh. Check the repo name and that your GitHub account can see it.")
+                    }
+                    elseif ("$canPush".Trim() -ne 'true') {
+                        $problems.Add("Your GitHub account has no write access to $repo, which the tools-website step needs.")
+                    }
+                }
+            }
         }
         if (Test-Tool 'git' "Install Git for Windows.") {
-            $script:tagCommit = git -C $RepoRoot rev-parse --verify --quiet "$tagName^{commit}"
+            $script:tagCommit = git -C $RepoRoot rev-list -n 1 "refs/tags/$tagName" 2>$null
             if ($LASTEXITCODE -ne 0 -or -not $script:tagCommit) {
                 $problems.Add("Tag '$tagName' not found in $RepoRoot. Zip-Release.ps1's Tag step creates it.")
             }
