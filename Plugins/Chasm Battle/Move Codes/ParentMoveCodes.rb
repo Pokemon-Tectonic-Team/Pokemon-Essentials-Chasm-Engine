@@ -947,7 +947,7 @@ class PokeBattle_PledgeMove < PokeBattle_Move
             end
         when :Rainbow # Fire + Water
             unless user.pbOpposingSide.effectActive?(:Rainbow)
-                user.pbOpposingSide.applyEffect(:Rainbow, applyEffectDurationModifiers(4, user))
+                user.pbOwnSide.applyEffect(:Rainbow, applyEffectDurationModifiers(4, user))
                 animName = user.opposes? ? "RainbowOpp" : "Rainbow"
             end
         when :Swamp # Water + Grass

@@ -196,6 +196,7 @@ def battleKeywordsImportantCaseSensitive
         "Rest",
         "Gust",
         "Snore",
+        "Rainbow",
     ]
 end
 
@@ -205,6 +206,7 @@ def battleKeywordsUnimportant
         "doubles",
         "double",
         "doubled",
+        "doubling",
         "tripled",
         "three times",
         "four times",

@@ -11,7 +11,7 @@ def pbSwapAbility(pkmn, scene = nil)
     abil2 = i[0] if i[1] == 1
   end
 
-  if abil1.nil? || abil2.nil? || pkmn.hasHiddenAbility? || pkmn.isSpecies?(:ZYGARDE)
+  if abil1.nil? || abil2.nil? || pkmn.hasHiddenAbility?
     pbSceneDefaultDisplay(_INTL("It won't have any effect."), scene)
     return false
   end
@@ -39,6 +39,18 @@ def pbSwapAbility(pkmn, scene = nil)
     return true
   end
   return false
+end
+
+def pbCanSwapAbility?(pkmn)
+    abils = pkmn.getAbilityList
+    abil1 = nil; abil2 = nil
+    for i in abils
+      abil1 = i[0] if i[1] == 0
+      abil2 = i[0] if i[1] == 1
+    end
+
+    return false if abil1.nil? || abil2.nil? || pkmn.hasHiddenAbility?
+    return true
 end
 
 ItemHandlers::UseOnPokemon.add(:ABILITYCAPSULE,proc { |item,pkmn,scene|

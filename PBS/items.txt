@@ -591,7 +591,7 @@ NamePlural = Choice Bands
 Pocket = 12
 Price = 8000
 Flags = Clothing,ChoiceLocking
-Description = Held item which ups Attack by 40%, but allows the use of only one move.
+Description = Held item which boosts Attack by 40%, but allows the use of only one move.
 #-------------------------------
 [CHOICESPECS]
 Name = Choice Specs
@@ -599,7 +599,7 @@ NamePlural = Choice Specs
 Pocket = 12
 Price = 8000
 Flags = Clothing,ChoiceLocking
-Description = Held item which ups Sp. Atk by 40%, but allows the use of only one move.
+Description = Held item which boosts Sp. Atk by 40%, but allows the use of only one move.
 #-------------------------------
 [CHOICESCARF]
 Name = Choice Scarf
@@ -607,7 +607,7 @@ NamePlural = Choice Scarves
 Pocket = 12
 Price = 8000
 Flags = Clothing,ChoiceLocking
-Description = Held item which boosts Speed by 40% but allows the use of only one move.
+Description = Held item which boosts Speed by 40%, but allows the use of only one move.
 #-------------------------------
 [LUMBERAXE]
 Name = Lumber Axe
@@ -866,7 +866,7 @@ NamePlural = Muscle Bands
 Pocket = 12
 Price = 4000
 Flags = Clothing
-Description = A held item. It is a headband that boosts the power of physical moves by 15%.
+Description = A held item. It is a headband that boosts Attack by 15%.
 #-------------------------------
 [WISEGLASSES]
 Name = Wise Glasses
@@ -874,7 +874,7 @@ NamePlural = Wise Glasses
 Pocket = 12
 Price = 4000
 Flags = Clothing
-Description = A held item. It is a thick pair of glasses that boosts the power of special moves by 15%.
+Description = A held item. It is a thick pair of glasses that boosts Special Attack by 15%.
 #-------------------------------
 [SEVENLEAGUEBOOTS]
 Name = 7-League Boots

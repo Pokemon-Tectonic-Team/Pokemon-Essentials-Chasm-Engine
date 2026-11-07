@@ -669,6 +669,23 @@ immuneTypeRealName))
     #=============================================================================
     # Generalised status displays
     #=============================================================================
+    def pbDisplayPoisonWorsenedMessage(newPoisonCount, showWorsenedMessage = false)
+        showMessages = $Options.status_effect_messages.zero?
+        if newPoisonCount % POISON_DOUBLING_TURNS == 0
+            if showMessages
+                if newPoisonCount == POISON_DOUBLING_TURNS
+                    @battle.pbDisplaySlower(_INTL("{1}'s poison worsened! The damage will be doubled until it leaves the field.", pbThis))
+                else
+                    @battle.pbDisplaySlower(_INTL("{1}'s poison doubled yet again!", pbThis))
+                end
+            else
+                @battle.pbDisplay(_INTL("{1}'s poison worsened!", pbThis))
+            end
+        elsif showWorsenedMessage
+            @battle.pbDisplay(_INTL("{1}'s poison worsened!", pbThis))
+        end
+    end
+
     def pbContinueStatus(statusToContinue = nil)
         getStatuses.each do |oneStatus|
             next if !statusToContinue.nil? && oneStatus != statusToContinue
@@ -698,17 +715,7 @@ immuneTypeRealName))
                 unless fainted?
                     increaseStatusCount(:POISON)
                     newPoisonCount = getStatusCount(:POISON)
-                    if newPoisonCount % POISON_DOUBLING_TURNS == 0
-                        if showMessages
-                            if newPoisonCount == POISON_DOUBLING_TURNS
-                                @battle.pbDisplaySlower(_INTL("{1}'s poison worsened! The damage will be doubled until it leaves the field.", pbThis))
-                            else
-                                @battle.pbDisplaySlower(_INTL("{1}'s poison doubled yet again!", pbThis))
-                            end
-                        else
-                            @battle.pbDisplay(_INTL("{1}'s poison worsened!", pbThis))
-                        end
-                    end
+                    pbDisplayPoisonWorsenedMessage(newPoisonCount)
                 end
             when :BURN
                 if showMessages

@@ -765,7 +765,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:HITANDRUN,
   proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
-      next unless targets.any? { |b| b.knockedBelowHalf? }
+      next unless targets.any? { |b| !b.damageState.unaffected && b.damageState.totalCalcedDamage < b.totalhp / 2 }
       user.applyEffect(:HitAndRunSwitch)
   }
 )
@@ -879,6 +879,21 @@ BattleHandlers::UserAbilityEndOfMove.add(:MARIACHI,
       elsif move.soundMove?
         user.tryRaiseStat(:SPECIAL_ATTACK, user, increment: 1, ability: ability)
       end
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:PROBEWEAKNESS,
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
+    next if user.dummy
+    next unless move.damagingMove?
+    targets.each do |b|
+      next if b.damageState.unaffected
+      next if b.damageState.critical
+      next unless move.allowedToRandomCrit?(user, b)
+      user.incrementEffect(:ProbeWeakness)
+      battle.pbDisplay(_INTL("{1} sharpens its instincts, doubling its critical hit chance!", user.pbThis))
+      break
+    end
   }
 )
 
