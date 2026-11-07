@@ -13,7 +13,7 @@ def pbMapInterpreterRunning?
 end
 
 def pbRefreshSceneMap
-    if $scene&.is_a?(Scene_Map)
+    if $scene.is_a?(Scene_Map)
         if $scene.respond_to?("miniupdate")
             $scene.miniupdate
         else
@@ -23,7 +23,7 @@ def pbRefreshSceneMap
 end
 
 def pbUpdateSceneMap
-    if $scene&.is_a?(Scene_Map) && !pbIsFaded?
+    if $scene.is_a?(Scene_Map) && !pbIsFaded?
         if $scene.respond_to?("miniupdate")
             $scene.miniupdate
         else
@@ -552,7 +552,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
         break if text == last_text
     end
     colortag = ""
-    if $game_system&.respond_to?("message_frame") &&
+    if $game_system.respond_to?("message_frame") &&
        $game_system.message_frame != 0
         colortag = getSkinColor(msgwindow.windowskin, 0, true)
     else
@@ -731,7 +731,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                     end
                 end
             when "p"
-                facewindow.dispose if facewindow
+                facewindow&.dispose
                 partyMember = $Trainer.party[param.to_i]
                 if partyMember
                     partyMemberBitmap = GameData::Species.sprite_bitmap_from_pokemon(partyMember)
@@ -765,7 +765,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 msgwindow.x	= 60
                 msgwindow.width	-= 60
             when "ff"
-                facewindow.dispose if facewindow
+                facewindow&.dispose
                 facewindow = FaceWindowVX.new(param)
                 pbPositionNearMsgWindow(facewindow, msgwindow, :left)
                 facewindow.viewport = msgwindow.viewport
@@ -776,13 +776,13 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 portraits[side] = pbCreatePortraitWindow(param, msgwindow)
                 pbPositionPortraitWindows(portraits, msgwindow)
             when "g"      # Display gold window
-                goldwindow.dispose if goldwindow
+                goldwindow&.dispose
                 goldwindow = pbDisplayGoldWindow(msgwindow)
             when "cn"     # Display coins window
-                coinwindow.dispose if coinwindow
+                coinwindow&.dispose
                 coinwindow = pbDisplayCoinsWindow(msgwindow, goldwindow)
             when "pt"     # Display battle points window
-                battlepointswindow.dispose if battlepointswindow
+                battlepointswindow&.dispose
                 battlepointswindow = pbDisplayBattlePointsWindow(msgwindow)
             when "wu" # Window Up
                 msgwindow.y = 0
@@ -836,8 +836,8 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
         break unless letterbyletter
         Graphics.update
         Input.update
-        facewindow.update if facewindow
-        iconwindow.update if iconwindow
+        facewindow&.update
+        iconwindow&.update
         portraits.each_value(&:update)
         if autoresume && msgwindow.waitcount == 0
             msgwindow.resume if msgwindow.busy?
@@ -863,14 +863,14 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
         $game_map.need_refresh = true if $game_map
     end
     ret = commandProc.call(msgwindow) if commandProc
-    msgback.dispose if msgback
-    goldwindow.dispose if goldwindow
-    coinwindow.dispose if coinwindow
-    battlepointswindow.dispose if battlepointswindow
+    msgback&.dispose
+    goldwindow&.dispose
+    coinwindow&.dispose
+    battlepointswindow&.dispose
     if haveSpecialClose
         pbSEPlay(pbStringToAudioFile(specialCloseSE))
         atTop = (msgwindow.y == 0)
-        for i in 0..signWaitTime
+        (0..signWaitTime).each do |i|
             if atTop
                 msgwindow.y = -msgwindow.height * i / signWaitTime
                 facewindow.y = -facewindow.height * i / signWaitTime if facewindow
@@ -882,12 +882,12 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
             Input.update
             pbUpdateSceneMap
             msgwindow.update
-            facewindow.update if facewindow
+            facewindow&.update
             pbPositionPortraitWindows(portraits, msgwindow)
         end
     end
-    facewindow.dispose if facewindow
-    iconwindow.dispose if iconwindow
+    facewindow&.dispose
+    iconwindow&.dispose
     portraits.each_value(&:dispose)
     $SpeakerNameWindow.visible = false if $SpeakerNameWindow
     return ret
@@ -974,7 +974,7 @@ def pbShowCommands(msgwindow, commands = nil, cmdIfCancel = 0, defaultCmd = 0)
         Graphics.update
         Input.update
         cmdwindow.update
-        msgwindow.update if msgwindow
+        msgwindow&.update
         yield if block_given?
         if Input.trigger?(Input::BACK)
             if cmdIfCancel > 0
@@ -1052,7 +1052,7 @@ def pbMessageWaitForInput(msgwindow, frames, showPause = false)
     frames.times do
         Graphics.update
         Input.update
-        msgwindow.update if msgwindow
+        msgwindow&.update
         pbUpdateSceneMap
         break if Input.trigger?(Input::USE) || Input.trigger?(Input::BACK)
         yield if block_given?
@@ -1081,7 +1081,7 @@ def pbFreeText(msgwindow, currenttext, passwordbox, maxlength, width = 240)
             break
         end
         window.update
-        msgwindow.update if msgwindow
+        msgwindow&.update
         yield if block_given?
     end
     Input.text_input = false
