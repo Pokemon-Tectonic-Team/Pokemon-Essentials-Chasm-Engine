@@ -604,6 +604,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     end
     haveSpecialClose = false
     specialCloseSE = ""
+    startSE = nil
     iconFadeInTime = -1
     (0...controls.length).each do |i|
         control = controls[i][0]
