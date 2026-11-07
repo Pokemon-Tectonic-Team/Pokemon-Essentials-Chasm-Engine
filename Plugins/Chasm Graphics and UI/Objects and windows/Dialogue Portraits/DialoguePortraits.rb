@@ -14,11 +14,12 @@
 # changes, or the same code with no face (\ml[]) clears it. Giving a side
 # another frame of the same file swaps it in place, for expression changes; a
 # different file slides the old portrait out as the new one slides in.
-# Portraits only show on the map.
+# Portraits only show on the map. PortraitCommands.rb does the same from an
+# event's Script command.
 #
-# The side last given a face is the speaker. While two or more portraits are
-# up, every one but the speaker's is dimmed. Clearing the speaker's side leaves
-# nobody speaking, and nothing is dimmed.
+# The side last given a face is the speaker, and every portrait but the
+# speaker's is dimmed. Clearing the speaker's side leaves nobody speaking, and
+# nothing is dimmed.
 #===============================================================================
 PORTRAIT_FRAME_WIDTH    = 192
 PORTRAIT_FRAME_HEIGHT   = 256
@@ -49,6 +50,18 @@ PortraitAnchor = Struct.new(:y, :height, :topInset, :bottomInset) do
     end
 end
 
+# The anchor outside a message: where the next message window would show, in
+# the speech skin.
+def defaultPortraitAnchor
+    window = pbCreateStatusWindow
+    begin
+        pbRepositionMessageWindow(window, pbDefaultMessageLines)
+        return PortraitAnchor.of(window)
+    ensure
+        window.dispose
+    end
+end
+
 # Returns the [x, y] of a portrait window at rest. It stands on the anchor's
 # visible top edge, or hangs under its visible bottom edge when the message
 # window is at the top of the screen. Allowing for the window padding means
@@ -57,7 +70,7 @@ def portraitWindowPosition(side, portraitWidth, portraitHeight, anchor, screenWi
     x = case side
         when :left   then PORTRAIT_EDGE_MARGIN
         when :centre then (screenWidth - portraitWidth) / 2
-        when :right  then screenWidth - portraitWidth - PORTRAIT_EDGE_MARGIN
+        else screenWidth - portraitWidth - PORTRAIT_EDGE_MARGIN
         end
     y = if anchor.y <= 0
             anchor.y + anchor.height - PORTRAIT_WINDOW_PADDING - anchor.bottomInset
@@ -119,7 +132,12 @@ class DialoguePortrait
     end
 
     def closed?
-        return @target == 0 && @slide == 0 && @fade == 0
+        return @target == 0 && settled?
+    end
+
+    # Whether slide, fade and dim have all reached their targets.
+    def settled?
+        return @slide == @target && @fade == @target && @dim == @dimTarget
     end
 
     def anchor(anchor)
@@ -191,17 +209,39 @@ class DialoguePortraitSet
         if current && current.file == name
             current.frame = index
         else
-            leave(side)
+            hide(side)
             @shown[side] = DialoguePortrait.new(side, face) unless face.empty?
         end
         @speaker = side unless face.empty?
+        refreshDims
         anchor(anchor)
     end
 
-    # side is one of PORTRAIT_SIDES, or nil for nobody.
+    # Sends side's portrait out, if it has one.
+    def hide(side)
+        @speaker = nil if side == @speaker
+        portrait = @shown.delete(side)
+        return unless portrait
+        portrait.close
+        @leaving.push(portrait)
+        refreshDims
+    end
+
+    def hideAll
+        @shown.each_key { |side| hide(side) }
+    end
+
+    # side is one of PORTRAIT_SIDES, or nil for nobody. A side with no
+    # portrait is someone off screen, so every portrait shown dims.
     def speaker=(side)
         checkPortraitSide(side) unless side.nil?
         @speaker = side
+        refreshDims
+    end
+
+    # Whether any portrait is still moving, fading, dimming or leaving.
+    def animating?
+        return !@leaving.empty? || !@shown.values.all?(&:settled?)
     end
 
     # [side, restImageRect] of the speaker's portrait, or nil while no shown
@@ -219,9 +259,7 @@ class DialoguePortraitSet
     # inConversation is false once no event or message needs the portraits,
     # which sends them all out.
     def update(inConversation)
-        @shown.each_key { |side| leave(side) } unless inConversation
-        dimOthers = !@speaker.nil? && @shown.length > 1
-        @shown.each { |side, portrait| portrait.dimmed = dimOthers && side != @speaker }
+        hideAll unless inConversation
         portraits.each(&:update)
         finished, @leaving = @leaving.partition(&:closed?)
         finished.each(&:dispose)
@@ -239,11 +277,8 @@ class DialoguePortraitSet
         return @shown.values + @leaving
     end
 
-    def leave(side)
-        @speaker = nil if side == @speaker
-        portrait = @shown.delete(side)
-        return unless portrait
-        portrait.close
-        @leaving.push(portrait)
+    # Leaving portraits keep the dim they had.
+    def refreshDims
+        @shown.each { |side, portrait| portrait.dimmed = !@speaker.nil? && side != @speaker }
     end
 end

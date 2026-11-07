@@ -471,7 +471,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     autoresume = false
     text = message.clone
     msgback = nil
-    linecount = (Graphics.height > 400) ? 3 : 2
+    linecount = pbDefaultMessageLines
     ### Text replacement
     text.gsub!(/\\sign\[([^\]]*)\]/i) do # \sign[something] gets turned into
         next "\\op\\cl\\ts[]\\w[#{Regexp.last_match(1)}]" # \op\cl\ts[]\w[something]

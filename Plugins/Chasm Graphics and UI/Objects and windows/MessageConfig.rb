@@ -274,6 +274,11 @@ def pbPositionNearMsgWindow(cmdwindow, msgwindow, side)
     end
 end
 
+# Lines of text a message window shows unless its message sets them.
+def pbDefaultMessageLines
+    return (Graphics.height > 400) ? 3 : 2
+end
+
 # internal function
 def pbRepositionMessageWindow(msgwindow, linecount = 2)
     msgwindow.height = 32 * linecount + msgwindow.borderY
