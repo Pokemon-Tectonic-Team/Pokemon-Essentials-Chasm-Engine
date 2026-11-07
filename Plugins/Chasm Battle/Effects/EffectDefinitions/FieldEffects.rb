@@ -30,7 +30,7 @@ GameData::BattleEffect.register_effect(:Field, {
     :real_name => "Gravity Turns",
     :type => :Integer,
     :ticks_down_eor => true,
-    :ticks_down_proc => proc do |battle, value|
+    :ticks_down_proc => proc do |battle, _value|
         next !battle.pbCheckGlobalAbility(:DISTORTEDGRAVITY)
     end,
     :apply_proc => proc do |battle, _value|
@@ -139,7 +139,7 @@ GameData::BattleEffect.register_effect(:Field, {
     :real_name => "Puzzle Room",
     :type => :Integer,
     :ticks_down_eor => true,
-    :ticks_down_proc => proc do |battle, value|
+    :ticks_down_proc => proc do |battle, _value|
         next !battle.pbCheckGlobalAbility(:ROOMLOCK)
     end,
     :is_room => true,
@@ -159,7 +159,7 @@ GameData::BattleEffect.register_effect(:Field, {
     :real_name => "Odd Room",
     :type => :Integer,
     :ticks_down_eor => true,
-    :ticks_down_proc => proc do |battle, value|
+    :ticks_down_proc => proc do |battle, _value|
         next !battle.pbCheckGlobalAbility(:ROOMLOCK)
     end,
     :is_room => true,
@@ -179,7 +179,7 @@ GameData::BattleEffect.register_effect(:Field, {
     :real_name => "Polarized Room",
     :type => :Integer,
     :ticks_down_eor => true,
-    :ticks_down_proc => proc do |battle, value|
+    :ticks_down_proc => proc do |battle, _value|
         next !battle.pbCheckGlobalAbility(:ROOMLOCK)
     end,
     :is_room => true,
@@ -199,7 +199,7 @@ GameData::BattleEffect.register_effect(:Field, {
     :real_name => "Insight Room",
     :type => :Integer,
     :ticks_down_eor => true,
-    :ticks_down_proc => proc do |battle, value|
+    :ticks_down_proc => proc do |battle, _value|
         next !battle.pbCheckGlobalAbility(:ROOMLOCK)
     end,
     :is_room => true,
@@ -225,7 +225,7 @@ GameData::BattleEffect.register_effect(:Field, {
     :real_name => "Emotion Room",
     :type => :Integer,
     :ticks_down_eor => true,
-    :ticks_down_proc => proc do |battle, value|
+    :ticks_down_proc => proc do |battle, _value|
         next !battle.pbCheckGlobalAbility(:ROOMLOCK)
     end,
     :is_room => true,
@@ -245,7 +245,7 @@ GameData::BattleEffect.register_effect(:Field, {
     :real_name => "Willful Room",
     :type => :Integer,
     :ticks_down_eor => true,
-    :ticks_down_proc => proc do |battle, value|
+    :ticks_down_proc => proc do |battle, _value|
         next !battle.pbCheckGlobalAbility(:ROOMLOCK)
     end,
     :is_room => true,
@@ -275,7 +275,7 @@ GameData::BattleEffect.register_effect(:Field, {
     :expire_proc => proc do |battle|
         battle.pbDisplay(_INTL("The grey mist dissipated."))
     end,
-    :eor_proc => proc do |battle, value|
+    :eor_proc => proc do |battle, _value|
         battle.eachBattler do |b|
             next unless b.hasAlteredStatSteps?
             b.pbResetStatSteps
@@ -294,7 +294,7 @@ GameData::BattleEffect.register_effect(:Field, {
     :real_name => "Floral Gramarye",
     :type => :Integer,
     :ticks_down_eor => true,
-    :eor_proc => proc do |battle, value|
+    :eor_proc => proc do |battle, _value|
         battle.eachBattler do |b|
             next unless b.canHeal?
             b.applyFractionalHealing(1.0 / 8.0, customMessage: _INTL("{1} was healed by the field of flowers!", b.pbThis))
