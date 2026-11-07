@@ -203,20 +203,17 @@ function New-ZipWithNanaZip {
 function New-ZipWithDotNet {
     param([string[]]$Paths, [string]$OutputZipPath)
 
+    $files = foreach ($relPath in $Paths) {
+        $fullPath = Join-Path $RepoRoot $relPath
+        if (Test-Path $fullPath -PathType Container) { Get-ChildItem -Path $fullPath -Recurse -File | ForEach-Object FullName }
+        else { $fullPath }
+    }
+
     $zip = [System.IO.Compression.ZipFile]::Open($OutputZipPath, [System.IO.Compression.ZipArchiveMode]::Create)
     try {
-        foreach ($relPath in $Paths) {
-            $fullPath = Join-Path $RepoRoot $relPath
-            if (Test-Path $fullPath -PathType Container) {
-                Get-ChildItem -Path $fullPath -Recurse -File | ForEach-Object {
-                    $entryName = $_.FullName.Substring($RepoRoot.Length + 1) -replace '\\', '/'
-                    [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $entryName, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
-                }
-            }
-            else {
-                $entryName = $relPath -replace '\\', '/'
-                [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $fullPath, $entryName, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
-            }
+        foreach ($file in $files) {
+            $entryName = $file.Substring($RepoRoot.Length + 1) -replace '\\', '/'
+            [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $file, $entryName, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
         }
     }
     finally {
