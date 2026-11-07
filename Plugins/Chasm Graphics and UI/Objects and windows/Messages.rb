@@ -43,7 +43,7 @@ def pbEventCommentInput(*args)
     return nil if list.nil?
     return nil unless list.is_a?(Array)
     for item in list
-        next unless item.code == 108 || item.code == 408
+        next unless [108, 408].include?(item.code)
         next unless item.parameters[0] == trigger
         start = list.index(item) + 1
         finish = start + elements
@@ -228,18 +228,27 @@ end
 #===============================================================================
 #
 #===============================================================================
+# Shows one frame of a face sheet: "name" or "name,index", where frames are
+# laid out four to a row.
+# Portrait code expanded by integrating the "Dialogue Portraits" plugin
+# by AenaonDogsky and Mr. Gela
+# How to use:
+# In RPGMaker XP, type into a text box the following format
+# \mr[ImageName in Graphics/Faces]
+# Ex. \mr[TestImage]Hello.
+# mr can be other commands too, like ml for the left side of the screen.
+# Accepted images are 192x256 pixel size. If you input a bigger image, it shows the top left of the image.
 class FaceWindowVX < SpriteWindow_Base
-    def initialize(face)
-        super(0, 0, 128, 128)
+    def initialize(face, frameWidth = 96, frameHeight = 96)
+        super(0, 0, frameWidth + 32, frameHeight + 32)
         faceinfo = face.split(",")
         facefile = pbResolveBitmap("Graphics/Faces/" + faceinfo[0])
         facefile ||= pbResolveBitmap("Graphics/Pictures/" + faceinfo[0])
         contents.dispose if contents
-        @faceIndex = faceinfo[1].to_i
+        @frameRect = faceFrameRect(faceinfo[1].to_i, frameWidth, frameHeight)
         @facebitmaptmp = AnimatedBitmap.new(facefile)
-        @facebitmap = BitmapWrapper.new(96, 96)
-        factRect = Rect.new((@faceIndex % 4) * 96, (@faceIndex / 4) * 96, 96, 96)
-        @facebitmap.blt(0, 0, @facebitmaptmp.bitmap, factRect)
+        @facebitmap = BitmapWrapper.new(frameWidth, frameHeight)
+        @facebitmap.blt(0, 0, @facebitmaptmp.bitmap, @frameRect)
         self.contents = @facebitmap
     end
 
@@ -247,8 +256,7 @@ class FaceWindowVX < SpriteWindow_Base
         super
         if @facebitmaptmp.totalFrames > 1
             @facebitmaptmp.update
-            faceRect = Rect.new((@faceIndex % 4) * 96, (@faceIndex / 4) * 96, 96, 96)
-            @facebitmap.blt(0, 0, @facebitmaptmp.bitmap, factRect)
+            @facebitmap.blt(0, 0, @facebitmaptmp.bitmap, @frameRect)
         end
     end
 
@@ -256,6 +264,47 @@ class FaceWindowVX < SpriteWindow_Base
         @facebitmaptmp.dispose
         @facebitmap.dispose if @facebitmap
         super
+    end
+end
+
+def faceFrameRect(index, frameWidth, frameHeight)
+    return Rect.new((index % 4) * frameWidth, (index / 4) * frameHeight, frameWidth, frameHeight)
+end
+
+#===============================================================================
+# Dialogue portraits: \ml[face], \mc[face] and \mr[face] show a large face
+# above the message window on the left, centre or right.
+#===============================================================================
+PORTRAIT_FRAME_WIDTH  = 192
+PORTRAIT_FRAME_HEIGHT = 256
+PORTRAIT_EDGE_MARGIN  = 8
+PORTRAIT_SIDES = { "ml" => :left, "mc" => :centre, "mr" => :right }.freeze
+
+# Returns the [x, y] of a portrait window. It sits on the message window's top
+# edge, or under its bottom edge when the message window is at the top of the
+# screen. The 16px window padding means the image itself touches the edge.
+def portraitWindowPosition(side, portraitWidth, portraitHeight, msgY, msgHeight, screenWidth)
+    x = case side
+        when :left   then PORTRAIT_EDGE_MARGIN
+        when :centre then (screenWidth - portraitWidth) / 2
+        when :right  then screenWidth - portraitWidth - PORTRAIT_EDGE_MARGIN
+        end
+    y = (msgY <= 0) ? msgY + msgHeight - 16 : msgY - portraitHeight + 16
+    return [x, y]
+end
+
+def pbCreatePortraitWindow(face, msgwindow)
+    portrait = FaceWindowVX.new(face, PORTRAIT_FRAME_WIDTH, PORTRAIT_FRAME_HEIGHT)
+    portrait.windowskin = nil
+    portrait.viewport = msgwindow.viewport
+    portrait.z = msgwindow.z
+    return portrait
+end
+
+def pbPositionPortraitWindows(portraits, msgwindow)
+    portraits.each do |side, portrait|
+        portrait.x, portrait.y = portraitWindowPosition(side, portrait.width, portrait.height,
+            msgwindow.y, msgwindow.height, Graphics.width)
     end
 end
 
@@ -273,7 +322,7 @@ end
 def pbGetMapNameFromId(id)
     return pbGetMessage(MessageTypes::MapNames, id)
     map = pbGetBasicMapNameFromId(id)
-    map.gsub!(/\\PN/, $Trainer.name) if $Trainer
+    map.gsub!("\\PN", $Trainer.name) if $Trainer
     return map
 end
 
@@ -386,10 +435,10 @@ end
 #===============================================================================
 def pbCreateStatusWindow(viewport = nil)
     msgwindow = Window_AdvancedTextPokemon.new("")
-    if !viewport
-        msgwindow.z = 99_999
-    else
+    if viewport
         msgwindow.viewport = viewport
+    else
+        msgwindow.z = 99_999
     end
     msgwindow.visible = false
     msgwindow.letterbyletter = false
@@ -401,10 +450,10 @@ end
 
 def pbCreateMessageWindow(viewport = nil, skin = nil)
     msgwindow = Window_AdvancedTextPokemon.new("")
-    if !viewport
-        msgwindow.z = 99_999
-    else
+    if viewport
         msgwindow.viewport = viewport
+    else
+        msgwindow.z = 99_999
     end
     msgwindow.visible = true
     msgwindow.letterbyletter = true
@@ -431,7 +480,8 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     ret = nil
     commands = nil
     facewindow = nil
-	iconwindow = nil
+    iconwindow = nil
+    portraits = {}
     goldwindow = nil
     coinwindow = nil
     battlepointswindow = nil
@@ -447,8 +497,8 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
         next "\\op\\cl\\ts[]\\w[" + Regexp.last_match(1) + "]" # \op\cl\ts[]\w[something]
     end
     text = globalMessageReplacements(text)
-    text.gsub!(/\\\\/, "\5")
-    text.gsub!(/\\1/, "\1")
+    text.gsub!("\\\\", "\5")
+    text.gsub!("\\1", "\1")
     if $game_actors
         text.gsub!(/\\n\[([1-8])\]/i) do
             m = Regexp.last_match(1).to_i
@@ -514,7 +564,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     ### Controls
     textchunks = []
     controls = []
-    while text[/(?:\\(f|ff|i|p|db|ts|cl|me|se|wt|wtnp|ch)\[([^\]]*)\]|\\(g|cn|pt|wd|wm|wu|wl|wr|op|cl|or|ss|\.|\||!|\^))/i]
+    while text[/(?:\\(f|ff|i|p|db|ml|mc|mr|ts|cl|me|se|wt|wtnp|ch)\[([^\]]*)\]|\\(g|cn|pt|wd|wm|wu|wl|wr|op|cl|or|ss|\.|\||!|\^))/i]
         textchunks.push($~.pre_match)
         if $~[1]
             controls.push([$~[1].downcase, $~[2], -1])
@@ -591,7 +641,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
             iconwindow.dispose if iconwindow
             icon_location = "Graphics/#{param}"
             iconwindow = IconSprite.new(msgwindow.viewport)
-			iconwindow.setBitmap(icon_location)
+            iconwindow.setBitmap(icon_location)
             iconwindow.visible = false
             iconwindow.opacity = 0
             msgwindow.visible = false
@@ -634,6 +684,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
             $SpeakerNameWindow.x += 12
             $SpeakerNameWindow.z = msgwindow.z + 1
         end
+        pbPositionPortraitWindows(portraits, msgwindow)
         if iconFadeInCount > 0
             fadeProgress = (iconFadeInTime - iconFadeInCount) / iconFadeInTime.to_f
             iconwindow.opacity = (fadeProgress * 255).ceil
@@ -648,9 +699,9 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 msgwindow.y = -msgwindow.height * signWaitCount / signWaitTime
                 facewindow.y = -facewindow.height * signWaitCount / signWaitTime if facewindow
             else
-                msgwindow.y = Graphics.height - msgwindow.height * (signWaitTime - signWaitCount) / signWaitTime
+                msgwindow.y = Graphics.height - (msgwindow.height * (signWaitTime - signWaitCount) / signWaitTime)
                 if facewindow
-                    facewindow.y = Graphics.height - facewindow.height * (signWaitTime - signWaitCount) / signWaitTime
+                    facewindow.y = Graphics.height - (facewindow.height * (signWaitTime - signWaitCount) / signWaitTime)
                 end
             end
         end
@@ -678,7 +729,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                     if atTop
                         facewindow.y = -facewindow.height * signWaitCount / signWaitTime if facewindow
                     elsif facewindow
-                        facewindow.y = Graphics.height - facewindow.height * (signWaitTime - signWaitCount) / signWaitTime
+                        facewindow.y = Graphics.height - (facewindow.height * (signWaitTime - signWaitCount) / signWaitTime)
                     end
                 end
             when "p"
@@ -695,7 +746,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                         if atTop
                             facewindow.y = -facewindow.height * signWaitCount / signWaitTime if facewindow
                         elsif facewindow
-                            facewindow.y = Graphics.height - facewindow.height * (signWaitTime - signWaitCount) / signWaitTime
+                            facewindow.y = Graphics.height - (facewindow.height * (signWaitTime - signWaitCount) / signWaitTime)
                         end
                     end
                     Pokemon.play_cry(partyMember.species)
@@ -704,12 +755,12 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 iconwindow.dispose if facewindow
                 icon_location = "Graphics/#{param}"
                 iconwindow = IconSprite.new(msgwindow.viewport)
-				iconwindow.setBitmap(icon_location)
-				iconwindow.zoom_x 	= 4.0
-                iconwindow.zoom_y 	= 4.0
-                iconwindow.z        = msgwindow.z
-				iconwindow.x		= (Graphics.width - iconwindow.get_display_width) / 2
-                iconwindow.y 		= (Graphics.height / 2.0 - (iconwindow.get_display_height * 2) / 3.0).ceil + iconFadeInTime
+                iconwindow.setBitmap(icon_location)
+                iconwindow.zoom_x	= 4.0
+                iconwindow.zoom_y	= 4.0
+                iconwindow.z = msgwindow.z
+                iconwindow.x	= (Graphics.width - iconwindow.get_display_width) / 2
+                iconwindow.y	= ((Graphics.height / 2.0) - ((iconwindow.get_display_height * 2) / 3.0)).ceil + iconFadeInTime
                 msgwindow.waitcount = iconFadeInTime
                 autoresume = true
             when "or"
@@ -721,6 +772,11 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 pbPositionNearMsgWindow(facewindow, msgwindow, :left)
                 facewindow.viewport = msgwindow.viewport
                 facewindow.z        = msgwindow.z
+            when "ml", "mc", "mr"
+                side = PORTRAIT_SIDES[control]
+                portraits[side]&.dispose
+                portraits[side] = pbCreatePortraitWindow(param, msgwindow)
+                pbPositionPortraitWindows(portraits, msgwindow)
             when "g"      # Display gold window
                 goldwindow.dispose if goldwindow
                 goldwindow = pbDisplayGoldWindow(msgwindow)
@@ -746,7 +802,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 msgwindow.y = Graphics.height - msgwindow.height
                 msgback.y = msgwindow.y if msgback
                 pbPositionNearMsgWindow(facewindow, msgwindow, :left)
-                msgwindow.y = Graphics.height - msgwindow.height * (signWaitTime - signWaitCount) / signWaitTime
+                msgwindow.y = Graphics.height - (msgwindow.height * (signWaitTime - signWaitCount) / signWaitTime)
             when "wl" # Window Left
                 msgwindow.x = 0
                 msgwindow.width = Graphics.width - 400
@@ -783,7 +839,8 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
         Graphics.update
         Input.update
         facewindow.update if facewindow
-		iconwindow.update if iconwindow
+        iconwindow.update if iconwindow
+        portraits.each_value(&:update)
         if autoresume && msgwindow.waitcount == 0
             msgwindow.resume if msgwindow.busy?
             break unless msgwindow.busy?
@@ -820,18 +877,20 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 msgwindow.y = -msgwindow.height * i / signWaitTime
                 facewindow.y = -facewindow.height * i / signWaitTime if facewindow
             else
-                msgwindow.y = Graphics.height - msgwindow.height * (signWaitTime - i) / signWaitTime
-                facewindow.y = Graphics.height - facewindow.height * (signWaitTime - i) / signWaitTime if facewindow
+                msgwindow.y = Graphics.height - (msgwindow.height * (signWaitTime - i) / signWaitTime)
+                facewindow.y = Graphics.height - (facewindow.height * (signWaitTime - i) / signWaitTime) if facewindow
             end
             Graphics.update
             Input.update
             pbUpdateSceneMap
             msgwindow.update
             facewindow.update if facewindow
+            pbPositionPortraitWindows(portraits, msgwindow)
         end
     end
     facewindow.dispose if facewindow
-	iconwindow.dispose if iconwindow
+    iconwindow.dispose if iconwindow
+    portraits.each_value(&:dispose)
     $SpeakerNameWindow.visible = false if $SpeakerNameWindow
     return ret
 end
@@ -878,12 +937,12 @@ def pbMessage(message, commands = nil, cmdIfCancel = 0, skin = nil, defaultCmd =
     return ret
 end
 
-def pbConfirmMessage(message, &block)
-    return (pbMessage(message, [_INTL("Yes"), _INTL("No")], 2, &block) == 0)
+def pbConfirmMessage(message, &)
+    return pbMessage(message, [_INTL("Yes"), _INTL("No")], 2, &) == 0
 end
 
-def pbConfirmMessageSerious(message, &block)
-    return (pbMessage(message, [_INTL("No"), _INTL("Yes")], 1, &block) == 1)
+def pbConfirmMessageSerious(message, &)
+    return pbMessage(message, [_INTL("No"), _INTL("Yes")], 1, &) == 1
 end
 
 def pbConfirmMessageGated(message, &block)
@@ -894,12 +953,12 @@ def pbConfirmMessageGated(message, &block)
     end
 end
 
-def pbMessageChooseNumber(message, params, &block)
+def pbMessageChooseNumber(message, params, &)
     msgwindow = pbCreateMessageWindow(nil, params.messageSkin)
     ret = pbMessageDisplay(msgwindow, message, true,
        proc { |msgwindow|
            next pbChooseNumber(msgwindow, params, &block)
-       }, &block)
+       }, &)
     pbDisposeMessageWindow(msgwindow)
     return ret
 end
@@ -1033,12 +1092,12 @@ def pbFreeText(msgwindow, currenttext, passwordbox, maxlength, width = 240)
     return ret
 end
 
-def pbMessageFreeText(message, currenttext, passwordbox, maxlength, width = 240, &block)
+def pbMessageFreeText(message, currenttext, passwordbox, maxlength, width = 240, &)
     msgwindow = pbCreateMessageWindow
     retval = pbMessageDisplay(msgwindow, message, true,
        proc { |msgwindow|
            next pbFreeText(msgwindow, currenttext, passwordbox, maxlength, width, &block)
-       }, &block)
+       }, &)
     pbDisposeMessageWindow(msgwindow)
     return retval
 end
@@ -1046,70 +1105,70 @@ end
 # Displays text options in the message box, allowing the player to scroll through them
 # with left/right arrows and select with A. Returns the selected index or -1 if cancelled.
 def pbScrollableTextSelection(options, initial_index = 0)
-  msgwindow = pbCreateMessageWindow
-  index = initial_index.clamp(0, options.length - 1)
-  ret = -1
+    msgwindow = pbCreateMessageWindow
+    index = initial_index.clamp(0, options.length - 1)
+    ret = -1
 
-  # Create a separate window for the navigation indicator
-  navwindow = Window_AdvancedTextPokemon.new("")
-  navwindow.viewport = msgwindow.viewport
-  navwindow.z = msgwindow.z
-  navwindow.letterbyletter = false
-  navwindow.baseColor = MessageConfig.pbDefaultTextMainColor
-  navwindow.shadowColor = MessageConfig.pbDefaultTextShadowColor
-  # Calculate padding width based on total options
-  total_digits = options.length.to_s.length
-  # Size the window to fit the text
-  nav_text = _INTL("{1}/{2}", options.length, options.length)
-  navwindow.resizeToFit(nav_text, Graphics.width)
-  # Position above the message window, on the right side
-  navwindow.x = Graphics.width - navwindow.width
-  navwindow.y = msgwindow.y - navwindow.height
+    # Create a separate window for the navigation indicator
+    navwindow = Window_AdvancedTextPokemon.new("")
+    navwindow.viewport = msgwindow.viewport
+    navwindow.z = msgwindow.z
+    navwindow.letterbyletter = false
+    navwindow.baseColor = MessageConfig.pbDefaultTextMainColor
+    navwindow.shadowColor = MessageConfig.pbDefaultTextShadowColor
+    # Calculate padding width based on total options
+    total_digits = options.length.to_s.length
+    # Size the window to fit the text
+    nav_text = _INTL("{1}/{2}", options.length, options.length)
+    navwindow.resizeToFit(nav_text, Graphics.width)
+    # Position above the message window, on the right side
+    navwindow.x = Graphics.width - navwindow.width
+    navwindow.y = msgwindow.y - navwindow.height
 
-  loop do
-    msgwindow.letterbyletter = false
-    msgwindow.text = options[index]
+    loop do
+        msgwindow.letterbyletter = false
+        msgwindow.text = options[index]
 
-    padded_index = sprintf("%0#{total_digits}d", index + 1)
-    navwindow.text = _INTL("{1}/{2}", padded_index, options.length)
+        padded_index = format("%0#{total_digits}d", index + 1)
+        navwindow.text = _INTL("{1}/{2}", padded_index, options.length)
 
-    Graphics.update
-    Input.update
-    msgwindow.update
-    navwindow.update
-    pbUpdateSceneMap
+        Graphics.update
+        Input.update
+        msgwindow.update
+        navwindow.update
+        pbUpdateSceneMap
 
-    if Input.trigger?(Input::LEFT) || Input.trigger?(Input::UP)
-      pbPlayCursorSE
-      index = (index - 1) % options.length
-    elsif Input.trigger?(Input::RIGHT) || Input.trigger?(Input::DOWN)
-      pbPlayCursorSE
-      index = (index + 1) % options.length
-    elsif Input.trigger?(Input::USE)
-      pbPlayDecisionSE
-      ret = index
-      break
-    elsif Input.trigger?(Input::BACK)
-      pbPlayCancelSE
-      ret = -1
-      break
+        if Input.trigger?(Input::LEFT) || Input.trigger?(Input::UP)
+            pbPlayCursorSE
+            index = (index - 1) % options.length
+        elsif Input.trigger?(Input::RIGHT) || Input.trigger?(Input::DOWN)
+            pbPlayCursorSE
+            index = (index + 1) % options.length
+        elsif Input.trigger?(Input::USE)
+            pbPlayDecisionSE
+            ret = index
+            break
+        elsif Input.trigger?(Input::BACK)
+            pbPlayCancelSE
+            ret = -1
+            break
+        end
     end
-  end
 
-  navwindow.dispose
-  pbDisposeMessageWindow(msgwindow)
-  return ret
+    navwindow.dispose
+    pbDisposeMessageWindow(msgwindow)
+    return ret
 end
 
 def break_string(str, character_count)
     arr = []
-    pos = 0     
+    pos = 0
     loop do
         break arr if pos == str.size
-        if str[pos] == ' '
+        if str[pos] == " "
             pos += 1
         end
-        m = str.match(/.{1,#{character_count}}(?=[ ]|\z)|.{,#{character_count-1}}[ ]/, pos)
+        m = str.match(/.{1,#{character_count}}(?= |\z)|.{,#{character_count - 1}} /, pos)
         return nil if m.nil?
         arr << m[0]
         pos += m[0].size
