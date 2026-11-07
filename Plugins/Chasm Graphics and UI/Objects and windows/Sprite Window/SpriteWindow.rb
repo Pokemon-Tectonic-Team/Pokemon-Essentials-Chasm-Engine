@@ -398,7 +398,17 @@ class SpriteWindow < Window
       end
       return 32
     end
-  
+
+    # [top, bottom]: the transparent rows between the window's edges and its
+    # skin's visible frame, read from the edges as drawn.
+    def frameInsets
+      top = @sprites["side0"]
+      bottom = @sprites["side3"]
+      return [0, 0] unless top.bitmap && bottom.bitmap
+      return [transparentRowsAt(top.bitmap, top.src_rect, false),
+              transparentRowsAt(bottom.bitmap, bottom.src_rect, true)]
+    end
+
     def leftEdge; self.startX; end
     def topEdge; self.startY; end
     def rightEdge; self.borderX-self.leftEdge; end
