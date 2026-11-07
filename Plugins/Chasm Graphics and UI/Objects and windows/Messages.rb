@@ -226,36 +226,34 @@ end
 #===============================================================================
 #
 #===============================================================================
-# Shows one frame of a face sheet: "name" or "name,index", where frames are
-# laid out four to a row.
-# Portrait code expanded by integrating the "Dialogue Portraits" plugin
-# by AenaonDogsky and Mr. Gela
-# How to use:
-# In RPGMaker XP, type into a text box the following format
-# \mr[ImageName in Graphics/Faces]
-# Ex. \mr[TestImage]Hello.
-# mr can be other commands too, like ml for the left side of the screen.
-# Accepted images are 192x256 pixel size. If you input a bigger image, it shows the top left of the image.
+# Shows one frame of a face sheet, where frames are laid out four to a row.
+# face is "name" or "name,index", looked up in Graphics/Faces, then
+# Graphics/Pictures.
 class FaceWindowVX < SpriteWindow_Base
     def initialize(face, frameWidth = 96, frameHeight = 96)
         super(0, 0, frameWidth + 32, frameHeight + 32)
-        faceinfo = face.split(",")
-        facefile = pbResolveBitmap("Graphics/Faces/#{faceinfo[0]}")
-        facefile ||= pbResolveBitmap("Graphics/Pictures/#{faceinfo[0]}")
+        name, index = parseFaceSpec(face)
+        facefile = pbResolveBitmap("Graphics/Faces/#{name}")
+        facefile ||= pbResolveBitmap("Graphics/Pictures/#{name}")
         contents&.dispose
-        @frameRect = faceFrameRect(faceinfo[1].to_i, frameWidth, frameHeight)
+        @frameWidth = frameWidth
+        @frameHeight = frameHeight
         @facebitmaptmp = AnimatedBitmap.new(facefile)
         @facebitmap = BitmapWrapper.new(frameWidth, frameHeight)
-        @facebitmap.blt(0, 0, @facebitmaptmp.bitmap, @frameRect)
         self.contents = @facebitmap
+        self.frame = index
+    end
+
+    def frame=(index)
+        @frameRect = faceFrameRect(index, @frameWidth, @frameHeight)
+        redraw
     end
 
     def update
         super
-        if @facebitmaptmp.totalFrames > 1
-            @facebitmaptmp.update
-            @facebitmap.blt(0, 0, @facebitmaptmp.bitmap, @frameRect)
-        end
+        return unless @facebitmaptmp.totalFrames > 1
+        @facebitmaptmp.update
+        redraw
     end
 
     def dispose
@@ -263,47 +261,23 @@ class FaceWindowVX < SpriteWindow_Base
         @facebitmap&.dispose
         super
     end
+
+    private
+
+    def redraw
+        @facebitmap.clear
+        @facebitmap.blt(0, 0, @facebitmaptmp.bitmap, @frameRect)
+    end
+end
+
+# Splits a face spec "name" or "name,index" into [name, index].
+def parseFaceSpec(face)
+    name, index = face.split(",", 2)
+    return [name, index.to_i]
 end
 
 def faceFrameRect(index, frameWidth, frameHeight)
     return Rect.new((index % 4) * frameWidth, (index / 4) * frameHeight, frameWidth, frameHeight)
-end
-
-#===============================================================================
-# Dialogue portraits: \ml[face], \mc[face] and \mr[face] show a large face
-# above the message window on the left, centre or right.
-#===============================================================================
-PORTRAIT_FRAME_WIDTH  = 192
-PORTRAIT_FRAME_HEIGHT = 256
-PORTRAIT_EDGE_MARGIN  = 8
-PORTRAIT_SIDES = { "ml" => :left, "mc" => :centre, "mr" => :right }.freeze
-
-# Returns the [x, y] of a portrait window. It sits on the message window's top
-# edge, or under its bottom edge when the message window is at the top of the
-# screen. The 16px window padding means the image itself touches the edge.
-def portraitWindowPosition(side, portraitWidth, portraitHeight, msgY, msgHeight, screenWidth)
-    x = case side
-        when :left   then PORTRAIT_EDGE_MARGIN
-        when :centre then (screenWidth - portraitWidth) / 2
-        when :right  then screenWidth - portraitWidth - PORTRAIT_EDGE_MARGIN
-        end
-    y = (msgY <= 0) ? msgY + msgHeight - 16 : msgY - portraitHeight + 16
-    return [x, y]
-end
-
-def pbCreatePortraitWindow(face, msgwindow)
-    portrait = FaceWindowVX.new(face, PORTRAIT_FRAME_WIDTH, PORTRAIT_FRAME_HEIGHT)
-    portrait.windowskin = nil
-    portrait.viewport = msgwindow.viewport
-    portrait.z = msgwindow.z
-    return portrait
-end
-
-def pbPositionPortraitWindows(portraits, msgwindow)
-    portraits.each do |side, portrait|
-        portrait.x, portrait.y = portraitWindowPosition(side, portrait.width, portrait.height,
-            msgwindow.y, msgwindow.height, Graphics.width)
-    end
 end
 
 #===============================================================================
@@ -479,7 +453,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     commands = nil
     facewindow = nil
     iconwindow = nil
-    portraits = {}
+    portraits = pbDialoguePortraits
     goldwindow = nil
     coinwindow = nil
     battlepointswindow = nil
@@ -682,7 +656,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
             $SpeakerNameWindow.x += 12
             $SpeakerNameWindow.z = msgwindow.z + 1
         end
-        pbPositionPortraitWindows(portraits, msgwindow)
+        portraits&.anchor(msgwindow)
         if iconFadeInCount > 0
             fadeProgress = (iconFadeInTime - iconFadeInCount) / iconFadeInTime.to_f
             iconwindow.opacity = (fadeProgress * 255).ceil
@@ -771,10 +745,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 facewindow.viewport = msgwindow.viewport
                 facewindow.z        = msgwindow.z
             when "ml", "mc", "mr"
-                side = PORTRAIT_SIDES[control]
-                portraits[side]&.dispose
-                portraits[side] = pbCreatePortraitWindow(param, msgwindow)
-                pbPositionPortraitWindows(portraits, msgwindow)
+                portraits&.show(PORTRAIT_SIDES[control], param, msgwindow)
             when "g"      # Display gold window
                 goldwindow&.dispose
                 goldwindow = pbDisplayGoldWindow(msgwindow)
@@ -838,7 +809,6 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
         Input.update
         facewindow&.update
         iconwindow&.update
-        portraits.each_value(&:update)
         if autoresume && msgwindow.waitcount == 0
             msgwindow.resume if msgwindow.busy?
             break unless msgwindow.busy?
@@ -883,12 +853,11 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
             pbUpdateSceneMap
             msgwindow.update
             facewindow&.update
-            pbPositionPortraitWindows(portraits, msgwindow)
+            portraits&.anchor(msgwindow)
         end
     end
     facewindow&.dispose
     iconwindow&.dispose
-    portraits.each_value(&:dispose)
     $SpeakerNameWindow.visible = false if $SpeakerNameWindow
     return ret
 end
