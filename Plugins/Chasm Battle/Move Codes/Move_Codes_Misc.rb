@@ -788,6 +788,10 @@ class PokeBattle_Move_FailsIfUserNotAsleep < PokeBattle_Move
         return true unless user.willStayAsleepAI?
         return pbMoveFailed?(user, targets, false)
     end
+
+    def shouldHighlight?(user, target)
+        return user.asleep? && user.statusCount > 1
+    end
 end
 
 #===============================================================================

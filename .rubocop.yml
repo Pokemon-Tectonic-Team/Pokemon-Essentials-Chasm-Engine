@@ -1,140 +1,138 @@
 AllCops:
-  TargetRubyVersion: 3.1
-  NewCops: enable
+    TargetRubyVersion: 3.1
+    NewCops: enable
 
 Layout/IndentationStyle:
-  EnforcedStyle: spaces
+    EnforcedStyle: spaces
 
 Layout/IndentationWidth:
-  Width: 4
+    Width: 4
 
 Layout/LineLength:
-  Max: 200
+    Max: 200
 
 Style/StringLiterals:
-  EnforcedStyle: double_quotes
+    EnforcedStyle: double_quotes
 
 Style/FrozenStringLiteralComment:
-  EnforcedStyle: never
+    EnforcedStyle: never
 
 Style/Encoding:
-  Enabled: true
+    Enabled: true
 
 # RPG Maker uses global variables pervasively ($Trainer, $game_switches, etc.)
 Style/GlobalVars:
-  Enabled: false
+    Enabled: false
 
 Style/SpecialGlobalVars:
-  Enabled: false
+    Enabled: false
 
 # Metrics cops are impractical for complex game-engine battle logic
 Metrics:
-  Enabled: false
+    Enabled: false
 
-# Naming
-Naming/FileName:
-  Enabled: false
-
-Naming/VariableName:
-  Enabled: false
-
-Naming/MethodName:
-  Enabled: false
-
-Naming/MethodParameterName:
-  Enabled: false
-
-Naming/BlockParameterName:
-  Enabled: false
+# It's not reasonable to update name conventions across the codebase
+Naming:
+    Enabled: false
 
 # Layout cops that produce noise without improving readability in game code
 Layout/ArgumentAlignment:
-  Enabled: false
+    Enabled: false
 
 Layout/HashAlignment:
-  Enabled: false
+    Enabled: false
 
 Layout/FirstHashElementIndentation:
-  Enabled: false
+    Enabled: false
 
 Layout/MultilineMethodCallBraceLayout:
-  Enabled: false
+    Enabled: false
 
 Layout/EmptyLineAfterGuardClause:
-  Enabled: false
+    Enabled: false
 
 # Style cops disabled for patterns that are common and intentional in this codebase
 Style/Documentation:
-  Enabled: false
+    Enabled: false
 
 Style/RedundantReturn:
-  Enabled: false
+    Enabled: false
 
 Style/OptionalBooleanParameter:
-  Enabled: false
+    Enabled: false
 
 Style/ConditionalAssignment:
-  Enabled: false
+    Enabled: false
 
 Style/TernaryParentheses:
-  Enabled: false
+    Enabled: false
 
 Style/GuardClause:
-  Enabled: false
+    Enabled: false
 
 Style/NumericPredicate:
-  Enabled: false
+    Enabled: false
 
 Style/SingleLineMethods:
-  Enabled: false
+    Enabled: false
 
 Style/HashSyntax:
-  Enabled: false
+    Enabled: false
 
 Style/AccessorGrouping:
-  Enabled: false
+    Enabled: false
 
 Style/TrailingCommaInArrayLiteral:
-  Enabled: false
+    Enabled: false
 
 Style/TrailingCommaInHashLiteral:
-  Enabled: false
+    Enabled: false
 
 Style/TrailingCommaInArguments:
-  Enabled: false
+    Enabled: false
 
 Style/Alias:
-  Enabled: false
+    Enabled: false
 
 Style/BlockDelimiters:
-  Enabled: false
+    Enabled: false
 
 Style/IfUnlessModifier:
-  Enabled: false
+    Enabled: false
 
 Style/NegatedIf:
-  Enabled: false
+    Enabled: false
 
 Style/WhileUntilModifier:
-  Enabled: false
+    Enabled: false
 
 Style/Lambda:
-  Enabled: false
+    Enabled: false
 
 Style/SymbolArray:
-  Enabled: false
+    Enabled: false
 
 Style/WordArray:
-  Enabled: false
+    Enabled: false
 
 Style/PercentLiteralDelimiters:
-  Enabled: false
+    Enabled: false
 
 Style/SignalException:
-  Enabled: false
+    Enabled: false
+
+Style/CombinableLoops:
+    Enabled: false
+
+# This codebase intentionally groups related classes in files, especially for small MoveCode classes
+Style/OneClassPerFile:
+    Enabled: false
 
 Lint/AssignmentInCondition:
-  Enabled: false
+    Enabled: false
 
 Lint/AmbiguousRegexpLiteral:
-  Enabled: false
+    Enabled: false
+
+Lint/NonLocalExitFromIterator:
+    Enabled: false

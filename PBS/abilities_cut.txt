@@ -830,6 +830,10 @@ Description = At the end of each turn in moonglow, heals self by 1/12th of its m
 Name = Ninjutsu
 Description = Slips past all types of spikes. Deals 50% more damage to targets that switched in this turn.
 #-------------------------------
+[NOXIOUS]
+Name = Noxious
+Description = Reduces each other Pokémon's HP by 1/12th at the end of each turn.
+#-------------------------------
 [OBLIVIOUS]
 Name = Oblivious
 Description = Prevents it from becoming infatuated.

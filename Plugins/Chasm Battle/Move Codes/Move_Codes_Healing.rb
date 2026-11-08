@@ -643,17 +643,18 @@ end
 class PokeBattle_Move_HealUserFullHPBindsTarget < PokeBattle_HealingMove
     def healRatio(_user); return 1.0; end
 
+    def canOverheal?(user); return true; end
+
     def pbMoveFailed?(user, _targets, show_message)
         if user.effectActive?(:Trapping)
             @battle.pbDisplay(_INTL("{1}'s HP is unable to gather any honey!", user.pbThis)) if show_message
             return true
         end
-        return super
     end
 
     def pbEffectGeneral(user)
         super
-        user.applyEffect(:Trapping, 3)
+        user.applyEffect(:Trapping, 2)
         user.applyEffect(:TrappingMove, :INFESTATION)
         user.pointAt(:TrappingUser, user)
 
