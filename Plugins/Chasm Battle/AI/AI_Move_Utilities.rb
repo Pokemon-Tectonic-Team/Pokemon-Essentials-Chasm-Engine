@@ -46,10 +46,6 @@ class PokeBattle_AI
     def aiPredictsFailure?(move, user, target, boss = false)
         fails = false
 
-        # Falsify the turn count so that the AI is calculated as though we are actually
-        # in the midst of performing the move (turnCount is incremented as the attack phase begins)
-        user.turnCount += 1
-
         # Short-circuit for type-immune moves. Computing typeMod here also
         # populates @typeModCache so the later pbSuccessCheckAgainstTarget
         # call and pbGetMoveScoreDamage both reuse the cached result for free.
@@ -59,7 +55,6 @@ class PokeBattle_AI
             precomputedTypeMod = pbCalcTypeModAI(moveType, user, target, move)
             if precomputedTypeMod == 0
                 echoln("\t\t[AI FAILURE CHECK] #{user.pbThis} rejects #{move.id} -- completely ineffective against #{target.pbThis(false)}")
-                user.turnCount -= 1
                 return true
             end
         end
@@ -114,8 +109,6 @@ class PokeBattle_AI
                 break
             end
         end
-
-        user.turnCount -= 1
 
         return fails
     end

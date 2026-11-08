@@ -30,7 +30,7 @@ BattleHandlers::GuaranteedCriticalUserAbility.add(:WALLNINJA,
 
 BattleHandlers::GuaranteedCriticalUserAbility.add(:BREAKINGWAVE,
     proc { |ability, user, _target, _battle, move|
-        next true if user.turnCount <= 1
+        next true if user.firstTurn?
     }
 )
 

@@ -223,7 +223,6 @@ class FightMenuDisplay < BattleMenuBase
           begin
             # Determine whether to shade the move
             targetingData = move.pbTarget(@battler)
-            @battler.turnCount += 1 # Fake the turn count
             if targetingData.num_targets == 0 || move.worksWithNoTargets?
               shouldShade = move.shouldShade?(@battler,nil)
             else
@@ -235,8 +234,7 @@ class FightMenuDisplay < BattleMenuBase
                 break
               end
             end
-            @battler.turnCount -= 1 # Fake the turn count
-    
+
             if shouldShade
               @visibility["shader_#{i}"] = true
             # Determine whether to highlight the move

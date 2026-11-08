@@ -450,9 +450,13 @@ class PokeBattle_Battle
             end
             PBDebug.log("")
 
+            advanceBattlerTurnCounts
+
             # Start of round phase
             PBDebug.logonerr { pbStartOfRoundPhase }
             break if @decision > 0
+
+            countStartOfRoundEntrants
 
             @commandPhasesThisRound = 0
 
@@ -541,6 +545,23 @@ class PokeBattle_Battle
 
         end
         pbEndOfBattle
+    # A battler's turnCount is the number of rounds it has begun on the field. It
+    # rises as each round begins, before the start-of-round phase; a battler sent in
+    # during that phase has begun the round too, so countStartOfRoundEntrants raises
+    # it to 1 afterwards. 0 therefore means it entered later in this round.
+    # Extra actions within a round (e.g. an avatar's) don't count.
+    def advanceBattlerTurnCounts
+        @battlers.each do |b|
+            next unless b
+            b.turnCount += 1 unless b.fainted?
+        end
+    end
+
+    def countStartOfRoundEntrants
+        @battlers.each do |b|
+            next unless b
+            b.turnCount = 1 if b.turnCount == 0 && !b.fainted?
+        end
     end
 
     def pbStartOfRoundPhase

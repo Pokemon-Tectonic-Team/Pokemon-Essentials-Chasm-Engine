@@ -249,7 +249,6 @@ class PokeBattle_Battle
     def resetAttackPhaseEffects
         @battlers.each_with_index do |b, i|
             next unless b
-            b.turnCount += 1 unless b.fainted?
             @successStates[i].clear
             if @choices[i][0] != :UseMove && @choices[i][0] != :Shift && @choices[i][0] != :SwitchOut
                 b.disableEffect(:DestinyBond)
