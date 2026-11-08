@@ -528,24 +528,26 @@ class PokeBattle_Battler
     def inTwoTurnSkyAttack?
         return inTwoTurnAttack?(
             "TwoTurnAttackInvulnerableInSky",
-                "TwoTurnAttackInvulnerableInSkyRecoilQuarterOfDamageDealt",
-                "TwoTurnAttackInvulnerableScalesFaster",
-                "TwoTurnAttackInvulnerableJinxFrostbite"
+            "TwoTurnAttackInvulnerableInSkyRecoilQuarterOfDamageDealt",
+            "TwoTurnAttackInvulnerableScalesFaster",
+            "TwoTurnAttackInvulnerableJinxFrostbite"
         )
     end
 
     def semiInvulnerable?
-        return inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
-        "TwoTurnAttackInvulnerableUnderground",
-        "TwoTurnAttackInvulnerableUndergroundHitThreeTimes",
-        "TwoTurnAttackInvulnerableUnderwater",
-        "TwoTurnAttackInvulnerableHiding",
-        "TwoTurnAttackInvulnerableInFoliage",
-        "TwoTurnAttackInvulnerableRemoveProtections",
-        "TwoTurnAttackInvulnerableInSkyRecoilQuarterOfDamageDealt",
-        "TwoTurnAttackInvulnerableScalesFaster",
-        "TwoTurnAttackInvulnerableJinxFrostbite",
-        "TwoTurnAttackInvulnerableVerminCloud",)
+        return inTwoTurnAttack?(
+            "TwoTurnAttackInvulnerableInSky",
+            "TwoTurnAttackInvulnerableUnderground",
+            "TwoTurnAttackInvulnerableUndergroundHitThreeTimes",
+            "TwoTurnAttackInvulnerableUnderwater",
+            "TwoTurnAttackInvulnerableHiding",
+            "TwoTurnAttackInvulnerableInFoliage",
+            "TwoTurnAttackInvulnerableRemoveProtections",
+            "TwoTurnAttackInvulnerableInSkyRecoilQuarterOfDamageDealt",
+            "TwoTurnAttackInvulnerableScalesFaster",
+            "TwoTurnAttackInvulnerableJinxFrostbite",
+            "TwoTurnAttackInvulnerableVerminCloud",
+        )
     end
 
     def pbEncoredMoveIndex
