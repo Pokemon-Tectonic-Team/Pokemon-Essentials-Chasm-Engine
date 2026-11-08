@@ -1037,7 +1037,7 @@ BattleHandlers::TargetAbilityOnHit.add(:PRIMEVALFLOURISHING,
 BattleHandlers::TargetAbilityOnHit.add(:FORCEREVERSAL,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
         if aiCheck
-            expectedTypeMod = battle.battleAI.pbCalcTypeModAI(move.calcType, user, target, move)
+            expectedTypeMod = battle.battleAI.pbCalcTypeModAI(move.calcTypes, user, target, move)
             next 0 unless Effectiveness.resistant?(target.damageState.typeMod)
             ret = 0
             aiNumHits.times do |i|

@@ -18,6 +18,7 @@ class PokeBattle_Move
     attr_reader   :priority
     attr_reader   :flags
     attr_accessor :calcType
+    attr_reader   :calcTypes
     attr_accessor :powerBoost
     attr_accessor :snatched
     attr_accessor :category_override
@@ -45,35 +46,55 @@ class PokeBattle_Move
       @priority   = move.priority
       @flags      = move.flags
       @calcType   = nil
+      @calcTypes  = []
       @powerBoost = false   # For Aerilate, Pixilate, Refrigerate, Galvanize
       @snatched   = false
     end
-  
+
+    # The subclass of this one that implements a function code.
+    def PokeBattle_Move.functionClass(functionCode)
+      functionCode ||= "Basic"
+      className = sprintf("PokeBattle_Move_%s", functionCode)
+      raise "A class for move function code #{functionCode} does not exist!" unless Object.const_defined?(className)
+      return Object.const_get(className)
+    end
+
     # This is the code actually used to generate a PokeBattle_Move object. The
     # object generated is a subclass of this one which depends on the move's
     # function code (found in the script section PokeBattle_MoveEffect).
     def PokeBattle_Move.from_pokemon_move(battle, move)
       validate move => Pokemon::Move
-      moveFunction = move.function_code || "Basic"
-      className = sprintf("PokeBattle_Move_%s", moveFunction)
-      if Object.const_defined?(className)
-        begin
-          return Object.const_get(className).new(battle, move)
-        rescue StandardError
-          raise "Error while trying to create a move of class #{className}"
-        end
-      else
-        raise "A class for move function code #{moveFunction} does not exist!"
+      moveClass = functionClass(move.function_code)
+      begin
+        return moveClass.new(battle, move)
+      rescue StandardError
+        raise "Error while trying to create a move of class #{moveClass}"
       end
-      return PokeBattle_UnimplementedMove.new(battle, move)
     end
-  
+
+    # The types of a move known only by its data.
+    def PokeBattle_Move.dataTypes(moveData)
+      return functionClass(moveData.function_code).typesWith(moveData.type)
+    end
+
     #=============================================================================
     # About the move
     #=============================================================================
     def move_data
       return GameData::Move.get(@id)
     end
+
+    # A type the move has besides its own, declared by its function code.
+    def PokeBattle_Move.extraType; return nil; end
+
+    # A move's types when its own type is the given one, which comes first.
+    def PokeBattle_Move.typesWith(primary)
+      return [primary, extraType].compact.uniq
+    end
+
+    def extraType; return self.class.extraType; end
+    def typesWith(primary); return self.class.typesWith(primary); end
+    def types; return typesWith(@type); end
 
     def pbTarget(user)
         targetData = GameData::Target.get(@target)

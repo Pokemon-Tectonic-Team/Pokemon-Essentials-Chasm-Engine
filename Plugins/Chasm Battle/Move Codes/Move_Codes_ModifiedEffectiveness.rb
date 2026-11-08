@@ -134,29 +134,15 @@ class PokeBattle_Move_NeutralEffectiveAgainstSteelLowerDef1 < PokeBattle_TypeSup
 end
 
 #===============================================================================
-# Type effectiveness is multiplied by the Flying-type's effectiveness against
-# the target. (Flying Press)
+# Is also Flying-type. (Flying Press)
 #===============================================================================
-class PokeBattle_Move_EffectivenessIncludesFlyingType < PokeBattle_Move
-    def pbCalcTypeModSingle(moveType, defType, user=nil, target=nil)
-        ret = super
-        if GameData::Type.exists?(:FLYING)
-            ret *= Effectiveness.calculate_one(:FLYING, defType)
-        end
-        return ret
-    end
+class PokeBattle_Move_AlsoFlyingType < PokeBattle_Move
+    def self.extraType; return :FLYING; end
 end
 
 #===============================================================================
-# Type effectiveness is multiplied by the Psychic-type's effectiveness against
-# the target. (Leyline Burst)
+# Is also Psychic-type. (Leyline Burst)
 #===============================================================================
-class PokeBattle_Move_EffectivenessIncludesPsychicType < PokeBattle_Move
-    def pbCalcTypeModSingle(moveType, defType, user=nil, target=nil)
-        ret = super
-        if GameData::Type.exists?(:PSYCHIC)
-            ret *= Effectiveness.calculate_one(:PSYCHIC, defType)
-        end
-        return ret
-    end
+class PokeBattle_Move_AlsoPsychicType < PokeBattle_Move
+    def self.extraType; return :PSYCHIC; end
 end

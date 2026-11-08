@@ -648,7 +648,7 @@ class PokeBattle_Move_DamageBoost30PercentSuperOrHyperEffective < PokeBattle_Mov
     end
 
     def shouldHighlight?(user, target)
-        return pbCalcTypeMod(:FLYING, user, target, true) == Effectiveness::SUPER_EFFECTIVE
+        return pbCalcTypeMod([:FLYING], user, target, true) == Effectiveness::SUPER_EFFECTIVE
     end
 end
 

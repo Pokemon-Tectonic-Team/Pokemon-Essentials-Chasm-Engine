@@ -37,6 +37,7 @@ class MoveDex_Entry_Scene
         @sprites["selectionarrow"].x = SPECIES_LIST_COLUMN_1_X_LEFT - 16
 
         @typebitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Pokedex/icon_types")))
+        @types_emphasized_bitmap = AnimatedBitmap.new(addLanguageSuffix("Graphics/Pictures/Pokedex/icon_types_emphasized"))
 
         @detailLinesToShow = 9
         @sprites["scroll_arrow_up"] = AnimatedSprite.new("Graphics/Pictures/uparrow", 8, 28, 40, 2, @viewport)
@@ -347,6 +348,32 @@ class MoveDex_Entry_Scene
         @sprites["scroll_arrow_down"].visible = canScrollSpeciesList? && @scroll <= @currentSpeciesList[0].length - @speciesLinesToShow
     end
 
+    # The types the move has no effect on, is resisted by, is super effective
+    # against and is hyper effective against, over all of its types.
+    def typeMatchups
+        immuneTypes = []
+        resistedTypes = []
+        superTypes = []
+        hyperTypes = []
+        moveTypes = @battleMoveObject.types
+        GameData::Type.each do |t|
+            next if t.pseudo_type
+
+            effect = @battleMoveObject.typesEffectiveness(moveTypes, [t.id], nil, nil, false)
+
+            if Effectiveness.ineffective?(effect)
+                immuneTypes.push(t)
+            elsif Effectiveness.not_very_effective?(effect)
+                resistedTypes.push(t)
+            elsif Effectiveness.hyper_effective?(effect)
+                hyperTypes.push(t)
+            elsif Effectiveness.super_effective?(effect)
+                superTypes.push(t)
+            end
+        end
+        return immuneTypes, resistedTypes, superTypes, hyperTypes
+    end
+
     def drawTypeMatchupsPage
         bg_path = "Graphics/Pictures/Movedex/bg_move_matchups"
         bg_path += "_dark" if darkMode?
@@ -363,23 +390,8 @@ class MoveDex_Entry_Scene
             statusLabelWidth = @sprites["overlay"].bitmap.text_size(statusLabel).width
             drawTextEx(overlay, (Graphics.width / 2) - (statusLabelWidth / 2), 80, 450, 1, statusLabel, base, shadow)
         else
-            immuneTypes = []
-            resistentTypes = []
-            weakTypes = []
-
-            GameData::Type.each do |t|
-                next if t.pseudo_type
-
-                effect = @battleMoveObject.pbCalcTypeModSingle(@moveData.type, t.id)**3
-
-                if Effectiveness.ineffective?(effect)
-                    immuneTypes.push(t)
-                elsif Effectiveness.not_very_effective?(effect)
-                    resistentTypes.push(t)
-                elsif Effectiveness.super_effective?(effect)
-                    weakTypes.push(t)
-                end
-            end
+            immuneTypes, resistentTypes, superTypes, hyperTypes = typeMatchups
+            weakTypes = [].concat(hyperTypes, superTypes)
 
             # Draw the types the move is super effective against
             drawTextEx(overlay, xLeft, yBase, 450, 1, _INTL("Super:"), base, shadow)
@@ -389,7 +401,8 @@ class MoveDex_Entry_Scene
                 weakTypes.each_with_index do |t, index|
                     type_number = GameData::Type.get(t).id_number
                     typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + (index >= 7 ? 100 : 0), yBase + 30 + (36 * (index % 7)), @typebitmap.bitmap,
+                    bitmapUsed = hyperTypes.include?(t) ? @types_emphasized_bitmap.bitmap : @typebitmap.bitmap
+                    overlay.blt(xLeft + (index >= 7 ? 100 : 0), yBase + 30 + (36 * (index % 7)), bitmapUsed,
                 typerect)
                 end
             end
@@ -531,6 +544,7 @@ class MoveDex_Entry_Scene
         pbDisposeSpriteHash(@sprites)
         @viewport.dispose
         @typebitmap.dispose
+        @types_emphasized_bitmap.dispose
     end
 
     def pbUpdate

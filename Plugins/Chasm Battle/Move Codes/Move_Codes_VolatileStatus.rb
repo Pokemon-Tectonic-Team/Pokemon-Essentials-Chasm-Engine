@@ -345,7 +345,7 @@ class PokeBattle_Move_DisableTargetUsingDifferentMove4 < PokeBattle_Move
             if moveData.category == 2 && %i[User BothSides].include?(moveData.target)
                 score += 100
             elsif moveData.category != 2 && moveData.target == :NearOther &&
-                  Effectiveness.ineffective?(pbCalcTypeMod(moveData.type, target, user))
+                  Effectiveness.ineffective?(pbCalcTypeMod(PokeBattle_Move.dataTypes(moveData), target, user))
                 score += 100
             end
         end

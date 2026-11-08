@@ -21,19 +21,15 @@ class PokeBattle_AI
         return num_targets > 1
     end
 
-    def pbCalcTypeModAI(moveType, user, target, move)
-        return Effectiveness::NORMAL_EFFECTIVE unless moveType
-        cache_key = [moveType, move.id, user.personalID, target.personalID]
+    def pbCalcTypeModAI(moveTypes, user, target, move)
+        return Effectiveness::NORMAL_EFFECTIVE if moveTypes.empty?
+        cache_key = [moveTypes, move.id, user.personalID, target.personalID]
         return @typeModCache[cache_key] if @typeModCache.key?(cache_key)
         # Determine types
         allowIllusion = !target.aiKnowsIllusion?
         tTypes = target.pbTypes(true, allowIllusion)
         # Get effectivenesses
-        ret = 1
-        tTypes.each do |defType|
-            next if moveType == :GROUND && defType == :FLYING && target.hasActiveItemAI?(:IRONBALL)
-            ret *= move.pbCalcTypeModSingle(moveType, defType, user, target)
-        end
+        ret = move.typesEffectiveness(moveTypes, tTypes, user, target, target.hasActiveItemAI?(:IRONBALL))
         # Modify effectiveness for bosses
         ret = Effectiveness.modify_boss_effectiveness(ret, user, target)
         @typeModCache[cache_key] = ret
@@ -55,8 +51,7 @@ class PokeBattle_AI
         # call and pbGetMoveScoreDamage both reuse the cached result for free.
         precomputedTypeMod = nil
         if user.index != target.index
-            moveType = pbRoughType(move, user)
-            precomputedTypeMod = pbCalcTypeModAI(moveType, user, target, move)
+            precomputedTypeMod = pbCalcTypeModAI(pbRoughTypes(move, user), user, target, move)
             if precomputedTypeMod == 0
                 echoln("\t\t[AI FAILURE CHECK] #{user.pbThis} rejects #{move.id} -- completely ineffective against #{target.pbThis(false)}")
                 user.turnCount -= 1

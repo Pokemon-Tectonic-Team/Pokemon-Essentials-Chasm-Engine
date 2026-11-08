@@ -137,7 +137,7 @@ class PokeBattle_Battler
         end
         confusionMove.calcType = confusionMove.pbCalcType(self) # nil
         confusionMove.calculateUsageOverrides(self, [self])
-        @damageState.typeMod = confusionMove.pbCalcTypeMod(confusionMove.calcType, self, self) # 8
+        @damageState.typeMod = confusionMove.pbCalcTypeMod(confusionMove.calcTypes, self, self)
         @damageState.typeMod *= 2.0 if superEff
         confusionMove.pbCheckDamageAbsorption(self, self)
         confusionMove.pbCalcDamage(self, self)
@@ -402,7 +402,7 @@ class PokeBattle_Battler
                 b.damageState.reset
                 b.damageState.initialHP = b.hp
 
-                typeMod = move.pbCalcTypeMod(move.calcType, user, b)
+                typeMod = move.pbCalcTypeMod(move.calcTypes, user, b)
                 b.damageState.typeMod = typeMod
 
                 showFailMessages = move.pbShowFailMessages?(targets)
@@ -538,7 +538,7 @@ class PokeBattle_Battler
                 success = false
                 unless move.pbMoveFailed?(b, newTargets, true)
                     newTargets.each_with_index do |newTarget, idx|
-                        typeMod = move.pbCalcTypeMod(move.calcType, user, b)
+                        typeMod = move.pbCalcTypeMod(move.calcTypes, user, b)
                         b.damageState.typeMod = typeMod
 
                         showFailMessages = move.pbShowFailMessages?(targets)

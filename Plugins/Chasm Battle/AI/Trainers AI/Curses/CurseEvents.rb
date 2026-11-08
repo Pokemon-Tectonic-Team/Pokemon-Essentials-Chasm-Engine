@@ -27,8 +27,8 @@ class PokeBattle_Battle
         return ret || false
     end
 
-    def triggerEffectivenessChangeCurseEffect(curse_policy, moveType, user, target, effectiveness)
-        ret = EffectivenessChangeCurseEffect.trigger(curse_policy, moveType, user, target, effectiveness)
+    def triggerEffectivenessChangeCurseEffect(curse_policy, moveTypes, user, target, effectiveness)
+        ret = EffectivenessChangeCurseEffect.trigger(curse_policy, moveTypes, user, target, effectiveness)
         return ret || effectiveness
     end
 

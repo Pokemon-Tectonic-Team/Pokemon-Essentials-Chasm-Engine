@@ -22,6 +22,10 @@ def pbRoughType(move, user)
     return ret
 end
 
+def pbRoughTypes(move, user)
+    return move.pbCalcTypes(user)
+end
+
 #=============================================================================
 # Figure out if the AI should play more aggressively
 # because the situation allows/requires it

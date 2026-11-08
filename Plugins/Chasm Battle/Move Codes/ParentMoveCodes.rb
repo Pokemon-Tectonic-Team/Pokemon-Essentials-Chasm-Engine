@@ -33,6 +33,7 @@ class PokeBattle_SelfHit < PokeBattle_Move
         @flags      = ""
         @effectChance = 0
         @calcType   = nil
+        @calcTypes  = []
         @powerBoost = false
         @snatched   = false
     end
@@ -87,6 +88,7 @@ class PokeBattle_Struggle < PokeBattle_Move
         @flags      = ""
         @effectChance = 0
         @calcType   = nil
+        @calcTypes  = []
         @powerBoost = false
         @snatched   = false
     end

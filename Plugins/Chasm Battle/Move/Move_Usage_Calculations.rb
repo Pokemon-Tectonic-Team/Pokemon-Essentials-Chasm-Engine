@@ -34,6 +34,10 @@ class PokeBattle_Move
         return ret
     end
 
+    def pbCalcTypes(user)
+        return typesWith(pbCalcType(user))
+    end
+
     #=============================================================================
     # Type effectiveness calculation
     #=============================================================================
@@ -49,7 +53,7 @@ class PokeBattle_Move
             ret = Effectiveness::NORMAL_EFFECTIVE
         end
         # Grounded Flying-type Pokémon become susceptible to Ground moves
-        ret = Effectiveness::NORMAL_EFFECTIVE if !target&.airborne? && (defType == :FLYING && moveType == :GROUND)
+        ret = Effectiveness::NORMAL_EFFECTIVE if target && !target.airborne? && (defType == :FLYING && moveType == :GROUND)
         # Inured
         ret /= 2 if target&.effectActive?(:Inured) && Effectiveness.super_effective_type?(moveType, defType)
         # Break Through — check immunity first (cheap) before iterating the ability list.
@@ -59,8 +63,21 @@ class PokeBattle_Move
         return ret
     end
 
-    def pbCalcTypeMod(moveType, user, target, uiOnlyCheck = false)
-        return Effectiveness::NORMAL_EFFECTIVE unless moveType
+    # The product of pbCalcTypeModSingle over every pair of move type and
+    # defender type. An Iron Ball makes Ground neutral against Flying.
+    def typesEffectiveness(moveTypes, defTypes, user, target, ironBall)
+        ret = 1
+        moveTypes.each do |moveType|
+            defTypes.each do |defType|
+                next if ironBall && moveType == :GROUND && defType == :FLYING
+                ret *= pbCalcTypeModSingle(moveType, defType, user, target)
+            end
+        end
+        return ret
+    end
+
+    def pbCalcTypeMod(moveTypes, user, target, uiOnlyCheck = false)
+        return Effectiveness::NORMAL_EFFECTIVE if moveTypes.empty?
 
         # Determine types
         tTypes = target.pbTypes(true, uiOnlyCheck)
@@ -68,11 +85,7 @@ class PokeBattle_Move
         immunityPierced = false
 
         # Get effectivenesses
-        ret = 1
-        tTypes.each do |type|
-            next if moveType == :GROUND && type == :FLYING && target.hasActiveItem?(:IRONBALL)
-            ret *= pbCalcTypeModSingle(moveType, type, user, target)
-        end
+        ret = typesEffectiveness(moveTypes, tTypes, user, target, target.hasActiveItem?(:IRONBALL))
 
         # Partially pierce immunities
         if inherentImmunitiesPierced?(user, target)
@@ -96,17 +109,17 @@ class PokeBattle_Move
         end
 
         # Creep Out
-        ret *= 2 if target.effectActive?(:CreepOut) && moveType == :BUG
+        ret *= 2 if target.effectActive?(:CreepOut) && moveTypes.include?(:BUG)
 
         # Tar Shot
-        ret *= 2 if target.effectActive?(:TarShot) && moveType == :FIRE
+        ret *= 2 if target.effectActive?(:TarShot) && moveTypes.include?(:FIRE)
 
         # Modify effectiveness for bosses
         ret = Effectiveness.modify_boss_effectiveness(ret, user, target)
 
         # Type effectiveness changing curses
         @battle.curses.each do |curse|
-            ret = @battle.triggerEffectivenessChangeCurseEffect(curse, moveType, user, target, ret)
+            ret = @battle.triggerEffectivenessChangeCurseEffect(curse, moveTypes, user, target, ret)
         end
 
         return ret

@@ -203,7 +203,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:TELEPATHY,
 
 def typeModToCheck(battle, type, user, target, move, aiCheck)
   if aiCheck
-    typeMod = battle.battleAI.pbCalcTypeModAI(type, user, target, move)
+    typeMod = battle.battleAI.pbCalcTypeModAI(move.typesWith(type), user, target, move)
   else
     typeMod = target.damageState.typeMod
   end

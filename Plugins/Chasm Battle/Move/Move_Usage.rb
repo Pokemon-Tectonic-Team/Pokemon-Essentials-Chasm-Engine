@@ -36,6 +36,7 @@ class PokeBattle_Move
         @category_override = calculateCategoryOverride(user, targets)
         # Calculate the move's type during this usage
         @calcType = pbCalcType(user)
+        @calcTypes = typesWith(@calcType)
     end
 
     def calculateCategoryOverride(user, targets)
