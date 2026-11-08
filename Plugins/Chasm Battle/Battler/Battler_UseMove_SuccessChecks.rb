@@ -55,7 +55,7 @@ class PokeBattle_Battler
             return false
         end
         # Choice Items
-        if effectActive?(:ChoiceBand)
+        if effectActive?(:ChoiceBand) && !@ignoreChoiceLock
             choiceItem = nil
             GameData::Item.getByFlag("ChoiceLocking").each do |choiceLockItem|
                 next unless hasActiveItem?(choiceLockItem)

@@ -71,3 +71,9 @@ BattleHandlers::CriticalCalcUserAbility.add(:RELUCTANTWARRIOR,
       next c
   }
 )
+
+BattleHandlers::CriticalCalcUserAbility.add(:PROBEWEAKNESS,
+  proc { |ability, user, _target, _move, c|
+      next c + user.effects[:ProbeWeakness]
+  }
+)

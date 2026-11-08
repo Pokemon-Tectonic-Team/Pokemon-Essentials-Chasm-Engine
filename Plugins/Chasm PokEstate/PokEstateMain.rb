@@ -519,12 +519,14 @@ class PokEstate
 		cmdEvolve  = -1
 		cmdStyle = -1
 		cmdSwapAbility = -1
+		cmdChangeForm = -1
 		cmdOmnitutor = -1
 		cmdCancel = -1
 
 		# Build the commands
 		commands[cmdStyle = commands.length]  	= _INTL("Set Style") if pbHasItem?(:STYLINGKIT)
-		commands[cmdSwapAbility = commands.length]  	= _INTL("Swap Ability") if pbHasItem?(:VIRALHELIX)
+		commands[cmdSwapAbility = commands.length]  	= _INTL("Swap Ability") if pbHasItem?(:VIRALHELIX) && pbCanSwapAbility?(pokemon)
+		commands[cmdChangeForm = commands.length]        = _INTL("Change Form") if pbHasItem?(:UNIVERSALFORMALIZER) && pbCanChangePokemonForm?(pokemon)
 		if $PokemonGlobal.omnitutor_active && !getOmniMoves(pokemon).empty?
 			commands[cmdOmnitutor = commands.length]	= _INTL("OmniTutor")
 		end
@@ -566,6 +568,10 @@ class PokEstate
 			pbStyleValueScreen(pokemon)
 		elsif cmdSwapAbility >= 0 && modifyCommand == cmdSwapAbility
 			pbSwapAbility(pokemon)
+			convertEventToPokemon(eventCalling, pokemon)
+		elsif cmdChangeForm >= 0 && modifyCommand == cmdChangeForm
+            pbChangePokemonForm(pokemon)
+			convertEventToPokemon(eventCalling, pokemon)
 		elsif cmdOmnitutor >= 0 && modifyCommand == cmdOmnitutor
 			omniTutorScreen(pokemon)
 		elsif cmdCancel > -1 && modifyCommand == cmdCancel

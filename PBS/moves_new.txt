@@ -700,17 +700,6 @@ Flags = CanProtect
 Description = The user causes the air around the target to explode. The move's type is changed based on the active weather.
 Animation = WEATHERBALL
 #-------------------------------
-[WISHINGWELL]
-Name = Wishing Well
-Type = NORMAL
-Category = Status
-Accuracy = 0
-TotalPP = 10
-Target = UserSide
-FunctionCode = WishingWellScalesWithMoney
-Description = The user throws away up to 1000 scattered coins to bless its side, blocking random added effects and healing for 1/16th HP each turn. Lasts one turn per 100 coins.
-Animation = PAYDAY
-#-------------------------------
 [WORLDREVOLVING]
 Name = World Revolving
 Type = NORMAL
@@ -1668,6 +1657,20 @@ EffectChance = 100
 Description = The user attacks while slathered in grime. This poisons the user.
 Animation = POISONJAB
 #-------------------------------
+[HAZARDCLAW]
+Name = Hazard Claw
+Type = POISON
+Category = Physical
+Power = 90
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = Numb
+Flags = CanProtect,Slice
+EffectChance = 100
+Description = The user releases a potent venom through its claws, numbing the target.
+Animation = CROSSPOISON
+#-------------------------------
 [MIASMA]
 Name = Miasma
 Type = POISON
@@ -1693,6 +1696,18 @@ FunctionCode = Poison
 Flags = CanProtect,Punch
 EffectChance = 10
 Description = The user stabs the opponent with a toxin-infused limb. It has a 10% chance to poison.
+#-------------------------------
+[NOXIOUSBARBS]
+Name = Noxious Barbs
+Type = POISON
+Category = Status
+Accuracy = 100
+TotalPP = 8
+Target = NearOther
+FunctionCode = PoisonMoveWorsenPoisonLowerSpeed1
+Flags = CanProtect,CanMagicCoat
+Description = This poisons the target. If the target is already poisoned, their poison worsens and their Speed is lowered.
+Animation = POISONSTING
 #-------------------------------
 [POISONDART]
 Name = Poison Dart
@@ -2491,7 +2506,7 @@ Type = ROCK
 Category = Special
 Power = 80
 Accuracy = 100
-TotalPP = 12
+TotalPP = 15
 Target = NearOther
 FunctionCode = FractureTarget
 Flags = CanProtect
@@ -3124,7 +3139,7 @@ Type = BUG
 Category = Physical
 Power = 50
 Accuracy = 100
-TotalPP = 20
+TotalPP = 12
 Target = NearOther
 FunctionCode = HealUserByHalfOfDamageDone
 Flags = CanProtect
@@ -5194,6 +5209,18 @@ EffectChance = 40
 Description = The user crashes into the target with the force of a large wave. This has a 40% chance to lower Defense.
 Animation = SPATTERINGRAM
 #-------------------------------
+[WELLWISHES]
+Name = Well Wishes
+Type = WATER
+Category = Status
+Accuracy = 0
+TotalPP = 5
+Target = User
+FunctionCode = HealUserHalfOfTotalHPSetupRainbow
+Flags = CanSnatch,Sound
+Description = The user throws away 500 scattered coins to heal itself by half of its max HP and bless its side with a Rainbow for eight turns.
+Animation = PAYDAY
+#-------------------------------
 [WETLANDWALTZ]
 Name = Wetland Waltz
 Type = WATER
@@ -5460,7 +5487,7 @@ Name = Mulch Meal
 Type = GRASS
 Category = Status
 Accuracy = 0
-TotalPP = 10
+TotalPP = 5
 Target = User
 FunctionCode = HealUserHalfOfTotalHPRaiseSpd1
 Flags = CanSnatch
@@ -8179,8 +8206,8 @@ Accuracy = 70
 TotalPP = 10
 Target = NearOther
 FunctionCode = CantMissIfInMoonglow
-Flags = CanProtect,CanRandomCrit
-Description = The user tries to surprise-attack the target. Cannot miss in moonglow. Can random critical hit.
+Flags = CanProtect,CanRandomCrit,DoubleCritChance
+Description = The user tries to surprise-attack the target. Cannot miss in moonglow. Can random critical hit, and does so twice as often.
 Animation = NIGHTSLASH
 #-------------------------------
 [PILFER]
@@ -8681,7 +8708,7 @@ TotalPP = 5
 Target = User
 FunctionCode = HealUserFullHPBindsTarget
 Flags = CanSnatch
-Description = The user uses honey to fully restore its HP. However, this lures swarming insects, trapping and binding the user for three turns.
+Description = The user uses honey to fully restore its HP. This can overheal. However, swarming insects trap and bind the user for two turns.
 Animation = RECOVER
 #-------------------------------
 [HUMBLE]
