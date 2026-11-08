@@ -211,7 +211,7 @@ class MoveDex_Scene
                     @scroll = 0
                     doRefresh = true
                 else
-                    pbPlayCursorSE
+                    pbPlayBuzzerSE
                 end
             elsif Input.trigger?(Input::DOWN) && Input.press?(Input::CTRL)
                 if @scroll < @moveList.length - 1
@@ -219,7 +219,7 @@ class MoveDex_Scene
                     @scroll = @moveList.length - 1
                     doRefresh = true
                 else
-                    pbPlayCursorSE
+                    pbPlayBuzzerSE
                 end
             elsif Input.repeat?(Input::UP)
                 if @scroll > 0
