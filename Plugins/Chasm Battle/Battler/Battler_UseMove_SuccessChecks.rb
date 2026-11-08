@@ -8,7 +8,7 @@ class PokeBattle_Battler
     # move) or an unusable move may be called by another move such as Metronome.
     #=============================================================================
     def pbCanChooseMove?(move, commandPhase, showMessages = true, specialUsage = false)
-        return true if move.empoweredMove? && boss?
+        return true if move.bossPrimeval?(self)
         # Disable
         if @effects[:DisableMove] == move.id && !specialUsage
             msg = _INTL("{1}'s {2} is disabled!", pbThis, move.name)
@@ -133,7 +133,7 @@ class PokeBattle_Battler
             echoln(msg)
             return false
         end
-        #Type-Restricted
+        # Type-Restricted
         if effectActive?(:TypeRestricted) && move.id != :STRUGGLE && move.pbCalcType(self) != @effects[:TypeRestricted]
             effect_type = @effects[:TypeRestricted]
             msg = _INTL("{1} can only use {2}-type moves!", pbThis, effect_type.name.capitalize)
@@ -165,7 +165,7 @@ class PokeBattle_Battler
                 return false
             end
         end
-        if hasActiveAbility?(:AURORAPRISM) && (move.damagingMove? && (pbHasType?(move.type) || move.type == :FLEX))
+        if hasActiveAbility?(:AURORAPRISM) && move.damagingMove? && (pbHasType?(move.type) || move.type == :FLEX)
             msg = _INTL("{1} cannot use moves of their own types!", pbThis)
             if showMessages
                 commandPhase ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
@@ -177,7 +177,7 @@ class PokeBattle_Battler
         return false unless move.pbCanChooseMove?(self, commandPhase, showMessages)
         # Turbulent Sky
         if pbOwnSide.effectActive?(:TurbulentSky) && !effectActive?(:Instructed) &&
-                @lastMoveUsedType && move.pbCalcType(self) == @lastMoveUsedType && move.id != @battle.struggle.id
+           @lastMoveUsedType && move.pbCalcType(self) == @lastMoveUsedType && move.id != @battle.struggle.id
             msg = _INTL("{1} can't use the same type twice in a row due to the turbulent sky!", pbThis)
             if showMessages
                 commandPhase ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
@@ -219,8 +219,8 @@ class PokeBattle_Battler
     # to have been used (even if it then fails for whatever reason).
     #=============================================================================
     def pbTryUseMove(move, specialUsage, skipAccuracyCheck, aiCheck = false)
-        return true if move.empoweredMove? && boss? && move.statusMove?
-        
+        return true if move.bossPrimeval?(self) && move.statusMove?
+
         # Check whether it's possible for self to use the given move
         # NOTE: Encore has already changed the move being used, no need to have a
         #       check for it here.
@@ -231,7 +231,7 @@ class PokeBattle_Battler
 
         if effectActive?(:IceSculpture)
             if aiCheck
-                echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to being an ice sculpture.")  
+                echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to being an ice sculpture.")
             else
                 @battle.pbDisplay(_INTL("{1} is an ice sculpture! It can't move!", pbThis))
             end
@@ -283,23 +283,22 @@ class PokeBattle_Battler
         if hasActiveAbility?(:PACIFIST)
             if aiCheck
                 echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Pacifist)")
-                return false
             else
                 showMyAbilitySplash(:PACIFIST)
                 @battle.pbDisplay(_INTL("{1} refuses to battle!", pbThis))
                 onMoveFailed(move)
                 hideMyAbilitySplash
-                return false
             end
+            return false
         elsif refusesToFight?
             if aiCheck
                 echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to refuse to move (Refuses to fight)")
-                return false
             else
                 @battle.pbDisplay(_INTL("{1} refuses to battle!", pbThis))
                 onMoveFailed(move)
-                return false
+
             end
+            return false
         end
 
         # Truant
@@ -332,23 +331,21 @@ class PokeBattle_Battler
                     echoln("\t\t[AI FAILURE CHECK] #{pbThis} rejects the move #{move.id} due to it being predicted to flinch (Moonglow?)")
                     return false
                 end
+            elsif effectActive?(:FlinchImmunity)
+                @battle.pbDisplay(_INTL("{1} would have flinched, but it's immune now!", pbThis))
+                disableEffect(:Flinch)
+            elsif tyrannicalPreventsFlinch?
+            elsif hasActiveItem?(:COURAGEBADGE)
+                @battle.pbDisplay(_INTL("{1} would have flinched, but it holds a Courage Badge!", pbThis))
+                aiLearnsItem(:COURAGEBADGE)
             else
-                if effectActive?(:FlinchImmunity)
-                    @battle.pbDisplay(_INTL("{1} would have flinched, but it's immune now!", pbThis))
-                    disableEffect(:Flinch)
-                elsif tyrannicalPreventsFlinch?
-                elsif hasActiveItem?(:COURAGEBADGE)
-                    @battle.pbDisplay(_INTL("{1} would have flinched, but it holds a Courage Badge!", pbThis))
-                    aiLearnsItem(:COURAGEBADGE)
-                else
-                    @battle.pbDisplay(_INTL("{1} flinched and couldn't move!", pbThis))
-                    eachActiveAbility do |ability|
-                        BattleHandlers.triggerAbilityOnFlinch(ability, self, @battle)
-                    end
-                    onMoveFailed(move)
-                    applyEffect(:FlinchImmunity,4)
-                    return false
+                @battle.pbDisplay(_INTL("{1} flinched and couldn't move!", pbThis))
+                eachActiveAbility do |ability|
+                    BattleHandlers.triggerAbilityOnFlinch(ability, self, @battle)
                 end
+                onMoveFailed(move)
+                applyEffect(:FlinchImmunity, 4)
+                return false
             end
         end
         return true
@@ -414,13 +411,12 @@ target.pbThis(true)))
         protectionIgnoredByAbility = true if user.shouldAbilityApply?(:PHANTASMAL, aiCheck) && move.is_a?(PokeBattle_Move_TwoTurnAttackInvulnerable)
         protectionIgnoredByAbility = true if user.shouldAbilityApply?(:PRIMEVALBREAKTHROUGH, aiCheck)
 
-
         # Only check the target's side if the target is not the self
         holdersToCheck = [target]
         holdersToCheck.push(target.pbOwnSide) if target.index != user.index
         holdersToCheck.each do |effectHolder|
             effectHolder.eachActiveProtectionEffect do |effect, _value, data|
-                if data.protection_info&.has_key?(:does_negate_proc) && !data.protection_info[:does_negate_proc].call(
+                if data.protection_info&.key?(:does_negate_proc) && !data.protection_info[:does_negate_proc].call(
                     user, target, move, @battle)
                     next
                 end
@@ -428,7 +424,7 @@ target.pbThis(true)))
                 animationName = data.protection_info ? data.protection_info[:animation_name] : effect.to_s
                 negated = doesProtectionEffectNegateThisMove?(effectName, move, user, target, protectionIgnoredByAbility,
 animationName, show_message) do
-                    if data.protection_info&.has_key?(:hit_proc) && !aiCheck
+                    if data.protection_info&.key?(:hit_proc) && !aiCheck
                         data.protection_info[:hit_proc].call(user, target, move, @battle)
                     end
                 end
@@ -440,7 +436,7 @@ animationName, show_message) do
         if move.canMagicCoat? && !target.semiInvulnerable? && target.opposes?(user)
             if aiCheck
                 if target.canChooseMagicCoat? || target.effectActive?(:EmpoweredMagicCoat)
-                    return false              
+                    return false
                 end
             else
                 if target.effectActive?(:EmpoweredMagicCoat)
@@ -523,8 +519,8 @@ animationName, show_message) do
         pranksterInEffect = false
         if aiCheck
             pranksterInEffect = true if user.hasActiveAbilityAI?(:PRANKSTER) && move.statusMove?
-        else
-            pranksterInEffect = true if user.effectActive?(:Prankster)
+        elsif user.effectActive?(:Prankster)
+            pranksterInEffect = true
         end
         if pranksterInEffect && target.pbHasType?(:DARK) && target.opposes?(user)
             PBDebug.log("[Target immune] #{target.pbThis} is Dark-type and immune to Prankster-boosted moves")
@@ -552,13 +548,12 @@ target.pbThis(true)))
                 return true
             end
             GameData::Item.getByFlag("Levitation").each do |levitationItem|
-                if target.hasActiveItem?(levitationItem)
-                    if showMessages
-                        @battle.pbDisplay(_INTL("{1}'s {2} makes Ground moves miss!", target.pbThis, getItemName(levitationItem)))
-                        @battle.triggerImmunityDialogue(user, target, false)
-                    end
-                    return true
+                next unless target.hasActiveItem?(levitationItem)
+                if showMessages
+                    @battle.pbDisplay(_INTL("{1}'s {2} makes Ground moves miss!", target.pbThis, getItemName(levitationItem)))
+                    @battle.triggerImmunityDialogue(user, target, false)
                 end
+                return true
             end
             if target.effectActive?(:MagnetRise)
                 if showMessages
@@ -586,8 +581,8 @@ target.pbThis(true)))
         # Two-turn attacks can't fail here in the charging turn
         if aiCheck
             return true if move.is_a?(PokeBattle_TwoTurnMove)
-        else
-            return true if user.effectActive?(:TwoTurnAttack)
+        elsif user.effectActive?(:TwoTurnAttack)
+            return true
         end
         # Lock-On
         return true if user.effectActive?(:LockOn) && user.effects[:LockOnPos] == target.index
@@ -606,16 +601,14 @@ target.pbThis(true)))
     # Message shown when a move fails the per-hit success check above.
     #=============================================================================
     def pbMissMessage(move, user, target)
-        if move.pbTarget(user).num_targets > 1
-            @battle.pbDisplay(_INTL("{1} avoided the attack!", target.pbThis))
-        elsif target.effectActive?(:TwoTurnAttack)
+        if move.pbTarget(user).num_targets > 1 || target.effectActive?(:TwoTurnAttack)
             @battle.pbDisplay(_INTL("{1} avoided the attack!", target.pbThis))
         elsif !move.pbMissMessage(user, target)
             @battle.pbDisplay(_INTL("{1}'s attack missed!", user.pbThis))
         end
     end
 
-    def onMoveFailed(move, affectsTrackers = true)
+    def onMoveFailed(_move, affectsTrackers = true)
         @lastMoveFailed = true if affectsTrackers
         # Slap stick
         eachOpposing do |b|

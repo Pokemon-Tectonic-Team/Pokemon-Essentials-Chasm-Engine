@@ -31,11 +31,9 @@ class PokeBattle_Battler
             ret = BattleHandlers.triggerTypeCalcAbility(abilityID, self, ret)
         end
         # Extra types (used for a curse)
-        if @pokemon
-            @pokemon.extraTypes.each do |extraPkmnType|
-                next if ret.include?(extraPkmnType)
-                ret.push(extraPkmnType)
-            end
+        @pokemon&.extraTypes&.each do |extraPkmnType|
+            next if ret.include?(extraPkmnType)
+            ret.push(extraPkmnType)
         end
         # Burn Up erases the Fire-type.
         ret.delete(:FIRE) if effectActive?(:BurnUp)
@@ -93,25 +91,21 @@ class PokeBattle_Battler
         return GameData::Ability.try_get(firstAbility)
     end
 
-    def eachAbility
-        abilities.each do |abilityID|
-            yield abilityID
-        end
+    def eachAbility(&)
+        abilities.each(&)
     end
 
-    def eachActiveAbility(ignore_fainted = false, ignoreGas: false)
+    def eachActiveAbility(ignore_fainted = false, ignoreGas: false, &block)
         return unless abilityActive?(ignore_fainted, ignoreGas)
-        abilities.each do |abilityID|
-            yield abilityID
-        end
+        abilities.each(&block)
     end
 
     def hasAbility?(checkable)
         abilities.each do |ability|
             if checkable.is_a?(Array)
                 return ability if checkable.include?(ability)
-            else
-                return ability if checkable == ability
+            elsif checkable == ability
+                return ability
             end
         end
         return false
@@ -148,7 +142,7 @@ class PokeBattle_Battler
             return true if item.nil?
             return !isIllegalItem?(item)
         end
-        
+
         # Sticky fingers is weird and needs it own check here
         if hasActiveAbility?(:STICKYFINGERS)
             return itemCount <= 1 && stolen
@@ -266,15 +260,13 @@ class PokeBattle_Battler
 
     def eachItemWithName
         eachItem do |itemID|
-            yield itemID,getItemName(itemID)
+            yield itemID, getItemName(itemID)
         end
     end
 
-    def eachActiveItem(ignoreFainted = false)
+    def eachActiveItem(ignoreFainted = false, &)
         return unless itemActive?(ignoreFainted)
-        eachItem do |itemID|
-            yield itemID
-        end
+        eachItem(&)
     end
 
     def itemActive?(ignoreFainted = false)
@@ -316,8 +308,8 @@ class PokeBattle_Battler
         items.each do |item|
             if checkitem.is_a?(Array)
                 return item if checkitem.include?(item)
-            else
-                return item if checkitem == item
+            elsif checkitem == item
+                return item
             end
         end
         return false
@@ -353,12 +345,12 @@ class PokeBattle_Battler
         return false
     end
 
-    def eachMove(&block)
-        @moves.each(&block)
+    def eachMove(&)
+        @moves.each(&)
     end
 
-    def eachMoveWithIndex(&block)
-        @moves.each_with_index(&block)
+    def eachMoveWithIndex(&)
+        @moves.each_with_index(&)
     end
 
     def pbHasMove?(move_id)
@@ -387,19 +379,19 @@ class PokeBattle_Battler
     end
 
     def activatesTargetAbilities?(aiCheck = false)
-        return false if shouldItemApply?(:PROXYFIST,aiCheck)
+        return false if shouldItemApply?(:PROXYFIST, aiCheck)
         return false if shouldAbilityApply?(:AFROTECTION, aiCheck)
         return true
     end
 
     def activatesTargetItem?(aiCheck = false)
-        return false if shouldItemApply?(:PROXYFIST,aiCheck)
+        return false if shouldItemApply?(:PROXYFIST, aiCheck)
         return false if shouldAbilityApply?(:AFROTECTION, aiCheck)
         return true
     end
 
     def activatesTargetEffects?(aiCheck = false)
-        return false if shouldItemApply?(:PROXYFIST,aiCheck)
+        return false if shouldItemApply?(:PROXYFIST, aiCheck)
         return false if shouldAbilityApply?(:AFROTECTION, aiCheck)
         return true
     end
@@ -432,13 +424,13 @@ class PokeBattle_Battler
     end
 
     def airborne?(checkingForAI = false)
-        return false if shouldItemApply?(:IRONBALL,checkingForAI)
+        return false if shouldItemApply?(:IRONBALL, checkingForAI)
         return false if effectActive?(:Ingrain)
         return false if effectActive?(:SmackDown)
         return false if @battle.gravityIntensified?
         return true if shouldTypeApply?(:FLYING, checkingForAI)
         return true if hasLevitate?(checkingForAI) && !@battle.moldBreaker
-        return true if shouldItemApply?(GameData::Item.getByFlag("Levitation"),checkingForAI)
+        return true if shouldItemApply?(GameData::Item.getByFlag("Levitation"), checkingForAI)
         return true if effectActive?(:MagnetRise)
         return true if effectActive?(:Telekinesis)
         return false
@@ -471,11 +463,11 @@ class PokeBattle_Battler
 
     def canHeal?(overheal = false)
         return false if fainted?
-        overheal = overheal || forceOverheal?
+        overheal ||= forceOverheal?
         if overheal
             return false if @hp >= @totalhp * 2
-        else
-            return false if @hp >= @totalhp
+        elsif @hp >= @totalhp
+            return false
         end
         return false if effectActive?(:HealBlock)
         return true
@@ -535,25 +527,27 @@ class PokeBattle_Battler
 
     def inTwoTurnSkyAttack?
         return inTwoTurnAttack?(
-                "TwoTurnAttackInvulnerableInSky",
-                "TwoTurnAttackInvulnerableInSkyRecoilQuarterOfDamageDealt",
-                "TwoTurnAttackInvulnerableScalesFaster",
-                "TwoTurnAttackInvulnerableJinxFrostbite"
-            )
+            "TwoTurnAttackInvulnerableInSky",
+            "TwoTurnAttackInvulnerableInSkyRecoilQuarterOfDamageDealt",
+            "TwoTurnAttackInvulnerableScalesFaster",
+            "TwoTurnAttackInvulnerableJinxFrostbite"
+        )
     end
 
     def semiInvulnerable?
-        return inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
-        "TwoTurnAttackInvulnerableUnderground",
-        "TwoTurnAttackInvulnerableUndergroundHitThreeTimes",
-        "TwoTurnAttackInvulnerableUnderwater",
-        "TwoTurnAttackInvulnerableHiding",
-        "TwoTurnAttackInvulnerableInFoliage",
-        "TwoTurnAttackInvulnerableRemoveProtections",
-        "TwoTurnAttackInvulnerableInSkyRecoilQuarterOfDamageDealt",
-        "TwoTurnAttackInvulnerableScalesFaster",
-        "TwoTurnAttackInvulnerableJinxFrostbite",
-        "TwoTurnAttackInvulnerableVerminCloud",)
+        return inTwoTurnAttack?(
+            "TwoTurnAttackInvulnerableInSky",
+            "TwoTurnAttackInvulnerableUnderground",
+            "TwoTurnAttackInvulnerableUndergroundHitThreeTimes",
+            "TwoTurnAttackInvulnerableUnderwater",
+            "TwoTurnAttackInvulnerableHiding",
+            "TwoTurnAttackInvulnerableInFoliage",
+            "TwoTurnAttackInvulnerableRemoveProtections",
+            "TwoTurnAttackInvulnerableInSkyRecoilQuarterOfDamageDealt",
+            "TwoTurnAttackInvulnerableScalesFaster",
+            "TwoTurnAttackInvulnerableJinxFrostbite",
+            "TwoTurnAttackInvulnerableVerminCloud",
+        )
     end
 
     def pbEncoredMoveIndex
@@ -655,7 +649,7 @@ class PokeBattle_Battler
 
     def hpBasedEffectResistance
         return 1.0 unless boss?
-        return 1.0 / (@pokemon.hpMult.to_f || DEFAULT_BOSS_HP_MULT.to_f)
+        return 1.0 / @pokemon.hpMult.to_f
     end
 
     def evenTurn?
@@ -693,7 +687,7 @@ class PokeBattle_Battler
         holdersToCheck.each do |effectHolder|
             effectHolder.eachEffect(true) do |_effect, _value, data|
                 next unless data.is_protection?
-                if data.protection_info&.has_key?(:does_negate_proc)
+                if data.protection_info&.key?(:does_negate_proc)
                     return data.protection_info[:does_negate_proc].call(user, self, move, @battle)
                 else
                     return true
@@ -713,23 +707,23 @@ class PokeBattle_Battler
 
     def getRoomDuration(baseDuration = 6, aiCheck: false)
         ret = baseDuration
-        ret = (ret * 3) / 2 if shouldItemApply?(:REINFORCINGROD,aiCheck)
+        ret = (ret * 3) / 2 if shouldItemApply?(:REINFORCINGROD, aiCheck)
         ret = applyEffectDurationModifiers(ret, self)
         return ret
     end
 
-    def getScreenDuration(baseDuration = 5,aiCheck: false)
+    def getScreenDuration(baseDuration = 5, aiCheck: false)
         ret = baseDuration
-        ret += 3 if shouldItemApply?(:LIGHTCLAY,aiCheck)
-        ret += 6 if shouldItemApply?(:BRIGHTCLAY,aiCheck)
-        ret += 2 if shouldAbilityApply?(:PLANARVEIL,aiCheck)
+        ret += 3 if shouldItemApply?(:LIGHTCLAY, aiCheck)
+        ret += 6 if shouldItemApply?(:BRIGHTCLAY, aiCheck)
+        ret += 2 if shouldAbilityApply?(:PLANARVEIL, aiCheck)
         ret = applyEffectDurationModifiers(ret, self)
         return ret
     end
 
-    def getRampageDuration(baseDuration = 2,aiCheck: false)
+    def getRampageDuration(baseDuration = 2, aiCheck: false)
         ret = baseDuration
-        ret += 1 if shouldAbilityApply?(:UNDYINGRAGE,aiCheck)
+        ret += 1 if shouldAbilityApply?(:UNDYINGRAGE, aiCheck)
         return ret
     end
 
@@ -746,7 +740,7 @@ class PokeBattle_Battler
         half = @totalhp / 2.0
         return @damageState.initialHP >= half && @hp < half
     end
-    
+
     def avatarData
         return GameData::Avatar.get_from_pokemon(@pokemon)
     end
@@ -918,14 +912,14 @@ class PokeBattle_Battler
     end
 
     def maxOverhealingPossible
-        return (@totalhp * 2) - @hp  
+        return (@totalhp * 2) - @hp
     end
 
     def overhealed?
         return @hp > @totalhp
     end
 
-    def getWeatherSettingDuration(weatherType, baseDuration = 4, ignoreFainted = false)
+    def getWeatherSettingDuration(weatherType, baseDuration = 4, _ignoreFainted = false)
         duration = baseDuration
         if duration > 0
             eachActiveItem(true) do |item|
@@ -936,12 +930,12 @@ class PokeBattle_Battler
     end
 
     def ignoreScreens?(checkingForAI)
-        return true if shouldAbilityApply?(GameData::Ability.getByFlag("IgnoreScreens"),checkingForAI)
+        return true if shouldAbilityApply?(GameData::Ability.getByFlag("IgnoreScreens"), checkingForAI)
         return false
     end
 
     def canBeDisabled?(show_messages = false, move = nil)
-        return false if move&.empoweredMove? && boss?
+        return false if move&.bossPrimeval?(self)
         return false if move&.pbMoveFailedAromaVeil?(nil, self, show_messages)
         return false if fainted?
         return false if effectActive?(:Disable)
@@ -957,7 +951,7 @@ class PokeBattle_Battler
     end
 
     def immuneToHazards?(aiCheck = false)
-        if shouldItemApply?(:HEAVYDUTYBOOTS,aiCheck)
+        if shouldItemApply?(:HEAVYDUTYBOOTS, aiCheck)
             aiLearnsItem(:HEAVYDUTYBOOTS) unless aiCheck
             return true
         end
@@ -992,14 +986,12 @@ class PokeBattle_Battler
         return @pokemon.species_data.legalAbilities
     end
 
-    def eachLegalAbility
-        @pokemon.species_data.legalAbilities.each do |abilityID|
-            yield abilityID
-        end
+    def eachLegalAbility(&)
+        @pokemon.species_data.legalAbilities.each(&)
     end
 
     def protectedByScreen?
-        pbOwnSide.eachEffect(true) do |effect, _value, data|
+        pbOwnSide.eachEffect(true) do |_effect, _value, data|
             next unless data.is_screen?
             return true
         end
@@ -1019,7 +1011,7 @@ class PokeBattle_Battler
             end
             return true
         end
-        badInfluencer = @battle.pbCheckOpposingAbility(:BADINFLUENCE,@index)
+        badInfluencer = @battle.pbCheckOpposingAbility(:BADINFLUENCE, @index)
         if badInfluencer
             if showMessages
                 badInfluencer.showMyAbilitySplash(:BADINFLUENCE)
@@ -1076,8 +1068,8 @@ class PokeBattle_Battler
 
     def hasMentalEffect?
         eachEffect(true) do |_effect, _value, data|
-        return true if data.is_mental?
+            return true if data.is_mental?
+        end
+        return false
     end
-    return false
-  end
 end
