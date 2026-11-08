@@ -8,7 +8,7 @@ class PokeBattle_Battler
     # move) or an unusable move may be called by another move such as Metronome.
     #=============================================================================
     def pbCanChooseMove?(move, commandPhase, showMessages = true, specialUsage = false)
-        return true if move.empoweredMove? && boss?
+        return true if move.bossPrimeval?(self)
         # Disable
         if @effects[:DisableMove] == move.id && !specialUsage
             msg = _INTL("{1}'s {2} is disabled!", pbThis, move.name)
@@ -219,7 +219,7 @@ class PokeBattle_Battler
     # to have been used (even if it then fails for whatever reason).
     #=============================================================================
     def pbTryUseMove(move, specialUsage, skipAccuracyCheck, aiCheck = false)
-        return true if move.empoweredMove? && boss? && move.statusMove?
+        return true if move.bossPrimeval?(self) && move.statusMove?
         
         # Check whether it's possible for self to use the given move
         # NOTE: Encore has already changed the move being used, no need to have a

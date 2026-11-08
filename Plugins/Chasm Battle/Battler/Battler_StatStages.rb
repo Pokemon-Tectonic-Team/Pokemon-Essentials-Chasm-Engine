@@ -268,7 +268,8 @@ class PokeBattle_Battler
                 @battle.pbDisplay(_INTL("{1} is protected by Mist!", pbThis)) if showFailMsg
                 return false
             end
-            unless ignoreAbilities
+            pierce = move&.bossPrimeval?(user)
+            unless ignoreAbilities || pierce
                 eachActiveAbility do |ability|
                     return false if BattleHandlers.triggerStatLossImmunityAbilityNonIgnorable(ability, self, stat, @battle, showFailMsg)
                 end
@@ -284,7 +285,7 @@ class PokeBattle_Battler
                     end
                 end
             end
-            if hasTribeBonus?(:SCRAPPER) && stat == :DEFENSE
+            if !pierce && hasTribeBonus?(:SCRAPPER) && stat == :DEFENSE
                 if showFailMsg
                     @battle.pbShowTribeSplash(self,:SCRAPPER)
                     @battle.pbDisplay(_INTL("{1}'s attitude prevents its Defense from lowering!", pbThis))
@@ -292,7 +293,7 @@ class PokeBattle_Battler
                 end
                 return false
             end
-            if hasTribeBonus?(:RADIANT) && stat == :SPECIAL_DEFENSE
+            if !pierce && hasTribeBonus?(:RADIANT) && stat == :SPECIAL_DEFENSE
                 if showFailMsg
                     @battle.pbShowTribeSplash(self,:RADIANT)
                     @battle.pbDisplay(_INTL("{1}'s sheen prevents its Sp. Def from lowering!", pbThis))
@@ -300,7 +301,7 @@ class PokeBattle_Battler
                 end
                 return false
             end
-            if hasActiveItem?(:CLEARAMULET)
+            if !pierce && hasActiveItem?(:CLEARAMULET)
                 if showFailMsg
                     @battle.pbDisplay(_INTL("{1} is protected by its Clear Amulet!", pbThis))
                 end
@@ -329,14 +330,15 @@ class PokeBattle_Battler
         return false if increment <= 0
         lowered = false
         if pbCanLowerStatStep?(stat, user, move, showFailMsg, ignoreContrary)
+            pierce = move&.bossPrimeval?(user)
             @battle.pbShowAbilitySplash(user, ability) if ability
             if item
                 cause = GameData::Item.get(item).name
                 @battle.pbCommonAnimation("UseItem", user)
-                lowered = true if pbLowerStatStepByCause(stat, increment, user, cause, showAnim: showAnim, ignoreContrary: ignoreContrary, ignoreStubborn: ignoreStubborn)
+                lowered = true if pbLowerStatStepByCause(stat, increment, user, cause, showAnim: showAnim, ignoreContrary: ignoreContrary, ignoreStubborn: ignoreStubborn, pierce: pierce)
             elsif cause
-                lowered = true if pbLowerStatStepByCause(stat, increment, user, cause, showAnim: showAnim, ignoreContrary: ignoreContrary, ignoreStubborn: ignoreStubborn)
-            elsif pbLowerStatStep(stat, increment, user, showAnim, ignoreContrary, false, ignoreStubborn)
+                lowered = true if pbLowerStatStepByCause(stat, increment, user, cause, showAnim: showAnim, ignoreContrary: ignoreContrary, ignoreStubborn: ignoreStubborn, pierce: pierce)
+            elsif pbLowerStatStep(stat, increment, user, showAnim, ignoreContrary, false, ignoreStubborn, pierce: pierce)
                 lowered = true
             end
         end
@@ -357,9 +359,9 @@ class PokeBattle_Battler
         return increment
     end
 
-    def pbLowerStatStep(stat, increment, user = nil, showAnim = true, ignoreContrary = false, ignoreMirrorArmor = false, ignoreStubborn = false)
+    def pbLowerStatStep(stat, increment, user = nil, showAnim = true, ignoreContrary = false, ignoreMirrorArmor = false, ignoreStubborn = false, pierce: false)
         # Mirror Armor, only if not self inflicted
-        if !ignoreMirrorArmor && hasActiveAbility?(:MIRRORARMOR) && (!user || user.index != @index) &&
+        if !ignoreMirrorArmor && !pierce && hasActiveAbility?(:MIRRORARMOR) && (!user || user.index != @index) &&
            !@battle.moldBreaker && pbCanLowerStatStep?(stat)
             battle.pbShowAbilitySplash(self, :MIRRORARMOR)
             @battle.pbDisplay(_INTL("{1}'s Mirror Armor activated!", pbThis))
@@ -390,7 +392,7 @@ class PokeBattle_Battler
             return false
         end
         # Stubborn
-        if hasActiveAbility?(:STUBBORN) && !ignoreStubborn && !@battle.moldBreaker && increment > 1
+        if hasActiveAbility?(:STUBBORN) && !ignoreStubborn && !pierce && !@battle.moldBreaker && increment > 1
             showMyAbilitySplash(:STUBBORN)
             @battle.pbDisplay(_INTL("{1} resists the large stat drop!", pbThis))
             hideMyAbilitySplash
@@ -441,9 +443,9 @@ class PokeBattle_Battler
         return increment
     end
 
-    def pbLowerStatStepByCause(stat, increment, user, cause, showAnim: true, showMessages: true, ignoreContrary: false, ignoreMirrorArmor: false, ignoreStubborn: false)
+    def pbLowerStatStepByCause(stat, increment, user, cause, showAnim: true, showMessages: true, ignoreContrary: false, ignoreMirrorArmor: false, ignoreStubborn: false, pierce: false)
         # Mirror Armor
-        if !ignoreMirrorArmor && hasActiveAbility?(:MIRRORARMOR) && (!user || user.index != @index) &&
+        if !ignoreMirrorArmor && !pierce && hasActiveAbility?(:MIRRORARMOR) && (!user || user.index != @index) &&
                 !@battle.moldBreaker && pbCanLowerStatStep?(stat)
             battle.pbShowAbilitySplash(self, :MIRRORARMOR)
             @battle.pbDisplay(_INTL("{1}'s Mirror Armor activated!", pbThis))
@@ -474,7 +476,7 @@ class PokeBattle_Battler
             return false
         end
         # Stubborn
-        if hasActiveAbility?(:STUBBORN) && !@battle.moldBreaker && increment > 1
+        if hasActiveAbility?(:STUBBORN) && !ignoreStubborn && !pierce && !@battle.moldBreaker && increment > 1
             showMyAbilitySplash(:STUBBORN)
             @battle.pbDisplay(_INTL("{1} resists the large stat drop!", pbThis))
             hideMyAbilitySplash
@@ -683,6 +685,7 @@ class PokeBattle_Battler
     def pbLowerMultipleStatSteps(statArray, user = nil, move: nil, showFailMsg: false, showAnim: true, ability: nil, item: nil, ignoreContrary: false, ignoreMirrorArmor: false)
         return unless pbCanLowerAnyOfStats?(statArray, user, move: move, showFailMsg: showFailMsg)
         @battle.pbShowAbilitySplash(user, ability) if ability
+        pierce = move&.bossPrimeval?(user)
 
         cause = nil
         if item
@@ -692,7 +695,7 @@ class PokeBattle_Battler
 
         unless @battle.moldBreaker
             # Mirror Armor, only if not self inflicted
-            if hasActiveAbility?(:MIRRORARMOR) && !ignoreMirrorArmor && (!user || user.index != @index)
+            if hasActiveAbility?(:MIRRORARMOR) && !ignoreMirrorArmor && !pierce && (!user || user.index != @index)
                 battle.pbShowAbilitySplash(self, :MIRRORARMOR)
                 @battle.pbDisplay(_INTL("{1}'s Mirror Armor activated!", pbThis))
                 unless user
@@ -739,7 +742,7 @@ class PokeBattle_Battler
         end
 
         # Stubborn
-        if hasActiveAbility?(:STUBBORN) && !@battle.moldBreaker && anyLargeDrops
+        if hasActiveAbility?(:STUBBORN) && !pierce && !@battle.moldBreaker && anyLargeDrops
             showMyAbilitySplash(:STUBBORN)
             @battle.pbDisplay(_INTL("{1} resists the large stat drop!", pbThis))
             hideMyAbilitySplash

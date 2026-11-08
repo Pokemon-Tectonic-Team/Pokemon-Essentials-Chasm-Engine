@@ -185,8 +185,9 @@ class PokeBattle_Battler
                 return false
             end
         end
+        pierce = move&.bossPrimeval?(user)
         # Type immunities
-        immuneType = hasTypeImmunityToStatus?(newStatus, user)
+        immuneType = hasTypeImmunityToStatus?(newStatus, user) unless pierce
         if immuneType
             immuneTypeRealName = GameData::Type.get(immuneType).name
             if showMessages
@@ -196,28 +197,7 @@ immuneTypeRealName))
             return false
         end
         # Ability immunity
-        immuneAbility = nil
-        immAlly = nil
-        eachActiveAbility do |ability|
-            next unless BattleHandlers.triggerStatusImmunityAbilityNonIgnorable(ability, self, newStatus)
-            immuneAbility = ability
-            break
-        end
-        if immuneAbility.nil? && selfInflicted || !@battle.moldBreaker
-            eachActiveAbility do |ability|
-                next unless BattleHandlers.triggerStatusImmunityAbility(ability, self, newStatus)
-                immuneAbility = ability
-                break
-            end
-            eachAlly do |b|
-                b.eachActiveAbility do |ability|
-                    next unless BattleHandlers.triggerStatusImmunityAllyAbility(ability, self, newStatus)
-                    immuneAbility = ability
-                    immAlly = b
-                    break
-                end
-            end
-        end
+        immuneAbility, immAlly = statusImmunityAbility(newStatus, selfInflicted) unless pierce
         if immuneAbility
             if showMessages
                 @battle.pbShowAbilitySplash(immAlly || self, immuneAbility)
@@ -244,6 +224,23 @@ immuneTypeRealName))
             return false
         end
         return true
+    end
+
+    # Returns the ability granting immunity to the status and the ally holding it (nil if self), or nil
+    def statusImmunityAbility(newStatus, selfInflicted)
+        eachActiveAbility do |ability|
+            return ability if BattleHandlers.triggerStatusImmunityAbilityNonIgnorable(ability, self, newStatus)
+        end
+        return nil if @battle.moldBreaker && !selfInflicted
+        eachActiveAbility do |ability|
+            return ability if BattleHandlers.triggerStatusImmunityAbility(ability, self, newStatus)
+        end
+        eachAlly do |b|
+            b.eachActiveAbility do |ability|
+                return ability, b if BattleHandlers.triggerStatusImmunityAllyAbility(ability, self, newStatus)
+            end
+        end
+        return nil
     end
 
     def pbCanSynchronizeStatus?(newStatus, applicator)
@@ -300,8 +297,8 @@ immuneTypeRealName))
     #=============================================================================
     # Generalised infliction of status problem
     #=============================================================================
-    def pbInflictStatus(newStatus, newStatusCount = 0, msg = nil, user = nil)
-        if hasTribeBonus?(:TYRANNICAL) && !pbOwnSide.effectActive?(:TyrannicalImmunity)
+    def pbInflictStatus(newStatus, newStatusCount = 0, msg = nil, user = nil, pierce: false)
+        if !pierce && hasTribeBonus?(:TYRANNICAL) && !pbOwnSide.effectActive?(:TyrannicalImmunity)
             @battle.pbShowTribeSplash(self,:TYRANNICAL)
             @battle.pbDisplay(_INTL("{1} refuses to gain a status condition!", pbThis))
             @battle.pbHideTribeSplash(self)
@@ -508,8 +505,8 @@ immuneTypeRealName))
         return true
     end
 
-    def applySleep(msg = nil)
-        pbInflictStatus(:SLEEP, -1, msg)
+    def applySleep(msg = nil, pierce: false)
+        pbInflictStatus(:SLEEP, -1, msg, pierce: pierce)
     end
 
     def applySleepSelf(msg = nil, duration = -1)
@@ -534,8 +531,8 @@ immuneTypeRealName))
         return pbCanInflictStatus?(:POISON, user, showMessages, move)
     end
 
-    def applyPoison(user = nil, msg = nil, severe: false)
-        pbInflictStatus(:POISON, severe ? 1 : 0, msg, user)
+    def applyPoison(user = nil, msg = nil, severe: false, pierce: false)
+        pbInflictStatus(:POISON, severe ? 1 : 0, msg, user, pierce: pierce)
     end
 
     def getPoisonDoublings
@@ -571,8 +568,8 @@ immuneTypeRealName))
         return pbCanInflictStatus?(:BURN, user, showMessages, move)
     end
 
-    def applyBurn(user = nil, msg = nil, severe: false)
-        pbInflictStatus(:BURN, severe ? 1 : 0, msg, user)
+    def applyBurn(user = nil, msg = nil, severe: false, pierce: false)
+        pbInflictStatus(:BURN, severe ? 1 : 0, msg, user, pierce: pierce)
     end
 
     #=============================================================================
@@ -586,8 +583,8 @@ immuneTypeRealName))
         return pbCanInflictStatus?(:FROSTBITE, user, showMessages, move)
     end
 
-    def applyFrostbite(user = nil, msg = nil, severe: false)
-        pbInflictStatus(:FROSTBITE, severe ? 1 : 0, msg, user)
+    def applyFrostbite(user = nil, msg = nil, severe: false, pierce: false)
+        pbInflictStatus(:FROSTBITE, severe ? 1 : 0, msg, user, pierce: pierce)
     end
 
     #=============================================================================
@@ -601,8 +598,8 @@ immuneTypeRealName))
         return pbCanInflictStatus?(:NUMB, user, showMessages, move)
     end
 
-    def applyNumb(user = nil, msg = nil, severe: false)
-        pbInflictStatus(:NUMB, severe ? 1 : 0, msg, user)
+    def applyNumb(user = nil, msg = nil, severe: false, pierce: false)
+        pbInflictStatus(:NUMB, severe ? 1 : 0, msg, user, pierce: pierce)
     end
 
     #=============================================================================
@@ -616,8 +613,8 @@ immuneTypeRealName))
         return pbCanInflictStatus?(:DIZZY, user, showMessages, move)
     end
 
-    def applyDizzy(user = nil, msg = nil, severe: false)
-        pbInflictStatus(:DIZZY, severe ? 1 : 0, msg, user)
+    def applyDizzy(user = nil, msg = nil, severe: false, pierce: false)
+        pbInflictStatus(:DIZZY, severe ? 1 : 0, msg, user, pierce: pierce)
     end
 
     #=============================================================================
@@ -631,8 +628,8 @@ immuneTypeRealName))
         return pbCanInflictStatus?(:LEECHED, user, showMessages, move)
     end
 
-    def applyLeeched(user = nil, msg = nil, severe: false)
-        pbInflictStatus(:LEECHED, severe ? 1 : 0, msg, user)
+    def applyLeeched(user = nil, msg = nil, severe: false, pierce: false)
+        pbInflictStatus(:LEECHED, severe ? 1 : 0, msg, user, pierce: pierce)
     end
 
     #=============================================================================
@@ -646,8 +643,8 @@ immuneTypeRealName))
         return pbCanInflictStatus?(:WATERLOG, user, showMessages, move)
     end
 
-    def applyWaterlog(user = nil, msg = nil, severe: false)
-        pbInflictStatus(:WATERLOG, severe ? 1 : 0, msg, user)
+    def applyWaterlog(user = nil, msg = nil, severe: false, pierce: false)
+        pbInflictStatus(:WATERLOG, severe ? 1 : 0, msg, user, pierce: pierce)
     end
 
     #=============================================================================

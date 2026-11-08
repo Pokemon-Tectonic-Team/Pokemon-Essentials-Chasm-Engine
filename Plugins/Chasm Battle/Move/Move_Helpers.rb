@@ -38,6 +38,11 @@ class PokeBattle_Move
         return user.debuffedBySun?(checkingForAI)
     end
 
+    # A boss's Primeval move pierces the target's own protections (abilities, type immunities, items, tribes).
+    def bossPrimeval?(user)
+        return empoweredMove? && user&.boss?
+    end
+
     def inherentImmunitiesPierced?(user, target)
         return (user.boss? || target.boss?) && damagingMove? && (empoweredMove? || AVATARS_REGULAR_ATTACKS_PIERCE_IMMUNITIES)
     end

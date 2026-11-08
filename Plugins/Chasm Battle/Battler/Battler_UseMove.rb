@@ -197,7 +197,7 @@ class PokeBattle_Battler
         pbBeginTurn(choice)
 
         # Force the use of certain moves if they're already being used
-        unless specialUsage || @battle.foretoldMove || (choice[2]&.empoweredMove? && boss?)
+        unless specialUsage || @battle.foretoldMove || choice[2]&.bossPrimeval?(self)
             if usingMultiTurnAttack? && !@currentMove.nil?
                 choice[2] = PokeBattle_Move.from_pokemon_move(@battle, Pokemon::Move.new(@currentMove))
                 specialUsage = true
@@ -311,7 +311,7 @@ class PokeBattle_Battler
         targets = pbChangeTargets(move, user, targets)
 
         # Global move disruption effects
-        unless move.empoweredMove? && boss?
+        unless move.bossPrimeval?(self)
             # Pressure
             unless specialUsage
                 targets.each do |b|

@@ -437,7 +437,7 @@ class PokeBattle_Battler
     end
 
     def pbReducePP(move)
-        return true if boss? && move.empoweredMove?
+        return true if move.bossPrimeval?(self)
         return true if usingMultiTurnAttack?
         return true if move.pp.negative? # Don't reduce PP for special calls of moves
         return true if move.total_pp <= 0 # Infinite PP, can always be used
