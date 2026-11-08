@@ -338,6 +338,23 @@ class PokeBattle_AI
         fakeBattler = PokeBattle_Battler.new(@battle, battlerSlot.index, true)
         fakeBattler.pbInitializeFake(pkmn, partyIndex)
 
+        # Update Castform's form to match the current weather.
+        if fakeBattler.isSpecies?(:CASTFORM) && fakeBattler.hasActiveAbility?(:FORECAST)
+            newForm = 0
+            case @battle.pbWeather
+                when :Sunshine, :HarshSun   then newForm = 1
+                when :Rainstorm, :HeavyRain then newForm = 2
+                when :Hail, :IceAge         then newForm = 3
+                when :Sandstorm, :StarStorm then newForm = 4
+                when :Moonglow, :BloodMoon  then newForm = 5
+                when :Eclipse, :RingEclipse then newForm = 6
+            end
+            if fakeBattler.form != newForm
+                fakeBattler.form = newForm
+                fakeBattler.pbUpdate(true)
+            end
+        end
+
         # Account for hazards
         hazardSwitchScore, entryDamageTaken, dieingOnEntry = getHazardEvaluationForEnteringBattler(fakeBattler)
         switchScore += hazardSwitchScore

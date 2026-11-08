@@ -147,31 +147,29 @@ class PokeBattle_Battle
         # Make sure Exp doesn't exceed the maximum
         level_cap = LEVEL_CAPS_USED ? getLevelCap : GameData::GrowthRate.max_level
         expRaw = pkmn.exp + exp
-        expFinal = expRaw.clamp(0, growth_rate.minimum_exp_for_level(level_cap))
+        curLevel = pkmn.level
+        maxLevel = [curLevel,level_cap].max
+        expFinal = expRaw.clamp(0, growth_rate.minimum_exp_for_level(maxLevel))
         # Calculates if there is excess exp and if it can be stored
         if (expRaw > expFinal) && hasExpJAR
             expLeftovers = expRaw
         else
             expLeftovers = 0
         end
-        expFinal = expRaw.clamp(0, growth_rate.minimum_exp_for_level(level_cap))
+        expFinal = expRaw.clamp(0, growth_rate.minimum_exp_for_level(maxLevel))
         expGained = expFinal - pkmn.exp
         expLeftovers -= expFinal
         expLeftovers = (expLeftovers * EXP_JAR_BASE_EFFICIENCY).floor
         @expStored += expLeftovers if expLeftovers > 0
-        curLevel = pkmn.level
         newLevel = growth_rate.level_from_exp(expFinal)
-        if expGained == 0 and pkmn.level < level_cap
+        if expGained == 0 && curLevel < level_cap
             pbDisplayPaused(_INTL("{1} gained 0 experience.", pkmn.name))
             return
         end
         # "Exp gained" message
-        if showMessages
+        if showMessages && expGained != 0
             if newLevel == level_cap
-                if expGained != 0
-                    pbDisplayPaused(_INTL("{1} gained only {3} Exp. Points due to the level cap at level {2}.", pkmn.name,
-                    level_cap, expGained))
-                end
+                pbDisplayPaused(_INTL("{1} gained only {3} Exp. Points due to the level cap at level {2}.", pkmn.name, level_cap, expGained))
             elsif pkmn.onHotStreak? && HOT_STREAKS_ACTIVE
                 pbDisplayPaused(_INTL("{1} got a Hot Streak boosted {2} Exp. Points!", pkmn.name, expGained))
             else
@@ -183,8 +181,8 @@ class PokeBattle_Battle
             pbDisplayPaused(_INTL("{1}'s new level is less than its\r\ncurrent level, which shouldn't happen.\r\n[Debug: {2}]",
                 pkmn.name, debugInfo))
         end
-        if newLevel > level_cap
-            raise _INTL("{1}'s new level is greater than the level cap, which shouldn't happen.\r\n[Debug: {2}]",
+        if newLevel > curLevel && newLevel > level_cap
+            raise _INTL("{1}'s level was raised above the level cap, which shouldn't happen.\r\n[Debug: {2}]",
                 pkmn.name, debugInfo)
         end
         tempExp1 = pkmn.exp

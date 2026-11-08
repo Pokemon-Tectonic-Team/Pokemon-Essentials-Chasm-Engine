@@ -895,8 +895,7 @@ BattleHandlers::TargetAbilityOnHit.add(:WANDERINGSPIRIT,
         oldAbil = user.firstAbility
         next unless oldAbil
         next -5 if aiCheck
-        target.replaceAbility(oldAbil, user.opposes?(target))
-        user.replaceAbility(ability, user.opposes?(target))
+        target.swapAbilities(user, user.opposes?(target))
     }
 )
 

@@ -140,8 +140,7 @@ class PokeBattle_Move_StartUserShedTypeWeaknesses < PokeBattle_Move
 end
 
 #===============================================================================
-# User is protected from random additional effects for a number of turns, by consuming coins. 
-# (Wishing Well)
+# User is protected from random additional effects for a number of turns, by consuming coins.
 #===============================================================================
 class PokeBattle_Move_WishingWellScalesWithMoney < PokeBattle_Move
     def initialize(battle, move)

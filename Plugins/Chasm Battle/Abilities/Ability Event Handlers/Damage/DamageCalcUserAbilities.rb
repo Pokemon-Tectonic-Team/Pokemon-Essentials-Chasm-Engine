@@ -360,7 +360,7 @@ BattleHandlers::DamageCalcUserAbility.add(:EXPERTISE,
   }
 )
 
-BattleHandlers::DamageCalcUserAbility.copy(:EXPERTISE,:NEUROFORCE)
+BattleHandlers::DamageCalcUserAbility.copy(:EXPERTISE, :NEUROFORCE)
 
 BattleHandlers::DamageCalcUserAbility.add(:TINTEDLENS,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|
@@ -379,6 +379,8 @@ BattleHandlers::DamageCalcUserAbility.add(:SNIPER,
     end
   }
 )
+
+BattleHandlers::DamageCalcUserAbility.copy(:SNIPER, :PROBEWEAKNESS)
 
 BattleHandlers::DamageCalcUserAbility.add(:LIMINAL,
   proc { |ability, user, target, move, mults, _baseDmg, type, aiCheck|

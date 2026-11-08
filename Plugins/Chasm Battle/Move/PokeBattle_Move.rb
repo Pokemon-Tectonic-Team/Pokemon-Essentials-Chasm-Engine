@@ -173,7 +173,7 @@ class PokeBattle_Move
       return true if bitingMove?
       return true if sliceMove?
 
-      return true if windMove?
+      return true if soundMove?
       return true if windMove?
       return true if lightMove?
       return true if pulseMove?

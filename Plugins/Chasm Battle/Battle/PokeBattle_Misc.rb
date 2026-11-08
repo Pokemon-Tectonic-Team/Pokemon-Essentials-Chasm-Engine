@@ -101,6 +101,7 @@ class PokeBattle_Battle
     def anyMonHasAbility?(ability)
         [@party1, @party2].each do |party|
             party.each do |pkmn|
+                next if pkmn.nil?
                 return true if pkmn.hasAbility?(ability)
             end
         end
@@ -254,10 +255,17 @@ class PokeBattle_Battle
         end
 
         unless cantForceMove
-            PBDebug.logonerr do
-                forcedMoveUser.effects[moveUsageEffect] = true unless moveUsageEffect.nil?
-                forcedMoveUser.pbUseMoveSimple(moveID, target, moveIndex, specialUsage)
-                forcedMoveUser.effects[moveUsageEffect] = false unless moveUsageEffect.nil?
+            oldIgnoreChoiceLock = forcedMoveUser.ignoreChoiceLock
+            forcedMoveUser.ignoreChoiceLock = true
+
+            begin
+                PBDebug.logonerr do
+                    forcedMoveUser.effects[moveUsageEffect] = true unless moveUsageEffect.nil?
+                    forcedMoveUser.pbUseMoveSimple(moveID, target, moveIndex, specialUsage)
+                    forcedMoveUser.effects[moveUsageEffect] = false unless moveUsageEffect.nil?
+                end
+            ensure
+                forcedMoveUser.ignoreChoiceLock = oldIgnoreChoiceLock
             end
         end
 

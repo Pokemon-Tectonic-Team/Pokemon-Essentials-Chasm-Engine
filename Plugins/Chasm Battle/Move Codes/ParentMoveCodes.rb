@@ -650,6 +650,7 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
             score -= 50
             score -= 30 unless user.firstTurn?
             score -= 30 if user.belowHalfHealth?
+            score -= 500 if user.tormented?
         end
         return score
     end
@@ -946,7 +947,7 @@ class PokeBattle_PledgeMove < PokeBattle_Move
             end
         when :Rainbow # Fire + Water
             unless user.pbOpposingSide.effectActive?(:Rainbow)
-                user.pbOpposingSide.applyEffect(:Rainbow, applyEffectDurationModifiers(4, user))
+                user.pbOwnSide.applyEffect(:Rainbow, applyEffectDurationModifiers(4, user))
                 animName = user.opposes? ? "RainbowOpp" : "Rainbow"
             end
         when :Swamp # Water + Grass

@@ -94,6 +94,7 @@ BattleHandlers::TargetAbilityKnockedBelowHalf.add(:AROMATIC,
 
 BattleHandlers::TargetAbilityKnockedBelowHalf.add(:SUDDENTURN,
     proc { |ability, target, user, move, _switched, battle|
+        next if target.fainted?
         battle.forceUseMove(target, :RAPIDSPIN, ability: ability)
     }
 )

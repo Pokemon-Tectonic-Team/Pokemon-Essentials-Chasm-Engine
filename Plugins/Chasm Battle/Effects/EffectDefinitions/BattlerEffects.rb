@@ -586,6 +586,14 @@ GameData::BattleEffect.register_effect(:Battler, {
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ProbeWeakness,
+    :real_name => "Probe Weakness",
+    :type => :Integer,
+    :maximum => 4,
+    :critical_rate_buff => true,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
     :id => :FocusPunch,
     :real_name => "Focus Punch",
     :resets_eor	=> true,
@@ -607,7 +615,7 @@ GameData::BattleEffect.register_effect(:Battler, {
 
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :AbilitySupressed,
-    :real_name => "Ability Surpressed",
+    :real_name => "Ability Suppressed",
     :baton_passed => true,
     :pass_value_proc => proc do |battler, value|
         next false if battler.immutableAbility?
