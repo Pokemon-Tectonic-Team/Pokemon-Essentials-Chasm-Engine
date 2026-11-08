@@ -1573,9 +1573,9 @@ GameData::BattleEffect.register_effect(:Battler, {
         when :PITFALL, :CRUSHINGCHASM       then battle.pbCommonAnimation("SandTomb", battler)
         when :INFESTATION, :TERRORSWARM     then battle.pbCommonAnimation("Infestation", battler)
         when :SURGESNARE, :THUNDERCAGE      then battle.pbCommonAnimation("ThunderCage", battler)
-        when :BEARHUG then battle.pbCommonAnimation("BearHug", battler)
-        when :MAGEHAND, :KINETICGRIP         then battle.pbCommonAnimation("KineticGrip", battler)
-        when :MAGNETIZE, :FARADAYCAGE        then battle.pbCommonAnimation("MagnetBomb", battler)
+        when :BEARHUG                       then battle.pbCommonAnimation("BearHug", battler)
+        when :MAGEHAND, :KINETICGRIP        then battle.pbCommonAnimation("KineticGrip", battler)
+        when :MAGNETIZE, :FARADAYCAGE       then battle.pbCommonAnimation("MagnetBomb", battler)
         else battle.pbCommonAnimation("Wrap", battler)
         end
         if battler.takesIndirectDamage?
