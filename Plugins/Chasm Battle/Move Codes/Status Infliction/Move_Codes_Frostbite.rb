@@ -83,18 +83,16 @@ end
 # Frostbite the target and add the Ice-type to it. (Hibernal Flux)
 #===============================================================================
 class PokeBattle_Move_FrostbiteAddIceType < PokeBattle_Move
-    def pbFailsAgainstTarget?(_user, target, show_message)
-        if !target.canFrostbite?(_user, false, self) && !target.canChangeTypeTo?(:ICE)
-            if show_message
-                @battle.pbDisplay(_INTL("But it failed, since {1} can't be frostbitten or gain Ice-type!", target.pbThis(true)))
-            end
-        end 
+    def pbFailsAgainstTarget?(user, target, show_message)
+        if !target.canFrostbite?(user, false, self) && !target.canChangeTypeTo?(:ICE) && show_message
+            @battle.pbDisplay(_INTL("But it failed, since {1} can't be frostbitten or gain Ice-type!", target.pbThis(true)))
+        end
         return false
     end
 
-    def pbEffectAgainstTarget(_user, target)
-        if target.canFrostbite?(_user, false, self)
-            target.applyFrostbite(_user)
+    def pbEffectAgainstTarget(user, target)
+        if target.canFrostbite?(user, false, self)
+            target.applyFrostbite(user)
         end
         if target.canChangeTypeTo?(:ICE)
             target.applyEffect(:Type3, :ICE)

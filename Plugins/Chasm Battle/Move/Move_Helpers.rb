@@ -121,7 +121,7 @@ class PokeBattle_Move
                 pbReceiveItem(item)
                 @battle.pbHideAbilitySplash(stealer) if ability
             else
-                stealer.giveItem(item,true)
+                stealer.giveItem(item, true)
                 @battle.pbHideAbilitySplash(stealer) if ability
                 stealer.pbHeldItemTriggerCheck
             end
@@ -239,8 +239,8 @@ class PokeBattle_Move
             battler = @battle.pbFindBattler(partyIndex, user.index)
             if battler
                 return true if battler.canAddItem?(item)
-            else
-                return true if sharedspoilsBenchCanReceive?(pkmn, item)
+            elsif sharedspoilsBenchCanReceive?(pkmn, item)
+                return true
             end
         end
         return false
@@ -375,7 +375,7 @@ class PokeBattle_Move
         end
     end
 
-    def switchOutUser(user,switchedBattlers=[],disableMoldBreaker=true,randomReplacement=false,batonPass=false)
+    def switchOutUser(user, switchedBattlers = [], disableMoldBreaker = true, randomReplacement = false, batonPass = false)
         return unless @battle.pbCanSwitch?(user.index)
         return unless @battle.pbCanChooseNonActive?(user.index)
         @battle.pbDisplay(_INTL("{1} went back to {2}!", user.pbThis, @battle.pbGetOwnerName(user.index)))
@@ -390,11 +390,11 @@ class PokeBattle_Move
         user.pbEffectsOnSwitchIn(true)
     end
 
-    def switchOutUserForSelectedPokemon(user,selectedPokemonIndex,switchedBattlers=[],disableMoldBreaker=true)
+    def switchOutUserForSelectedPokemon(user, selectedPokemonIndex, switchedBattlers = [], disableMoldBreaker = true)
         return unless @battle.pbCanSwitch?(user.index)
         @battle.pbPursuit(user.index)
         return if user.fainted?
-        @battle.pbRecallAndReplace(user.index,selectedPokemonIndex)
+        @battle.pbRecallAndReplace(user.index, selectedPokemonIndex)
         @battle.pbClearChoice(user.index)
         @battle.moldBreaker = false if disableMoldBreaker
         switchedBattlers.push(user.index)
@@ -409,8 +409,8 @@ class PokeBattle_Move
             next if b.fainted?
             if invertMissCheck
                 next unless b.damageState.unaffected
-            else
-                next if b.damageState.unaffected
+            elsif b.damageState.unaffected
+                next
             end
             next if switchedBattlers.include?(b.index)
             next if b.effectActive?(:Ingrain) || b.effectActive?(:EvilRoots)
@@ -425,12 +425,12 @@ class PokeBattle_Move
             else
                 @battle.pbDisplay(_INTL("{1} switches in!", b.pbThis))
             end
-            @battle.pbClearChoice(b.index)   # Replacement Pokémon does nothing this round
+            @battle.pbClearChoice(b.index) # Replacement Pokémon does nothing this round
             switchedBattlers.push(b.index)
             roarSwitched.push(b.index)
             @battle.pbHideAbilitySplash(user) if ability
         end
-        if roarSwitched.length > 0
+        if !roarSwitched.empty?
             @battle.moldBreaker = false if roarSwitched.include?(user.index)
             @battle.pbPriority(true).each do |b|
                 b.pbEffectsOnSwitchIn(true) if roarSwitched.include?(b.index)
@@ -457,7 +457,7 @@ class PokeBattle_Move
             return false
         end
         if user.firstItem == :PEARLOFWISDOM
-             @battle.pbDisplay(_INTL("But it failed, since the Pearl of Fate cannot be exchanged!")) if show_message
+            @battle.pbDisplay(_INTL("But it failed, since the Pearl of Fate cannot be exchanged!")) if show_message
             return false
         end
         return true
@@ -489,6 +489,6 @@ class PokeBattle_Move
             @battle.pbDisplay(_INTL("{1} obtained {2}.", target.pbThis, oldUserItemName)) if oldUserItem
             user.pbHeldItemTriggerCheck
             target.pbHeldItemTriggerCheck
-        end  
-    end  
+        end
+    end
 end
