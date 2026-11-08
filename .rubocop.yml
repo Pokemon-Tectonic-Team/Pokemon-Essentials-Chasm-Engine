@@ -124,6 +124,10 @@ Style/SignalException:
 Style/CombinableLoops:
     Enabled: false
 
+# This codebase intentionally groups related classes in files, especially for small MoveCode classes
+Style/OneClassPerFile:
+    Enabled: false
+
 Lint/AssignmentInCondition:
     Enabled: false
 
