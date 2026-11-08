@@ -92,7 +92,7 @@ class PokeBattle_Battler
         else
             damageAmount = @totalhp * fraction
         end
-        damageAmount *= getFractionalDamageModifier(aiCheck) unless struggle
+        damageAmount *= getFractionalDamageModifier(aiCheck: aiCheck) unless struggle
         damageAmount = damageAmount.ceil
         return damageAmount
     end
