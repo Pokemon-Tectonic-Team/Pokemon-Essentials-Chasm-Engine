@@ -206,8 +206,7 @@ class MoveDex_Entry_Scene
                 break if excessWidth <= 0
                 charactersToShave += 1
             end
-            shavedName = moveName[0..-charactersToShave]
-            shavedName = shavedName[0..-1] if shavedName[shavedName.length-1] == " "
+            shavedName = moveName[0..-charactersToShave].rstrip
             moveName = shavedName + "..."
         end
         return moveName

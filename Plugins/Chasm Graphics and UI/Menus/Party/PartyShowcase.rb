@@ -345,8 +345,7 @@ class PokemonPartyShowcase_Scene
                     break if excessWidth <= 0
                     charactersToShave += 1
                 end
-                shavedName = moveName[0..-charactersToShave]
-                shavedName = shavedName[0..-1] if shavedName[shavedName.length-1] == " "
+                shavedName = moveName[0..-charactersToShave].rstrip
                 moveName = shavedName + "..."
             end
             drawTextEx(@overlay, displayX + POKEMON_ICON_SIZE + 8, mainIconY + moveTopOffset + moveIndex * moveLineHeight, 200, 1, moveName, base, shadow)
