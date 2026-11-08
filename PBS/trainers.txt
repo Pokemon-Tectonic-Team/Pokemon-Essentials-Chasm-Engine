@@ -21,9 +21,9 @@ Pokemon = SLAKING,70
     AbilityIndex = 0 # Truant
 #-------------------------------
 [YOUNGSTER,Joey]
-Pokemon = HAVALUGG,50
-    Moves = INURE,RECOVER
-    AbilityIndex = 0 # Earthshaker
+Pokemon = LILLIGANT,50
+    AbilityIndex = 1 # Herbalist
+    Item = PARADOXHERB,MIRRORHERB
 #-------------------------------
 [ROLLERSKATER_M,Lane Tester]
 Pokemon = MACHOP,10
