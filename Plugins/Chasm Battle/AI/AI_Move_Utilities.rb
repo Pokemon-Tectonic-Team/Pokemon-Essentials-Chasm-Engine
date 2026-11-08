@@ -44,8 +44,6 @@ class PokeBattle_AI
     # Move failure
     #=============================================================================
     def aiPredictsFailure?(move, user, target, boss = false)
-        fails = false
-
         # Short-circuit for type-immune moves. Computing typeMod here also
         # populates @typeModCache so the later pbSuccessCheckAgainstTarget
         # call and pbGetMoveScoreDamage both reuse the cached result for free.
@@ -155,7 +153,7 @@ class PokeBattle_AI
                 numHits = 0
             end
             if subHP > 0 && !move.ignoresSubstitute?(user)
-                totalDamage += [subHP,damage].min
+                totalDamage += [subHP, damage].min
                 subHP -= damage
                 subFaded = true if subHP <= 0
             else
@@ -163,7 +161,7 @@ class PokeBattle_AI
             end
         end
 
-        return totalDamage.floor,subFaded
+        return totalDamage.floor, subFaded
     end
 
     #===========================================================================
@@ -179,7 +177,7 @@ class PokeBattle_AI
         type = pbRoughType(move, user)
         # Calculate all modifier effects
         modifiers = {}
-        modifiers[:base_accuracy]  = baseAcc
+        modifiers[:base_accuracy] = baseAcc
         modifiers[:accuracy_step] = user.steps[:ACCURACY]
         modifiers[:evasion_step]  = target.steps[:EVASION]
         modifiers[:accuracy_multiplier] = 1.0
