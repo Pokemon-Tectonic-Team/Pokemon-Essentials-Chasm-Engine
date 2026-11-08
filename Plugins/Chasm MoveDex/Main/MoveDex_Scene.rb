@@ -126,7 +126,6 @@ class MoveDex_Scene
             @moveList.each_with_index do |dex_item, _index|
                 listIndex += 1
                 next if listIndex < @scroll
-                maxWidth = displayIndex == 0 ? 200 : 212
                 moveName, moveShadow = getFormattedMoveName(dex_item[:data], 200)
                 @selected_move = dex_item[:move] if listIndex == @scroll
                 moveDrawY = MOVE_LIST_SUMMARY_MOVE_NAMES_Y_INIT + 32 * displayIndex
@@ -175,8 +174,7 @@ class MoveDex_Scene
                 break if excessWidth <= 0
                 charactersToShave += 1
             end
-            shavedName = moveName[0..-charactersToShave]
-            shavedName = shavedName[0..-1] if shavedName[shavedName.length-1] == " "
+            shavedName = moveName[0..-charactersToShave].rstrip
             moveName = shavedName + "..."
         end
         if move_data.is_signature?
