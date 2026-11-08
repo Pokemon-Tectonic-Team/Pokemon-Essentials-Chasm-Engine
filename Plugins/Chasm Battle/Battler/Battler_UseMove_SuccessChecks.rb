@@ -334,7 +334,7 @@ class PokeBattle_Battler
             elsif effectActive?(:FlinchImmunity)
                 @battle.pbDisplay(_INTL("{1} would have flinched, but it's immune now!", pbThis))
                 disableEffect(:Flinch)
-                # elsif tyrannicalPreventsFlinch?
+            elsif tyrannicalPreventsFlinch?
             elsif hasActiveItem?(:COURAGEBADGE)
                 @battle.pbDisplay(_INTL("{1} would have flinched, but it holds a Courage Badge!", pbThis))
                 aiLearnsItem(:COURAGEBADGE)
