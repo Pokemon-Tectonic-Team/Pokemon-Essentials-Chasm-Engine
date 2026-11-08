@@ -1061,6 +1061,21 @@ def ctag(color)
        baseColor,shadowColor)
   end
   
+  # Lays out items as a comma-separated list in lines no wider than width in
+  # bitmap's current font, breaking only between items.
+  def wrapListAtCommas(bitmap,items,width)
+    lines = []
+    items.each do |item|
+      if !lines.empty? && bitmap.text_size(lines[-1] + ", " + item).width <= width
+        lines[-1] += ", " + item
+      else
+        lines[-1] += "," unless lines.empty?
+        lines.push(item)
+      end
+    end
+    return lines
+  end
+
   def drawFormattedTextEx(bitmap,x,y,width,text,baseColor=nil,shadowColor=nil,lineheight=32)
     base=!baseColor ? Color.new(12*8,12*8,12*8) : baseColor.clone
     shadow=!shadowColor ? Color.new(26*8,26*8,25*8) : shadowColor.clone

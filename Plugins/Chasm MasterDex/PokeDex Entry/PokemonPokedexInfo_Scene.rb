@@ -291,21 +291,40 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         type2rect = Rect.new(0, type2_number * 32, 96, 32)
         overlay.blt(232, 120, @typebitmap.bitmap, type1rect)
         overlay.blt(332, 120, @typebitmap.bitmap, type2rect) if type1 != type2
-        # Write the tribes
-        if species_data.tribes.length == 0
-            tribesDescription = _INTL("None")
-        else
-            tribes = []
-            species_data.tribes.each do |tribe|
-                tribes.push(getTribeName(tribe))
-            end
-            tribesDescription = tribes.join(", ")
-        end
-        drawTextEx(overlay, 266, 166, 224, 2, tribesDescription, base, shadow)
+        drawTribes(overlay, species_data.tribes, base, shadow)
         # Draw all text
         pbDrawTextPositions(overlay, textpos)
         # Draw all images
         pbDrawImagePositions(overlay, imagepos)
+    end
+
+    # Draws the tribe list in its two-line box, switching to the small font in
+    # up to four tighter lines when the normal font would need more than two.
+    def drawTribes(overlay, tribes, base, shadow)
+        x = 266
+        y = 166
+        width = 224
+        if tribes.empty?
+            drawTextEx(overlay, x, y, width, 2, _INTL("None"), base, shadow)
+            return
+        end
+        tribeNames = tribes.map { |tribe| getTribeName(tribe) }
+        if wrapListAtCommas(overlay, tribeNames, width).length <= 2
+            drawTextEx(overlay, x, y, width, 2, tribeNames.join(", "), base, shadow)
+            return
+        end
+        pbSetSmallFont(overlay)
+        lines = wrapListAtCommas(overlay, tribeNames, width)
+        if lines.length <= 3
+            lineHeight = 18
+            top = y - 10 + (3 - lines.length) * 9
+        else
+            lineHeight = 14
+            top = y - 12
+        end
+        textpos = lines.each_with_index.map { |line, i| [line, x, top + i * lineHeight, 0, base, shadow] }
+        pbDrawTextPositions(overlay, textpos)
+        pbSetSystemFont(overlay)
     end
 
     def drawPageAbilities

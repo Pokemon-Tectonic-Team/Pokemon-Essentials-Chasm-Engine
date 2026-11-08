@@ -865,11 +865,17 @@ class PokemonSummary_Scene
         elsif tribes.length == GameData::Tribe.legal_tribes_count
             drawFormattedTextEx(overlay, tribesX, tribesY+32, tribesWidth, _INTL("All"), tribe_base, tribe_shadow)
         else
+            # More than three rows in the normal font run into the ability below
+            compact = tribes.length > 3
+            pbSetSmallFont(overlay) if compact
+            firstTribeY = compact ? tribesY - 11 : tribesY
+            tribeRowHeight = compact ? 17 : 32
             tribes.each_with_index do |tribe, index|
                 tribeName = getTribeName(tribe)
-                tribeY = tribesY + 32 * index
+                tribeY = firstTribeY + tribeRowHeight * index
                 drawFormattedTextEx(overlay, tribesX, tribeY, tribesWidth, tribeName, tribe_base, tribe_shadow)
             end
+            pbSetSystemFont(overlay) if compact
         end
         
 
