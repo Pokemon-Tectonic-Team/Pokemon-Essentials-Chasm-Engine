@@ -183,8 +183,9 @@ end
 class PokeBattle_Move_EmpoweredYawn < PokeBattle_Move_SleepTargetNextTurn
     include EmpoweredMove
 
-    def pbEffectGeneral(user)
+    def pbEffectAgainstTarget(user, target)
         super
+        target.applyEffect(:YawnPierces) if bossPrimeval?(user)
     end
 end
 
@@ -274,10 +275,7 @@ end
 #===============================================================================
 class PokeBattle_Move_SleepTargetIfStatused < PokeBattle_SleepMove
     def pbFailsAgainstTarget?(user, target, show_message)
-        if target.asleep?
-            @battle.pbDisplay(_INTL("But it failed, since {1} is already asleep!", target.pbThis(true))) if show_message
-            return true
-        end
+        return true if pbFailsTargetAsleep?(target, show_message)
         unless target.pbHasAnyStatus?
             @battle.pbDisplay(_INTL("But it failed, since {1} isn't statused!", target.pbThis(true))) if show_message
             return true
@@ -285,15 +283,26 @@ class PokeBattle_Move_SleepTargetIfStatused < PokeBattle_SleepMove
         return !target.canSleep?(user, show_message, self, true)
     end
 
-    def pbEffectAgainstTarget(_user, target)
+    def pbFailsTargetAsleep?(target, show_message)
+        return false unless target.asleep?
+        @battle.pbDisplay(_INTL("But it failed, since {1} is already asleep!", target.pbThis(true))) if show_message
+        return true
+    end
+
+    def pbEffectAgainstTarget(user, target)
         target.pbCureStatus
-        target.applySleep
+        target.applySleep(pierce: bossPrimeval?(user))
     end
 end
 
 # Empowered Pacify
 class PokeBattle_Move_EmpoweredPacify < PokeBattle_Move_SleepTargetIfStatused
     include EmpoweredMove
+
+    def pbFailsAgainstTarget?(user, target, show_message)
+        return true if pbFailsTargetAsleep?(target, show_message)
+        return !target.canSleep?(user, show_message, self, target.pbHasAnyStatus?)
+    end
 
     def pbEffectGeneral(user)
         super

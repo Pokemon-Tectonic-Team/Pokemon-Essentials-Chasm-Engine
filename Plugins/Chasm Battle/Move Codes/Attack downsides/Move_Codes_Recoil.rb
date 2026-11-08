@@ -50,7 +50,7 @@ class PokeBattle_Move_RecoilThirdOfDamageDealtBurnTarget < PokeBattle_RecoilMove
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
-        target.applyBurn(user) if target.canBurn?(user, false, self)
+        target.applyBurn(user, pierce: bossPrimeval?(user)) if target.canBurn?(user, false, self)
     end
 
     def getTargetAffectingEffectScore(user, target)

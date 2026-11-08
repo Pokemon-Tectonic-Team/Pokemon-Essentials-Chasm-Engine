@@ -27,14 +27,11 @@ class PokeBattle_Move_LeechTargetLowerTargetAtkSpAtk1 < PokeBattle_LeechMove
 end
 
 # Empowered Leech Seed
-class PokeBattle_Move_EmpoweredLeechSeed < PokeBattle_Move
+class PokeBattle_Move_EmpoweredLeechSeed < PokeBattle_Move_Leech
     include EmpoweredMove
 
     def pbEffectGeneral(user)
         super
-        @battle.eachOtherSideBattler(user) do |b|
-            b.applyLeeched(user) if b.canLeech?(user, true, self)
-        end
         transformType(user, :GRASS)
     end
 end

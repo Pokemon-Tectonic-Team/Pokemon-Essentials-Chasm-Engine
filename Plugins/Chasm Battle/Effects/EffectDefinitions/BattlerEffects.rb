@@ -1732,11 +1732,13 @@ GameData::BattleEffect.register_effect(:Battler, {
     :type => :Integer,
     :ticks_down_eor => true,
     :expire_proc => proc do |_battle, battler|
-        if battler.canSleepYawn?
+        pierce = battler.effectActive?(:YawnPierces)
+        if battler.canSleepYawn?(pierce: pierce)
             PBDebug.log("[Lingering effect] #{battler.pbThis} fell asleep because of Yawn")
-            battler.applySleep
+            battler.applySleep(pierce: pierce)
         end
     end,
+    :sub_effects => [:YawnPierces],
     :apply_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} became drowsy!", battler.pbThis))
     end,
@@ -1750,6 +1752,13 @@ GameData::BattleEffect.register_effect(:Battler, {
         end
         next stay_in_rating
     end
+})
+
+# Drowsiness from a boss's Primeval move, which pierces the target's own protections when it falls asleep
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :YawnPierces,
+    :real_name => "Drowsiness Pierces",
+    :info_displayed => false,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {

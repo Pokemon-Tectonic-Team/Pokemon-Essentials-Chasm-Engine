@@ -63,14 +63,11 @@ class PokeBattle_Move_FrostbitesTargetIfInMoonglow < PokeBattle_FrostbiteMove
 end
 
 # Empowered Chill
-class PokeBattle_Move_EmpoweredChill < PokeBattle_Move
+class PokeBattle_Move_EmpoweredChill < PokeBattle_Move_Frostbite
     include EmpoweredMove
 
     def pbEffectGeneral(user)
         super
-        @battle.eachOtherSideBattler(user) do |b|
-            b.applyFrostbite(user) if b.canFrostbite?(user, true, self)
-        end
         transformType(user, :ICE)
     end
 end

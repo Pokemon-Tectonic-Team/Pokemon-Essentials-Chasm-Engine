@@ -68,14 +68,11 @@ class PokeBattle_Move_NumbTargetLowerTargetAtkSpAtk1 < PokeBattle_NumbMove
 end
 
 # Empowered Numb
-class PokeBattle_Move_EmpoweredNumb < PokeBattle_Move
+class PokeBattle_Move_EmpoweredNumb < PokeBattle_Move_Numb
     include EmpoweredMove
 
     def pbEffectGeneral(user)
         super
-        @battle.eachOtherSideBattler(user) do |b|
-            b.applyNumb(user) if b.canNumb?(user, true, self)
-        end
         transformType(user, :ELECTRIC)
     end
 end

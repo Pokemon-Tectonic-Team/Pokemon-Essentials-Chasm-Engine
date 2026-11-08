@@ -32,6 +32,8 @@ end
 class PokeBattle_Move_EmpoweredTorment < PokeBattle_Move_DisableTargetUsingSameMoveConsecutively
     include EmpoweredMove
 
+    def pbFailsAgainstTarget?(_user, _target, _show_message); return false; end
+
     def pbEffectGeneral(user)
         super
         transformType(user, :DARK)
@@ -526,14 +528,11 @@ class PokeBattle_Move_CurseTargetUserPaysQuarterOfTotalHP < PokeBattle_Move_Curs
 end
 
 # Empowered Cursed Oath
-class PokeBattle_Move_EmpoweredCursedOath < PokeBattle_Move
+class PokeBattle_Move_EmpoweredCursedOath < PokeBattle_Move_CurseTarget
     include EmpoweredMove
 
     def pbEffectGeneral(user)
         super
-        @battle.eachOtherSideBattler(user) do |b|
-            b.applyEffect(:Curse)
-        end
         transformType(user, :GHOST)
     end
 end

@@ -8,10 +8,7 @@ class PokeBattle_Move_SwitchOutTargetStatusMove < PokeBattle_Move
     def ignoresSubstitute?(_user); return true; end
 
     def pbFailsAgainstTarget?(user, target, show_message)
-        if target.effectActive?(:Ingrain) || target.effectActive?(:EvilRoots)
-            @battle.pbDisplay(_INTL("{1} anchored itself with its roots!", target.pbThis)) if show_message
-            return true
-        end
+        return true if pbFailsTargetRooted?(target, show_message)
         if @battle.wildBattle? && !@battle.canRun
             @battle.pbDisplay(_INTL("But it failed, since the battle can't be run from!")) if show_message
             return true
@@ -24,11 +21,20 @@ class PokeBattle_Move_SwitchOutTargetStatusMove < PokeBattle_Move
             @battle.pbDisplay(_INTL("But it failed, since {1} is an Avatar!", target.pbThis(true))) if show_message
             return true
         end
-        if @battle.trainerBattle? && !@battle.pbCanChooseNonActive?(target.index)
-            @battle.pbDisplay(_INTL("But it failed, since {1} cannot be replaced!", target.pbThis(true))) if show_message
-            return true
-        end
+        return true if @battle.trainerBattle? && pbFailsTargetUnreplaceable?(target, show_message)
         return false
+    end
+
+    def pbFailsTargetRooted?(target, show_message)
+        return false unless target.effectActive?(:Ingrain) || target.effectActive?(:EvilRoots)
+        @battle.pbDisplay(_INTL("{1} anchored itself with its roots!", target.pbThis)) if show_message
+        return true
+    end
+
+    def pbFailsTargetUnreplaceable?(target, show_message)
+        return false if @battle.pbCanChooseNonActive?(target.index)
+        @battle.pbDisplay(_INTL("But it failed, since {1} cannot be replaced!", target.pbThis(true))) if show_message
+        return true
     end
 
     def pbSwitchOutTargetsEffect(user, targets, numHits, switchedBattlers)
@@ -44,6 +50,10 @@ end
 # Empowered Whirlwind
 class PokeBattle_Move_EmpoweredWhirlwind < PokeBattle_Move_SwitchOutTargetStatusMove
     include EmpoweredMove
+
+    def pbFailsAgainstTarget?(_user, target, show_message)
+        return pbFailsTargetRooted?(target, show_message) || pbFailsTargetUnreplaceable?(target, show_message)
+    end
 
     def pbEffectGeneral(user)
         transformType(user, :FLYING)

@@ -480,7 +480,7 @@ immuneTypeRealName))
         return pbCanInflictStatus?(:SLEEP, user, showMessages, move, ignoreStatus)
     end
 
-    def canSleepYawn?
+    def canSleepYawn?(pierce: false)
         return false unless hasSpotsForStatus
         return false if asleep?
         unless hasActiveAbility?(:SOUNDPROOF)
@@ -488,19 +488,7 @@ immuneTypeRealName))
                 return false if b.effectActive?(:Uproar)
             end
         end
-        eachActiveAbility do |ability|
-            BattleHandlers.triggerStatusImmunityAbilityNonIgnorable(ability, self, :SLEEP)
-        end
-        unless @battle.moldBreaker
-            eachActiveAbility do |ability|
-                return false if BattleHandlers.triggerStatusImmunityAbility(ability, self, :SLEEP)
-            end
-            eachAlly do |b|
-                b.eachActiveAbility do |ability|
-                    return false if BattleHandlers.triggerStatusImmunityAllyAbility(ability, self, :SLEEP)
-                end
-            end
-        end
+        return false if !pierce && statusImmunityAbility(:SLEEP, false)
         return false if pbOwnSide.effectActive?(:Safeguard)
         return true
     end

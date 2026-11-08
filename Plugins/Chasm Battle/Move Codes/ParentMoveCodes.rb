@@ -111,15 +111,15 @@ class PokeBattle_SleepMove < PokeBattle_Move
         return !target.canSleep?(user, show_message, self)
     end
 
-    def pbEffectAgainstTarget(_user, target)
+    def pbEffectAgainstTarget(user, target)
         return if damagingMove?
-        target.applySleep
+        target.applySleep(pierce: bossPrimeval?(user))
     end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
         return unless target.canSleep?(user, guaranteedEffect?, self)
-        target.applySleep
+        target.applySleep(pierce: bossPrimeval?(user))
     end
 
     def getTargetAffectingEffectScore(user, target)
@@ -138,13 +138,13 @@ class PokeBattle_PoisonMove < PokeBattle_Move
 
     def pbEffectAgainstTarget(user, target)
         return if damagingMove?
-        target.applyPoison(user)
+        target.applyPoison(user, pierce: bossPrimeval?(user))
     end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
         return unless target.canPoison?(user, guaranteedEffect?, self)
-        target.applyPoison(user)
+        target.applyPoison(user, pierce: bossPrimeval?(user))
     end
 
     def getTargetAffectingEffectScore(user, target)
@@ -163,13 +163,13 @@ class PokeBattle_NumbMove < PokeBattle_Move
 
     def pbEffectAgainstTarget(user, target)
         return if damagingMove?
-        target.applyNumb(user)
+        target.applyNumb(user, pierce: bossPrimeval?(user))
     end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
         return unless target.canNumb?(user, guaranteedEffect?, self)
-        target.applyNumb(user)
+        target.applyNumb(user, pierce: bossPrimeval?(user))
     end
 
     def getTargetAffectingEffectScore(user, target)
@@ -188,13 +188,13 @@ class PokeBattle_BurnMove < PokeBattle_Move
 
     def pbEffectAgainstTarget(user, target)
         return if damagingMove?
-        target.applyBurn(user)
+        target.applyBurn(user, pierce: bossPrimeval?(user))
     end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
         return unless target.canBurn?(user, guaranteedEffect?, self)
-        target.applyBurn(user)
+        target.applyBurn(user, pierce: bossPrimeval?(user))
     end
 
     def getTargetAffectingEffectScore(user, target)
@@ -211,15 +211,15 @@ class PokeBattle_FrostbiteMove < PokeBattle_Move
         return !target.canFrostbite?(user, show_message, self)
     end
 
-    def pbEffectAgainstTarget(_user, target)
+    def pbEffectAgainstTarget(user, target)
         return if damagingMove?
-        target.applyFrostbite
+        target.applyFrostbite(user, pierce: bossPrimeval?(user))
     end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
         return unless target.canFrostbite?(user, guaranteedEffect?, self)
-        target.applyFrostbite
+        target.applyFrostbite(user, pierce: bossPrimeval?(user))
     end
 
     def getTargetAffectingEffectScore(user, target)
@@ -236,15 +236,15 @@ class PokeBattle_DizzyMove < PokeBattle_Move
         return !target.canDizzy?(user, show_message, self)
     end
 
-    def pbEffectAgainstTarget(_user, target)
+    def pbEffectAgainstTarget(user, target)
         return if damagingMove?
-        target.applyDizzy
+        target.applyDizzy(user, pierce: bossPrimeval?(user))
     end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
         return unless target.canDizzy?(user, guaranteedEffect?, self)
-        target.applyDizzy
+        target.applyDizzy(user, pierce: bossPrimeval?(user))
     end
 
     def getTargetAffectingEffectScore(user, target)
@@ -261,15 +261,15 @@ class PokeBattle_LeechMove < PokeBattle_Move
         return !target.canLeech?(user, show_message, self)
     end
 
-    def pbEffectAgainstTarget(_user, target)
+    def pbEffectAgainstTarget(user, target)
         return if damagingMove?
-        target.applyLeeched
+        target.applyLeeched(user, pierce: bossPrimeval?(user))
     end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
         return unless target.canLeech?(user, guaranteedEffect?, self)
-        target.applyLeeched
+        target.applyLeeched(user, pierce: bossPrimeval?(user))
     end
 
     def getTargetAffectingEffectScore(user, target)
@@ -286,15 +286,15 @@ class PokeBattle_WaterlogMove < PokeBattle_Move
         return !target.canWaterlog?(user, show_message, self)
     end
 
-    def pbEffectAgainstTarget(_user, target)
+    def pbEffectAgainstTarget(user, target)
         return if damagingMove?
-        target.applyWaterlog
+        target.applyWaterlog(user, pierce: bossPrimeval?(user))
     end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
         return unless target.canWaterlog?(user, guaranteedEffect?, self)
-        target.applyWaterlog
+        target.applyWaterlog(user, pierce: bossPrimeval?(user))
     end
 
     def getTargetAffectingEffectScore(user, target)
@@ -1576,7 +1576,6 @@ module EmpoweredMove
     def worksWithNoTargets?; return true; end
 
     def pbMoveFailed?(_user, _targets, _show_message); return false; end
-    def pbFailsAgainstTarget?(_user, _target, _show_message); return false; end
 
     # There must be 2 turns without using a primeval attack to then be able to use it again
     def turnsBetweenUses(); return 2; end

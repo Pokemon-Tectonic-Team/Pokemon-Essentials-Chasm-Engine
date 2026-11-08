@@ -50,15 +50,11 @@ class PokeBattle_Move_PoisonTargetLowerTargetSpd4 < PokeBattle_Move
 end
 
 # Empowered Poison Gas
-class PokeBattle_Move_EmpoweredPoisonGas < PokeBattle_Move
+class PokeBattle_Move_EmpoweredPoisonGas < PokeBattle_Move_Poison
     include EmpoweredMove
 
     def pbEffectGeneral(user)
         super
-        @battle.eachOtherSideBattler(user) do |b|
-            next unless b.canPoison?(user, true, self)
-            b.applyPoison(user)
-        end
         transformType(user, :POISON)
     end
 end

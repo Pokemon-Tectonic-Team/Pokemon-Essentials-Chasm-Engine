@@ -93,14 +93,11 @@ class PokeBattle_Move_BurnTargetIfInEclipse < PokeBattle_BurnMove
 end
 
 # Empowered Ignite
-class PokeBattle_Move_EmpoweredIgnite < PokeBattle_Move
+class PokeBattle_Move_EmpoweredIgnite < PokeBattle_Move_Burn
     include EmpoweredMove
 
     def pbEffectGeneral(user)
         super
-        @battle.eachOtherSideBattler(user) do |b|
-            b.applyBurn(user) if b.canBurn?(user, true, self)
-        end
         transformType(user, :FIRE)
     end
 end
