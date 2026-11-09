@@ -50,9 +50,9 @@ end
 #===============================================================================
 class PokeBattle_Move_NumbTargetLowerTargetAtkSpAtk1 < PokeBattle_NumbMove
     def pbFailsAgainstTarget?(user, target, show_message)
-        if  !target.canNumb?(user, false, self) &&
-            !target.pbCanLowerStatStep?(:ATTACK, user, self) &&
-            !target.pbCanLowerStatStep?(:SPECIAL_ATTACK, user, self)
+        if !target.canNumb?(user, false, self) &&
+           !target.pbCanLowerStatStep?(:ATTACK, user, self) &&
+           !target.pbCanLowerStatStep?(:SPECIAL_ATTACK, user, self)
 
             @battle.pbDisplay(_INTL("But it failed, since {1} can't be numbed or have either of its attacking stats lowered!", target.pbThis(true))) if show_message
             return true
@@ -68,14 +68,11 @@ class PokeBattle_Move_NumbTargetLowerTargetAtkSpAtk1 < PokeBattle_NumbMove
 end
 
 # Empowered Numb
-class PokeBattle_Move_EmpoweredNumb < PokeBattle_Move
+class PokeBattle_Move_EmpoweredNumb < PokeBattle_Move_Numb
     include EmpoweredMove
 
     def pbEffectGeneral(user)
         super
-        @battle.eachOtherSideBattler(user) do |b|
-            b.applyNumb(user) if b.canNumb?(user, true, self)
-        end
         transformType(user, :ELECTRIC)
     end
 end
