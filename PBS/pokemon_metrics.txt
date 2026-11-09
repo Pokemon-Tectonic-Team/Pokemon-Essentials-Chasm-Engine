@@ -890,7 +890,7 @@ ShadowSize = 2
 #-------------------------------
 [CASCOON]
 BackSprite = 2,28
-FrontSprite = 0,37
+FrontSprite = 0,28
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------

@@ -1,5 +1,6 @@
 class PokemonPokedexInfo_Scene
     include MoveInfoDisplay
+    include TypeMatchupsDisplay
 
     SIGNATURE_COLOR = Color.new(211, 175, 44)
     SIGNATURE_COLOR_LIGHTER = Color.new(228, 207, 128)
@@ -536,84 +537,11 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         bg_path += "_dark" if darkMode?
         @sprites["background"].setBitmap(_INTL(bg_path))
         overlay = @sprites["overlay"].bitmap
-        base   = MessageConfig.pbDefaultTextMainColor
-        shadow = MessageConfig.pbDefaultTextShadowColor
-        xLeft = 36
-        yBase = 60
         @available.each do |i|
             next unless i[2] == @form
-            i[0]
             fSpecies = GameData::Species.get_species_form(@species, i[2])
-
-            # type1 = GameData::Type.get(fSpecies.type1)
-            # type2 = GameData::Type.get(fSpecies.type2)
-
-            immuneTypes = []
-            barelyEffectiveTypes = []
-            resistentTypes = []
-            weakTypes = []
-            hyperWeakTypes = []
-
-            GameData::Type.each do |t|
-                next if t.pseudo_type
-
-                effect = Effectiveness.calculate(t.id, [fSpecies.type1, fSpecies.type2])
-
-                if Effectiveness.ineffective?(effect)
-                    immuneTypes.push(t)
-                elsif Effectiveness.barely_effective?(effect)
-                    barelyEffectiveTypes.push(t)
-                elsif Effectiveness.not_very_effective?(effect)
-                    resistentTypes.push(t)
-                elsif Effectiveness.hyper_effective?(effect)
-                    hyperWeakTypes.push(t)
-                elsif Effectiveness.super_effective?(effect)
-                    weakTypes.push(t)
-                end
-            end
-            weakTypes = [].concat(hyperWeakTypes, weakTypes)
-            resistentTypes = [].concat(barelyEffectiveTypes, resistentTypes)
-
-            # Draw the types the pokemon is weak to
-            drawTextEx(overlay, xLeft, yBase, 450, 1, _INTL("Weak:"), base, shadow)
-            if weakTypes.empty?
-                drawTextEx(overlay, xLeft, yBase + 30, 450, 1, _INTL("None"), base, shadow)
-            else
-                weakTypes.each_with_index do |t, index|
-                    type_number = GameData::Type.get(t).id_number
-                    typerect = Rect.new(0, type_number * 32, 96, 32)
-                    bitmapUsed = hyperWeakTypes.include?(t) ? @types_emphasized_bitmap.bitmap : @typebitmap.bitmap
-                    overlay.blt(xLeft, yBase + 30 + (36 * index), bitmapUsed, typerect)
-                end
-            end
-
-            # Draw the types the pokemon resists
-            resistOffset = 112
-            drawTextEx(overlay, xLeft + resistOffset, yBase, 450, 1, _INTL("Resist:"), base, shadow)
-            if resistentTypes.empty?
-                drawTextEx(overlay, xLeft + resistOffset, yBase + 30, 450, 1, _INTL("None"), base, shadow)
-            else
-                resistentTypes.each_with_index do |t, index|
-                    type_number = GameData::Type.get(t).id_number
-                    typerect = Rect.new(0, type_number * 32, 96, 32)
-                    bitmapUsed = barelyEffectiveTypes.include?(t) ? @types_emphasized_bitmap.bitmap : @typebitmap.bitmap
-                    overlay.blt(xLeft + resistOffset + (index >= 7 ? 100 : 0), yBase + 30 + (36 * (index % 7)),
-              bitmapUsed, typerect)
-                end
-            end
-
-            # Draw the types the pokemon is immune to
-            immuneOffset = 324
-            drawTextEx(overlay, xLeft + immuneOffset, yBase, 450, 1, _INTL("Immune:"), base, shadow)
-            if immuneTypes.empty?
-                drawTextEx(overlay, xLeft + immuneOffset, yBase + 30, 450, 1, _INTL("None"), base, shadow)
-            else
-                immuneTypes.each_with_index do |t, index|
-                    type_number = GameData::Type.get(t).id_number
-                    typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + immuneOffset, yBase + 30 + (36 * index), @typebitmap.bitmap, typerect)
-                end
-            end
+            matchups = typeMatchupsBy { |typeID| Effectiveness.calculate(typeID, [fSpecies.type1, fSpecies.type2]) }
+            drawTypeMatchups(overlay, matchups, [_INTL("Weak:"), _INTL("Resist:"), _INTL("Immune:")], 1)
         end
     end
 
@@ -622,73 +550,13 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
         bg_path += "_dark" if darkMode?
         @sprites["background"].setBitmap(_INTL(bg_path))
         overlay = @sprites["overlay"].bitmap
-        base   = MessageConfig.pbDefaultTextMainColor
-        shadow = MessageConfig.pbDefaultTextShadowColor
-        xLeft = 36
-        yBase = 60
         @available.each do |i|
             next unless i[2] == @form
-            i[0]
             fSpecies = GameData::Species.get_species_form(@species, i[2])
-
-            immuneTypes = []
-            resistentTypes = []
-            weakTypes = []
-
-            GameData::Type.each do |t|
-                next if t.pseudo_type
-
-                effect1 = Effectiveness.calculate_one(fSpecies.type1, t.id)
-                effect2 = Effectiveness.calculate_one(fSpecies.type2, t.id)
-                effect = [effect1, effect2].max
-
-                if Effectiveness.ineffective?(effect)
-                    immuneTypes.push(t)
-                elsif Effectiveness.not_very_effective?(effect)
-                    resistentTypes.push(t)
-                elsif Effectiveness.super_effective?(effect)
-                    weakTypes.push(t)
-                end
+            matchups = typeMatchupsBy do |typeID|
+                [Effectiveness.calculate_one(fSpecies.type1, typeID), Effectiveness.calculate_one(fSpecies.type2, typeID)].max
             end
-
-            # Draw the types the pokemon is super effective against
-            drawTextEx(overlay, xLeft, yBase, 450, 1, _INTL("Super:"), base, shadow)
-            if weakTypes.empty?
-                drawTextEx(overlay, xLeft, yBase + 30, 450, 1, _INTL("None"), base, shadow)
-            else
-                weakTypes.each_with_index do |t, index|
-                    type_number = GameData::Type.get(t).id_number
-                    typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + (index >= 7 ? 100 : 0), yBase + 30 + (36 * (index % 7)), @typebitmap.bitmap,
-              typerect)
-                end
-            end
-
-            # Draw the types the pokemon can't deal but NVE damage to
-            resistOffset = 212
-            drawTextEx(overlay, xLeft + resistOffset, yBase, 450, 1, _INTL("Not Very:"), base, shadow)
-            if resistentTypes.empty?
-                drawTextEx(overlay, xLeft + resistOffset, yBase + 30, 450, 1, _INTL("None"), base, shadow)
-            else
-                resistentTypes.each_with_index do |t, index|
-                    type_number = GameData::Type.get(t).id_number
-                    typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + resistOffset, yBase + 30 + (36 * index), @typebitmap.bitmap, typerect)
-                end
-            end
-
-            # Draw the types the pokemon can't deal but immune damage to
-            immuneOffset = 324
-            drawTextEx(overlay, xLeft + immuneOffset, yBase, 450, 1, _INTL("No Effect:"), base, shadow)
-            if immuneTypes.empty?
-                drawTextEx(overlay, xLeft + immuneOffset, yBase + 30, 450, 1, _INTL("None"), base, shadow)
-            else
-                immuneTypes.each_with_index do |t, index|
-                    type_number = GameData::Type.get(t).id_number
-                    typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + immuneOffset, yBase + 30 + (36 * index), @typebitmap.bitmap, typerect)
-                end
-            end
+            drawTypeMatchups(overlay, matchups, [_INTL("Super:"), _INTL("Not Very:"), _INTL("No Effect:")], 0)
         end
     end
 

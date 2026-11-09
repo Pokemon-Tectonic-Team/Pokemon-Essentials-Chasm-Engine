@@ -9,9 +9,9 @@ end
 #===============================================================================
 class PokeBattle_Move_LeechTargetLowerTargetAtkSpAtk1 < PokeBattle_LeechMove
     def pbFailsAgainstTarget?(user, target, show_message)
-        if  !target.canLeech?(user, false, self) &&
-            !target.pbCanLowerStatStep?(:ATTACK, user, self) &&
-            !target.pbCanLowerStatStep?(:SPECIAL_ATTACK, user, self)
+        if !target.canLeech?(user, false, self) &&
+           !target.pbCanLowerStatStep?(:ATTACK, user, self) &&
+           !target.pbCanLowerStatStep?(:SPECIAL_ATTACK, user, self)
 
             @battle.pbDisplay(_INTL("But it failed, since {1} can't be leeched or have either of its attacking stats lowered!", target.pbThis(true))) if show_message
             return true
@@ -27,14 +27,11 @@ class PokeBattle_Move_LeechTargetLowerTargetAtkSpAtk1 < PokeBattle_LeechMove
 end
 
 # Empowered Leech Seed
-class PokeBattle_Move_EmpoweredLeechSeed < PokeBattle_Move
+class PokeBattle_Move_EmpoweredLeechSeed < PokeBattle_Move_Leech
     include EmpoweredMove
 
     def pbEffectGeneral(user)
         super
-        @battle.eachOtherSideBattler(user) do |b|
-            b.applyLeeched(user) if b.canLeech?(user, true, self)
-        end
         transformType(user, :GRASS)
     end
 end

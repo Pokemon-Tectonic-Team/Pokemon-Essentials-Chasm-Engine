@@ -8,7 +8,7 @@ end
 # No additional effect.
 #===============================================================================
 class PokeBattle_Move_Invalid < PokeBattle_Move
-    def initialize(battle, move)
+    def initialize(_battle, _move) # rubocop:disable Lint/MissingSuper
         raise _INTL("An Invalid move is being instanced. This shouldn't happen!")
     end
 end
@@ -52,7 +52,7 @@ class PokeBattle_Move_StartPerishCountsForAllBattlers < PokeBattle_Move
         return target.effectActive?(:PerishSong)
     end
 
-    def pbEffectAgainstTarget(user, target)
+    def pbEffectAgainstTarget(_user, target)
         target.applyEffect(:PerishSong, 3)
     end
 
@@ -101,7 +101,7 @@ class PokeBattle_Move_PursueSwitchingFoe < PokeBattle_Move
     end
 
     def pbBaseDamageAI(baseDmg, user, target)
-        baseDmg *= 2 if @battle.aiPredictsSwitch?(user,target.index)
+        baseDmg *= 2 if @battle.aiPredictsSwitch?(user, target.index)
         return baseDmg
     end
 end
@@ -112,16 +112,16 @@ end
 class PokeBattle_Move_ChangeUserMewtwoChoiceOfForm < PokeBattle_Move
     def resolutionChoice(user, replayed_choice)
         if @battle.autoTesting
-            @chosenForm = rand(2) + 1
+            @chosenForm = rand(1..2)
         elsif !user.pbOwnedByPlayer? # Trainer AI
             @chosenForm = 2 # Always chooses mega mind form
         elsif !replayed_choice.nil?
             @chosenForm = replayed_choice
         else
-            form1Name = GameData::Species.get_species_form(:MEWTWO,1).form_name
-            form2Name = GameData::Species.get_species_form(:MEWTWO,2).form_name
-            formNames = [form1Name,form2Name]
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)),formNames)
+            form1Name = GameData::Species.get_species_form(:MEWTWO, 1).form_name
+            form2Name = GameData::Species.get_species_form(:MEWTWO, 2).form_name
+            formNames = [form1Name, form2Name]
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)), formNames)
             @chosenForm = chosenIndex + 1
             return @chosenForm
         end
@@ -149,7 +149,7 @@ class PokeBattle_Move_ChangeUserMewtwoChoiceOfForm < PokeBattle_Move
         end
         return false
     end
-    
+
     def pbEffectGeneral(user)
         user.pbChangeForm(@chosenForm, _INTL("{1} augmented its genes and transformed!", user.pbThis))
     end
@@ -195,7 +195,7 @@ class PokeBattle_Move_TransformTargetPreEvolution < PokeBattle_Move
         return false
     end
 
-    def pbEffectAgainstTarget(user, target)
+    def pbEffectAgainstTarget(_user, target)
         target.transformSpecies(GameData::Species.get(target.technicalSpecies).get_previous_species)
     end
 
@@ -300,12 +300,15 @@ class PokeBattle_Move_TargetUsesItsLastUsedMoveAgain < PokeBattle_Move
             return true
         end
         targetMove = @battle.choices[target.index][2]
-        if targetMove && (targetMove.function == "FailsIfUserDamagedThisTurn" ||   # Focus Punch
-                          targetMove.function == "UsedAfterUserTakesPhysicalDamage" ||   # Shell Trap
-                          targetMove.function == "UsedAfterUserTakesSpecialDamage" ||   # Masquerblade
-                          targetMove.function == "BurnAttackerBeforeUserActs" ||     # Beak Blast
-                          targetMove.function == "FrostbiteAttackerBeforeUserActs" ||    # Cold Snap
-                          targetMove.function == "SetupSpikesBeforeUserActs")   # Shard Surge
+        focusingFunctions = [
+            "FailsIfUserDamagedThisTurn",
+            "UsedAfterUserTakesPhysicalDamage",
+            "UsedAfterUserTakesSpecialDamage",
+            "BurnAttackerBeforeUserActs",
+            "FrostbiteAttackerBeforeUserActs",
+            "SetupSpikesBeforeUserActs" # Shard Surge
+        ]
+        if targetMove && focusingFunctions.include?(targetMove.function)
             @battle.pbDisplay(_INTL("But it failed, since {1} is focusing!", target.pbThis(true))) if show_message
             return true
         end
@@ -396,17 +399,17 @@ end
 class PokeBattle_Move_ChangeUserDeoxysChoiceOfForm < PokeBattle_Move
     def resolutionChoice(user, replayed_choice)
         if @battle.autoTesting
-            @chosenForm = rand(3) + 1
+            @chosenForm = rand(1..3)
         elsif !user.pbOwnedByPlayer? # Trainer AI
             @chosenForm = 2 # Always chooses defense form
         elsif !replayed_choice.nil?
             @chosenForm = replayed_choice
         else
-            form1Name = GameData::Species.get_species_form(:DEOXYS,1).form_name
-            form2Name = GameData::Species.get_species_form(:DEOXYS,2).form_name
-            form3Name = GameData::Species.get_species_form(:DEOXYS,3).form_name
-            formNames = [form1Name,form2Name,form3Name]
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)),formNames)
+            form1Name = GameData::Species.get_species_form(:DEOXYS, 1).form_name
+            form2Name = GameData::Species.get_species_form(:DEOXYS, 2).form_name
+            form3Name = GameData::Species.get_species_form(:DEOXYS, 3).form_name
+            formNames = [form1Name, form2Name, form3Name]
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which form should {1} take?", user.pbThis(true)), formNames)
             @chosenForm = chosenIndex + 1
             return @chosenForm
         end
@@ -434,7 +437,7 @@ class PokeBattle_Move_ChangeUserDeoxysChoiceOfForm < PokeBattle_Move
         end
         return false
     end
-    
+
     def pbEffectGeneral(user)
         user.pbChangeForm(@chosenForm, _INTL("{1} reforms its genes with space energy!", user.pbThis))
     end
@@ -458,9 +461,9 @@ class PokeBattle_Move_IgnoreTargetAbilityChangeUserNecrozmaForm < PokeBattle_Mov
         if !user.countsAs?(:NECROZMA)
             @battle.pbDisplay(_INTL("But {1} can't use the move!", user.pbThis(true))) if show_message
             return true
-        end 
+        end
         return false
-    end 
+    end
 
     def pbChangeUsageCounters(user, specialUsage)
         super
@@ -569,8 +572,8 @@ class PokeBattle_Move_RaiseTargetAtkSpAtk3TargetHitsSelfAdaptive < PokeBattle_Mo
         return score
     end
 
-    def calculateDamageForHitAI(user,target,type,baseDmg,numTargets,aiContext=nil)
-        damage = calculateDamageForHit(user,target,type,baseDmg,numTargets,true,aiContext)
+    def calculateDamageForHitAI(user, target, types, baseDmg, numTargets, aiContext = nil)
+        damage = calculateDamageForHit(user, target, types, baseDmg, numTargets, true, aiContext)
         damage *= 1.75 unless targetIsUnaware?(target, aiCheck: true)
         return damage
     end
@@ -691,10 +694,9 @@ class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
         ]
     end
 
-    def resolutionChoice(user, replayed_choice)
-        validMoveNames = []
-        @validMoves.each do |move|
-            validMoveNames.push(getMoveName(move))
+    def resolutionChoice(user, _replayed_choice)
+        validMoveNames = @validMoves.map do |move|
+            getMoveName(move)
         end
 
         if @battle.autoTesting
@@ -702,7 +704,7 @@ class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
         elsif !user.pbOwnedByPlayer? # Trainer AI
             @chosenMove = @validMoves[0]
         else
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)), validMoveNames)
             @chosenMove = @validMoves[chosenIndex]
         end
     end
@@ -715,7 +717,7 @@ class PokeBattle_Move_UseChoiceOfElementalFangs < PokeBattle_Move
         @chosenMove = nil
     end
 
-    def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
+    def pbShowAnimation(_id, _user, _targets, _hitNum = 0, _showAnimation = true)
         return # No animation
     end
 end
@@ -738,9 +740,8 @@ class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
     end
 
     def resolutionChoice(user, replayed_choice)
-        validMoveNames = []
-        @validMoves.each do |move|
-            validMoveNames.push(getMoveName(move))
+        validMoveNames = @validMoves.map do |move|
+            getMoveName(move)
         end
 
         if @battle.autoTesting
@@ -750,7 +751,7 @@ class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
         elsif !replayed_choice.nil?
             @chosenMove = replayed_choice
         else
-            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)),validMoveNames)
+            chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which move should {1} use?", user.pbThis(true)), validMoveNames)
             @chosenMove = @validMoves[chosenIndex]
             return @chosenMove
         end
@@ -764,13 +765,13 @@ class PokeBattle_Move_UseChoiceOfElementalCrunches < PokeBattle_Move
         @chosenMove = nil
     end
 
-    def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
+    def pbShowAnimation(_id, _user, _targets, _hitNum = 0, _showAnimation = true)
         return # No animation
     end
 end
 
 #===============================================================================
-# Fails if the user is not asleep. 
+# Fails if the user is not asleep.
 # (Snore, Stertor, Sleepwalk Strike, REM Burst, Slumbering Roar, Toss n' Turn)
 #===============================================================================
 class PokeBattle_Move_FailsIfUserNotAsleep < PokeBattle_Move
@@ -789,7 +790,7 @@ class PokeBattle_Move_FailsIfUserNotAsleep < PokeBattle_Move
         return pbMoveFailed?(user, targets, false)
     end
 
-    def shouldHighlight?(user, target)
+    def shouldHighlight?(user, _target)
         return user.asleep? && user.statusCount > 1
     end
 end
@@ -798,7 +799,7 @@ end
 # Fails if the user is not asleep and wakes up the user. (Wakeful Tide)
 #===============================================================================
 class PokeBattle_Move_FailsIfUserNotAsleepWakeUpUser < PokeBattle_Move_FailsIfUserNotAsleep
-    def pbEffectAfterAllHits(user, targets)
+    def pbEffectAfterAllHits(user, _targets)
         user.pbCureStatus(true, :SLEEP)
     end
 end
@@ -820,7 +821,7 @@ class PokeBattle_Move_UseAllOtherSoundMoves < PokeBattle_Move
     end
 
     def pbMoveFailed?(user, _targets, show_message)
-        if getAllOtherSoundMoves(user).length == 0
+        if getAllOtherSoundMoves(user).empty?
             if show_message
                 @battle.pbDisplay(_INTL("But it failed, since {1} knows no other sound-based moves!", user.pbThis(true)))
             end
