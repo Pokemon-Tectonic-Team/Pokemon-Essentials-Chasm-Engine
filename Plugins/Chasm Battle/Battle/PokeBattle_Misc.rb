@@ -360,9 +360,9 @@ class PokeBattle_Battle
     def aiSeesMove(battler, moveID)
         return unless battler.pbOwnedByPlayer?
         return if battler.boss?
+        return if moveID.nil?
         moveID = moveID.id if moveID.is_a?(PokeBattle_Move)
-        array = @knownMoves[battler.pokemon.personalID]
-        array = [] if array.nil?
+        array = aiKnownMoves(battler.pokemon)
         array.push(moveID) unless array.include?(moveID)
     end
 
