@@ -150,7 +150,7 @@ class PokeBattle_Move
     end
 
     def selectPartyMemberForEffect(idxBattler, selectableProc = nil)
-        if @battle.pbOwnedByPlayer?(idxBattler)
+        if @battle.battlers[idxBattler].humanControlled?
             return playerChoosesPartyMemberForEffect(idxBattler, selectableProc)[0]
         else
             return trainerChoosesPartyMemberForEffect(idxBattler, selectableProc)[0]
@@ -158,7 +158,7 @@ class PokeBattle_Move
     end
 
     def selectPartyMemberForSwitchEffect(idxBattler, selectableProc = nil)
-        if @battle.pbOwnedByPlayer?(idxBattler)
+        if @battle.battlers[idxBattler].humanControlled?
             return playerChoosesPartyMemberForEffect(idxBattler, selectableProc)
         else
             return trainerChoosesPartyMemberForEffect(idxBattler, selectableProc)
@@ -247,7 +247,7 @@ class PokeBattle_Move
     end
 
     def sharedspoilsChoosePartyMember(user, item, itemName)
-        if @battle.pbOwnedByPlayer?(user.index)
+        if user.humanControlled?
             sharedspoilsPlayerChoose(user, item, itemName)
         else
             sharedspoilsAIChoose(user, item, itemName)
