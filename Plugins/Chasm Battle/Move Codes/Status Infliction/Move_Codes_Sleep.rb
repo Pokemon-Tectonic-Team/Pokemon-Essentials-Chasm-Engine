@@ -117,7 +117,7 @@ class PokeBattle_Move_SleepTargetIfSlowerThanUserMinUserSpeed < PokeBattle_Sleep
         user.pbMinimizeStatStep(:SPEED, user, self)
     end
 
-    def getEffectScore(user, target)
+    def getEffectScore(user, _target)
         score = -30
         score -= user.steps[:SPEED] * 5
         return score
@@ -128,7 +128,7 @@ end
 # Target falls asleep. Can only be used during the Full Moon. (Bed Time)
 #===============================================================================
 class PokeBattle_Move_SleepTargetIfInFullMoonglow < PokeBattle_SleepMove
-    def pbMoveFailed?(user, _targets, show_message)
+    def pbMoveFailed?(_user, _targets, show_message)
         unless @battle.fullMoon?
             @battle.pbDisplay(_INTL("But it failed, since it isn't a Full Moon!")) if show_message
             return true
@@ -183,8 +183,9 @@ end
 class PokeBattle_Move_EmpoweredYawn < PokeBattle_Move_SleepTargetNextTurn
     include EmpoweredMove
 
-    def pbEffectGeneral(user)
+    def pbEffectAgainstTarget(user, target)
         super
+        target.applyEffect(:YawnPierces) if bossPrimeval?(user)
     end
 end
 
@@ -230,7 +231,7 @@ end
 class PokeBattle_Move_SacrificeAllySleepTargetNextTurn < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
         unless user.hasAlly?
-            @battle.pbDisplay(_INTL("But it failed, since {1} has no ally to sacrifice!",user.pbThis(true))) if show_message
+            @battle.pbDisplay(_INTL("But it failed, since {1} has no ally to sacrifice!", user.pbThis(true))) if show_message
             return true
         end
         return false
@@ -238,7 +239,7 @@ class PokeBattle_Move_SacrificeAllySleepTargetNextTurn < PokeBattle_Move
 
     def pbOnStartUse(user, _targets)
         user.eachAlly do |b|
-            @battle.pbDisplay(_INTL("{1} draws darkness from {2}!",user.pbThis,b.pbThis(true)))
+            @battle.pbDisplay(_INTL("{1} draws darkness from {2}!", user.pbThis, b.pbThis(true)))
             if b.boss? # bosses only lose half a health bar
                 b.pbReduceHP(b.avatarHealthPerPhase / 2.0)
             else
@@ -247,7 +248,7 @@ class PokeBattle_Move_SacrificeAllySleepTargetNextTurn < PokeBattle_Move
             b.pbFaint if b.fainted?
             break
         end
-    end 
+    end
 
     def pbFailsAgainstTarget?(user, target, show_message)
         if target.effectActive?(:Yawn)
@@ -274,10 +275,7 @@ end
 #===============================================================================
 class PokeBattle_Move_SleepTargetIfStatused < PokeBattle_SleepMove
     def pbFailsAgainstTarget?(user, target, show_message)
-        if target.asleep?
-            @battle.pbDisplay(_INTL("But it failed, since {1} is already asleep!", target.pbThis(true))) if show_message
-            return true
-        end
+        return true if pbFailsTargetAsleep?(target, show_message)
         unless target.pbHasAnyStatus?
             @battle.pbDisplay(_INTL("But it failed, since {1} isn't statused!", target.pbThis(true))) if show_message
             return true
@@ -285,15 +283,26 @@ class PokeBattle_Move_SleepTargetIfStatused < PokeBattle_SleepMove
         return !target.canSleep?(user, show_message, self, true)
     end
 
-    def pbEffectAgainstTarget(_user, target)
+    def pbFailsTargetAsleep?(target, show_message)
+        return false unless target.asleep?
+        @battle.pbDisplay(_INTL("But it failed, since {1} is already asleep!", target.pbThis(true))) if show_message
+        return true
+    end
+
+    def pbEffectAgainstTarget(user, target)
         target.pbCureStatus
-        target.applySleep
+        target.applySleep(pierce: bossPrimeval?(user))
     end
 end
 
 # Empowered Pacify
 class PokeBattle_Move_EmpoweredPacify < PokeBattle_Move_SleepTargetIfStatused
     include EmpoweredMove
+
+    def pbFailsAgainstTarget?(user, target, show_message)
+        return true if pbFailsTargetAsleep?(target, show_message)
+        return !target.canSleep?(user, show_message, self, target.pbHasAnyStatus?)
+    end
 
     def pbEffectGeneral(user)
         super
