@@ -1,4 +1,4 @@
-CRITICAL_HIT_RATIOS = [16, 8, 4, 2, 1]
+CRITICAL_HIT_RATIOS = [16, 8, 4, 2, 1].freeze
 
 class PokeBattle_Move
     #=============================================================================
@@ -49,11 +49,11 @@ class PokeBattle_Move
             ret = Effectiveness::NORMAL_EFFECTIVE
         end
         # Delta Stream's weather
-        if @battle&.pbWeather == :StrongWinds && (defType == :FLYING && Effectiveness.super_effective_type?(moveType, defType))
+        if @battle&.pbWeather == :StrongWinds && defType == :FLYING && Effectiveness.super_effective_type?(moveType, defType)
             ret = Effectiveness::NORMAL_EFFECTIVE
         end
         # Grounded Flying-type Pokémon become susceptible to Ground moves
-        ret = Effectiveness::NORMAL_EFFECTIVE if target && !target.airborne? && (defType == :FLYING && moveType == :GROUND)
+        ret = Effectiveness::NORMAL_EFFECTIVE if target && !target.airborne? && defType == :FLYING && moveType == :GROUND
         # Inured
         ret /= 2 if target&.effectActive?(:Inured) && Effectiveness.super_effective_type?(moveType, defType)
         # Break Through — check immunity first (cheap) before iterating the ability list.
@@ -159,8 +159,8 @@ class PokeBattle_Move
         evasion = (evasion.to_f + 100.0) / 2.0 if target.boss? && AVATAR_DILUTED_STAT_STEPS
         evasion = 1 if evasion < 1
         # Calculation
-        calc = accuracy.to_f / evasion.to_f
-        return true if 100 <= modifiers[:base_accuracy] * calc # Avoid calling pbRandom if move is guaranteed to hit
+        calc = accuracy.to_f / evasion
+        return true if modifiers[:base_accuracy] * calc >= 100 # Avoid calling pbRandom if move is guaranteed to hit
         return @battle.pbRandom(100) < modifiers[:base_accuracy] * calc
     end
 
@@ -187,7 +187,7 @@ class PokeBattle_Move
         target.eachActiveItem do |item|
             BattleHandlers.triggerAccuracyCalcTargetItem(item, modifiers, user, target, self, types)
         end
-        
+
         # Other effects, inc. ones that set accuracy_multiplier or evasion_step to
         # specific values
         modifiers[:accuracy_multiplier] *= 2.0 if @battle.gravityIntensified?
@@ -198,7 +198,7 @@ class PokeBattle_Move
             modifiers[:evasion_step] = 0 if @function == "IgnoreTargetDefSpDefEvaStatStages" # Chip Away
             if %w[AlwaysHits RemoveProtectionsBypassSubstituteAlwaysHits HyperspaceFury].include?(@name)
                 modifiers[:base_accuracy] = 0
-            end # "Always hit"
+            end
             modifiers[:base_accuracy] = 0 if user.effectActive?(:LockOn) && user.pointsAt?(:LockOnPos, target)
         end
     end
@@ -225,7 +225,7 @@ class PokeBattle_Move
         elsif allowedToRandomCrit
             rate = criticalHitRate(user, target)
             random_crit = false
-            random_crit = isRandomCrit?(user, target, rate) unless checkingForAI #Avoids needlessly calling pbRandom on AI checks
+            random_crit = isRandomCrit?(user, target, rate) unless checkingForAI # Avoids needlessly calling pbRandom on AI checks
             crit = true if random_crit
         end
 
@@ -344,30 +344,30 @@ class PokeBattle_Move
         return false
     end
 
-    def allowedToRandomCrit?(user, target)
-        return true if canRandomCrit?  
+    def allowedToRandomCrit?(user, _target)
+        return true if canRandomCrit?
         return true if user.effectActive?(:RaisedCritChance)
-        return true if user.hasActiveAbility?(GameData::Ability.getByFlag("EnablesRandomCrits")) 
+        return true if user.hasActiveAbility?(GameData::Ability.getByFlag("EnablesRandomCrits"))
         return false
     end
 
     #=============================================================================
     # Antecedents for damage calculation
     #=============================================================================
-    def pbBaseDamage(baseDmg, _user, _target);              return baseDmg;    end
+    def pbBaseDamage(baseDmg, _user, _target); return baseDmg; end
 
     # For when the damage boost must be applied after the move usage has progressed
     # Or the damage mult is ugly and will result in weird display BP
-    def pbModifyDamage(damageMult, _user, _target);         return damageMult; end
+    def pbModifyDamage(damageMult, _user, _target); return damageMult; end
 
     def ignoresDefensiveStepBoosts?(_user, _target); return false; end
 
-    def pbAttackingStat(user, target, checkingForAI = false)
+    def pbAttackingStat(user, _target, _checkingForAI = false)
         return user, :SPECIAL_ATTACK if specialMove?
         return user, :ATTACK
     end
 
-    def pbDefendingStat(user, target, checkingForAI = false)
+    def pbDefendingStat(_user, target, _checkingForAI = false)
         return target, :SPECIAL_DEFENSE if specialMove?
         return target, :DEFENSE
     end

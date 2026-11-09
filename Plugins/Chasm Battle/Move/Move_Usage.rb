@@ -2,20 +2,28 @@ class PokeBattle_Move
     #=============================================================================
     # Effect methods per move usage
     #=============================================================================
-    def pbCanChooseMove?(_user, _commandPhase, _showMessages); return true; end # For Belch
-    def pbDisplayChargeMessage(user); end # For Focus Punch/shell Trap/Beak Blast
+    # For Belch
+    def pbCanChooseMove?(_user, _commandPhase, _showMessages); return true; end
+    # For Focus Punch/shell Trap/Beak Blast
+    def pbDisplayChargeMessage(user); end
     def pbOnStartUse(user, targets); end
-    def pbAddTarget(targets, user); end # For Counter, etc. and Bide
-    def pbModifyTargets(targets, user); end # For Dragon Darts, etc.
-    def pbAllMissed(user, targets); end # Move effects that occur after all hits if all of them missed
+    # For Counter, etc. and Bide
+    def pbAddTarget(targets, user); end
+    # For Dragon Darts, etc.
+    def pbModifyTargets(targets, user); end
+    # Move effects that occur after all hits if all of them missed
+    def pbAllMissed(user, targets); end
 
-    def pbEffectOnNumHits(user, target, numHits); end # Move effects that occur after all hits, which base themselves on how many hits landed
+    # Move effects that occur after all hits, which base themselves on how many hits landed
+    def pbEffectOnNumHits(user, target, numHits); end
 
+    # Check if the move should fail, specifically if its not being specifically used (e.g. Dancer)
     def pbMoveFailedNoSpecial?(_user, _targets)
         return false
-    end # Check if the move should fail, specifically if its not being specifically used (e.g. Dancer)
+    end
 
-    def priorityModification(_user, _target); return 0; end # Checks whether the move should have modified priority
+    # Checks whether the move should have modified priority
+    def priorityModification(_user, _target); return 0; end
     def moveFailed(user, targets); end
 
     def resetMoveUsageState; end
@@ -50,7 +58,7 @@ class PokeBattle_Move
         return nil
     end
 
-    def resolutionChoice(user, replayed_choice); return nil; end
+    def resolutionChoice(_user, _replayed_choice); return nil; end
 
     #=============================================================================
     # Methods for displaying stuff when the move is used
@@ -60,7 +68,7 @@ class PokeBattle_Move
             unless @battle.autoTesting
                 @battle.pbDisplayWithFormatting(_INTL("\\ss{1} used <c2=06644bd2>{2}</c2>!", user.pbThis, @name))
                 if user.pbOwnedByPlayer?
-                    unlockAchievement(:USE_PRIMEVAL_MOVE) && !(user.battle.is_replayed)
+                    unlockAchievement(:USE_PRIMEVAL_MOVE) && !user.battle.is_replayed
                 end
             end
         else
@@ -135,19 +143,19 @@ class PokeBattle_Move
     # charging turn, and is nil during the attack turn.
     def pbIsChargingTurn?(_user); return false; end
 
-    def canParentalBond?(user, targets, checkingForAI = false)
+    def canParentalBond?(user, _targets, checkingForAI = false)
         return false unless damagingMove?
         return false if multiHitMove?
-        return true if user.shouldAbilityApply?(:PARENTALBOND,checkingForAI)
-        return true if user.shouldAbilityApply?(:STRIKETWICE,checkingForAI) && @battle.rainy?
+        return true if user.shouldAbilityApply?(:PARENTALBOND, checkingForAI)
+        return true if user.shouldAbilityApply?(:STRIKETWICE, checkingForAI) && @battle.rainy?
         return false
     end
 
-    def canDiffract?(user, targets, checkingForAI = false)
+    def canDiffract?(user, _targets, checkingForAI = false)
         return false unless damagingMove?
         return false if multiHitMove?
         return false unless lightMove?
-        return true if user.shouldAbilityApply?(:DIFFRACTION,checkingForAI) && user.protectedByScreen?
+        return true if user.shouldAbilityApply?(:DIFFRACTION, checkingForAI) && user.protectedByScreen?
         return false
     end
 
@@ -198,8 +206,9 @@ class PokeBattle_Move
     def pbOverrideSuccessCheckPerHit(_user, _target); return false; end
     def pbCrashDamage(user); end
     def pbInitialEffect(user, targets, hitNum); end
-    def pbDesignateTargetsForHit(targets, _hitNum); return targets; end # For Dragon Darts
-    def pbRepeatHit?(_hitNum = 0); return false; end # For Dragon Darts
+    # For Dragon Darts
+    def pbDesignateTargetsForHit(targets, _hitNum); return targets; end
+    def pbRepeatHit?(_hitNum = 0); return false; end
 
     def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
         return if @autoTesting
@@ -217,7 +226,8 @@ class PokeBattle_Move
     def pbEffectAgainstTarget(user, target); end
     def pbEffectGeneral(user); end
     def pbAdditionalEffect(user, target); end
-    def pbEffectAfterAllHits(user, target); end # Move effects that occur after all hits
+    # Move effects that occur after all hits
+    def pbEffectAfterAllHits(user, target); end
     def pbSwitchOutTargetsEffect(user, targets, numHits, switchedBattlers); end
     def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers); end
 
@@ -272,14 +282,14 @@ class PokeBattle_Move
     end
 
     def pbMoveFailedTargetAlreadyMoved?(target, showMessage = true)
-        if (@battle.choices[target.index][0] != :UseMove &&
-           @battle.choices[target.index][0] != :Shift)
+        if @battle.choices[target.index][0] != :UseMove &&
+           @battle.choices[target.index][0] != :Shift
             @battle.pbDisplay(_INTL("But it failed, since {1} didn't choose to use a move!", target.pbThis(true))) if showMessage
             return true
         end
         if target.movedThisRound?
-             @battle.pbDisplay(_INTL("But it failed, since {1} already move this turn!", target.pbThis(true))) if showMessage
-             return true
+            @battle.pbDisplay(_INTL("But it failed, since {1} already move this turn!", target.pbThis(true))) if showMessage
+            return true
         end
         return false
     end
@@ -324,7 +334,7 @@ class PokeBattle_Move
         if target.hasActiveAbility?(:THIEFSDIVERSION) && target.hasAnyItem? && target.itemActive? && target.hasNonInitialItem? && !@battle.moldBreaker
             target.damageState.thiefsDiversion = true
             return
-        end 
+        end
     end
 
     def disguiseIntact?(target, aiCheck = false)
@@ -333,7 +343,7 @@ class PokeBattle_Move
         return aiCheck ? target.hasActiveAbilityAI?(:DISGUISE) : target.hasActiveAbility?(:DISGUISE)
     end
 
-    def damageNegated?(user, target, aiCheck = false)
+    def damageNegated?(_user, target, aiCheck = false)
         return true if target.effectActive?(:LastGasp)
         return false if aiCheck
         return true if target.damageState.disguise
@@ -437,7 +447,7 @@ class PokeBattle_Move
             delayedDamage = damage
             if delayedDamage > 0
                 target.effects[:DelayedDamage] = [] unless target.effectActive?(:DelayedDamage)
-                target.effects[:DelayedDamage].push([1,delayedDamage])
+                target.effects[:DelayedDamage].push([1, delayedDamage])
                 target.damageState.displayedDamage = 0
                 target.damageState.hpLost = 0
                 return
@@ -471,7 +481,7 @@ class PokeBattle_Move
         return if @battle.autoTesting
         # Animate allies first, then foes
         animArray = []
-        for side in 0...2 # side here means "allies first, then foes"
+        (0...2).each do |side| # side here means "allies first, then foes"
             targets.each do |b|
                 next if b.damageState.unaffected || b.damageState.hpLost == 0
                 next if (side == 0 && b.opposes?(user)) || (side == 1 && !b.opposes?(user))
@@ -484,7 +494,7 @@ class PokeBattle_Move
                 effectiveness = b.damageState.typeMod
                 animArray.push([b, oldHP, effectiveness])
             end
-            if animArray.length > 0
+            if !animArray.empty?
                 @battle.scene.pbHitAndHPLossAnimation(animArray, fastHitAnimation)
                 animArray.clear
             end
@@ -524,7 +534,7 @@ class PokeBattle_Move
         end
 
         if Effectiveness.super_effective?(target.damageState.typeMod) && target.pbOwnedByPlayer? &&
-                !$PokemonGlobal.typeChartChangesTutorialized
+           !$PokemonGlobal.typeChartChangesTutorialized
             newWeakness = false
             newWeakness = true if @calcTypes.include?(:POISON) && target.pbHasType?(:WATER)
             newWeakness = true if @calcTypes.include?(:BUG) && target.pbHasType?(:FAIRY)
@@ -548,7 +558,8 @@ class PokeBattle_Move
         end
         # Effectiveness message, for moves with 1 hit
         pbEffectivenessMessage(user, target, numTargets) if target.damageState.messagesPerHit
-        if target.damageState.substitute && !target.substituted? # Substitute ran out of HP
+        # Substitute ran out of HP
+        if target.damageState.substitute && !target.substituted?
             target.disableEffect(:Substitute)
             @battle.pbDisplay(_INTL("{1}'s substitute faded!", target.pbThis))
         end
@@ -590,7 +601,7 @@ class PokeBattle_Move
             target.consumeItem(:CASSBERRY) if target.hasItem?(:CASSBERRY)
         elsif target.damageState.archVillain
             user = target.damageState.archVillain
-            @battle.pbShowAbilitySplash(user,:ARCHVILLAIN)
+            @battle.pbShowAbilitySplash(user, :ARCHVILLAIN)
             @battle.pbDisplay(_INTL("{1} lets out an arrogant laugh!", user.pbThis))
             @battle.pbHideAbilitySplash(user)
         elsif target.damageState.thiefsDiversion
@@ -600,7 +611,7 @@ class PokeBattle_Move
             @battle.pbHideAbilitySplash(target)
         elsif target.effectActive?(:LastGasp)
             @battle.pbDisplay(_INTL("{1} is invulnerable to all damage!", target.pbThis))
-        end        
+        end
     end
 
     # Used by Counter/Mirror Coat/Metal Burst/Revenge/Focus Punch/Bide/Assurance.

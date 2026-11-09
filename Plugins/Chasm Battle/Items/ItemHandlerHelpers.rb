@@ -8,7 +8,7 @@ def healFromBerry(battler, ratio, item, forced = false, filchedFrom = nil, filch
     ratio *= 2.0 if battler.hasActiveAbility?(:RIPEN)
     if battler.hasTribeBonus?(:SCAVENGER)
         ratio *= 1.5
-        battler.battle.pbShowTribeSplash(battler,:SCAVENGER)
+        battler.battle.pbShowTribeSplash(battler, :SCAVENGER)
         battler.battle.pbDisplay(_INTL("{1} got a bit extra out of their {2}!", battler.pbThis, getItemName(item)))
         battler.battle.pbHideTribeSplash(battler)
     end
@@ -53,7 +53,7 @@ def pbBattleTypeWeakingBerry(item, berryType, moveTypes, target, mults, feast = 
     target.battle.pbCommonAnimation("Nom", target) unless aiCheck
 end
 
-def pbBattleGem(item, user, gemType, move, mults, moveTypes, aiCheck = false, aiContext = nil)
+def pbBattleGem(item, user, gemType, _move, mults, moveTypes, aiCheck = false, aiContext = nil)
     return unless moveTypes.include?(gemType)
     return unless user.canConsumeGem?
     user.applyEffect(:GemConsumed, item) unless aiCheck

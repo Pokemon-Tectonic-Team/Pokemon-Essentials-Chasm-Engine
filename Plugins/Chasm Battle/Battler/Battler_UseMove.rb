@@ -191,7 +191,7 @@ class PokeBattle_Battler
     def pbUseMove(choice, specialUsage = false)
         # NOTE: This is intentionally determined before a multi-turn attack can
         #       set specialUsage to true.
-        skipAccuracyCheck = (specialUsage && choice[2] != @battle.struggle)
+        skipAccuracyCheck = specialUsage && choice[2] != @battle.struggle
 
         # Start using the move
         pbBeginTurn(choice)
@@ -647,7 +647,7 @@ class PokeBattle_Battler
                 @lastMoveFailed        = true
             end
         else
-            @lastMoveUsed     = move.id
+            @lastMoveUsed = move.id
             @lastMoveUsedTypes = move.calcTypes
             @lastMoveUsedCategory = move.calculatedCategory
             @movesUsedThisTurn.push(move.id)
@@ -931,8 +931,8 @@ class PokeBattle_Battler
             end
 
             if pbOwnedByPlayer?
-                unlockAchievement(:DEAL_LARGE_DAMAGE_1) if maxDamageOnTargets >= 1000 && !(user.battle.is_replayed)
-                unlockAchievement(:DEAL_LARGE_DAMAGE_2) if maxDamageOnTargets >= 10_000 && !(user.battle.is_replayed)
+                unlockAchievement(:DEAL_LARGE_DAMAGE_1) if maxDamageOnTargets >= 1000 && !user.battle.is_replayed
+                unlockAchievement(:DEAL_LARGE_DAMAGE_2) if maxDamageOnTargets >= 10_000 && !user.battle.is_replayed
             end
         end
         # Self-Destruct/Explosion's damaging and fainting of user

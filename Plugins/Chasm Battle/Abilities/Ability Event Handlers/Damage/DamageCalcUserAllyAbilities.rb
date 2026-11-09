@@ -7,10 +7,10 @@ BattleHandlers::DamageCalcUserAllyAbility.add(:POWERSPOT,
 
 BattleHandlers::DamageCalcUserAllyAbility.add(:STEELYSPIRIT,
   proc { |ability, user, _target, _move, mults, _baseDmg, types, aiCheck|
-        if types.include?(:STEEL)
-            mults[:base_damage_multiplier] *= 3 / 2.0
-            user.aiLearnsAbility(ability) unless aiCheck
-        end
+      if types.include?(:STEEL)
+          mults[:base_damage_multiplier] *= 3 / 2.0
+          user.aiLearnsAbility(ability) unless aiCheck
+      end
   }
 )
 
@@ -34,9 +34,9 @@ BattleHandlers::DamageCalcUserAllyAbility.add(:TOXICATTITUDE,
 
 BattleHandlers::DamageCalcUserAllyAbility.add(:HIVEMIND,
   proc { |ability, user, _target, _move, mults, _baseDmg, types, aiCheck|
-        if types.include?(:BUG)
-            mults[:base_damage_multiplier] *= 3 / 2.0
-            user.aiLearnsAbility(ability) unless aiCheck
-        end
+      if types.include?(:BUG)
+          mults[:base_damage_multiplier] *= 3 / 2.0
+          user.aiLearnsAbility(ability) unless aiCheck
+      end
   }
 )
