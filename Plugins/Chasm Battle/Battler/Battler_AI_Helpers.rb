@@ -93,23 +93,31 @@ class PokeBattle_Battler
     end
 
     def eachAIKnownMove
-        return if movesHiddenByIllusion?
-        knownMoveIDs = @battle.aiKnownMoves(@pokemon)
-        getMoves.each do |move|
-            next unless move
-            next if pbOwnedByPlayer? && !knownMoveIDs.include?(move.id)
-            yield move
-        end
+        eachAIKnownMoveWithIndex { |move, _index| yield move }
     end
 
     def eachAIKnownMoveWithIndex
         return if movesHiddenByIllusion?
-        knownMoveIDs = @battle.aiKnownMoves(@pokemon)
         getMoves.each_with_index do |move, index|
             next unless move
-            next if pbOwnedByPlayer? && !knownMoveIDs.include?(move.id)
+            next unless aiKnowsMove?(move)
             yield move, index
         end
+    end
+
+    # Insight Room shows the AI the highest eligible move without skipping moves the battler
+    # already knows, so as not to reveal which moves it lacks. When the battler already knows
+    # that move, the AI keeps it after the room ends, but never learns the fifth move it gets.
+    def aiKnowsMove?(move)
+        return true unless pbOwnedByPlayer?
+        return true if @battle.aiKnownMoves(@pokemon).include?(move.id)
+        return false unless @battle.field.effectActive?(:InsightRoom)
+        return false unless move.id == getInsightRoomMove
+        if pbHasMove?(move.id) && !boss?
+            echoln("[AI LEARNING] Predicted insight room move for #{pbThis(true)} is #{move.id} - already known, no extra knowledge")
+            aiSeesMove(move.id)
+        end
+        return true
     end
 
     def movesHiddenByIllusion?
