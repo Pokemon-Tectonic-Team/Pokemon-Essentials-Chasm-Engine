@@ -50,8 +50,8 @@ class PokeBattle_Battler
         @type1 = @type2 = nil
         @ability_ids     = []
         @addedAbilities  = []
-        @addedItems  = []
-        @gender         = 0
+        @addedItems = []
+        @gender = 0
         @attack = @defense = @spatk = @spdef = @speed = 0
         @status         = :NONE
         @statusCount    = 0
@@ -95,7 +95,7 @@ class PokeBattle_Battler
         @status       = pkmn.status
         @statusCount  = pkmn.statusCount
         @boss = pkmn.boss
-        @pokemon      = pkmn
+        @pokemon = pkmn
         resetAbilities(true) if ability
         @pokemonIndex = idxParty
         @participants = []
@@ -139,7 +139,7 @@ class PokeBattle_Battler
     end
 
     def resetMoves
-        @moves        = []
+        @moves = []
         @pokemon.moves.each_with_index do |m, i|
             @moves[i] = PokeBattle_Move.from_pokemon_move(@battle, m)
         end
@@ -153,7 +153,7 @@ class PokeBattle_Battler
     end
 
     def pbInitialize(pkmn, idxParty, batonPass = false)
-        handOff = hasActiveAbility?(:HANDOFF,true)
+        handOff = hasActiveAbility?(:HANDOFF, true)
         pbInitPokemon(pkmn, idxParty)
         pbInitEffects(batonPass, handOff)
         @damageState.reset
@@ -172,7 +172,7 @@ class PokeBattle_Battler
         if !@effects[:GivingDragonRideTo].nil? && effectActive?(:GivingDragonRideTo)
             getBattlerPointsTo(:GivingDragonRideTo).disableEffect(:OnDragonRide)
         end
-        
+
         initializeEffects(batonPass)
 
         # All effects stop pointing at this battler index if appropriate
@@ -256,11 +256,10 @@ class PokeBattle_Battler
         @movesUsedThisTurn     = []
         @movesUsedLastTurn     = []
         @lastMoveUsed          = nil
-        @lastMoveUsedType      = nil
+        @lastMoveUsedTypes     = []
         @lastMoveUsedCategory  = -1
         @usedDamagingMove      = false
         @lastRoundMove = nil
-        @lastRoundMoveType     = nil
         @lastRoundMoveCategory = -1
         @lastRegularMoveUsed   = nil
         @lastRegularMoveTarget = -1
@@ -273,7 +272,7 @@ class PokeBattle_Battler
         # Boss stuff
         @avatarPhase           = 1
         @phaseTransitioning    = false
-        @empoweredTimer		   = 0
+        @empoweredTimer = 0
         @extraMovesPerTurn = 0
         @indicesTargetedRoundBeforeLast = []
         @indicesTargetedLastRound = []
@@ -330,7 +329,7 @@ class PokeBattle_Battler
 
     def refreshDataBox
         return if @fake
-        @battle.scene.pbRefreshOne(@index) if @battle.scene
+        @battle.scene&.pbRefreshOne(@index)
     end
 
     def showMyAbilitySplash(abilityID, delay = false)

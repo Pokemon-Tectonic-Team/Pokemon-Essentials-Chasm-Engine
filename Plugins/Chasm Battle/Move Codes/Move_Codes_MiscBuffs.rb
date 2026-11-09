@@ -115,9 +115,9 @@ class PokeBattle_Move_EmpoweredLaserFocus < PokeBattle_Move
 end
 
 #===============================================================================
-# User takes half damage from Super Effective moves. (Inure)
+# User cannot take Super/Hyper effective damage for the next three hits. (Inure)
 #===============================================================================
-class PokeBattle_Move_StartUserShedTypeWeaknesses < PokeBattle_Move
+class PokeBattle_Move_StartUserShedTypeWeaknesses3 < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
         if user.effectActive?(:Inured)
             @battle.pbDisplay(_INTL("But it failed, since {1} is already inured!", user.pbThis(true))) if show_message
@@ -127,7 +127,7 @@ class PokeBattle_Move_StartUserShedTypeWeaknesses < PokeBattle_Move
     end
 
     def pbEffectGeneral(user)
-        user.applyEffect(:Inured)
+        user.applyEffect(:Inured, 3)
     end
 
     def getEffectScore(user, _target)

@@ -8,7 +8,7 @@ def healFromBerry(battler, ratio, item, forced = false, filchedFrom = nil, filch
     ratio *= 2.0 if battler.hasActiveAbility?(:RIPEN)
     if battler.hasTribeBonus?(:SCAVENGER)
         ratio *= 1.5
-        battler.battle.pbShowTribeSplash(battler,:SCAVENGER)
+        battler.battle.pbShowTribeSplash(battler, :SCAVENGER)
         battler.battle.pbDisplay(_INTL("{1} got a bit extra out of their {2}!", battler.pbThis, getItemName(item)))
         battler.battle.pbHideTribeSplash(battler)
     end
@@ -37,9 +37,9 @@ def pbBattleStatIncreasingBerry(battler, battle, item, forced, stat, increment =
     return result
 end
 
-def pbBattleTypeWeakingBerry(item, type, moveType, target, mults, feast = false, aiCheck = false)
-    return if moveType != type
-    return if !Effectiveness.super_effective?(target.damageState.typeMod) && moveType != :NORMAL
+def pbBattleTypeWeakingBerry(item, berryType, moveTypes, target, mults, feast = false, aiCheck = false)
+    return unless moveTypes.include?(berryType)
+    return if !Effectiveness.super_effective?(target.damageState.typeMod) && berryType != :NORMAL
     if target.hasActiveAbility?(:RIPEN)
         mults[:final_damage_multiplier] = (mults[:final_damage_multiplier] / 4).round
     else
@@ -53,16 +53,16 @@ def pbBattleTypeWeakingBerry(item, type, moveType, target, mults, feast = false,
     target.battle.pbCommonAnimation("Nom", target) unless aiCheck
 end
 
-def pbBattleGem(item, user, type, move, mults, moveType, aiCheck = false, aiContext = nil)
-    return if moveType != type
+def pbBattleGem(item, user, gemType, _move, mults, moveTypes, aiCheck = false, aiContext = nil)
+    return unless moveTypes.include?(gemType)
     return unless user.canConsumeGem?
     user.applyEffect(:GemConsumed, item) unless aiCheck
     aiContext[:item_consumed] = true if aiContext
     mults[:base_damage_multiplier] *= 1.5
 end
 
-def typeBoostingItem(item, user, type, mults, moveType, aiCheck = false)
-    if moveType == type
+def typeBoostingItem(item, user, boostedType, mults, moveTypes, aiCheck = false)
+    if moveTypes.include?(boostedType)
         mults[:base_damage_multiplier] *= 1.2
         user.aiLearnsItem(item) unless aiCheck
     end

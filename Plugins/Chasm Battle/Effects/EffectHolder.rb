@@ -145,13 +145,6 @@ module EffectHolder
         return @effects[effect] == battler.index
     end
 
-    def eachEffectPointsAt(_onlyActive = false.battler)
-        validateCorrectLocation(effect)
-        eachEffect(true) do |effect, value, data|
-            yield effect, value, data if pointsAt?(effect, battler)
-        end
-    end
-
     def getBattlerPointsTo(effect)
         validateCorrectLocation(effect)
         validatePosition(effect)

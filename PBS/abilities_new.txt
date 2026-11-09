@@ -160,6 +160,11 @@ Description = Deals more damage to targets the faster it is than them. Up to a 5
 Name = Ball Mimic
 Description = Your Poké Balls are 50% more effective.
 #-------------------------------
+[BARRENBLOOD]
+Name = Barren Blood
+Description = During sandstorm, deal and take 50% more damage.
+Flags = SandstormSynergy
+#-------------------------------
 [BARRIERMAKER]
 Name = Barrier Maker
 Description = Sets a Reflect for four turns upon entry.
@@ -441,7 +446,7 @@ Flags = HailSynergy
 #-------------------------------
 [DEBRISFIELD]
 Name = Debris Field
-Description = Immune to non-volatile status conditions due to its hard shell. Boosts Sp. Atk and Speed by 30% in sandstorm.
+Description = Immune to non-volatile status conditions. In sandstorm, powers up Rock-type moves by 50% and deals 1/6th max HP when hit.
 Flags = SandstormSynergy
 #-------------------------------
 [DEBUGGER]
@@ -472,7 +477,7 @@ Flags = SandstormSynergy
 #-------------------------------
 [DESERTSCAVENGER]
 Name = Desert Scavenger
-Description = Restores this Pokémon's HP based on damage taken by others from sandstorm.
+Description = Restores this Pokémon's HP based on damage taken by others from sandstorm, and increases sandstorm damage by 50%.
 Flags = SandstormSynergy
 #-------------------------------
 [DESERTSPIRIT]
@@ -1380,6 +1385,10 @@ Flags = MoonglowSynergy
 Name = Manifestation
 Description = Boosts the power of pulse moves by 50%, and makes them physical when that would be more effective.
 #-------------------------------
+[MARIACHI]
+Name = Mariachi
+Description = Boosts Sp. Atk after using a sound move. Heals for 1/5th max HP after using a dance move.
+#-------------------------------
 [MARINE]
 Name = Marine
 Description = Physical moves have a 30% chance to waterlog targets.
@@ -1799,11 +1808,6 @@ Name = Rain Prism
 Description = Powers up Fairy-type moves by 50% in rainstorm.
 Flags = RainstormSynergy
 #-------------------------------
-[RAMPROW]
-Name = Ram Prow
-Description = Ignores screens, Substitute, and Abilities that would affect its moves.
-Flags = MoldBreaking,IgnoreScreens,IgnoreSubstitute
-#-------------------------------
 [RAPIDONSET]
 Name = Rapid Onset
 Description = On the first turn, its attacks poison the target.
@@ -1946,10 +1950,19 @@ Name = Safe Passage
 Description = Doubles this Pokémon's Defense in rainstorm.
 Flags = RainstormSynergy
 #-------------------------------
+[SANDBANKBRUTE]
+Name = Sandbank Brute
+Description = During sandstorm, its attacks can't miss and restore HP equal to 25% of the damage dealt.
+Flags = SandstormSynergy
+#-------------------------------
 [SANDBURST]
 Name = Sand Burst
 Description = Summons a sandstorm for four turns when hit by an attack.
 Flags = SandstormSynergy
+#-------------------------------
+[SANDRECONSTRUCTION]
+Name = Sand Reconstruction
+Description = Prevents 75% of the self-damage from recoil and self-destructing during sandstorm.
 #-------------------------------
 [SANDSHROUD]
 Name = Sand Shroud
@@ -2225,6 +2238,10 @@ Description = Slice moves always crit. However, their damage is dealt at the end
 [STEAMPOWER]
 Name = Steam Power
 Description = Takes 50% less damage from Water-type moves. Raises Speed by four steps when hit by one.
+#-------------------------------
+[STEEPMOMENTUM]
+Name = Steep Momentum
+Description = Gains two steps of Attack and Speed if it didn’t deal attack damage this turn. When it does, reset its positive stat changes.
 #-------------------------------
 [STERN]
 Name = Stern
@@ -2514,10 +2531,6 @@ Description = Takes half damage from Dark- and Bug-type moves.
 Name = Unassuming
 Description = Before using a status move against a single foe, lowers their Defense by two steps.
 #-------------------------------
-[UNBREAKABLE]
-Name = Unbreakable
-Description = Prevents half the self-damage from recoil and self-destructing.
-#-------------------------------
 [UNCANNYLUCK]
 Name = Uncanny Luck
 Description = If an attacker would activate a random added effect on this Pokémon, that effect is placed on the attacker instead.
@@ -2644,7 +2657,7 @@ Flags = HailSynergy
 #-------------------------------
 [WINTERSWAGES]
 Name = Winter's Wages
-Description = Restores HP based on damage taken by others from hail.
+Description = Restores HP based on damage taken by others from hail, and increases hail damage by 50%.
 Flags = HailSynergy
 #-------------------------------
 [WISEHUNTER]

@@ -17,7 +17,7 @@ class PokeBattle_Move_SetUserTypesToUserMoveType < PokeBattle_Move
             next if userTypes.include?(m.type)
             @newTypes.push(m.type) unless @newTypes.include?(m.type)
         end
-        if @newTypes.length == 0
+        if @newTypes.empty?
             @battle.pbDisplay(_INTL("But it failed, since there are no valid types for it to choose!")) if show_message
             return true
         end
@@ -50,18 +50,18 @@ class PokeBattle_Move_SetUserTypesToResistLastAttack < PokeBattle_Move
     end
 
     def pbFailsAgainstTarget?(user, target, show_message)
-        if !target.lastMoveUsed || !target.lastMoveUsedType ||
-           GameData::Type.get(target.lastMoveUsedType).pseudo_type
+        lastTypes = target.lastMoveUsedTypes
+        if !target.lastMoveUsed || lastTypes.empty? || lastTypes.any? { |type| GameData::Type.get(type).pseudo_type }
             @battle.pbDisplay(_INTL("But it failed!")) if show_message
             return true
         end
         @newTypes = []
         GameData::Type.each do |t|
             next if t.pseudo_type || user.pbHasType?(t.id) ||
-                    !Effectiveness.resistant_type?(target.lastMoveUsedType, t.id)
+                    !Effectiveness.resistant?(typesEffectiveness(lastTypes, [t.id], nil, nil, false))
             @newTypes.push(t.id)
         end
-        if @newTypes.length == 0
+        if @newTypes.empty?
             @battle.pbDisplay(_INTL("But it failed!")) if show_message
             return true
         end
@@ -190,7 +190,7 @@ class PokeBattle_Move_SetUserTypesToTargetTypes < PokeBattle_Move
 
     def pbFailsAgainstTarget?(user, target, show_message)
         newTypes = target.pbTypes(true)
-        if newTypes.length == 0 # Target has no type to copy
+        if newTypes.empty? # Target has no type to copy
             @battle.pbDisplay(_INTL("But it failed, since {1} has no types!", target.pbThis(true))) if show_message
             return true
         end
@@ -212,7 +212,7 @@ end
 # Target becomes Bug type. (Scale Scatter)
 #===============================================================================
 class PokeBattle_Move_SetTargetTypesToBug < PokeBattle_Move
-    def pbFailsAgainstTarget?(_user, target, show_message)
+    def pbFailsAgainstTarget?(_user, _target, show_message)
         unless GameData::Type.exists?(:BUG)
             @battle.pbDisplay(_INTL("But it failed, since the Bug-type doesn't exist!")) if show_message
             return true
@@ -243,7 +243,7 @@ class PokeBattle_Move_RemoveTargetWaterType < PokeBattle_Move
     def pbEffectBeforeDealingDamage(user, target)
         if target.pbHasType?(:WATER)
             target.applyEffect(:DryHeat)
-            target.damageState.typeMod = pbCalcTypeMod(@calcType, user, target)
+            target.damageState.typeMod = pbCalcTypeMod(@calcTypes, user, target)
         end
     end
 end
@@ -348,7 +348,7 @@ class PokeBattle_Move_AddSteelTypeToTargetLowerTargetSpd4 < PokeBattle_Move
     def getTargetAffectingEffectScore(user, target)
         score = 0
         score += 60 unless target.pbHasTypeAI?(:STEEL)
-        score += getMultiStatDownEffectScore([:SPEED,4],user,target)
+        score += getMultiStatDownEffectScore([:SPEED, 4], user, target)
         return score
     end
 end
@@ -358,7 +358,8 @@ end
 # Additional effect changes depending on rotom's form. Only usable by rotom.
 #===============================================================================
 class PokeBattle_Move_TypeAndEffectDependsOnUserRotomForm < PokeBattle_Move
-    def aiAutoKnows?(pokemon); return true; end
+    def aiAutoKnows?(_pokemon); return true; end
+
     def pbMoveFailed?(user, _targets, show_message)
         unless user.countsAs?(:ROTOM)
             @battle.pbDisplay(_INTL("But {1} can't use the move!", user.pbThis(true))) if show_message
@@ -439,9 +440,8 @@ end
 class PokeBattle_Move_SetTargetTypesToChoiceOfDragonFairySteel < PokeBattle_Move
     def resolutionChoice(user, replayed_choice)
         validTypes = %i[DRAGON FAIRY STEEL]
-        validTypeNames = []
-        validTypes.each do |typeID|
-            validTypeNames.push(GameData::Type.get(typeID).name)
+        validTypeNames = validTypes.map do |typeID|
+            GameData::Type.get(typeID).name
         end
         if validTypes.length == 1
             @chosenType = validTypes[0]
@@ -453,7 +453,7 @@ class PokeBattle_Move_SetTargetTypesToChoiceOfDragonFairySteel < PokeBattle_Move
             elsif !replayed_choice.nil?
                 @chosenType = replayed_choice
             else
-                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which type should {1} gift?", user.pbThis(true)),validTypeNames)
+                chosenIndex = @battle.scene.pbChooseWithThinkingLoop(_INTL("Which type should {1} gift?", user.pbThis(true)), validTypeNames)
                 @chosenType = validTypes[chosenIndex]
                 return @chosenType
             end
@@ -476,9 +476,9 @@ class PokeBattle_Move_SetTargetTypesToChoiceOfDragonFairySteel < PokeBattle_Move
         return false
     end
 
-    def pbFailsAgainstTargetAI?(_user, target)
+    def pbFailsAgainstTargetAI?(user, target)
         @chosenType = :DRAGON
-        return pbFailsAgainstTarget?(_user, target, false)
+        return pbFailsAgainstTarget?(user, target, false)
     end
 
     def pbEffectAgainstTarget(_user, target)

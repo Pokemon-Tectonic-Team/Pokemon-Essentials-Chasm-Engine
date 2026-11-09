@@ -20,7 +20,7 @@ end
 class PokeBattle_Move_RaiseAllySpd4OrBurnFoe < PokeBattle_Move
     def pbOnStartUse(user, targets)
         @buffing = false
-        @buffing = !user.opposes?(targets[0]) if targets.length > 0
+        @buffing = !user.opposes?(targets[0]) if !targets.empty?
     end
 
     def pbFailsAgainstTarget?(user, target, show_message)
@@ -54,7 +54,7 @@ class PokeBattle_Move_RaiseAllySpd4OrBurnFoe < PokeBattle_Move
         if user.opposes?(target)
             return getBurnEffectScore(user, target)
         else
-            return getMultiStatUpEffectScore([:SPEED,4])
+            return getMultiStatUpEffectScore([:SPEED, 4])
         end
     end
 end
@@ -93,14 +93,11 @@ class PokeBattle_Move_BurnTargetIfInEclipse < PokeBattle_BurnMove
 end
 
 # Empowered Ignite
-class PokeBattle_Move_EmpoweredIgnite < PokeBattle_Move
+class PokeBattle_Move_EmpoweredIgnite < PokeBattle_Move_Burn
     include EmpoweredMove
 
     def pbEffectGeneral(user)
         super
-        @battle.eachOtherSideBattler(user) do |b|
-            b.applyBurn(user) if b.canBurn?(user, true, self)
-        end
         transformType(user, :FIRE)
     end
 end
@@ -116,18 +113,15 @@ end
 # Burns the target and add the Fire-type to it. (Evernal Flux)
 #===============================================================================
 class PokeBattle_Move_BurnAddFireType < PokeBattle_Move
-    def pbFailsAgainstTarget?(_user, target, show_message)
-        if !target.canBurn?(_user, false, self) && !target.canChangeTypeTo?(:FIRE)
-            if show_message
-                @battle.pbDisplay(_INTL("But it failed, since {1} can't be burned or gain Fire-type!", target.pbThis(true)))
-            end
-        end 
-        return false
+    def pbFailsAgainstTarget?(user, target, show_message)
+        return false if target.canBurn?(user, false, self) || target.canChangeTypeTo?(:FIRE)
+        @battle.pbDisplay(_INTL("But it failed, since {1} can't be burned or gain Fire-type!", target.pbThis(true))) if show_message
+        return true
     end
 
-    def pbEffectAgainstTarget(_user, target)
-        if target.canBurn?(_user, false, self)
-            target.applyBurn(_user)
+    def pbEffectAgainstTarget(user, target)
+        if target.canBurn?(user, false, self)
+            target.applyBurn(user)
         end
         if target.canChangeTypeTo?(:FIRE)
             target.applyEffect(:Type3, :FIRE)

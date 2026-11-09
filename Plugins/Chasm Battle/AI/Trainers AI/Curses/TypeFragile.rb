@@ -10,7 +10,7 @@ PokeBattle_Battle::BattleStartApplyCurse.add(:CURSE_TYPE_FRAGILE,
 )
 
 PokeBattle_Battle::EffectivenessChangeCurseEffect.add(:CURSE_TYPE_FRAGILE,
-    proc { |_curse_policy, _moveType, user, target, effectiveness|
+    proc { |_curse_policy, _moveTypes, user, target, effectiveness|
         if !user.pbOwnedByPlayer? && target.pbOwnedByPlayer? &&
                 Effectiveness.normal?(effectiveness)
             next effectiveness * 2
