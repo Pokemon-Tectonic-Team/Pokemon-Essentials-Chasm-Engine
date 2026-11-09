@@ -209,7 +209,11 @@ GameData::BattleEffect.register_effect(:Field, {
         # AI learns of the battler's possible insight room move
         # It either has it from insight room or has it already
         battle.eachBattler do |b|
-            b.aiSeesMove(b.getInsightRoomMove)
+            revealedMove = b.getInsightRoomMove
+            if b.pbOwnedByPlayer? && !b.boss? && b.pbHasMove?(revealedMove)
+                echoln("[AI LEARNING] Predicted insight room move for #{b.pbThis(true)} is #{revealedMove} - already known, no extra knowledge")
+            end
+            b.aiSeesMove(revealedMove)
         end
     end,
     :disable_proc => proc do |battle, _battler|
