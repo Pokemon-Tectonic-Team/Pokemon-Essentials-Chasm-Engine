@@ -220,3 +220,30 @@ class PokeBattle_Move_StartSwapSpeedOrder5 < PokeBattle_Move
         @battle.field.applyEffect(:TrickstersDomain, applyEffectDurationModifiers(@trickstersdomainDuration, _user))
     end
 end
+
+#===============================================================================
+# During Sandstorm, sets a Dustbowl on the opposite side for the next 5 turns.
+# Prevents healing and raises damage against the opponent by 30% (Dustbowl)
+#===============================================================================
+class PokeBattle_Move_OppSide30MoreDamageCantHealIfInSand5 < PokeBattle_Move
+    def initialize(battle, move)
+        super
+        @dustbowlDuration = 5
+    end
+
+    def pbMoveFailed?(user, _targets, show_message)
+        unless @battle.sandy?
+            @battle.pbDisplay(_INTL("But it failed, since there is no Sandstorm!")) if show_message
+            return true
+        end
+        return false
+    end
+
+    def pbEffectGeneral(user)
+        user.pbOpposingSide.applyEffect(:Dustbowl, applyEffectDurationModifiers(@dustbowlDuration, user))
+    end
+
+    def getEffectScore(user, target)
+        return getDustbowlEffectScore(user, target)
+    end
+end

@@ -3,42 +3,42 @@
 #########################################
 
 BattleHandlers::TargetAbilityOnHit.add(:SANDBURST,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, _user, target, _move, battle, aiCheck, _aiNumHits|
         score = pbBattleWeatherAbility(ability, :Sandstorm, target, battle, false, true, aiCheck)
         next score * -1 if aiCheck
     }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:INNERHEAT,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, _user, target, _move, battle, aiCheck, _aiNumHits|
         score = pbBattleWeatherAbility(ability, :Sunshine, target, battle, false, true, aiCheck)
         next score * -1 if aiCheck
     }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:STORMBRINGER,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, _user, target, _move, battle, aiCheck, _aiNumHits|
         score = pbBattleWeatherAbility(ability, :Rainstorm, target, battle, false, true, aiCheck)
         next score * -1 if aiCheck
     }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:FROSTSCATTER,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, _user, target, _move, battle, aiCheck, _aiNumHits|
         score = pbBattleWeatherAbility(ability, :Hail, target, battle, false, true, aiCheck)
         next score * -1 if aiCheck
     }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:SUNEATER,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, _user, target, _move, battle, aiCheck, _aiNumHits|
         score = pbBattleWeatherAbility(ability, :Eclipse, target, battle, false, true, aiCheck)
         next score * -1 if aiCheck
     }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:LUNARIOT,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, _user, target, _move, battle, aiCheck, _aiNumHits|
         score = pbBattleWeatherAbility(ability, :Moonglow, target, battle, false, true, aiCheck)
         next score * -1 if aiCheck
     }
@@ -48,7 +48,7 @@ BattleHandlers::TargetAbilityOnHit.add(:LUNARIOT,
 # Other battle effects
 #########################################
 BattleHandlers::TargetAbilityOnHit.add(:GRAVITYWELL,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, _aiNumHits|
         if aiCheck
             next getGravityEffectScore(user, 4)
         else
@@ -66,42 +66,42 @@ BattleHandlers::TargetAbilityOnHit.add(:GRAVITYWELL,
 
 BattleHandlers::TargetAbilityOnHit.add(:GOOEY,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next if user.dummy
-        next unless move.physicalMove?
-        if aiCheck
-            ret = 0
-            aiNumHits.times do |i|
-                ret -= getMultiStatDownEffectScore([:ATTACK,1,:SPEED,1], target, user, fakeStepModifier: i)
-            end
-            next ret
-        end
-        user.pbLowerMultipleStatSteps([:ATTACK,1,:SPEED,1], target, ability: ability)
-        battle.pbHideAbilitySplash(target)
-    }
+      next if user.dummy
+      next unless move.physicalMove?
+      if aiCheck
+          ret = 0
+          aiNumHits.times do |i|
+              ret -= getMultiStatDownEffectScore([:ATTACK, 1, :SPEED, 1], target, user, fakeStepModifier: i)
+          end
+          next ret
+      end
+      user.pbLowerMultipleStatSteps([:ATTACK, 1, :SPEED, 1], target, ability: ability)
+      battle.pbHideAbilitySplash(target)
+  }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:SICKENING,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next if user.dummy
-        next unless move.specialMove?
-        if aiCheck
-            ret = 0
-            aiNumHits.times do |i|
-                ret -= getMultiStatDownEffectScore([:SPECIAL_ATTACK,1,:SPEED,1], target, user, fakeStepModifier: i)
-            end
-            next ret
-        end
-        user.pbLowerMultipleStatSteps([:SPECIAL_ATTACK,1,:SPEED,1], target, ability: ability)
-        battle.pbHideAbilitySplash(target)
-    }
+      next if user.dummy
+      next unless move.specialMove?
+      if aiCheck
+          ret = 0
+          aiNumHits.times do |i|
+              ret -= getMultiStatDownEffectScore([:SPECIAL_ATTACK, 1, :SPEED, 1], target, user, fakeStepModifier: i)
+          end
+          next ret
+      end
+      user.pbLowerMultipleStatSteps([:SPECIAL_ATTACK, 1, :SPEED, 1], target, ability: ability)
+      battle.pbHideAbilitySplash(target)
+  }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:COTTONDOWN,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
         if aiCheck
             ret = 0
             aiNumHits.times do |i|
-                ret -= getMultiStatDownEffectScore([:SPEED,2], target, user, fakeStepModifier: i)
+                ret -= getMultiStatDownEffectScore([:SPEED, 2], target, user, fakeStepModifier: i)
             end
             next ret
         else
@@ -118,24 +118,24 @@ BattleHandlers::TargetAbilityOnHit.add(:COTTONDOWN,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:STAMINA,
-  proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
-        if aiCheck
-            ret = 0
-            aiNumHits.times do |i|
-                ret -= getMultiStatUpEffectScore([:DEFENSE,1], user, target, fakeStepModifier: i, evaluateThreat: false)
-            end
-            next ret
-        end
-        target.tryRaiseStat(:DEFENSE, target, ability: ability, increment: 1)
+  proc { |ability, user, target, _move, _battle, aiCheck, aiNumHits|
+      if aiCheck
+          ret = 0
+          aiNumHits.times do |i|
+              ret -= getMultiStatUpEffectScore([:DEFENSE, 1], user, target, fakeStepModifier: i, evaluateThreat: false)
+          end
+          next ret
+      end
+      target.tryRaiseStat(:DEFENSE, target, ability: ability, increment: 1)
   }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:GRIT,
-    proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, _battle, aiCheck, aiNumHits|
         if aiCheck
             ret = 0
             aiNumHits.times do |i|
-                ret -= getMultiStatUpEffectScore([:SPECIAL_DEFENSE,1], user, target, fakeStepModifier: i, evaluateThreat: false)
+                ret -= getMultiStatUpEffectScore([:SPECIAL_DEFENSE, 1], user, target, fakeStepModifier: i, evaluateThreat: false)
             end
             next ret
         end
@@ -144,24 +144,24 @@ BattleHandlers::TargetAbilityOnHit.add(:GRIT,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:WEAKARMOR,
-  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next unless move.physicalMove?
-        next if target.fainted?
-        if aiCheck
-            ret = getMultiStatDownEffectScore([:DEFENSE, 1], target, target)
-            ret -= getMultiStatUpEffectScore([:SPEED, 2], target, target, evaluateThreat: false)
-            next ret
-        else
-            battle.pbShowAbilitySplash(target, ability)
-            target.tryLowerStat(:DEFENSE, target)
-            target.tryRaiseStat(:SPEED, target, increment: 2)
-            battle.pbHideAbilitySplash(target)
-        end
+  proc { |ability, _user, target, move, battle, aiCheck, _aiNumHits|
+      next unless move.physicalMove?
+      next if target.fainted?
+      if aiCheck
+          ret = getMultiStatDownEffectScore([:DEFENSE, 1], target, target)
+          ret -= getMultiStatUpEffectScore([:SPEED, 2], target, target, evaluateThreat: false)
+          next ret
+      else
+          battle.pbShowAbilitySplash(target, ability)
+          target.tryLowerStat(:DEFENSE, target)
+          target.tryRaiseStat(:SPEED, target, increment: 2)
+          battle.pbHideAbilitySplash(target)
+      end
   }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:IMPETUOUS,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, _user, target, move, battle, aiCheck, _aiNumHits|
         next unless move.specialMove?
         next if target.fainted?
         if aiCheck
@@ -179,11 +179,11 @@ BattleHandlers::TargetAbilityOnHit.add(:IMPETUOUS,
 
 BattleHandlers::TargetAbilityOnHit.add(:STEAMPOWER,
     proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
-        next unless move.calcType == :WATER
+        next unless move.calcTypes.include?(:WATER)
         if aiCheck
             ret = 0
             aiNumHits.times do |i|
-                ret -= getMultiStatUpEffectScore([:SPEED,4], user, target, fakeStepModifier: i*4, evaluateThreat: false)
+                ret -= getMultiStatUpEffectScore([:SPEED, 4], user, target, fakeStepModifier: i * 4, evaluateThreat: false)
             end
             next ret
         end
@@ -197,17 +197,17 @@ BattleHandlers::TargetAbilityOnHit.add(:STEAMPOWER,
 
 BattleHandlers::TargetAbilityOnHit.add(:IRONBARBS,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next unless move.physicalMove?
-        if aiCheck
-            next -10 * aiNumHits if user.takesIndirectDamage?
-            next 0
-        end
-        battle.pbShowAbilitySplash(target, ability)
-        if user.takesIndirectDamage?(true)
-            battle.pbDisplay(_INTL("{1} is hurt!", user.pbThis))
-            user.applyFractionalDamage(1.0 / 8.0)
-        end
-        battle.pbHideAbilitySplash(target)
+      next unless move.physicalMove?
+      if aiCheck
+          next -10 * aiNumHits if user.takesIndirectDamage?
+          next 0
+      end
+      battle.pbShowAbilitySplash(target, ability)
+      if user.takesIndirectDamage?(true)
+          battle.pbDisplay(_INTL("{1} is hurt!", user.pbThis))
+          user.applyFractionalDamage(1.0 / 8.0)
+      end
+      battle.pbHideAbilitySplash(target)
   }
 )
 
@@ -230,7 +230,7 @@ BattleHandlers::TargetAbilityOnHit.add(:FEEDBACK,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:KNAPPINGSTONES,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
         next if user.dummy
         next unless Effectiveness.super_effective?(target.damageState.typeMod)
         if aiCheck
@@ -250,9 +250,9 @@ BattleHandlers::TargetAbilityOnHit.add(:KNAPPINGSTONES,
         battle.pbHideAbilitySplash(target)
     }
 )
-  
+
 BattleHandlers::TargetAbilityOnHit.add(:ARCCONDUCTOR,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
         next unless battle.rainy?
         if aiCheck
             next -10 * aiNumHits if user.takesIndirectDamage?
@@ -267,8 +267,24 @@ BattleHandlers::TargetAbilityOnHit.add(:ARCCONDUCTOR,
     }
 )
 
-BattleHandlers::TargetAbilityOnHit.add(:SPINTENSITY,
+BattleHandlers::TargetAbilityOnHit.add(:DEBRISFIELD,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+        next unless battle.sandy?
+        if aiCheck
+            next -10 * aiNumHits if user.takesIndirectDamage?
+            next 0
+        end
+        battle.pbShowAbilitySplash(target, ability)
+        if user.takesIndirectDamage?(true)
+            battle.pbDisplay(_INTL("{1} is hurt!", user.pbThis))
+            user.applyFractionalDamage(1.0 / 6.0)
+        end
+        battle.pbHideAbilitySplash(target)
+    }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:SPINTENSITY,
+    proc { |ability, user, target, _move, battle, aiCheck, _aiNumHits|
         next unless target.steps[:SPEED] > 0
         if aiCheck
             next -5 * target.steps[:SPEED] if user.takesIndirectDamage?
@@ -289,46 +305,46 @@ BattleHandlers::TargetAbilityOnHit.add(:SPINTENSITY,
 #########################################
 
 BattleHandlers::TargetAbilityOnHit.add(:CONSTRICTOR,
-  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next unless move.physicalMove?
-        next if target.fainted?
-        next if user.effectActive?(:Trapping)
-        next if user.effectActive?(:Binding)
-        next if target.effectActive?(:SwitchedIn)
-        next if user.dummy
-        trappingDuration = 3
-        trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
-        score = 30
-        score *= 2 if user.hasActiveItemAI?(:GRIPCLAW)
-        next score if aiCheck
-        battle.pbShowAbilitySplash(target, ability)
-        battle.pbDisplay(_INTL("{1} is being constricted!", user.pbThis))
-        user.applyEffect(:Binding, applyEffectDurationModifiers(trappingDuration, target))
-        user.applyEffect(:TrappingAbility, :CONSTRICTOR)
-        user.pointAt(:TrappingUser, target)
-        battle.pbHideAbilitySplash(target)
+  proc { |ability, user, target, move, battle, aiCheck, _aiNumHits|
+      next unless move.physicalMove?
+      next if target.fainted?
+      next if user.effectActive?(:Trapping)
+      next if user.effectActive?(:Binding)
+      next if target.effectActive?(:SwitchedIn)
+      next if user.dummy
+      trappingDuration = 3
+      trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
+      score = 30
+      score *= 2 if user.hasActiveItemAI?(:GRIPCLAW)
+      next score if aiCheck
+      battle.pbShowAbilitySplash(target, ability)
+      battle.pbDisplay(_INTL("{1} is being constricted!", user.pbThis))
+      user.applyEffect(:Binding, applyEffectDurationModifiers(trappingDuration, target))
+      user.applyEffect(:TrappingAbility, :CONSTRICTOR)
+      user.pointAt(:TrappingUser, target)
+      battle.pbHideAbilitySplash(target)
   }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:MAGNETTRAP,
-  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next unless move.specialMove?
-        next if target.fainted?
-        next if user.effectActive?(:Trapping)
-        next if user.effectActive?(:Binding)
-        next if target.effectActive?(:SwitchedIn)
-        next if user.dummy
-        trappingDuration = 3
-        trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
-        score = 30
-        score *= 2 if user.hasActiveItemAI?(:GRIPCLAW)
-        next score if aiCheck
-        battle.pbShowAbilitySplash(target, ability)
-        battle.pbDisplay(_INTL("{1} is being magnetized!", user.pbThis))
-        user.applyEffect(:Binding, applyEffectDurationModifiers(trappingDuration, target))
-        user.applyEffect(:TrappingAbility, :MAGNETTRAP)
-        user.pointAt(:TrappingUser, target)
-        battle.pbHideAbilitySplash(target)
+  proc { |ability, user, target, move, battle, aiCheck, _aiNumHits|
+      next unless move.specialMove?
+      next if target.fainted?
+      next if user.effectActive?(:Trapping)
+      next if user.effectActive?(:Binding)
+      next if target.effectActive?(:SwitchedIn)
+      next if user.dummy
+      trappingDuration = 3
+      trappingDuration *= 2 if user.hasActiveItem?(:GRIPCLAW)
+      score = 30
+      score *= 2 if user.hasActiveItemAI?(:GRIPCLAW)
+      next score if aiCheck
+      battle.pbShowAbilitySplash(target, ability)
+      battle.pbDisplay(_INTL("{1} is being magnetized!", user.pbThis))
+      user.applyEffect(:Binding, applyEffectDurationModifiers(trappingDuration, target))
+      user.applyEffect(:TrappingAbility, :MAGNETTRAP)
+      user.pointAt(:TrappingUser, target)
+      battle.pbHideAbilitySplash(target)
   }
 )
 
@@ -340,43 +356,42 @@ BattleHandlers::TargetAbilityOnHit.add(:MAGNETTRAP,
 
 BattleHandlers::TargetAbilityOnHit.add(:COUNTERFLOW,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next unless move.specialMove?
-        next if target.fainted?
-        next -30 * aiNumHits if aiCheck
-        battle.forceUseMove(target, :BREACH, user.index, ability: ability)
+      next unless move.specialMove?
+      next if target.fainted?
+      next -30 * aiNumHits if aiCheck
+      battle.forceUseMove(target, :BREACH, user.index, ability: ability)
   }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:GUTPUNCH,
-  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next if target.fainted?
-        next -30 * aiNumHits if aiCheck
-        next if target.hasCopiedMoveMarker?
-        battle.forceUseMove(target, :MEGAPUNCH, user.index, moveUsageEffect: :GutPunch, ability: ability)
+  proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
+      next if target.fainted?
+      next -30 * aiNumHits if aiCheck
+      next if target.hasCopiedMoveMarker?
+      battle.forceUseMove(target, :MEGAPUNCH, user.index, moveUsageEffect: :GutPunch, ability: ability)
   }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:WIBBLEWOBBLE,
-  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next if target.fainted?
-        next -40 if aiCheck
-        battle.forceUseMove(target, :POWERSPLIT, user.index, ability: ability)
+  proc { |ability, user, target, _move, battle, aiCheck, _aiNumHits|
+      next if target.fainted?
+      next -40 if aiCheck
+      battle.forceUseMove(target, :POWERSPLIT, user.index, ability: ability)
   }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:BOUNCEBACK,
-  proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next if user.boss?
-        next unless user.hp > target.hp
-        next if target.fainted?
-        next -20 if aiCheck
-        battle.forceUseMove(target, :PAINSPLIT, user.index, ability: ability)
+  proc { |ability, user, target, _move, battle, aiCheck, _aiNumHits|
+      next if user.boss?
+      next unless user.hp > target.hp
+      next if target.fainted?
+      next -20 if aiCheck
+      battle.forceUseMove(target, :PAINSPLIT, user.index, ability: ability)
   }
 )
 
-
 BattleHandlers::TargetAbilityOnHit.add(:HUGGABLE,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, _aiNumHits|
         next if target.fainted?
         next unless target.damageState.finalBaseDamage >= 95
         if aiCheck
@@ -389,22 +404,22 @@ BattleHandlers::TargetAbilityOnHit.add(:HUGGABLE,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:LOUDSLEEPER,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-          next if target.fainted?
-          next unless target.asleep?
-          next -30 * aiNumHits if aiCheck
-          next if target.hasCopiedMoveMarker?
-          battle.forceUseMove(target, :SNORE, user.index, moveUsageEffect: :LoudSleeper, ability: ability)
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
+        next if target.fainted?
+        next unless target.asleep?
+        next -30 * aiNumHits if aiCheck
+        next if target.hasCopiedMoveMarker?
+        battle.forceUseMove(target, :SNORE, user.index, moveUsageEffect: :LoudSleeper, ability: ability)
     }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:SNORER,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-          next if target.fainted?
-          next unless target.asleep?
-          next -15 * aiNumHits if aiCheck
-          next if target.hasCopiedMoveMarker?
-          battle.forceUseMove(target, :SNORE, user.index, moveUsageEffect: :Snorer, ability: ability)
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
+        next if target.fainted?
+        next unless target.asleep?
+        next -15 * aiNumHits if aiCheck
+        next if target.hasCopiedMoveMarker?
+        battle.forceUseMove(target, :SNORE, user.index, moveUsageEffect: :Snorer, ability: ability)
     }
 )
 
@@ -695,7 +710,7 @@ BattleHandlers::TargetAbilityOnHit.add(:BACKWASH,
 #########################################
 
 BattleHandlers::TargetAbilityOnHit.add(:CURSEDTAIL,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
         next if user.effectActive?(:Curse)
         if aiCheck
             if user.effectActive?(:CurseWarned) || aiNumHits > 1
@@ -716,7 +731,7 @@ BattleHandlers::TargetAbilityOnHit.add(:CURSEDTAIL,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:SEALINGBODY,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, move, battle, aiCheck, _aiNumHits|
         next if user.fainted?
         next if user.effectActive?(:Disable)
         next if move.id == :STRUGGLE
@@ -728,7 +743,7 @@ BattleHandlers::TargetAbilityOnHit.add(:SEALINGBODY,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:PERISHBODY,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, _aiNumHits|
         next if target.boss?
         next if user.effectActive?(:PerishSong)
         next if target.effectActive?(:PerishSong)
@@ -745,7 +760,7 @@ BattleHandlers::TargetAbilityOnHit.add(:PERISHBODY,
 #########################################
 MENDING_FEATHER_CHARM_HEALING_FRACTION = 1.0 / 8.0
 BattleHandlers::TargetAbilityOnHit.add(:MENDINGFEATHERCHARM,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
         if aiCheck
             next -30 * aiNumHits
         end
@@ -760,10 +775,10 @@ BattleHandlers::TargetAbilityOnHit.add(:MENDINGFEATHERCHARM,
             battle.pbDisplay(_INTL("{1} heals its party members!", target.pbThis))
             party = battle.pbParty(target.index)
             previousHealthValues = []
-		    previousStatusIndices = []
+            previousStatusIndices = []
             party.each_with_index do |partyMember, i|
                 previousHealthValues.push(partyMember.hp)
-			    previousStatusIndices.push(partyMember.getStatusImageIndex)
+                previousStatusIndices.push(partyMember.getStatusImageIndex)
                 next unless partyMember.able?(false, GameData::Ability.getByFlag("UnableByDefault"))
                 battler = battle.pbFindBattler(i, target)
                 if battler
@@ -772,7 +787,7 @@ BattleHandlers::TargetAbilityOnHit.add(:MENDINGFEATHERCHARM,
                     partyMember.healByFraction(MENDING_FEATHER_CHARM_HEALING_FRACTION)
                 end
             end
-            showPartyHealing(party,previousHealthValues,previousStatusIndices)
+            showPartyHealing(party, previousHealthValues, previousStatusIndices)
 
             # Attacker effect
             battle.pbAnimation(:FEATHERDANCE, target, [user])
@@ -783,7 +798,7 @@ BattleHandlers::TargetAbilityOnHit.add(:MENDINGFEATHERCHARM,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:RAGINGSCALECHARM,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
         if aiCheck
             next -30 * aiNumHits
         end
@@ -801,14 +816,14 @@ BattleHandlers::TargetAbilityOnHit.add(:RAGINGSCALECHARM,
 
             # Attacker effect
             battle.pbAnimation(:SWAGGER, target, [user])
-            user.pbConfusionDamage(_INTL("{1} hurt itself in an extreme rage!",user.pbThis), false, selfHitBasePower(user.level)*2)
+            user.pbConfusionDamage(_INTL("{1} hurt itself in an extreme rage!", user.pbThis), false, selfHitBasePower(user.level) * 2)
         end
         target.hideMyAbilitySplash
     }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:RENDINGFANGCHARM,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
         if aiCheck
             next -30 * aiNumHits
         end
@@ -821,7 +836,7 @@ BattleHandlers::TargetAbilityOnHit.add(:RENDINGFANGCHARM,
             # Main effect
             unless user.pbOwnSide.effectAtMax?(:Spikes)
                 battle.pbAnimation(:SPIKES, target, nil)
-                user.pbOwnSide.incrementEffect(:Spikes,2)
+                user.pbOwnSide.incrementEffect(:Spikes, 2)
             end
 
             # Attacker effect
@@ -833,7 +848,7 @@ BattleHandlers::TargetAbilityOnHit.add(:RENDINGFANGCHARM,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:CALMINGSCUTECHARM,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
         if aiCheck
             next -30 * aiNumHits
         end
@@ -864,7 +879,7 @@ BattleHandlers::TargetAbilityOnHit.add(:CALMINGSCUTECHARM,
 #########################################
 
 BattleHandlers::TargetAbilityOnHit.add(:MUMMY,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, _battle, aiCheck, _aiNumHits|
         next if user.dummy
         next if user.fainted?
         next if user.immutableAbility?
@@ -873,9 +888,9 @@ BattleHandlers::TargetAbilityOnHit.add(:MUMMY,
         user.replaceAbility(ability, user.opposes?(target))
     }
 )
-  
+
 BattleHandlers::TargetAbilityOnHit.add(:INFECTED,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, _battle, aiCheck, _aiNumHits|
         next if user.dummy
         next if user.fainted?
         next if user.immutableAbility?
@@ -887,7 +902,7 @@ BattleHandlers::TargetAbilityOnHit.add(:INFECTED,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:WANDERINGSPIRIT,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, _battle, aiCheck, _aiNumHits|
         next if user.dummy
         next if user.fainted?
         next if user.immutableAbility?
@@ -900,7 +915,7 @@ BattleHandlers::TargetAbilityOnHit.add(:WANDERINGSPIRIT,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:THUNDERSTRUCK,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, _user, target, _move, battle, aiCheck, _aiNumHits|
         if aiCheck
             next target.pbHasAttackingType?(:ELECTRIC) ? -40 : 0
         else
@@ -912,9 +927,9 @@ BattleHandlers::TargetAbilityOnHit.add(:THUNDERSTRUCK,
         end
     }
 )
-  
+
 BattleHandlers::TargetAbilityOnHit.add(:ILLUSION,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |_ability, _user, target, _move, battle, aiCheck, _aiNumHits|
         next 10 if aiCheck
         # NOTE: This intentionally doesn't show the ability splash.
         next unless target.illusion?
@@ -924,10 +939,10 @@ BattleHandlers::TargetAbilityOnHit.add(:ILLUSION,
     }
 )
 
-BattleHandlers::TargetAbilityOnHit.copy(:ILLUSION,:INCOGNITO)
+BattleHandlers::TargetAbilityOnHit.copy(:ILLUSION, :INCOGNITO)
 
 BattleHandlers::TargetAbilityOnHit.add(:COREPROVENANCE,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, _user, target, move, _battle, aiCheck, aiNumHits|
         next unless move.physicalMove?
         next if target.pbOwnSide.effectAtMax?(:ErodedRock)
         if aiCheck
@@ -940,11 +955,11 @@ BattleHandlers::TargetAbilityOnHit.add(:COREPROVENANCE,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:QUILLERINSTINCT,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
         next if target.pbOpposingSide.effectAtMax?(:Spikes)
         if aiCheck
             layerSlots = GameData::BattleEffect.get(:Spikes).maximum - target.pbOpposingSide.countEffect(:Spikes)
-            aiNumHits = [aiNumHits,layerSlots].min
+            aiNumHits = [aiNumHits, layerSlots].min
             next -getHazardSettingEffectScore(target, user) * aiNumHits
         end
         battle.pbShowAbilitySplash(target, ability)
@@ -956,7 +971,7 @@ BattleHandlers::TargetAbilityOnHit.add(:QUILLERINSTINCT,
 
 # Only does stuff for the AI
 BattleHandlers::TargetAbilityOnHit.add(:MULTISCALE,
-    proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
+    proc { |_ability, _user, target, _move, _battle, aiCheck, _aiNumHits|
         next unless aiCheck
         next unless target.fullHealth?
         next 20 # Value for breaking multiscale
@@ -964,20 +979,20 @@ BattleHandlers::TargetAbilityOnHit.add(:MULTISCALE,
 )
 
 # Only does stuff for the AI
-BattleHandlers::TargetAbilityOnHit.copy(:MULTISCALE,:DOMINEERING,:SHADOWSHIELD)
+BattleHandlers::TargetAbilityOnHit.copy(:MULTISCALE, :DOMINEERING, :SHADOWSHIELD)
 
 BattleHandlers::TargetAbilityOnHit.add(:COLORCOLLECTOR,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, _user, target, move, battle, aiCheck, _aiNumHits|
         next if target.fainted?
         next -10 if aiCheck
-        
+
         type = move.calcType
 
         next if target.pbHasType?(type)
         if target.effectActive?(:ColorCollector)
             target.effects[:ColorCollector].push(type)
         else
-            target.applyEffect(:ColorCollector,[type])  
+            target.applyEffect(:ColorCollector, [type])
         end
 
         typeName = GameData::Type.get(type).name
@@ -985,11 +1000,11 @@ BattleHandlers::TargetAbilityOnHit.add(:COLORCOLLECTOR,
         battle.pbDisplay(_INTL("{1} collected the {2} type!", target.pbThis, typeName))
         battle.scene.pbRefresh
         target.hideMyAbilitySplash
-  }
+    }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:TANGLINGVINES,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, _battle, aiCheck, aiNumHits|
         next if user.dummy
         next if target.fainted?
         next -10 * aiNumHits if aiCheck
@@ -997,12 +1012,11 @@ BattleHandlers::TargetAbilityOnHit.add(:TANGLINGVINES,
         user.tryLowerStat(:SPEED, target, increment: 1)
         user.pointAt(:TanglingVines, target)
         target.hideMyAbilitySplash
-
     }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:PRIMEVALFLOURISHING,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, _user, target, _move, battle, aiCheck, aiNumHits|
         next if target.fainted?
         next -10 * aiNumHits if aiCheck
         next if target.form == 0
@@ -1037,8 +1051,7 @@ BattleHandlers::TargetAbilityOnHit.add(:PRIMEVALFLOURISHING,
 BattleHandlers::TargetAbilityOnHit.add(:FORCEREVERSAL,
     proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
         if aiCheck
-            expectedTypeMod = battle.battleAI.pbCalcTypeModAI(move.calcType, user, target, move)
-            next 0 unless Effectiveness.resistant?(target.damageState.typeMod)
+            next 0 unless Effectiveness.resistant?(battle.battleAI.pbCalcTypeModAI(move.calcTypes, user, target, move))
             ret = 0
             aiNumHits.times do |i|
                 ret -= getMultiStatUpEffectScore(ATTACKING_STATS_2, user, target, fakeStepModifier: i, evaluateThreat: false)
@@ -1053,15 +1066,15 @@ BattleHandlers::TargetAbilityOnHit.add(:FORCEREVERSAL,
 
 BattleHandlers::TargetAbilityOnHit.add(:RELUCTANTBLADE,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-        next unless move.physicalMove?
-        next if target.fainted?
-        next -30 * aiNumHits if aiCheck
-        battle.forceUseMove(target, :LEAFAGE, user.index, ability: ability)
+      next unless move.physicalMove?
+      next if target.fainted?
+      next -30 * aiNumHits if aiCheck
+      battle.forceUseMove(target, :LEAFAGE, user.index, ability: ability)
   }
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:INNARDSOUT,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, aiNumHits|
         next if user.dummy
         if aiCheck
             if user.takesIndirectDamage?
@@ -1087,7 +1100,7 @@ BattleHandlers::TargetAbilityOnHit.add(:INNARDSOUT,
 )
 
 BattleHandlers::TargetAbilityOnHit.add(:GULPMISSILE,
-    proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
+    proc { |ability, user, target, _move, battle, aiCheck, _aiNumHits|
         next if target.form == 0
         next unless target.species == :CRAMORANT
         gulpform = target.form
