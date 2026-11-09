@@ -367,11 +367,11 @@ class PokeBattle_Battler
         return false
     end
 
-    def pbHasMoveType?(check_type)
-        return false unless check_type
-        check_type = GameData::Type.get(check_type).id
-        eachMove { |m| return true if m.type == check_type }
-        return false
+    # Whether this battler's last move had none of its own types (Soul Read).
+    def lastMoveUsedOffType?
+        return false if @lastMoveUsedTypes.empty?
+        ownTypes = pbTypes(true)
+        return @lastMoveUsedTypes.none? { |type| ownTypes.include?(type) }
     end
 
     def pbHasMoveFunction?(*arg)

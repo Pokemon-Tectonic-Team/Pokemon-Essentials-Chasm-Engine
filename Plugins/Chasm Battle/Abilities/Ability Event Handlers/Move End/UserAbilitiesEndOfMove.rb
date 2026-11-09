@@ -278,7 +278,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:SPACEINTERLOPER,
 
 BattleHandlers::UserAbilityEndOfMove.add(:SPARESCALES,
   proc { |ability, user, _targets, move, _battle, _switchedBattlers|
-      next unless %i[GRASS GROUND STEEL].include?(move.calcType)
+      next unless move.calcTypes.intersect?(%i[GRASS GROUND STEEL])
       healingMessage = _INTL("{1} gathered up material.", user.pbThis)
       user.applyFractionalHealing(1.0 / 5.0, ability: ability, customMessage: healingMessage, canOverheal: true)
   }
@@ -394,7 +394,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:VICIOUSCYCLE,
   proc { |ability, user, targets, move, battle, _switchedBattlers, aiCheck|
       next if user.dummy
       next unless move.damagingMove?
-      next unless move.calcType == :DRAGON
+      next unless move.calcTypes.include?(:DRAGON)
       # AI learns ability if move spreads or drain happens
       user.aiLearnsAbility(ability) if ( !aiCheck && ( targets.size() > 1 || user.hp != user.totalhp) )
       user.pbRecoverHPFromMultiDrain(targets, 0.33, user:user, ability: ability)
@@ -405,7 +405,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:HORDETACTICS,
   proc { |ability, user, targets, move, battle, _switchedBattlers, aiCheck|
       next if user.dummy
       next unless move.damagingMove?
-      next unless move.calcType == :NORMAL
+      next unless move.calcTypes.include?(:NORMAL)
       # AI learns ability if move spreads or drain happens
       user.aiLearnsAbility(ability) if ( !aiCheck && ( targets.size() > 1 || user.hp != user.totalhp) )
       user.pbRecoverHPFromMultiDrain(targets, 0.33, user:user, ability: ability)

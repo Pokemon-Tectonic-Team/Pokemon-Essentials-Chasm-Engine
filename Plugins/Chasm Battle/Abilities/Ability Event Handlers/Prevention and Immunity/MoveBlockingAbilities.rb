@@ -16,12 +16,12 @@ BattleHandlers::MoveBlockingAbility.add(:ROYALMAJESTY,
 
 BattleHandlers::MoveBlockingAbility.add(:DESICCATE,
     proc { |ability, _bearer, _user, _targets, move, battle, aiCheck|
-        next %i[GRASS WATER].include?(move.calcType) && battle.sandy?
+        next move.calcTypes.intersect?(%i[GRASS WATER]) && battle.sandy?
     }
 )
 
 BattleHandlers::MoveBlockingAbility.add(:DECONTAMINATION,
     proc { |ability, _bearer, _user, _targets, move, battle, aiCheck|
-        next %i[BUG POISON].include?(move.calcType) && battle.moonGlowing?
+        next move.calcTypes.intersect?(%i[BUG POISON]) && battle.moonGlowing?
     }
 )

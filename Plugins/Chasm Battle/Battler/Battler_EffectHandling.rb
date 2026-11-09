@@ -99,7 +99,6 @@ class PokeBattle_Battler
         @empoweredTimer += 1 if boss?
 
         @lastRoundMove 			= @lastMoveUsed
-        @lastRoundMoveType	    = @lastMoveUsedType
         @lastRoundMoveCategory	= @lastMoveUsedCategory
 
         @movesUsedLastTurn      = @movesUsedThisTurn.clone

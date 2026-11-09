@@ -104,7 +104,7 @@ class PokeBattle_Move
           return allNearFoesData if user.effectActive?(:FlareWitch)
           moveMadeSpread = false
           user.eachActiveAbility do |abilityID|
-            next unless BattleHandlers.triggerMoveMakeHitAllNearFoesAbility(abilityID, user, self, @calcType, @battle)
+            next unless BattleHandlers.triggerMoveMakeHitAllNearFoesAbility(abilityID, user, self, @calcTypes, @battle)
             moveMadeSpread = true
             break
           end

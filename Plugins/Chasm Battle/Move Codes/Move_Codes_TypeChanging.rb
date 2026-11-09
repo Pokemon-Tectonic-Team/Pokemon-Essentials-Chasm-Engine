@@ -50,15 +50,15 @@ class PokeBattle_Move_SetUserTypesToResistLastAttack < PokeBattle_Move
     end
 
     def pbFailsAgainstTarget?(user, target, show_message)
-        if !target.lastMoveUsed || !target.lastMoveUsedType ||
-           GameData::Type.get(target.lastMoveUsedType).pseudo_type
+        lastTypes = target.lastMoveUsedTypes
+        if !target.lastMoveUsed || lastTypes.empty? || lastTypes.any? { |type| GameData::Type.get(type).pseudo_type }
             @battle.pbDisplay(_INTL("But it failed!")) if show_message
             return true
         end
         @newTypes = []
         GameData::Type.each do |t|
             next if t.pseudo_type || user.pbHasType?(t.id) ||
-                    !Effectiveness.resistant_type?(target.lastMoveUsedType, t.id)
+                    !Effectiveness.resistant?(typesEffectiveness(lastTypes, [t.id], nil, nil, false))
             @newTypes.push(t.id)
         end
         if @newTypes.length == 0

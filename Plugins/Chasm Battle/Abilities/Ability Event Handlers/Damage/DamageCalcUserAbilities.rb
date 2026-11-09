@@ -625,7 +625,7 @@ BattleHandlers::DamageCalcUserAbility.add(:TAIGATREKKER,
 
 BattleHandlers::DamageCalcUserAbility.add(:PHASESHIFT,
   proc { |ability, user, target, move, mults, _baseDmg, types, aiCheck|
-    if !user.lastMoveUsedType.nil? && types.first != user.lastMoveUsedType
+    if !user.lastMoveUsedTypes.empty? && types.first != user.lastMoveUsedTypes.first
       mults[:base_damage_multiplier] *= 3 / 2.0
       user.aiLearnsAbility(ability) unless aiCheck
     end
@@ -654,7 +654,7 @@ BattleHandlers::DamageCalcUserAbility.add(:TERRITORIAL,
 
 BattleHandlers::DamageCalcUserAbility.add(:SOULREAD,
   proc { |ability, user, target, move, mults, _baseDmg, types, aiCheck|
-      if !target.lastMoveUsedType.nil? && !target.pbTypes(true).include?(target.lastMoveUsedType)
+      if target.lastMoveUsedOffType?
           mults[:attack_multiplier] *= 2.0
           user.aiLearnsAbility(ability) unless aiCheck
       end

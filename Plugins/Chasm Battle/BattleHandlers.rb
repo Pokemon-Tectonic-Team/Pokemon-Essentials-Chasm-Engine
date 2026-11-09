@@ -319,8 +319,8 @@ module BattleHandlers
 
     #=============================================================================
 
-    def self.triggerMoveMakeHitAllNearFoesAbility(ability, user, move, type, battle)
-        ret = MoveMakeHitAllNearFoesAbility.trigger(ability, user, move, type, battle)
+    def self.triggerMoveMakeHitAllNearFoesAbility(ability, user, move, types, battle)
+        ret = MoveMakeHitAllNearFoesAbility.trigger(ability, user, move, types, battle)
         return ret || false
     end
 
@@ -335,13 +335,13 @@ module BattleHandlers
         return !ret.nil? ? ret : false
     end
 
-    def self.triggerMoveImmunityTargetAbility(ability, user, target, move, type, battle, showMessages, aiCheck)
-        ret = MoveImmunityTargetAbility.trigger(ability, user, target, move, type, battle, showMessages, aiCheck)
+    def self.triggerMoveImmunityTargetAbility(ability, user, target, move, types, battle, showMessages, aiCheck)
+        ret = MoveImmunityTargetAbility.trigger(ability, user, target, move, types, battle, showMessages, aiCheck)
         return !ret.nil? ? ret : false
     end
 
-    def self.triggerMoveImmunityAllyAbility(ability, user, target, move, type, battle, ally, showMessages)
-        ret = MoveImmunityAllyAbility.trigger(ability, user, target, move, type, battle, ally, showMessages)
+    def self.triggerMoveImmunityAllyAbility(ability, user, target, move, types, battle, ally, showMessages)
+        ret = MoveImmunityAllyAbility.trigger(ability, user, target, move, types, battle, ally, showMessages)
         return !ret.nil? ? ret : false
     end
 

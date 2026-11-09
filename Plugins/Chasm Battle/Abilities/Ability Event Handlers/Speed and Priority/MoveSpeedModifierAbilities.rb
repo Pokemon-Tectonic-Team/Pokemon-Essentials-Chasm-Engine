@@ -11,7 +11,7 @@ BattleHandlers::MoveSpeedModifierAbility.add(:MAESTRO,
 
 BattleHandlers::MoveSpeedModifierAbility.add(:GALEWINGS,
     proc { |ability, battler, move, battle, mult, aiCheck|
-        next unless (aiCheck && move.nil?) || move.type == :FLYING
+        next unless (aiCheck && move.nil?) || move.types.include?(:FLYING)
         if aiCheck
             next mult * 2.0
         else

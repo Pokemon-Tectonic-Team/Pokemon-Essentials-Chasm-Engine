@@ -179,7 +179,7 @@ BattleHandlers::TargetAbilityOnHit.add(:IMPETUOUS,
 
 BattleHandlers::TargetAbilityOnHit.add(:STEAMPOWER,
     proc { |ability, user, target, move, _battle, aiCheck, aiNumHits|
-        next unless move.calcType == :WATER
+        next unless move.calcTypes.include?(:WATER)
         if aiCheck
             ret = 0
             aiNumHits.times do |i|

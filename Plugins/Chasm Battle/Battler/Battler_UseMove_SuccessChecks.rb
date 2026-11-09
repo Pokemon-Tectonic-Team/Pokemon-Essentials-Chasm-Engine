@@ -125,7 +125,7 @@ class PokeBattle_Battler
             return false
         end
         # Barred
-        if effectActive?(:Barred) && move.id != :STRUGGLE && !pbHasType?(move.pbCalcType(self))
+        if effectActive?(:Barred) && move.id != :STRUGGLE && move.pbCalcTypes(self).none? { |type| pbHasType?(type) }
             msg = _INTL("{1} can't use {2} after being barred!", pbThis, move.name)
             if showMessages
                 commandPhase ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
@@ -134,7 +134,7 @@ class PokeBattle_Battler
             return false
         end
         #Type-Restricted
-        if effectActive?(:TypeRestricted) && move.id != :STRUGGLE && move.pbCalcType(self) != @effects[:TypeRestricted]
+        if effectActive?(:TypeRestricted) && move.id != :STRUGGLE && !move.pbCalcTypes(self).include?(@effects[:TypeRestricted])
             effect_type = @effects[:TypeRestricted]
             msg = _INTL("{1} can only use {2}-type moves!", pbThis, effect_type.name.capitalize)
             if showMessages
@@ -165,7 +165,7 @@ class PokeBattle_Battler
                 return false
             end
         end
-        if hasActiveAbility?(:AURORAPRISM) && (move.damagingMove? && (pbHasType?(move.type) || move.type == :FLEX))
+        if hasActiveAbility?(:AURORAPRISM) && (move.damagingMove? && (move.types.any? { |type| pbHasType?(type) } || move.type == :FLEX))
             msg = _INTL("{1} cannot use moves of their own types!", pbThis)
             if showMessages
                 commandPhase ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
@@ -177,7 +177,7 @@ class PokeBattle_Battler
         return false unless move.pbCanChooseMove?(self, commandPhase, showMessages)
         # Turbulent Sky
         if pbOwnSide.effectActive?(:TurbulentSky) && !effectActive?(:Instructed) &&
-                @lastMoveUsedType && move.pbCalcType(self) == @lastMoveUsedType && move.id != @battle.struggle.id
+                !@lastMoveUsedTypes.empty? && move.pbCalcType(self) == @lastMoveUsedTypes.first && move.id != @battle.struggle.id
             msg = _INTL("{1} can't use the same type twice in a row due to the turbulent sky!", pbThis)
             if showMessages
                 commandPhase ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
@@ -540,7 +540,7 @@ target.pbThis(true)))
 
     def airborneImmunity?(user, target, move, showMessages = true, aiCheck = false)
         # Airborne-based immunity to Ground moves
-        if move.damagingMove?(aiCheck) && move.calcType == :GROUND && target.airborne? && !move.hitsFlyingTargets?
+        if move.damagingMove?(aiCheck) && move.calcTypes.include?(:GROUND) && target.airborne? && !move.hitsFlyingTargets?
             levitationAbility = target.hasLevitate?
             if levitationAbility && !@battle.moldBreaker
                 if showMessages

@@ -58,7 +58,7 @@ BattleHandlers::UserAbilityOnHit.add(:DAWNFALL,
 
 BattleHandlers::UserAbilityOnHit.add(:SEARINGWINGS,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-    next unless move.calcType == :FLYING
+    next unless move.calcTypes.include?(:FLYING)
     randomStatusProcUserAbility(ability, :BURN, 30, user, target, move, battle, aiCheck, aiNumHits)
   }
 )
@@ -90,7 +90,7 @@ BattleHandlers::UserAbilityOnHit.add(:FLASHFREEZE,
 
 BattleHandlers::UserAbilityOnHit.add(:GLACIALWINGS,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-    next unless move.calcType == :FLYING
+    next unless move.calcTypes.include?(:FLYING)
     randomStatusProcUserAbility(ability, :FROSTBITE, 30, user, target, move, battle, aiCheck, aiNumHits)
   }
 )
@@ -122,7 +122,7 @@ BattleHandlers::UserAbilityOnHit.add(:DISCONNECTION,
 
 BattleHandlers::UserAbilityOnHit.add(:GALVANICWINGS,
   proc { |ability, user, target, move, battle, aiCheck, aiNumHits|
-    next unless move.calcType == :FLYING  
+    next unless move.calcTypes.include?(:FLYING)  
     randomStatusProcUserAbility(ability, :NUMB, 30, user, target, move, battle, aiCheck, aiNumHits)
   }
 )

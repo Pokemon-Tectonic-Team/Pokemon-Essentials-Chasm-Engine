@@ -34,7 +34,7 @@ BattleHandlers::EORGainItemAbility.add(:STRATAGEM,
             next unless GameData::Item.get(gem).legal?
             next unless battler.canAddItem?(gem)
             typeName = gem.to_s.chomp("GEM") # ROCKGEM -> ROCK
-            next unless attackingMoves.any? { |m| m.type == typeName.to_sym }
+            next unless attackingMoves.any? { |m| m.types.include?(typeName.to_sym) }
             itemsCanAdd.push(gem) 
         end
         next if itemsCanAdd.length == 0

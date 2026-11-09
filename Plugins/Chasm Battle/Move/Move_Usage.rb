@@ -228,11 +228,11 @@ class PokeBattle_Move
         return false if @battle.moldBreaker
         return false if target.semiInvulnerable?
         target.eachAbilityShouldApply(aiCheck) do |ability|
-            return true if BattleHandlers.triggerMoveImmunityTargetAbility(ability, user, target, self, @calcType, @battle, showMessages, aiCheck)
+            return true if BattleHandlers.triggerMoveImmunityTargetAbility(ability, user, target, self, @calcTypes, @battle, showMessages, aiCheck)
         end
         target.eachAlly do |b|
             b.eachAbilityShouldApply(aiCheck) do |ability|
-                return true if BattleHandlers.triggerMoveImmunityAllyAbility(ability, user, target, self, @calcType, @battle, b, showMessages)
+                return true if BattleHandlers.triggerMoveImmunityAllyAbility(ability, user, target, self, @calcTypes, @battle, b, showMessages)
             end
         end
         return false
@@ -526,9 +526,9 @@ class PokeBattle_Move
         if Effectiveness.super_effective?(target.damageState.typeMod) && target.pbOwnedByPlayer? &&
                 !$PokemonGlobal.typeChartChangesTutorialized
             newWeakness = false
-            newWeakness = true if @calcType == :POISON && target.pbHasType?(:WATER)
-            newWeakness = true if @calcType == :BUG && target.pbHasType?(:FAIRY)
-            newWeakness = true if @calcType == :PSYCHIC && target.pbHasType?(:STEEL)
+            newWeakness = true if @calcTypes.include?(:POISON) && target.pbHasType?(:WATER)
+            newWeakness = true if @calcTypes.include?(:BUG) && target.pbHasType?(:FAIRY)
+            newWeakness = true if @calcTypes.include?(:PSYCHIC) && target.pbHasType?(:STEEL)
             playTypeChartChangesTutorial if newWeakness
         end
     end

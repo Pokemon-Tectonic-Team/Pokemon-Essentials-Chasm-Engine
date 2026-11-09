@@ -640,7 +640,7 @@ class PokeBattle_Battler
     def trackMoveUsage(move: nil, specialUsage: false, target: nil)
         if move.nil?
             @lastMoveUsed = nil
-            @lastMoveUsedType = nil
+            @lastMoveUsedTypes = []
             @lastMoveUsedCategory = -1
 
             unless specialUsage
@@ -650,7 +650,7 @@ class PokeBattle_Battler
             end
         else
             @lastMoveUsed     = move.id
-            @lastMoveUsedType = move.calcType # For Conversion 2
+            @lastMoveUsedTypes = move.calcTypes
             @lastMoveUsedCategory = move.calculatedCategory
             @movesUsedThisTurn.push(move.id)
             @usedDamagingMove = true if move.damagingMove?
@@ -882,7 +882,7 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("The bubble surrounding {1} reduced the damage!", b.pbThis))
         end
         #Action Star proc message
-        if user.effectActive?(:ActionStar) && move.damagingMove? && move.calcType == :NORMAL
+        if user.effectActive?(:ActionStar) && move.damagingMove? && move.calcTypes.include?(:NORMAL)
             @battle.pbDisplay(_INTL("{1} lands a flashy hit!", user.pbThis))
             user.disableEffect(:ActionStar)
         end

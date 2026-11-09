@@ -60,7 +60,7 @@ BattleHandlers::PriorityChangeAbility.add(:TREMORSENSE,
 
 BattleHandlers::PriorityChangeAbility.add(:FAUXLIAGE,
   proc { |ability, battler, move, _pri, _targets = nil, _aiCheck = false|
-      next 1 if move.calcType == :GRASS
+      next 1 if move.calcTypes.include?(:GRASS)
   }
 )
 
@@ -72,6 +72,6 @@ BattleHandlers::PriorityChangeAbility.add(:QUICKBUILD,
 
 BattleHandlers::PriorityChangeAbility.add(:EGOIST,
   proc { |ability, battler, move, _pri, _targets = nil, _aiCheck = false|
-      next 1 if move.type == :FIGHTING
+      next 1 if move.types.include?(:FIGHTING)
   }
 )

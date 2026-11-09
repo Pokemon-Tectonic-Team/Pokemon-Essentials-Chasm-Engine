@@ -256,11 +256,10 @@ class PokeBattle_Battler
         @movesUsedThisTurn     = []
         @movesUsedLastTurn     = []
         @lastMoveUsed          = nil
-        @lastMoveUsedType      = nil
+        @lastMoveUsedTypes     = []
         @lastMoveUsedCategory  = -1
         @usedDamagingMove      = false
         @lastRoundMove = nil
-        @lastRoundMoveType     = nil
         @lastRoundMoveCategory = -1
         @lastRegularMoveUsed   = nil
         @lastRegularMoveTarget = -1
