@@ -332,12 +332,12 @@ class FightMenuDisplay < BattleMenuBase
                 end
             else
                 case effectiveness
-                when 0                  then effectivenessCategory = 0
-                when 0.00001..0.25      then effectivenessCategory = 1
-                when 0.5 then effectivenessCategory = 2
-                when 1 then effectivenessCategory = 3
-                when 2 then effectivenessCategory = 4
-                when 4.. then effectivenessCategory = 5
+                when 0              then effectivenessCategory = 0
+                when 0.00001..0.25  then effectivenessCategory = 1
+                when 0.5            then effectivenessCategory = 2
+                when 1              then effectivenessCategory = 3
+                when 2              then effectivenessCategory = 4
+                when 4..            then effectivenessCategory = 5
                 end
             end
 
