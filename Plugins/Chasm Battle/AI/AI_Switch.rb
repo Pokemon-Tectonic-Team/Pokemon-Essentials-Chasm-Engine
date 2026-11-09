@@ -566,13 +566,12 @@ class PokeBattle_AI
         pkmnTypes = [pkmn.type1, pkmn.type2].compact.uniq
         return nil if pkmnTypes.empty?
 
-        # Best case for the candidate's own offense: its best known move
-        # type against the foe's typing.
+        # Best case for the candidate's own offense: its best known move's
+        # types against the foe's typing.
         bestOffenseMod = 0.0
         pkmn.moves.each do |move|
-            moveType = GameData::Move.get(move.id).type
-            next unless moveType
-            mod = Effectiveness.calculate(moveType, foeTypes)
+            moveTypes = PokeBattle_Move.dataTypes(GameData::Move.get(move.id))
+            mod = moveTypes.inject(1.0) { |product, type| product * Effectiveness.calculate(type, foeTypes) }
             bestOffenseMod = mod if mod > bestOffenseMod
         end
 

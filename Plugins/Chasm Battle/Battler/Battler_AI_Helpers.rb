@@ -247,14 +247,14 @@ class PokeBattle_Battler
         return false unless check_type
         check_type = GameData::Type.get(check_type).id
         eachAIKnownMove do |m|
-            return true if m.type == check_type && m.damagingMove?(true)
+            return true if m.types.include?(check_type) && m.damagingMove?(true)
         end
         return false
     end
 
     def hasOffTypeMove?
         eachAIKnownMove do |m|
-            next if pbHasTypeAI?(m.type)
+            next if m.types.any? { |type| pbHasTypeAI?(type) }
             return true
         end
         return false

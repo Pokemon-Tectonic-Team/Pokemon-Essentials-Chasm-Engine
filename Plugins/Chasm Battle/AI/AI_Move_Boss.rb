@@ -273,7 +273,7 @@ class PokeBattle_AI
             end
 
             # Value moves that are STAB on the first turn of the battle or of a phase
-            if AVATARS_START_WITH_STAB && user.empoweredTimer == 0 && user.pbHasType?(moveForChoice.type)
+            if AVATARS_START_WITH_STAB && user.empoweredTimer == 0 && moveForChoice.types.any? { |type| user.pbHasType?(type) }
                 choice[1] += 30
             end
         end

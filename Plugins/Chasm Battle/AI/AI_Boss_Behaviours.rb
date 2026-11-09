@@ -6,7 +6,7 @@ class PokeBattle_AI_Boss
 
     def rejectPoisonMovesIfBelched
         @rejectMovesIf.push(proc { |move, user, _battle|
-            next true if user.belched? && move.type == :POISON && move.id != :BELCH
+            next true if user.belched? && move.types.include?(:POISON) && move.id != :BELCH
         })
     end
 

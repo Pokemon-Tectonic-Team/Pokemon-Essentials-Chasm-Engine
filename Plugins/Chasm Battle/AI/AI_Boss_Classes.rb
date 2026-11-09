@@ -793,7 +793,7 @@ class PokeBattle_AI_KLANG < PokeBattle_AI_Boss
         secondMoveEveryTurn(:METALSOUND)
 
         @useMovesIFF.push(proc { |move, user, battle|
-            if move.type == :ELECTRIC
+            if move.types.include?(:ELECTRIC)
                 if user.effectActive?(:EnergyCharge)
                     next 1
                 else
