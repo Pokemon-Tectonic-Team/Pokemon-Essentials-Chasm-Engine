@@ -35,7 +35,7 @@ class PokeBattle_AI
         logMoveChoices(user, choices)
 
         # If there are valid choices, pick among them
-        if choices.length > 0
+        if !choices.empty?
             # Determine the most preferred move
             preferredChoice = nil
 
@@ -51,11 +51,8 @@ class PokeBattle_AI
 
             empoweredDamagingChoices.reject! { |choice| user.empoweredTimer < user.getMoves[choice[0]].turnsBetweenUses }
 
-            if guaranteedChoices.length == 0
-                if empoweredDamagingChoices.length > 0
-                    preferredChoice = empoweredDamagingChoices[0]
-                    PBDebug.log("[BOSS AI] #{user.pbThis} (#{user.index}) will use an empowered move since there exists at least one, and the timer is high enough")
-                else
+            if guaranteedChoices.empty?
+                if empoweredDamagingChoices.empty?
                     # Disallow targeted moves that would target a different category than the moves used before in the turn
                     if AVATARS_CANT_CHANGE_TARGETING && !user.firstTurnThisRound? && regularChoices.length >= 2
                         targetingSize = user.indicesTargetedThisRound.length
@@ -88,15 +85,16 @@ class PokeBattle_AI
 
                     preferredChoice = sortedChoices[0]
                     unless preferredChoice.nil?
-                        PBDebug.log("[BOSS AI] #{user.pbThis} (#{user.index}) chooses #{user.getMoves[preferredChoice[0]].name}" +
-                            " since is the first listed among its remaining choices")
+                        PBDebug.log("[BOSS AI] #{user.pbThis} (#{user.index}) chooses #{user.getMoves[preferredChoice[0]].name} since is the first listed among its remaining choices")
                     end
+                else
+                    preferredChoice = empoweredDamagingChoices[0]
+                    PBDebug.log("[BOSS AI] #{user.pbThis} (#{user.index}) will use an empowered move since there exists at least one, and the timer is high enough")
                 end
             else
                 preferredChoice = guaranteedChoices[0]
                 unless preferredChoice.nil?
-                    PBDebug.log("[BOSS AI] #{user.pbThis} (#{user.index}) chooses #{user.getMoves[preferredChoice[0]].name}" +
-                        ", since is the first listed among its guaranteed moves")
+                    PBDebug.log("[BOSS AI] #{user.pbThis} (#{user.index}) chooses #{user.getMoves[preferredChoice[0]].name}, since is the first listed among its guaranteed moves")
                 end
             end
 
@@ -122,7 +120,7 @@ class PokeBattle_AI
         # if there is somehow still no choice, choose to use Struggle
         if @battle.choices[idxBattler][2].nil?
             PBDebug.log("[BOSS AI] #{user.pbThis} (#{user.index}) AI protocols have failed, picking struggle")
-            #print _INTL("Boss using struggle!") if @battle.autoTesting
+            # print _INTL("Boss using struggle!") if @battle.autoTesting
             @battle.choices[idxBattler][0] = :UseMove    # "Use move"
             @battle.choices[idxBattler][1] = -1          # Index of move to be used
             @battle.choices[idxBattler][2] = @battle.struggle # Struggle PokeBattle_Move object
@@ -273,7 +271,7 @@ class PokeBattle_AI
             end
 
             # Value moves that are STAB on the first turn of the battle or of a phase
-            if AVATARS_START_WITH_STAB && user.empoweredTimer == 0 && user.pbHasType?(moveForChoice.type)
+            if AVATARS_START_WITH_STAB && user.empoweredTimer == 0 && moveForChoice.types.any? { |type| user.pbHasType?(type) }
                 choice[1] += 30
             end
         end
@@ -316,8 +314,8 @@ class PokeBattle_AI
                 realDamage = pbTotalDamageAI(move, user, target, numTargets)
 
                 if realDamage >= target.hp
-                    willFaint = true 
-                    realDamage = target.hp  # Cap damage out at their current HP total
+                    willFaint = true
+                    realDamage = target.hp # Cap damage out at their current HP total
                 end
 
                 damageMod = (AVATAR_DAMAGE_SCORE_MAX * realDamage / target.totalhp.to_f).floor
@@ -336,7 +334,5 @@ class PokeBattle_AI
         else
             return 50
         end
-
-        
     end
 end

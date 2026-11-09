@@ -1,5 +1,5 @@
 BattleHandlers::MoveImmunityAllyAbility.add(:GARGANTUAN,
-    proc { |ability, user, target, move, _type, battle, ally, showMessages|
+    proc { |ability, user, target, move, _types, battle, ally, showMessages|
         next false unless move.pbTarget(user).num_targets > 1
         next false unless user.opposes?(target)
         next false if move.bossPrimeval?(user)

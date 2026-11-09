@@ -137,7 +137,7 @@ class PokeBattle_Battler
                         end
         confusionMove.calcType = confusionMove.pbCalcType(self) # nil
         confusionMove.calculateUsageOverrides(self, [self])
-        @damageState.typeMod = confusionMove.pbCalcTypeMod(confusionMove.calcType, self, self) # 8
+        @damageState.typeMod = confusionMove.pbCalcTypeMod(confusionMove.calcTypes, self, self)
         @damageState.typeMod *= 2.0 if superEff
         confusionMove.pbCheckDamageAbsorption(self, self)
         confusionMove.pbCalcDamage(self, self)
@@ -402,7 +402,7 @@ class PokeBattle_Battler
                 b.damageState.reset
                 b.damageState.initialHP = b.hp
 
-                typeMod = move.pbCalcTypeMod(move.calcType, user, b)
+                typeMod = move.pbCalcTypeMod(move.calcTypes, user, b)
                 b.damageState.typeMod = typeMod
 
                 showFailMessages = move.pbShowFailMessages?(targets)
@@ -538,7 +538,7 @@ class PokeBattle_Battler
                 success = false
                 unless move.pbMoveFailed?(b, newTargets, true)
                     newTargets.each_with_index do |newTarget, idx|
-                        typeMod = move.pbCalcTypeMod(move.calcType, user, b)
+                        typeMod = move.pbCalcTypeMod(move.calcTypes, user, b)
                         b.damageState.typeMod = typeMod
 
                         showFailMessages = move.pbShowFailMessages?(targets)
@@ -638,7 +638,7 @@ class PokeBattle_Battler
     def trackMoveUsage(move: nil, specialUsage: false, target: nil)
         if move.nil?
             @lastMoveUsed = nil
-            @lastMoveUsedType = nil
+            @lastMoveUsedTypes = []
             @lastMoveUsedCategory = -1
 
             unless specialUsage
@@ -647,8 +647,8 @@ class PokeBattle_Battler
                 @lastMoveFailed        = true
             end
         else
-            @lastMoveUsed     = move.id
-            @lastMoveUsedType = move.calcType # For Conversion 2
+            @lastMoveUsed = move.id
+            @lastMoveUsedTypes = move.calcTypes
             @lastMoveUsedCategory = move.calculatedCategory
             @movesUsedThisTurn.push(move.id)
             @usedDamagingMove = true if move.damagingMove?
@@ -884,7 +884,7 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("The bubble surrounding {1} reduced the damage!", b.pbThis))
         end
         # Action Star proc message
-        if user.effectActive?(:ActionStar) && move.damagingMove? && move.calcType == :NORMAL
+        if user.effectActive?(:ActionStar) && move.damagingMove? && move.calcTypes.include?(:NORMAL)
             @battle.pbDisplay(_INTL("{1} lands a flashy hit!", user.pbThis))
             user.disableEffect(:ActionStar)
         end
@@ -1044,7 +1044,7 @@ class PokeBattle_Battler
         elsif move.randomEffect? && !user.hasActiveAbility?(:SHEERFORCE) # Random added effects
             targets.each do |b|
                 next if b.damageState.calcDamage == 0
-                chance = move.pbAdditionalEffectChance(user, b, move.calcType)
+                chance = move.pbAdditionalEffectChance(user, b)
                 next if chance <= 0
                 if @battle.pbRandom(100) < chance && move.canApplyRandomAddedEffects?(user, b, chance, true)
                     if b.hasActiveAbility?(:UNCANNYLUCK)

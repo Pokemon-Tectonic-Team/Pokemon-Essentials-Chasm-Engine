@@ -11,9 +11,6 @@ class PokeBattle_AI
         @precalculatedChoices = {}
         @precalculatedDefensiveMatchup = {}
         @typeModCache = {}
-        @justswitched = [false,false,false,false]
-        @battleArena = false
-        @battlePalace = false
     end
 
     def pbAIRandom(x); return rand(x); end

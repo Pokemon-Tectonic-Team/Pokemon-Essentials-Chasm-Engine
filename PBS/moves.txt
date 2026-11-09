@@ -1222,7 +1222,7 @@ Power = 100
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = EffectivenessIncludesFlyingType
+FunctionCode = AlsoFlyingType
 Flags = CanProtect
 Description = The user dives down onto the target from the sky. This move is also Flying-type.
 #-------------------------------

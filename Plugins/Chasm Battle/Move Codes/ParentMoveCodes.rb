@@ -33,6 +33,7 @@ class PokeBattle_SelfHit < PokeBattle_Move
         @flags      = ""
         @effectChance = 0
         @calcType   = nil
+        @calcTypes  = []
         @powerBoost = false
         @snatched   = false
     end
@@ -87,6 +88,7 @@ class PokeBattle_Struggle < PokeBattle_Move
         @flags      = ""
         @effectChance = 0
         @calcType   = nil
+        @calcTypes  = []
         @powerBoost = false
         @snatched   = false
     end
@@ -521,13 +523,13 @@ class PokeBattle_FixedDamageMove < PokeBattle_Move
         end
     end
 
-    def calculateDamageForHit(user, target, type, baseDmg, numTargets, aiCheck = false, aiContext = nil)
+    def calculateDamageForHit(user, target, types, baseDmg, numTargets, aiCheck = false, aiContext = nil)
         fixedDamage = pbFixedDamage(user, target)
         return fixedDamage if fixedDamage
         super
     end
 
-    def displayWeatherDebuffMessages(_user, _type); return; end
+    def displayWeatherDebuffMessages(_user, _types); return; end
 end
 
 #===============================================================================
@@ -1413,7 +1415,7 @@ class PokeBattle_ForetoldMove < PokeBattle_Move
         super unless foretoldDamagingTurn?
     end
 
-    def displayWeatherDebuffMessages(user, type)
+    def displayWeatherDebuffMessages(user, types)
         super unless foretoldDamagingTurn?
     end
 
@@ -1702,7 +1704,7 @@ class PokeBattle_Move_StatusTargetLowerTargetDef2 < PokeBattle_Move
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
-        chance = pbAdditionalEffectChance(user, target, @calcType, @subEffectChance)
+        chance = pbAdditionalEffectChance(user, target, @subEffectChance)
         return if chance == 0
         if @battle.pbRandom(100) < chance && target.pbCanInflictStatus?(@statusToApply, user, false, self) && canApplyRandomAddedEffects?(user, target, chance, true)
             target.pbInflictStatus(@statusToApply, 0, nil, user)

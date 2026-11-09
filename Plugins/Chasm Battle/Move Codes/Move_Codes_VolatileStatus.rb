@@ -344,7 +344,7 @@ class PokeBattle_Move_DisableTargetUsingDifferentMove4 < PokeBattle_Move
             moveData = GameData::Move.get(target.lastRegularMoveUsed)
             lockedIntoSelfStatus = moveData.category == 2 && %i[User BothSides].include?(moveData.target)
             lockedIntoIneffectiveAttack = moveData.category != 2 && moveData.target == :NearOther &&
-                                          Effectiveness.ineffective?(pbCalcTypeMod(moveData.type, target, user))
+                                          Effectiveness.ineffective?(pbCalcTypeMod(PokeBattle_Move.dataTypes(moveData), target, user))
             score += 100 if lockedIntoSelfStatus || lockedIntoIneffectiveAttack
         end
         return score

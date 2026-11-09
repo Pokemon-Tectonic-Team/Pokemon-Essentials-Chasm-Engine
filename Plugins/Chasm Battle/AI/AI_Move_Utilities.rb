@@ -21,19 +21,15 @@ class PokeBattle_AI
         return num_targets > 1
     end
 
-    def pbCalcTypeModAI(moveType, user, target, move)
-        return Effectiveness::NORMAL_EFFECTIVE unless moveType
-        cache_key = [moveType, move.id, user.personalID, target.personalID]
+    def pbCalcTypeModAI(moveTypes, user, target, move)
+        return Effectiveness::NORMAL_EFFECTIVE if moveTypes.empty?
+        cache_key = [moveTypes, move.id, user.personalID, target.personalID]
         return @typeModCache[cache_key] if @typeModCache.key?(cache_key)
         # Determine types
         allowIllusion = !target.aiKnowsIllusion?
         tTypes = target.pbTypes(true, allowIllusion)
         # Get effectivenesses
-        ret = 1
-        tTypes.each do |defType|
-            next if moveType == :GROUND && defType == :FLYING && target.hasActiveItemAI?(:IRONBALL)
-            ret *= move.pbCalcTypeModSingle(moveType, defType, user, target)
-        end
+        ret = move.typesEffectiveness(moveTypes, tTypes, user, target, target.hasActiveItemAI?(:IRONBALL))
         # Modify effectiveness for bosses
         ret = Effectiveness.modify_boss_effectiveness(ret, user, target)
         @typeModCache[cache_key] = ret
@@ -55,8 +51,7 @@ class PokeBattle_AI
         # call and pbGetMoveScoreDamage both reuse the cached result for free.
         precomputedTypeMod = nil
         if user.index != target.index
-            moveType = pbRoughType(move, user)
-            precomputedTypeMod = pbCalcTypeModAI(moveType, user, target, move)
+            precomputedTypeMod = pbCalcTypeModAI(pbRoughTypes(move, user), user, target, move)
             if precomputedTypeMod == 0
                 echoln("\t\t[AI FAILURE CHECK] #{user.pbThis} rejects #{move.id} -- completely ineffective against #{target.pbThis(false)}")
                 user.turnCount -= 1
@@ -139,13 +134,12 @@ class PokeBattle_AI
     def pbTotalDamageAI(move, user, target, numTargets = 1, aiContext = nil)
         return 0, false if move.damageNegated?(user, target, true)
 
-        # Get the move's type
-        type = pbRoughType(move, user)
+        types = pbRoughTypes(move, user)
 
         baseDmg = pbMoveBaseDamageAI(move, user, target)
 
         # Calculate the damage for one hit
-        damage = move.calculateDamageForHitAI(user, target, type, baseDmg, numTargets, aiContext)
+        damage = move.calculateDamageForHitAI(user, target, types, baseDmg, numTargets, aiContext)
 
         # Estimate how many hits the move will do
         numHits = move.numberOfHits(user, [target], true)
@@ -182,8 +176,7 @@ class PokeBattle_AI
         return 100 if baseAcc == 0
         baseAcc = move.pbBaseAccuracy(user, target)
         return 100 if baseAcc == 0
-        # Get the move's type
-        type = pbRoughType(move, user)
+        types = pbRoughTypes(move, user)
         # Calculate all modifier effects
         modifiers = {}
         modifiers[:base_accuracy]  = baseAcc
@@ -191,7 +184,7 @@ class PokeBattle_AI
         modifiers[:evasion_step]  = target.steps[:EVASION]
         modifiers[:accuracy_multiplier] = 1.0
         modifiers[:evasion_multiplier]  = 1.0
-        move.pbCalcAccuracyModifiers(user, target, modifiers, true, type, aiContext)
+        move.pbCalcAccuracyModifiers(user, target, modifiers, true, types, aiContext)
         # Calculation
         statBoundary = PokeBattle_Battler::STAT_STEP_BOUND
         accStep = modifiers[:accuracy_step].clamp(-statBoundary, statBoundary)

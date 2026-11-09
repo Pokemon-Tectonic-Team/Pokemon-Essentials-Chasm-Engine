@@ -331,8 +331,7 @@ class FightMenuDisplay < BattleMenuBase
 
     def setMoveOutcomePredictor(move,opposingBattler)
       begin
-        typeOfMove = move.pbCalcType(@battler)
-        effectiveness = move.pbCalcTypeMod(typeOfMove,@battler,opposingBattler,true)
+        effectiveness = move.pbCalcTypeMod(move.pbCalcTypes(@battler),@battler,opposingBattler,true)
 
         if move.is_a?(PokeBattle_FixedDamageMove)
             if effectiveness == 0
