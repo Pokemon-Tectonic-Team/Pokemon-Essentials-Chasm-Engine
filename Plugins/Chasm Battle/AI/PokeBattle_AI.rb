@@ -77,9 +77,12 @@ class PokeBattle_AI
         bestMoveChoices,killInfo = pbGetBestTrainerMoveChoices(user)
         return [:None, 0, nil, -1] if bestMoveChoices.empty?
         switchChoice = pbDetermineSwitch(idxBattler)
-        return [:SwitchOut, switchChoice, -1] if switchChoice > -1
-        bestMoveChoices.stable_sort_by! { |choice| -choice[1] }
-        moveChoice = bestMoveChoices[0]
+        if switchChoice > -1
+            moveChoice = safePivotChoice(user, bestMoveChoices)
+            return [:SwitchOut, switchChoice, -1] unless moveChoice
+        else
+            moveChoice = bestMoveChoices.stable_sort_by { |choice| -choice[1] }[0]
+        end
         moveIndex = moveChoice[0]
         return [:UseMove,moveIndex,user.getMoves[moveIndex],moveChoice[2]]
     end
