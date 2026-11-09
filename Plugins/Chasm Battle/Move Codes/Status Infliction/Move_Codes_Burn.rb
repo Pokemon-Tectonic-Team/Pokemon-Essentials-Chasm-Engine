@@ -114,10 +114,9 @@ end
 #===============================================================================
 class PokeBattle_Move_BurnAddFireType < PokeBattle_Move
     def pbFailsAgainstTarget?(user, target, show_message)
-        if !target.canBurn?(user, false, self) && !target.canChangeTypeTo?(:FIRE) && show_message
-            @battle.pbDisplay(_INTL("But it failed, since {1} can't be burned or gain Fire-type!", target.pbThis(true)))
-        end
-        return false
+        return false if target.canBurn?(user, false, self) || target.canChangeTypeTo?(:FIRE)
+        @battle.pbDisplay(_INTL("But it failed, since {1} can't be burned or gain Fire-type!", target.pbThis(true))) if show_message
+        return true
     end
 
     def pbEffectAgainstTarget(user, target)

@@ -1109,9 +1109,10 @@ class PokeBattle_InviteMove < PokeBattle_Move
     end
 
     def pbFailsAgainstTarget?(user, target, show_message)
-        if @battle.primevalWeatherPresent?(false) && target.pbCanInflictStatus?(@statusToApply, user, false, self) && show_message
-            @battle.pbDisplay(_INTL("But it failed, since {1} can't gain the status and the weather can't be set!", target.pbThis(true)))
-        end
+        return false if target.pbCanInflictStatus?(@statusToApply, user, false, self)
+        return false unless @battle.primevalWeatherPresent?(false)
+        @battle.pbDisplay(_INTL("But it failed, since {1} can't gain the status and the weather can't be set!", target.pbThis(true))) if show_message
+        return true
     end
 
     def pbEffectAgainstTarget(user, target)
