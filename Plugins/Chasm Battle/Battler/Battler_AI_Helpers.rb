@@ -105,19 +105,16 @@ class PokeBattle_Battler
         end
     end
 
-    # Insight Room shows the AI the highest eligible move without skipping moves the battler
-    # already knows, so as not to reveal which moves it lacks. When the battler already knows
-    # that move, the AI keeps it after the room ends, but never learns the fifth move it gets.
+    # Insight Room shows the AI the highest eligible move it doesn't already know of, skipping
+    # only the moves it knows rather than the battler's real moveset, which it has no right to.
+    # When the battler has that move anyway, the AI sees it only while the room is up, and never
+    # learns the fifth move the battler actually gets.
     def aiKnowsMove?(move)
         return true unless pbOwnedByPlayer?
-        return true if @battle.aiKnownMoves(@pokemon).include?(move.id)
+        knownMoves = @battle.aiKnownMoves(@pokemon)
+        return true if knownMoves.include?(move.id)
         return false unless @battle.field.effectActive?(:InsightRoom)
-        return false unless move.id == getInsightRoomMove
-        if pbHasMove?(move.id) && !boss?
-            echoln("[AI LEARNING] Predicted insight room move for #{pbThis(true)} is #{move.id} - already known, no extra knowledge")
-            aiSeesMove(move.id)
-        end
-        return true
+        return move.id == getInsightRoomMove(knownMoves)
     end
 
     def movesHiddenByIllusion?
