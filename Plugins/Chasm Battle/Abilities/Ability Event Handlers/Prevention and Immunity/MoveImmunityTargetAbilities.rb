@@ -201,9 +201,9 @@ BattleHandlers::MoveImmunityTargetAbility.add(:TELEPATHY,
   }
 )
 
-def typeModToCheck(battle, type, user, target, move, aiCheck)
+def typeModToCheck(battle, types, user, target, move, aiCheck)
   if aiCheck
-    typeMod = battle.battleAI.pbCalcTypeModAI(move.typesWith(type), user, target, move)
+    typeMod = battle.battleAI.pbCalcTypeModAI(types, user, target, move)
   else
     typeMod = target.damageState.typeMod
   end
@@ -214,7 +214,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:WONDERGUARD,
   proc { |ability, user, target, move, type, battle, showMessages, aiCheck|
       next false if move.statusMove?
       next false if !type
-      next false if Effectiveness.super_effective?(typeModToCheck(battle, type, user, target, move, aiCheck))
+      next false if Effectiveness.super_effective?(typeModToCheck(battle, move.typesWith(type), user, target, move, aiCheck))
       if showMessages
           battle.pbShowAbilitySplash(target, ability)
           battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))

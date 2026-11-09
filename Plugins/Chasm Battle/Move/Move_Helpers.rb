@@ -22,19 +22,19 @@ class PokeBattle_Move
         return false
     end
 
-    def applyRainDebuff?(user, type, checkingForAI = false)
+    def applyRainDebuff?(user, types, checkingForAI = false)
         return false unless @battle.rainy?
         return false unless RAIN_DEBUFF_ACTIVE
         return false if immuneToRainDebuff?
-        return false if %i[WATER ELECTRIC].include?(type)
+        return false if types.intersect?(%i[WATER ELECTRIC])
         return user.debuffedByRain?(checkingForAI)
     end
 
-    def applySunDebuff?(user, type, checkingForAI = false)
+    def applySunDebuff?(user, types, checkingForAI = false)
         return false unless @battle.sunny?
         return false unless SUN_DEBUFF_ACTIVE
         return false if immuneToSunDebuff?
-        return false if %i[FIRE GRASS].include?(type)
+        return false if types.intersect?(%i[FIRE GRASS])
         return user.debuffedBySun?(checkingForAI)
     end
 

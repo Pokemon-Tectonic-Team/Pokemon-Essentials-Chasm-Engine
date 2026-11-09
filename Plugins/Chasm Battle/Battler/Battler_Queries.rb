@@ -893,9 +893,9 @@ class PokeBattle_Battler
         return @index % 2
     end
 
-    def typeMod(type, target, move, aiCheck = false)
+    def typeMod(types, target, move, aiCheck = false)
         if aiCheck
-            return @battle.battleAI.pbCalcTypeModAI(move.typesWith(type), self, target, move)
+            return @battle.battleAI.pbCalcTypeModAI(types, self, target, move)
         else
             return @damageState.typeMod
         end

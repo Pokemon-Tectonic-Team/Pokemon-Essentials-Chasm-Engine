@@ -134,13 +134,12 @@ class PokeBattle_AI
     def pbTotalDamageAI(move, user, target, numTargets = 1, aiContext = nil)
         return 0, false if move.damageNegated?(user, target, true)
 
-        # Get the move's type
-        type = pbRoughType(move, user)
+        types = pbRoughTypes(move, user)
 
         baseDmg = pbMoveBaseDamageAI(move, user, target)
 
         # Calculate the damage for one hit
-        damage = move.calculateDamageForHitAI(user, target, type, baseDmg, numTargets, aiContext)
+        damage = move.calculateDamageForHitAI(user, target, types, baseDmg, numTargets, aiContext)
 
         # Estimate how many hits the move will do
         numHits = move.numberOfHits(user, [target], true)
@@ -177,8 +176,7 @@ class PokeBattle_AI
         return 100 if baseAcc == 0
         baseAcc = move.pbBaseAccuracy(user, target)
         return 100 if baseAcc == 0
-        # Get the move's type
-        type = pbRoughType(move, user)
+        types = pbRoughTypes(move, user)
         # Calculate all modifier effects
         modifiers = {}
         modifiers[:base_accuracy]  = baseAcc
@@ -186,7 +184,7 @@ class PokeBattle_AI
         modifiers[:evasion_step]  = target.steps[:EVASION]
         modifiers[:accuracy_multiplier] = 1.0
         modifiers[:evasion_multiplier]  = 1.0
-        move.pbCalcAccuracyModifiers(user, target, modifiers, true, type, aiContext)
+        move.pbCalcAccuracyModifiers(user, target, modifiers, true, types, aiContext)
         # Calculation
         statBoundary = PokeBattle_Battler::STAT_STEP_BOUND
         accStep = modifiers[:accuracy_step].clamp(-statBoundary, statBoundary)

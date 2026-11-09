@@ -1048,7 +1048,7 @@ class PokeBattle_Battler
         elsif move.randomEffect? && !user.hasActiveAbility?(:SHEERFORCE) # Random added effects
             targets.each do |b|
                 next if b.damageState.calcDamage == 0
-                chance = move.pbAdditionalEffectChance(user, b, move.calcType)
+                chance = move.pbAdditionalEffectChance(user, b)
                 next if chance <= 0
                 if @battle.pbRandom(100) < chance && move.canApplyRandomAddedEffects?(user,b,chance,true)
                     if b.hasActiveAbility?(:UNCANNYLUCK)

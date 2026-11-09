@@ -17,11 +17,6 @@ end
 #=============================================================================
 # Get approximate properties for a battler
 #=============================================================================
-def pbRoughType(move, user)
-    ret = move.pbCalcType(user)
-    return ret
-end
-
 def pbRoughTypes(move, user)
     return move.pbCalcTypes(user)
 end

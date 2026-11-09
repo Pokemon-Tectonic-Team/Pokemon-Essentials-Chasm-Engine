@@ -37,7 +37,7 @@ class PokeBattle_Move_EffectDependsOnEnvironment < PokeBattle_Move
     def pbEffectAfterAllHits(user, target)
         return if target.fainted?
         return if target.damageState.unaffected || target.damageState.substitute
-        chance = pbAdditionalEffectChance(user, target, @calcType)
+        chance = pbAdditionalEffectChance(user, target)
         return if @battle.pbRandom(100) >= chance
         return unless canApplyRandomAddedEffects?(user,target,chance,true)
         case @secretPower

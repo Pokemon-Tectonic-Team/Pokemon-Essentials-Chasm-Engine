@@ -164,28 +164,28 @@ class PokeBattle_Move
         return @battle.pbRandom(100) < modifiers[:base_accuracy] * calc
     end
 
-    def pbCalcAccuracyModifiers(user, target, modifiers, aiCheck = false, aiType = nil, aiContext = nil)
-        typeToUse = aiCheck ? aiType : @calcType
+    def pbCalcAccuracyModifiers(user, target, modifiers, aiCheck = false, aiTypes = nil, aiContext = nil)
+        types = aiCheck ? aiTypes : @calcTypes
         # Ability effects that alter accuracy calculation
         user.eachAbilityShouldApply(aiCheck) do |ability|
-            BattleHandlers.triggerAccuracyCalcUserAbility(ability, modifiers, user, target, self, typeToUse)
+            BattleHandlers.triggerAccuracyCalcUserAbility(ability, modifiers, user, target, self, types)
         end
         user.eachAlly do |ally|
             ally.eachAbilityShouldApply(aiCheck) do |ability|
-                BattleHandlers.triggerAccuracyCalcUserAllyAbility(ability, modifiers, user, target, self, typeToUse)
+                BattleHandlers.triggerAccuracyCalcUserAllyAbility(ability, modifiers, user, target, self, types)
             end
         end
         unless @battle.moldBreaker
             target.eachAbilityShouldApply(aiCheck) do |ability|
-                BattleHandlers.triggerAccuracyCalcTargetAbility(ability, modifiers, user, target, self, typeToUse)
+                BattleHandlers.triggerAccuracyCalcTargetAbility(ability, modifiers, user, target, self, types)
             end
         end
         # Item effects that alter accuracy calculation
         user.eachActiveItem do |item|
-            BattleHandlers.triggerAccuracyCalcUserItem(item, modifiers, user, target, self, typeToUse, aiCheck, aiContext)
+            BattleHandlers.triggerAccuracyCalcUserItem(item, modifiers, user, target, self, types, aiCheck, aiContext)
         end
         target.eachActiveItem do |item|
-            BattleHandlers.triggerAccuracyCalcTargetItem(item, modifiers, user, target, self, typeToUse)
+            BattleHandlers.triggerAccuracyCalcTargetItem(item, modifiers, user, target, self, types)
         end
         
         # Other effects, inc. ones that set accuracy_multiplier or evasion_step to
@@ -306,7 +306,7 @@ class PokeBattle_Move
         end
 
         # Hearsh Sunlight
-        if @battle.pbWeather == :HarshSun && applySunDebuff?(user, @calcType, checkingForAI)
+        if @battle.pbWeather == :HarshSun && applySunDebuff?(user, @calcTypes, checkingForAI)
             unless checkingForAI
                 battle.pbDisplay(_INTL("The harsh sunlight prevents the hit from being critical!", target.pbThis))
             end
@@ -384,7 +384,7 @@ showMessages)
                 return false
             end
         end
-        if @battle.pbWeather == :HeavyRain && applyRainDebuff?(user, @calcType, aiCheck)
+        if @battle.pbWeather == :HeavyRain && applyRainDebuff?(user, @calcTypes, aiCheck)
             if showMessages
                 battle.pbDisplay(_INTL("The heavy rain prevents a random added effect!"))
             end
@@ -406,7 +406,7 @@ showMessages)
         return true
     end
 
-    def pbAdditionalEffectChance(user, target, type, effectChance = 0, aiCheck = false, aiContext = nil)
+    def pbAdditionalEffectChance(user, target, effectChance = 0, aiCheck = false, aiContext = nil)
         return 100 if @battle.pbCheckGlobalAbility(:WISHMAKER)
         # Abilities ensure effect chance
         user.eachAbilityShouldApply(aiCheck) do |ability|

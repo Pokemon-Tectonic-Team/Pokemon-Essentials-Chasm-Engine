@@ -81,7 +81,7 @@ class PokeBattle_Move
             displayCategoryChangeMessage(move.category_override) if move.category_override
         end
         # Display messages letting the player know that weather is debuffing a move (if it is)
-        displayWeatherDebuffMessages(user, move.calcType) if $Options.weather_messages == 0
+        displayWeatherDebuffMessages(user, move.calcTypes) if $Options.weather_messages == 0
     end
 
     def displayBPAdjustmentMessage(user, targets)
@@ -105,15 +105,15 @@ class PokeBattle_Move
         end
     end
 
-    def displayWeatherDebuffMessages(user, type)
-        if applyRainDebuff?(user, type)
+    def displayWeatherDebuffMessages(user, types)
+        if applyRainDebuff?(user, types)
             if @battle.pbCheckGlobalAbility(:DREARYCLOUDS)
                 @battle.pbDisplay(_INTL("{1}'s attack is dampened a lot by the dreary rain.", user.pbThis))
             else
                 @battle.pbDisplay(_INTL("{1}'s attack is dampened by the rain.", user.pbThis))
             end
         end
-        if applySunDebuff?(user, type)
+        if applySunDebuff?(user, types)
             if @battle.pbCheckGlobalAbility(:BLINDINGLIGHT)
                 @battle.pbDisplay(_INTL("{1} is blinded by the bright light of the sun.", user.pbThis))
             else

@@ -1,6 +1,6 @@
 # Choice Crown
 BattleHandlers::DamageCalcUserItem.add(:CHOICECROWN,
-    proc { |item,user,target,move,mults,baseDmg,type,aiCheck|
+    proc { |item,user,target,move,mults,baseDmg,types,aiCheck|
       mults[:base_damage_multiplier] *= 1.5
     }
 )
@@ -36,7 +36,7 @@ BattleHandlers::SpeedCalcItem.add(:ZENITHSCARF,
 
 # All-Purpose Vest
 BattleHandlers::DamageCalcTargetItem.add(:ALLPURPOSEVEST,
-    proc { |item,user,target,move,mults,baseDmg,type,aiCheck|
+    proc { |item,user,target,move,mults,baseDmg,types,aiCheck|
       mults[:defense_multiplier] *= 1.5
     }
 )
@@ -85,8 +85,8 @@ BattleHandlers::HPHealItem.add(:SITREONBERRY,
 BattleHandlers::EORHealingItem.copy(:LEFTOVERS,:ROSELIFEAST)
 
 BattleHandlers::DamageCalcTargetItem.add(:ROSELIFEAST,
-    proc { |item,user,target,move,mults,baseDmg,type,aiCheck|
-      pbBattleTypeWeakingBerry(item, :FAIRY,type,target,mults,true,aiCheck)
+    proc { |item,user,target,move,mults,baseDmg,types,aiCheck|
+      pbBattleTypeWeakingBerry(item, :FAIRY,types,target,mults,true,aiCheck)
     }
 )
 
@@ -94,8 +94,8 @@ BattleHandlers::DamageCalcTargetItem.add(:ROSELIFEAST,
 BattleHandlers::EORHealingItem.copy(:LEFTOVERS,:OCCAFEAST)
 
 BattleHandlers::DamageCalcTargetItem.add(:OCCAFEAST,
-    proc { |item,user,target,move,mults,baseDmg,type,aiCheck|
-      pbBattleTypeWeakingBerry(item, :FIRE,type,target,mults,true,aiCheck)
+    proc { |item,user,target,move,mults,baseDmg,types,aiCheck|
+      pbBattleTypeWeakingBerry(item, :FIRE,types,target,mults,true,aiCheck)
     }
 )
 
@@ -103,8 +103,8 @@ BattleHandlers::DamageCalcTargetItem.add(:OCCAFEAST,
 BattleHandlers::EORHealingItem.copy(:LEFTOVERS,:RINDOFEAST)
 
 BattleHandlers::DamageCalcTargetItem.add(:RINDOFEAST,
-    proc { |item,user,target,move,mults,baseDmg,type,aiCheck|
-      pbBattleTypeWeakingBerry(item, :GRASS,type,target,mults,true,aiCheck)
+    proc { |item,user,target,move,mults,baseDmg,types,aiCheck|
+      pbBattleTypeWeakingBerry(item, :GRASS,types,target,mults,true,aiCheck)
     }
 )
 
@@ -130,7 +130,7 @@ BattleHandlers::HPHealItem.add(:ZALAKABERRY,
 
 # Lucent Gem
 BattleHandlers::DamageCalcUserItem.add(:LUCENTGEM,
-    proc { |item,user,target,move,mults,baseDmg,type,aiCheck,aiContext|
+    proc { |item,user,target,move,mults,baseDmg,types,aiCheck,aiContext|
         user.applyEffect(:GemConsumed,item) unless aiCheck
         aiContext[:item_consumed] = true if aiContext
         mults[:base_damage_multiplier] *= 1.5
@@ -216,7 +216,7 @@ BattleHandlers::WeatherExtenderItem.copy(:MIRROREDROCK,:MIRROREDSASH)
 
 # Death Orb
 BattleHandlers::DamageCalcUserItem.add(:DEATHORB,
-  proc { |item,user,target,move,mults,baseDmg,type,aiCheck|
+  proc { |item,user,target,move,mults,baseDmg,types,aiCheck|
     if !move.is_a?(PokeBattle_SelfHit)
       mults[:final_damage_multiplier] *= 1.3
     end
@@ -246,7 +246,7 @@ BattleHandlers::EORHealingItem.add(:LUNCHBOX,
 )
 
 BattleHandlers::DamageCalcTargetItem.add(:LUNCHBOX,
-  proc { |item,user,target,move,mults,baseDmg,type,aiCheck|
+  proc { |item,user,target,move,mults,baseDmg,types,aiCheck|
     mults[:final_damage_multiplier] *= (2.0/3.0) if target.fullHealth?
   }
 )

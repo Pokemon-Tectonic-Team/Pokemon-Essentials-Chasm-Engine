@@ -354,52 +354,52 @@ module BattleHandlers
 
     #=============================================================================
 
-    def self.triggerAccuracyCalcUserAbility(ability, mults, user, target, move, type)
-        AccuracyCalcUserAbility.trigger(ability, mults, user, target, move, type)
+    def self.triggerAccuracyCalcUserAbility(ability, mults, user, target, move, types)
+        AccuracyCalcUserAbility.trigger(ability, mults, user, target, move, types)
     end
 
-    def self.triggerAccuracyCalcUserAllyAbility(ability, mults, user, target, move, type)
-        AccuracyCalcUserAllyAbility.trigger(ability, mults, user, target, move, type)
+    def self.triggerAccuracyCalcUserAllyAbility(ability, mults, user, target, move, types)
+        AccuracyCalcUserAllyAbility.trigger(ability, mults, user, target, move, types)
     end
 
-    def self.triggerAccuracyCalcTargetAbility(ability, mults, user, target, move, type)
-        AccuracyCalcTargetAbility.trigger(ability, mults, user, target, move, type)
+    def self.triggerAccuracyCalcTargetAbility(ability, mults, user, target, move, types)
+        AccuracyCalcTargetAbility.trigger(ability, mults, user, target, move, types)
     end
 
-    def self.triggerAccuracyCalcUserItem(item, mults, user, target, move, type, aiCheck, aiContext = nil)
-        AccuracyCalcUserItem.trigger(item, mults, user, target, move, type, aiCheck, aiContext)
+    def self.triggerAccuracyCalcUserItem(item, mults, user, target, move, types, aiCheck, aiContext = nil)
+        AccuracyCalcUserItem.trigger(item, mults, user, target, move, types, aiCheck, aiContext)
     end
 
-    def self.triggerAccuracyCalcTargetItem(item, mults, user, target, move, type)
-        AccuracyCalcTargetItem.trigger(item, mults, user, target, move, type)
-    end
-
-    #=============================================================================
-
-    def self.triggerDamageCalcUserAbility(ability, user, target, move, mults, baseDmg, type, aiCheck = false)
-        DamageCalcUserAbility.trigger(ability, user, target, move, mults, baseDmg, type, aiCheck)
-    end
-
-    def self.triggerDamageCalcUserAllyAbility(ability, user, target, move, mults, baseDmg, type, aiCheck = false)
-        DamageCalcUserAllyAbility.trigger(ability, user, target, move, mults, baseDmg, type, aiCheck)
-    end
-
-    def self.triggerDamageCalcUserItem(item, user, target, move, mults, baseDmg, type, aiCheck = false, aiContext = nil)
-        DamageCalcUserItem.trigger(item, user, target, move, mults, baseDmg, type, aiCheck, aiContext)
+    def self.triggerAccuracyCalcTargetItem(item, mults, user, target, move, types)
+        AccuracyCalcTargetItem.trigger(item, mults, user, target, move, types)
     end
 
     #=============================================================================
 
-    def self.triggerDamageCalcTargetAbility(ability, user, target, move, mults, baseDmg, type, aiCheck = false)
-        DamageCalcTargetAbility.trigger(ability, user, target, move, mults, baseDmg, type, aiCheck)
+    def self.triggerDamageCalcUserAbility(ability, user, target, move, mults, baseDmg, types, aiCheck = false)
+        DamageCalcUserAbility.trigger(ability, user, target, move, mults, baseDmg, types, aiCheck)
     end
 
-    def self.triggerDamageCalcTargetAllyAbility(ability, user, target, owner, move, mults, baseDmg, type, aiCheck = false)
-        DamageCalcTargetAllyAbility.trigger(ability, user, target, owner, move, mults, baseDmg, type, aiCheck)
+    def self.triggerDamageCalcUserAllyAbility(ability, user, target, move, mults, baseDmg, types, aiCheck = false)
+        DamageCalcUserAllyAbility.trigger(ability, user, target, move, mults, baseDmg, types, aiCheck)
     end
 
-    def self.triggerDamageCalcTargetItem(item, user, target, move, mults, baseDmg, type, aiCheck)
-        DamageCalcTargetItem.trigger(item, user, target, move, mults, baseDmg, type, aiCheck)
+    def self.triggerDamageCalcUserItem(item, user, target, move, mults, baseDmg, types, aiCheck = false, aiContext = nil)
+        DamageCalcUserItem.trigger(item, user, target, move, mults, baseDmg, types, aiCheck, aiContext)
+    end
+
+    #=============================================================================
+
+    def self.triggerDamageCalcTargetAbility(ability, user, target, move, mults, baseDmg, types, aiCheck = false)
+        DamageCalcTargetAbility.trigger(ability, user, target, move, mults, baseDmg, types, aiCheck)
+    end
+
+    def self.triggerDamageCalcTargetAllyAbility(ability, user, target, owner, move, mults, baseDmg, types, aiCheck = false)
+        DamageCalcTargetAllyAbility.trigger(ability, user, target, owner, move, mults, baseDmg, types, aiCheck)
+    end
+
+    def self.triggerDamageCalcTargetItem(item, user, target, move, mults, baseDmg, types, aiCheck)
+        DamageCalcTargetItem.trigger(item, user, target, move, mults, baseDmg, types, aiCheck)
     end
 
     #=============================================================================
