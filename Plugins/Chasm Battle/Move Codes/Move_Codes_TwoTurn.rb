@@ -86,6 +86,19 @@ class PokeBattle_Move_TwoTurnAttackOneTurnInRainstorm < PokeBattle_TwoTurnMove
 end
 
 #===============================================================================
+# Two turn attack. Skips first turn, attacks second turn. In sand, takes 1 turn instead. (Terraslide)
+#===============================================================================
+class PokeBattle_Move_TwoTurnAttackOneTurnInSand < PokeBattle_TwoTurnMove
+    def pbChargingTurnMessage(user, _targets)
+        @battle.pbDisplay(_INTL("{1} stirred the ground beneath it!", user.pbThis))
+    end
+
+    def skipChargingTurn?(user)
+        return @battle.sandy?
+    end
+end
+
+#===============================================================================
 # Two turn attack. Skips first turn, attacks second turn.
 # May paralyze the target.
 #===============================================================================

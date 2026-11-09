@@ -992,6 +992,10 @@ Description = Doubles the Speed of kicking moves.
 Name = Ramming Speed
 Description = Doubles the speed of recoil moves.
 #-------------------------------
+[RAMPROW]
+Name = Ram Prow
+Description = Ignores screens, Substitute, and Abilities that would affect its moves.
+#-------------------------------
 [RATTLED]
 Name = Rattled
 Description = Bug-, Dark- and Ghost-type moves scare it and boost its Speed.
@@ -1421,6 +1425,10 @@ Description = Moves can be used regardless of Abilities.
 Name = Unbound
 Description = Moves ignore Abilities that would affect its moves or activate after hitting the target, and immunities due to typing.
 Flags = MoldBreaking,BypassTypeImmunity
+#-------------------------------
+[UNBREAKABLE]
+Name = Unbreakable
+Description = Prevents half the self-damage from recoil and self-destructing.
 #-------------------------------
 [UNCANNYCOLD]
 Name = Uncanny Cold

@@ -414,6 +414,15 @@ BattleHandlers::DamageCalcTargetAbility.add(:HAILSTONEHELM,
   }
 )
 
+BattleHandlers::DamageCalcTargetAbility.add(:BARRENBLOOD,
+  proc { |ability, user, target, _move, mults, _baseDmg, type, aiCheck|
+    if user.battle.sandy? 
+      mults[:final_damage_multiplier] *= 3 / 2.0
+      target.aiLearnsAbility(ability) unless aiCheck
+    end
+  }
+)
+
 ############################################
 # Ability Code for cut or unused abilities
 ############################################

@@ -191,7 +191,7 @@ class PokeBattle_Battler
     def pbUseMove(choice, specialUsage = false)
         # NOTE: This is intentionally determined before a multi-turn attack can
         #       set specialUsage to true.
-        skipAccuracyCheck = (specialUsage && choice[2] != @battle.struggle)
+        skipAccuracyCheck = specialUsage && choice[2] != @battle.struggle
 
         # Start using the move
         pbBeginTurn(choice)
@@ -797,9 +797,13 @@ class PokeBattle_Battler
         # If we get here, this hit will happen and do something
         all_targets = targets
         targets = move.pbDesignateTargetsForHit(targets, hitNum) # For Dragon Darts
-        targets.each { |b| b.damageState.resetPerHit }
-        # Tracked whether the Pokemon is trapped
         targets.each { |b|
+            b.damageState.resetPerHit
+            if b.damageState.recalcTypeMod
+                b.damageState.typeMod = move.pbCalcTypeMod(move.calcType, user, b)
+                b.damageState.recalcTypeMod = false
+            end
+            # Tracked whether the Pokemon is trapped
             next unless b.trapped?
             b.damageState.trapped = true
         }
@@ -931,8 +935,8 @@ class PokeBattle_Battler
             end
 
             if pbOwnedByPlayer?
-                unlockAchievement(:DEAL_LARGE_DAMAGE_1) if maxDamageOnTargets >= 1000 && !(user.battle.is_replayed)
-                unlockAchievement(:DEAL_LARGE_DAMAGE_2) if maxDamageOnTargets >= 10_000 && !(user.battle.is_replayed)
+                unlockAchievement(:DEAL_LARGE_DAMAGE_1) if maxDamageOnTargets >= 1000 && !user.battle.is_replayed
+                unlockAchievement(:DEAL_LARGE_DAMAGE_2) if maxDamageOnTargets >= 10_000 && !user.battle.is_replayed
             end
         end
         # Self-Destruct/Explosion's damaging and fainting of user
@@ -1087,6 +1091,14 @@ class PokeBattle_Battler
         end
         targets.each { |b| b.pbFaint if b&.fainted? }
         user.pbFaint if user.fainted?
+        # Inure decrement
+        if move.damagingMove?
+            targets.each do |b|
+                next if b.damageState.unaffected || b.fainted?
+                next unless b.effectActive?(:Inured)
+                b.damageState.recalcTypeMod = true unless b.tickDownAndProc(:Inured)
+            end
+        end
         # Dragon Darts' second half of attack
         if move.pbRepeatHit?(hitNum) && all_targets.any? { |b| !b.fainted? && !b.damageState.unaffected }
             pbProcessMoveHit(move, user, all_targets, hitNum + 1, skipAccuracyCheck, fastHitAnimation)

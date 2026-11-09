@@ -19,7 +19,7 @@ class PokeBattle_Battler
             return false
         end
         # Heal Block
-        if effectActive?(:HealBlock) && move.healingMove?
+        if (effectActive?(:HealBlock) || pbOwnSide.effectActive?(:Dustbowl)) && move.healingMove?
             msg = _INTL("{1} can't use {2} because of Heal Block!", pbThis, move.name)
             if showMessages
                 commandPhase ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)

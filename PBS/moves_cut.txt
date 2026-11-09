@@ -1884,6 +1884,19 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = The user attacks the foe with a hazardous, full-power headbutt. The user also takes 50% recoil.
 #-------------------------------
+[ICEBREAKER]
+Name = Icebreaker
+Type = ROCK
+Category = Physical
+Power = 120
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user sweeps away hazards afflicting your side while lunging forward. User also takes 33% recoil.
+Animation = HEADSMASH
+#-------------------------------
 [INVITESAND]
 Name = Invite Sand
 Type = ROCK
@@ -4084,17 +4097,6 @@ FunctionCode = Invalid
 Flags = CanProtect
 EffectChance = 30
 Description = The user attacks by harshly dropping an icicle onto the foe. It has a 30% chance to make the target flinch.
-#-------------------------------
-[INURE]
-Name = Inure
-Type = ICE
-Category = Status
-Accuracy = 0
-TotalPP = 10
-Target = User
-FunctionCode = Invalid
-Flags = CanSnatch
-Description = The user inures themselves to a harsh environment, shedding their type weaknesses.
 #-------------------------------
 [MIST]
 Name = Mist

@@ -58,6 +58,12 @@ BattleHandlers::AccuracyCalcUserAbility.add(:PINDOWN,
     }
 )
 
+BattleHandlers::AccuracyCalcUserAbility.add(:SANDBANKBRUTE,
+    proc { |ability, mults, user, _target, _move, _type|
+        mults[:base_accuracy] = 0 if user.battle.sandy?
+    }
+)
+
 ############################################
 # Ability Code for cut or unused abilities
 ############################################

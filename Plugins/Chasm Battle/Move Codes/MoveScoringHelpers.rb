@@ -796,6 +796,19 @@ def getJinxEffectScore(user, target)
     return score
 end
 
+def getDustbowlEffectScore(user, target)
+    return 0 if user.pbOpposingSide.effectActive?(:Dustbowl)
+    score = 50
+    score += 30 if user.hasDamagingAttack?
+    hasHealer = false
+    user.eachOpposing do |battler|
+        if battler.hasHealingMove?
+            score += 60
+        end
+    end
+    return score
+end
+
 def passingTurnSideEffectScore(battle,sideIndex = 1)
     score = 0
     battle.eachBattler do |b|
