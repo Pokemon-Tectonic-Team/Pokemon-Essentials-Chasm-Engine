@@ -214,6 +214,9 @@ class PokeBattle_Battle
             end
         end
 
+        helpersPickActions
+        helpersAnnounceActions
+
         preSelectionAlerts
 
         # Choose actions for the round (AI first, then player)
@@ -272,6 +275,16 @@ class PokeBattle_Battle
         end
 
         triggerAllChoicesDialogue
+    end
+
+    def helpersPickActions
+        @playerHelper&.pickActionStartOfRound
+        @opponentHelper&.pickActionStartOfRound
+    end
+
+    def helpersAnnounceActions
+        @playerHelper&.announceSelectedMove(self)
+        @opponentHelper&.announceSelectedMove(self, forOpponent: true)
     end
 
     def preSelectionAlerts
