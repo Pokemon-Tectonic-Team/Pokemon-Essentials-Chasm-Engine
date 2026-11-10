@@ -393,8 +393,9 @@ class PokeBattle_Battle
         return false unless predictable?(predictor, idxBattler)
         predictedAction = @predictedActions[idxBattler]
         return true if predictedAction[0] == :SwitchOut
-        return true if !ignoreSwitchMoves && predictedAction[0] == :UseMove && predictedAction[2].switchOutMove?
-        return false
+        return false unless predictedAction[0] == :UseMove && predictedAction[2].switchOutMove?
+        return true unless onlyBeforePredictor
+        return @battleAI.userMovesFirst?(predictedAction[2], @battlers[idxBattler], predictor)
     end
 
     def aiPredictsAttack?(predictor, idxBattler, againstPredictor = false, categoryOnly = -1)

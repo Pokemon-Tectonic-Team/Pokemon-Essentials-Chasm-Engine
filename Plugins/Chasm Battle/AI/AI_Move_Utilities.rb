@@ -40,12 +40,6 @@ class PokeBattle_AI
     # Move failure
     #=============================================================================
     def aiPredictsFailure?(move, user, target, boss = false)
-        fails = false
-
-        # Falsify the turn count so that the AI is calculated as though we are actually
-        # in the midst of performing the move (turnCount is incremented as the attack phase begins)
-        user.turnCount += 1
-
         # Short-circuit for type-immune moves. Computing typeMod here also
         # populates @typeModCache so the later pbSuccessCheckAgainstTarget
         # call and pbGetMoveScoreDamage both reuse the cached result for free.
@@ -54,7 +48,6 @@ class PokeBattle_AI
             precomputedTypeMod = pbCalcTypeModAI(pbRoughTypes(move, user), user, target, move)
             if precomputedTypeMod == 0
                 echoln("\t\t[AI FAILURE CHECK] #{user.pbThis} rejects #{move.id} -- completely ineffective against #{target.pbThis(false)}")
-                user.turnCount -= 1
                 return true
             end
         end
@@ -110,8 +103,6 @@ class PokeBattle_AI
             end
         end
 
-        user.turnCount -= 1
-
         return fails
     end
 
@@ -156,7 +147,7 @@ class PokeBattle_AI
                 numHits = 0
             end
             if subHP > 0 && !move.ignoresSubstitute?(user)
-                totalDamage += [subHP,damage].min
+                totalDamage += [subHP, damage].min
                 subHP -= damage
                 subFaded = true if subHP <= 0
             else
@@ -164,7 +155,7 @@ class PokeBattle_AI
             end
         end
 
-        return totalDamage.floor,subFaded
+        return totalDamage.floor, subFaded
     end
 
     #===========================================================================
@@ -179,7 +170,7 @@ class PokeBattle_AI
         types = pbRoughTypes(move, user)
         # Calculate all modifier effects
         modifiers = {}
-        modifiers[:base_accuracy]  = baseAcc
+        modifiers[:base_accuracy] = baseAcc
         modifiers[:accuracy_step] = user.steps[:ACCURACY]
         modifiers[:evasion_step]  = target.steps[:EVASION]
         modifiers[:accuracy_multiplier] = 1.0
@@ -207,21 +198,20 @@ class PokeBattle_AI
     # Speed calculation
     #===========================================================================
     # If KillInfo is given, calculates if the user will move before the possible kill against it
-    # Otherwise, calculates if the user will move before the target (assuming 0 priority by the target)
-    def userMovesFirst?(move, user, target, killInfo: nil)
+    # Otherwise, calculates if the user will move before the target using a move of targetPriority (0 if not given)
+    def userMovesFirst?(move, user, target, killInfo: nil, targetPriority: nil)
         return false if move.is_a?(PokeBattle_ForetoldMove)
         userPriority = @battle.getMovePriority(move, user, [target], true)
-        foePriority = killInfo&.priority || 0
+        foePriority = killInfo&.priority || targetPriority || 0
         foeChecking = killInfo&.user || target
+        foeDescriptor = foeChecking.pbThis(true)
+        foeDescriptor += "'s #{killInfo.move.id}" if killInfo
+        priorityDescriptor = killInfo || targetPriority ? " at priority #{foePriority}" : ""
         if userPriority > foePriority
-            message = "\t[ORDER CALC] #{user.pbThis}'s #{move.id} has priority #{userPriority}, so will probably move BEFORE #{foeChecking.pbThis(true)}"
-            message += "'s #{killInfo.move.id} at priority #{foePriority}" if killInfo
-            echoln(message)
+            echoln("\t[ORDER CALC] #{user.pbThis}'s #{move.id} has priority #{userPriority}, so will probably move BEFORE #{foeDescriptor}#{priorityDescriptor}")
             return true
         elsif foePriority > userPriority
-            message = "\t[ORDER CALC] #{user.pbThis}'s #{move.id} has priority #{userPriority}, so will probably move AFTER #{foeChecking.pbThis(true)}"
-            message += "'s #{killInfo.move.id} at priority #{foePriority}" if killInfo
-            echoln(message)
+            echoln("\t[ORDER CALC] #{user.pbThis}'s #{move.id} has priority #{userPriority}, so will probably move AFTER #{foeDescriptor}#{priorityDescriptor}")
             return false
         else
             userSpeed = user.pbSpeed(true, move: move)
@@ -230,10 +220,7 @@ class PokeBattle_AI
             movesFirst = !movesFirst if user.battle.field.effectActive?(:TrickstersDomain)
             orderDescriptor = movesFirst ? "BEFORE" : "AFTER"
 
-            message = "\t[ORDER CALC] #{user.pbThis}'s #{move.id} will have speed #{userSpeed}, so will move #{orderDescriptor} #{foeChecking.pbThis(true)}"
-            message += "'s #{killInfo.move.id}" if killInfo
-            message += " at speed #{opposingSpeed}"
-            echoln(message)
+            echoln("\t[ORDER CALC] #{user.pbThis}'s #{move.id} will have speed #{userSpeed}, so will move #{orderDescriptor} #{foeDescriptor} at speed #{opposingSpeed}")
             return movesFirst
         end
     end
