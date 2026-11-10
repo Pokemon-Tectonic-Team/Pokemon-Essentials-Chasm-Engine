@@ -107,11 +107,15 @@ class PokeBattle_Move_StealsTargetItemForSelfOrPartyMember < PokeBattle_Move_Rem
         return unless canKnockOffItems?(user, target)
 
         knockOffItems(user, target, firstItemOnly: true) do |item, itemName|
-            @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!", user.pbThis, target.pbThis(true), itemName))
-            if sharedspoilsAnyoneCanReceive?(user, item)
-                sharedspoilsChoosePartyMember(user, item, itemName)
+            if @battle.stolenItemTurnsToDust?(item)
+                @battle.pbDisplay(_INTL("{1}'s {2} turned to dust.", target.pbThis, itemName))
             else
-                @battle.pbDisplay(_INTL("But nobody could receive the item!"))
+                @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!", user.pbThis, target.pbThis(true), itemName))
+                if sharedspoilsAnyoneCanReceive?(user, item)
+                    sharedspoilsChoosePartyMember(user, item, itemName)
+                else
+                    @battle.pbDisplay(_INTL("But nobody could receive the item!"))
+                end
             end
         end
     end
