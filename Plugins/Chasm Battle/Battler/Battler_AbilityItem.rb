@@ -44,6 +44,12 @@ class PokeBattle_Battler
         pbAbilityStatusCureCheck
     end
 
+    def pbManualTriggerAbilityOnSwitchIn(ability)
+        return if fainted?
+        return unless abilityActive?
+        BattleHandlers.triggerAbilityOnSwitchIn(ability, self, @battle)
+    end
+
     #=============================================================================
     # Ability effects
     #=============================================================================
