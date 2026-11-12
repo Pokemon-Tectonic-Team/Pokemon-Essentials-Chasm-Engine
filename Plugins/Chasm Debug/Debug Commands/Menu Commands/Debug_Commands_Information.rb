@@ -18,7 +18,6 @@
       for id in mapData.mapinfos.keys.sort
           map = mapData.getMap(id)
           next if !map || !mapData.mapinfos[id]
-          mapName = mapData.mapinfos[id].name
           map_metadata = GameData::MapMetadata.try_get(id)
           if map_metadata
             metadata_hash = {
@@ -184,7 +183,7 @@
     "effect"      => proc { |sprites, viewport|
       GameData::Species.each do |species_data|
         # Only look at pokemon that are the base of an evolutionary line
-        next if species_data.get_prevolutions.length > 0
+        next if species_data.has_previous_species?
         next if species_data.get_evolutions.length == 0
   
         # Get the list of all pokemon in that line
