@@ -214,7 +214,7 @@ class PokeBattle_Battle
 
         if aiCheck
             if target >= 0
-                @battleAI.pbGetMoveScore(fakeMove, forcedMoveUser, @battlers[target], forcedMoveUser.ownersPolicies)
+                return @battleAI.pbGetMoveScore(fakeMove, forcedMoveUser, @battlers[target], forcedMoveUser.ownersPolicies)
             else
                 newChoice, = @battleAI.pbEvaluateMoveTrainer(forcedMoveUser, fakeMove, random: true)
                 if newChoice
@@ -359,9 +359,9 @@ class PokeBattle_Battle
     def aiSeesMove(battler, moveID)
         return unless battler.pbOwnedByPlayer?
         return if battler.boss?
+        return if moveID.nil?
         moveID = moveID.id if moveID.is_a?(PokeBattle_Move)
-        array = @knownMoves[battler.pokemon.personalID]
-        array = [] if array.nil?
+        array = aiKnownMoves(battler.pokemon)
         array.push(moveID) unless array.include?(moveID)
     end
 
@@ -389,8 +389,7 @@ class PokeBattle_Battle
         return true
     end
 
-    # With onlyBeforePredictor, a predicted switch-out move counts only if it goes before the predictor
-    def aiPredictsSwitch?(predictor, idxBattler, onlyBeforePredictor = false)
+    def aiPredictsSwitch?(predictor, idxBattler, ignoreSwitchMoves = false)
         return false unless predictable?(predictor, idxBattler)
         predictedAction = @predictedActions[idxBattler]
         return true if predictedAction[0] == :SwitchOut
