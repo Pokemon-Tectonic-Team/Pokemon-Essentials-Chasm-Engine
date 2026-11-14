@@ -35,6 +35,12 @@ class PokeBattle_Move_SetUserTypesToUserMoveType < PokeBattle_Move
         user.pbRaiseMultipleStatSteps(ALL_STATS_1, user, move: self)
         user.applyEffect(:ConversionUsed)
     end
+
+    def getEffectScore(user, target)
+        score = 0
+        score += getMultiStatUpEffectScore(ALL_STATS_1, user, user)
+        return score
+    end
 end
 
 #===============================================================================
