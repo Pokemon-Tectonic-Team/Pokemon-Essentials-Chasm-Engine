@@ -535,7 +535,7 @@ end
 class PokeBattle_AI_PORYGONZ < PokeBattle_AI_Boss
     def initialize(user, battle)
         super
-        @firstTurnOnly += %i[CONVERSION CONVERSION2]
+        @firstTurnOnly += %i[CONVERSION]
     end
 end
 

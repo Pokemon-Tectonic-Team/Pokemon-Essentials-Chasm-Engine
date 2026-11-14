@@ -1,10 +1,13 @@
 #===============================================================================
-# Changes user's type to that of a random user's move, except a type the user
-# already has (even partially), OR changes to the user's first move's type.
-# (Conversion)
+# Changes user's type to the type of their first move,
+# unless they already have that type. (Conversion)
 #===============================================================================
 class PokeBattle_Move_SetUserTypesToUserMoveType < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
+        if user.effectActive?(:ConversionUsed)
+            @battle.pbDisplay(_INTL("But it failed, since {1} has already used Conversion!", user.pbThis(true))) if show_message
+            return true
+        end
         unless user.canChangeType?
             @battle.pbDisplay(_INTL("But it failed, since {1} can't have its type changed!", user.pbThis(true)))
             return true
@@ -29,12 +32,14 @@ class PokeBattle_Move_SetUserTypesToUserMoveType < PokeBattle_Move
         user.pbChangeTypes(newType)
         typeName = GameData::Type.get(newType).name
         @battle.pbDisplay(_INTL("{1} transformed into the {2} type!", user.pbThis, typeName))
+        user.pbRaiseMultipleStatSteps(ALL_STATS_1, user, move: self)
+        user.applyEffect(:ConversionUsed)
     end
 end
 
 #===============================================================================
 # Changes user's type to a random one that resists/is immune to the last move
-# used by the target. (Conversion 2)
+# used by the target.
 #===============================================================================
 class PokeBattle_Move_SetUserTypesToResistLastAttack < PokeBattle_Move
     def ignoresSubstitute?(_user); return true; end

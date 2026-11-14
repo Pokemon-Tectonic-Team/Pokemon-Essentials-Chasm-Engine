@@ -37,7 +37,7 @@ class PokeBattle_Battler
         end
         # Burn Up erases the Fire-type.
         ret.delete(:FIRE) if effectActive?(:BurnUp)
-        # Cold Conversion erases the Ice-type.
+        # Sublimate erases the Ice-type.
         ret.delete(:ICE) if effectActive?(:Sublimate)
         # Dry Heat erases the Water-type.
         ret.delete(:WATER) if effectActive?(:DryHeat)

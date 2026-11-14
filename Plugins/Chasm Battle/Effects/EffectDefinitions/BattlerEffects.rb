@@ -2875,3 +2875,9 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Steep Momentum",
     :info_displayed => false
 })
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ConversionUsed,
+    :real_name => "Conversion Used",
+    :info_displayed => false
+})

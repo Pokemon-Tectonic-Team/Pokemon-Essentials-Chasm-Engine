@@ -2505,6 +2505,10 @@ Description = Boosts the power of sound moves by 30%. Sound moves ignore the tar
 Name = Tunnel Maker
 Description = Powers up Ground-type moves by 50%.
 #-------------------------------
+[TYPINGTROJAN]
+Name = Typing Trojan
+Description = This Pokémon is the type of its first two moves. It can't use moves that aren't of its own types.
+#-------------------------------
 [ULTRAADAPTED]
 Name = Ultra Adapted
 Description = Powers up moves of the same type by 50%.

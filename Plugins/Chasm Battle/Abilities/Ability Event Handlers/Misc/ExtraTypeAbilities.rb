@@ -85,3 +85,20 @@ BattleHandlers::TypeCalcAbility.add(:PLASMAADAPTED,
         next types
     }
 )
+
+BattleHandlers::TypeCalcAbility.add(:TYPINGTROJAN,
+    proc { |ability, battler, types|
+        newTypes = []
+        battler.eachMoveWithIndex do |m, i|
+            break if i > 1
+            moveType = m.type
+            next if GameData::Type.get(moveType).pseudo_type
+            next if newTypes.include?(moveType)
+            newTypes.push(moveType)
+        end
+        unless newTypes.empty?
+            types.replace(newTypes)
+        end
+        next types
+    }
+)

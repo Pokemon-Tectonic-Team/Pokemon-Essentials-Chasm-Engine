@@ -98,22 +98,11 @@ Name = Conversion
 Type = NORMAL
 Category = Status
 Accuracy = 0
-TotalPP = 25
+TotalPP = 5
 Target = User
 FunctionCode = SetUserTypesToUserMoveType
 Flags = CanSnatch,ForceSignature
-Description = The user changes its type to become the same type as one of its moves.
-#-------------------------------
-[CONVERSION2]
-Name = Conversion 2
-Type = NORMAL
-Category = Status
-Accuracy = 0
-TotalPP = 25
-Target = NearOther
-FunctionCode = SetUserTypesToResistLastAttack
-Flags = ForceSignature
-Description = The user changes its type to make itself resistant to the type of the attack the opponent used last.
+Description = The user changes its type to become the same type as its first moveslot. After changing its type, this raises all stats.
 #-------------------------------
 [COVET]
 Name = Covet

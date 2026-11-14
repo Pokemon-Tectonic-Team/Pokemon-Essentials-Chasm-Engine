@@ -145,6 +145,17 @@ Flags = CanProtect
 EffectChance = 10
 Description = The user squeezes the target, trapping and damaging it for three turns.
 #-------------------------------
+[CONVERSION2]
+Name = Conversion 2
+Type = NORMAL
+Category = Status
+Accuracy = 0
+TotalPP = 25
+Target = NearOther
+FunctionCode = Invalid
+Flags = ForceSignature
+Description = The user changes its type to make itself resistant to the type of the attack the opponent used last.
+#-------------------------------
 [COPYCAT]
 Name = Copycat
 Type = NORMAL

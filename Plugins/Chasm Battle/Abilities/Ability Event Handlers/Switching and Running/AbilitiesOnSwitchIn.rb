@@ -1035,6 +1035,16 @@ BattleHandlers::AbilityOnSwitchIn.add(:PLASMAADAPTED,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:TYPINGTROJAN,
+  proc { |ability, battler, battle, aiCheck|
+      next 0 if aiCheck
+      battle.pbShowAbilitySplash(battler, ability)
+      battle.pbAnimation(:CONVERSION, battler, nil, 0)
+      battle.pbDisplay(_INTL("{1}'s typing has been corrupted!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+  }
+)
+
 BattleHandlers::AbilityOnSwitchIn.add(:IONIZEDALLOY,
   proc { |ability, battler, battle, aiCheck|
       next 0 if aiCheck
