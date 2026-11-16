@@ -6,7 +6,7 @@ Description = After being attacked, uses Parting Shot to switch out.
 #-------------------------------
 [ACCUMULATION]
 Name = Accumulation
-Description = This Pokémon gains twice as many stats from leveling up.
+Description = This Pokémon gains twice as many stats from leveling up. It can't have its base stats modified.
 Flags = Immutable
 #-------------------------------
 [ACIDRAIN]
