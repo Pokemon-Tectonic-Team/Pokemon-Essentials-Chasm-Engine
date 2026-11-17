@@ -911,7 +911,7 @@ sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
             if prevo_areas.empty?
                 drawTextEx(overlay, xLeft, coordinateY, 450, 1, _INTL("None"), base, shadow)
             else
-                prevo_areas.each_key do |area_name|
+                prevo_areas.each do |area_name, prevo_name|
                     drawTextEx(overlay, xLeft, coordinateY, 450, 1, area_name, base, shadow)
                     coordinateY += 30
                 end
