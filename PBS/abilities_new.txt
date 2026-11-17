@@ -226,7 +226,7 @@ Description = Increase the EXP gained from battles in which it participates by 5
 #-------------------------------
 [BOGGLINGBOLERO]
 Name = Boggling Bolero
-Description = After using a dance move, lowers one of each foe's Attack and Sp. Atk, whichever is higher.
+Description = After using a dance move, lowers one of each foe's Attack or Sp. Atk by two steps, whichever is higher.
 #-------------------------------
 [BOTTOMFEEDER]
 Name = Bottom Feeder
@@ -2112,7 +2112,7 @@ Description = On the first turn, its attacks leech the target.
 #-------------------------------
 [SIRENSONG]
 Name = Siren Song
-Description = After using a sound move, lowers one of each foe's Attack and Sp. Atk, whichever is higher.
+Description = After using a sound move, lowers one of each foe's Attack or Sp. Atk, whichever is higher.
 #-------------------------------
 [SLAPSTICK]
 Name = Slapstick
