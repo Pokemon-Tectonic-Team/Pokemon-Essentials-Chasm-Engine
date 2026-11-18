@@ -404,7 +404,7 @@ Description = When hit with a special move, hits back instantly with Breach.
 #-------------------------------
 [CREEPINGHORROR]
 Name = Creeping Horror
-Description = Foretelling moves take one turn longer to attack but deal 50% more damage.
+Description = While a Foretelling move is waiting to hit, this Pokémon takes 25% less damage.
 #-------------------------------
 [CURSEDTAIL]
 Name = Cursed Tail
