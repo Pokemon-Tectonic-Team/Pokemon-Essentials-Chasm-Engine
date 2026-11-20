@@ -67,8 +67,12 @@ class PokemonDocumentationMenu < PokemonPauseMenu
 		cmdTribesMenu = -1
 		cmdPokeXRay = -1
 		infoCommands = []
-		if pbHasItem?(:POKEXRAY) && @battle && @battle.trainerBattle? && !@battle.is_online?
-			infoCommands[cmdPokeXRay = infoCommands.length] = getItemName(:POKEXRAY)
+		if @battle && !@battle.is_online?
+			regularXRayActive = (pbHasItem?(:POKEXRAY) || pbHasItem?(:POKEXRAY2)) && @battle.trainerBattle?
+			upgradedXRayActive = pbHasItem?(:POKEXRAY2) && @battle.bossBattle?
+			if regularXRayActive || upgradedXRayActive
+				infoCommands[cmdPokeXRay = infoCommands.length] = getItemName(:POKEXRAY)
+			end
 		end
 		infoCommands[cmdMasterDex = infoCommands.length] = _INTL("MasterDex")
 		infoCommands[cmdMoveDex = infoCommands.length] = _INTL("MoveDex")
@@ -96,18 +100,39 @@ class PokemonDocumentationMenu < PokemonPauseMenu
 						screen.pbStartScreen
 					}
 			elsif cmdPokeXRay > -1 && infoCommand == cmdPokeXRay
-				if @battle.opponent.length == 1
-					showPokeXRayForTrainer(@battle.opponent[0])
-				else
-					opponentCommands = []
-					@battle.opponent.each do |trainer|
-            opponentCommands.push(trainer.full_name)
+				if pbHasItem?(:POKEXRAY2) && @battle.bossBattle?
+					possibleAvatars = []
+					@battle.eachOtherSideBattler do |b|
+						next unless b.boss?
+						possibleAvatars.push(b)
 					end
-					opponentCommands.push(_INTL("Cancel"))
-					choice = pbMessage(_INTL("Point the Poké X-Ray at which trainer?"),opponentCommands,opponentCommands.length)
-					next if choice == opponentCommands.length - 1
-					chosenTrainer = @battle.opponent[choice]
-					showPokeXRayForTrainer(chosenTrainer)
+					if possibleAvatars.length == 1
+						bossViewer(possibleAvatars[0])
+					else
+						avatarCommands = []
+						possibleAvatars.each do |b|
+							avatarCommands.push(_INTL("Avatar of {1}",b.name))
+						end
+						avatarCommands.push(_INTL("Cancel"))
+						choice = pbMessage(_INTL("Point the Poké X-Ray at which avatar?"),avatarCommands,avatarCommands.length)
+						next if choice == avatarCommands.length - 1
+						chosenAvatar = possibleAvatars[choice]
+						bossViewer(chosenAvatar)
+					end
+				else
+					if @battle.opponent.length == 1
+						showPokeXRayForTrainer(@battle.opponent[0])
+					elsif @battle.trainerBattle?
+						opponentCommands = []
+						@battle.opponent.each do |trainer|
+							opponentCommands.push(trainer.full_name)
+						end
+						opponentCommands.push(_INTL("Cancel"))
+						choice = pbMessage(_INTL("Point the Poké X-Ray at which trainer?"),opponentCommands,opponentCommands.length)
+						next if choice == opponentCommands.length - 1
+						chosenTrainer = @battle.opponent[choice]
+						showPokeXRayForTrainer(chosenTrainer)
+					end
 				end
 			else
 				pbPlayCloseMenuSE

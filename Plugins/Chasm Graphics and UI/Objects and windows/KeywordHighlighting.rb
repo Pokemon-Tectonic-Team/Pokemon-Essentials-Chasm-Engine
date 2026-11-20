@@ -47,7 +47,6 @@ def battleKeywordsImportant
         "poisoning",
         "poisoned",
         "poisons",
-        "poison",
         "leeching",
         "leeched",
         "leeches",
@@ -79,6 +78,7 @@ def battleKeywordsImportant
         "disables",
         "disable",
         "tormented",
+        "torment",
         "maximizes",
         "maximize",
         "minimized",
@@ -190,11 +190,13 @@ def battleKeywordsImportantCaseSensitive
         "Evasion",
         "Frost Spikes",
         "Flame Spikes",
+        "poison",
         "Poison Spikes",
         "Spikes",
         "Rest",
         "Gust",
         "Snore",
+        "Rainbow",
     ]
 end
 
@@ -204,6 +206,8 @@ def battleKeywordsUnimportant
         "doubles",
         "double",
         "doubled",
+        "doubling",
+        "tripled",
         "three times",
         "four times",
         "five times",

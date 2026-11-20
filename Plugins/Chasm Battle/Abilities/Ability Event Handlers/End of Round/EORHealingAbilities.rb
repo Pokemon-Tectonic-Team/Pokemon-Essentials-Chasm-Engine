@@ -49,17 +49,6 @@ BattleHandlers::EORHealingAbility.add(:HYDRATION,
     }
 )
 
-BattleHandlers::EORHealingAbility.add(:HEALER,
-    proc { |ability, battler, battle|
-        battler.eachAlly do |b|
-            next unless b.hasAnyStatusNoTrigger
-            battle.pbShowAbilitySplash(battler, ability)
-            b.pbCureStatus
-            battle.pbHideAbilitySplash(battler)
-        end
-    }
-)
-
 BattleHandlers::EORHealingAbility.add(:OXYGENATION,
     proc { |ability, battler, battle|
         next unless battler.hasAnyStatusNoTrigger
@@ -180,4 +169,19 @@ BattleHandlers::EORHealingAbility.add(:DIRECTCURRENT,
       battler.hideMyAbilitySplash
     end
   }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::EORHealingAbility.add(:HEALER,
+    proc { |ability, battler, battle|
+        battler.eachAlly do |b|
+            next unless b.hasAnyStatusNoTrigger
+            battle.pbShowAbilitySplash(battler, ability)
+            b.pbCureStatus
+            battle.pbHideAbilitySplash(battler)
+        end
+    }
 )

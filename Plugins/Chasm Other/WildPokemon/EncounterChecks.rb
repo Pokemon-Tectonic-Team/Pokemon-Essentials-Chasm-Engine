@@ -267,7 +267,7 @@ class PokemonEncounters
     # Get the encounter table
     encounter_data = GameData::Encounter.get(map_ID, $PokemonGlobal.encounter_version)
     return nil if !encounter_data
-    enc_list = encounter_data.types[enc_type]
+    enc_list = encounter_data.types[enc_type].clone
     return choose_wild_pokemon_from_enc_list(enc_list, chance_rolls)
   end
 

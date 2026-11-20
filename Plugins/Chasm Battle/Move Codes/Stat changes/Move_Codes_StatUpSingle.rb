@@ -119,7 +119,7 @@ class PokeBattle_Move_EmpoweredSpikyShield < PokeBattle_Move_RaiseUserDef2
 
     def pbEffectGeneral(user)
         super
-        user.addAbility(:IRONBARBS,true)
+        user.addAbility(:IRONBARBS, true)
         transformType(user, :GRASS)
     end
 end
@@ -150,7 +150,7 @@ class PokeBattle_Move_EmpoweredIronDefense < PokeBattle_Move_RaiseUserDef4
 
     def pbEffectGeneral(user)
         super
-        user.addAbility(:FILTER,true)
+        user.addAbility(:FILTER, true)
         transformType(user, :STEEL)
     end
 end
@@ -349,7 +349,7 @@ class PokeBattle_Move_EmpoweredMirrorShield < PokeBattle_Move_RaiseUserSpDef2
 
     def pbEffectGeneral(user)
         super
-        user.addAbility(:FEEDBACK,true)
+        user.addAbility(:FEEDBACK, true)
         transformType(user, :STEEL)
     end
 end
@@ -380,7 +380,7 @@ class PokeBattle_Move_EmpoweredAmnesia < PokeBattle_Move_RaiseUserSpDef4
 
     def pbEffectGeneral(user)
         super
-        user.addAbility(:UNAWARE,true)
+        user.addAbility(:UNAWARE, true)
         transformType(user, :PSYCHIC)
     end
 end

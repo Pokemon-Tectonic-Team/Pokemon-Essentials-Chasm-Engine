@@ -22,14 +22,14 @@ class PokeBattle_Move_UserFaintsExplosive < PokeBattle_Move
             @battle.pbHideAbilitySplash(user)
         else
             reduction = user.totalhp
-            unbreakable = user.hasActiveAbility?(:UNBREAKABLE)
-            if unbreakable
-                @battle.pbShowAbilitySplash(user, :UNBREAKABLE)
+            sandreconstruction = user.hasActiveAbility?(:SANDRECONSTRUCTION) && @battle.sandy?
+            if sandreconstruction
+                @battle.pbShowAbilitySplash(user, :SANDRECONSTRUCTION)
                 @battle.pbDisplay(_INTL("{1} resists the recoil!", user.pbThis))
-                reduction = (reduction / 2.0).ceil
+                reduction = (reduction / 4.0).ceil
             end
             user.pbReduceHP(reduction, false)
-            @battle.pbHideAbilitySplash(user) if unbreakable
+            @battle.pbHideAbilitySplash(user) if sandreconstruction
             if user.hasActiveAbility?(:PERENNIALPAYLOAD,true)
                 @battle.pbShowAbilitySplash(user, :PERENNIALPAYLOAD)
                 @battle.pbDisplay(_INTL("{1} will revive in five turns!", user.pbThis))

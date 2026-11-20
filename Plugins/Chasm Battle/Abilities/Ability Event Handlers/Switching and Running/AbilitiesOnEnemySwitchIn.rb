@@ -9,6 +9,10 @@ BattleHandlers::AbilityOnEnemySwitchIn.add(:DETERRENT,
     }
 )
 
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
 BattleHandlers::AbilityOnEnemySwitchIn.add(:CLAUSTROPHOBIA,
     proc { |ability, switcher, bearer, battle|
         next unless battle.roomActive?

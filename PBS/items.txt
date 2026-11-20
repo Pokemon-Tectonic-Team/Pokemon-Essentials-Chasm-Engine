@@ -548,7 +548,7 @@ Name = Red Card
 NamePlural = Red Cards
 Pocket = 13
 Price = 4000
-Description = A card with a mysterious power. When the holder is struck by a foe, the attacker is removed from battle.
+Description = A card with a mysterious power. When the holder is hit by an attack, the attacker is forced to switch.
 #-------------------------------
 [SHEDSHELL]
 Name = Shed Shell
@@ -591,7 +591,7 @@ NamePlural = Choice Bands
 Pocket = 12
 Price = 8000
 Flags = Clothing,ChoiceLocking
-Description = Held item which ups Attack by 40%, but allows the use of only one move.
+Description = Held item which boosts Attack by 40%, but allows the use of only one move.
 #-------------------------------
 [CHOICESPECS]
 Name = Choice Specs
@@ -599,7 +599,7 @@ NamePlural = Choice Specs
 Pocket = 12
 Price = 8000
 Flags = Clothing,ChoiceLocking
-Description = Held item which ups Sp. Atk by 40%, but allows the use of only one move.
+Description = Held item which boosts Sp. Atk by 40%, but allows the use of only one move.
 #-------------------------------
 [CHOICESCARF]
 Name = Choice Scarf
@@ -607,7 +607,7 @@ NamePlural = Choice Scarves
 Pocket = 12
 Price = 8000
 Flags = Clothing,ChoiceLocking
-Description = Held item which boosts Speed by 40% but allows the use of only one move.
+Description = Held item which boosts Speed by 40%, but allows the use of only one move.
 #-------------------------------
 [LUMBERAXE]
 Name = Lumber Axe
@@ -690,7 +690,7 @@ Name = Loaded Dice
 NamePlural = Loaded Dices
 Pocket = 13
 Price = 4000
-Description = A held item. It makes multi-hit attacks consistently hit 4 or 5 times.
+Description = A held item. It makes "two to five" multi-hit attacks consistently hit 4 or 5 times.
 #-------------------------------
 [FRAGILELOCKET]
 Name = Fragile Locket
@@ -866,7 +866,7 @@ NamePlural = Muscle Bands
 Pocket = 12
 Price = 4000
 Flags = Clothing
-Description = A held item. It is a headband that boosts the power of physical moves by 15%.
+Description = A held item. It is a headband that boosts Attack by 15%.
 #-------------------------------
 [WISEGLASSES]
 Name = Wise Glasses
@@ -874,7 +874,7 @@ NamePlural = Wise Glasses
 Pocket = 12
 Price = 4000
 Flags = Clothing
-Description = A held item. It is a thick pair of glasses that boosts the power of special moves by 15%.
+Description = A held item. It is a thick pair of glasses that boosts Special Attack by 15%.
 #-------------------------------
 [SEVENLEAGUEBOOTS]
 Name = 7-League Boots
@@ -1877,7 +1877,7 @@ Description = A held item that can cure dizzy.
 Name = Spelon Berry
 NamePlural = Spelon Berries
 Pocket = 9
-Price = 500
+Price = 0
 Flags = Berry
 Description = A held item that can cure leeched.
 #-------------------------------
@@ -1885,7 +1885,7 @@ Description = A held item that can cure leeched.
 Name = Belue Berry
 NamePlural = Belue Berries
 Pocket = 9
-Price = 500
+Price = 0
 Flags = Berry
 Description = A held item that can cure waterlogged.
 #-------------------------------
@@ -2079,7 +2079,7 @@ NamePlural = Ganlon Berries
 Pocket = 9
 Price = 0
 Flags = Berry,Pinch
-Description = If held by a Pokémon, it raises its Defense by two steps in a pinch.
+Description = If held by a Pokémon, it raises its Defense by three steps in a pinch.
 #-------------------------------
 [SALACBERRY]
 Name = Salac Berry
@@ -2103,7 +2103,7 @@ NamePlural = Apicot Berries
 Pocket = 9
 Price = 0
 Flags = Berry,Pinch
-Description = If held by a Pokémon, it raises its Sp. Def by two steps in a pinch.
+Description = If held by a Pokémon, it raises its Sp. Def by three steps in a pinch.
 #-------------------------------
 [LANSATBERRY]
 Name = Lansat Berry
@@ -2165,17 +2165,17 @@ Description = If held by a Pokémon and a special attack hits it, the attacker t
 Name = Kee Berry
 NamePlural = Kee Berries
 Pocket = 9
-Price = 20
+Price = 0
 Flags = Berry
-Description = If held by a Pokémon and a physical attack hits it, raises the holder's Defense by four steps.
+Description = If held by a Pokémon and a physical attack hits it, raises the holder's Defense by three steps.
 #-------------------------------
 [MARANGABERRY]
 Name = Maranga Berry
 NamePlural = Maranga Berries
 Pocket = 9
-Price = 20
+Price = 0
 Flags = Berry
-Description = If held by a Pokémon and a special attack hits it, raises the holder's Sp. Def by four steps.
+Description = If held by a Pokémon and a special attack hits it, raises the holder's Sp. Def by three steps.
 #-------------------------------
 [BICYCLE]
 Name = Bicycle
@@ -2307,14 +2307,6 @@ Pocket = 2
 Price = 1000
 FieldUse = OnPokemon
 Description = A capsule that allows a Pokémon with two Abilities to switch between these Abilities when it is used.
-#-------------------------------
-[SPRINKLOTAD]
-Name = Sprinklotad
-NamePlural = Sprinklotads
-Pocket = 8
-Price = 0
-Flags = KeyItem
-Description = A watering can shaped like a Lotad. It helps promote the healthy growth of any Berries planted in soft soil.
 #-------------------------------
 [PRISONBOTTLE]
 Name = Prison Bottle
@@ -2467,15 +2459,6 @@ Pocket = 7
 Price = 0
 Flags = KeyItem,SkipPocketMessage
 Description = A charm that doubles the chance of getting a critical catch.
-#-------------------------------
-[INFINITEROPE]
-Name = Escape Rope
-NamePlural = Escape Ropes
-Pocket = 8
-Price = 0
-FieldUse = Direct
-Flags = KeyItem
-Description = A long, durable rope. Use it to escape instantly from a cave or a dungeon.
 #-------------------------------
 [GRASSTOKEN]
 Name = Grass Token
@@ -2653,7 +2636,7 @@ NamePlural = EXP-EZ Dispensers
 Pocket = 3
 Price = 0
 FieldUse = OnPokemon
-Flags = EXPCandy,KeyItem
+Flags = KeyItem
 Description = A machine that stores EXP Candy and excess EXP. Use it on your Pokémon to feed them candy.
 #-------------------------------
 [UNIVERSALFORMALIZER]
@@ -2734,7 +2717,16 @@ Pocket = 8
 Price = 0
 FieldUse = Direct
 Flags = KeyItem
-Description = A high tech surveillance device. Use it to scout out the teams of nearby trainers.
+Description = A high tech surveillance device. Use it to scout out the teams of nearby trainers or mid-battle.
+#-------------------------------
+[POKEXRAY2]
+Name = Poké X-Ray 2
+NamePlural = Poké X-Rays 2
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = Used to scout the teams of nearby trainers and the behaviour of nearby Avatars. Can also be used mid-battle.
 #-------------------------------
 [CELLBOOSTER]
 Name = Cell Booster

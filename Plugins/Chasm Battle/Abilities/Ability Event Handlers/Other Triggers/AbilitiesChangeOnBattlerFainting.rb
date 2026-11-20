@@ -5,6 +5,7 @@ BattleHandlers::AbilityChangeOnBattlerFainting.add(:POWEROFALCHEMY,
         fainted.eachAbility do |abilityID|
             next if GameData::Ability.get(abilityID).is_uncopyable_ability?
             battler.addAbility(abilityID, true)
+            battler.pbManualTriggerAbilityOnSwitchIn(abilityID)
         end
     }
 )
@@ -23,16 +24,17 @@ BattleHandlers::AbilityChangeOnBattlerFainting.add(:ALLCONSUMING,
         fainted.eachAbility do |abilityID|
             next if GameData::Ability.get(abilityID).is_uncopyable_ability?
             battler.addAbility(abilityID, true)
+            battler.pbManualTriggerAbilityOnSwitchIn(abilityID)
         end
 
         GameData::Stat.each_main_battle do |s|
-            statValue = battler.steps[s.id]
+            statValue = fainted.steps[s.id]
             next if statValue == 0
             if statValue > 0
-                battler.tryLowerStat(s.id, battler, increment: statValue)
+                battler.tryRaiseStat(s.id, battler, increment: statValue)
             end
             if statValue < 0
-                battler.tryLowerStat(s.id, battler, increment: statValue)
+                battler.tryLowerStat(s.id, battler, increment: -statValue)
             end
         end
 

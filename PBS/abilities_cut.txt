@@ -98,10 +98,6 @@ Name = Battle Armor
 Description = The Pokémon is protected against critical hits.
 Flags = CritImmunity
 #-------------------------------
-[BATTLEHARDENED]
-Name = Battle-Hardened
-Description = Raises Defense and Sp. Def by three steps when its HP is lowered below half.
-#-------------------------------
 [BEASTBOOST]
 Name = Beast Boost
 Description = Boosts its best stat each time it deals a KO.
@@ -140,7 +136,7 @@ Name = Blaze
 Description = Powers up Fire-type moves in a pinch.
 #-------------------------------
 [BLIZZBOXER]
-Name = Sleetshaker
+Name = Blizz Boxer
 Description = Boosts Attack by 30% in hailstorms.
 #-------------------------------
 [BRAINSCRAMBLE]
@@ -356,6 +352,10 @@ Description = At low health, eats other battlers' low-health triggered berries.
 [EXTREMEENERGY]
 Name = Extreme Voltage
 Description = Increases Sp. Atk by 50%, but the Pokémon is hurt for 1/10th HP each turn.
+#-------------------------------
+[FAEVEIL]
+Name = Fae Veil
+Description = Prevents itself and allies from being burned, frostbitten, or numbed.
 #-------------------------------
 [FAIRYSURGE]
 Name = Fairy Surge
@@ -580,6 +580,10 @@ Description = Pokémon that swap in for this have their Speed raised and their P
 Name = Innards Out
 Description = When this Pokémon is knocked out by an attack, the attacker takes damage equal to this Pokémon's previous HP.
 #-------------------------------
+[INNARDSPUNCH]
+Name = Innards Punch
+Description = When hit with an attacking move, hits back instantly with Mega Punch.
+#-------------------------------
 [INNERLIGHT]
 Name = Inner Light
 Description = Summons sunshine for four turns when hit by an attack.
@@ -604,6 +608,10 @@ Description = Raises Attack when hit by a Dark-type move.
 [KEENEYE]
 Name = Keen Eye
 Description = Prevents other Pokémon from lowering accuracy.
+#-------------------------------
+[KLEPTOMANIAC]
+Name = Kleptomaniac
+Description = Uses Snatch upon entry, stealing self-targeting status moves.
 #-------------------------------
 [KLUMSYKINESIS]
 Name = Clumsy Kinesis
@@ -783,6 +791,10 @@ Description = After being attacked, gains immunity to that move's type but loses
 Name = Moth Burglar
 Description = Hits opponent with Thief when switched out.
 #-------------------------------
+[MULTIHEADED]
+Name = Multiheaded
+Description = While this Pokémon is below half health, takes 33% less damage from attacks.
+#-------------------------------
 [MYSTICTAP]
 Name = Mystic Tap
 Description = Gets double healing from all sources during moonglow.
@@ -817,6 +829,10 @@ Description = At the end of each turn in moonglow, heals self by 1/12th of its m
 [NINJUTSU]
 Name = Ninjutsu
 Description = Slips past all types of spikes. Deals 50% more damage to targets that switched in this turn.
+#-------------------------------
+[NOXIOUS]
+Name = Noxious
+Description = Reduces each other Pokémon's HP by 1/12th at the end of each turn.
 #-------------------------------
 [OBLIVIOUS]
 Name = Oblivious
@@ -975,6 +991,10 @@ Description = Doubles the Speed of kicking moves.
 [RAMMINGSPEED]
 Name = Ramming Speed
 Description = Doubles the speed of recoil moves.
+#-------------------------------
+[RAMPROW]
+Name = Ram Prow
+Description = Ignores screens, Substitute, and Abilities that would affect its moves.
 #-------------------------------
 [RATTLED]
 Name = Rattled
@@ -1152,6 +1172,10 @@ Description = Can't be statused due to its hard shell. Boosts Sp. Atk and Speed 
 Name = Dreamy Haze
 Description = If an attack lowers its HP to half or less, the attacker becomes drowsy.
 #-------------------------------
+[SLICKSURFACE]
+Name = Slick Surface
+Description = Can't be leeched, drained, or trapped.
+#-------------------------------
 [SMOKEREFLEX]
 Name = Pressure Valve
 Description = Right before the Pokémon is attacked, the attacker's stat changes are reset.
@@ -1294,6 +1318,10 @@ Description = Has a 30% chance to leech targets when using physical moves.
 Name = Sweet Veil
 Description = Prevents itself and allies from falling asleep.
 #-------------------------------
+[SWORDBREAKER]
+Name = Sword Breaker
+Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
+#-------------------------------
 [SYMBIOSIS]
 Name = Symbiosis
 Description = Copies its held item to an ally that has used theirs.
@@ -1397,6 +1425,10 @@ Description = Moves can be used regardless of Abilities.
 Name = Unbound
 Description = Moves ignore Abilities that would affect its moves or activate after hitting the target, and immunities due to typing.
 Flags = MoldBreaking,BypassTypeImmunity
+#-------------------------------
+[UNBREAKABLE]
+Name = Unbreakable
+Description = Prevents half the self-damage from recoil and self-destructing.
 #-------------------------------
 [UNCANNYCOLD]
 Name = Uncanny Cold

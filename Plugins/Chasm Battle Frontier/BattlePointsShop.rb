@@ -1,7 +1,8 @@
 def battlePointsShop
 	# Generate the shop
 	shopEntries = {
-		:EXPCANDYXL => 3,
+		:EXPCANDYXL => 2,
+		:FIGMENT => 5,
 		:MASTERBALL => 15,
 		:GLEAMPOWDER => 50,
 		:RELICCROWN => 100,

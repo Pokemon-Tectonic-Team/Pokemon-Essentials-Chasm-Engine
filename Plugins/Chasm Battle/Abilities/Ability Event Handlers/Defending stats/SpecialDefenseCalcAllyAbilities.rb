@@ -5,6 +5,10 @@ BattleHandlers::SpecialDefenseCalcAllyAbility.add(:FLOWERGIFT,
     }
 )
 
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
 BattleHandlers::SpecialDefenseCalcAllyAbility.add(:NEGATIVEOUTLOOK,
     proc { |ability, user, _battle, spDefMult|
         spDefMult *= 1.5 if user.pbHasType?(:ELECTRIC)

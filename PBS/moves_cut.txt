@@ -145,6 +145,17 @@ Flags = CanProtect
 EffectChance = 10
 Description = The user squeezes the target, trapping and damaging it for three turns.
 #-------------------------------
+[CONVERSION2]
+Name = Conversion 2
+Type = NORMAL
+Category = Status
+Accuracy = 0
+TotalPP = 25
+Target = NearOther
+FunctionCode = Invalid
+Flags = ForceSignature
+Description = The user changes its type to make itself resistant to the type of the attack the opponent used last.
+#-------------------------------
 [COPYCAT]
 Name = Copycat
 Type = NORMAL
@@ -905,6 +916,17 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = Type based on weather, and double damage if any. Physical or special based on user's stats.
 #-------------------------------
+[WISHINGWELL]
+Name = Wishing Well
+Type = NORMAL
+Category = Status
+Accuracy = 0
+TotalPP = 10
+Target = UserSide
+FunctionCode = Invalid
+Description = The user throws away up to 1000 scattered coins to bless its side, blocking random added effects and healing for 1/16th HP each turn. Lasts one turn per 100 coins.
+Animation = PAYDAY
+#-------------------------------
 [WRAP]
 Name = Wrap
 Type = NORMAL
@@ -944,6 +966,18 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = The user forces the target to switch out, to be replaced at random. In the wild, the battle ends.
 #-------------------------------
+[CLOSECOMBAT]
+Name = Close Combat
+Type = FIGHTING
+Category = Physical
+Power = 110
+Accuracy = 100
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user fights the foe up close without guarding itself. This lowers the user's Defense and Sp. Def by two steps.
+#-------------------------------
 [DETECT]
 Name = Detect
 Type = FIGHTING
@@ -968,6 +1002,19 @@ Flags = CanProtect
 EffectChance = 10
 Description = The user distorts the target's aura, damaging it. This has a 10% chance of reducing the target's Defense.
 Animation = VACUUMWAVE
+#-------------------------------
+[DYNAMICPUNCH]
+Name = Dynamic Punch
+Type = FIGHTING
+Category = Physical
+Power = 100
+Accuracy = 50
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Punch
+EffectChance = 100
+Description = The user punches the target with full, concentrated power. It dizzies the target if it hits.
 #-------------------------------
 [ENLIGHTENEDHIT]
 Name = Enlightened Hit
@@ -1317,6 +1364,20 @@ Flags = CanProtect
 Description = The user takes an advantageous airborne position, then strikes on the second turn.
 Animation = FLY
 #-------------------------------
+[TEMPEST]
+Name = Tempest
+Type = FLYING
+Category = Special
+Power = 100
+Accuracy = 50
+TotalPP = 5
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Wind
+EffectChance = 100
+Description = Chaotic winds push the target around, dizzying it.
+Animation = HURRICANE
+#-------------------------------
 [WINGATTACK]
 Name = Wing Attack
 Type = FLYING
@@ -1352,6 +1413,18 @@ Target = User
 Priority = 4
 FunctionCode = Invalid
 Description = Protects the user from attacks. Also poisons any attacker physically attacks the user.
+#-------------------------------
+[CAUSTICPUNCH]
+Name = Caustic Punch
+Type = POISON
+Category = Physical
+Power = 65
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Punch
+Description = The user strikes with an acidic punch that destroys Gems and Berries.
 #-------------------------------
 [CORRODE]
 Name = Corrode
@@ -1425,6 +1498,19 @@ FunctionCode = Invalid
 Flags = CanProtect,Sound
 EffectChance = 30
 Description = The user creates distorted guitar sounds to attack the target. It has a 30% chance to dizzy.
+#-------------------------------
+[HONORLESSSTING]
+Name = Honorless Sting
+Type = POISON
+Category = Physical
+Power = 105
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user uses venom that turns the target's body against it. Super effective vs Fighting-types.
+Animation = POISONSTING
 #-------------------------------
 [MURKYFOG]
 Name = Murky Fog
@@ -1808,6 +1894,19 @@ Target = NearOther
 FunctionCode = Invalid
 Flags = CanProtect
 Description = The user attacks the foe with a hazardous, full-power headbutt. The user also takes 50% recoil.
+#-------------------------------
+[ICEBREAKER]
+Name = Icebreaker
+Type = ROCK
+Category = Physical
+Power = 120
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user sweeps away hazards afflicting your side while lunging forward. User also takes 33% recoil.
+Animation = HEADSMASH
 #-------------------------------
 [INVITESAND]
 Name = Invite Sand
@@ -2528,6 +2627,19 @@ FunctionCode = Invalid
 Flags = CanProtect
 EffectChance = 100
 Description = The target is razed with a mystical fire of great intensity. Burns the target.
+#-------------------------------
+[SEARINGSHOT]
+Name = Searing Shot
+Type = FIRE
+Category = Special
+Power = 100
+Accuracy = 100
+TotalPP = 5
+Target = AllNearOthers
+FunctionCode = Invalid
+Flags = CanProtect
+EffectChance = 30
+Description = An inferno of scarlet flames torches everything around the user. It has a 30% chance to burn.
 #-------------------------------
 [STOREFUEL]
 Name = Store Fuel
@@ -3972,6 +4084,18 @@ Flags = CanMagicCoat
 Description = The user imprisons all near foes, reducing their attacking stats by one step each and trapping them until the next time they take a hit.
 Animation = CHILL
 #-------------------------------
+[ICEHAMMER]
+Name = Ice Hammer
+Type = ICE
+Category = Physical
+Power = 100
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect,Punch
+Description = The user swings and hits with its strong, heavy fist. This lowers the user's Speed by two steps.
+#-------------------------------
 [ICICLECRASH]
 Name = Icicle Crash
 Type = ICE
@@ -4109,6 +4233,32 @@ Flags = CanProtect
 EffectChance = 20
 Description = The user tackles the foe while exhibiting overwhelming menace. It may also make the target flinch.
 #-------------------------------
+[DUALCHOP]
+Name = Dual Chop
+Type = DRAGON
+Category = Physical
+Power = 40
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user attacks its target by hitting it with brutal strikes. The target is hit twice in a row.
+#-------------------------------
+[GALLINGSPIT]
+Name = Galling Spit
+Type = DRAGON
+Category = Special
+Power = 80
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+EffectChance = 30
+Description = The user spits venom at the target. It has a 30% chance to poison.
+Animation = ACIDSPRAY
+#-------------------------------
 [REND]
 Name = Rend
 Type = DRAGON
@@ -4148,6 +4298,19 @@ FunctionCode = Invalid
 Flags = CanProtect
 EffectChance = 100
 Description = The user attacks by shooting scales two to five times. It boosts the user's Speed stat but lowers its Defense stat.
+#-------------------------------
+[SHRED]
+Name = Shred
+Type = DRAGON
+Category = Physical
+Power = 65
+Accuracy = 100
+TotalPP = 20
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user attacks with a flurry of claws.
+Animation = DRAGONCLAW
 #-------------------------------
 #		DARK MOVES
 #-------------------------------
@@ -4395,6 +4558,20 @@ Target = UserAndAllies
 FunctionCode = Invalid
 Description = The user raises the Defense and Sp. Def of all Grass-type Pokémon on its side.
 #-------------------------------
+[FOOL]
+Name = Fool
+Type = FAIRY
+Category = Special
+Power = 50
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+EffectChance = 50
+Description = The user makes a fool out of the target. This has a 50% chance of jinxing them.
+Animation = FAKEOUT
+#-------------------------------
 [KALEIDOSCOPE]
 Name = Kaleidoscope
 Type = FAIRY
@@ -4514,6 +4691,20 @@ FunctionCode = Invalid
 Flags = CanProtect,Wind
 EffectChance = 30
 Description = The user attacks the target by emitting steam. It has a 30% chance to dizzy.
+#-------------------------------
+[SUPERSTITION]
+Name = Superstition
+Type = FAIRY
+Category = Special
+Power = 80
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+EffectChance = 30
+Description = The user causes nearby objects to fall onto the target. This has a 30% chance of jinxing them.
+Animation = POLTERGEIST
 #-------------------------------
 [TRANQUILTUNE]
 Name = Tranquil Tune

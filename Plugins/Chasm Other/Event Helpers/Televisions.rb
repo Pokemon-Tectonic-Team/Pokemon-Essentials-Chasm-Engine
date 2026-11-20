@@ -51,7 +51,7 @@ def displayInterestingWeatherReport()
         report = boringReports[mapName]
     end
 
-    displayWeatherReport(report,mapName) if report
+    displayWeatherReport(report, _INTL(mapName)) if report
 end
 
 def displayWeatherReport(weatherReport,mapName)
@@ -130,7 +130,7 @@ def getWeatherDescriptor(weatherSymbol, strength)
     when :Sandstorm
         return _INTL("hot and dry sandstorm conditions")
     when :Fog
-        return _INTL("cold and wet fog wtih reduced visibility")
+        return _INTL("cold and wet fog with reduced visibility")
     when :ToxicFog
         return _INTL("smoggy and dangerous conditions")
     end

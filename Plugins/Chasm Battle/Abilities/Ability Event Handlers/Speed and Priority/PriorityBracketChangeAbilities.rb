@@ -1,10 +1,12 @@
-BattleHandlers::PriorityBracketChangeAbility.add(:STALL,
+BattleHandlers::PriorityBracketChangeAbility.add(:APATHETIC,
   proc { |ability, _battler, subPri, _battle|
       next -1 if subPri == 0
   }
 )
 
-BattleHandlers::PriorityBracketChangeAbility.copy(:STALL,:APATHETIC)
+############################################
+# Ability Code for cut or unused abilities
+############################################
 
 BattleHandlers::PriorityBracketChangeAbility.add(:QUICKDRAW,
     proc { |ability, _battler, subPri, battle|

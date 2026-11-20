@@ -58,35 +58,80 @@ class PokeBattle_Move_BurnOrFrostbiteTargetBasedOnHigherStat < PokeBattle_Move
 
     def pbEffectAgainstTarget(user, target)
         return if damagingMove?
-        burnOrFrostbite(user, target)
+        burnOrFrostbite(user, target, self)
     end
 
     def pbAdditionalEffect(user, target)
         return if target.damageState.substitute
-        burnOrFrostbite(user, target)
-    end
-
-    def burnOrFrostbite(user, target)
-        real_attack = target.pbAttack
-        real_special_attack = target.pbSpAtk
-
-        if target.canBurn?(user, false, self) && real_attack >= real_special_attack
-            target.applyBurn(user)
-        elsif target.canFrostbite?(user, false, self) && real_special_attack >= real_attack
-            target.applyFrostbite(user)
-        end
+        burnOrFrostbite(user, target, self)
     end
 
     def getTargetAffectingEffectScore(user, target)
-        score = 0
-        real_attack = target.pbAttack
-        real_special_attack = target.pbSpAtk
-        if target.canBurn?(user, false, self) && real_attack >= real_special_attack
-            score += getBurnEffectScore(user, target)
-        elsif target.canFrostbite?(user, false, self) && real_special_attack >= real_attack
-            score += getFrostbiteEffectScore(user, target)
+        return getBurnOrFrostbiteEffectScore(user, target)
+    end
+end
+
+def burnOrFrostbite(user, target, move)
+    real_attack = target.pbAttack
+    real_special_attack = target.pbSpAtk
+
+    if target.canBurn?(user, false, move) && real_attack >= real_special_attack
+        target.applyBurn(user)
+    elsif target.canFrostbite?(user, false, move) && real_special_attack >= real_attack
+        target.applyFrostbite(user)
+    end
+end
+
+def getBurnOrFrostbiteEffectScore(user, target)
+    score = 0
+    real_attack = target.pbAttack
+    real_special_attack = target.pbSpAtk
+    if target.canBurn?(user, false, self) && real_attack >= real_special_attack
+        score += getBurnEffectScore(user, target)
+    elsif target.canFrostbite?(user, false, self) && real_special_attack >= real_attack
+        score += getFrostbiteEffectScore(user, target)
+    end
+    return score
+end
+
+#===============================================================================
+# Burns or frostbites the target, whichever hits the target's better base stat.
+# Requires a charge up turn.
+# (Diametric Breath)
+#===============================================================================
+class PokeBattle_Move_TwoTurnAttackBurnOrFrostbiteTargetBasedOnHigherStat < PokeBattle_TwoTurnMove
+    def pbFailsAgainstTarget?(user, target, show_message)
+        return false if damagingMove?
+        if !target.canBurn?(user, show_message, self) && !target.canFrostbite?(user, show_message, self)
+            if show_message
+                @battle.pbDisplay(_INTL("But it failed, since {1} can neither be burned or frostbitten!", target.pbThis(true)))
+            end
+            return true
         end
-        return score
+        return false
+    end
+
+    def pbChargingTurnMessage(user, _targets)
+        @battle.pbDisplay(_INTL("{1} breathed in ice and fire!", user.pbThis))
+    end
+
+    def pbFailsAgainstTarget?(user, target, show_message)
+        return false if damagingMove?
+        if !target.canBurn?(user, show_message, self) && !target.canFrostbite?(user, show_message, self)
+            if show_message
+                @battle.pbDisplay(_INTL("But it failed, since {1} can neither be burned or frostbitten!", target.pbThis(true)))
+            end
+            return true
+        end
+        return false
+    end
+
+    def pbAttackingTurnEffect(user, target)
+        burnOrFrostbite(user, target, self)
+    end
+
+    def getTargetAffectingEffectScore(user, target)
+        return getBurnOrFrostbiteEffectScore(user, target)
     end
 end
 

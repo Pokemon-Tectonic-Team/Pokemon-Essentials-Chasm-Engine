@@ -1,10 +1,3 @@
-BattleHandlers::SpecialAttackCalcUserAbility.add(:FLAREBOOST,
-    proc { |ability, user, _battle, spAtkMult|
-        spAtkMult *= 1.5 if user.burned?
-        next spAtkMult
-    }
-)
-
 BattleHandlers::SpecialAttackCalcUserAbility.add(:SOLARPOWER,
   proc { |ability, _user, battle, spAtkMult|
       spAtkMult *= 1.5 if battle.sunny?
@@ -29,13 +22,6 @@ BattleHandlers::SpecialAttackCalcUserAbility.add(:PUREENERGY,
 BattleHandlers::SpecialAttackCalcUserAbility.add(:CLOUDBURST,
   proc { |ability, _user, battle, spAtkMult|
       spAtkMult *= 1.3 if battle.rainy?
-      next spAtkMult
-  }
-)
-
-BattleHandlers::SpecialAttackCalcUserAbility.add(:DEBRISFIELD,
-  proc { |ability, _user, battle, spAtkMult|
-      spAtkMult *= 1.3 if battle.sandy?
       next spAtkMult
   }
 )
@@ -82,13 +68,6 @@ BattleHandlers::SpecialAttackCalcUserAbility.add(:ILLUMINANCE,
   }
 )
 
-BattleHandlers::SpecialAttackCalcUserAbility.add(:SANDPOWER,
-  proc { |ability, _user, battle, spAtkMult|
-      spAtkMult *= 1.3 if battle.sandy?
-      next spAtkMult
-  }
-)
-
 BattleHandlers::SpecialAttackCalcUserAbility.add(:OVERWHELM,
   proc { |ability, _user, battle, spAtkMult|
       spAtkMult *= 1.3 if battle.rainy?
@@ -120,6 +99,24 @@ BattleHandlers::SpecialAttackCalcUserAbility.add(:EXTREMEVOLTAGE,
 BattleHandlers::SpecialAttackCalcUserAbility.add(:CASTELLAN,
   proc { |ability, _user, battle, spAtkMult|
       spAtkMult *= 1.3 if battle.roomActive?
+      next spAtkMult
+  }
+)
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::SpecialAttackCalcUserAbility.add(:FLAREBOOST,
+    proc { |ability, user, _battle, spAtkMult|
+        spAtkMult *= 1.5 if user.burned?
+        next spAtkMult
+    }
+)
+
+BattleHandlers::SpecialAttackCalcUserAbility.add(:SANDPOWER,
+  proc { |ability, _user, battle, spAtkMult|
+      spAtkMult *= 1.3 if battle.sandy?
       next spAtkMult
   }
 )

@@ -2,7 +2,7 @@ def ancientGrassHole
     pbMessage(_INTL("An impassable hole, filled with stunted grass."))
     if pbHasItem?(:FLORASCEPTRE)
         if pbConfirmMessageSerious(_INTL("Use the Flora Sceptre?"))
-            pbMessage(_INTL("With a flourish, you wave the Flora Scepter over the hole."))
+            pbMessage(_INTL("With a flourish, you wave the Flora Sceptre over the hole."))
             pbWait(10)
             pbMoveRoute(get_self,  [
                 PBMoveRoute::DirectionFixOff,

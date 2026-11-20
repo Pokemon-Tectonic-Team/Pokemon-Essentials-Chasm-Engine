@@ -5,21 +5,17 @@ class PokeBattle_Move_Waterlog < PokeBattle_WaterlogMove
 end
 
 # Empowered Waterlog
-class PokeBattle_Move_EmpoweredWaterlog < PokeBattle_Move
+class PokeBattle_Move_EmpoweredWaterlog < PokeBattle_Move_Waterlog
     include EmpoweredMove
 
     def pbEffectGeneral(user)
         super
-        @battle.eachOtherSideBattler(user) do |b|
-            b.applyWaterlog(user) if b.canWaterlog?(user, true, self)
-        end
         transformType(user, :WATER)
     end
 end
 
 #===============================================================================
-# Power is doubled if the target is using Dive. Hits some semi-invulnerable
-# targets. (Surf)
+# Power is doubled if the target is using Dive. Hits diving targets. Can waterlog.
 #===============================================================================
 class PokeBattle_Move_WaterlogTargetHitsDivers < PokeBattle_WaterlogMove
     def hitsDivingTargets?; return true; end
@@ -28,11 +24,6 @@ class PokeBattle_Move_WaterlogTargetHitsDivers < PokeBattle_WaterlogMove
         baseDmg *= 2 if target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderwater") # Dive
         return baseDmg
     end
-end
-
-# Empowered Surf
-class PokeBattle_Move_653 < PokeBattle_Move_WaterlogTargetHitsDivers
-    include EmpoweredMove
 end
 
 #===============================================================================
@@ -77,7 +68,7 @@ class PokeBattle_Move_WaterlogTargetStartHealUserEachTurn < PokeBattle_WaterlogM
         user.applyEffect(:AquaRing) unless user.effectActive?(:AquaRing)
     end
 
-    def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
+    def pbShowAnimation(_id, user, targets, _hitNum = 0, _showAnimation = true)
         targets.each do |b|
             @battle.pbAnimation(:SOAK, user, [b]) if b.canWaterlog?(user, false, self)
         end
@@ -90,7 +81,7 @@ class PokeBattle_Move_WaterlogTargetStartHealUserEachTurn < PokeBattle_WaterlogM
         user.applyEffect(:AquaRing) unless user.effectActive?(:AquaRing)
     end
 
-    def getEffectScore(user, target)
-        return getAquaRingEffectScore(user) 
+    def getEffectScore(user, _target)
+        return getAquaRingEffectScore(user)
     end
 end

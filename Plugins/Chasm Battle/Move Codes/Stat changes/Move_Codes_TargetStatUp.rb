@@ -1,6 +1,6 @@
 #===============================================================================
 # The user raises the target's Attack and Sp. Atk by 5 steps by decorating
-# the target. (Decorate)
+# the target.
 #===============================================================================
 class PokeBattle_Move_RaiseTargetAtkSpAtk5 < PokeBattle_TargetMultiStatUpMove
     def initialize(battle, move)
@@ -130,7 +130,7 @@ class PokeBattle_Move_RaiseTargetWorstThreeStats1 < PokeBattle_Move
         statsTargetCanRaise = target.finalStats.select do |stat, _finalValue|
             next target.pbCanRaiseStatStep?(stat, user, self)
         end
-        statsRanked = statsTargetCanRaise.sort_by { |_s, v| v }.to_h.keys
+        statsRanked = statsTargetCanRaise.stable_sort_by { |_s, v| v }.to_h.keys
         statUp = []
         statsRanked.each_with_index do |stat, index|
             break if index > 2

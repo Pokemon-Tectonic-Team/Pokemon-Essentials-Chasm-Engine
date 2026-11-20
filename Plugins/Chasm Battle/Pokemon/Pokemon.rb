@@ -1443,7 +1443,7 @@ class Pokemon
         stats = getCalculatedStats
         hpDiff = @totalhp - @hp
         @totalhp = stats[:HP]
-        @hp      = (fainted? ? 0 : (@totalhp - hpDiff))
+        @hp      = (fainted? ? 0 : [(@totalhp - hpDiff), 1].max)
         @attack  = stats[:ATTACK]
         @defense = stats[:DEFENSE]
         @spatk   = stats[:SPECIAL_ATTACK]

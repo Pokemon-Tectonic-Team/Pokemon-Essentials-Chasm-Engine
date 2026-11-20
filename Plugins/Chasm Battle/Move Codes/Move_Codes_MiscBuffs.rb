@@ -115,9 +115,9 @@ class PokeBattle_Move_EmpoweredLaserFocus < PokeBattle_Move
 end
 
 #===============================================================================
-# User takes half damage from Super Effective moves. (Inure)
+# User cannot take Super/Hyper effective damage for the next three hits. (Inure)
 #===============================================================================
-class PokeBattle_Move_StartUserShedTypeWeaknesses < PokeBattle_Move
+class PokeBattle_Move_StartUserShedTypeWeaknesses3 < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
         if user.effectActive?(:Inured)
             @battle.pbDisplay(_INTL("But it failed, since {1} is already inured!", user.pbThis(true))) if show_message
@@ -127,7 +127,7 @@ class PokeBattle_Move_StartUserShedTypeWeaknesses < PokeBattle_Move
     end
 
     def pbEffectGeneral(user)
-        user.applyEffect(:Inured)
+        user.applyEffect(:Inured, 3)
     end
 
     def getEffectScore(user, _target)
@@ -140,7 +140,7 @@ class PokeBattle_Move_StartUserShedTypeWeaknesses < PokeBattle_Move
 end
 
 #===============================================================================
-# User is protected from random additional effects for a number of turns, by consuming coins (Wishing Well)
+# User is protected from random additional effects for a number of turns, by consuming coins.
 #===============================================================================
 class PokeBattle_Move_WishingWellScalesWithMoney < PokeBattle_Move
     def initialize(battle, move)
@@ -213,7 +213,7 @@ class PokeBattle_Move_EmpoweredWorkUp < PokeBattle_Move
 end
 
 #===============================================================================
-# User transforms into Gulping or Gorging form (Gulping Dive)
+# User transforms into Gulping or Gorging form. (Gulping Dive)
 #===============================================================================
 
 class PokeBattle_Move_GulpingDive < PokeBattle_Move

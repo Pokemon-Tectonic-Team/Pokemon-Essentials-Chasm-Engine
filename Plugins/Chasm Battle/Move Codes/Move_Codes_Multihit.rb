@@ -116,6 +116,42 @@ class PokeBattle_Move_HitTwoToFiveTimes < PokeBattle_Move
 end
 
 #===============================================================================
+# Hits 3-5 times. (Fickle Union)
+#===============================================================================
+module RandomHitableThreeToFive
+    def multiHitMove?; return true; end
+
+    def pbNumHits(user, targets, _checkingForAI = false)
+        return getRandomFickleUnionNumber(user, targets)
+    end
+
+    def pbNumHitsAI(user, targets)
+        return getRandomFickleUnionNumberAI(user, targets)
+    end
+end
+
+def getRandomFickleUnionNumber(user, _targets)
+    hitChances = [3, 4, 5]
+    if user.hasActiveAbility?(GameData::Ability.getByFlag("MaxRandomHits"))
+        numHits = hitChances.last
+    else
+        numHits = hitChances.sample
+    end
+    numHits += 1 if user.hasActiveAbility?(:REPETITION)
+    return numHits
+end
+
+def getRandomFickleUnionNumberAI(user, _targets)
+    if user.hasActiveAbilityAI?(GameData::Ability.getByFlag("MaxRandomHits"))
+        score = 5 
+    else
+        score = 4 # Average
+    end
+    score += 1 if user.hasActiveAbilityAI?(:REPETITION)
+    return score
+end
+
+#===============================================================================
 # Attacks two to five times. Gains money for each hit. (Sacred Lots)
 #===============================================================================
 class PokeBattle_Move_HitTwoToFiveTimesAddMoneyGainedFromBattleEachHit < PokeBattle_Move_HitTwoToFiveTimes
@@ -218,7 +254,7 @@ end
 # Hits in 2 volleys. The second volley targets the original target's ally if it
 # has one (that can be targeted), or the original target if not. A battler
 # cannot be targeted if it is is immune to or protected from this move somehow,
-# or if this move will miss it. (Dragon Darts)
+# or if this move will miss it.
 # NOTE: This move sometimes shows a different failure message compared to the
 #       official games. This is because of the order in which failure checks are
 #       done (all checks for each target in turn, versus all targets for each
@@ -280,7 +316,7 @@ end
 
 #===============================================================================
 # Does Dragon-Darts style hit redirection, plus
-# each target hit loses 1 step of Speed. (Tar Volley)
+# each target hit loses 1 step of Speed.
 #===============================================================================
 class PokeBattle_Move_HitTwoTimesTargetThenTargetAllyLowerTargetSpd1 < PokeBattle_Move_HitTwoTimesTargetThenTargetAlly
     def pbAdditionalEffect(user, target)
@@ -307,6 +343,7 @@ end
 
 #===============================================================================
 # Works just like HitTwoTimesTargetThenTargetAlly, but hits four times.
+# (Dreepy Barrage)
 #===============================================================================
 class PokeBattle_Move_HitFourTimesTargetThenTargetAlly < PokeBattle_Move_HitTwoTimesTargetThenTargetAlly
     def pbNumHits(_user, _targets, checkingForAI = false)

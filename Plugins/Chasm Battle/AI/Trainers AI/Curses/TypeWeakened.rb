@@ -10,7 +10,7 @@ PokeBattle_Battle::BattleStartApplyCurse.add(:CURSE_TYPE_WEAKENED,
 )
 
 PokeBattle_Battle::EffectivenessChangeCurseEffect.add(:CURSE_TYPE_WEAKENED,
-    proc { |_curse_policy, _moveType, user, target, effectiveness|
+    proc { |_curse_policy, _moveTypes, user, target, effectiveness|
         if user.pbOwnedByPlayer? &&
                 !target.pbOwnedByPlayer? &&
                 Effectiveness.super_effective?(effectiveness)

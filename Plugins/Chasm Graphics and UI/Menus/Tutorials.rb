@@ -123,7 +123,7 @@ def playAdaptiveMovesTutorial
 end
 
 def playPokecenterNPCsTutorial
-    playTutorialMessage(_INTL("Every PokéCenter and every Ranger Station will contain the 3 Team Customization NPCs."))
+    playTutorialMessage(_INTL("Every PokéCenter and every Ranger Station will contain the 4 Team Customization NPCs."))
     playTutorialMessage(_INTL("Speak to them to learn how they can upgrade your team!"))
 end
 

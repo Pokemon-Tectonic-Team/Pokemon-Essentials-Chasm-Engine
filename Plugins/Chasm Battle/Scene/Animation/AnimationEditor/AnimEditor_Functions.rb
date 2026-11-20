@@ -1121,7 +1121,6 @@ def animationEditorMain(animation)
   sidewin=ControlWindow.new(512+128,0,160,384+128)
   sidewin.addButton(_INTL("SE and BG..."))
   sidewin.addButton(_INTL("Cel Focus..."))
-  sidewin.addSpace
   sidewin.addButton(_INTL("Paste Last"))
   sidewin.addButton(_INTL("Copy Frames..."))
   sidewin.addButton(_INTL("Clear Frames..."))
@@ -1131,6 +1130,7 @@ def animationEditorMain(animation)
   sidewin.addSpace
   sidewin.addButton(_INTL("Play Animation"))
   sidewin.addButton(_INTL("Play Opp Anim"))
+  sidewin.addControl(SwapUserTargetButton.new(canvas))
   sidewin.addButton(_INTL("Import Anim..."))
   sidewin.addButton(_INTL("Export Anim..."))
   sidewin.addButton(_INTL("Help"))
@@ -1292,14 +1292,18 @@ def animationEditorMain(animation)
         canvas.update
       end
     end
-    canvas.pasteLast if sidewin.changed?(3)
-    pbCopyFrames(canvas) if sidewin.changed?(4)
-    pbClearFrames(canvas) if sidewin.changed?(5)
-    pbTweening(canvas) if sidewin.changed?(6)
-    pbCellBatch(canvas) if sidewin.changed?(7)
-    pbEntireSlide(canvas) if sidewin.changed?(8)
-    canvas.play if sidewin.changed?(10)
-    canvas.play(true) if sidewin.changed?(11)
+    canvas.pasteLast if sidewin.changed?(2)
+    pbCopyFrames(canvas) if sidewin.changed?(3)
+    pbClearFrames(canvas) if sidewin.changed?(4)
+    pbTweening(canvas) if sidewin.changed?(5)
+    pbCellBatch(canvas) if sidewin.changed?(6)
+    pbEntireSlide(canvas) if sidewin.changed?(7)
+    canvas.play if sidewin.changed?(9)
+    canvas.play(true) if sidewin.changed?(10)
+    if sidewin.changed?(11)
+      canvas.swapUserTarget
+      sidewin.controls[11].invalidate
+    end
     if sidewin.changed?(12)
       pbImportAnim(animation,canvas,animwin)
       sliderwin.controls[0].curvalue=canvas.currentframe+1

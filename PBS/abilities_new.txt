@@ -6,7 +6,7 @@ Description = After being attacked, uses Parting Shot to switch out.
 #-------------------------------
 [ACCUMULATION]
 Name = Accumulation
-Description = This Pokémon gains twice as many stats from leveling up.
+Description = This Pokémon gains twice as many stats from leveling up. It can't have its base stats modified.
 Flags = Immutable
 #-------------------------------
 [ACIDRAIN]
@@ -25,11 +25,11 @@ Flags = STABBoosting
 #-------------------------------
 [ADRENALINERUSH]
 Name = Adrenaline Rush
-Description = Raises Speed by four steps when its HP is lowered below half.
+Description = Raises Speed by four steps if an attack lowers its HP below half.
 #-------------------------------
 [AERODYNAMIC]
 Name = Aerodynamic
-Description = Immune to Flying-type moves and raises Speed if hit by one.
+Description = Immune to Flying-type moves and raises Speed instead.
 #-------------------------------
 [AFROTECTION]
 Name = Afrotection
@@ -58,7 +58,7 @@ Description = Moves that cause the user to become hidden deal additional damage 
 #-------------------------------
 [ANARCHIC]
 Name = Anarchic
-Description = Doubles Speed in eclipse.
+Description = Doubles this Pokémon's Speed in eclipse.
 Flags = EclipseSynergy
 #-------------------------------
 [APATHETIC]
@@ -106,7 +106,7 @@ Description = Uses Aromatherapy if an attack lowers its HP below half.
 #-------------------------------
 [ASSAULTSPINES]
 Name = Assault Spines
-Description = Doubles Sp. Def, but this Pokémon can't use status moves.
+Description = Doubles this Pokémon's Sp. Def, but can't use status moves.
 Flags = NoStatusUse
 #-------------------------------
 [ASTRALHARVEST]
@@ -160,9 +160,18 @@ Description = Deals more damage to targets the faster it is than them. Up to a 5
 Name = Ball Mimic
 Description = Your Poké Balls are 50% more effective.
 #-------------------------------
+[BARRENBLOOD]
+Name = Barren Blood
+Description = During sandstorm, deal and take 50% more damage.
+Flags = SandstormSynergy
+#-------------------------------
 [BARRIERMAKER]
 Name = Barrier Maker
 Description = Sets a Reflect for four turns upon entry.
+#-------------------------------
+[BATTLEHARDENED]
+Name = Battle-Hardened
+Description = Raises Defense and Sp. Def by three steps if an attack lowers its HP below half. This only works once per switch-in.
 #-------------------------------
 [BEAMING]
 Name = Beaming
@@ -217,7 +226,7 @@ Description = Increase the EXP gained from battles in which it participates by 5
 #-------------------------------
 [BOGGLINGBOLERO]
 Name = Boggling Bolero
-Description = After using a dance move, lowers one of each foe's Attack and Sp. Atk, whichever is higher.
+Description = After using a dance move, lowers one of each foe's Attack or Sp. Atk by two steps, whichever is higher.
 #-------------------------------
 [BOTTOMFEEDER]
 Name = Bottom Feeder
@@ -277,7 +286,7 @@ Flags = ForceSignature
 #-------------------------------
 [CANDYVEIL]
 Name = Candy Veil
-Description = Prevents itself and allies from being poisoned, leeched, or waterlogged.
+Description = Prevents itself and allies from being poisoned, leeched, or numbed.
 #-------------------------------
 [CANIDCRUSHER]
 Name = Canid Crusher
@@ -305,7 +314,7 @@ Description = This Pokémon's Speed is doubled while using light-based moves.
 #-------------------------------
 [CHALLENGER]
 Name = Challenger
-Description = Immune to Fighting-type moves and raises Attack and Sp. Atk if hit by one.
+Description = Immune to Fighting-type moves and raises Attack and Sp. Atk instead.
 #-------------------------------
 [CHILLEDBODY]
 Name = Chilled Body
@@ -361,12 +370,12 @@ Description = Boosts Sp. Atk by 75%, but this Pokémon becomes frostbitten after
 #-------------------------------
 [COLDFUSION]
 Name = Cold Fusion
-Description = Immune to Fire- and Electric-type moves and raises Attack and Sp. Atk by two steps if hit by one.
+Description = Immune to Fire- and Electric-type moves and raises Attack and Sp. Atk by two steps instead.
 Flags = ForceSignature
 #-------------------------------
 [COLDRECEPTION]
 Name = Cold Reception
-Description = Immune to Ice-type moves and raises Attack and Sp. Atk if hit by one.
+Description = Immune to Ice-type moves and raises Attack and Sp. Atk instead.
 #-------------------------------
 [COLORCOLLECTOR]
 Name = Color Collector
@@ -395,7 +404,7 @@ Description = When hit with a special move, hits back instantly with Breach.
 #-------------------------------
 [CREEPINGHORROR]
 Name = Creeping Horror
-Description = Foretelling moves take one turn longer to attack but deal 50% more damage.
+Description = While a Foretelling move is waiting to hit, this Pokémon takes 25% less damage.
 #-------------------------------
 [CURSEDTAIL]
 Name = Cursed Tail
@@ -437,12 +446,12 @@ Flags = HailSynergy
 #-------------------------------
 [DEBRISFIELD]
 Name = Debris Field
-Description = Immune to non-volatile status conditions due to its hard shell. Boosts Sp. Atk and Speed by 30% in sandstorm.
+Description = Immune to non-volatile status conditions. In sandstorm, powers up Rock-type moves by 50% and deals 1/6th max HP when hit.
 Flags = SandstormSynergy
 #-------------------------------
 [DEBUGGER]
 Name = Debugger
-Description = Immune to Bug-type moves and raises Speed if hit by one.
+Description = Immune to Bug-type moves and raises Speed instead.
 #-------------------------------
 [DECONTAMINATION]
 Name = Decontamination
@@ -468,7 +477,7 @@ Flags = SandstormSynergy
 #-------------------------------
 [DESERTSCAVENGER]
 Name = Desert Scavenger
-Description = Restores this Pokémon's HP based on damage taken by others from sandstorm.
+Description = Restores this Pokémon's HP based on damage taken by others from sandstorm, and increases sandstorm damage by 50%.
 Flags = SandstormSynergy
 #-------------------------------
 [DESERTSPIRIT]
@@ -632,7 +641,7 @@ Description = Takes half damage from Psychic- and Ghost-type attacks.
 [EXOSPHERICDESCENT]
 Name = Exospheric Descent
 Description = Cannot enter battle unless all party members are below half HP. Upon entry, transforms into Meteoric Form.
-Flags = Immutable,UnableByDefault
+Flags = Immutable,UnableByDefault,BattleEndReviver
 #-------------------------------
 [EXOTHERMENGINE]
 Name = Exotherm Engine
@@ -663,10 +672,6 @@ Flags = EclipseSynergy
 [FADINGFURY]
 Name = Fading Fury
 Description = Boosts the power of kick and light moves by 50%, but this Pokémon is hurt for 1/10th HP each turn.
-#-------------------------------
-[FAEVEIL]
-Name = Fae Veil
-Description = Prevents itself and allies from being burned, frostbitten, or numbed.
 #-------------------------------
 [FALSEFRONT]
 Name = False Front
@@ -717,7 +722,7 @@ Flags = RainstormSynergy
 #-------------------------------
 [FICKLEUNION]
 Name = Fickle Union
-Description = Pulse moves multi-hit two to five times at 30% power.
+Description = Pulse moves multi-hit three to five times at 30% power.
 #-------------------------------
 [FIELDOFDEATH]
 Name = Field of Death
@@ -750,7 +755,7 @@ Description = At the end of every turn, each Pokémon takes 1/8th HP damage. Thi
 #-------------------------------
 [FIREFIGHTER]
 Name = Firefighter
-Description = Immune to Fire-type moves and raises Attack and Sp. Atk if hit by one.
+Description = Immune to Fire-type moves and raises Attack and Sp. Atk instead.
 #-------------------------------
 [FIRSTSTRIKE]
 Name = First Strike
@@ -775,7 +780,7 @@ Flags = Immutable
 #-------------------------------
 [FLUSTERFLOCK]
 Name = Fluster Flock
-Description = Doubles Attack, but this Pokémon becomes dizzy after attacking.
+Description = Doubles this Pokémon's Attack, but becomes dizzy after attacking.
 #-------------------------------
 [FLUTTERTOTEM]
 Name = Flutter Totem
@@ -787,7 +792,7 @@ Description = Hits opponent with Gust when switched out.
 #-------------------------------
 [FLYTRAP]
 Name = Flytrap
-Description = Immune to Bug-type moves and raises Attack and Sp. Atk when hit by one.
+Description = Immune to Bug-type moves and raises Attack and Sp. Atk instead.
 #-------------------------------
 [FOGTOTEM]
 Name = Fog Totem
@@ -799,7 +804,7 @@ Description = Raises Speed by two steps after knocking out any Pokémon.
 #-------------------------------
 [FOOLHARDY]
 Name = Foolhardy
-Description = Immune to Psychic-type moves and raises Attack and Sp. Atk if hit by one.
+Description = Immune to Psychic-type moves and raises Attack and Sp. Atk instead.
 #-------------------------------
 [FOREMAN]
 Name = Foreman
@@ -892,7 +897,7 @@ Description = Foes that become frostbitten are severely so. This Pokémon's Flyi
 #-------------------------------
 [GLASSFIRING]
 Name = Glass Firing
-Description = Immune to Fire-type moves and raises Defense and Sp. Def if hit by one.
+Description = Immune to Fire-type moves and raises Defense and Sp. Def instead.
 #-------------------------------
 [GNAWING]
 Name = Gnawing
@@ -937,6 +942,10 @@ Description = Raises Attack and Sp. Atk whenever any Pokémon uses a dance move.
 [GROTESQUEVITALS]
 Name = Grotesque Vitals
 Description = Heals 1/16th HP every turn. Protected from being poisoned.
+#-------------------------------
+[GUTPUNCH]
+Name = Gut Punch
+Description = When hit with an attacking move, hits back instantly with Mega Punch.
 #-------------------------------
 [HADEANRAGE]
 Name = Hadean Rage
@@ -983,15 +992,15 @@ Flags = ForceSignature
 #-------------------------------
 [HEADACHE]
 Name = Headache
-Description = Doubles Sp. Atk, but this Pokémon becomes dizzy after attacking.
+Description = Doubles this Pokémon's Sp. Atk, but becomes dizzy after attacking.
 #-------------------------------
 [HEARTLESS]
 Name = Heartless
-Description = Immune to Fairy-type moves and restores 25% of max HP if hit by one. This can overheal.
+Description = Immune to Fairy-type moves and restores 25% of max HP instead. This can overheal.
 #-------------------------------
 [HEARTOFJUSTICE]
 Name = Heart of Justice
-Description = Immune to Dark-type moves and boosts Attack and Sp. Atk when hit by one.
+Description = Immune to Dark-type moves and boosts Attack and Sp. Atk instead.
 #-------------------------------
 [HEATDEATH]
 Name = Heat Death
@@ -1039,7 +1048,7 @@ Flags = AllWeatherSynergy
 #-------------------------------
 [HITANDRUN]
 Name = Hit and Run
-Description = When this Pokémon knocks a foe below half health, this Pokémon switches out.
+Description = When this Pokémon's attacks deal less than 50% of the target's max HP, this Pokémon switches out.
 #-------------------------------
 [HIVEMIND]
 Name = Hive Mind
@@ -1071,7 +1080,7 @@ Description = When hit by a move with 95 or more base power, hits back instantly
 #-------------------------------
 [HULLHUNGER]
 Name = Hull Hunger
-Description = Immune to Steel-type moves and restores 25% of max HP if hit by one.
+Description = Immune to Steel-type moves and restores 25% of max HP instead.
 #-------------------------------
 [HYBRIDFIGHTER]
 Name = Hybrid Fighter
@@ -1079,7 +1088,7 @@ Description = Punches, Kicks, and Bites combo together to create special effects
 #-------------------------------
 [HYPERSPEED]
 Name = Hyper Speed
-Description = Doubles Speed. Dashes to avoid hazards upon entry.
+Description = Doubles this Pokémon's Speed. Dashes to avoid hazards upon entry.
 Flags = HazardImmunity
 #-------------------------------
 [ICEBLOCK]
@@ -1089,7 +1098,7 @@ Flags = Immutable
 #-------------------------------
 [ICEMIRROR]
 Name = Ice Mirror
-Description = Doubles Sp. Def in hail.
+Description = Doubles this Pokémon's Sp. Def in hail.
 Flags = HailSynergy
 #-------------------------------
 [ICEQUEEN]
@@ -1138,7 +1147,7 @@ Description = After being attacked, gains immunity to that move's type but loses
 #-------------------------------
 [INDUSTRIALIZE]
 Name = Industrialize
-Description = Immune to Steel-type moves and raises Speed if hit by one.
+Description = Immune to Steel-type moves and raises Speed instead.
 #-------------------------------
 [INEXORABLE]
 Name = Inexorable
@@ -1155,10 +1164,6 @@ Description = This Pokémon is also Grass-type. When hit by an attack, the attac
 [INKSPRAY]
 Name = Ink Spray
 Description = Upon entry, blinds all foes.
-#-------------------------------
-[INNARDSPUNCH]
-Name = Innards Punch
-Description = When hit with an attacking move, hits back instantly with Mega Punch.
 #-------------------------------
 [INNERHEAT]
 Name = Inner Heat
@@ -1245,9 +1250,9 @@ Description = Rather than take recoil damage, it swaps out, and its replacement 
 Name = Killjoy
 Description = Pokémon can't raise their stats. Pokémon that dance take damage equal to 1/4th their HP.
 #-------------------------------
-[KLEPTOMANIAC]
-Name = Kleptomaniac
-Description = Uses Snatch upon entry, stealing self-targeting status moves.
+[KNAPPINGSTONES]
+Name = Knapping Stones
+Description = After this Pokémon is hit with a super- or hyper-effective move, the attacker takes 33% of the damage dealt as recoil.
 #-------------------------------
 [KNUCKLEDUSTER]
 Name = Knuckleduster
@@ -1380,6 +1385,10 @@ Flags = MoonglowSynergy
 Name = Manifestation
 Description = Boosts the power of pulse moves by 50%, and makes them physical when that would be more effective.
 #-------------------------------
+[MARIACHI]
+Name = Mariachi
+Description = Boosts Sp. Atk after using a sound move. Heals for 1/5th max HP after using a dance move.
+#-------------------------------
 [MARINE]
 Name = Marine
 Description = Physical moves have a 30% chance to waterlog targets.
@@ -1477,10 +1486,6 @@ Name = Mounting Chill
 Description = Heals 1/8th of its max HP each turn in a hail.
 Flags = HailSynergy
 #-------------------------------
-[MULTIHEADED]
-Name = Multiheaded
-Description = While this Pokémon is below half health, takes 33% less damage from attacks.
-#-------------------------------
 [MULTITASKER]
 Name = Multitasker
 Description = This Pokémon's Psychic-type attacks become spread and deal 35% more damage.
@@ -1512,7 +1517,7 @@ Description = While this Pokémon is unfainted (in battle or switched out), pois
 #-------------------------------
 [NIGHTLIFE]
 Name = Night Life
-Description = Doubles Speed in moonglow.
+Description = Doubles this Pokémon's Speed in moonglow.
 Flags = MoonglowSynergy
 #-------------------------------
 [NIGHTOWL]
@@ -1537,10 +1542,6 @@ Description = Deals no damage to a target while they are using a status move.
 [NOHOPE]
 Name = No Hope
 Description = Traps foes when they are below half health.
-#-------------------------------
-[NOXIOUS]
-Name = Noxious
-Description = Reduces each other Pokémon's HP by 1/12th at the end of each turn.
 #-------------------------------
 [NUMBINGTOUCH]
 Name = Numbing Touch
@@ -1612,7 +1613,7 @@ Description = Powers up Rock-type moves by 50%.
 #-------------------------------
 [PARANOID]
 Name = Paranoid
-Description = Doubles Sp. Def. This Pokémon takes double damage from Psychic-type moves.
+Description = Doubles this Pokémon's Sp. Def, but takes double damage from Psychic-type moves.
 #-------------------------------
 [PECKINGORDER]
 Name = Pecking Order
@@ -1620,7 +1621,7 @@ Description = Immune to Flying-type moves and deals 50% more damage with them.
 #-------------------------------
 [PERENNIALPAYLOAD]
 Name = Perennial Payload
-Description = After fainting from self-destructing, revives after five turns.
+Description = After fainting from self-destructing, revives at 1 HP after five turns.
 #-------------------------------
 [PERFECTIONIST]
 Name = Perfectionist
@@ -1700,7 +1701,7 @@ Flags = Uncopyable
 #-------------------------------
 [POISONABSORB]
 Name = Poison Absorb
-Description = Immune to Poison-type moves and restores 25% of max HP if hit by one.
+Description = Immune to Poison-type moves and restores 25% of max HP instead.
 #-------------------------------
 [POISONPUNISH]
 Name = Poison Punish
@@ -1735,6 +1736,10 @@ Flags = SetupCounterAI
 Name = Primordial Seal
 Description = This Pokémon cannot enter the battle before Regidrago, Regice, Regirock, Registeel and Regieleki have.
 Flags = Immutable,UnableByDefault,BattleEndReviver
+#-------------------------------
+[PROBEWEAKNESS]
+Name = Probe Weakness
+Description = Doubles this Pokémon's crit chance, if it lands a move that could crit but doesn't. Powers up critical hits by another 50%.
 #-------------------------------
 [PROTECTIVEINSTINCT]
 Name = Protective Instinct
@@ -1803,11 +1808,6 @@ Name = Rain Prism
 Description = Powers up Fairy-type moves by 50% in rainstorm.
 Flags = RainstormSynergy
 #-------------------------------
-[RAMPROW]
-Name = Ram Prow
-Description = Ignores screens, Substitute, and Abilities that would affect its moves.
-Flags = MoldBreaking,IgnoreScreens,IgnoreSubstitute
-#-------------------------------
 [RAPIDONSET]
 Name = Rapid Onset
 Description = On the first turn, its attacks poison the target.
@@ -1835,7 +1835,7 @@ Flags = Immutable
 #-------------------------------
 [REAWAKENEDPOWER]
 Name = Reawakened Power
-Description = Maximizes Sp. Atk when its HP is lowered below half.
+Description = Maximizes Sp. Atk if an attack lowers its HP below half.
 #-------------------------------
 [RECLAMATION]
 Name = Reclamation
@@ -1947,13 +1947,22 @@ Description = This Pokémon is also Steel-type, but it takes 15% more damage fro
 #-------------------------------
 [SAFEPASSAGE]
 Name = Safe Passage
-Description = Doubles Defense in rainstorm.
+Description = Doubles this Pokémon's Defense in rainstorm.
 Flags = RainstormSynergy
+#-------------------------------
+[SANDBANKBRUTE]
+Name = Sandbank Brute
+Description = During sandstorm, its attacks can't miss and restore HP equal to 25% of the damage dealt.
+Flags = SandstormSynergy
 #-------------------------------
 [SANDBURST]
 Name = Sand Burst
 Description = Summons a sandstorm for four turns when hit by an attack.
 Flags = SandstormSynergy
+#-------------------------------
+[SANDRECONSTRUCTION]
+Name = Sand Reconstruction
+Description = Prevents 75% of the self-damage from recoil and self-destructing during sandstorm.
 #-------------------------------
 [SANDSHROUD]
 Name = Sand Shroud
@@ -1987,6 +1996,10 @@ Flags = EclipseSynergy
 [SCALDINGSMOKE]
 Name = Scalding Smoke
 Description = Powers up Poison-type moves by 50%.
+#-------------------------------
+[SCALEVEIL]
+Name = Scale Veil
+Description = Prevents itself and allies from being burned, frostbitten, or waterlogged.
 #-------------------------------
 [SCATHINGSYZYGY]
 Name = Scathing Syzygy
@@ -2058,7 +2071,7 @@ Description = Its physical attacks reduce the target's Defense.
 #-------------------------------
 [SHIELDSMITHING]
 Name = Shield-Smithing
-Description = Immune to Steel-type moves and boosts Defense and Sp. Def when hit by one.
+Description = Immune to Steel-type moves and boosts Defense and Sp. Def instead.
 #-------------------------------
 [SHIFTINGFIST]
 Name = Shifting Fist
@@ -2078,12 +2091,12 @@ Description = This Pokémon and other battlers don't benefit from same-type atta
 #-------------------------------
 [SILVERLINING]
 Name = Silver Lining
-Description = Boosts Speed by 50% in rainstorm. Doubles random added effect chance in rainstorm.
+Description = Boosts this Pokémon's Speed by 50% in rainstorm. Doubles random added effect chance in rainstorm.
 Flags = RainstormSynergy
 #-------------------------------
 [SILVERSENSE]
 Name = Silver Sense
-Description = Doubles critical hit chance. Restores HP for half the damage it does with critical hits.
+Description = Doubles this Pokémon's critical hit chance. Restores HP for half the damage it does with critical hits.
 #-------------------------------
 [SIMPLETON]
 Name = Simpleton
@@ -2099,7 +2112,7 @@ Description = On the first turn, its attacks leech the target.
 #-------------------------------
 [SIRENSONG]
 Name = Siren Song
-Description = After using a sound move, lowers one of each foe's Attack and Sp. Atk, whichever is higher.
+Description = After using a sound move, lowers one of each foe's Attack or Sp. Atk, whichever is higher.
 #-------------------------------
 [SLAPSTICK]
 Name = Slapstick
@@ -2109,10 +2122,6 @@ Description = Whenever a foe fails or misses, they take 1/8th HP damage.
 Name = Sleetshaker
 Description = Boosts Attack by 30% in hail.
 Flags = HailSynergy
-#-------------------------------
-[SLICKSURFACE]
-Name = Slick Surface
-Description = Can't be leeched, drained, or trapped.
 #-------------------------------
 [SLINKY]
 Name = Slinky
@@ -2165,7 +2174,7 @@ Flags = SunshineSynergy
 #-------------------------------
 [SOLONOCTURNE]
 Name = Solo Nocturne
-Description = Doubles Defense in moonglow.
+Description = Doubles this Pokémon's Defense in moonglow.
 Flags = MoonglowSynergy
 #-------------------------------
 [SOPPING]
@@ -2230,6 +2239,10 @@ Description = Slice moves always crit. However, their damage is dealt at the end
 Name = Steam Power
 Description = Takes 50% less damage from Water-type moves. Raises Speed by four steps when hit by one.
 #-------------------------------
+[STEEPMOMENTUM]
+Name = Steep Momentum
+Description = Gains two steps of Attack and Speed if it didn’t deal attack damage this turn. When it does, reset its positive stat changes.
+#-------------------------------
 [STERN]
 Name = Stern
 Description = Its attacks are critical against waterlogged targets.
@@ -2279,7 +2292,7 @@ Description = Makes foes stressed and unable to use their items.
 #-------------------------------
 [STRIKECORONA]
 Name = Strike Corona
-Description = Doubles Defense, but this Pokémon can't use status moves.
+Description = Doubles this Pokémon's Defense, but can't use status moves.
 Flags = NoStatusUse
 #-------------------------------
 [STRIKETWICE]
@@ -2348,7 +2361,7 @@ Description = Powers up Steel-type moves by 50%.
 #-------------------------------
 [SUPERCONDUCTOR]
 Name = Superconductor
-Description = Doubles the speed of allied Pokémon.
+Description = Doubles the Speed of allied Pokémon.
 #-------------------------------
 [SURFSUP]
 Name = Surf's Up
@@ -2367,10 +2380,6 @@ Description = When an ally switches in, this Pokémon's Speed is increased.
 Name = Swift Stomps
 Description = This Pokémon's Speed is doubled while using kicking moves.
 #-------------------------------
-[SWORDBREAKER]
-Name = Sword Breaker
-Description = If an attack lowers this Pokémon's HP below half, the attacker becomes fractured.
-#-------------------------------
 [SWORDHORNSTYLE]
 Name = Sword-Horn Style
 Description = After attacking the same foe twice, they become numbed, and a Sanctuary is set on this Pokémon's side for three turns.
@@ -2381,7 +2390,7 @@ Description = Boosts the power of slice moves by 30%.
 #-------------------------------
 [SWORDSMITHING]
 Name = Sword-Smithing
-Description = Immune to Steel-type moves and boosts Attack and Sp. Atk when hit by one.
+Description = Immune to Steel-type moves and boosts Attack and Sp. Atk instead.
 #-------------------------------
 [TAIGATREKKER]
 Name = Taiga Trekker
@@ -2496,6 +2505,10 @@ Description = Boosts the power of sound moves by 30%. Sound moves ignore the tar
 Name = Tunnel Maker
 Description = Powers up Ground-type moves by 50%.
 #-------------------------------
+[TYPINGTROJAN]
+Name = Typing Trojan
+Description = This Pokémon is the type of its first two moves. It can't use moves that aren't of its own types.
+#-------------------------------
 [ULTRAADAPTED]
 Name = Ultra Adapted
 Description = Powers up moves of the same type by 50%.
@@ -2521,10 +2534,6 @@ Description = Takes half damage from Dark- and Bug-type moves.
 [UNASSUMING]
 Name = Unassuming
 Description = Before using a status move against a single foe, lowers their Defense by two steps.
-#-------------------------------
-[UNBREAKABLE]
-Name = Unbreakable
-Description = Prevents half the self-damage from recoil and self-destructing.
 #-------------------------------
 [UNCANNYLUCK]
 Name = Uncanny Luck
@@ -2557,7 +2566,7 @@ Description = After an attack reduces its HP below half, deals 1/4th of the atta
 #-------------------------------
 [VENOMDETTA]
 Name = Venomdetta
-Description = Immune to Poison-type moves and raises Attack and Sp. Atk if hit by one.
+Description = Immune to Poison-type moves and raises Attack and Sp. Atk instead.
 #-------------------------------
 [VENOMGORGER]
 Name = Venom Gorger
@@ -2566,6 +2575,10 @@ Description = Whenever a foe's poison worsens, this Pokémon heals for 25% max H
 [VERDANT]
 Name = Verdant
 Description = Powers up Grass-type moves of itself and its allies by 50%.
+#-------------------------------
+[VERSATILEARTIST]
+Name = Versatile Artist
+Description = Gains the opposite side's last used move as a 5th move.
 #-------------------------------
 [VICIOUSCYCLE]
 Name = Vicious Cycle
@@ -2648,7 +2661,7 @@ Flags = HailSynergy
 #-------------------------------
 [WINTERSWAGES]
 Name = Winter's Wages
-Description = Restores HP based on damage taken by others from hail.
+Description = Restores HP based on damage taken by others from hail, and increases hail damage by 50%.
 Flags = HailSynergy
 #-------------------------------
 [WISEHUNTER]

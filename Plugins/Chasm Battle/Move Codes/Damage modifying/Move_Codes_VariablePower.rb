@@ -24,7 +24,7 @@ class PokeBattle_Move_ScalesWithUserHP < PokeBattle_Move
 end
 
 #===============================================================================
-# Power increases with the target's HP. (Crush Grip, Wring Out)
+# Power increases with the target's HP.
 #===============================================================================
 class PokeBattle_Move_ScalesWithTargetHP < PokeBattle_Move
     def pbBaseDamage(_baseDmg, _user, target)
@@ -72,7 +72,6 @@ end
 
 #===============================================================================
 # Power increases with the target's positive stat changes (ignores negative ones).
-# (Punishment)
 #===============================================================================
 class PokeBattle_Move_ScalesTargetsPositiveStatSteps < PokeBattle_Move
     def pbBaseDamage(_baseDmg, _user, target)

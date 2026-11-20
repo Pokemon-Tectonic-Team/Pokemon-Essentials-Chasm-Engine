@@ -43,6 +43,18 @@ class PokeBattle_Move_TypeDependsOnWeather < PokeBattle_Move
         hitNum = 7 if t == :FLYING
         super
     end
+
+    def getDetailsForMoveDex(detailsList = [])
+        detailsList << _INTL("Changes Type depending on the Weather:")
+        detailsList << _INTL("<u>No Weather</u>: Normal")
+        detailsList << _INTL("<u>Sunshine / Harsh Sun</u>: Fire")
+        detailsList << _INTL("<u>Rainstorm / Heavy Rain</u>: Water")
+        detailsList << _INTL("<u>Hail / Ice Age</u>: Ice")
+        detailsList << _INTL("<u>Sandstorm / Star Storm</u>: Rock")
+        detailsList << _INTL("<u>Eclipse / Ring Eclipse</u>: Psychic")
+        detailsList << _INTL("<u>Moonglow / Blood Moon</u>: Fairy")
+        detailsList << _INTL("<u>Strong Winds</u>: Flying")
+    end
 end
 
 #===============================================================================
@@ -101,7 +113,7 @@ class PokeBattle_Move_TypeDependsOnUserSpecialItem < PokeBattle_Move
 end
 
 #===============================================================================
-# Type depends on the user's form, and can be chosen if the Pokémon has the Modus Switch ability. (Techno Blast)
+# Type depends on the user's form, and can be chosen if the Pokémon has the Modus Switch ability.
 #===============================================================================
 class PokeBattle_Move_TechnoBlast < PokeBattle_Move_TypeDependsOnUserSpecialItem
     def initialize(battle, move)

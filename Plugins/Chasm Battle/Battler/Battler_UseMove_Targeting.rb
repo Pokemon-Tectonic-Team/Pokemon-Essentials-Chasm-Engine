@@ -113,7 +113,9 @@ move, false, true)
             return true unless move.hitsHidingTargets?
         elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableInFoliage") # Camouflage
             return true unless move.hitsCamouflagedTargets?
-        elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableRemoveProtections")	# PHANTOMFORCE/SHADOWFORCE in case we have a move that hits them
+        elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableRemoveProtections")	# Shadow Force in case we have a move that should hit it
+            return true
+        elsif target.inTwoTurnAttack?("TwoTurnAttackInvulnerableVerminCloud") # Vermin Cloud in case we have a move that should hit it
             return true
         end
         

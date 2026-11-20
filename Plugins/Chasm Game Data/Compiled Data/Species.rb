@@ -4,6 +4,7 @@ module GameData
         DEFAULT_GENDER_RATIO = :Female50Percent
         DEFAULT_BASE_HAPPINESS = 70
         DEFAULT_STAT_ROUNDING = 5
+        UNROUNDED_STATS = [:SPEED]
 
         attr_reader :id
         attr_reader :id_number
@@ -185,6 +186,7 @@ module GameData
                 oldBST = 0
                 newBST = 0
                 GameData::Stat.each_main do |s|
+                    next if UNROUNDED_STATS.include?(s.id)
                     @base_stats[s.id] = 1 if !@base_stats[s.id] || @base_stats[s.id] <= 0
                     next if @base_stats[s.id] % @stat_rounding == 0 || @base_stats[s.id] == 1
                     oldValue = @base_stats[s.id]

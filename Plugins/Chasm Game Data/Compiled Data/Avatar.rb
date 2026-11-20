@@ -174,6 +174,10 @@ module GameData
         def getTypeForPhase(index)
             return getListOfPhaseTypes[index]
         end
+
+        def speciesData
+            return GameData::Species.get_species_form(@species, @form)
+        end
         
         def self.get_from_pokemon(pokemon)
 			return GameData::Avatar.get(pokemon.species,pokemon.bossVersion)

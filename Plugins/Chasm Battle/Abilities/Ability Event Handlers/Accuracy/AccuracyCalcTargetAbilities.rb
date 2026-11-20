@@ -1,22 +1,26 @@
-BattleHandlers::AccuracyCalcTargetAbility.add(:LIGHTNINGROD,
-  proc { |ability, mults, _user, _target, _move, type|
-      mults[:base_accuracy] = 0 if type == :ELECTRIC
-  }
-)
-
 BattleHandlers::AccuracyCalcTargetAbility.add(:NOGUARD,
-  proc { |ability, mults, _user, _target, _move, _type|
+  proc { |_ability, mults, _user, _target, _move, _types|
       mults[:base_accuracy] = 0
   }
 )
 
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
+BattleHandlers::AccuracyCalcTargetAbility.add(:LIGHTNINGROD,
+  proc { |_ability, mults, _user, _target, _move, types|
+      mults[:base_accuracy] = 0 if types.include?(:ELECTRIC)
+  }
+)
+
 BattleHandlers::AccuracyCalcTargetAbility.add(:STORMDRAIN,
-  proc { |ability, mults, _user, _target, _move, type|
-      mults[:base_accuracy] = 0 if type == :WATER
+  proc { |_ability, mults, _user, _target, _move, types|
+      mults[:base_accuracy] = 0 if types.include?(:WATER)
   }
 )
 BattleHandlers::AccuracyCalcTargetAbility.add(:WONDERSKIN,
-  proc { |ability, mults, user, target, move, _type|
+  proc { |_ability, mults, user, target, move, _types|
       mults[:base_accuracy] = 50 if move.statusMove? && user.opposes?(target) && (mults[:base_accuracy] > 50)
   }
 )

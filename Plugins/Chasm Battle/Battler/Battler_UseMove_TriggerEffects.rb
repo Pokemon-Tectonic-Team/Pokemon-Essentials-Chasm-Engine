@@ -93,7 +93,7 @@ class PokeBattle_Battler
             if target.effectActive?(:StunningCurl, true) && !user.numbed?
                 PBDebug.log("[Lingering effect] #{target.pbThis}'s Stunning Curl")
                 if user.canNumb?(target, false)
-                    @battle.pbDisplay(_INTL("{1}'s stance made {2}'s attack bounce off akwardly!", target.pbThis,
+                    @battle.pbDisplay(_INTL("{1}'s stance made {2}'s attack bounce off awkwardly!", target.pbThis,
 user.pbThis(true)))
                     user.applyNumb(target)
                 end

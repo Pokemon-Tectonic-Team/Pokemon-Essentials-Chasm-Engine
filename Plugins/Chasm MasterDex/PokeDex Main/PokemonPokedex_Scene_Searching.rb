@@ -347,7 +347,7 @@ class PokemonPokedex_Scene
     end
 
     def searchByAvailableLevel
-        commands = ["Minimum Level", "Normal Availability", "Cancel"]
+        commands = [_INTL("Minimum Level"), _INTL("Normal Availability"), _INTL("Cancel")]
         command = pbMessage(_INTL("What threshold for availability?"), commands, commands.length)
         return if command == commands.length - 1
         normal = command == 1

@@ -7,7 +7,7 @@ class PokeBattle_Move_ReviveGrassTypePartyMemberToFullHP < PokeBattle_PartyMembe
             @battle.pbDisplay(_INTL("But it failed, since this is a wild battle!")) if show_message
             return true
         end
-        return false
+        return super
     end
     
     def legalChoice(pokemon)
@@ -36,7 +36,7 @@ class PokeBattle_Move_RevivePartyMemberTo1HP < PokeBattle_PartyMemberEffectMove
             @battle.pbDisplay(_INTL("But it failed, since this is a wild battle!")) if show_message
             return true
         end
-        return false
+        return super
     end
 
     def legalChoice(pokemon)

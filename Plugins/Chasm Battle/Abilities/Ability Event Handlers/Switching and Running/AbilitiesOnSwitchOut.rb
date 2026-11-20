@@ -15,8 +15,8 @@ BattleHandlers::AbilityOnSwitchOut.add(:NATURALCURE,
 )
 
 BattleHandlers::AbilityOnSwitchOut.add(:FLYBY,
-  proc { |ability, battler, battle, endOfBattle|
-      next if endOfBattle
+  proc { |ability, battler, battle, _endOfBattle|
+      next if battle.pbAllFainted?(battler.idxOpposingSide)
       battle.forceUseMove(battler, :GUST, ability: ability)
   }
 )
@@ -62,8 +62,8 @@ BattleHandlers::AbilityOnSwitchOut.add(:MAGMATRAIL,
 )
 
 BattleHandlers::AbilityOnSwitchOut.add(:INSECTCOLLECTOR,
-  proc { |ability, battler, battle, endOfBattle|
-      next if endOfBattle
+  proc { |ability, battler, battle, _endOfBattle|
+      next if battle.pbAllFainted?(battler.idxOpposingSide)
       battle.forceUseMove(battler, :COVET, ability: ability)
   }
 )

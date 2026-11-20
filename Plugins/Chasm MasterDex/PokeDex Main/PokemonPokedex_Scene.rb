@@ -1027,7 +1027,11 @@ class PokemonPokedex_Scene
                     modifyTutorLearnability
                 elsif Input.pressex?(0x46) && $DEBUG # F, for Filter
                     acceptSearchResults do
-                        debugFilterToRegularLine
+                        if debugControl
+                            debugFilterToNonLegendFinalEvos
+                        else
+                            debugFilterToFinalEvos
+                        end
                     end
                 elsif Input.pressex?(0x45) && $DEBUG # E, for Export
                     exportDexListAsCSV
@@ -1048,7 +1052,15 @@ class PokemonPokedex_Scene
 
     #### DEBUG FUNCTIONALITY ###
 
-    def debugFilterToRegularLine
+    def debugFilterToFinalEvos
+        dexlist = searchStartingList
+        dexlist = dexlist.find_all do |dex_item|
+            next dex_item[:data].get_evolutions.length == 0
+        end
+        return dexlist
+    end
+
+    def debugFilterToNonLegendFinalEvos
         dexlist = searchStartingList
         dexlist = dexlist.find_all do |dex_item|
             next !dex_item[:data].isLegendary? && dex_item[:data].get_evolutions.length == 0

@@ -53,7 +53,7 @@ WEIGHTLIFTING,Weightlifting
 HEAVYMETAL,Heavy Metal
 COFFEE,Coffee
 ICEDLATTES,Iced Lattes
-HOTCOCAO,Hot Cocao
+HOTCOCOA,Hot Cocoa
 CHOCOLATEMILK,Chocolate Milk
 FLOWERS,Flowers
 AVANTGARDE,Avant-garde

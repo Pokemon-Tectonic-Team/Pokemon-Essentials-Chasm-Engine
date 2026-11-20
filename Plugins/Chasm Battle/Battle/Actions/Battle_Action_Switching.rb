@@ -62,7 +62,7 @@ class PokeBattle_Battle
             partyScene.pbDisplay(_INTL("Rampaging Pokémon can't be switched out!")) if partyScene
             return false
         end
-        if @battlers[idxBattler].effectActive?(:BypassExhaustion)
+        if @battlers[idxBattler].effectActive?(:HyperBeam)
             partyScene.pbDisplay(_INTL("Exhausted Pokémon can't be switched out!")) if partyScene
             return false
         end
@@ -234,6 +234,9 @@ class PokeBattle_Battle
                             next if switched.include?(playerBattler.index)
                             next unless pbCanChooseNonActive?(playerBattler.index)
                             next if playerBattler.effectActive?(:Rampaging)
+                            if playerBattler.hasActiveAbility?(:EMPATHFINDER)
+                                next unless pbCanSwitch?(playerBattler.index)
+                            end
 
                             idxPartyForName = idxPartyNew
                             enemyParty = pbParty(idxBattler)

@@ -15,6 +15,7 @@ class Options
     attr_accessor :particle_effects
     attr_accessor :overworld_weather
     attr_accessor :screenshake
+    attr_accessor :flashing
     attr_accessor :damage_numbers
     attr_accessor :show_item_descriptions
     attr_accessor :show_trait_unlocks
@@ -39,7 +40,6 @@ class Options
     attr_accessor :expez_dispenser_animation
     attr_accessor :quick_evolution
     attr_accessor :name_on_showcases
-    attr_accessor :flashing_weather
     
     attr_accessor :bike_bgm
 
@@ -97,7 +97,7 @@ class Options
         @overworld_weather              = 0 # (0=true, 1=false)
         @forced_time_tint               = 0 # (0=off,1=morning,2=mid-day,3=evening,4=night)
         @screenshake                    = 0 # (0=true, 1=false)
-        @flashing_weather               = 0 # (0=true, 1=false)
+        @flashing                       = 0 # (0=true, 1=false)
         @damage_numbers                 = 0 # (0=true, 1=false)
         @show_item_descriptions         = $DEBUG ? 1 : 0 # (0=true, 1=false)
         @effectiveness_messages         = 0 # (0=true, 1=false)

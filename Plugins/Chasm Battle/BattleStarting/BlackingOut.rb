@@ -75,8 +75,6 @@ def pbStartOver(_gameover = false)
         $game_map.refresh
     end
     pbEraseEscapePoint
-
-    leaveTournament
 end
 
 def blackOut

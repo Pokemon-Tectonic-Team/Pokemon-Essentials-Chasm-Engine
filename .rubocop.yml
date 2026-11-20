@@ -1,36 +1,138 @@
-inherit_from:
-- https://relaxed.ruby.style/rubocop.yml
+AllCops:
+    TargetRubyVersion: 3.1
+    NewCops: enable
+
+Layout/IndentationStyle:
+    EnforcedStyle: spaces
+
+Layout/IndentationWidth:
+    Width: 4
+
+Layout/LineLength:
+    Max: 200
+
+Style/StringLiterals:
+    EnforcedStyle: double_quotes
+
+Style/FrozenStringLiteralComment:
+    EnforcedStyle: never
 
 Style/Encoding:
     Enabled: true
 
-Layout/LineLength:
-    Max: 200
-  
-AllCops:
-    TargetRubyVersion: 3.0
-    NewCops: enable
-  
-Layout/IndentationStyle:
-    EnforcedStyle: tabs
-
-Layout/IndentationWidth:
-    Enabled: false
-  
-Naming/VariableName:
-    EnforcedStyle: snake_case
-
-Naming/FileName:
-    Enabled: false
-    
-Style/FrozenStringLiteralComment:
-    EnforcedStyle: never
-
-Style/StringLiterals:
-    EnforcedStyle: double_quotes
-    
+# RPG Maker uses global variables pervasively ($Trainer, $game_switches, etc.)
 Style/GlobalVars:
     Enabled: false
 
-Layout/ArgumentAlignment:  
+Style/SpecialGlobalVars:
+    Enabled: false
+
+# Metrics cops are impractical for complex game-engine battle logic
+Metrics:
+    Enabled: false
+
+# It's not reasonable to update name conventions across the codebase
+Naming:
+    Enabled: false
+
+# Layout cops that produce noise without improving readability in game code
+Layout/ArgumentAlignment:
+    Enabled: false
+
+Layout/HashAlignment:
+    Enabled: false
+
+Layout/FirstHashElementIndentation:
+    Enabled: false
+
+Layout/MultilineMethodCallBraceLayout:
+    Enabled: false
+
+Layout/EmptyLineAfterGuardClause:
+    Enabled: false
+
+# Style cops disabled for patterns that are common and intentional in this codebase
+Style/Documentation:
+    Enabled: false
+
+Style/RedundantReturn:
+    Enabled: false
+
+Style/OptionalBooleanParameter:
+    Enabled: false
+
+Style/ConditionalAssignment:
+    Enabled: false
+
+Style/TernaryParentheses:
+    Enabled: false
+
+Style/GuardClause:
+    Enabled: false
+
+Style/NumericPredicate:
+    Enabled: false
+
+Style/SingleLineMethods:
+    Enabled: false
+
+Style/HashSyntax:
+    Enabled: false
+
+Style/AccessorGrouping:
+    Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+    Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+    Enabled: false
+
+Style/TrailingCommaInArguments:
+    Enabled: false
+
+Style/Alias:
+    Enabled: false
+
+Style/BlockDelimiters:
+    Enabled: false
+
+Style/IfUnlessModifier:
+    Enabled: false
+
+Style/NegatedIf:
+    Enabled: false
+
+Style/WhileUntilModifier:
+    Enabled: false
+
+Style/Lambda:
+    Enabled: false
+
+Style/SymbolArray:
+    Enabled: false
+
+Style/WordArray:
+    Enabled: false
+
+Style/PercentLiteralDelimiters:
+    Enabled: false
+
+Style/SignalException:
+    Enabled: false
+
+Style/CombinableLoops:
+    Enabled: false
+
+# This codebase intentionally groups related classes in files, especially for small MoveCode classes
+Style/OneClassPerFile:
+    Enabled: false
+
+Lint/AssignmentInCondition:
+    Enabled: false
+
+Lint/AmbiguousRegexpLiteral:
+    Enabled: false
+
+Lint/NonLocalExitFromIterator:
     Enabled: false

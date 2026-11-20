@@ -9,4 +9,4 @@ BattleHandlers::PreventAddedEffectTargetAbility.add(:SHIELDDUST,
     }
 )
 
-BattleHandlers::PreventAddedEffectTargetAbility.copy(:SHIELDDUST,:UNCONQUERABLE,:RUGGEDSCALES)
+BattleHandlers::PreventAddedEffectTargetAbility.copy(:SHIELDDUST,:RUGGEDSCALES)

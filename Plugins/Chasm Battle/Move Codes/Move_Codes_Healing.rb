@@ -16,6 +16,44 @@ class PokeBattle_Move_HealUserHalfOfTotalHPLoseFlyingTypeThisTurn < PokeBattle_H
 end
 
 #===============================================================================
+# User heals for 1/2 of its max HP and sets up the Rainbow effect, which doubles
+# Random Added Effect Chance on the user's side. Consumes 500 coins. (Well Wishes)
+#===============================================================================
+class PokeBattle_Move_HealUserHalfOfTotalHPSetupRainbow < PokeBattle_HalfHealingMove
+    def initialize(battle, move)
+        super
+        @coinsToConsume = 500
+        @rainbowDuration = 8
+    end
+
+    def pbMoveFailed?(user, _targets, show_message)
+        if user.pbOwnSide.countEffect(:PayDay) < @coinsToConsume
+            @battle.pbDisplay(_INTL("But it failed, since there are not enough coins on the field!")) if show_message
+            return true
+        end
+        return false
+    end
+
+    def pbEffectGeneral(user)
+        super
+        user.pbOwnSide.effects[:PayDay] -= @coinsToConsume
+        user.pbOwnSide.effects[:PayDay] = 0 if user.pbOwnSide.effects[:PayDay] < 0
+        @battle.pbDisplay(_INTL("{1} threw {2} coins into the Wishing Well!", user.pbThis, @coinsToConsume))
+        user.pbOwnSide.applyEffect(:Rainbow, applyEffectDurationModifiers(@rainbowDuration, user))
+        @battle.pbCommonAnimation("Rainbow", user)
+    end
+
+    def getEffectScore(user, target)
+        score = super
+        side = user.pbOwnSide
+        unless side.effectActive?(:Rainbow)
+            score += 40
+        end
+        return score
+    end
+end
+
+#===============================================================================
 # Battler in user's position is healed by 1/2 of its max HP, at the end of the
 # next round. (Wish)
 #===============================================================================
@@ -130,7 +168,7 @@ class PokeBattle_Move_EmpoweredShoreUp < PokeBattle_HalfHealingMove
 end
 
 #===============================================================================
-# Heals user by 2/3 of its max HP.
+# Heals user by 2/3 of its max HP. (Lounge)
 #===============================================================================
 class PokeBattle_Move_HealUserTwoThirdsOfTotalHP < PokeBattle_HealingMove
     def healRatio(_user)
@@ -204,7 +242,7 @@ end
 
 #===============================================================================
 # Rings the user. Ringed Pokémon gain 1/16 of max HP at the end of each round.
-# (Aqua Ring)
+# (Mending Sprit, Wetland Waltz)
 #===============================================================================
 class PokeBattle_Move_StartHealUserEachTurn < PokeBattle_Move
     def pbMoveFailed?(user, _targets, show_message)
@@ -605,17 +643,18 @@ end
 class PokeBattle_Move_HealUserFullHPBindsTarget < PokeBattle_HealingMove
     def healRatio(_user); return 1.0; end
 
+    def canOverheal?(user); return true; end
+
     def pbMoveFailed?(user, _targets, show_message)
         if user.effectActive?(:Trapping)
             @battle.pbDisplay(_INTL("{1}'s HP is unable to gather any honey!", user.pbThis)) if show_message
             return true
         end
-        return super
     end
 
     def pbEffectGeneral(user)
         super
-        user.applyEffect(:Trapping, 3)
+        user.applyEffect(:Trapping, 2)
         user.applyEffect(:TrappingMove, :INFESTATION)
         user.pointAt(:TrappingUser, user)
 

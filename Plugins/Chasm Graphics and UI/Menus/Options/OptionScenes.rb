@@ -231,7 +231,7 @@ class PokemonOption_Scene_Speed < PokemonOption_Scene_Base
 			),
 			EnumOption.new(
                 _INTL("Team Snapshots"),
-                _INTL("Whether to automatically take screenshots of your Party Showcase after major victories."),
+                _INTL("Whether to auto-screenshot your Party Showcase after major victories."),
                 [_INTL("On"), _INTL("Off")],
 				proc { $Options.party_snapshots },
 				proc { |value|
@@ -265,7 +265,7 @@ class PokemonOption_Scene_Speed < PokemonOption_Scene_Base
 			),
             EnumOption.new(
                 _INTL("EXP-EZ Dispenser Animation"),
-                _INTL("Whether to play an animation showing the Pokemon being fed candy by the EXP-EZ Dispenser."),
+                _INTL("Whether to play the EXP-EZ Dispenser feeding animation."),
                 [_INTL("On"), _INTL("Off")],
 				proc { $Options.expez_dispenser_animation },
 				proc { |value| $Options.expez_dispenser_animation = value }
@@ -520,15 +520,6 @@ class PokemonOption_Scene_Overworld < PokemonOption_Scene_Base
 				}
 			),
             EnumOption.new(
-                _INTL("Flashing"),
-                _INTL("Whether lightning storms display a flashing lightning effect."),
-                [_INTL("On"), _INTL("Off")],
-                proc { $Options.flashing_weather },
-                proc { |value|
-                    $Options.flashing_weather = value
-                }
-            ),
-            EnumOption.new(
                 _INTL("Force Time"),
                 _INTL("Force the overworld lighting of a certain hour of the day."),
                 [_INTL("Off"), _INTL("6"), _INTL("12"), _INTL("18"), _INTL("24")],
@@ -579,6 +570,15 @@ class PokemonOption_Scene_AdvancedGraphics < PokemonOption_Scene_Base
 					$Options.screenshake = value
 				}
 			),
+            EnumOption.new(
+                _INTL("Flashing"),
+                _INTL("Whether to use screen flash effects. Disable if annoying."),
+                [_INTL("On"), _INTL("Off")],
+                proc { $Options.flashing },
+                proc { |value|
+                    $Options.flashing = value
+                }
+            ),
 		])
 	end
 end

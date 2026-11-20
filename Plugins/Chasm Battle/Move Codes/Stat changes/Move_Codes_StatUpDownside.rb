@@ -2,8 +2,8 @@
 # Reduces the user's HP by half of max, and sets its Attack to maximum.
 # (Belly Drum)
 #===============================================================================
-class PokeBattle_Move_MaxUserAtkLoseHalfOfTotalHP < PokeBattle_Move
-    def statUp; return [:ATTACK,12]; end
+class PokeBattle_Move_MaxUserAtkLoseThirdOfTotalHP < PokeBattle_Move
+    def statUp; return [:ATTACK,8]; end
 
     def pbMoveFailed?(user, _targets, show_message)
         if user.hp <= hpLoss(user)
@@ -15,7 +15,7 @@ class PokeBattle_Move_MaxUserAtkLoseHalfOfTotalHP < PokeBattle_Move
     end
 
     def hpLoss(battler)
-        return [(battler.totalhp / 2.0).ceil, 1].max
+        return [(battler.totalhp / 3.0).ceil, 1].max
     end
 
     def pbEffectGeneral(user)
@@ -35,12 +35,11 @@ end
 #===============================================================================
 # Reduces the user's HP by half of max, and sets its Sp. Atk to maximum. (Bad Blood)
 #===============================================================================
-class PokeBattle_Move_MaxUserSpAtkLoseHalfOfTotalHP < PokeBattle_Move
-    def statUp; return [:SPECIAL_ATTACK,12]; end
+class PokeBattle_Move_MaxUserSpAtkLoseThirdOfTotalHP < PokeBattle_Move
+    def statUp; return [:SPECIAL_ATTACK,8]; end
 
     def pbMoveFailed?(user, _targets, show_message)
-        hpLoss = [user.totalhp / 2, 1].max
-        if user.hp <= hpLoss
+        if user.hp <= hpLoss(user)
             @battle.pbDisplay(_INTL("But it failed, since {1}'s HP is too low!", user.pbThis(true))) if show_message
             return true
         end
@@ -48,9 +47,12 @@ class PokeBattle_Move_MaxUserSpAtkLoseHalfOfTotalHP < PokeBattle_Move
         return false
     end
 
+    def hpLoss(battler)
+        return [(battler.totalhp / 3.0).ceil, 1].max
+    end
+
     def pbEffectGeneral(user)
-        hpLoss = [user.totalhp / 2, 1].max
-        user.pbReduceHP(hpLoss, false)
+        user.pbReduceHP(hpLoss(user), false)
         user.pbMaximizeStatStep(:SPECIAL_ATTACK, user, self)
         user.pbItemHPHealCheck
     end

@@ -156,6 +156,14 @@ end
 # Swaps the user's Attack and Defense stats.
 #===============================================================================
 class PokeBattle_Move_SwapPhysicalStats < PokeBattle_Move
+    def pbFailsAgainstTarget?(user, target, show_message)
+        if user.immuneToBaseStatChanges?
+            @battle.pbDisplay(_INTL("But it failed, since {1} can't have its stats modified!", user.pbThis(true))) if show_message
+            return true
+        end
+        return false
+    end
+
     def pbEffectGeneral(user)
         baseAttack = user.base_attack
         baseDefense = user.base_defense
@@ -178,6 +186,14 @@ end
 # Swaps the user's Sp Attack and Sp Def stats.
 #===============================================================================
 class PokeBattle_Move_SwapSpecialStats < PokeBattle_Move
+    def pbFailsAgainstTarget?(user, target, show_message)
+        if user.immuneToBaseStatChanges?
+            @battle.pbDisplay(_INTL("But it failed, since {1} can't have its stats modified!", user.pbThis(true))) if show_message
+            return true
+        end
+        return false
+    end
+
     def pbEffectGeneral(user)
         baseSpAtk = user.base_special_attack
         baseSpDef = user.base_special_defense
@@ -201,6 +217,18 @@ end
 # Averages the user's and target's base Special Attack. (Power Split)
 #===============================================================================
 class PokeBattle_Move_AverageUserTargetOffenses < PokeBattle_Move
+    def pbFailsAgainstTarget?(user, target, show_message)
+        if user.immuneToBaseStatChanges?
+            @battle.pbDisplay(_INTL("But it failed, since {1} can't have its stats modified!", user.pbThis(true))) if show_message
+            return true
+        end
+        if target.immuneToBaseStatChanges?
+            @battle.pbDisplay(_INTL("But it failed, since {1} can't have its stats modified!", target.pbThis(true))) if show_message
+            return true
+        end
+        return false
+    end
+
     def pbEffectAgainstTarget(user, target)
         newAtk   = ((user.base_attack + target.base_attack) / 2).floor
         newSpAtk = ((user.base_special_attack + target.base_special_attack) / 2).floor
@@ -227,7 +255,7 @@ class PokeBattle_Move_AverageUserTargetOffenses < PokeBattle_Move
 end
 
 #===============================================================================
-# Swaps the user's speed and item with the target. (Ion Exchange)
+# Swaps the user's speed and item with the target. (Tit for Tat)
 #===============================================================================
 class PokeBattle_Move_SwitchUserTargetSpeedsItems < PokeBattle_Move_SwapItems
     def pbMoveFailed?(user, _targets, show_message)
@@ -244,7 +272,8 @@ class PokeBattle_Move_SwitchUserTargetSpeedsItems < PokeBattle_Move_SwapItems
 
     def pbEffectAgainstTarget(user, target)
         super
-
+        return if user.immuneToBaseStatChanges?
+        return if target.immuneToBaseStatChanges?
         newUserSpeed   = target.base_speed
         newTargetSpeed = user.base_speed
         user.applyEffect(:BaseSpeed,newUserSpeed)
@@ -276,6 +305,18 @@ end
 # Averages the user's and target's base Special Defense. (Guard Split)
 #===============================================================================
 class PokeBattle_Move_AverageUserTargetDefenses < PokeBattle_Move
+    def pbFailsAgainstTarget?(user, target, show_message)
+        if user.immuneToBaseStatChanges?
+            @battle.pbDisplay(_INTL("But it failed, since {1} can't have its stats modified!", user.pbThis(true))) if show_message
+            return true
+        end
+        if target.immuneToBaseStatChanges?
+            @battle.pbDisplay(_INTL("But it failed, since {1} can't have its stats modified!", target.pbThis(true))) if show_message
+            return true
+        end
+        return false
+    end
+
     def pbEffectAgainstTarget(user, target)
         newDef   = ((user.base_defense + target.base_defense) / 2).floor
         newSpDef = ((user.base_special_defense + target.base_special_defense) / 2).floor

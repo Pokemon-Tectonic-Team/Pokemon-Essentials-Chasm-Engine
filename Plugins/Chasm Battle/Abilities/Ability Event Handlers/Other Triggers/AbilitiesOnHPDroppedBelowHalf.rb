@@ -8,20 +8,6 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:EMERGENCYEXIT,
 
 BattleHandlers::AbilityOnHPDroppedBelowHalf.copy(:EMERGENCYEXIT, :WIMPOUT)
 
-BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BERSERK,
-  proc { |ability, battler, _battle|
-      battler.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, battler, ability: ability)
-      next false
-  }
-)
-
-BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:ADRENALINERUSH,
-  proc { |ability, battler, _battle|
-      battler.tryRaiseStat(:SPEED, battler, increment: 4, ability: ability)
-      next false
-  }
-)
-
 BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BOULDERNEST,
   proc { |ability, battler, battle|
       battle.pbShowAbilitySplash(battler, ability)
@@ -37,13 +23,6 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BOULDERNEST,
   }
 )
 
-BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:REAWAKENEDPOWER,
-  proc { |ability, battler, _battle|
-      battler.pbMaximizeStatStep(:SPECIAL_ATTACK, battler, self, ability: ability)
-      next false
-  }
-)
-
 BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:PRIMEVALDISGUISE,
     proc { |ability, battler, battle|
         next unless battler.illusion?
@@ -54,13 +33,6 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:PRIMEVALDISGUISE,
         battle.pbHideAbilitySplash(battler)
         next false
     }
-)
-
-BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BATTLEHARDENED,
-  proc { |ability, battler, _battle|
-      battler.pbRaiseMultipleStatSteps([:DEFENSE, 3, :SPECIAL_DEFENSE, 3], battler, ability: ability)
-      next false
-  }
 )
 
 BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:RATSNEST,
@@ -112,3 +84,8 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:VOIDWARRANTY,
       battle.pbHideAbilitySplash(battler)
   }
 )
+
+############################################
+# Ability Code for cut or unused abilities
+############################################
+
