@@ -5189,7 +5189,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = FixedDamageOneEighthWaterlogTarget
 Flags = CanProtect
-Description = The target gets covered in sticky spines, waterlogging it and losing 1/8th of their current HP.
+Description = The target gets covered in sticky spines, waterlogging it and losing 1/8th of their max HP.
 Animation = SOAK
 #-------------------------------
 [TIDEPULL]
