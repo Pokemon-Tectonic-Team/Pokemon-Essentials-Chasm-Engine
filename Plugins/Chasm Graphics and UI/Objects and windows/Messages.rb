@@ -9,11 +9,11 @@ end
 
 def pbMapInterpreterRunning?
     interp = pbMapInterpreter
-    return interp && interp.running?
+    return interp&.running?
 end
 
 def pbRefreshSceneMap
-    if $scene && $scene.is_a?(Scene_Map)
+    if $scene.is_a?(Scene_Map)
         if $scene.respond_to?("miniupdate")
             $scene.miniupdate
         else
@@ -23,7 +23,7 @@ def pbRefreshSceneMap
 end
 
 def pbUpdateSceneMap
-    if $scene && $scene.is_a?(Scene_Map) && !pbIsFaded?
+    if $scene.is_a?(Scene_Map) && !pbIsFaded?
         if $scene.respond_to?("miniupdate")
             $scene.miniupdate
         else
@@ -42,12 +42,12 @@ def pbEventCommentInput(*args)
     trigger = args[2]     # Trigger
     return nil if list.nil?
     return nil unless list.is_a?(Array)
-    for item in list
-        next unless item.code == 108 || item.code == 408
+    list.each do |item|
+        next unless [108, 408].include?(item.code)
         next unless item.parameters[0] == trigger
         start = list.index(item) + 1
         finish = start + elements
-        for id in start...finish
+        (start...finish).each do |id|
             next unless list[id]
             parameters.push(list[id].parameters[0])
         end
@@ -202,13 +202,11 @@ def pbChooseNumber(msgwindow, params)
         Input.update
         pbUpdateSceneMap
         cmdwindow.update
-        msgwindow.update if msgwindow
+        msgwindow&.update
         yield if block_given?
         if Input.trigger?(Input::USE)
             ret = cmdwindow.number
-            if ret > maximum
-                pbPlayBuzzerSE
-            elsif ret < minimum
+            if ret > maximum || ret < minimum
                 pbPlayBuzzerSE
             else
                 pbPlayDecisionSE
@@ -228,35 +226,66 @@ end
 #===============================================================================
 #
 #===============================================================================
+# Shows one frame of a face sheet, where frames are laid out four to a row.
+# face is "name" or "name,index", looked up in Graphics/Faces, then
+# Graphics/Pictures, or only in Graphics/Faces shiny if this save flags it shiny.
 class FaceWindowVX < SpriteWindow_Base
-    def initialize(face)
-        super(0, 0, 128, 128)
-        faceinfo = face.split(",")
-        facefile = pbResolveBitmap("Graphics/Faces/" + faceinfo[0])
-        facefile ||= pbResolveBitmap("Graphics/Pictures/" + faceinfo[0])
-        contents.dispose if contents
-        @faceIndex = faceinfo[1].to_i
+    def initialize(face, frameWidth = 96, frameHeight = 96)
+        super(0, 0, frameWidth + 32, frameHeight + 32)
+        name, index = parseFaceSpec(face)
+        facefile = resolveFaceFile(name)
+        contents.dispose
+        @frameWidth = frameWidth
+        @frameHeight = frameHeight
         @facebitmaptmp = AnimatedBitmap.new(facefile)
-        @facebitmap = BitmapWrapper.new(96, 96)
-        factRect = Rect.new((@faceIndex % 4) * 96, (@faceIndex / 4) * 96, 96, 96)
-        @facebitmap.blt(0, 0, @facebitmaptmp.bitmap, factRect)
+        @facebitmap = BitmapWrapper.new(frameWidth, frameHeight)
         self.contents = @facebitmap
+        self.frame = index
+    end
+
+    def frame=(index)
+        @frameRect = faceFrameRect(index, @frameWidth, @frameHeight)
+        redraw
     end
 
     def update
         super
-        if @facebitmaptmp.totalFrames > 1
-            @facebitmaptmp.update
-            faceRect = Rect.new((@faceIndex % 4) * 96, (@faceIndex / 4) * 96, 96, 96)
-            @facebitmap.blt(0, 0, @facebitmaptmp.bitmap, factRect)
-        end
+        return unless @facebitmaptmp.totalFrames > 1
+        @facebitmaptmp.update
+        redraw
     end
 
     def dispose
         @facebitmaptmp.dispose
-        @facebitmap.dispose if @facebitmap
+        @facebitmap.dispose
         super
     end
+
+    private
+
+    def resolveFaceFile(name)
+        unless $shiny_faces.shiny?(name)
+            return pbResolveBitmap("Graphics/Faces/#{name}") || pbResolveBitmap("Graphics/Pictures/#{name}")
+        end
+        file = pbResolveBitmap("Graphics/Faces shiny/#{name}")
+        raise "Face #{name} is flagged shiny but has no sheet in Graphics/Faces shiny" unless file
+        return file
+    end
+
+    def redraw
+        @facebitmap.clear
+        @facebitmap.blt(0, 0, @facebitmaptmp.bitmap, @frameRect)
+    end
+end
+
+# Splits a face spec "name" or "name,index" into [name, index].
+def parseFaceSpec(face)
+    name, index = face.split(",", 2)
+    return [name, index.to_i]
+end
+
+def faceFrameRect(index, frameWidth, frameHeight)
+    return Rect.new((index % 4) * frameWidth, (index / 4) * frameHeight, frameWidth, frameHeight)
 end
 
 #===============================================================================
@@ -272,9 +301,9 @@ end
 
 def pbGetMapNameFromId(id)
     return pbGetMessage(MessageTypes::MapNames, id)
-    map = pbGetBasicMapNameFromId(id)
-    map.gsub!(/\\PN/, $Trainer.name) if $Trainer
-    return map
+    # map = pbGetBasicMapNameFromId(id)
+    # map.gsub!("\\PN", $Trainer.name) if $Trainer
+    # return map
 end
 
 def pbCsvField!(str)
@@ -386,10 +415,10 @@ end
 #===============================================================================
 def pbCreateStatusWindow(viewport = nil)
     msgwindow = Window_AdvancedTextPokemon.new("")
-    if !viewport
-        msgwindow.z = 99_999
-    else
+    if viewport
         msgwindow.viewport = viewport
+    else
+        msgwindow.z = 99_999
     end
     msgwindow.visible = false
     msgwindow.letterbyletter = false
@@ -401,10 +430,10 @@ end
 
 def pbCreateMessageWindow(viewport = nil, skin = nil)
     msgwindow = Window_AdvancedTextPokemon.new("")
-    if !viewport
-        msgwindow.z = 99_999
-    else
+    if viewport
         msgwindow.viewport = viewport
+    else
+        msgwindow.z = 99_999
     end
     msgwindow.visible = true
     msgwindow.letterbyletter = true
@@ -431,7 +460,8 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     ret = nil
     commands = nil
     facewindow = nil
-	iconwindow = nil
+    iconwindow = nil
+    portraits = pbDialoguePortraits
     goldwindow = nil
     coinwindow = nil
     battlepointswindow = nil
@@ -441,14 +471,14 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     autoresume = false
     text = message.clone
     msgback = nil
-    linecount = (Graphics.height > 400) ? 3 : 2
+    linecount = pbDefaultMessageLines
     ### Text replacement
     text.gsub!(/\\sign\[([^\]]*)\]/i) do # \sign[something] gets turned into
-        next "\\op\\cl\\ts[]\\w[" + Regexp.last_match(1) + "]" # \op\cl\ts[]\w[something]
+        next "\\op\\cl\\ts[]\\w[#{Regexp.last_match(1)}]" # \op\cl\ts[]\w[something]
     end
     text = globalMessageReplacements(text)
-    text.gsub!(/\\\\/, "\5")
-    text.gsub!(/\\1/, "\1")
+    text.gsub!("\\\\", "\5")
+    text.gsub!("\\1", "\1")
     if $game_actors
         text.gsub!(/\\n\[([1-8])\]/i) do
             m = Regexp.last_match(1).to_i
@@ -465,11 +495,11 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     end
     text.gsub!(/\\pm/i, _INTL("${1}", $Trainer.money.to_s_formatted)) if $Trainer
     text.gsub!(/\\n/i, "\n")
-    text.gsub!(/\\\[([0-9a-f]{8,8})\]/i) { "<c2=" + Regexp.last_match(1) + ">" }
-    text.gsub!(/\\pg/i, "\\b") if $Trainer && $Trainer.male?
-    text.gsub!(/\\pg/i, "\\r") if $Trainer && $Trainer.female?
-    text.gsub!(/\\pog/i, "\\r") if $Trainer && $Trainer.male?
-    text.gsub!(/\\pog/i, "\\b") if $Trainer && $Trainer.female?
+    text.gsub!(/\\\[([0-9a-f]{8,8})\]/i) { "<c2=#{Regexp.last_match(1)}>" }
+    text.gsub!(/\\pg/i, "\\b") if $Trainer&.male?
+    text.gsub!(/\\pg/i, "\\r") if $Trainer&.female?
+    text.gsub!(/\\pog/i, "\\r") if $Trainer&.male?
+    text.gsub!(/\\pog/i, "\\b") if $Trainer&.female?
     text.gsub!(/\\pg/i, "")
     text.gsub!(/\\pog/i, "")
     text.gsub!(/\\b/i, "<c3=3050C8,D0D0C8>")
@@ -504,7 +534,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
         break if text == last_text
     end
     colortag = ""
-    if $game_system && $game_system.respond_to?("message_frame") &&
+    if $game_system.respond_to?("message_frame") &&
        $game_system.message_frame != 0
         colortag = getSkinColor(msgwindow.windowskin, 0, true)
     else
@@ -514,7 +544,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     ### Controls
     textchunks = []
     controls = []
-    while text[/(?:\\(f|ff|i|p|db|ts|cl|me|se|wt|wtnp|ch)\[([^\]]*)\]|\\(g|cn|pt|wd|wm|wu|wl|wr|op|cl|or|ss|\.|\||!|\^))/i]
+    while text[/(?:\\(f|ff|i|p|db|ml|mc|mr|ts|cl|me|se|wt|wtnp|ch)\[([^\]]*)\]|\\(g|cn|pt|wd|wm|wu|wl|wr|op|cl|or|ss|\.|\||!|\^))/i]
         textchunks.push($~.pre_match)
         if $~[1]
             controls.push([$~[1].downcase, $~[2], -1])
@@ -524,11 +554,11 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
         text = $~.post_match
     end
     textchunks.push(text)
-    for chunk in textchunks
+    textchunks.each do |chunk|
         chunk.gsub!(/\005/, "\\")
     end
     textlen = 0
-    for i in 0...controls.length
+    (0...controls.length).each do |i|
         control = controls[i][0]
         case control
         when "wt", "wtnp", ".", "|"
@@ -539,9 +569,8 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
         textlen += toUnformattedText(textchunks[i]).scan(/./m).length
         controls[i][2] = textlen
     end
-    text = textchunks.join("")
+    text = textchunks.join
     signWaitCount = 0
-    badgeDisplayCount = 0
     begin
         textSpeedSetting = $Options.textspeed
     rescue StandardError
@@ -557,8 +586,9 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     end
     haveSpecialClose = false
     specialCloseSE = ""
+    startSE = nil
     iconFadeInTime = -1
-    for i in 0...controls.length
+    (0...controls.length).each do |i|
         control = controls[i][0]
         param = controls[i][1]
         case control
@@ -569,18 +599,18 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
             haveSpecialClose = true
             specialCloseSE = param
         when "f"
-            facewindow.dispose if facewindow
+            facewindow&.dispose
             facewindow = PictureWindow.new("Graphics/Pictures/#{param}")
         when "ff"
-            facewindow.dispose if facewindow
+            facewindow&.dispose
             facewindow = FaceWindowVX.new(param)
         when "i"
-            facewindow.dispose if facewindow
+            facewindow&.dispose
             icon_location = GameData::Item.icon_filename(param)
             facewindow = PictureWindow.new(icon_location)
             facewindow.visible = false
         when "p"
-            facewindow.dispose if facewindow
+            facewindow&.dispose
             partyMember = $Trainer.party[param.to_i]
             if partyMember
                 partyMemberBitmap = GameData::Species.sprite_bitmap_from_pokemon($Trainer.party[param.to_i])
@@ -588,10 +618,10 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 facewindow.visible = false
             end
         when "db" # Display big
-            iconwindow.dispose if iconwindow
+            iconwindow&.dispose
             icon_location = "Graphics/#{param}"
             iconwindow = IconSprite.new(msgwindow.viewport)
-			iconwindow.setBitmap(icon_location)
+            iconwindow.setBitmap(icon_location)
             iconwindow.visible = false
             iconwindow.opacity = 0
             msgwindow.visible = false
@@ -601,7 +631,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
             cmdvariable = pbCsvPosInt!(cmds)
             cmdIfCancel = pbCsvField!(cmds).to_i
             commands = []
-            commands.push(pbCsvField!(cmds)) while cmds.length > 0
+            commands.push(pbCsvField!(cmds)) until cmds.empty?
         when "wtnp", "^"
             text = text.sub(/\001\z/, "") # fix: '$' can match end of line as well
         when "se"
@@ -628,12 +658,8 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     Graphics.frame_reset if Graphics.frame_rate > 40
     iconFadeInCount = iconFadeInTime
     loop do
-        if $SpeakerNameWindow
-            pbPositionNearMsgWindow($SpeakerNameWindow, msgwindow, :left)
-            $SpeakerNameWindow.y += 12
-            $SpeakerNameWindow.x += 12
-            $SpeakerNameWindow.z = msgwindow.z + 1
-        end
+        portraits&.anchor(PortraitAnchor.of(msgwindow))
+        positionSpeakerWindow(msgwindow, portraits&.speakerPlacement)
         if iconFadeInCount > 0
             fadeProgress = (iconFadeInTime - iconFadeInCount) / iconFadeInTime.to_f
             iconwindow.opacity = (fadeProgress * 255).ceil
@@ -648,26 +674,26 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 msgwindow.y = -msgwindow.height * signWaitCount / signWaitTime
                 facewindow.y = -facewindow.height * signWaitCount / signWaitTime if facewindow
             else
-                msgwindow.y = Graphics.height - msgwindow.height * (signWaitTime - signWaitCount) / signWaitTime
+                msgwindow.y = Graphics.height - (msgwindow.height * (signWaitTime - signWaitCount) / signWaitTime)
                 if facewindow
-                    facewindow.y = Graphics.height - facewindow.height * (signWaitTime - signWaitCount) / signWaitTime
+                    facewindow.y = Graphics.height - (facewindow.height * (signWaitTime - signWaitCount) / signWaitTime)
                 end
             end
         end
-        for i in 0...controls.length
+        (0...controls.length).each do |i|
             next unless controls[i]
             next if controls[i][2] > msgwindow.position || msgwindow.waitcount != 0
             control = controls[i][0]
             param = controls[i][1]
             case control
             when "f"
-                facewindow.dispose if facewindow
+                facewindow&.dispose
                 facewindow = PictureWindow.new("Graphics/Pictures/#{param}")
                 pbPositionNearMsgWindow(facewindow, msgwindow, :left)
                 facewindow.viewport = msgwindow.viewport
                 facewindow.z        = msgwindow.z
             when "i"
-                facewindow.dispose if facewindow
+                facewindow&.dispose
                 icon_location = GameData::Item.icon_filename(param)
                 facewindow = PictureWindow.new(icon_location)
                 pbPositionNearMsgWindow(facewindow, msgwindow, :left)
@@ -678,11 +704,11 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                     if atTop
                         facewindow.y = -facewindow.height * signWaitCount / signWaitTime if facewindow
                     elsif facewindow
-                        facewindow.y = Graphics.height - facewindow.height * (signWaitTime - signWaitCount) / signWaitTime
+                        facewindow.y = Graphics.height - (facewindow.height * (signWaitTime - signWaitCount) / signWaitTime)
                     end
                 end
             when "p"
-                facewindow.dispose if facewindow
+                facewindow&.dispose
                 partyMember = $Trainer.party[param.to_i]
                 if partyMember
                     partyMemberBitmap = GameData::Species.sprite_bitmap_from_pokemon(partyMember)
@@ -695,7 +721,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                         if atTop
                             facewindow.y = -facewindow.height * signWaitCount / signWaitTime if facewindow
                         elsif facewindow
-                            facewindow.y = Graphics.height - facewindow.height * (signWaitTime - signWaitCount) / signWaitTime
+                            facewindow.y = Graphics.height - (facewindow.height * (signWaitTime - signWaitCount) / signWaitTime)
                         end
                     end
                     Pokemon.play_cry(partyMember.species)
@@ -704,31 +730,33 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 iconwindow.dispose if facewindow
                 icon_location = "Graphics/#{param}"
                 iconwindow = IconSprite.new(msgwindow.viewport)
-				iconwindow.setBitmap(icon_location)
-				iconwindow.zoom_x 	= 4.0
-                iconwindow.zoom_y 	= 4.0
-                iconwindow.z        = msgwindow.z
-				iconwindow.x		= (Graphics.width - iconwindow.get_display_width) / 2
-                iconwindow.y 		= (Graphics.height / 2.0 - (iconwindow.get_display_height * 2) / 3.0).ceil + iconFadeInTime
+                iconwindow.setBitmap(icon_location)
+                iconwindow.zoom_x	= 4.0
+                iconwindow.zoom_y	= 4.0
+                iconwindow.z = msgwindow.z
+                iconwindow.x	= (Graphics.width - iconwindow.get_display_width) / 2
+                iconwindow.y	= ((Graphics.height / 2.0) - ((iconwindow.get_display_height * 2) / 3.0)).ceil + iconFadeInTime
                 msgwindow.waitcount = iconFadeInTime
                 autoresume = true
             when "or"
                 msgwindow.x	= 60
                 msgwindow.width	-= 60
             when "ff"
-                facewindow.dispose if facewindow
+                facewindow&.dispose
                 facewindow = FaceWindowVX.new(param)
                 pbPositionNearMsgWindow(facewindow, msgwindow, :left)
                 facewindow.viewport = msgwindow.viewport
                 facewindow.z        = msgwindow.z
+            when "ml", "mc", "mr"
+                portraits&.show(PORTRAIT_SIDES[control], param, PortraitAnchor.of(msgwindow))
             when "g"      # Display gold window
-                goldwindow.dispose if goldwindow
+                goldwindow&.dispose
                 goldwindow = pbDisplayGoldWindow(msgwindow)
             when "cn"     # Display coins window
-                coinwindow.dispose if coinwindow
+                coinwindow&.dispose
                 coinwindow = pbDisplayCoinsWindow(msgwindow, goldwindow)
             when "pt"     # Display battle points window
-                battlepointswindow.dispose if battlepointswindow
+                battlepointswindow&.dispose
                 battlepointswindow = pbDisplayBattlePointsWindow(msgwindow)
             when "wu" # Window Up
                 msgwindow.y = 0
@@ -746,7 +774,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 msgwindow.y = Graphics.height - msgwindow.height
                 msgback.y = msgwindow.y if msgback
                 pbPositionNearMsgWindow(facewindow, msgwindow, :left)
-                msgwindow.y = Graphics.height - msgwindow.height * (signWaitTime - signWaitCount) / signWaitTime
+                msgwindow.y = Graphics.height - (msgwindow.height * (signWaitTime - signWaitCount) / signWaitTime)
             when "wl" # Window Left
                 msgwindow.x = 0
                 msgwindow.width = Graphics.width - 400
@@ -782,8 +810,8 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
         break unless letterbyletter
         Graphics.update
         Input.update
-        facewindow.update if facewindow
-		iconwindow.update if iconwindow
+        facewindow&.update
+        iconwindow&.update
         if autoresume && msgwindow.waitcount == 0
             msgwindow.resume if msgwindow.busy?
             break unless msgwindow.busy?
@@ -808,30 +836,31 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
         $game_map.need_refresh = true if $game_map
     end
     ret = commandProc.call(msgwindow) if commandProc
-    msgback.dispose if msgback
-    goldwindow.dispose if goldwindow
-    coinwindow.dispose if coinwindow
-    battlepointswindow.dispose if battlepointswindow
+    msgback&.dispose
+    goldwindow&.dispose
+    coinwindow&.dispose
+    battlepointswindow&.dispose
     if haveSpecialClose
         pbSEPlay(pbStringToAudioFile(specialCloseSE))
         atTop = (msgwindow.y == 0)
-        for i in 0..signWaitTime
+        (0..signWaitTime).each do |i|
             if atTop
                 msgwindow.y = -msgwindow.height * i / signWaitTime
                 facewindow.y = -facewindow.height * i / signWaitTime if facewindow
             else
-                msgwindow.y = Graphics.height - msgwindow.height * (signWaitTime - i) / signWaitTime
-                facewindow.y = Graphics.height - facewindow.height * (signWaitTime - i) / signWaitTime if facewindow
+                msgwindow.y = Graphics.height - (msgwindow.height * (signWaitTime - i) / signWaitTime)
+                facewindow.y = Graphics.height - (facewindow.height * (signWaitTime - i) / signWaitTime) if facewindow
             end
             Graphics.update
             Input.update
             pbUpdateSceneMap
             msgwindow.update
-            facewindow.update if facewindow
+            facewindow&.update
+            portraits&.anchor(PortraitAnchor.of(msgwindow))
         end
     end
-    facewindow.dispose if facewindow
-	iconwindow.dispose if iconwindow
+    facewindow&.dispose
+    iconwindow&.dispose
     $SpeakerNameWindow.visible = false if $SpeakerNameWindow
     return ret
 end
@@ -878,12 +907,12 @@ def pbMessage(message, commands = nil, cmdIfCancel = 0, skin = nil, defaultCmd =
     return ret
 end
 
-def pbConfirmMessage(message, &block)
-    return (pbMessage(message, [_INTL("Yes"), _INTL("No")], 2, &block) == 0)
+def pbConfirmMessage(message, &)
+    return pbMessage(message, [_INTL("Yes"), _INTL("No")], 2, &) == 0
 end
 
-def pbConfirmMessageSerious(message, &block)
-    return (pbMessage(message, [_INTL("No"), _INTL("Yes")], 1, &block) == 1)
+def pbConfirmMessageSerious(message, &)
+    return pbMessage(message, [_INTL("No"), _INTL("Yes")], 1, &) == 1
 end
 
 def pbConfirmMessageGated(message, &block)
@@ -894,12 +923,12 @@ def pbConfirmMessageGated(message, &block)
     end
 end
 
-def pbMessageChooseNumber(message, params, &block)
+def pbMessageChooseNumber(message, params, &)
     msgwindow = pbCreateMessageWindow(nil, params.messageSkin)
     ret = pbMessageDisplay(msgwindow, message, true,
        proc { |msgwindow|
            next pbChooseNumber(msgwindow, params, &block)
-       }, &block)
+       }, &)
     pbDisposeMessageWindow(msgwindow)
     return ret
 end
@@ -917,7 +946,7 @@ def pbShowCommands(msgwindow, commands = nil, cmdIfCancel = 0, defaultCmd = 0)
         Graphics.update
         Input.update
         cmdwindow.update
-        msgwindow.update if msgwindow
+        msgwindow&.update
         yield if block_given?
         if Input.trigger?(Input::BACK)
             if cmdIfCancel > 0
@@ -995,7 +1024,7 @@ def pbMessageWaitForInput(msgwindow, frames, showPause = false)
     frames.times do
         Graphics.update
         Input.update
-        msgwindow.update if msgwindow
+        msgwindow&.update
         pbUpdateSceneMap
         break if Input.trigger?(Input::USE) || Input.trigger?(Input::BACK)
         yield if block_given?
@@ -1024,7 +1053,7 @@ def pbFreeText(msgwindow, currenttext, passwordbox, maxlength, width = 240)
             break
         end
         window.update
-        msgwindow.update if msgwindow
+        msgwindow&.update
         yield if block_given?
     end
     Input.text_input = false
@@ -1033,12 +1062,12 @@ def pbFreeText(msgwindow, currenttext, passwordbox, maxlength, width = 240)
     return ret
 end
 
-def pbMessageFreeText(message, currenttext, passwordbox, maxlength, width = 240, &block)
+def pbMessageFreeText(message, currenttext, passwordbox, maxlength, width = 240, &)
     msgwindow = pbCreateMessageWindow
     retval = pbMessageDisplay(msgwindow, message, true,
        proc { |msgwindow|
            next pbFreeText(msgwindow, currenttext, passwordbox, maxlength, width, &block)
-       }, &block)
+       }, &)
     pbDisposeMessageWindow(msgwindow)
     return retval
 end
@@ -1046,70 +1075,70 @@ end
 # Displays text options in the message box, allowing the player to scroll through them
 # with left/right arrows and select with A. Returns the selected index or -1 if cancelled.
 def pbScrollableTextSelection(options, initial_index = 0)
-  msgwindow = pbCreateMessageWindow
-  index = initial_index.clamp(0, options.length - 1)
-  ret = -1
+    msgwindow = pbCreateMessageWindow
+    index = initial_index.clamp(0, options.length - 1)
+    ret = -1
 
-  # Create a separate window for the navigation indicator
-  navwindow = Window_AdvancedTextPokemon.new("")
-  navwindow.viewport = msgwindow.viewport
-  navwindow.z = msgwindow.z
-  navwindow.letterbyletter = false
-  navwindow.baseColor = MessageConfig.pbDefaultTextMainColor
-  navwindow.shadowColor = MessageConfig.pbDefaultTextShadowColor
-  # Calculate padding width based on total options
-  total_digits = options.length.to_s.length
-  # Size the window to fit the text
-  nav_text = _INTL("{1}/{2}", options.length, options.length)
-  navwindow.resizeToFit(nav_text, Graphics.width)
-  # Position above the message window, on the right side
-  navwindow.x = Graphics.width - navwindow.width
-  navwindow.y = msgwindow.y - navwindow.height
+    # Create a separate window for the navigation indicator
+    navwindow = Window_AdvancedTextPokemon.new("")
+    navwindow.viewport = msgwindow.viewport
+    navwindow.z = msgwindow.z
+    navwindow.letterbyletter = false
+    navwindow.baseColor = MessageConfig.pbDefaultTextMainColor
+    navwindow.shadowColor = MessageConfig.pbDefaultTextShadowColor
+    # Calculate padding width based on total options
+    total_digits = options.length.to_s.length
+    # Size the window to fit the text
+    nav_text = _INTL("{1}/{2}", options.length, options.length)
+    navwindow.resizeToFit(nav_text, Graphics.width)
+    # Position above the message window, on the right side
+    navwindow.x = Graphics.width - navwindow.width
+    navwindow.y = msgwindow.y - navwindow.height
 
-  loop do
-    msgwindow.letterbyletter = false
-    msgwindow.text = options[index]
+    loop do
+        msgwindow.letterbyletter = false
+        msgwindow.text = options[index]
 
-    padded_index = sprintf("%0#{total_digits}d", index + 1)
-    navwindow.text = _INTL("{1}/{2}", padded_index, options.length)
+        padded_index = format("%0#{total_digits}d", index + 1)
+        navwindow.text = _INTL("{1}/{2}", padded_index, options.length)
 
-    Graphics.update
-    Input.update
-    msgwindow.update
-    navwindow.update
-    pbUpdateSceneMap
+        Graphics.update
+        Input.update
+        msgwindow.update
+        navwindow.update
+        pbUpdateSceneMap
 
-    if Input.trigger?(Input::LEFT) || Input.trigger?(Input::UP)
-      pbPlayCursorSE
-      index = (index - 1) % options.length
-    elsif Input.trigger?(Input::RIGHT) || Input.trigger?(Input::DOWN)
-      pbPlayCursorSE
-      index = (index + 1) % options.length
-    elsif Input.trigger?(Input::USE)
-      pbPlayDecisionSE
-      ret = index
-      break
-    elsif Input.trigger?(Input::BACK)
-      pbPlayCancelSE
-      ret = -1
-      break
+        if Input.trigger?(Input::LEFT) || Input.trigger?(Input::UP)
+            pbPlayCursorSE
+            index = (index - 1) % options.length
+        elsif Input.trigger?(Input::RIGHT) || Input.trigger?(Input::DOWN)
+            pbPlayCursorSE
+            index = (index + 1) % options.length
+        elsif Input.trigger?(Input::USE)
+            pbPlayDecisionSE
+            ret = index
+            break
+        elsif Input.trigger?(Input::BACK)
+            pbPlayCancelSE
+            ret = -1
+            break
+        end
     end
-  end
 
-  navwindow.dispose
-  pbDisposeMessageWindow(msgwindow)
-  return ret
+    navwindow.dispose
+    pbDisposeMessageWindow(msgwindow)
+    return ret
 end
 
 def break_string(str, character_count)
     arr = []
-    pos = 0     
+    pos = 0
     loop do
         break arr if pos == str.size
-        if str[pos] == ' '
+        if str[pos] == " "
             pos += 1
         end
-        m = str.match(/.{1,#{character_count}}(?=[ ]|\z)|.{,#{character_count-1}}[ ]/, pos)
+        m = str.match(/.{1,#{character_count}}(?= |\z)|.{,#{character_count - 1}} /, pos)
         return nil if m.nil?
         arr << m[0]
         pos += m[0].size
