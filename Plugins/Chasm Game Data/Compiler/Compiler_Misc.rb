@@ -7,6 +7,7 @@ module Compiler
 
         signatureMoveInfo.each do |moveID,signatureHolder|
             GameData::Move.get(moveID).signature_of = signatureHolder
+            GameData::Species.get(signatureHolder).signature_moves.push(moveID)
         end
 
         # Pokemon with the TutorAny flag inherit all non signature moves
@@ -21,6 +22,7 @@ module Compiler
 
         signatureAbilityInfo.each do |abilityID,signatureHolder|
             GameData::Ability.get(abilityID).signature_of = signatureHolder
+            GameData::Species.get(signatureHolder).signature_abilities.push(abilityID)
         end
 
         # Move learning metadata
@@ -59,6 +61,7 @@ module Compiler
         # Save all data
         GameData::Move.save
         GameData::Ability.save
+        GameData::Species.save
         Graphics.update
     end
 end
