@@ -19,6 +19,7 @@ class PokemonTemp
     attr_accessor :encounterType
     attr_accessor :evolutionLevels
     attr_writer   :dependentEvents
+    attr_accessor :opponentHelperTrainer
 
     # Overworld trackers
     attr_accessor :batterywarning
@@ -89,6 +90,7 @@ class PokemonTemp
 
     def clearBattleRules
       self.battleRules.clear
+      @opponentHelperTrainer = nil
     end
 
     def recordBattleRule(rule,var=nil)
@@ -121,21 +123,17 @@ class PokemonTemp
       when "base"                   then rules["base"]           = var
       when "outcome", "outcomevar"  then rules["outcomeVar"]     = var
       when "nopartner"              then rules["noPartner"]      = true
+      when "nohelper"               then rules["noHelper"]      = true
       when "randomorder";           then rules["randomOrder"]    = true
       when "turnstosurvive";        then rules["turnsToSurvive"] = var
       when "autotesting"            then rules["autotesting"]    = true
       when "playerambush"           then rules["playerambush"]   = true
       when "foeambush"              then rules["foeambush"]      = true
       when "lanetargeting"          then rules["lanetargeting"]   = true
-      when "doubleshift"           then rules["doubleshift"]   = true
+      when "doubleshift"            then rules["doubleshift"]   = true
       else
         raise _INTL("Battle rule \"{1}\" does not exist.", rule)
       end
     end
-
-    def dragonFlames
-      @dragonFlames = [] if @dragonFlames.nil?
-      return @dragonFlames
-  end
 end
   
