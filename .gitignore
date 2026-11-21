@@ -27,4 +27,6 @@ Data/PBSExtensions.rxdata
 Data/GraphicsExtensions.rxdata
 server.log
 .idea/
+Build files/Releases/
+.env
 .rubocop-https*
