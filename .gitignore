@@ -28,3 +28,4 @@ Data/GraphicsExtensions.rxdata
 server.log
 .idea/
 .rubocop-https*
+/coverage/
