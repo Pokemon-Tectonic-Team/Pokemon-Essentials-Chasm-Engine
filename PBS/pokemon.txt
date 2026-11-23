@@ -14725,8 +14725,8 @@ Name = Ducklett
 Type1 = FLYING
 Type2 = FAIRY
 # HP, Attack, Defense, Speed, Sp. Atk, Sp. Def
-BaseStats = 65,65,55,60,40,50
-# Total = 335
+BaseStats = 60,85,65,80,55,50
+# Total = 395
 BaseEXP = 61
 Rareness = 145
 Abilities = INTIMIDATE,SLIPSTREAM
@@ -14741,7 +14741,7 @@ Pokedex = They are better at swimming than flying, and they happily eat their fa
 Generation = 5
 Flags = Grounded
 WildItemUncommon = FAIRYFEATHER
-Evolutions = SWANNA,Level,38
+Evolutions = SWANNA,Level,33
 #-------------------------------
 [SWANNA]
 Name = Swanna
