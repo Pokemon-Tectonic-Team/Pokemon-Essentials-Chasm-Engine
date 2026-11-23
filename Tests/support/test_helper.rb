@@ -24,6 +24,7 @@ require_relative "core_scripts"
 require_relative "plugin_files"
 require_relative "plugin_loader"
 require_relative "test_reset"
+require_relative "record_factories"
 
 CoreScripts.load(File.join(repo_root, "Data", "Scripts.rxdata"), PluginFiles::CORE_SCRIPTS)
 require_relative "localisation_stubs"
@@ -31,3 +32,4 @@ PluginLoader.load(repo_root, PluginFiles::PLUGIN_FILES)
 
 TestReset.baseline = GameDataSnapshot.take
 Minitest::Test.include(TestReset)
+Minitest::Test.include(RecordFactories)

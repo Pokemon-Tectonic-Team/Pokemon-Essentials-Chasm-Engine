@@ -74,3 +74,14 @@ If the code you're testing relies on Essentials internals, either add a simple
 fake version of that function to the appropriate stub file under
 `Tests/support/`, or to load the real version, add its name to the
 `CORE_SCRIPTS` list in `plugin_files.rb`.
+
+Tests don't read the game's PBS data. Each test registers the records it needs,
+types included, with the helpers in `Tests/support/record_factories.rb`:
+
+```ruby
+create_type(id: :FIRE, weaknesses: [:WATER])
+create_move(id: :EMBER, type: :FIRE, base_damage: 40)
+```
+
+Give each record an `id` and whatever fields the code you're testing reads; the
+rest get defaults. Everything a test registers is gone before the next test.
