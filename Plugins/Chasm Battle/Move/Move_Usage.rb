@@ -288,7 +288,7 @@ class PokeBattle_Move
             return true
         end
         if target.movedThisRound?
-            @battle.pbDisplay(_INTL("But it failed, since {1} already move this turn!", target.pbThis(true))) if showMessage
+            @battle.pbDisplay(_INTL("But it failed, since {1} already moved this turn!", target.pbThis(true))) if showMessage
             return true
         end
         return false
