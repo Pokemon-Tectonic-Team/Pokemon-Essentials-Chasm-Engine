@@ -7,7 +7,10 @@ module GameData
     #=============================================================================
     module ClassMethods
       def register(hash)
-        self::DATA[hash[:id]] = self::DATA[hash[:id_number]] = self.new(hash)
+        record = self.new(hash)
+        self::DATA[hash[:id]] = record
+        self::DATA[hash[:id_number]] = record unless hash[:id_number].nil?
+        return record
       end
   
       # @param other [Symbol, self, String, Integer]

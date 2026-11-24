@@ -14,6 +14,7 @@ module PluginFiles
     PLUGIN_FILES = [
         "_Settings/GameSettings.rb",
         "Chasm Game Data/GameData.rb",
+        "Chasm Game Data/AvatarConstants.rb",
         "Chasm Game Data/Compiled Data/Type.rb",
         "Chasm Game Data/Compiled Data/Ability.rb",
         "Chasm Game Data/Compiled Data/Item.rb",
@@ -22,5 +23,6 @@ module PluginFiles
         "Chasm Game Data/Static Data/Stat.rb",
         "Chasm Game Data/Static Data/Status.rb",
         "Chasm Game Data/Static Data/Target.rb",
+        "Chasm Battle/Effects/BattleEffect.rb",
     ].freeze
 end
