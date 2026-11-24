@@ -9,6 +9,7 @@ module PluginFiles
         Validation
         Compiler
         PluginManager
+        EventSystem
     ].freeze
 
     PLUGIN_FILES = [
@@ -24,5 +25,20 @@ module PluginFiles
         "Chasm Game Data/Static Data/Status.rb",
         "Chasm Game Data/Static Data/Target.rb",
         "Chasm Battle/Effects/BattleEffect.rb",
+        "Chasm Battle/BattleHandlers.rb",
+        "Chasm Battle/Battler/Battler_Properties.rb",
+        "Chasm Battle/Pokemon/Pokemon_Move.rb",
+        "Chasm Battle/Move/PokeBattle_Move.rb",
+        "Chasm Battle/Move/Move_Usage.rb",
+        "Chasm Battle/Move Codes/ParentMoveCodes.rb",
+        "Chasm Battle/Move Codes/Damage modifying/Move_Codes_VariablePower.rb",
+        "Chasm Battle/Move Codes/Move_Codes_FixedDamage.rb",
+        "Chasm Battle/Move Codes/Move_Codes_HelpingHand.rb",
+        "Chasm Battle/Move Codes/Move_Codes_MoveOrder.rb",
+        "Chasm Battle/Battle/PokeBattle_Battle.rb",
+        "Chasm Battle/Battle/PokeBattle_Weather.rb",
+        "Chasm Battle/Items/ItemHandlerHelpers.rb",
+        "Chasm Battle/Items/BattleHandlers/Damage/DamageCalcUserItems.rb",
+        "Chasm Battle/Abilities/Ability Event Handlers/Modify Move/MoveBaseTypeModifierAbilities.rb",
     ].freeze
 end

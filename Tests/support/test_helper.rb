@@ -1,5 +1,5 @@
 # The one file every test requires. Sets up gems and coverage, loads the core scripts and plugin
-# files tests use, and resets GameData before every test.
+# files tests use and the battle fakes over them, and resets game state before every test.
 repo_root = File.expand_path("../..", __dir__)
 
 ENV["BUNDLE_GEMFILE"] = File.join(repo_root, "Gemfile")
@@ -25,11 +25,15 @@ require_relative "plugin_files"
 require_relative "plugin_loader"
 require_relative "test_reset"
 require_relative "record_factories"
+require_relative "move_factory"
 
 CoreScripts.load(File.join(repo_root, "Data", "Scripts.rxdata"), PluginFiles::CORE_SCRIPTS)
 require_relative "localisation_stubs"
 PluginLoader.load(repo_root, PluginFiles::PLUGIN_FILES)
+require_relative "test_battler"
+require_relative "test_battle"
 
-TestReset.baseline = GameDataSnapshot.take
+TestReset.baseline = StateSnapshot.take
 Minitest::Test.include(TestReset)
 Minitest::Test.include(RecordFactories)
+Minitest::Test.include(MoveFactory)

@@ -1,6 +1,6 @@
-require_relative "game_data_snapshot"
+require_relative "state_snapshot"
 
-# Before every test, puts GameData back to the baseline the harness took once game code loaded.
+# Before every test, puts game state back to the baseline the harness took once game code loaded.
 module TestReset
     class << self
         attr_accessor :baseline
@@ -8,6 +8,6 @@ module TestReset
 
     def before_setup
         super
-        GameDataSnapshot.restore(TestReset.baseline)
+        StateSnapshot.restore(TestReset.baseline)
     end
 end

@@ -85,3 +85,14 @@ create_move(id: :EMBER, type: :FIRE, base_damage: 40)
 
 Give each record an `id` and whatever fields the code you're testing reads; the
 rest get defaults. Everything a test registers is gone before the next test.
+
+For battle code, the `TestBattler` and `TestBattle` classes let you set up
+simple battle state, specifying only what you need. `make_move` creates a test
+move object instead of only a test PBS record.
+
+```ruby
+target = TestBattler.new(hp: 50, totalhp: 100)
+battle = TestBattle.new(battlers: [target])
+quash = make_move(PokeBattle_Move_TargetActsLast, battle: battle)
+```
+
