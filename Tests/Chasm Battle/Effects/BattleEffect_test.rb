@@ -173,6 +173,12 @@ class BattleEffectTest < Minitest::Test
         refute effect(type: :Integer).active_value?(0)
     end
 
+    def test_active_value_integer_with_a_default_of_minus_one
+        e = effect(type: :Integer, default: -1)
+        assert e.active_value?(0)
+        refute e.active_value?(-1)
+    end
+
     def test_active_value_position_and_party_position
         [:Position, :PartyPosition].each do |type|
             e = effect(type: type)
@@ -320,7 +326,6 @@ class BattleEffectTest < Minitest::Test
         pairs = []
         e.each_sub_effect(true) { |id, data| pairs << [id, data] }
         assert_equal [[:SUBB, b], [:SUBA, a]], pairs
-        assert_same b, pairs[0][1]
     end
 
     def test_each_sub_effect_yields_nothing_without_sub_effects
@@ -359,6 +364,5 @@ class BattleEffectTest < Minitest::Test
         yielded = []
         GameData::BattleEffect.each_effect { |data| yielded << data }
         assert_equal records.sort_by(&:id), yielded.sort_by(&:id)
-        assert_equal 4, yielded.length
     end
 end

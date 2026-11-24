@@ -8,7 +8,7 @@ tests would save us effort in review!
 ## Usage
 
 You'll need to install Ruby locally on your PC, separately from the RMXP engine.
-Version 3.2 or later is required, 4.0 is recommended. The easiest way to install
+Version 3.3 or later is required, 4.0 is recommended. The easiest way to install
 Ruby on Windows is from RubyInstaller.org.
 
 To set up tests and linting for the first time, open a command prompt in the
@@ -95,4 +95,3 @@ target = TestBattler.new(hp: 50, totalhp: 100)
 battle = TestBattle.new(battlers: [target])
 quash = make_move(PokeBattle_Move_TargetActsLast, battle: battle)
 ```
-

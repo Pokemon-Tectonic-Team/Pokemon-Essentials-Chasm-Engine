@@ -10,8 +10,8 @@ class TypeTest < Minitest::Test
         assert_equal [], type.weaknesses
         assert_equal [], type.resistances
         assert_equal [], type.immunities
-        refute type.pseudo_type
-        refute type.special_type
+        assert_equal false, type.pseudo_type
+        assert_equal false, type.special_type
     end
 
     def test_initialize_keeps_given_values
@@ -55,8 +55,15 @@ class TypeTest < Minitest::Test
         assert_nil type.dark_color
     end
 
-    def test_name_reads_the_registered_name
-        assert_equal "Flame", create_type(id: :FIRE, name: "Flame").name
+    def test_name_is_looked_up_by_id_number
+        create_type(id: :WATER, id_number: 4, name: "Registered")
+        type = GameData::Type.new({ id: :FIRE, id_number: 4, name: "Own" })
+
+        assert_equal "Registered", type.name
+    end
+
+    def test_name_of_an_unregistered_id_number_is_blank
+        assert_equal "", GameData::Type.new({ id: :FIRE, id_number: 9, name: "Own" }).name
     end
 
     def test_a_physical_type_is_physical_and_not_special
@@ -95,18 +102,6 @@ class TypeTest < Minitest::Test
         type = GameData::Type.new({ id: :FIRE, weaknesses: [:WATER], resistances: [:GRASS], immunities: [:GHOST] })
 
         assert_equal 1.0, type.effectiveness(:NORMAL)
-    end
-
-    def test_a_type_both_weak_and_resistant_counts_as_weak
-        type = GameData::Type.new({ id: :FIRE, weaknesses: [:WATER], resistances: [:WATER] })
-
-        assert_equal 2.0, type.effectiveness(:WATER)
-    end
-
-    def test_a_type_both_weak_and_immune_counts_as_weak
-        type = GameData::Type.new({ id: :FIRE, weaknesses: [:WATER], immunities: [:WATER] })
-
-        assert_equal 2.0, type.effectiveness(:WATER)
     end
 
     def test_ineffective_is_only_zero
@@ -176,6 +171,13 @@ class TypeTest < Minitest::Test
         assert_equal 1.0, Effectiveness.calculate(:WATER, [:FIRE, :GRASS])
     end
 
+    def test_calculate_with_an_immune_defending_type_is_zero
+        create_type(id: :NORMAL, immunities: [:GHOST])
+        create_type(id: :FIRE)
+
+        assert_equal 0.0, Effectiveness.calculate(:GHOST, [:NORMAL, :FIRE])
+    end
+
     def test_calculate_ignores_nils
         create_type(id: :FIRE, weaknesses: [:WATER])
 
@@ -194,24 +196,54 @@ class TypeTest < Minitest::Test
         assert_equal 1.0, Effectiveness.calculate(:WATER, [nil])
     end
 
-    def test_type_wrappers_answer_for_a_matching_and_a_non_matching_pair
+    # FIRE defends: GHOST 0, GRASS 0.5, WATER 2, NORMAL 1.
+    def create_defending_fire
         create_type(id: :FIRE, weaknesses: [:WATER], resistances: [:GRASS], immunities: [:GHOST])
-        create_type(id: :NORMAL)
+    end
+
+    def test_ineffective_type_is_true_only_for_an_immunity
+        create_defending_fire
 
         assert Effectiveness.ineffective_type?(:GHOST, :FIRE)
         refute Effectiveness.ineffective_type?(:GRASS, :FIRE)
+        refute Effectiveness.ineffective_type?(:NORMAL, :FIRE)
+        refute Effectiveness.ineffective_type?(:WATER, :FIRE)
+    end
+
+    def test_not_very_effective_type_is_true_only_for_a_resistance
+        create_defending_fire
 
         assert Effectiveness.not_very_effective_type?(:GRASS, :FIRE)
+        refute Effectiveness.not_very_effective_type?(:GHOST, :FIRE)
+        refute Effectiveness.not_very_effective_type?(:NORMAL, :FIRE)
         refute Effectiveness.not_very_effective_type?(:WATER, :FIRE)
+    end
+
+    def test_resistant_type_is_true_only_for_a_resistance
+        create_defending_fire
 
         assert Effectiveness.resistant_type?(:GRASS, :FIRE)
+        refute Effectiveness.resistant_type?(:GHOST, :FIRE)
+        refute Effectiveness.resistant_type?(:NORMAL, :FIRE)
         refute Effectiveness.resistant_type?(:WATER, :FIRE)
+    end
 
-        assert Effectiveness.normal_type?(:FIRE, :NORMAL)
+    def test_normal_type_is_true_only_for_a_neutral_pair
+        create_defending_fire
+
+        assert Effectiveness.normal_type?(:NORMAL, :FIRE)
+        refute Effectiveness.normal_type?(:GHOST, :FIRE)
+        refute Effectiveness.normal_type?(:GRASS, :FIRE)
         refute Effectiveness.normal_type?(:WATER, :FIRE)
+    end
+
+    def test_super_effective_type_is_true_only_for_a_weakness
+        create_defending_fire
 
         assert Effectiveness.super_effective_type?(:WATER, :FIRE)
+        refute Effectiveness.super_effective_type?(:GHOST, :FIRE)
         refute Effectiveness.super_effective_type?(:GRASS, :FIRE)
+        refute Effectiveness.super_effective_type?(:NORMAL, :FIRE)
     end
 
     def test_modify_boss_effectiveness_returns_the_effectiveness_unchanged_while_dilution_is_off

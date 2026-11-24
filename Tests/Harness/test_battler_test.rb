@@ -48,6 +48,15 @@ class TestBattlerTest < Minitest::Test
         assert_equal [[:E, 1]], battler.applied_effects
     end
 
+    def test_loaded_overrides_take_the_real_methods_parameters
+        %i[pbThis fainted?].each do |name|
+            real = PokeBattle_Battler.instance_method(name).parameters
+            fake = TestBattler.instance_method(name).parameters
+
+            assert_equal real.map(&:first), fake.map(&:first), "#{name} takes other kinds of argument"
+        end
+    end
+
     def test_has_active_ability_is_true_only_for_a_listed_ability
         battler = TestBattler.new(abilities: %i[STATIC BLAZE])
 

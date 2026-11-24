@@ -22,6 +22,14 @@ class MoveFactoryTest < Minitest::Test
         refute make_move(id: :OTHERMOVE).soundMove?
     end
 
+    def test_the_record_has_one_total_pp
+        assert_equal 1, make_move.total_pp
+    end
+
+    def test_attrs_reach_the_record
+        assert_equal 40, make_move(base_damage: 40).baseDamage
+    end
+
     def test_the_default_id_is_testmove
         assert_equal :TESTMOVE, make_move.id
     end

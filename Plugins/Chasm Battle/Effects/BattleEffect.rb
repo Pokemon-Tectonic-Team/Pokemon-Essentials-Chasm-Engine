@@ -254,7 +254,7 @@ module GameData
             @entry_proc	= hash[:entry_proc]
 
             # If the effect needs custom logic to determing if it should be active or not
-            # Instead of using the default values (i.e. Integers active above 0)
+            # Instead of using the default rule (active whenever the value isn't the effect's default)
             @active_value_proc      = hash[:active_value_proc]
 
             @baton_passed           = hash[:baton_passed] || false

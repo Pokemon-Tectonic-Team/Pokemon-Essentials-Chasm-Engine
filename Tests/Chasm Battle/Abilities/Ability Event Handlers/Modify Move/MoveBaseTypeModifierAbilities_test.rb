@@ -57,14 +57,14 @@ class MoveBaseTypeModifierAbilitiesTest < Minitest::Test
     def test_arcticariette_turns_a_sound_move_into_ice_with_a_power_boost
         create_type(id: :ICE)
         move = sound_move
-        assert_equal :ICE, trigger(:ARCTICARIETTE, move, :NORMAL)
+        assert_equal :ICE, trigger(:ARCTICARIETTE, move, :WATER)
         assert move.powerBoost
     end
 
     def test_arcticariette_leaves_a_non_sound_move
         create_type(id: :ICE)
         move = plain_move
-        assert_equal :NORMAL, trigger(:ARCTICARIETTE, move, :NORMAL)
+        assert_equal :WATER, trigger(:ARCTICARIETTE, move, :WATER)
         refute move.powerBoost
     end
 

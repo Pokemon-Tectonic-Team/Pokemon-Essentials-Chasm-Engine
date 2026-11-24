@@ -10,7 +10,10 @@ class RuntimeStubsTest < Minitest::Test
         assert_equal 40, Color.new(1, 2, 3, 40).alpha
     end
 
-    def test_echoln_returns_nil
-        assert_nil echoln("x")
+    def test_echoln_prints_nothing
+        out, err = capture_io { echoln("a", "b") }
+
+        assert_empty out
+        assert_empty err
     end
 end

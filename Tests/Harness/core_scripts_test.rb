@@ -62,6 +62,13 @@ class CoreScriptsTest < Minitest::Test
         end
     end
 
+    def test_entries_refuse_an_entry_with_four_elements
+        with_entries([[1, "A", deflated("1"), :extra]]) do |path|
+            error = assert_raises(HarnessError) { CoreScripts.entries(path) }
+            assert_includes error.message, "not [id, name, code]"
+        end
+    end
+
     def test_entries_refuse_an_entry_whose_name_is_not_a_string
         with_entries([[1, :A, deflated("1")]]) do |path|
             assert_raises(HarnessError) { CoreScripts.entries(path) }
@@ -70,7 +77,8 @@ class CoreScriptsTest < Minitest::Test
 
     def test_entries_refuse_an_entry_whose_code_is_not_a_string
         with_entries([[1, "A", 5]]) do |path|
-            assert_raises(HarnessError) { CoreScripts.entries(path) }
+            error = assert_raises(HarnessError) { CoreScripts.entries(path) }
+            assert_includes error.message, "not [id, name, code]"
         end
     end
 
@@ -90,6 +98,13 @@ class CoreScriptsTest < Minitest::Test
         with_entries(logging_archive) do |path|
             CoreScripts.load(path, %w[Third First])
             assert_equal %w[first third], $core_scripts_test_log
+        end
+    end
+
+    def test_load_evaluates_each_entry_under_its_core_file_name
+        with_entries([[1, "First", deflated("$core_scripts_test_log << __FILE__")]]) do |path|
+            CoreScripts.load(path, ["First"])
+            assert_equal ["[core] First"], $core_scripts_test_log
         end
     end
 

@@ -1,6 +1,8 @@
 # A real PokeBattle_Battler whose state is set from keywords and whose queries that reach the
 # battle, the Pokémon or the effect registry answer from those keywords instead. Each override
-# takes the real method's arguments, so callers reach it unchanged. The ones that act on the
+# takes the arguments of the game's method of that name, so callers reach it unchanged; most of
+# those methods aren't loaded by the harness, so keep each signature in step with the game's
+# source by hand. The ones that act on the
 # battle (aiLearnsItem, applyEffect) record their calls in order.
 class TestBattler < PokeBattle_Battler
     attr_reader :learned_items, :applied_effects

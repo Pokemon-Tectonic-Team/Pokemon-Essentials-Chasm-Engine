@@ -17,13 +17,23 @@ class LocalisationStubsTest < Minitest::Test
         assert_equal "3 moves", _INTL("{1} moves", 3)
     end
 
-    def test_intl_without_placeholders_returns_the_text
-        assert_equal "plain", _INTL("plain")
+    def test_intl_without_placeholders_returns_a_copy_of_the_text
+        text = "plain"
+        result = _INTL(text)
+
+        assert_equal "plain", result
+        refute_same text, result
+    end
+
+    def test_intl_substitutes_one_argument_at_a_time_as_core_does
+        assert_equal "b b", _INTL("{1} {2}", "{2}", "b")
     end
 
     def test_get_message_returns_the_real_name_of_the_type_with_that_number
         GameData::Type.register({ id: :LOCALISATIONTEST, id_number: 77, name: "Localised" })
+        GameData::Type.register({ id: :LOCALISATIONOTHER, id_number: 78, name: "Other" })
         assert_equal "Localised", pbGetMessage(MessageTypes::Types, 77)
+        assert_equal "Other", pbGetMessage(MessageTypes::Types, 78)
     end
 
     def test_get_message_returns_an_empty_string_when_no_type_has_that_number

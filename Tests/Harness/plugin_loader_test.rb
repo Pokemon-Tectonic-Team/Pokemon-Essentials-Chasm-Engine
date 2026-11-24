@@ -49,17 +49,28 @@ class PluginLoaderTest < Minitest::Test
             PluginLoader.order(root)
 
             assert_equal cwd, Dir.pwd
-            refute $DEBUG
+            assert_equal false, $DEBUG
+        end
+    end
+
+    def test_order_restores_a_debug_flag_that_was_set
+        with_fixture do |root|
+            $DEBUG = true
+            PluginLoader.order(root)
+
+            assert_equal true, $DEBUG
+        ensure
+            $DEBUG = false
         end
     end
 
     def test_order_restores_cwd_and_debug_after_an_error
         Dir.mktmpdir("no plugins") do |root|
             cwd = Dir.pwd
-            capture_io { assert_raises(SystemCallError) { PluginLoader.order(root) } }
+            capture_io { assert_raises(Errno::ENOENT) { PluginLoader.order(root) } }
 
             assert_equal cwd, Dir.pwd
-            refute $DEBUG
+            assert_equal false, $DEBUG
         end
     end
 

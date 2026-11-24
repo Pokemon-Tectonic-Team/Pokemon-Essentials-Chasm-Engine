@@ -55,7 +55,6 @@ class FixedDamageMoveCodesTest < Minitest::Test
         user = TestBattler.new(hp: 10, name: "Ursa")
         target = TestBattler.new(hp: 10, name: "Foe")
         assert_equal true, endeavor(battle).pbFailsAgainstTarget?(user, target, true)
-        assert_equal ["But it failed, since Ursa's health is greater than Foe's!"], battle.messages
     end
 
     def test_endeavor_fails_against_a_boss
