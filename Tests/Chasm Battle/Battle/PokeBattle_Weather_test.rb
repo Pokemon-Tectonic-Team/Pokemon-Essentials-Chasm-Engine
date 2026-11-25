@@ -4,7 +4,7 @@ require_relative "../../support/test_helper"
 class WeatherTestBattle < PokeBattle_Battle
     Field = Struct.new(:weather, :specialWeatherEffect)
 
-    def initialize(weather:, special: false, battlers: [])
+    def initialize(weather:, special: false, battlers: []) # rubocop:disable Lint/MissingSuper -- a fake: sets only its own state, skipping the real initializer by design
         @field = Field.new(weather, special)
         @battlers = battlers
     end
@@ -39,7 +39,7 @@ class PokeBattleWeatherTest < Minitest::Test
     end
 
     def test_each_family_helper_is_false_for_another_weather
-        FAMILIES.each do |helper, weathers|
+        FAMILIES.each_key do |helper|
             FAMILIES.each do |other_helper, other_weathers|
                 next if other_helper == helper
                 other_weathers.each do |weather|

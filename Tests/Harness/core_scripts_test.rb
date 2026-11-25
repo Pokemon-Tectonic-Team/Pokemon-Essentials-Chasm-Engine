@@ -24,8 +24,8 @@ class CoreScriptsTest < Minitest::Test
         end
     end
 
-    def with_entries(entries, &block)
-        with_archive(Marshal.dump(entries), &block)
+    def with_entries(entries, &)
+        with_archive(Marshal.dump(entries), &)
     end
 
     def logging_archive

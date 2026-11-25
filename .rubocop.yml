@@ -8,6 +8,10 @@ Layout/IndentationStyle:
 Layout/IndentationWidth:
     Width: 4
 
+# .gitattributes decides line endings, so a checkout's follow the platform
+Layout/EndOfLine:
+    Enabled: false
+
 Layout/LineLength:
     Max: 200
 

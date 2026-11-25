@@ -157,7 +157,7 @@ class StateSnapshotTest < Minitest::Test
         handlers = HandlerHash2.new
         handlers.add(:KEPT, proc {})
         event = Event.new
-        event + @kept_callback
+        event += @kept_callback
         BattleHandlers.const_set(:SnapshotTestHandlers, handlers)
         BattleHandlers.const_set(:SnapshotTestEvent, event)
         yield handlers, event
@@ -195,7 +195,7 @@ class StateSnapshotTest < Minitest::Test
         with_planted_handlers do |_handlers, event|
             snapshot = StateSnapshot.take
             callback = proc {}
-            event + callback
+            event += callback
             assert_includes event.instance_variable_get(:@callbacks), callback
 
             StateSnapshot.restore(snapshot)
@@ -212,7 +212,7 @@ class StateSnapshotTest < Minitest::Test
             snapshot = StateSnapshot.take
             handlers.add(:ADDED, proc {})
             handlers.addIf(proc { false }, proc {})
-            event + proc {}
+            event += proc {}
 
             StateSnapshot.restore(snapshot)
 

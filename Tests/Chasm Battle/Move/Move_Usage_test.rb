@@ -3,7 +3,7 @@ require_relative "../../support/test_helper"
 class MoveUsageTest < Minitest::Test
     # A target at index 1 with the given choice; the move's battle holds choices for both indexes.
     def setup_target(choice, id: :TESTMOVE, **battler)
-        target = TestBattler.new(**{ index: 1, name: "Target" }.merge(battler))
+        target = TestBattler.new(index: 1, name: "Target", **battler)
         battle = TestBattle.new(battlers: [target], choices: [[:UseMove, 0, :chosen_move], choice])
         [make_move(battle: battle, id: id), target, battle]
     end

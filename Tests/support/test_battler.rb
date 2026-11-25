@@ -7,7 +7,7 @@
 class TestBattler < PokeBattle_Battler
     attr_reader :learned_items, :applied_effects
 
-    def initialize(hp: 1, totalhp: 1, index: 0, effects: {}, boss: false, speed: 1, name: "Test",
+    def initialize(hp: 1, totalhp: 1, index: 0, effects: {}, boss: false, speed: 1, name: "Test", # rubocop:disable Lint/MissingSuper -- a fake: sets only its own state, skipping the real initializer by design
                    hp_resistance: 1.0, fainted: false, moved: false, abilities: [])
         @hp = hp
         @totalhp = totalhp
@@ -24,7 +24,7 @@ class TestBattler < PokeBattle_Battler
         @applied_effects = []
     end
 
-    def pbSpeed(_aiCheck = false, _step = nil, afterSwitching: false, move: nil)
+    def pbSpeed(_aiCheck = false, _step = nil, afterSwitching: false, move: nil) # rubocop:disable Lint/UnusedMethodArgument -- keyword names match the game's signature
         @speed
     end
 
@@ -44,7 +44,7 @@ class TestBattler < PokeBattle_Battler
         @moved
     end
 
-    def hasActiveAbility?(ability, _ignore_fainted = false, _checkingForAI = false, ignoreGas: false)
+    def hasActiveAbility?(ability, _ignore_fainted = false, _checkingForAI = false, ignoreGas: false) # rubocop:disable Lint/UnusedMethodArgument -- keyword names match the game's signature
         @abilities.include?(ability)
     end
 

@@ -20,7 +20,7 @@ class GameDataClassMethodsTest < Minitest::Test
         GameData::Type.register({ id: :WATER, id_number: 0 })
 
         yielded = []
-        GameData::Type.each { |type| yielded << type.id }
+        GameData::Type.each { |type| yielded << type.id } # rubocop:disable Style/MapIntoArray -- the test drives each itself; map would test something else
 
         assert_equal [:WATER, :FIRE], yielded
     end

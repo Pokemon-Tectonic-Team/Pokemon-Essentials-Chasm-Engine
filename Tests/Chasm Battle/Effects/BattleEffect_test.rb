@@ -248,7 +248,10 @@ class BattleEffectTest < Minitest::Test
     def test_ticks_down_gives_the_procs_answer
         seen = nil
         e = effect(type: :Integer, ticks_down_eor: true, ticks_down_sor: true,
-                   ticks_down_proc: proc { |battle, value| seen = [battle, value]; value > 1 })
+                   ticks_down_proc: proc { |battle, value|
+                       seen = [battle, value]
+                       value > 1
+                   })
         assert_equal true, e.ticks_down?(:battle, 2)
         assert_equal [:battle, 2], seen
         assert_equal false, e.ticks_down?(:battle, 1)
@@ -309,7 +312,10 @@ class BattleEffectTest < Minitest::Test
 
     def test_baton_pass_value_is_the_procs_answer
         seen = nil
-        e = effect(type: :Integer, pass_value_proc: proc { |battler, value| seen = [battler, value]; value + 10 })
+        e = effect(type: :Integer, pass_value_proc: proc { |battler, value|
+            seen = [battler, value]
+            value + 10
+        })
         assert_equal 14, e.baton_pass_value(:battler, 4)
         assert_equal [:battler, 4], seen
     end

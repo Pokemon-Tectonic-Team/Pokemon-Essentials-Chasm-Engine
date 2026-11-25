@@ -180,7 +180,7 @@ module GameData
             return !@entry_proc.nil?
         end
 
-        DATA = {}
+        DATA = {} # rubocop:disable Style/MutableConstant -- the registry, filled as effects load
 
         extend ClassMethods
         include InstanceMethods
@@ -202,7 +202,7 @@ module GameData
             @type                   = hash[:type] || :Boolean
             @default                = hash[:default]
             @maximum	= hash[:maximum]
-            @info_displayed	= hash.has_key?(:info_displayed) ? hash[:info_displayed] : true
+            @info_displayed	= hash.key?(:info_displayed) ? hash[:info_displayed] : true
             @info_custom_description = hash[:info_custom_description]
             if @default.nil?
                 case @type
@@ -270,7 +270,7 @@ module GameData
             @others_lose_track = hash[:others_lose_track] || false
 
             @disable_effects_on_other_exit = hash[:disable_effects_on_other_exit] || []
-            @hand_off     = hash[:hand_off] || false
+            @hand_off = hash[:hand_off] || false
             @sub_effects	= hash[:sub_effects] || []
 
             @protection_effect	= hash[:protection_effect] || false
@@ -279,13 +279,13 @@ module GameData
 
             @status_applying_hazard = hash[:status_applying_hazard]
 
-            @is_room	            = hash[:is_room] || false
+            @is_room = hash[:is_room] || false
             @is_screen				= hash[:is_screen] || false
             @is_hazard				= hash[:is_hazard] || false
             @is_mental				= hash[:is_mental] || false
-            @is_spike				= hash[:is_spike] || false
+            @is_spike	= hash[:is_spike] || false
 
-            @copied_move_marker     = hash[:copied_move_marker] || false
+            @copied_move_marker = hash[:copied_move_marker] || false
 
             @avatars_purge = hash[:avatars_purge] || false
 
@@ -416,13 +416,13 @@ module GameData
 
         ### Methods dealing with the effect when a battler is initialized
         def initialize_battler(battle, battler)
-            @initialize_proc.call(battle, battler) if @initialize_proc
+            @initialize_proc&.call(battle, battler)
         end
 
         ### Methods dealing with the effect being newly applied
         def apply_battler(battle, battler)
             value = battler.effects[@id]
-            @apply_proc.call(battle, battler, value) if @apply_proc
+            @apply_proc&.call(battle, battler, value)
         end
 
         def apply_position(battle, index)
@@ -430,88 +430,88 @@ module GameData
             battler = battle.battlers[index]
             return if battler.nil? || battler.fainted?
             value = position.effects[@id]
-            @apply_proc.call(battle, index, position, battler, value) if @apply_proc
+            @apply_proc&.call(battle, index, position, battler, value)
         end
 
         def apply_side(battle, side)
             teamName = battle.battlers[side.index].pbTeam
             value = side.effects[@id]
-            @apply_proc.call(battle, side, teamName, value) if @apply_proc
+            @apply_proc&.call(battle, side, teamName, value)
         end
 
         def apply_field(battle)
             value = battle.field.effects[@id]
-            @apply_proc.call(battle, value) if @apply_proc
+            @apply_proc&.call(battle, value)
         end
 
         ### Methods dealing with the effect going away
         def disable_battler(battle, battler)
-            @disable_proc.call(battle, battler) if @disable_proc
+            @disable_proc&.call(battle, battler)
         end
 
         def disable_position(battle, index)
             position = battle.positions[index]
             battler = battle.battlers[index]
             return if battler.nil? || battler.fainted?
-            @disable_proc.call(battle, index, position, battler) if @disable_proc
+            @disable_proc&.call(battle, index, position, battler)
         end
 
         def disable_side(battle, side)
             teamName = battle.battlers[side.index].pbTeam
-            @disable_proc.call(battle, side, teamName) if @disable_proc
+            @disable_proc&.call(battle, side, teamName)
         end
 
         def disable_field(battle)
-            @disable_proc.call(battle) if @disable_proc
+            @disable_proc&.call(battle)
         end
 
         ### Methods dealing with the effect remaining EOT
         def remain_battler(battle, battler)
             value = battler.effects[@id]
-            @remain_proc.call(battle, battler, value) if @remain_proc
+            @remain_proc&.call(battle, battler, value)
         end
 
         def remain_position(battle, index)
             position = battle.positions[index]
             battler = battle.battlers[index]
             return if battler.nil? || battler.fainted?
-            @remain_proc.call(battle, index, position, battler) if @remain_proc
+            @remain_proc&.call(battle, index, position, battler)
         end
 
         def remain_side(battle, side)
             teamName = battle.battlers[side.index].pbTeam
-            @remain_proc.call(battle, side, teamName) if @remain_proc
+            @remain_proc&.call(battle, side, teamName)
         end
 
         def remain_field(battle)
-            @remain_proc.call(battle) if @remain_proc
+            @remain_proc&.call(battle)
         end
 
         ### Methods dealing with the effect going away after ticking down
         def expire_battler(battle, battler)
-            @expire_proc.call(battle, battler) if @expire_proc
+            @expire_proc&.call(battle, battler)
         end
 
         def expire_position(battle, index)
             position = battle.positions[index]
             battler = battle.battlers[index]
             return if battler.nil? || battler.fainted?
-            @expire_proc.call(battle, index, position, battler) if @expire_proc
+            @expire_proc&.call(battle, index, position, battler)
         end
 
         def expire_side(battle, side)
             teamName = battle.battlers[side.index].pbTeam
-            @expire_proc.call(battle, side, teamName) if @expire_proc
+            @expire_proc&.call(battle, side, teamName)
         end
 
         def expire_field(battle)
-            @expire_proc.call(battle) if @expire_proc
+            @expire_proc&.call(battle)
         end
 
         ### Methods dealing with effects at the end of each round
         def eor_battler(battle, battler)
             value = battler.effects[@id]
-            @eor_proc.call(battle, battler, value) if @eor_proc
+            @eor_proc&.call(battle, battler, value)
         end
 
         def eor_position(battle, index)
@@ -519,24 +519,24 @@ module GameData
             battler = battle.battlers[index]
             return if battler.nil? || battler.fainted?
             value = position.effects[@id]
-            @eor_proc.call(battle, index, position, battler, value) if @eor_proc
+            @eor_proc&.call(battle, index, position, battler, value)
         end
 
         def eor_side(battle, side)
             teamName = battle.battlers[side.index].pbTeam
             value = side.effects[@id]
-            @eor_proc.call(battle, side, teamName, value) if @eor_proc
+            @eor_proc&.call(battle, side, teamName, value)
         end
 
         def eor_field(battle)
             value = battle.field.effects[@id]
-            @eor_proc.call(battle, value) if @eor_proc
+            @eor_proc&.call(battle, value)
         end
 
         ### Methods dealing with effects at the start of each round
         def sor_battler(battle, battler)
             value = battler.effects[@id]
-            @sor_proc.call(battle, battler, value) if @sor_proc
+            @sor_proc&.call(battle, battler, value)
         end
 
         def sor_position(battle, index)
@@ -544,24 +544,24 @@ module GameData
             battler = battle.battlers[index]
             return if battler.nil? || battler.fainted?
             value = position.effects[@id]
-            @sor_proc.call(battle, index, position, battler, value) if @sor_proc
+            @sor_proc&.call(battle, index, position, battler, value)
         end
 
         def sor_side(battle, side)
             teamName = battle.battlers[side.index].pbTeam
             value = side.effects[@id]
-            @sor_proc.call(battle, side, teamName, value) if @sor_proc
+            @sor_proc&.call(battle, side, teamName, value)
         end
 
         def sor_field(battle)
             value = battle.field.effects[@id]
-            @sor_proc.call(battle, value) if @sor_proc
+            @sor_proc&.call(battle, value)
         end
 
         ### Methods dealing with the effect being incremented (call afterwards)
         def increment_battler(battle, battler, increment)
             newValue = battler.effects[@id]
-            @increment_proc.call(battle, battler, newValue, increment) if @increment_proc
+            @increment_proc&.call(battle, battler, newValue, increment)
         end
 
         def increment_position(battle, index, increment)
@@ -569,18 +569,18 @@ module GameData
             battler = battle.battlers[index]
             return if battler.nil? || battler.fainted?
             newValue = position.effects[@id]
-            @increment_proc.call(battle, index, position, battler, newValue, increment) if @increment_proc
+            @increment_proc&.call(battle, index, position, battler, newValue, increment)
         end
 
         def increment_side(battle, side, increment)
             teamName = battle.battlers[side.index].pbTeam
             newValue = side.effects[@id]
-            @increment_proc.call(battle, side, teamName, newValue, increment) if @increment_proc
+            @increment_proc&.call(battle, side, teamName, newValue, increment)
         end
 
         def increment_field(battle, increment)
             newValue = battle.field.effects[@id]
-            @increment_proc.call(battle, newValue, increment) if @increment_proc
+            @increment_proc&.call(battle, newValue, increment)
         end
 
         ### Battler entering
@@ -651,10 +651,8 @@ module GameData
             end
         end
 
-        def self.each_effect
-            each do |data|
-                yield data
-            end
+        def self.each_effect(&)
+            each(&)
         end
 
         # For translation

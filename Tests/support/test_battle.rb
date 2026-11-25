@@ -10,8 +10,8 @@ class TestBattle
         @messages = []
     end
 
-    def eachBattler(&block)
-        @battlers.each(&block)
+    def eachBattler(&)
+        @battlers.each(&)
     end
 
     # The priority order given, or the battlers in the order given when none was.

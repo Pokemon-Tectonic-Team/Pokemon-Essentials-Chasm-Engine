@@ -1,7 +1,7 @@
 require_relative "../../support/test_helper"
 
 class MoveOrderMoveCodesTest < Minitest::Test
-    USE_MOVE = [:UseMove, 0, :chosen_move]
+    USE_MOVE = [:UseMove, 0, :chosen_move].freeze
 
     # A battle of an actor at index 0 and a target at index 1, the target not last in priority.
     # Overrides: choices (the target's is choices[1]), target / actor battler attributes, priority.
@@ -9,8 +9,8 @@ class MoveOrderMoveCodesTest < Minitest::Test
     # its arguments in the move's `already_moved_calls`.
     def setup_quash(target_choice: USE_MOVE, target: {}, actor: {}, last: :actor, id: :TESTMOVE,
                     already_moved: false)
-        actor_battler = TestBattler.new(**{ index: 0, effects: { Quash: 0 }, name: "Actor" }.merge(actor))
-        target_battler = TestBattler.new(**{ index: 1, effects: { Quash: 0 }, name: "Target" }.merge(target))
+        actor_battler = TestBattler.new(index: 0, effects: { Quash: 0 }, name: "Actor", **actor)
+        target_battler = TestBattler.new(index: 1, effects: { Quash: 0 }, name: "Target", **target)
         priority = last == :actor ? [target_battler, actor_battler] : [actor_battler, target_battler]
         battle = TestBattle.new(battlers: [actor_battler, target_battler], priority: priority,
                                 choices: [USE_MOVE, target_choice])
