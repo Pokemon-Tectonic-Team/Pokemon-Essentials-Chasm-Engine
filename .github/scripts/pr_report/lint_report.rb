@@ -26,8 +26,8 @@ module PrReport
         # there are none).
         def summary(counts:, safe:, unique:)
             parts = [Markdown.code_block(OffenseCounts.plain(counts))]
-            parts << Markdown.cut_lines(offenses(unique), limit: LIMIT, note: CUT_NOTE) if unique
             parts << "...and #{safe} safely auto-correctable offenses.\n" if safe.positive?
+            parts << Markdown.cut_lines(offenses(unique), limit: LIMIT, note: CUT_NOTE) if unique
             parts.join("\n")
         end
 

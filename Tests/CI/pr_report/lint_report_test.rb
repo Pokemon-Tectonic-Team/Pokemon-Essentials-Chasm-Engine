@@ -63,10 +63,10 @@ class LintReportTest < Minitest::Test
         assert_equal "```text\n2  A/B\n```\n", L.summary(counts: "2  A/B\n", safe: 0, unique: nil)
     end
 
-    def test_summary_puts_the_safe_line_after_the_offenses
+    def test_summary_puts_the_safe_line_between_the_counts_and_the_offenses
         result = L.summary(counts: "1  A/B\n", safe: 3, unique: "### f\n- x\n")
 
-        assert_equal "```text\n1  A/B\n```\n\n### f\n- x\n\n...and 3 safely auto-correctable offenses.\n", result
+        assert_equal "```text\n1  A/B\n```\n\n...and 3 safely auto-correctable offenses.\n\n### f\n- x\n", result
     end
 
     def test_summary_says_none_when_unique_has_no_file_heading
