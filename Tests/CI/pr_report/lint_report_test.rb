@@ -26,6 +26,15 @@ class LintReportTest < Minitest::Test
         assert_equal "RuboCop couldn't run:\n\n```text\nboom\n```\n", L.error("boom\n")
     end
 
+    def test_headline_is_the_first_line_without_its_newline
+        assert_equal "boom", L.headline("boom\ntrace\n")
+        assert_equal "", L.headline("")
+    end
+
+    def test_error_shows_only_the_first_line
+        assert_equal "RuboCop couldn't run:\n\n```text\nboom\n```\n", L.error("boom\ntrace 1\ntrace 2\n")
+    end
+
     def test_summary_with_both_details
         unique = "# RuboCop Inspection Report\n\n1 offense\n\n### a.rb - (1 offenses)\n- x\n"
         critical = "# RuboCop Inspection Report\n\nNo offenses\n"

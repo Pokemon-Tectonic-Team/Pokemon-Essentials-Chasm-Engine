@@ -66,8 +66,8 @@ def lint
     summary = PrReport::LintReport.summary(full_lines: full.lines.length, counts: counts, unique: unique, critical: critical)
     [summary, full]
 rescue PrReport::Error => e
-    # A workflow command's data escapes "%" as "%25"; only the first line is sent.
-    puts "::error title=RuboCop::#{e.message.lines.first.chomp.gsub('%', '%25')}"
+    # A workflow command's data escapes "%" as "%25".
+    puts "::error title=RuboCop::#{PrReport::LintReport.headline(e.message).gsub('%', '%25')}"
     [PrReport::LintReport.error(e.message), nil]
 end
 

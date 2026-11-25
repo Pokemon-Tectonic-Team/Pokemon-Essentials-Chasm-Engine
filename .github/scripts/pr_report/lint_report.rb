@@ -37,7 +37,12 @@ module PrReport
         end
 
         def error(message)
-            "RuboCop couldn't run:\n\n#{Markdown.code_block(message)}"
+            "RuboCop couldn't run:\n\n#{Markdown.code_block(headline(message))}"
+        end
+
+        # An error's first line: the rest of RuboCop's stderr is a stack trace.
+        def headline(message)
+            message.lines.first.to_s.chomp
         end
 
         # A Markdown report from its first file heading on, leaving out RuboCop's title and totals.
