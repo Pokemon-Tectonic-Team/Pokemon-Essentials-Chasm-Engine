@@ -6,14 +6,17 @@ ENV["BUNDLE_GEMFILE"] = File.join(repo_root, "Gemfile")
 require "bundler/setup"
 
 # Started before anything it measures is loaded.
-if ENV["COVERAGE"] == "1"
+if %w[1 all].include?(ENV["COVERAGE"])
     require "simplecov"
     SimpleCov.start do
         root repo_root
         enable_coverage :branch
+        # SimpleCov's default hidden_filter drops every path under a dot folder, .github/ included.
+        remove_filter(/\A\..*/) or raise "SimpleCov's hidden-folder filter has changed; update this line"
         skip "Tests/Harness/"
         skip(/_test\.rb\z/)
         formats :html, :json
+        cover "Plugins/**/*.rb" if ENV["COVERAGE"] == "all"
     end
 end
 
