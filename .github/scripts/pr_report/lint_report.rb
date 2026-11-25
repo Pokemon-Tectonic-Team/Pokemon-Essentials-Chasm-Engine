@@ -1,15 +1,16 @@
 require_relative "markdown"
+require_relative "offense_counts"
 
 module PrReport
     # The comment's lint section, from RuboCop's outputs: the full Markdown report when it is
-    # short, otherwise a summary of counts, the cops with one offense and the warnings and worse.
+    # short, otherwise a summary of the counts per cop and the offenses of the detailed cops.
     module LintReport
         module_function
 
         LIMIT = 200
         FILE_HEADING = "### ".freeze
         TITLE = /\A# RuboCop Inspection Report\n\n/
-        WHERE_FULL = "The full report is in this run's job summary.".freeze
+        CUT_NOTE = "_Cut at #{LIMIT} lines. The full report is in this run's job summary._".freeze
 
         def summarise?(full)
             full.lines.length > LIMIT
@@ -20,16 +21,14 @@ module PrReport
             full.sub(TITLE, "")
         end
 
-        # counts is the `--format offenses` output, unique the `--only` Markdown run (nil when no
-        # cop has one offense) and critical the warnings-and-worse Markdown run.
-        def summary(full_lines:, counts:, unique:, critical:)
-            parts = []
-            parts << "#### Cops with one offense\n\n#{offenses(unique)}" if unique
-            parts << "#### Warnings and worse\n\n#{offenses(critical)}"
-            cut_note = "_Cut at #{LIMIT} lines. #{WHERE_FULL}_"
-            detail = Markdown.cut_lines(parts.join("\n"), limit: LIMIT, note: cut_note)
-            "The full RuboCop report is #{full_lines} lines, over the #{LIMIT}-line limit, so this " \
-                "is a summary. #{WHERE_FULL}\n\n#{Markdown.code_block(counts.sub(/\A\n+/, ''))}\n#{detail}"
+        # counts is the `--format offenses` output, safe the number of its offenses whose cops are
+        # safe-correctable, and unique the `--only` Markdown run of the detailed cops (nil when
+        # there are none).
+        def summary(counts:, safe:, unique:)
+            parts = [Markdown.code_block(OffenseCounts.plain(counts))]
+            parts << Markdown.cut_lines(offenses(unique), limit: LIMIT, note: CUT_NOTE) if unique
+            parts << "...and #{safe} safely auto-correctable offenses.\n" if safe.positive?
+            parts.join("\n")
         end
 
         def none_changed

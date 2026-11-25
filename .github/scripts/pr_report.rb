@@ -58,13 +58,11 @@ def lint
     return [PrReport::LintReport.full_section(full), nil] unless PrReport::LintReport.summarise?(full)
 
     counts = rubocop(files, "--format", "offenses")
-    once = PrReport::OffenseCounts.once(PrReport::OffenseCounts.parse(counts))
-    unique = once.empty? ? nil : rubocop(files, "--format", "markdown", "--only", once.join(","))
-    critical_args = ["--format", "markdown", "--fail-level", "W", "--display-only-fail-level-offenses"]
-    critical_args += ["--except", once.join(",")] unless once.empty?
-    critical = rubocop(files, *critical_args)
-    summary = PrReport::LintReport.summary(full_lines: full.lines.length, counts: counts, unique: unique, critical: critical)
-    [summary, full]
+    rows = PrReport::OffenseCounts.parse(counts)
+    detailed = PrReport::OffenseCounts.detailed(rows)
+    unique = detailed.empty? ? nil : rubocop(files, "--format", "markdown", "--only", detailed.join(","))
+    safe = PrReport::OffenseCounts.safe_correctable(rows)
+    [PrReport::LintReport.summary(counts: counts, safe: safe, unique: unique), full]
 rescue PrReport::Error => e
     # A workflow command's data escapes "%" as "%25".
     puts "::error title=RuboCop::#{PrReport::LintReport.headline(e.message).gsub('%', '%25')}"

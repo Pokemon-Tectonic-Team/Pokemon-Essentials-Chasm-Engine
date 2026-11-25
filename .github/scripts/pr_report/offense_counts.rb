@@ -7,6 +7,7 @@ module PrReport
         module_function
 
         ROW = /\A(\d+)\s+(\S+)(?: \[(Safe|Unsafe) Correctable\])?\z/
+        LABEL = / \[(?:Safe|Unsafe) Correctable\]$/
         TOTAL = /\A\d+\s+Total in /
         SEPARATOR = "--".freeze
 
@@ -21,9 +22,20 @@ module PrReport
             end
         end
 
-        # Names of the cops with exactly one offense.
-        def once(rows)
-            rows.select { |row| row[:count] == 1 }.map { |row| row[:cop] }
+        # The output without its surrounding blank lines and correctable labels.
+        def plain(text)
+            text.sub(/\A\n+/, "").sub(/\n+\z/, "\n").gsub(LABEL, "")
+        end
+
+        # Names of the cops a summary details: those with exactly one offense, unless RuboCop marks
+        # them safe-correctable.
+        def detailed(rows)
+            rows.select { |row| row[:count] == 1 && row[:correctable] != :safe }.map { |row| row[:cop] }
+        end
+
+        # How many offenses belong to cops RuboCop marks safe-correctable.
+        def safe_correctable(rows)
+            rows.sum { |row| row[:correctable] == :safe ? row[:count] : 0 }
         end
     end
 end

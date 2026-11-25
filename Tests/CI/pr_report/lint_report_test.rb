@@ -35,52 +35,69 @@ class LintReportTest < Minitest::Test
         assert_equal "RuboCop couldn't run:\n\n```text\nboom\n```\n", L.error("boom\ntrace 1\ntrace 2\n")
     end
 
-    def test_summary_with_both_details
+    def test_summary_with_unique_shows_counts_then_offenses_from_the_first_file_heading
         unique = "# RuboCop Inspection Report\n\n1 offense\n\n### a.rb - (1 offenses)\n- x\n"
-        critical = "# RuboCop Inspection Report\n\nNo offenses\n"
 
-        result = L.summary(full_lines: 250, counts: "5  Layout/X\n", unique: unique, critical: critical)
+        result = L.summary(counts: "5  Layout/X\n", safe: 0, unique: unique)
 
-        intro, rest = result.split("\n\n", 2)
-        assert_includes intro, "250 lines"
-        assert_includes intro, "200-line limit"
-        assert_includes intro, "summary"
-        assert_includes intro, "The full report is in this run's job summary."
-        assert_equal "```text\n5  Layout/X\n```\n\n" \
-                     "#### Cops with one offense\n\n### a.rb - (1 offenses)\n- x\n\n" \
-                     "#### Warnings and worse\n\nNone.\n", rest
+        assert_equal "```text\n5  Layout/X\n```\n\n### a.rb - (1 offenses)\n- x\n", result
     end
 
-    def test_summary_drops_the_blank_lines_rubocop_starts_counts_with
-        result = L.summary(full_lines: 250, counts: "\n5  Layout/X\n", unique: nil, critical: "")
+    def test_summary_shows_plain_counts
+        counts = "\n5  Layout/X [Safe Correctable]\n1  A/B [Unsafe Correctable]\n--\n6  Total in 1 files\n"
 
-        assert_includes result, "```text\n5  Layout/X\n```\n"
+        result = L.summary(counts: counts, safe: 0, unique: nil)
+
+        assert_equal "```text\n5  Layout/X\n1  A/B\n--\n6  Total in 1 files\n```\n", result
     end
 
-    def test_summary_without_unique_omits_that_heading
-        critical = "title\n\ncount\n\n### b.rb - (2 offenses)\n- y\n"
+    def test_summary_names_the_safe_correctable_offenses_only_when_there_are_some
+        with = L.summary(counts: "5  Layout/X\n", safe: 5, unique: nil)
+        without = L.summary(counts: "5  Layout/X\n", safe: 0, unique: nil)
 
-        result = L.summary(full_lines: 201, counts: "2  A/B\n", unique: nil, critical: critical)
-
-        refute_includes result, "Cops with one offense"
-        assert result.end_with?("```\n\n#### Warnings and worse\n\n### b.rb - (2 offenses)\n- y\n")
+        assert_equal "```text\n5  Layout/X\n```\n\n...and 5 safely auto-correctable offenses.\n", with
+        refute_includes without, "auto-correctable"
     end
 
-    def test_summary_detail_of_exactly_200_lines_is_not_cut
-        critical = "t\n\n### f\n#{"- x\n" * 197}"
+    def test_summary_without_unique_is_just_the_counts_block
+        assert_equal "```text\n2  A/B\n```\n", L.summary(counts: "2  A/B\n", safe: 0, unique: nil)
+    end
 
-        result = L.summary(full_lines: 300, counts: "1  A/B\n", unique: nil, critical: critical)
+    def test_summary_puts_the_safe_line_after_the_offenses
+        result = L.summary(counts: "1  A/B\n", safe: 3, unique: "### f\n- x\n")
 
-        assert result.end_with?("#### Warnings and worse\n\n### f\n#{"- x\n" * 197}")
+        assert_equal "```text\n1  A/B\n```\n\n### f\n- x\n\n...and 3 safely auto-correctable offenses.\n", result
+    end
+
+    def test_summary_says_none_when_unique_has_no_file_heading
+        result = L.summary(counts: "1  A/B\n", safe: 0, unique: "# RuboCop Inspection Report\n\nNo offenses\n")
+
+        assert result.end_with?("```\n\nNone.\n")
+    end
+
+    def test_summary_offenses_of_exactly_200_lines_are_not_cut
+        unique = "### f\n#{"- x\n" * 199}"
+
+        result = L.summary(counts: "1  A/B\n", safe: 0, unique: unique)
+
+        assert result.end_with?("\n#{unique}")
         refute_includes result, "Cut at"
     end
 
-    def test_summary_detail_over_200_lines_is_cut_with_a_note
-        critical = "t\n\n### f\n#{"- x\n" * 198}"
+    def test_summary_offenses_over_200_lines_are_cut_with_a_note
+        unique = "### f\n#{"- x\n" * 200}"
 
-        result = L.summary(full_lines: 300, counts: "1  A/B\n", unique: nil, critical: critical)
+        result = L.summary(counts: "1  A/B\n", safe: 0, unique: unique)
 
-        kept = "#### Warnings and worse\n\n### f\n#{"- x\n" * 197}"
-        assert result.end_with?("#{kept}\n_Cut at 200 lines. The full report is in this run's job summary._\n")
+        kept = "### f\n#{"- x\n" * 199}"
+        assert result.end_with?("\n#{kept}\n#{L::CUT_NOTE}\n")
+    end
+
+    def test_summary_cut_closes_an_open_code_fence
+        unique = "### f\n```\n#{"x\n" * 250}```\n"
+
+        result = L.summary(counts: "1  A/B\n", safe: 0, unique: unique)
+
+        assert result.end_with?("x\n```\n\n#{L::CUT_NOTE}\n")
     end
 end
