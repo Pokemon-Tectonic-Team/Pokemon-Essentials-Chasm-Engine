@@ -65,5 +65,8 @@ module PluginFiles
         "Chasm Graphics and UI/Objects and windows/Dialogue Labels/SpeakerTagPlacement.rb",
         "Chasm Graphics and UI/Objects and windows/Dialogue Portraits/DialoguePortraits.rb",
         "Chasm Graphics and UI/Objects and windows/Sprite Window/WindowskinInsets.rb",
+        "Chasm Graphics and UI/Graphics Code/BitmapHueShifts.rb",
+        "Chasm Graphics and UI/Menus/Move Tutoring/EggMoveTutor.rb",
+        "Chasm MasterDex/Other.rb",
     ].freeze
 end
