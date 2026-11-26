@@ -1,9 +1,17 @@
+require:
+    - ./.rubocop/cops/inline_tab.rb
+
 AllCops:
     TargetRubyVersion: 3.1
     NewCops: enable
 
 Layout/IndentationStyle:
     EnforcedStyle: spaces
+
+# IndentationStyle covers only indentation; this catches tabs used to align code later in a line
+Chasm/InlineTab:
+    Description: Use spaces, not tabs, after indentation.
+    Enabled: true
 
 Layout/IndentationWidth:
     Width: 4

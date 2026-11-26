@@ -48,7 +48,8 @@ code in `Plugins/Chasm MoveDex/Entry/MoveDex_Entry_Scene.rb` should be found in
 `Tests/Chasm MoveDex/Entry/MoveDex_Entry_Scene_test.rb`
 
 `Tests/support` contains the scripts that help these tests run, and
-`Tests/Harness` contains the tests _for_ those scripts.
+`Tests/Harness` contains the tests _for_ those scripts. `Tests/Lint` tests our
+custom lint rules.
 
 Test files `require` the harness through a relative path to
 `support/test_helper`.
