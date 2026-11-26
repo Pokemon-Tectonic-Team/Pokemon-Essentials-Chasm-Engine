@@ -48,6 +48,8 @@ module GameData
           return ret if pbResolveBitmap(ret)
           ret = path + sprintf("%03d", tr_type_data.id_number) + optional_suffix + suffix
           return ret if pbResolveBitmap(ret)
+          ret = path + optional_suffix + suffix
+          return ret if pbResolveBitmap(ret)
         end
         ret = path + tr_type_data.id.to_s + suffix
         return ret if pbResolveBitmap(ret)
@@ -92,8 +94,8 @@ module GameData
       end
   
       def self.player_map_icon_filename(tr_type)
-        outfit = ($Trainer) ? $Trainer.outfit : 0
-        return self.check_file(tr_type, "Graphics/Pictures/Town Map/Player Icons/mapPlayer", sprintf("_%d", outfit))
+        gender = ($Trainer) ? $Trainer.gender : 0
+        return self.check_file(tr_type, "Graphics/Pictures/Town Map/Player Icons/mapPlayer", sprintf("%03d", gender))
       end
 
       def self.cableClubClasses
