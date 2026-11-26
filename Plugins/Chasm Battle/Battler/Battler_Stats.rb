@@ -94,12 +94,14 @@ class PokeBattle_Battler
         end
     end
 
-    OFFENSIVE_LOCK_STAT = 120
-
-    DEFENSIVE_LOCK_STAT = 95
-
     def speed
         return base_speed
+    end
+
+    OFFENSIVE_LOCK_STAT = 120
+
+    def immuneToBaseStatChanges?
+        return hasActiveAbility?(:ACCUMULATION)
     end
 
     # Don't use for HP
@@ -111,7 +113,7 @@ class PokeBattle_Battler
         return @effects[:BaseAttack] if effectActive?(:BaseAttack)
         attack_bonus = tribalBonusForStat(:ATTACK)
         attack_bonus += allStatBonus
-        if hasActiveItem?(%i[POWERLOCK POWERKEY])
+        if hasActiveItem?(%i[POWERLOCK POWERKEY]) && !immuneToBaseStatChanges?
             return recalcStat(:ATTACK, OFFENSIVE_LOCK_STAT) + attack_bonus
         else
             return @attack + attack_bonus
@@ -122,9 +124,7 @@ class PokeBattle_Battler
         return @effects[:BaseDefense] if effectActive?(:BaseDefense)
         defense_bonus = tribalBonusForStat(:DEFENSE)
         defense_bonus += allStatBonus
-        if hasActiveItem?(:GUARDLOCK)
-            return recalcStat(:DEFENSE, DEFENSIVE_LOCK_STAT) + defense_bonus
-        elsif hasActiveItem?(:POWERKEY)
+        if hasActiveItem?(:POWERKEY) && !immuneToBaseStatChanges?
             return recalcStat(:DEFENSE, OFFENSIVE_LOCK_STAT) + defense_bonus
         else
             return @defense + defense_bonus
@@ -135,7 +135,7 @@ class PokeBattle_Battler
         return @effects[:BaseSpecialAttack] if effectActive?(:BaseSpecialAttack)
         spatk_bonus = tribalBonusForStat(:SPECIAL_ATTACK)
         spatk_bonus += allStatBonus
-        if hasActiveItem?(%i[ENERGYLOCK ENERGYKEY])
+        if hasActiveItem?(%i[ENERGYLOCK ENERGYKEY]) && !immuneToBaseStatChanges?
             return recalcStat(:SPECIAL_ATTACK, OFFENSIVE_LOCK_STAT) + spatk_bonus
         else
             return @spatk + spatk_bonus
@@ -146,9 +146,7 @@ class PokeBattle_Battler
         return @effects[:BaseSpecialDefense] if effectActive?(:BaseSpecialDefense)
         spdef_bonus = tribalBonusForStat(:SPECIAL_DEFENSE)
         spdef_bonus += allStatBonus
-        if hasActiveItem?(:WILLLOCK)
-            return recalcStat(:SPECIAL_DEFENSE, DEFENSIVE_LOCK_STAT) + spdef_bonus
-        elsif hasActiveItem?(:ENERGYKEY)
+        if hasActiveItem?(:ENERGYKEY) && !immuneToBaseStatChanges?
             return recalcStat(:SPECIAL_DEFENSE, OFFENSIVE_LOCK_STAT) + spdef_bonus
         else
             return @spdef + spdef_bonus

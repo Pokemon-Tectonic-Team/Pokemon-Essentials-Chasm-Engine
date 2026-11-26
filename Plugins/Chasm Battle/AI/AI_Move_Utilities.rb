@@ -198,21 +198,20 @@ class PokeBattle_AI
     # Speed calculation
     #===========================================================================
     # If KillInfo is given, calculates if the user will move before the possible kill against it
-    # Otherwise, calculates if the user will move before the target (assuming 0 priority by the target)
-    def userMovesFirst?(move, user, target, killInfo: nil)
+    # Otherwise, calculates if the user will move before the target using a move of targetPriority (0 if not given)
+    def userMovesFirst?(move, user, target, killInfo: nil, targetPriority: nil)
         return false if move.is_a?(PokeBattle_ForetoldMove)
         userPriority = @battle.getMovePriority(move, user, [target], true)
-        foePriority = killInfo&.priority || 0
+        foePriority = killInfo&.priority || targetPriority || 0
         foeChecking = killInfo&.user || target
+        foeDescriptor = foeChecking.pbThis(true)
+        foeDescriptor += "'s #{killInfo.move.id}" if killInfo
+        priorityDescriptor = killInfo || targetPriority ? " at priority #{foePriority}" : ""
         if userPriority > foePriority
-            message = "\t[ORDER CALC] #{user.pbThis}'s #{move.id} has priority #{userPriority}, so will probably move BEFORE #{foeChecking.pbThis(true)}"
-            message += "'s #{killInfo.move.id} at priority #{foePriority}" if killInfo
-            echoln(message)
+            echoln("\t[ORDER CALC] #{user.pbThis}'s #{move.id} has priority #{userPriority}, so will probably move BEFORE #{foeDescriptor}#{priorityDescriptor}")
             return true
         elsif foePriority > userPriority
-            message = "\t[ORDER CALC] #{user.pbThis}'s #{move.id} has priority #{userPriority}, so will probably move AFTER #{foeChecking.pbThis(true)}"
-            message += "'s #{killInfo.move.id} at priority #{foePriority}" if killInfo
-            echoln(message)
+            echoln("\t[ORDER CALC] #{user.pbThis}'s #{move.id} has priority #{userPriority}, so will probably move AFTER #{foeDescriptor}#{priorityDescriptor}")
             return false
         else
             userSpeed = user.pbSpeed(true, move: move)
@@ -221,10 +220,7 @@ class PokeBattle_AI
             movesFirst = !movesFirst if user.battle.field.effectActive?(:TrickstersDomain)
             orderDescriptor = movesFirst ? "BEFORE" : "AFTER"
 
-            message = "\t[ORDER CALC] #{user.pbThis}'s #{move.id} will have speed #{userSpeed}, so will move #{orderDescriptor} #{foeChecking.pbThis(true)}"
-            message += "'s #{killInfo.move.id}" if killInfo
-            message += " at speed #{opposingSpeed}"
-            echoln(message)
+            echoln("\t[ORDER CALC] #{user.pbThis}'s #{move.id} will have speed #{userSpeed}, so will move #{orderDescriptor} #{foeDescriptor} at speed #{opposingSpeed}")
             return movesFirst
         end
     end

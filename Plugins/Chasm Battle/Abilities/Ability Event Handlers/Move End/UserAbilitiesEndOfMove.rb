@@ -565,9 +565,9 @@ BattleHandlers::UserAbilityEndOfMove.add(:BOGGLINGBOLERO,
       battle.pbShowAbilitySplash(user, ability)
       foes.each do |b|
           if b.pbAttack > b.pbSpAtk
-              b.tryLowerStat(:ATTACK, user, increment: 1, showFailMsg: true)
+              b.tryLowerStat(:ATTACK, user, increment: 2, showFailMsg: true)
           else
-              b.tryLowerStat(:SPECIAL_ATTACK, user, increment: 1, showFailMsg: true)
+              b.tryLowerStat(:SPECIAL_ATTACK, user, increment: 2, showFailMsg: true)
           end
       end
       battle.pbHideAbilitySplash(user)
