@@ -25,6 +25,26 @@ class FaceSpecsTest < Minitest::Test
         assert_equal ["Val", 0], parseFaceSpec("Val,0")
     end
 
+    def test_an_animated_sheet_name_keeps_the_comma_in_its_brackets
+        assert_equal ["[2,10]Val", 0], parseFaceSpec("[2,10]Val")
+    end
+
+    def test_an_animated_sheet_name_takes_an_index_after_it
+        assert_equal ["[2,10]Val", 1], parseFaceSpec("[2,10]Val,1")
+    end
+
+    def test_an_animated_sheet_name_with_a_frame_count_alone_takes_an_index
+        assert_equal ["[2]Val", 3], parseFaceSpec("[2]Val,3")
+    end
+
+    def test_brackets_holding_anything_but_numbers_split_as_usual
+        assert_equal ["[a", 0], parseFaceSpec("[a,b]Val")
+    end
+
+    def test_brackets_later_in_a_name_split_as_usual
+        assert_equal ["Val[2", 10], parseFaceSpec("Val[2,10]")
+    end
+
     def test_a_negative_index_raises_naming_the_face
         error = assert_raises(ArgumentError) { parseFaceSpec("Val,-1") }
         assert_includes error.message, '"Val,-1"'

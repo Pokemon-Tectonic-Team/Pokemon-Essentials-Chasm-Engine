@@ -1,4 +1,5 @@
 require_relative "../../../support/test_helper"
+require_relative "../../../support/graphics_folder"
 
 class DialoguePortraitsTest < Minitest::Test
     SCREEN_WIDTH = 512
@@ -114,5 +115,72 @@ class DialoguePortraitsTest < Minitest::Test
 
     def test_the_centre_portrait_never_moves
         [0, 0.3, 1].each { |slide| assert_equal 0, portraitSlideOffset(:centre, slide) }
+    end
+end
+
+class DefaultPortraitAnchorTest < Minitest::Test
+    # Answers what pbRepositionMessageWindow reads from the game system.
+    MessageSettings = Struct.new(:message_position, :message_frame)
+
+    def run(...)
+        GraphicsFolder.with { super }
+    end
+
+    def teardown
+        $game_system = nil
+    end
+
+    # Runs the block with the screen height given, restoring the stub's after.
+    def withScreenHeight(height)
+        original = Graphics.method(:height)
+        Graphics.define_singleton_method(:height) { height }
+        yield
+    ensure
+        Graphics.define_singleton_method(:height, original)
+    end
+
+    # The message windows the block builds, each with the skins it was given.
+    def messageWindowsBuilt
+        built = []
+        Window_AdvancedTextPokemon.define_singleton_method(:new) do |*args|
+            super(*args).tap do |window|
+                skins = []
+                window.define_singleton_method(:setSkin) do |skin, *rest|
+                    skins.push(skin)
+                    super(skin, *rest)
+                end
+                built.push([window, skins])
+            end
+        end
+        yield
+        return built
+    ensure
+        Window_AdvancedTextPokemon.singleton_class.remove_method(:new)
+    end
+
+    def test_a_message_shows_two_lines_on_the_game_screen
+        assert_equal 2, pbDefaultMessageLines
+    end
+
+    def test_a_message_shows_three_lines_on_a_screen_taller_than_400
+        withScreenHeight(401) { assert_equal 3, pbDefaultMessageLines }
+    end
+
+    def test_portraits_stand_on_a_default_message_window_at_the_screen_bottom
+        assert_equal [Graphics.height - 96, 96, 0, 0], defaultPortraitAnchor.to_a
+    end
+
+    def test_portraits_follow_the_message_position_option
+        $game_system = MessageSettings.new(0, 0)
+        assert_equal 0, defaultPortraitAnchor.y
+    end
+
+    def test_the_stand_in_message_window_is_a_hidden_speech_window_disposed_after
+        built = messageWindowsBuilt { defaultPortraitAnchor }
+        assert_equal 1, built.length
+        window, skins = built.first
+        assert_equal [MessageConfig.pbGetSpeechFrame], skins
+        refute window.visible
+        assert window.disposed?
     end
 end

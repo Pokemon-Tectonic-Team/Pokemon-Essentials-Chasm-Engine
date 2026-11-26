@@ -1,4 +1,5 @@
 require_relative "../../../support/test_helper"
+require_relative "../../../support/graphics_folder"
 
 class DialoguePortraitTest < Minitest::Test
     # Stands in for FaceWindowVX, which needs a real bitmap. Sized as it sizes
@@ -62,6 +63,16 @@ class DialoguePortraitTest < Minitest::Test
         frames.times { portrait.update }
     end
 
+    # Updates until the block holds, returning the frames it took; fails after a second.
+    def framesUntil(portrait)
+        Graphics.frame_rate.times do |frames|
+            return frames if yield
+
+            portrait.update
+        end
+        flunk "not reached within a second of frames"
+    end
+
     def test_the_window_shows_the_face_at_portrait_frame_size
         build
         assert_equal "Val,2", @window.face
@@ -110,6 +121,18 @@ class DialoguePortraitTest < Minitest::Test
         assert portrait.settled?
         assert_equal restX, @window.x
         assert_equal 255, @window.contents_opacity
+    end
+
+    def test_opening_takes_the_slide_time
+        portrait = anchored
+        frames = framesUntil(portrait) { @window.x == restX }
+        assert_in_delta PORTRAIT_SLIDE_SECONDS * Graphics.frame_rate, frames, 1
+    end
+
+    def test_a_portrait_is_opaque_before_it_finishes_sliding
+        portrait = anchored
+        framesUntil(portrait) { @window.contents_opacity == 255 }
+        assert_operator @window.x, :<, restX
     end
 
     def test_a_right_portrait_comes_in_from_the_right
@@ -180,6 +203,31 @@ class DialoguePortraitTest < Minitest::Test
         assert portrait.settled?
     end
 
+    def test_dimming_eases_in_over_the_dim_time
+        portrait = anchored
+        portrait.dimmed = true
+        portrait.update
+        assert_includes 1...PORTRAIT_DIM_COLOR.alpha, @window.color.alpha
+        frames = 1 + framesUntil(portrait) { @window.color.alpha == PORTRAIT_DIM_COLOR.alpha }
+        assert_in_delta PORTRAIT_DIM_SECONDS * Graphics.frame_rate, frames, 1
+    end
+
+    def test_undimming_eases_back_out
+        portrait = anchored
+        portrait.dimmed = true
+        updateTimes(portrait, SETTLE_FRAMES)
+        portrait.dimmed = false
+        portrait.update
+        assert_includes 1...PORTRAIT_DIM_COLOR.alpha, @window.color.alpha
+    end
+
+    def test_a_closing_portrait_is_not_settled
+        portrait = anchored
+        updateTimes(portrait, SETTLE_FRAMES)
+        portrait.close
+        refute portrait.settled?
+    end
+
     def test_a_dimming_portrait_is_not_settled
         portrait = anchored
         updateTimes(portrait, SETTLE_FRAMES)
@@ -199,6 +247,7 @@ class DialoguePortraitTest < Minitest::Test
     def test_the_colour_is_only_set_when_the_dim_changes
         portrait = anchored
         updateTimes(portrait, SETTLE_FRAMES)
+        portrait.anchor(ANCHOR)
         assert_equal 1, @window.colors.length
     end
 
@@ -222,5 +271,70 @@ class DialoguePortraitTest < Minitest::Test
 
     def colorOf(color)
         return [color.red, color.green, color.blue, color.alpha]
+    end
+end
+
+# Portraits on real face windows, in a set as the map holds them.
+class DialoguePortraitFaceTest < Minitest::Test
+    SHEET = [768, 512].freeze
+    IMAGES = { "Graphics/Faces/Val" => SHEET, "Graphics/Faces shiny/Val" => SHEET }.freeze
+    ANCHOR = PortraitAnchor.new(288, 96, 0, 0)
+
+    def run(...)
+        GraphicsFolder.with(IMAGES) { super }
+    end
+
+    def setup
+        $shiny_faces = ShinyFaces.new
+        @portraits = DialoguePortraitSet.new
+    end
+
+    def teardown
+        @portraits.dispose
+        $shiny_faces = nil
+    end
+
+    def leftWindow
+        return @portraits.instance_variable_get(:@shown)[:left].instance_variable_get(:@window)
+    end
+
+    def sheetShown
+        return leftWindow.contents.blts.last[2].path
+    end
+
+    def frameXShown
+        return leftWindow.contents.blts.last[3].x
+    end
+
+    def test_a_portrait_is_a_skinless_face_window_of_the_portrait_frame_size
+        @portraits.show(:left, "Val,1", ANCHOR)
+        assert_instance_of FaceWindowVX, leftWindow
+        assert_nil leftWindow.windowskin
+        assert_equal [PORTRAIT_FRAME_WIDTH + 32, PORTRAIT_FRAME_HEIGHT + 32], [leftWindow.width, leftWindow.height]
+        assert_equal PORTRAIT_FRAME_WIDTH, frameXShown
+    end
+
+    def test_another_frame_redraws_the_same_window
+        @portraits.show(:left, "Val", ANCHOR)
+        window = leftWindow
+        @portraits.show(:left, "Val,3", ANCHOR)
+        assert_same window, leftWindow
+        assert_equal PORTRAIT_FRAME_WIDTH * 3, frameXShown
+    end
+
+    def test_a_shiny_face_shows_its_shiny_sheet
+        $shiny_faces.setShiny("Val", true)
+        @portraits.show(:left, "Val", ANCHOR)
+        assert_equal "Graphics/Faces shiny/Val.png", sheetShown
+    end
+
+    def test_a_face_flagged_shiny_while_shown_keeps_its_sheet_until_it_comes_back
+        @portraits.show(:left, "Val", ANCHOR)
+        $shiny_faces.setShiny("Val", true)
+        @portraits.show(:left, "Val,1", ANCHOR)
+        assert_equal "Graphics/Faces/Val.png", sheetShown
+        @portraits.hide(:left)
+        @portraits.show(:left, "Val", ANCHOR)
+        assert_equal "Graphics/Faces shiny/Val.png", sheetShown
     end
 end

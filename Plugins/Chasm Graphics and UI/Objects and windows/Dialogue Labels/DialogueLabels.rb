@@ -59,11 +59,21 @@ def positionSpeakerWindow(msgwindow, speaker)
     end
 end
 
+# Names the speaker by the trainer's full name, or logs and shows nothing for a
+# trainer that isn't defined.
 def setSpeakerTrainer(trainerClass, trainerName)
-    trainerData = GameData::Trainer.get(trainerClass, trainerName)
-    setSpeaker(trainerData.to_trainer.full_name)
+    unless speakerTrainerExists?(trainerClass, trainerName)
+        echoln("Unable to find dialogue label display name for trainer: #{trainerClass} #{trainerName}")
+        return
+    end
+    setSpeaker(GameData::Trainer.get(trainerClass, trainerName).to_trainer.full_name)
+end
+
+# Whether a trainer is defined, false for a class or name of the wrong type.
+def speakerTrainerExists?(trainerClass, trainerName)
+    return GameData::Trainer.exists?(trainerClass, trainerName)
 rescue ArgumentError
-    echoln("Unable to find dialogue label display name for trainer: #{trainerClass} #{trainerName}")
+    return false
 end
 
 def speakerNameWindowVisible?

@@ -48,7 +48,7 @@ class AnimatedBitmap
       if numFrames || filename[/^\[(\d+)(?:,(\d+))?\]/]   # Starts with 1 or 2 numbers in brackets
         # File has a frame count
         numFrames ||= $1.to_i
-        delay = delay || $2.to_i || 10
+        delay ||= $2 ? $2.to_i : 10
         raise "Invalid frame count in #{filename}" if numFrames <= 0
         raise "Invalid frame delay in #{filename}" if delay <= 0
         if panorama.width % numFrames != 0

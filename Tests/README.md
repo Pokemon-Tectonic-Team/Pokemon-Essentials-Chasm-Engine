@@ -96,3 +96,13 @@ target = TestBattler.new(hp: 50, totalhp: 100)
 battle = TestBattle.new(battlers: [target])
 quash = make_move(PokeBattle_Move_TargetActsLast, battle: battle)
 ```
+
+If you're testing something that needs images (e.g. UI), you can use
+`GraphicsFolder.with` to fake it. It can also create fake image files with given
+names as a test needs.
+
+```ruby
+def run(...)
+    GraphicsFolder.with("Graphics/Faces/Val" => [768, 512]) { super }
+end
+```
