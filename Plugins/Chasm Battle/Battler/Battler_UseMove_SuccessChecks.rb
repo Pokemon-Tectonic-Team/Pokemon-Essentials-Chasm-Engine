@@ -173,6 +173,14 @@ class PokeBattle_Battler
             echoln(msg)
             return false
         end
+        if hasActiveAbility?(:TYPINGTROJAN) && move.id != :STRUGGLE && move.type != :FLEX && !move.types.any? { |type| pbHasType?(type) }
+            msg = _INTL("{1} cannot use moves, that aren't of their own types!", pbThis)
+            if showMessages
+                commandPhase ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
+            end
+            echoln(msg)
+            return false
+        end
         # Moves that restrict when they can be used
         return false unless move.pbCanChooseMove?(self, commandPhase, showMessages)
         # Turbulent Sky

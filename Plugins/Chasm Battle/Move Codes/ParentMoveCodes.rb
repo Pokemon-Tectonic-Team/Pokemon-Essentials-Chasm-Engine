@@ -1432,7 +1432,6 @@ class PokeBattle_ForetoldMove < PokeBattle_Move
     def foretoldTurnCount(user, _target, aiCheck = false)
         count = @turnCount
         count -= 2 if user.shouldAbilityApply?(:BADOMEN, aiCheck)
-        count += 1 if user.shouldAbilityApply?(:CREEPINGHORROR, aiCheck)
         count = 1 if count < 1
         return count
     end

@@ -8,20 +8,6 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:EMERGENCYEXIT,
 
 BattleHandlers::AbilityOnHPDroppedBelowHalf.copy(:EMERGENCYEXIT, :WIMPOUT)
 
-BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BERSERK,
-  proc { |ability, battler, _battle|
-      battler.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, battler, ability: ability)
-      next false
-  }
-)
-
-BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:ADRENALINERUSH,
-  proc { |ability, battler, _battle|
-      battler.tryRaiseStat(:SPEED, battler, increment: 4, ability: ability)
-      next false
-  }
-)
-
 BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BOULDERNEST,
   proc { |ability, battler, battle|
       battle.pbShowAbilitySplash(battler, ability)
@@ -33,13 +19,6 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BOULDERNEST,
           battler.pbOpposingSide.applyEffect(:StealthRock)
       end
       battle.pbHideAbilitySplash(battler)
-      next false
-  }
-)
-
-BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:REAWAKENEDPOWER,
-  proc { |ability, battler, _battle|
-      battler.pbMaximizeStatStep(:SPECIAL_ATTACK, battler, self, ability: ability)
       next false
   }
 )
@@ -103,15 +82,6 @@ BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:VOIDWARRANTY,
       battler.pbChangeForm(formChoices[choiceIndex], _INTL("{1} takes on a new machine!", battler.pbThis))
       battler.refreshBattleMoves
       battle.pbHideAbilitySplash(battler)
-  }
-)
-
-BattleHandlers::AbilityOnHPDroppedBelowHalf.add(:BATTLEHARDENED,
-  proc { |ability, battler, _battle|
-      next if battler.effectActive?(:BattleHardened)
-      battler.pbRaiseMultipleStatSteps([:DEFENSE, 3, :SPECIAL_DEFENSE, 3], battler, ability: ability)
-      battler.applyEffect(:BattleHardened)
-      next false
   }
 )
 

@@ -1,3 +1,6 @@
+require:
+    - ./.rubocop/cops/inline_tab.rb
+
 AllCops:
     TargetRubyVersion: 3.1
     NewCops: enable
@@ -5,8 +8,17 @@ AllCops:
 Layout/IndentationStyle:
     EnforcedStyle: spaces
 
+# IndentationStyle covers only indentation; this catches tabs used to align code later in a line
+Chasm/InlineTab:
+    Description: Use spaces, not tabs, after indentation.
+    Enabled: true
+
 Layout/IndentationWidth:
     Width: 4
+
+# .gitattributes decides line endings, so a checkout's follow the platform
+Layout/EndOfLine:
+    Enabled: false
 
 Layout/LineLength:
     Max: 200

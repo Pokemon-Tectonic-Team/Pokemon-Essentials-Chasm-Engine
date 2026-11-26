@@ -1567,15 +1567,15 @@ GameData::BattleEffect.register_effect(:Battler, {
     :remain_proc => proc do |battle, battler, _value|
         moveName = battler.getMoveData(:TrappingMove).name
         case battler.effects[:TrappingMove]
-        when :CLAMP, :SLAMSHUT              then battle.pbCommonAnimation("Clamp", battler)
-        when :FIRESPIN, :CRIMSONSTORM       then battle.pbCommonAnimation("FireSpin", battler)
-        when :MAGMASTORM                    then battle.pbCommonAnimation("MagmaStorm", battler)
-        when :PITFALL, :CRUSHINGCHASM       then battle.pbCommonAnimation("SandTomb", battler)
-        when :INFESTATION, :TERRORSWARM     then battle.pbCommonAnimation("Infestation", battler)
-        when :SURGESNARE, :THUNDERCAGE      then battle.pbCommonAnimation("ThunderCage", battler)
-        when :BEARHUG                       then battle.pbCommonAnimation("BearHug", battler)
-        when :MAGEHAND, :KINETICGRIP        then battle.pbCommonAnimation("KineticGrip", battler)
-        when :MAGNETIZE, :FARADAYCAGE       then battle.pbCommonAnimation("MagnetBomb", battler)
+        when :CLAMP, :SLAMSHUT                          then battle.pbCommonAnimation("Clamp", battler)
+        when :FIRESPIN, :CRIMSONSTORM                   then battle.pbCommonAnimation("FireSpin", battler)
+        when :MAGMASTORM                                then battle.pbCommonAnimation("MagmaStorm", battler)
+        when :PITFALL, :CRUSHINGCHASM, :DEVOURINGDUST   then battle.pbCommonAnimation("SandTomb", battler)
+        when :INFESTATION, :TERRORSWARM                 then battle.pbCommonAnimation("Infestation", battler)
+        when :SURGESNARE, :THUNDERCAGE                  then battle.pbCommonAnimation("ThunderCage", battler)
+        when :BEARHUG                                   then battle.pbCommonAnimation("BearHug", battler)
+        when :MAGEHAND, :KINETICGRIP                    then battle.pbCommonAnimation("KineticGrip", battler)
+        when :MAGNETIZE, :FARADAYCAGE                   then battle.pbCommonAnimation("MagnetBomb", battler)
         else battle.pbCommonAnimation("Wrap", battler)
         end
         if battler.takesIndirectDamage?
@@ -2873,5 +2873,11 @@ GameData::BattleEffect.register_effect(:Battler, {
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :SteepMomentumDealtDamage,
     :real_name => "Steep Momentum",
+    :info_displayed => false
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ConversionUsed,
+    :real_name => "Conversion Used",
     :info_displayed => false
 })
