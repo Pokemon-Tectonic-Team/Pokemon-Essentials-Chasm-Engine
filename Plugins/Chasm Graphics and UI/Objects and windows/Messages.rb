@@ -482,6 +482,7 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
     begin
         text.gsub!(/\\pfp/i, $Trainer.party[0].name) if $Trainer && $Trainer.party[0]
     rescue StandardError
+        # Leaves \pfp as written if the lead Pokémon's name can't be read
     end
     text.gsub!(/\\pm/i, _INTL("${1}", $Trainer.money.to_s_formatted)) if $Trainer
     text.gsub!(/\\n/i, "\n")
@@ -977,7 +978,7 @@ def pbShowCommandsWithHelp(msgwindow, commands, help, cmdIfCancel = 0, defaultCm
         cmdwindow.index = defaultCmd
         command = 0
         msgwin.text = help[cmdwindow.index]
-        msgwin.width = msgwin.width # Necessary evil to make it use the proper margins
+        msgwin.relayout # So the help text uses the proper margins
         loop do
             Graphics.update
             Input.update

@@ -52,7 +52,9 @@ class SpriteWindow < Window
         privRefresh(true)
     end
 
-    def initialize(viewport = nil)
+    # Builds the window from sprites instead of calling Window's initialize,
+    # which would create a real window as well.
+    def initialize(viewport = nil) # rubocop:disable Lint/MissingSuper
         @sprites = {}
         @spritekeys = [
             "back",
@@ -358,7 +360,7 @@ class SpriteWindow < Window
                 @trim = [16, 16, 16, 16]
             end
         else
-            if value&.is_a?(Bitmap) && !value.disposed? && value.width == 128
+            if value.is_a?(Bitmap) && !value.disposed? && value.width == 128
                 @rpgvx = true
             else
                 @rpgvx = false
@@ -445,6 +447,12 @@ class SpriteWindow < Window
     def endY=(value)
         @trim[3] = value
         privRefresh
+    end
+
+    # Lays the window out again at its current size, as setting its width or
+    # height does.
+    def relayout
+        privRefresh(true)
     end
 
     #############
@@ -932,6 +940,7 @@ class SpriteWindow_Base < SpriteWindow
             begin
                 refresh
             rescue NoMethodError
+                # Not every window defines refresh
             end
         end
         if @curfont != MessageConfig.pbGetSystemFontName
@@ -942,6 +951,7 @@ class SpriteWindow_Base < SpriteWindow
             begin
                 refresh
             rescue NoMethodError
+                # Not every window defines refresh
             end
         end
     end

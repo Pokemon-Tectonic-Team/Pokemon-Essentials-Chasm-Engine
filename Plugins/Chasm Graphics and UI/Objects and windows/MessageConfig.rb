@@ -19,12 +19,9 @@ module MessageConfig
     WINDOW_OPACITY          = 255
     TEXT_SPEED              = nil # can be positive to wait frames or negative to
     # show multiple characters in a single frame
-    @@systemFrame     = nil
-    @@defaultTextSkin = nil
-    @@textSpeed       = nil
-    @@systemFont      = nil
-    @@smallFont       = nil
-    @@narrowFont      = nil
+    @systemFrame     = nil
+    @defaultTextSkin = nil
+    @textSpeed       = nil
 
     def self.pbDefaultTextMainColor(opposite: false)
         if opposite ^ ($Options&.dark_mode == 0)
@@ -87,29 +84,29 @@ module MessageConfig
     end
 
     def self.pbGetSystemFrame
-        unless @@systemFrame
+        unless @systemFrame
             skin = MessageConfig.pbDefaultSystemFrame
             skin = MessageConfig.pbDefaultWindowskin if nil_or_empty?(skin)
-            @@systemFrame = skin || ""
+            @systemFrame = skin || ""
         end
-        return @@systemFrame
+        return @systemFrame
     end
 
     def self.pbGetSpeechFrame
-        unless @@defaultTextSkin
+        unless @defaultTextSkin
             skin = MessageConfig.pbDefaultSpeechFrame
             skin = MessageConfig.pbDefaultWindowskin if nil_or_empty?(skin)
-            @@defaultTextSkin = skin || ""
+            @defaultTextSkin = skin || ""
         end
-        return @@defaultTextSkin
+        return @defaultTextSkin
     end
 
     def self.pbSetSystemFrame(value)
-        @@systemFrame = pbResolveBitmap(value) || ""
+        @systemFrame = pbResolveBitmap(value) || ""
     end
 
     def self.pbSetSpeechFrame(value)
-        @@defaultTextSkin = pbResolveBitmap(value) || ""
+        @defaultTextSkin = pbResolveBitmap(value) || ""
     end
 
     #-----------------------------------------------------------------------------
@@ -119,12 +116,12 @@ module MessageConfig
     end
 
     def self.pbGetTextSpeed
-        @@textSpeed ||= pbDefaultTextSpeed
-        return @@textSpeed
+        @textSpeed ||= pbDefaultTextSpeed
+        return @textSpeed
     end
 
     def self.pbSetTextSpeed(value)
-        @@textSpeed = value
+        @textSpeed = value
     end
 
     def self.pbSettingToTextSpeed(speed, slowed = false)
@@ -155,37 +152,17 @@ module MessageConfig
         return is_chinese? ? MessageConfig.pbTryFonts(CHN_FONT_NAME) : MessageConfig.pbTryFonts(NARROW_FONT_NAME)
     end
 
+    # Worked out on every call, since the font depends on the current language.
     def self.pbGetSystemFontName
-        # @@systemFont ||= pbDefaultSystemFontName
-        @@systemFont = pbDefaultSystemFontName
-        return @@systemFont
+        return pbDefaultSystemFontName
     end
 
     def self.pbGetSmallFontName
-        # @@smallFont ||= pbDefaultSmallFontName
-        @@smallFont = pbDefaultSmallFontName
-        return @@smallFont
+        return pbDefaultSmallFontName
     end
 
     def self.pbGetNarrowFontName
-        # @@narrowFont ||= pbDefaultNarrowFontName
-        @@narrowFont = pbDefaultNarrowFontName
-        return @@narrowFont
-    end
-
-    def self.pbSetSystemFontName(value)
-        @@systemFont = MessageConfig.pbTryFonts(value)
-        @@systemFont = MessageConfig.pbDefaultSystemFontName if @@systemFont == ""
-    end
-
-    def self.pbSetSmallFontName(value)
-        @@smallFont = MessageConfig.pbTryFonts(value)
-        @@smallFont = MessageConfig.pbDefaultSmallFontName if @@smallFont == ""
-    end
-
-    def self.pbSetNarrowFontName(value)
-        @@narrowFont = MessageConfig.pbTryFonts(value)
-        @@narrowFont = MessageConfig.pbDefaultNarrowFontName if @@narrowFont == ""
+        return pbDefaultNarrowFontName
     end
 
     def self.pbTryFonts(*args)
@@ -449,14 +426,9 @@ def getTextColorsFromIDNumber(colorID, isDarkSkin: darkMode?, asTag: false)
         else # Light background, dark text
             base = textcolors[2 * (colorID - 1)]
             shadow = textcolors[(2 * (colorID - 1)) + 1]
-            if asTag
-                return format("<c3=%s,%s>", base, shadow)
-            else
-                return [base, shadow]
-            end
         end
         if asTag
-            return format("<c3=%s,%s>", base, shadow)
+            return "<c3=#{base},#{shadow}>"
         else
             return [base, shadow]
         end
@@ -563,11 +535,13 @@ def pbUpdateSpriteHash(windows)
                 begin
                     window.update unless window.disposed?
                 rescue NoMethodError
+                    # A Plane has no update in some RGSS versions
                 end
             elsif window.respond_to?("update")
                 begin
                     window.update
                 rescue RGSSError
+                    # Raised by an object disposed since the last update
                 end
             end
         end
@@ -593,13 +567,7 @@ end
 
 def pbDisposed?(x)
     return true unless x
-    return x.disposed? unless x.is_a?(Viewport)
-    begin
-        x.rect = x.rect
-    rescue StandardError
-        return true
-    end
-    return false
+    return x.disposed?
 end
 
 #===============================================================================
