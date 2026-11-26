@@ -105,10 +105,12 @@ end
 class DialoguePortrait
     attr_reader :file
 
-    def initialize(side, face)
+    # windowClass builds the window from (face, frameWidth, frameHeight); tests
+    # give a fake.
+    def initialize(side, face, windowClass = FaceWindowVX)
         @side = side
         @file = parseFaceSpec(face)[0]
-        @window = FaceWindowVX.new(face, PORTRAIT_FRAME_WIDTH, PORTRAIT_FRAME_HEIGHT)
+        @window = windowClass.new(face, PORTRAIT_FRAME_WIDTH, PORTRAIT_FRAME_HEIGHT)
         @window.windowskin = nil
         @window.z = PORTRAIT_Z
         @slide = 0.0

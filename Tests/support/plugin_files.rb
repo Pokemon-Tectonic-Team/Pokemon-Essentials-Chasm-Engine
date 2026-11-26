@@ -10,6 +10,8 @@ module PluginFiles
         Compiler
         PluginManager
         EventSystem
+        SaveData
+        SaveData_Value
     ].freeze
 
     PLUGIN_FILES = [
@@ -40,7 +42,10 @@ module PluginFiles
         "Chasm Battle/Items/ItemHandlerHelpers.rb",
         "Chasm Battle/Items/BattleHandlers/Damage/DamageCalcUserItems.rb",
         "Chasm Battle/Abilities/Ability Event Handlers/Modify Move/MoveBaseTypeModifierAbilities.rb",
+        "Chasm Game Processing/Scene_Map.rb",
         "Chasm Graphics and UI/Objects and windows/FaceSpecs.rb",
+        "Chasm Graphics and UI/Objects and windows/ShinyFaces.rb",
+        "Chasm Graphics and UI/Objects and windows/Dialogue Portraits/PortraitCommands.rb",
         "Chasm Graphics and UI/Objects and windows/Dialogue Labels/SpeakerTagPlacement.rb",
         "Chasm Graphics and UI/Objects and windows/Dialogue Portraits/DialoguePortraits.rb",
         "Chasm Graphics and UI/Objects and windows/Sprite Window/WindowskinInsets.rb",

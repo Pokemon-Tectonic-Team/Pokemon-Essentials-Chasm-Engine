@@ -15,6 +15,18 @@ class RuntimeStubsTest < Minitest::Test
         assert_equal [1, 2, 3, 4], [rect.x, rect.y, rect.width, rect.height]
     end
 
+    def test_graphics_has_the_game_screen_size
+        assert_equal [Settings::SCREEN_WIDTH, Settings::SCREEN_HEIGHT], [Graphics.width, Graphics.height]
+    end
+
+    def test_graphics_runs_at_sixty_frames_a_second
+        assert_equal 60, Graphics.frame_rate
+    end
+
+    def test_the_data_directory_exists
+        assert File.directory?(System.data_directory)
+    end
+
     def test_echoln_prints_nothing
         out, err = capture_io { echoln("a", "b") }
 
