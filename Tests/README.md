@@ -96,3 +96,13 @@ target = TestBattler.new(hp: 50, totalhp: 100)
 battle = TestBattle.new(battlers: [target])
 quash = make_move(PokeBattle_Move_TargetActsLast, battle: battle)
 ```
+
+For code that needs a real battle, such as what the AI knows of the player's
+Pokémon or field effects, `AITestBattle` is a real `PokeBattle_Battle` with a
+real field, and `TestPokemon` stands in for the Pokémon behind a battler:
+
+```ruby
+battle = AITestBattle.new(auto_known_moves: { 0 => [:TACKLE] })
+player = battle.add_battler(index: 0, pokemon: TestPokemon.new(personal_id: 0), level: 50)
+battle.field.applyEffect(:InsightRoom, 5)
+```

@@ -17,13 +17,25 @@ class TestBattlerTest < Minitest::Test
         refute battler.hasActiveAbility?(:ANYTHING)
         assert_empty battler.learned_items
         assert_empty battler.applied_effects
+        assert_nil battler.battle
+        assert_nil battler.pokemon
+        assert_empty battler.moves
+        assert_equal 1, battler.level
     end
 
     def test_each_keyword_reaches_its_reader_or_override
         effects = { some_effect: 3 }
+        battle = Object.new
+        pokemon = TestPokemon.new
+        moves = [:a_move]
         battler = TestBattler.new(hp: 40, totalhp: 90, index: 2, effects: effects, boss: true, speed: 77,
                                   name: "Named", hp_resistance: 0.5, fainted: true, moved: true,
-                                  abilities: [:STATIC])
+                                  abilities: [:STATIC], battle: battle, pokemon: pokemon, moves: moves, level: 30)
+
+        assert_same battle, battler.battle
+        assert_same pokemon, battler.pokemon
+        assert_same moves, battler.moves
+        assert_equal 30, battler.level
 
         assert_equal 40, battler.hp
         assert_equal 90, battler.totalhp
@@ -46,10 +58,28 @@ class TestBattlerTest < Minitest::Test
         assert battler.hasActiveAbility?(:X, true, false, ignoreGas: true)
         battler.applyEffect(:E, 1, true)
         assert_equal [[:E, 1]], battler.applied_effects
+        refute battler.effectActive?(:E, true)
+    end
+
+    def test_effect_is_active_while_effects_holds_a_truthy_value
+        battler = TestBattler.new(effects: { on: true, counted: 2, off: false, cleared: nil })
+
+        assert battler.effectActive?(:on)
+        assert battler.effectActive?(:counted)
+        refute battler.effectActive?(:off)
+        refute battler.effectActive?(:cleared)
+        refute battler.effectActive?(:absent)
+    end
+
+    def test_no_effect_is_active_while_fainted_unless_fainting_is_ignored
+        battler = TestBattler.new(effects: { on: true }, fainted: true)
+
+        refute battler.effectActive?(:on)
+        assert battler.effectActive?(:on, true)
     end
 
     def test_loaded_overrides_take_the_real_methods_parameters
-        %i[pbThis fainted?].each do |name|
+        %i[pbThis fainted? hpBasedEffectResistance movedThisRound? hasActiveAbility? aiLearnsItem].each do |name|
             real = PokeBattle_Battler.instance_method(name).parameters
             fake = TestBattler.instance_method(name).parameters
 

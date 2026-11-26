@@ -35,6 +35,8 @@ require_relative "localisation_stubs"
 PluginLoader.load(repo_root, PluginFiles::PLUGIN_FILES)
 require_relative "test_battler"
 require_relative "test_battle"
+require_relative "test_pokemon"
+require_relative "ai_test_battle"
 
 TestReset.baseline = StateSnapshot.take
 Minitest::Test.include(TestReset)

@@ -389,7 +389,8 @@ class PokeBattle_Battle
         return true
     end
 
-    def aiPredictsSwitch?(predictor, idxBattler, ignoreSwitchMoves = false)
+    # With onlyBeforePredictor, a predicted switch-out move counts only if it goes before the predictor
+    def aiPredictsSwitch?(predictor, idxBattler, onlyBeforePredictor = false)
         return false unless predictable?(predictor, idxBattler)
         predictedAction = @predictedActions[idxBattler]
         return true if predictedAction[0] == :SwitchOut
