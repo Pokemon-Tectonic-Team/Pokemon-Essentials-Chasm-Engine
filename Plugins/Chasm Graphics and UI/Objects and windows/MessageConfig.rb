@@ -829,7 +829,7 @@ unless defined?(_INTL)
     def _INTL(*args)
         string = args[0].clone
         (1...args.length).each do |i|
-            string.gsub!(/\{#{i}\}/, (args[i]).to_s)
+            string.gsub!(/\{#{i}\}/, args[i].to_s)
         end
         return string
     end
@@ -851,7 +851,7 @@ unless defined?(_MAPINTL)
     def _MAPINTL(*args)
         string = args[1].clone
         (2...args.length).each do |i|
-            string.gsub!(/\{#{i}\}/, (args[i + 1]).to_s)
+            string.gsub!(/\{#{i}\}/, args[i + 1].to_s)
         end
         return string
     end
