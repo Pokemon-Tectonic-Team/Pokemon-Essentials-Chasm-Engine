@@ -16,8 +16,9 @@
 # changes, or the same code with no face (\ml[]) clears it. Giving a side
 # another frame of the same file swaps it in place, for expression changes; a
 # different file slides the old portrait out as the new one slides in.
-# Portraits only show on the map. PortraitCommands.rb does the same from an
-# event's Script command.
+# Portraits only show on the map; elsewhere these codes are skipped, so one
+# message can be shared with battles and menus. PortraitCommands.rb does the
+# same from an event's Script command, but raises off the map instead.
 #
 # The side last given a face is the speaker, and every portrait but the
 # speaker's is dimmed. Clearing the speaker's side leaves nobody speaking, and

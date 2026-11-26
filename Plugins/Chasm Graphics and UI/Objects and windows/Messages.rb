@@ -264,7 +264,7 @@ class FaceWindowVX < SpriteWindow_Base
     private
 
     def resolveFaceFile(name)
-        unless $shiny_faces.shiny?(name)
+        unless $shiny_faces&.shiny?(name)
             return pbResolveBitmap("Graphics/Faces/#{name}") || pbResolveBitmap("Graphics/Pictures/#{name}")
         end
         file = pbResolveBitmap("Graphics/Faces shiny/#{name}")
@@ -731,16 +731,16 @@ def pbMessageDisplay(msgwindow, message, letterbyletter = true, commandProc = ni
                 icon_location = "Graphics/#{param}"
                 iconwindow = IconSprite.new(msgwindow.viewport)
                 iconwindow.setBitmap(icon_location)
-                iconwindow.zoom_x	= 4.0
-                iconwindow.zoom_y	= 4.0
+                iconwindow.zoom_x   = 4.0
+                iconwindow.zoom_y   = 4.0
                 iconwindow.z = msgwindow.z
-                iconwindow.x	= (Graphics.width - iconwindow.get_display_width) / 2
-                iconwindow.y	= ((Graphics.height / 2.0) - ((iconwindow.get_display_height * 2) / 3.0)).ceil + iconFadeInTime
+                iconwindow.x    = (Graphics.width - iconwindow.get_display_width) / 2
+                iconwindow.y    = ((Graphics.height / 2.0) - ((iconwindow.get_display_height * 2) / 3.0)).ceil + iconFadeInTime
                 msgwindow.waitcount = iconFadeInTime
                 autoresume = true
             when "or"
-                msgwindow.x	= 60
-                msgwindow.width	-= 60
+                msgwindow.x = 60
+                msgwindow.width -= 60
             when "ff"
                 facewindow&.dispose
                 facewindow = FaceWindowVX.new(param)
@@ -923,15 +923,19 @@ def pbConfirmMessageGated(message, &block)
     end
 end
 
-def pbMessageChooseNumber(message, params, &)
+# The block is named because the proc below uses it, and Ruby 3.3 refuses an
+# anonymous block inside a block.
+# rubocop:disable Style/ArgumentsForwarding
+def pbMessageChooseNumber(message, params, &block)
     msgwindow = pbCreateMessageWindow(nil, params.messageSkin)
     ret = pbMessageDisplay(msgwindow, message, true,
        proc { |msgwindow|
            next pbChooseNumber(msgwindow, params, &block)
-       }, &)
+       }, &block)
     pbDisposeMessageWindow(msgwindow)
     return ret
 end
+# rubocop:enable Style/ArgumentsForwarding
 
 def pbShowCommands(msgwindow, commands = nil, cmdIfCancel = 0, defaultCmd = 0)
     return 0 unless commands
@@ -1062,15 +1066,18 @@ def pbFreeText(msgwindow, currenttext, passwordbox, maxlength, width = 240)
     return ret
 end
 
-def pbMessageFreeText(message, currenttext, passwordbox, maxlength, width = 240, &)
+# Named block: see pbMessageChooseNumber.
+# rubocop:disable Style/ArgumentsForwarding
+def pbMessageFreeText(message, currenttext, passwordbox, maxlength, width = 240, &block)
     msgwindow = pbCreateMessageWindow
     retval = pbMessageDisplay(msgwindow, message, true,
        proc { |msgwindow|
            next pbFreeText(msgwindow, currenttext, passwordbox, maxlength, width, &block)
-       }, &)
+       }, &block)
     pbDisposeMessageWindow(msgwindow)
     return retval
 end
+# rubocop:enable Style/ArgumentsForwarding
 
 # Displays text options in the message box, allowing the player to scroll through them
 # with left/right arrows and select with A. Returns the selected index or -1 if cancelled.
