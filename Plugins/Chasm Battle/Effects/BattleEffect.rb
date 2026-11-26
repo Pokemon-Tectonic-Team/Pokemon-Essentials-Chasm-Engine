@@ -180,7 +180,7 @@ module GameData
             return !@entry_proc.nil?
         end
 
-        DATA = {} # rubocop:disable Style/MutableConstant -- the registry, filled as effects load
+        DATA = {}
 
         extend ClassMethods
         include InstanceMethods
