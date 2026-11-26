@@ -353,7 +353,7 @@ class PokeBattle_Battler
         end
     end
 
-    def canChoosePursuit?(target)
+    def choosablePursuitMove(target)
         eachAIKnownMoveWithIndex do |move, i|
             next unless move.function == "PursueSwitchingFoe"
             next unless @battle.pbCanChooseMove?(index, i, false)

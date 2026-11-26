@@ -165,7 +165,7 @@ class PokeBattle_AI
                 PBDebug.log("[STAY-IN RATING] #{battler.pbThis} (#{battler.index}) has an opponent that can force swaps (+10)")
             end
 
-            pursuitMove = b.canChoosePursuit?(battler)
+            pursuitMove = b.choosablePursuitMove(battler)
             if pursuitMove
                 pursuitScore, = pbGetMoveScore(pursuitMove, b, battler)
                 pursuitScore = (pursuitScore / PokeBattle_AI::EFFECT_SCORE_TO_SWITCH_SCORE_CONVERSION_RATIO).ceil
