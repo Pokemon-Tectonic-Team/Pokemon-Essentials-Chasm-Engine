@@ -190,6 +190,44 @@ class SpeciesTest < Minitest::Test
         refute_includes written_form(plain_form), "Rareness" # Even where the base species has one
     end
 
+    # registration_hash
+
+    # A value other than the default for every key initialize reads
+    def full_species_hash
+        return {
+            id: :BASE_1, id_number: 12, species: :BASE, form: 1, name: "Base", form_name: "Alt", category: "Kind",
+            pokedex_entry: "Entry", pokedex_form: 2, type1: :FIRE, type2: :WATER, base_stats: stats, stat_rounding: 1,
+            base_exp: 64, growth_rate: :Fast, gender_ratio: :AlwaysMale, catch_rate: 3, happiness: 10,
+            moves: [[1, :TACKLE]], form_move: :SURF, tutor_moves: [:EMBER], line_moves: [:SURF], abilities: [:BLAZE],
+            hidden_abilities: [:BLAZE], wild_item_common: :BERRY, wild_item_uncommon: :GEM, wild_item_rare: :ORB,
+            hatch_steps: 5, evolutions: [[:TOP, :Level, 30, false]], height: 7, weight: 9, generation: 3,
+            mega_stone: :ORB, mega_move: :SURF, unmega_form: 1, mega_message: 1, notes: "Note", tribes: [:LOYAL],
+            defined_in_extension: true, flags: ["Legendary"], formalizer: [1], sticky_items: [:GEM]
+        }
+    end
+
+    def register_full_species
+        %i[TACKLE EMBER SURF].each { |id| create_move(id: id) }
+        %i[BERRY GEM ORB].each { |id| create_item(id: id) }
+        create_ability(id: :BLAZE)
+        return GameData::Species.register(full_species_hash)
+    end
+
+    def test_registration_hash_gives_back_what_the_species_was_registered_from
+        assert_equal full_species_hash, register_full_species.registration_hash
+    end
+
+    def test_registration_hash_copies_the_arrays_and_hashes
+        species = register_full_species
+        hash = species.registration_hash
+
+        hash[:moves].each { |entry| entry[0] = 99 }
+        hash[:evolutions].each { |evolution| evolution[2] = 99 }
+        hash.each_value { |value| value.clear if value.is_a?(Array) || value.is_a?(Hash) }
+
+        assert_equal full_species_hash, species.registration_hash
+    end
+
     # compile_pokemon_forms
 
     # Runs the block in an empty game folder with PBS/ and Data/, restoring the registered PBS

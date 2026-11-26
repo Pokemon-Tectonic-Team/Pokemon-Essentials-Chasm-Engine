@@ -224,6 +224,56 @@ module GameData
             legalityChecks
         end
 
+        # @return [Hash] the hash initialize reads, rebuilding this species when registered. Its
+        #   arrays and hashes are copies. Not included: the earliest available levels, which the
+        #   compiler sets after registering.
+        def registration_hash
+            return {
+                :id                   => @id,
+                :id_number            => @id_number,
+                :species              => @species,
+                :form                 => @form,
+                :name                 => @real_name,
+                :form_name            => @real_form_name,
+                :category             => @real_category,
+                :pokedex_entry        => @real_pokedex_entry,
+                :pokedex_form         => @pokedex_form,
+                :type1                => @type1,
+                :type2                => @type2,
+                :base_stats           => @base_stats.dup,
+                :stat_rounding        => @stat_rounding,
+                :base_exp             => @base_exp,
+                :growth_rate          => @growth_rate,
+                :gender_ratio         => @gender_ratio,
+                :catch_rate           => @catch_rate_override,
+                :happiness            => @happiness,
+                :moves                => @moves.map(&:dup),
+                :form_move            => @form_move,
+                :tutor_moves          => @tutor_moves.dup,
+                :line_moves           => @line_moves.dup,
+                :abilities            => @abilities.dup,
+                :hidden_abilities     => @hidden_abilities.dup,
+                :wild_item_common     => @wild_item_common,
+                :wild_item_uncommon   => @wild_item_uncommon,
+                :wild_item_rare       => @wild_item_rare,
+                :hatch_steps          => @hatch_steps,
+                :evolutions           => @evolutions.map(&:dup),
+                :height               => @height,
+                :weight               => @weight,
+                :generation           => @generation,
+                :mega_stone           => @mega_stone,
+                :mega_move            => @mega_move,
+                :unmega_form          => @unmega_form,
+                :mega_message         => @mega_message,
+                :notes                => @notes,
+                :tribes               => @tribes.dup,
+                :defined_in_extension => @defined_in_extension,
+                :flags                => @flags.dup,
+                :formalizer           => @formalizer.dup,
+                :sticky_items         => @sticky_items.dup,
+            }
+        end
+
         def legalityChecks
             @moves.each do |entry|
                 moveID = entry[1]
