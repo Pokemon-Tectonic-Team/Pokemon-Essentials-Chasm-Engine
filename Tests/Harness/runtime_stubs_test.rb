@@ -193,6 +193,15 @@ class RuntimeStubsTest < Minitest::Test
         assert_nil Input.update
     end
 
+    def test_save_data_marshals_the_object_into_the_file
+        Dir.mktmpdir do |dir|
+            path = File.join(dir, "data.dat")
+            save_data({ a: [1, "b"] }, path)
+
+            assert_equal({ a: [1, "b"] }, Marshal.load(File.binread(path))) # rubocop:disable Security/MarshalLoad -- the file the test just wrote
+        end
+    end
+
     def test_echoln_prints_nothing
         out, err = capture_io { echoln("a", "b") }
 
