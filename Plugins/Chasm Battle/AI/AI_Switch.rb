@@ -9,13 +9,52 @@ class Integer
 end
 
 class PokeBattle_AI
+    # Function codes of switch-out moves never used in place of a switch
+    PIVOT_EXCLUSIONS = [
+        "SwitchOutUserPassOnEffects", # Baton Pass: passing effects is a separate decision
+        "SwitchOutUserIfMissesDamagingMove", # Cavalry Charge: only switches on a miss
+        "RevivePartyMemberTo50HPThenSwitch", # Golden Rebirth: switches to the revived member
+    ].freeze
+
+    # Switches out through a safe pivot move if it has one, otherwise directly
     def pbEnemyShouldWithdraw?(idxBattler)
         chosenPartyIndex = pbDetermineSwitch(idxBattler)
-        if chosenPartyIndex >= 0
-            @battle.pbRegisterSwitch(idxBattler, chosenPartyIndex)
+        return false if chosenPartyIndex < 0
+        battler = @battle.battlers[idxBattler]
+        moveChoices, = pbGetBestTrainerMoveChoices(battler)
+        pivotChoice = safePivotChoice(battler, moveChoices)
+        if pivotChoice && @battle.pbRegisterMove(idxBattler, pivotChoice[0], false)
+            @battle.pbRegisterTarget(idxBattler, pivotChoice[2]) if pivotChoice[2] >= 0
+            PBDebug.log("[AI SWITCH] #{battler.pbThis} (#{idxBattler}) will switch out using #{battler.getMoves[pivotChoice[0]].name}")
             return true
         end
-        return false
+        @battle.pbRegisterSwitch(idxBattler, chosenPartyIndex)
+        return true
+    end
+
+    # The highest-scored of the move choices ([moveIndex, score, targetIndex]) whose move
+    # switches the battler out before any foe can hit it, or nil if there is none
+    def safePivotChoice(battler, moveChoices)
+        pivotChoices = moveChoices.select do |choice|
+            move = battler.getMoves[choice[0]]
+            move.switchOutMove? && !PIVOT_EXCLUSIONS.include?(move.function) && pivotIsSafe?(move, battler)
+        end
+        return pivotChoices.max_by { |choice| choice[1] }
+    end
+
+    # Whether the move goes before every foe able to act, against the fastest-priority
+    # damaging move the AI knows that foe has
+    def pivotIsSafe?(move, battler)
+        battler.eachOpposing do |foe|
+            next unless foe.canActThisTurn?
+            foePriority = 0
+            foe.eachAIKnownMove do |foeMove|
+                next unless foeMove.damagingMove?(true)
+                foePriority = [foePriority, @battle.getMovePriority(foeMove, foe, [battler], true)].max
+            end
+            return false unless userMovesFirst?(move, battler, foe, targetPriority: foePriority)
+        end
+        return true
     end
 
     def pbDetermineSwitch(idxBattler)

@@ -29,7 +29,7 @@ Description = Powers up ally Pokémon's special moves by 30%.
 #-------------------------------
 [BERSERK]
 Name = Berserk
-Description = Raises Attack and Sp. Atk by two steps when its HP is lowered below half.
+Description = Raises Attack and Sp. Atk by two steps if an attack lowers its HP below half.
 #-------------------------------
 [CHEEKPOUCH]
 Name = Cheek Pouch

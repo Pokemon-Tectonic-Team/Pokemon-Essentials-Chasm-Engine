@@ -48,7 +48,8 @@ class Window_UnformattedTextPokemon < SpriteWindow_Base
         return ret
     end
 
-    def resizeToFitInternal(text, maxwidth) # maxwidth is maximum acceptable window width
+    # maxwidth is maximum acceptable window width
+    def resizeToFitInternal(text, maxwidth)
         dims = [0, 0]
         cwidth = maxwidth < 0 ? Graphics.width : maxwidth
         getLineBrokenChunks(contents, text,
@@ -61,14 +62,16 @@ class Window_UnformattedTextPokemon < SpriteWindow_Base
         self.text = text
     end
 
-    def resizeToFit(text, maxwidth = -1) # maxwidth is maximum acceptable window width
+    # maxwidth is maximum acceptable window width
+    def resizeToFit(text, maxwidth = -1)
         dims = resizeToFitInternal(text, maxwidth)
         self.width = dims[0] + borderX + SpriteWindow_Base::TEXTPADDING
         self.height = dims[1] + borderY
         refresh
     end
 
-    def resizeHeightToFit(text, width = -1) # width is current window width
+    # width is current window width
+    def resizeHeightToFit(text, width = -1)
         dims = resizeToFitInternal(text, width)
         self.width  = (width < 0) ? Graphics.width : width
         self.height = dims[1] + borderY
@@ -76,7 +79,7 @@ class Window_UnformattedTextPokemon < SpriteWindow_Base
     end
 
     def setSkin(skin)
-        super(skin)
+        super
         privRefresh(true)
         oldbaser = @baseColor.red
         oldbaseg = @baseColor.green
@@ -102,7 +105,7 @@ class Window_UnformattedTextPokemon < SpriteWindow_Base
            height - borderY)
         contents.clear
         drawTextEx(contents, 0, 4, contents.width, 0,
-           @text.gsub(/\r/, ""), @baseColor, @shadowColor)
+           @text.gsub("\r", ""), @baseColor, @shadowColor)
     end
 end
 
@@ -158,13 +161,13 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
 
     def dispose
         return if disposed?
-        @pausesprite.dispose if @pausesprite
+        @pausesprite&.dispose
         @pausesprite = nil
         super
     end
 
     def waitcount=(value)
-        @waitcount = (value <= 0) ? 0 : value
+        @waitcount = [value, 0].max
     end
 
     attr_reader :cursorMode
@@ -208,6 +211,12 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
         self.text = text unless @starting
     end
 
+    # Also lays the text out again, fitting it to the window's margins.
+    def relayout
+        super
+        self.text = text unless @starting
+    end
+
     def resizeToFit(text, maxwidth = -1)
         dims = resizeToFitInternal(text, maxwidth)
         oldstarting = @starting
@@ -233,7 +242,7 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
         cwidth = (maxwidth < 0) ? Graphics.width : maxwidth
         chars = getFormattedTextForDims(contents, 0, 0,
            cwidth - borderX - 2 - 6, -1, text, @lineHeight, true)
-        for ch in chars
+        chars.each do |ch|
             dims[0] = [dims[0], ch[1] + ch[3]].max
             dims[1] = [dims[1], ch[2] + ch[4]].max
         end
@@ -298,7 +307,7 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
         height = 1
         numlines = 0
         visiblelines = (self.height - borderY) / 32
-        if value.length == 0
+        if value.empty?
             @fmtchars     = []
             @bitmapwidth  = width
             @bitmapheight = height
@@ -310,7 +319,7 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
                    self.width - borderX - SpriteWindow_Base::TEXTPADDING, -1,
                    shadowctag(@baseColor, @shadowColor) + value, 32, true)
                 @oldfont = contents.font.clone
-                for ch in fmt
+                fmt.each do |ch|
                     chx = ch[1] + ch[3]
                     chy = ch[2] + ch[4]
                     width  = chx if width < chx
@@ -338,7 +347,7 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
                    self.width - borderX - SpriteWindow_Base::TEXTPADDING, -1,
                    shadowctag(@baseColor, @shadowColor) + value, 32, true)
                 @oldfont = contents.font.clone
-                for ch in @fmtchars
+                @fmtchars.each do |ch|
                     chx = ch[1] + ch[3]
                     chy = ch[2] + ch[4]
                     width  = chx if width < chx
@@ -388,7 +397,7 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
 
     def maxPosition
         pos = 0
-        for ch in @fmtchars
+        @fmtchars.each do |ch|
             # index after the last character's index
             pos = ch[14] + 1 if pos < ch[14] + 1
         end
@@ -479,7 +488,7 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
         end
         maxX = width - borderX
         maxY = height - borderY
-        for i in @drawncurchar + 1..numchars
+        ((@drawncurchar + 1)..numchars).each do |i|
             next if i >= @fmtchars.length
             unless letterbyletter
                 next if @fmtchars[i][1] >= maxX
@@ -577,7 +586,7 @@ class Window_AdvancedTextPokemon < SpriteWindow_Base
 
     def update
         super
-        @pausesprite.update if @pausesprite && @pausesprite.visible
+        @pausesprite.update if @pausesprite&.visible
         if @waitcount > 0
             @waitcount -= 1
             return
@@ -619,7 +628,7 @@ class Window_InputNumberPokemon < SpriteWindow_Base
         @sign = false
         @negative = false
         super(0, 0, 32, 32)
-        self.width = digits_max * 24 + 8 + borderX
+        self.width = (digits_max * 24) + 8 + borderX
         self.height = 32 + borderY
         colors = getDefaultTextColors(windowskin)
         @baseColor = colors[0]
@@ -642,16 +651,16 @@ class Window_InputNumberPokemon < SpriteWindow_Base
         value = 0 unless value.is_a?(Numeric)
         if @sign
             @negative = (value < 0)
-            @number = [value.abs, 10**@digits_max - 1].min
+            @number = [value.abs, (10**@digits_max) - 1].min
         else
-            @number = [[value, 0].max, 10**@digits_max - 1].min
+            @number = value.clamp(0, (10**@digits_max) - 1)
         end
         refresh
     end
 
     def sign=(value)
         @sign = value
-        self.width = @digits_max * 24 + 8 + borderX + (@sign ? 24 : 0)
+        self.width = (@digits_max * 24) + 8 + borderX + (@sign ? 24 : 0)
         @index = (@digits_max - 1) + (@sign ? 1 : 0)
         refresh
     end
@@ -665,7 +674,7 @@ class Window_InputNumberPokemon < SpriteWindow_Base
         if @sign
             textHelper(0, 0, @negative ? "-" : "+", 0)
         end
-        for i in 0...@digits_max
+        (0...@digits_max).each do |i|
             index = i + (@sign ? 1 : 0)
             textHelper(index * 24, 0, s[i, 1], index)
         end
@@ -684,7 +693,6 @@ class Window_InputNumberPokemon < SpriteWindow_Base
                     newNumber = @number
                     n = newNumber / place % 10
                     newNumber -= n * place
-                    higherPlaceChange = 0
                     if Input.repeat?(Input::UP)
                         n = (n + 1) % 10
                         # Went above 9
@@ -745,9 +753,9 @@ class Window_InputNumberPokemon < SpriteWindow_Base
 
     def textHelper(x, y, text, i)
         textwidth = contents.text_size(text).width
-        pbDrawShadowText(contents, x + (12 - textwidth / 2), y, textwidth + 4, 32, text, @baseColor, @shadowColor)
+        pbDrawShadowText(contents, x + (12 - (textwidth / 2)), y, textwidth + 4, 32, text, @baseColor, @shadowColor)
         if @index == i && @active && @frame / 15 == 0
-            contents.fill_rect(x + (12 - textwidth / 2), y + 30, textwidth, 2, @baseColor)
+            contents.fill_rect(x + (12 - (textwidth / 2)), y + 30, textwidth, 2, @baseColor)
         end
     end
 end
@@ -759,7 +767,7 @@ class SpriteWindow_Selectable < SpriteWindow_Base
     attr_reader :index
 
     def initialize(x, y, width, height)
-        super(x, y, width, height)
+        super
         @item_max = 1
         @column_max = 1
         @virtualOy = 0
@@ -852,9 +860,9 @@ class SpriteWindow_Selectable < SpriteWindow_Base
            item > top_item + page_item_max
             return Rect.new(0, 0, 0, 0)
         else
-            cursor_width = (width - borderX - (@column_max - 1) * @column_spacing) / @column_max
+            cursor_width = (width - borderX - ((@column_max - 1) * @column_spacing)) / @column_max
             x = item % @column_max * (cursor_width + @column_spacing)
-            y = item / @column_max * @row_height - @virtualOy
+            y = (item / @column_max * @row_height) - @virtualOy
             return Rect.new(x, y, cursor_width, @row_height)
         end
     end
@@ -973,15 +981,17 @@ class SpriteWindow_Selectable < SpriteWindow_Base
         # This code makes the cursor stay in the middle of the visible list as much
         # as possible.
         new_top_row = row - ((page_row_max - 1) / 2).floor
-        new_top_row = [[new_top_row, row_max - page_row_max].min, 0].max
-        if self.top_row != new_top_row
+        # A list shorter than a page has no rows to scroll, and clamp refuses a
+        # negative upper bound.
+        new_top_row = new_top_row.clamp(0, [row_max - page_row_max, 0].max)
+        if top_row != new_top_row
             self.top_row = new_top_row
             #      dorefresh = true
         end
         # End of code
         cursor_width = (width - borderX) / @column_max
         x = index % @column_max * (cursor_width + @column_spacing)
-        y = index / @column_max * @row_height - @virtualOy
+        y = (index / @column_max * @row_height) - @virtualOy
         cursor_rect.set(x, y, cursor_width, @row_height)
         refresh if dorefresh || force
     end
@@ -1025,8 +1035,8 @@ module UpDownArrowMixin
     def adjustForZoom(sprite)
         sprite.zoom_x = zoom_x
         sprite.zoom_y = zoom_y
-        sprite.x = sprite.x * zoom_x + offset_x / zoom_x
-        sprite.y = sprite.y * zoom_y + offset_y / zoom_y
+        sprite.x = (sprite.x * zoom_x) + (offset_x / zoom_x)
+        sprite.y = (sprite.y * zoom_y) + (offset_y / zoom_y)
     end
 
     def update
@@ -1035,10 +1045,10 @@ module UpDownArrowMixin
         @downarrow.x = x + (width / 2) - (@downarrow.framewidth / 2)
         @uparrow.y   = y
         @downarrow.y = y + height - @downarrow.frameheight
-        @uparrow.visible = visible && active && (top_item != 0 &&
-                           @item_max > page_item_max)
+        @uparrow.visible = visible && active && top_item != 0 &&
+                           @item_max > page_item_max
         @downarrow.visible = visible && active &&
-                             (top_item + page_item_max < @item_max && @item_max > page_item_max)
+                             top_item + page_item_max < @item_max && @item_max > page_item_max
         @uparrow.z   = z + 1
         @downarrow.z = z + 1
         adjustForZoom(@uparrow)
@@ -1057,7 +1067,7 @@ class SpriteWindow_SelectableEx < SpriteWindow_Selectable
     include UpDownArrowMixin
 
     def initialize(*arg)
-        super(*arg)
+        super
         initUpDownArrow
     end
 end
@@ -1122,7 +1132,7 @@ class Window_DrawableCommand < SpriteWindow_SelectableEx
             width = 0
             tmpbitmap = BitmapWrapper.new(1, 1)
             pbSetSystemFont(tmpbitmap)
-            for i in commands
+            commands.each do |i|
                 width = [width, tmpbitmap.text_size(i).width].max
             end
             # one 16 to allow cursor
@@ -1131,13 +1141,13 @@ class Window_DrawableCommand < SpriteWindow_SelectableEx
         end
         # Store suggested width and height of window
         dims[0] = [borderX + 1, (width * columns) + borderX +
-            (columns - 1) * columnSpacing,].max
+            ((columns - 1) * columnSpacing),].max
         dims[1] = [borderY + 1, windowheight].max
         dims[1] = [dims[1], Graphics.height].min
     end
 
     def setSkin(skin)
-        super(skin)
+        super
         privRefresh(true)
         colors = getDefaultTextColors(windowskin)
         @baseColor   = colors[0]
@@ -1149,12 +1159,13 @@ class Window_DrawableCommand < SpriteWindow_SelectableEx
         return Rect.new(rect.x + 16, rect.y, rect.width - 16, rect.height)
     end
 
-    def itemCount # to be implemented by derived classes
+    # to be implemented by derived classes
+    def itemCount
         return 0
     end
 
-    def drawItem(index, count, rect) # to be implemented by derived classes
-    end
+    # to be implemented by derived classes
+    def drawItem(index, count, rect); end
 
     def refresh
         @item_max = itemCount
@@ -1162,7 +1173,7 @@ class Window_DrawableCommand < SpriteWindow_SelectableEx
         dheight = height - borderY
         self.contents = pbDoEnsureBitmap(contents, dwidth, dheight)
         contents.clear
-        for i in 0...@item_max
+        (0...@item_max).each do |i|
             next if i < top_item || i > top_item + page_item_max
             drawItem(i, @item_max, itemRect(i))
         end
@@ -1293,7 +1304,7 @@ class Window_AdvancedCommandPokemon < Window_DrawableCommand
         chars = getFormattedText(bitmap, 0, 0,
            Graphics.width - borderX - SpriteWindow_Base::TEXTPADDING - 16,
            -1, text, rowHeight, true, true)
-        for ch in chars
+        chars.each do |ch|
             dims[0] = dims[0] ? [dims[0], ch[1]].min : ch[1]
             dims[1] = [dims[1], ch[1] + ch[3]].max
         end
@@ -1382,7 +1393,7 @@ class Window_AdvancedCommandPokemon < Window_DrawableCommand
     def drawItem(index, _count, rect)
         pbSetSystemFont(contents)
         rect = drawCursor(index, rect)
-        if toUnformattedText(@commands[index]).gsub(/\n/, "") == @commands[index]
+        if toUnformattedText(@commands[index]).gsub("\n", "") == @commands[index]
             # Use faster alternative for unformatted text without line breaks
             pbDrawShadowText(contents, rect.x, rect.y, rect.width, rect.height,
                @commands[index], baseColor, shadowColor)

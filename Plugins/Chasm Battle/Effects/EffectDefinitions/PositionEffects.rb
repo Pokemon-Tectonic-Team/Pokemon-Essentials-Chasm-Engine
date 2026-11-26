@@ -148,7 +148,7 @@ GameData::BattleEffect.register_effect(:Position, {
                     battler.showMyAbilitySplash(:LONGRECEIVER)
                     battle.pbDisplay(_INTL("{1} passes its ability to {2}!", abilityPasserName, battler.pbThis(true)))
                     battler.hideMyAbilitySplash
-                    battler.addAbility(abilityPasser.ability,true, triggerSwitchIn: false)
+                    battler.addAbility(abilityPasser.ability, true)
                     position.disableEffect(:PassingAbility)
                 end
             end

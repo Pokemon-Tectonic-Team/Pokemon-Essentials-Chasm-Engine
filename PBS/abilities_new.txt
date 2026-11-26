@@ -6,7 +6,7 @@ Description = After being attacked, uses Parting Shot to switch out.
 #-------------------------------
 [ACCUMULATION]
 Name = Accumulation
-Description = This Pokémon gains twice as many stats from leveling up.
+Description = This Pokémon gains twice as many stats from leveling up. It can't have its base stats modified.
 Flags = Immutable
 #-------------------------------
 [ACIDRAIN]
@@ -25,7 +25,7 @@ Flags = STABBoosting
 #-------------------------------
 [ADRENALINERUSH]
 Name = Adrenaline Rush
-Description = Raises Speed by four steps when its HP is lowered below half.
+Description = Raises Speed by four steps if an attack lowers its HP below half.
 #-------------------------------
 [AERODYNAMIC]
 Name = Aerodynamic
@@ -171,7 +171,7 @@ Description = Sets a Reflect for four turns upon entry.
 #-------------------------------
 [BATTLEHARDENED]
 Name = Battle-Hardened
-Description = Raises Defense and Sp. Def by three steps when its HP is lowered below half. This only works once per switch-in.
+Description = Raises Defense and Sp. Def by three steps if an attack lowers its HP below half. This only works once per switch-in.
 #-------------------------------
 [BEAMING]
 Name = Beaming
@@ -226,7 +226,7 @@ Description = Increase the EXP gained from battles in which it participates by 5
 #-------------------------------
 [BOGGLINGBOLERO]
 Name = Boggling Bolero
-Description = After using a dance move, lowers one of each foe's Attack and Sp. Atk, whichever is higher.
+Description = After using a dance move, lowers one of each foe's Attack or Sp. Atk by two steps, whichever is higher.
 #-------------------------------
 [BOTTOMFEEDER]
 Name = Bottom Feeder
@@ -404,7 +404,7 @@ Description = When hit with a special move, hits back instantly with Breach.
 #-------------------------------
 [CREEPINGHORROR]
 Name = Creeping Horror
-Description = Foretelling moves take one turn longer to attack but deal 50% more damage.
+Description = While a Foretelling move is waiting to hit, this Pokémon takes 25% less damage.
 #-------------------------------
 [CURSEDTAIL]
 Name = Cursed Tail
@@ -1835,7 +1835,7 @@ Flags = Immutable
 #-------------------------------
 [REAWAKENEDPOWER]
 Name = Reawakened Power
-Description = Maximizes Sp. Atk when its HP is lowered below half.
+Description = Maximizes Sp. Atk if an attack lowers its HP below half.
 #-------------------------------
 [RECLAMATION]
 Name = Reclamation
@@ -2112,7 +2112,7 @@ Description = On the first turn, its attacks leech the target.
 #-------------------------------
 [SIRENSONG]
 Name = Siren Song
-Description = After using a sound move, lowers one of each foe's Attack and Sp. Atk, whichever is higher.
+Description = After using a sound move, lowers one of each foe's Attack or Sp. Atk, whichever is higher.
 #-------------------------------
 [SLAPSTICK]
 Name = Slapstick
@@ -2504,6 +2504,10 @@ Description = Boosts the power of sound moves by 30%. Sound moves ignore the tar
 [TUNNELMAKER]
 Name = Tunnel Maker
 Description = Powers up Ground-type moves by 50%.
+#-------------------------------
+[TYPINGTROJAN]
+Name = Typing Trojan
+Description = This Pokémon is the type of its first two moves. It can't use moves that aren't of its own types.
 #-------------------------------
 [ULTRAADAPTED]
 Name = Ultra Adapted

@@ -1,3 +1,7 @@
+require:
+    - ./.rubocop/cops/inline_tab.rb
+    - ./.rubocop/cops/mutable_constant.rb
+
 AllCops:
     TargetRubyVersion: 3.1
     NewCops: enable
@@ -5,8 +9,31 @@ AllCops:
 Layout/IndentationStyle:
     EnforcedStyle: spaces
 
+# IndentationStyle covers only indentation; this catches tabs used to align code later in a line
+Chasm/InlineTab:
+    Description: Use spaces, not tabs, after indentation.
+    Enabled: true
+
+# Replaced by Chasm/MutableConstant, which leaves the GameData `DATA = {}` registries alone.
+# Inline disables must name Chasm/MutableConstant.
+Style/MutableConstant:
+    Enabled: false
+
+Chasm/MutableConstant:
+    Description: Freeze mutable objects assigned to constants, except the `DATA = {}` registries.
+    Enabled: true
+    SafeAutoCorrect: false
+    EnforcedStyle: literals
+    SupportedStyles:
+        - literals
+        - strict
+
 Layout/IndentationWidth:
     Width: 4
+
+# .gitattributes decides line endings, so a checkout's follow the platform
+Layout/EndOfLine:
+    Enabled: false
 
 Layout/LineLength:
     Max: 200

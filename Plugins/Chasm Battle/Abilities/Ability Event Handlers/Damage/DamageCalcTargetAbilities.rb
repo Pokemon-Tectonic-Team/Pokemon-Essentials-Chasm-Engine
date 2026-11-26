@@ -423,6 +423,18 @@ BattleHandlers::DamageCalcTargetAbility.add(:BARRENBLOOD,
   }
 )
 
+BattleHandlers::DamageCalcTargetAbility.add(:CREEPINGHORROR,
+  proc { |ability, _user, target, _move, mults, _baseDmg, _types, aiCheck|
+      foretold = target.battle.battlers.any? do |b|
+          b && b.position.effectActive?(:ForetoldMoveCounter)
+      end
+      if foretold
+          mults[:final_damage_multiplier] *= 0.75
+          target.aiLearnsAbility(ability) unless aiCheck
+      end
+  }
+)
+
 ############################################
 # Ability Code for cut or unused abilities
 ############################################
