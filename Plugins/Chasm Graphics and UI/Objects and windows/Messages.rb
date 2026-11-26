@@ -278,16 +278,6 @@ class FaceWindowVX < SpriteWindow_Base
     end
 end
 
-# Splits a face spec "name" or "name,index" into [name, index].
-def parseFaceSpec(face)
-    name, index = face.split(",", 2)
-    return [name, index.to_i]
-end
-
-def faceFrameRect(index, frameWidth, frameHeight)
-    return Rect.new((index % 4) * frameWidth, (index / 4) * frameHeight, frameWidth, frameHeight)
-end
-
 #===============================================================================
 #
 #===============================================================================

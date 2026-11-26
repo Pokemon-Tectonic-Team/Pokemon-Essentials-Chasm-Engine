@@ -198,7 +198,9 @@ end
 class DialoguePortraitSet
     attr_reader :speaker
 
-    def initialize
+    # portraitClass builds each portrait from (side, face); tests give a fake.
+    def initialize(portraitClass = DialoguePortrait)
+        @portraitClass = portraitClass
         @shown = {}
         @leaving = []
         @speaker = nil
@@ -213,7 +215,7 @@ class DialoguePortraitSet
             current.frame = index
         else
             hide(side)
-            @shown[side] = DialoguePortrait.new(side, face) unless face.empty?
+            @shown[side] = @portraitClass.new(side, face) unless face.empty?
         end
         @speaker = side unless face.empty?
         refreshDims

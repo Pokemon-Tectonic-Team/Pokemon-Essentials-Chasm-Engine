@@ -8,10 +8,10 @@
 # the tag instead shrinks to its text and stands beside that portrait's image
 # on the side facing the screen centre: right of a left portrait, left of a
 # right one, and left of a centre one if it fits there, else right. It stays
-# on screen even if that means covering a portrait.
+# on screen even if that means covering a portrait (speakerTagX, in
+# SpeakerTagPlacement.rb).
 #===============================================================================
 SPEAKER_TAG_MIN_WIDTH = 160
-SPEAKER_TAG_GAP       = 4
 
 # The name tag window, which remembers how wide its text alone needs it to be.
 class SpeakerNameWindow < Window_AdvancedTextPokemon
@@ -40,18 +40,6 @@ def refreshSpeakerWindow
     $SpeakerNameWindow.y = Graphics.height - $SpeakerNameWindow.height
     $SpeakerNameWindow.z = 99_999
     $SpeakerNameWindow.visible = false # Starts hidden
-end
-
-# The x of a tag tagWidth wide beside a portrait image of the given side.
-def speakerTagX(side, imageRect, tagWidth, screenWidth)
-    leftOfImage = imageRect.x - SPEAKER_TAG_GAP - tagWidth
-    rightOfImage = imageRect.x + imageRect.width + SPEAKER_TAG_GAP
-    x = case side
-        when :left   then rightOfImage
-        when :centre then (leftOfImage >= 0) ? leftOfImage : rightOfImage
-        else leftOfImage
-        end
-    return x.clamp(0, screenWidth - tagWidth)
 end
 
 # Places the tag for msgwindow. speaker is nil, or [side, imageRect] of the
