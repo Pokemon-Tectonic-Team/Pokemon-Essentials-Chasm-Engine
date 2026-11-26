@@ -256,7 +256,7 @@ class PokeBattle_AI
 
     def pbDefaultChooseNewEnemy(idxBattler, safeSwitch = false)
         urgency = 0
-        list = pbGetPartyWithSwapRatings(idxBattler, safeSwitch, urgency)
+        list = pbGetPartyWithSwapRatings(idxBattler, urgency, safeSwitch: safeSwitch)
         list.delete_if { |val| !@battle.pbCanSwitchLax?(idxBattler, val[0]) }
         if !list.empty?
             listSwapOutCandidates(@battle.battlers[idxBattler], list)
@@ -278,7 +278,7 @@ class PokeBattle_AI
     FUTILITY_MARGIN = 60 # tuned through testing to maximise pruning without affecting behaviour
 
     # Rates every other Pokemon in the trainer's party and returns a sorted list of the indices and swap in rating
-    def pbGetPartyWithSwapRatings(idxBattler, safeSwitch = false, urgency, futilityThreshold: nil)
+    def pbGetPartyWithSwapRatings(idxBattler, urgency, safeSwitch: false, futilityThreshold: nil)
         list = []
         battlerSlot = @battle.battlers[idxBattler]
 
@@ -297,14 +297,14 @@ class PokeBattle_AI
                 next
             end
 
-            switchScore = getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, safeSwitch, urgency)
+            switchScore = getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, urgency, safeSwitch: safeSwitch)
             list.push([partyIndex, switchScore])
         end
         list.stable_sort_by! { |entry| entry[1].nil? ? 99_999 : -entry[1] }
         return list
     end
 
-    def getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, safeSwitch = false, urgency)
+    def getSwitchRatingForPartyMember(pkmn, partyIndex, battlerSlot, urgency, safeSwitch: false)
         switchScore = 0
 
         # Create a battler to simulate what would happen if the Pokemon was in battle right now
