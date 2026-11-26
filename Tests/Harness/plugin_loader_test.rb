@@ -74,6 +74,28 @@ class PluginLoaderTest < Minitest::Test
         end
     end
 
+    def test_a_plugin_error_raises_instead_of_exiting
+        with_fixture("Name = Beta\nRequires = Gamma\n") do |root|
+            capture_io do
+                error = assert_raises(HarnessError) { PluginLoader.order(root) }
+                assert_includes error.message, "meta.txt"
+            end
+        end
+    end
+
+    def test_it_is_ordering_only_while_order_runs
+        refute PluginLoader.ordering?
+        with_fixture { |root| PluginLoader.order(root) }
+        refute PluginLoader.ordering?
+    end
+
+    def test_ordering_ends_after_an_error
+        with_fixture("Name = Beta\nRequires = Gamma\n") do |root|
+            capture_io { assert_raises(HarnessError) { PluginLoader.order(root) } }
+        end
+        refute PluginLoader.ordering?
+    end
+
     def test_load_requires_the_named_files_in_engine_order
         with_fixture do |root|
             PluginLoader.load(root, ["A/sub/s.rb", "B/b.rb", "A/z.rb"])

@@ -1,6 +1,7 @@
-# Builds the report CI posts on a PR: coverage of the changed lines, the whole-codebase figure and
-# RuboCop on the changed Ruby files. Run from the repository root after the suite has written
-# coverage/coverage.json, with SYNTAX_OUTCOME, TESTS_OUTCOME, RUN_URL and PR_NUMBER set:
+# Builds the report CI posts on a PR: coverage of the changed lines (whitespace-only changes aside),
+# the whole-codebase figure and RuboCop on the changed Ruby files. Run from the repository root
+# after the suite has written coverage/coverage.json, with SYNTAX_OUTCOME, TESTS_OUTCOME, RUN_URL
+# and PR_NUMBER set:
 #
 #     ruby .github/scripts/pr_report.rb <output directory>
 #
@@ -11,6 +12,7 @@ require "json"
 require "open3"
 require "stringio"
 require_relative "pr_report/simplecov_diff_path"
+require_relative "pr_report/simplecov_ignore_whitespace"
 require_relative "pr_report/offense_counts"
 require_relative "pr_report/lint_report"
 require_relative "pr_report/comment_body"

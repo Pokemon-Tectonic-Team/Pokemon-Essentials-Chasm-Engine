@@ -3,14 +3,14 @@ module MessageConfig
     LIGHT_TEXT_SHADOW_COLOR     = Color.new(72, 80, 88)
     DARK_TEXT_MAIN_COLOR        = Color.new(80, 80, 88)
     DARK_TEXT_SHADOW_COLOR      = Color.new(160, 160, 168)
-    LIGHT_FADED_TEXT_COLOR      = Color.new(145,145,145)
-    DARK_FADED_TEXT_COLOR       = Color.new(110,110,110)
-    FONT_NAME               = "Power Green"
-    CHN_FONT_NAME           = "FusionPixelMonoPatched"
+    LIGHT_FADED_TEXT_COLOR      = Color.new(145, 145, 145)
+    DARK_FADED_TEXT_COLOR       = Color.new(110, 110, 110)
+    FONT_NAME               = "Power Green".freeze
+    CHN_FONT_NAME           = "FusionPixelMonoPatched".freeze
     FONT_SIZE               = 29
-    SMALL_FONT_NAME         = "Power Green Small"
+    SMALL_FONT_NAME         = "Power Green Small".freeze
     SMALL_FONT_SIZE         = 25
-    NARROW_FONT_NAME        = "Power Green Narrow"
+    NARROW_FONT_NAME        = "Power Green Narrow".freeze
     NARROW_FONT_SIZE        = 29
     # 0 = Pause cursor is displayed at end of text
     # 1 = Pause cursor is displayed at bottom right
@@ -19,12 +19,9 @@ module MessageConfig
     WINDOW_OPACITY          = 255
     TEXT_SPEED              = nil # can be positive to wait frames or negative to
     # show multiple characters in a single frame
-    @@systemFrame     = nil
-    @@defaultTextSkin = nil
-    @@textSpeed       = nil
-    @@systemFont      = nil
-    @@smallFont       = nil
-    @@narrowFont      = nil
+    @systemFrame     = nil
+    @defaultTextSkin = nil
+    @textSpeed       = nil
 
     def self.pbDefaultTextMainColor(opposite: false)
         if opposite ^ ($Options&.dark_mode == 0)
@@ -51,13 +48,13 @@ module MessageConfig
     end
 
     def self.systemFrameName
-        frameName = "Graphics/Windowskins/" + Settings::MENU_WINDOWSKINS[$Options.frame]
+        frameName = "Graphics/Windowskins/#{Settings::MENU_WINDOWSKINS[$Options.frame]}"
         frameName += "_dark" if darkMode?
         return frameName
     end
 
     def self.speechFrameName
-        frameName = "Graphics/Windowskins/" + Settings::SPEECH_WINDOWSKINS[$Options.textskin]
+        frameName = "Graphics/Windowskins/#{Settings::SPEECH_WINDOWSKINS[$Options.textskin]}"
         frameName += "_dark" if darkMode?
         return frameName
     end
@@ -66,7 +63,7 @@ module MessageConfig
         if $Options
             return pbResolveBitmap(systemFrameName) || ""
         else
-            return pbResolveBitmap("Graphics/Windowskins/" + Settings::MENU_WINDOWSKINS[0]) || ""
+            return pbResolveBitmap("Graphics/Windowskins/#{Settings::MENU_WINDOWSKINS[0]}") || ""
         end
     end
 
@@ -74,42 +71,42 @@ module MessageConfig
         if $Options
             return pbResolveBitmap(speechFrameName) || ""
         else
-            return pbResolveBitmap("Graphics/Windowskins/" + Settings::SPEECH_WINDOWSKINS[0]) || ""
+            return pbResolveBitmap("Graphics/Windowskins/#{Settings::SPEECH_WINDOWSKINS[0]}") || ""
         end
     end
 
     def self.pbDefaultWindowskin
-        skin = $data_system ? $data_system.windowskin_name : nil
-        skin = pbResolveBitmap("Graphics/Windowskins/" + skin) || "" if skin && skin != ""
+        skin = $data_system&.windowskin_name
+        skin = pbResolveBitmap("Graphics/Windowskins/#{skin}") || "" if skin && skin != ""
         skin = pbResolveBitmap("Graphics/System/Window") if nil_or_empty?(skin)
         skin = pbResolveBitmap("Graphics/Windowskins/001-Blue01") if nil_or_empty?(skin)
         return skin || ""
     end
 
     def self.pbGetSystemFrame
-        unless @@systemFrame
+        unless @systemFrame
             skin = MessageConfig.pbDefaultSystemFrame
             skin = MessageConfig.pbDefaultWindowskin if nil_or_empty?(skin)
-            @@systemFrame = skin || ""
+            @systemFrame = skin || ""
         end
-        return @@systemFrame
+        return @systemFrame
     end
 
     def self.pbGetSpeechFrame
-        unless @@defaultTextSkin
+        unless @defaultTextSkin
             skin = MessageConfig.pbDefaultSpeechFrame
             skin = MessageConfig.pbDefaultWindowskin if nil_or_empty?(skin)
-            @@defaultTextSkin = skin || ""
+            @defaultTextSkin = skin || ""
         end
-        return @@defaultTextSkin
+        return @defaultTextSkin
     end
 
     def self.pbSetSystemFrame(value)
-        @@systemFrame = pbResolveBitmap(value) || ""
+        @systemFrame = pbResolveBitmap(value) || ""
     end
 
     def self.pbSetSpeechFrame(value)
-        @@defaultTextSkin = pbResolveBitmap(value) || ""
+        @defaultTextSkin = pbResolveBitmap(value) || ""
     end
 
     #-----------------------------------------------------------------------------
@@ -119,12 +116,12 @@ module MessageConfig
     end
 
     def self.pbGetTextSpeed
-        @@textSpeed ||= pbDefaultTextSpeed
-        return @@textSpeed
+        @textSpeed ||= pbDefaultTextSpeed
+        return @textSpeed
     end
 
     def self.pbSetTextSpeed(value)
-        @@textSpeed = value
+        @textSpeed = value
     end
 
     def self.pbSettingToTextSpeed(speed, slowed = false)
@@ -155,46 +152,26 @@ module MessageConfig
         return is_chinese? ? MessageConfig.pbTryFonts(CHN_FONT_NAME) : MessageConfig.pbTryFonts(NARROW_FONT_NAME)
     end
 
+    # Worked out on every call, since the font depends on the current language.
     def self.pbGetSystemFontName
-        #@@systemFont ||= pbDefaultSystemFontName
-        @@systemFont = pbDefaultSystemFontName
-        return @@systemFont
+        return pbDefaultSystemFontName
     end
 
     def self.pbGetSmallFontName
-        #@@smallFont ||= pbDefaultSmallFontName
-        @@smallFont = pbDefaultSmallFontName
-        return @@smallFont
+        return pbDefaultSmallFontName
     end
 
     def self.pbGetNarrowFontName
-        #@@narrowFont ||= pbDefaultNarrowFontName
-        @@narrowFont = pbDefaultNarrowFontName
-        return @@narrowFont
-    end
-
-    def self.pbSetSystemFontName(value)
-        @@systemFont = MessageConfig.pbTryFonts(value)
-        @@systemFont = MessageConfig.pbDefaultSystemFontName if @@systemFont == ""
-    end
-
-    def self.pbSetSmallFontName(value)
-        @@smallFont = MessageConfig.pbTryFonts(value)
-        @@smallFont = MessageConfig.pbDefaultSmallFontName if @@smallFont == ""
-    end
-
-    def self.pbSetNarrowFontName(value)
-        @@narrowFont = MessageConfig.pbTryFonts(value)
-        @@narrowFont = MessageConfig.pbDefaultNarrowFontName if @@narrowFont == ""
+        return pbDefaultNarrowFontName
     end
 
     def self.pbTryFonts(*args)
-        for a in args
+        args.each do |a|
             next unless a
             if a.is_a?(String)
                 return a if Font.exist?(a)
             elsif a.is_a?(Array)
-                for aa in a
+                a.each do |aa|
                     ret = MessageConfig.pbTryFonts(aa)
                     return ret if ret != ""
                 end
@@ -224,7 +201,7 @@ def pbBottomLeftLines(window, lines, width = nil)
         window.borderY
     rescue StandardError
         32
-    end + lines * 32
+    end + (lines * 32)
     window.y = Graphics.height - window.height
 end
 
@@ -259,12 +236,11 @@ def pbPositionNearMsgWindow(cmdwindow, msgwindow, side)
         case side
         when :left
             cmdwindow.x = msgwindow.x
-        when :right
-            cmdwindow.x = msgwindow.x + msgwindow.width - cmdwindow.width
         when :center
-            messageCenter = msgwindow.x + msgwindow.width / 2
-            cmdwindow.x = messageCenter - cmdwindow.width / 2
+            messageCenter = msgwindow.x + (msgwindow.width / 2)
+            cmdwindow.x = messageCenter - (cmdwindow.width / 2)
         else
+            # default right
             cmdwindow.x = msgwindow.x + msgwindow.width - cmdwindow.width
         end
     else
@@ -274,11 +250,16 @@ def pbPositionNearMsgWindow(cmdwindow, msgwindow, side)
     end
 end
 
+# Lines of text a message window shows unless its message sets them.
+def pbDefaultMessageLines
+    return (Graphics.height > 400) ? 3 : 2
+end
+
 # internal function
 def pbRepositionMessageWindow(msgwindow, linecount = 2)
-    msgwindow.height = 32 * linecount + msgwindow.borderY
+    msgwindow.height = (32 * linecount) + msgwindow.borderY
     msgwindow.y = Graphics.height - msgwindow.height
-    if $game_system && $game_system.respond_to?("message_position")
+    if $game_system.respond_to?("message_position")
         case $game_system.message_position
         when 0  # up
             msgwindow.y = 0
@@ -288,7 +269,7 @@ def pbRepositionMessageWindow(msgwindow, linecount = 2)
             msgwindow.y = Graphics.height - msgwindow.height
         end
     end
-    if $game_system && $game_system.respond_to?("message_frame") && ($game_system.message_frame != 0)
+    if $game_system.respond_to?("message_frame") && ($game_system.message_frame != 0)
         msgwindow.opacity = 0
     end
 end
@@ -320,10 +301,10 @@ def isDarkBackground(background, rect = nil)
     return true if rect.width <= 0 || rect.height <= 0
     xSeg = (rect.width / 16)
     xLoop = (xSeg == 0) ? 1 : 16
-    xStart = (xSeg == 0) ? rect.x + (rect.width / 2) : rect.x + xSeg / 2
+    xStart = (xSeg == 0) ? rect.x + (rect.width / 2) : rect.x + (xSeg / 2)
     ySeg = (rect.height / 16)
     yLoop = (ySeg == 0) ? 1 : 16
-    yStart = (ySeg == 0) ? rect.y + (rect.height / 2) : rect.y + ySeg / 2
+    yStart = (ySeg == 0) ? rect.y + (rect.height / 2) : rect.y + (ySeg / 2)
     count = 0
     y = yStart
     r = 0
@@ -347,7 +328,7 @@ def isDarkBackground(background, rect = nil)
     r /= count
     g /= count
     b /= count
-    return (r * 0.299 + g * 0.587 + b * 0.114) < 160
+    return ((r * 0.299) + (g * 0.587) + (b * 0.114)) < 160
 end
 
 def isDarkWindowskin(windowskin)
@@ -360,7 +341,7 @@ def isDarkWindowskin(windowskin)
         return isDarkBackground(windowskin, Rect.new(32, 16, 16, 16))
     else
         clr = windowskin.get_pixel(windowskin.width / 2, windowskin.height / 2)
-        return (clr.red * 0.299 + clr.green * 0.587 + clr.blue * 0.114) < 160
+        return ((clr.red * 0.299) + (clr.green * 0.587) + (clr.blue * 0.114)) < 160
     end
 end
 
@@ -372,8 +353,8 @@ def getSkinColor(windowskin, color, isDarkSkin, asTag = true)
         return getTextColorsFromIDNumber(color, isDarkSkin: isDarkSkin, asTag: asTag)
     else # VX windowskin
         color = 0 if color >= 32
-        x = 64 + (color % 8) * 8
-        y = 96 + (color / 8) * 8
+        x = 64 + ((color % 8) * 8)
+        y = 96 + ((color / 8) * 8)
         pixel = windowskin.get_pixel(x, y)
         if asTag
             return shadowctagFromColor(pixel)
@@ -421,8 +402,8 @@ def getTextColorsFromIDNumber(colorID, isDarkSkin: darkMode?, asTag: false)
         colorToRgb32(MessageConfig::DARK_TEXT_SHADOW_COLOR), # 11 Dark default
         colorToRgb32(MessageConfig::LIGHT_TEXT_MAIN_COLOR),
         colorToRgb32(MessageConfig::LIGHT_TEXT_SHADOW_COLOR), # 12 Light default
-        "3976BF", "96B4CA",    # 13 Faded blue
-        "B84940", "E6BAC3",   # 14 Faded red
+        "3976BF", "96B4CA", # 13 Faded blue
+        "B84940", "E6BAC3", # 14 Faded red
     ]
     # No special colour, use default
     if colorID == 0 || colorID > textcolors.length / 2
@@ -440,21 +421,16 @@ def getTextColorsFromIDNumber(colorID, isDarkSkin: darkMode?, asTag: false)
     else
         # Special colour as listed above
         if isDarkSkin && colorID != 12 # Dark background, light text
-            base = textcolors[2 * (colorID - 1) + 1]
+            base = textcolors[(2 * (colorID - 1)) + 1]
             shadow = textcolors[2 * (colorID - 1)]
-            if asTag
-                return format("<c3=%s,%s>", base, shadow)
-            else
-                return [base, shadow]
-            end
         else # Light background, dark text
             base = textcolors[2 * (colorID - 1)]
-            shadow = textcolors[2 * (colorID - 1) + 1]
-            if asTag
-                return format("<c3=%s,%s>", base, shadow)
-            else
-                return [base, shadow]
-            end
+            shadow = textcolors[(2 * (colorID - 1)) + 1]
+        end
+        if asTag
+            return "<c3=#{base},#{shadow}>"
+        else
+            return [base, shadow]
         end
     end
 end
@@ -465,10 +441,10 @@ end
 def pbDoEnsureBitmap(bitmap, dwidth, dheight)
     if !bitmap || bitmap.disposed? || bitmap.width < dwidth || bitmap.height < dheight
         oldfont = (bitmap && !bitmap.disposed?) ? bitmap.font : nil
-        bitmap.dispose if bitmap
+        bitmap&.dispose
         bitmap = Bitmap.new([1, dwidth].max, [1, dheight].max)
         oldfont ? bitmap.font = oldfont : pbSetSystemFont(bitmap)
-        bitmap.font.shadow = false if bitmap.font && bitmap.font.respond_to?("shadow")
+        bitmap.font.shadow = false if bitmap.font.respond_to?("shadow")
     end
     return bitmap
 end
@@ -514,10 +490,10 @@ def pbSrcOver(dstColor, srcColor)
     cg = dstColor.green * dstColor.alpha / 255
     cb = dstColor.blue * dstColor.alpha / 255
     ica = 255 - dstColor.alpha
-    a = 255 - (iea * ica) / 255
-    r = (iea * cr) / 255 + er
-    g = (iea * cg) / 255 + eg
-    b = (iea * cb) / 255 + eb
+    a = 255 - ((iea * ica) / 255)
+    r = ((iea * cr) / 255) + er
+    g = ((iea * cg) / 255) + eg
+    b = ((iea * cb) / 255) + eb
     r = (a == 0) ? 0 : r * 255 / a
     g = (a == 0) ? 0 : g * 255 / a
     b = (a == 0) ? 0 : b * 255 / a
@@ -527,14 +503,14 @@ end
 def pbSetSpritesToColor(sprites, color)
     return if !sprites || !color
     colors = {}
-    for i in sprites
+    sprites.each do |i|
         next if !i[1] || pbDisposed?(i[1])
         colors[i[0]] = i[1].color.clone
         i[1].color = pbSrcOver(i[1].color, color)
     end
     Graphics.update
     Input.update
-    for i in colors
+    colors.each do |i|
         next unless sprites[i[0]]
         sprites[i[0]].color = i[1]
     end
@@ -550,7 +526,7 @@ ensure
 end
 
 def pbUpdateSpriteHash(windows)
-    for i in windows
+    windows.each do |i|
         window = i[1]
         if window
             if window.is_a?(Sprite) || window.is_a?(Window)
@@ -559,11 +535,13 @@ def pbUpdateSpriteHash(windows)
                 begin
                     window.update unless window.disposed?
                 rescue NoMethodError
+                    # A Plane has no update in some RGSS versions
                 end
             elsif window.respond_to?("update")
                 begin
                     window.update
                 rescue RGSSError
+                    # Raised by an object disposed since the last update
                 end
             end
         end
@@ -573,7 +551,7 @@ end
 # Disposes all objects in the specified hash.
 def pbDisposeSpriteHash(sprites)
     return unless sprites
-    for i in sprites.keys
+    sprites.each_key do |i|
         pbDisposeSprite(sprites, i)
     end
     sprites.clear
@@ -589,13 +567,7 @@ end
 
 def pbDisposed?(x)
     return true unless x
-    return x.disposed? unless x.is_a?(Viewport)
-    begin
-        x.rect = x.rect
-    rescue StandardError
-        return true
-    end
-    return false
+    return x.disposed?
 end
 
 #===============================================================================
@@ -622,7 +594,7 @@ def pbFadeOutIn(z = 99_999, nofadeout = false)
     viewport.z = z
     numFrames = (Graphics.frame_rate * 0.25).floor
     alphaDiff = (255.0 / numFrames).ceil
-    for j in 0..numFrames
+    (0..numFrames).each do |j|
         col.set(0, 0, 0, j * alphaDiff)
         viewport.color = col
         Graphics.update
@@ -634,7 +606,7 @@ def pbFadeOutIn(z = 99_999, nofadeout = false)
     ensure
         pbPopFade
         unless nofadeout
-            for j in 0..numFrames
+            (0..numFrames).each do |j|
                 col.set(0, 0, 0, (numFrames - j) * alphaDiff)
                 viewport.color = col
                 Graphics.update
@@ -651,7 +623,7 @@ def pbFadeOutInWithUpdate(z, sprites, nofadeout = false)
     viewport.z = z
     numFrames = (Graphics.frame_rate * 0.4).floor
     alphaDiff = (255.0 / numFrames).ceil
-    for j in 0..numFrames
+    (0..numFrames).each do |j|
         col.set(0, 0, 0, j * alphaDiff)
         viewport.color = col
         pbUpdateSpriteHash(sprites)
@@ -664,7 +636,7 @@ def pbFadeOutInWithUpdate(z, sprites, nofadeout = false)
     ensure
         pbPopFade
         unless nofadeout
-            for j in 0..numFrames
+            (0..numFrames).each do |j|
                 col.set(0, 0, 0, (numFrames - j) * alphaDiff)
                 viewport.color = col
                 pbUpdateSpriteHash(sprites)
@@ -697,12 +669,12 @@ def pbFadeOutAndHide(sprites)
     numFrames = (Graphics.frame_rate * 0.4).floor
     alphaDiff = (255.0 / numFrames).ceil
     pbDeactivateWindows(sprites) do
-        for j in 0..numFrames
+        (0..numFrames).each do |j|
             pbSetSpritesToColor(sprites, Color.new(0, 0, 0, j * alphaDiff))
             block_given? ? yield : pbUpdateSpriteHash(sprites)
         end
     end
-    for i in sprites
+    sprites.each do |i|
         next unless i[1]
         next if pbDisposed?(i[1])
         visiblesprites[i[0]] = true if i[1].visible
@@ -712,16 +684,14 @@ def pbFadeOutAndHide(sprites)
 end
 
 def pbFadeInAndShow(sprites, visiblesprites = nil, duration: 0.4)
-    if visiblesprites
-        for i in visiblesprites
-            sprites[i[0]].visible = true if i[1] && sprites[i[0]] && !pbDisposed?(sprites[i[0]])
-        end
+    visiblesprites&.each do |i|
+        sprites[i[0]].visible = true if i[1] && sprites[i[0]] && !pbDisposed?(sprites[i[0]])
     end
     numFrames = (Graphics.frame_rate * duration).floor
     alphaDiff = (255.0 / numFrames).ceil
     pbDeactivateWindows(sprites) do
-        for j in 0..numFrames
-            pbSetSpritesToColor(sprites, Color.new(0, 0, 0, ((numFrames - j) * alphaDiff)))
+        (0..numFrames).each do |j|
+            pbSetSpritesToColor(sprites, Color.new(0, 0, 0, (numFrames - j) * alphaDiff))
             block_given? ? yield : pbUpdateSpriteHash(sprites)
         end
     end
@@ -731,8 +701,8 @@ end
 # _activeStatuses_ is the result of a previous call to pbActivateWindows
 def pbRestoreActivations(sprites, activeStatuses)
     return if !sprites || !activeStatuses
-    for k in activeStatuses.keys
-        if sprites[k] && sprites[k].is_a?(Window) && !pbDisposed?(sprites[k])
+    activeStatuses.each_key do |k|
+        if sprites[k].is_a?(Window) && !pbDisposed?(sprites[k])
             sprites[k].active = activeStatuses[k] ? true : false
         end
     end
@@ -740,9 +710,9 @@ end
 
 # Deactivates all windows. If a code block is given, deactivates all windows,
 # runs the code in the block, and reactivates them.
-def pbDeactivateWindows(sprites, &block)
+def pbDeactivateWindows(sprites, &)
     if block_given?
-        pbActivateWindow(sprites, nil, &block)
+        pbActivateWindow(sprites, nil, &)
     else
         pbActivateWindow(sprites, nil)
     end
@@ -754,8 +724,8 @@ end
 def pbActivateWindow(sprites, key)
     return unless sprites
     activeStatuses = {}
-    for i in sprites
-        if i[1] && i[1].is_a?(Window) && !pbDisposed?(i[1])
+    sprites.each do |i|
+        if i[1].is_a?(Window) && !pbDisposed?(i[1])
             activeStatuses[i[0]] = i[1].active
             i[1].active = (i[0] == key)
         end
@@ -789,7 +759,7 @@ def addBackgroundPlane(sprites, planename, background, viewport = nil)
         sprites[planename].visible = false
     else
         sprites[planename].setBitmap(bitmapName)
-        for spr in sprites.values
+        sprites.each_value do |spr|
             spr.windowskin = nil if spr.is_a?(Window)
         end
     end
@@ -809,7 +779,7 @@ def addBackgroundOrColoredPlane(sprites, planename, background, color, viewport 
     else
         sprites[planename] = AnimatedPlane.new(viewport)
         sprites[planename].setBitmap(bitmapName)
-        for spr in sprites.values
+        sprites.each_value do |spr|
             spr.windowskin = nil if spr.is_a?(Window)
         end
     end
@@ -826,8 +796,8 @@ end
 unless defined?(_INTL)
     def _INTL(*args)
         string = args[0].clone
-        for i in 1...args.length
-            string.gsub!(/\{#{i}\}/, "#{args[i]}")
+        (1...args.length).each do |i|
+            string.gsub!(/\{#{i}\}/, args[i].to_s)
         end
         return string
     end
@@ -836,9 +806,9 @@ end
 unless defined?(_ISPRINTF)
     def _ISPRINTF(*args)
         string = args[0].clone
-        for i in 1...args.length
+        (1...args.length).each do |i|
             string.gsub!(/\{#{i}:([^}]+?)\}/) do |_m|
-                next format("%" + Regexp.last_match(1), args[i])
+                next format("%#{Regexp.last_match(1)}", args[i])
             end
         end
         return string
@@ -848,8 +818,8 @@ end
 unless defined?(_MAPINTL)
     def _MAPINTL(*args)
         string = args[1].clone
-        for i in 2...args.length
-            string.gsub!(/\{#{i}\}/, "#{args[i + 1]}")
+        (2...args.length).each do |i|
+            string.gsub!(/\{#{i}\}/, args[i + 1].to_s)
         end
         return string
     end
