@@ -145,6 +145,17 @@ Flags = CanProtect
 EffectChance = 10
 Description = The user squeezes the target, trapping and damaging it for three turns.
 #-------------------------------
+[CONVERSION2]
+Name = Conversion 2
+Type = NORMAL
+Category = Status
+Accuracy = 0
+TotalPP = 25
+Target = NearOther
+FunctionCode = Invalid
+Flags = ForceSignature
+Description = The user changes its type to make itself resistant to the type of the attack the opponent used last.
+#-------------------------------
 [COPYCAT]
 Name = Copycat
 Type = NORMAL
@@ -1821,6 +1832,19 @@ FunctionCode = Invalid
 Flags = CanProtect
 Description = The user spins a sandstorm around the target, trapping and damaging it for three turns.
 #-------------------------------
+[TERRASLIDE]
+Name = Terraslide
+Type = GROUND
+Category = Physical
+Power = 120
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user charges, then attacks on the second turn. Charges instantly in sandstorm.
+Animation = SOLARBEAM
+#-------------------------------
 [TREMOR]
 Name = Tremor
 Type = GROUND
@@ -1883,6 +1907,19 @@ Target = NearOther
 FunctionCode = Invalid
 Flags = CanProtect
 Description = The user attacks the foe with a hazardous, full-power headbutt. The user also takes 50% recoil.
+#-------------------------------
+[ICEBREAKER]
+Name = Icebreaker
+Type = ROCK
+Category = Physical
+Power = 120
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = Invalid
+Flags = CanProtect
+Description = The user sweeps away hazards afflicting your side while lunging forward. User also takes 33% recoil.
+Animation = HEADSMASH
 #-------------------------------
 [INVITESAND]
 Name = Invite Sand
@@ -4084,17 +4121,6 @@ FunctionCode = Invalid
 Flags = CanProtect
 EffectChance = 30
 Description = The user attacks by harshly dropping an icicle onto the foe. It has a 30% chance to make the target flinch.
-#-------------------------------
-[INURE]
-Name = Inure
-Type = ICE
-Category = Status
-Accuracy = 0
-TotalPP = 10
-Target = User
-FunctionCode = Invalid
-Flags = CanSnatch
-Description = The user inures themselves to a harsh environment, shedding their type weaknesses.
 #-------------------------------
 [MIST]
 Name = Mist

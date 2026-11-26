@@ -6,7 +6,7 @@ class PokeBattle_Battle
         battler = @battlers[battler] if battler.is_a?(Integer)
         move = battler.getMoves[idxMove]
         return false unless move
-        return true if move.empoweredMove? && battler.boss?
+        return true if move.bossPrimeval?(battler)
         if move.pp == 0 && move.total_pp > 0 && !sleepTalk
             pbDisplayPaused(_INTL("There's no PP left for this move!")) if showMessages
             echoln("The move #{move.name} has no PP, so it cannot be chosen.")
@@ -25,7 +25,7 @@ class PokeBattle_Battle
     def pbCanChooseAnyMove?(idxBattler, sleepTalk = false)
         battler = @battlers[idxBattler]
         battler.eachMoveWithIndex do |m, i|
-            return true if m.empoweredMove? && battler.boss?
+            return true if m.bossPrimeval?(battler)
             next if m.pp == 0 && m.total_pp > 0 && !sleepTalk
             if battler.effectActive?(:Encore)
                 idxEncoredMove = battler.pbEncoredMoveIndex
@@ -124,9 +124,7 @@ class PokeBattle_Battle
         when :AllNearFoes
             return false unless opposes?(idxUser, idxTarget)
             return false unless nearBattlers?(idxUser, idxTarget)
-        when :Foe
-            return false unless opposes?(idxUser, idxTarget)
-        when :AllFoes
+        when :Foe, :AllFoes
             return false unless opposes?(idxUser, idxTarget)
         when :NearOther
             return false unless nearEnoughForMoveTargeting?(idxUser, idxTarget)
@@ -165,22 +163,22 @@ class PokeBattle_Battle
                 end
             end
             @priority.clear
-            for i in 0..maxBattlerIndex
+            (0..maxBattlerIndex).each do |i|
                 b = @battlers[i]
                 next unless b
             end
-            for i in 0..maxBattlerIndex
+            (0..maxBattlerIndex).each do |i|
                 b = @battlers[i]
                 next unless b
                 # [battler, speed, sub-priority, priority, tie-breaker order]
                 bArray = [b, b.pbSpeed, 0, 0, randomOrder[i]]
-                if @choices[b.index][0] == :UseMove || @choices[b.index][0] == :Shift
+                if [:UseMove, :Shift].include?(@choices[b.index][0])
                     # Calculate move's priority
                     if @choices[b.index][0] == :UseMove
                         move = @choices[b.index][2]
                         target_index = @choices[b.index][3]
                         if @client_id == 1
-                            target_index = CableClub::pokemon_target_order(@client_id)[target_index]                          
+                            target_index = CableClub.pokemon_target_order(@client_id)[target_index]
                         end
                         targets = b.pbFindTargets(target_index, move, b)
                         # if we're on the info screen, flag aiCheck to disable active effects like Tremorsense
@@ -267,7 +265,7 @@ class PokeBattle_Battle
 
         # Final turn of Winter Hunts
         priority += 1 if user.pbOwnSide.effectActive?(:WinterHuntsEnd)
-        
+
         user.eachAbilityShouldApply(aiCheck) do |ability|
             abilityPriorityChange = BattleHandlers.triggerPriorityChangeAbility(ability, user, move, 0, targets, aiCheck)
             priority += abilityPriorityChange
@@ -280,8 +278,7 @@ class PokeBattle_Battle
         ret = []
         if onlySpeedSort
             # Sort battlers by their speed stats and tie-breaker order only.
-            tempArray = []
-            @priority.each { |pArray| tempArray.push([pArray[0], pArray[1], pArray[4]]) }
+            tempArray = @priority.map { |pArray| [pArray[0], pArray[1], pArray[4]] }
             tempArray.sort! { |a, b| (a[1] == b[1]) ? b[2] <=> a[2] : b[1] <=> a[1] }
             tempArray.each { |tArray| ret.push(tArray[0]) }
         else
@@ -297,8 +294,8 @@ class PokeBattle_Battle
     # Pokemon with speed ties are assigned the same number
     def pbTurnOrderDisplayed
         # don't do extra random calls if recalculating for info screen, to ensure cable club sync
-        pbCalculatePriority(true,nil,true)
-        
+        pbCalculatePriority(true, nil, true)
+
         speedHash = {}
 
         @priority.each do |pArray|

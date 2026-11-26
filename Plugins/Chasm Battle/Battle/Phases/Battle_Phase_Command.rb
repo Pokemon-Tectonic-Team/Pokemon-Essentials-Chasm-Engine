@@ -95,7 +95,7 @@ class PokeBattle_Battle
                 move = @battlers[idxBattler].getMoves[cmd]
                 next false if cmd < 0 || move.nil? || move.id.nil?
                 next false unless pbRegisterMove(idxBattler, cmd)
-                move.calculateUsageOverrides(battler,[]) # only to define calcType
+                move.calculateUsageOverrides(battler, []) # only to define calcType
                 target_data = move.pbTarget(battler)
                 next false if (!singleBattle? || target_data.id == :UserOrNearOther) &&
                               !pbChooseTarget(@battlers[idxBattler], move)
@@ -183,7 +183,7 @@ class PokeBattle_Battle
     #=============================================================================
     # Command phase
     #=============================================================================
-    def describeAction(actor,action)
+    def describeAction(actor, action)
         case action[0]
         when :None
             return "do nothing"
@@ -208,7 +208,7 @@ class PokeBattle_Battle
         end
 
         # Reset choices to perform Mega Evolution if it wasn't done somehow
-        for side in 0...2
+        (0...2).each do |side|
             @megaEvolution[side].each_with_index do |megaEvo, i|
                 @megaEvolution[side][i] = -1 if megaEvo >= 0
             end
@@ -241,7 +241,7 @@ class PokeBattle_Battle
                     next if bOpp.fainted?
                     possibleInvestigation.push(bOpp)
                 end
-                next if possibleInvestigation.length == 0
+                next if possibleInvestigation.empty?
                 investigating = possibleInvestigation.sample
                 pbShowAbilitySplash(b, :INVESTIGATOR)
                 choice = @choices[investigating.index]
@@ -280,8 +280,7 @@ class PokeBattle_Battle
             next if battler.nil?
             next unless battler.hasActiveAbility?(:SOULREAD)
             battler.eachOpposing do |opponent|
-                next if opponent.lastMoveUsedType.nil?
-                next if opponent.pbTypes(true).include?(opponent.lastMoveUsedType)
+                next unless opponent.lastMoveUsedOffType?
                 pbShowAbilitySplash(battler, :SOULREAD)
                 pbDisplay(_INTL("{1} reads {2}'s guilty soul!", battler.pbThis, opponent.pbThis(true)))
                 pbHideAbilitySplash(battler)
@@ -308,7 +307,7 @@ class PokeBattle_Battle
             pbClearChoice(i) if pbCanShowCommands?(i)
         end
         # Reset choices to perform Mega Evolution if it wasn't done somehow
-        for side in 0...2
+        (0...2).each do |side|
             @megaEvolution[side].each_with_index do |megaEvo, i|
                 @megaEvolution[side][i] = -1 if megaEvo >= 0
             end
@@ -423,7 +422,7 @@ class PokeBattle_Battle
 
                     eachSameSideBattler do |b|
                         next unless b.pbOwnedByPlayer?
-                        describedPlayerAction = describeAction(b,@predictedActions[b.index])
+                        describedPlayerAction = describeAction(b, @predictedActions[b.index])
                         echoln("[PLAYER PREDICTION] The AI predicts that #{b.pbThis} will #{describedPlayerAction}!")
                     end
                 end
@@ -533,7 +532,7 @@ class PokeBattle_Battle
                     actioned.pop # Forget this battler was done
                     idxBattler = actioned.last - 1
                     pbCancelChoice(idxBattler + 1) # Clear the previous battler's choice
-                    actioned.pop   # Forget the previous battler was done
+                    actioned.pop # Forget the previous battler was done
                     break
                 end
                 pbCancelChoice(idxBattler)
@@ -557,7 +556,6 @@ class PokeBattle_Battle
         return false unless ItemHandlers.triggerCanUseInBattle(item,
            pkmn, battler, nil, firstAction, self, @scene)
         return false unless pbRegisterItem(idxBattler, item, idxTarget)
-        ret = true
         return true
     end
 

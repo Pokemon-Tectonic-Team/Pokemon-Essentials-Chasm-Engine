@@ -1,4 +1,6 @@
 class MoveDex_Entry_Scene
+    include TypeMatchupsDisplay
+
     attr_reader :sprites
     attr_reader :viewport
 
@@ -36,7 +38,8 @@ class MoveDex_Entry_Scene
         @sprites["selectionarrow"].visible = false
         @sprites["selectionarrow"].x = SPECIES_LIST_COLUMN_1_X_LEFT - 16
 
-        @typebitmap = AnimatedBitmap.new(addLanguageSuffix(("Graphics/Pictures/Pokedex/icon_types")))
+        @typebitmap = AnimatedBitmap.new(addLanguageSuffix("Graphics/Pictures/Pokedex/icon_types"))
+        @types_emphasized_bitmap = AnimatedBitmap.new(addLanguageSuffix("Graphics/Pictures/Pokedex/icon_types_emphasized"))
 
         @detailLinesToShow = 9
         @sprites["scroll_arrow_up"] = AnimatedSprite.new("Graphics/Pictures/uparrow", 8, 28, 40, 2, @viewport)
@@ -347,78 +350,26 @@ class MoveDex_Entry_Scene
         @sprites["scroll_arrow_down"].visible = canScrollSpeciesList? && @scroll <= @currentSpeciesList[0].length - @speciesLinesToShow
     end
 
+    # The type matchups of the move, over all of its types.
+    def typeMatchups
+        moveTypes = @battleMoveObject.types
+        return typeMatchupsBy { |typeID| @battleMoveObject.typesEffectiveness(moveTypes, [typeID], nil, nil, false) }
+    end
+
     def drawTypeMatchupsPage
         bg_path = "Graphics/Pictures/Movedex/bg_move_matchups"
         bg_path += "_dark" if darkMode?
         @sprites["background"].setBitmap(_INTL(bg_path))
         overlay = @sprites["overlay"].bitmap
-        base   = MessageConfig.pbDefaultTextMainColor
-        shadow = MessageConfig.pbDefaultTextShadowColor
-
-        xLeft = 36
-        yBase = 60
 
         if @moveData.status?
+            base   = MessageConfig.pbDefaultTextMainColor
+            shadow = MessageConfig.pbDefaultTextShadowColor
             statusLabel = _INTL("Status")
             statusLabelWidth = @sprites["overlay"].bitmap.text_size(statusLabel).width
             drawTextEx(overlay, (Graphics.width / 2) - (statusLabelWidth / 2), 80, 450, 1, statusLabel, base, shadow)
         else
-            immuneTypes = []
-            resistentTypes = []
-            weakTypes = []
-
-            GameData::Type.each do |t|
-                next if t.pseudo_type
-
-                effect = @battleMoveObject.pbCalcTypeModSingle(@moveData.type, t.id)**3
-
-                if Effectiveness.ineffective?(effect)
-                    immuneTypes.push(t)
-                elsif Effectiveness.not_very_effective?(effect)
-                    resistentTypes.push(t)
-                elsif Effectiveness.super_effective?(effect)
-                    weakTypes.push(t)
-                end
-            end
-
-            # Draw the types the move is super effective against
-            drawTextEx(overlay, xLeft, yBase, 450, 1, _INTL("Super:"), base, shadow)
-            if weakTypes.empty?
-                drawTextEx(overlay, xLeft, yBase + 30, 450, 1, _INTL("None"), base, shadow)
-            else
-                weakTypes.each_with_index do |t, index|
-                    type_number = GameData::Type.get(t).id_number
-                    typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + (index >= 7 ? 100 : 0), yBase + 30 + (36 * (index % 7)), @typebitmap.bitmap,
-                typerect)
-                end
-            end
-
-            # Draw the types the move deals NVE damage to
-            resistOffset = 212
-            drawTextEx(overlay, xLeft + resistOffset, yBase, 450, 1, _INTL("Not Very:"), base, shadow)
-            if resistentTypes.empty?
-                drawTextEx(overlay, xLeft + resistOffset, yBase + 30, 450, 1, _INTL("None"), base, shadow)
-            else
-                resistentTypes.each_with_index do |t, index|
-                    type_number = GameData::Type.get(t).id_number
-                    typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + resistOffset, yBase + 30 + (36 * index), @typebitmap.bitmap, typerect)
-                end
-            end
-
-            # Draw the types the move deals immune damage to
-            immuneOffset = 324
-            drawTextEx(overlay, xLeft + immuneOffset, yBase, 450, 1, _INTL("No Effect:"), base, shadow)
-            if immuneTypes.empty?
-                drawTextEx(overlay, xLeft + immuneOffset, yBase + 30, 450, 1, _INTL("None"), base, shadow)
-            else
-                immuneTypes.each_with_index do |t, index|
-                    type_number = GameData::Type.get(t).id_number
-                    typerect = Rect.new(0, type_number * 32, 96, 32)
-                    overlay.blt(xLeft + immuneOffset, yBase + 30 + (36 * index), @typebitmap.bitmap, typerect)
-                end
-            end
+            drawTypeMatchups(overlay, typeMatchups, [_INTL("Super:"), _INTL("Not Very:"), _INTL("No Effect:")], 0)
         end
     end
 
@@ -531,6 +482,7 @@ class MoveDex_Entry_Scene
         pbDisposeSpriteHash(@sprites)
         @viewport.dispose
         @typebitmap.dispose
+        @types_emphasized_bitmap.dispose
     end
 
     def pbUpdate

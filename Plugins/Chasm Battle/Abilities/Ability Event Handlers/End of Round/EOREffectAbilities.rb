@@ -29,6 +29,15 @@ BattleHandlers::EOREffectAbility.add(:SPINTENSITY,
   }
 )
 
+BattleHandlers::EOREffectAbility.add(:STEEPMOMENTUM,
+  proc { |ability, battler, battle|
+      unless battler.effects[:SteepMomentumDealtDamage]
+        battler.pbRaiseMultipleStatSteps([:ATTACK, 2, :SPEED, 2], battler, ability: ability)
+      end
+      battler.effects[:SteepMomentumDealtDamage] = false
+  }
+)
+
 BattleHandlers::EOREffectAbility.add(:HUNGERSWITCH,
   proc { |ability, battler, battle|
       if battler.species == :MORPEKO

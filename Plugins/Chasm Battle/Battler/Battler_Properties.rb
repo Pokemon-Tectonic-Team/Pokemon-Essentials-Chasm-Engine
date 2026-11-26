@@ -2,12 +2,12 @@ class PokeBattle_Battler
     # Fundamental to this object
     attr_reader   :battle
     attr_accessor :index, :pokemonIndex, :species, :type1, :type2, :ability_ids, :moves, :turnCount
-    attr_accessor  :gender, :iv, :steps, :captured, :effects
+    attr_accessor :gender, :iv, :steps, :captured, :effects
 
     # Trackers
     attr_accessor  :participants, :lastAttacker, :lastFoeAttacker, :lastHPLost, :lastHPLostFromFoe
-    attr_accessor  :lastMoveUsed, :lastMoveUsedType, :lastMoveUsedCategory, :moveUsageHistory # All moves used, in order
-    attr_accessor  :lastRoundMove, :lastRoundMoveType, :lastRoundMoveCategory
+    attr_accessor  :lastMoveUsed, :lastMoveUsedTypes, :lastMoveUsedCategory, :moveUsageHistory # All moves used, in order
+    attr_accessor  :lastRoundMove, :lastRoundMoveCategory
     attr_accessor  :lastRegularMoveUsed, :lastRegularMoveTarget, :usedDamagingMove
     attr_accessor  :lastRoundMoved, :lastMoveFailed, :lastRoundMoveFailed, :movesUsed, :currentMove
     attr_accessor  :tookDamage, :tookPhysicalHit, :tookSpecialHit, :tookPhysicalHitLastRound, :tookSpecialHitLastRound
@@ -16,9 +16,9 @@ class PokeBattle_Battler
     attr_accessor :ignoreChoiceLock
 
     # Avatar stuff
-    attr_accessor  :boss, :avatarPhase, :phaseTransitioning
-    attr_accessor  :indicesTargetedThisRound, :indicesTargetedLastRound, :indicesTargetedRoundBeforeLast
-    attr_accessor  :empoweredTimer, :dmgMult, :dmgResist
+    attr_accessor :boss, :avatarPhase, :phaseTransitioning
+    attr_accessor :indicesTargetedThisRound, :indicesTargetedLastRound, :indicesTargetedRoundBeforeLast
+    attr_accessor :empoweredTimer, :dmgMult, :dmgResist
 
     # The Pokémon and its properties
     attr_reader :pokemon
@@ -67,9 +67,9 @@ class PokeBattle_Battler
         # Wild Pokémon are already in the battle and should never refuse to fight.
         return false if @battle.wildBattle? && pbOwnSide.index == 1
         idxTrainer = @battle.pbGetOwnerIndexFromBattlerIndex(index)
-        eachActiveAbility(true, ignoreGas:true) do |ability|
+        eachActiveAbility(true, ignoreGas: true) do |ability|
             return true if BattleHandlers.triggerForbidsUserSwitchInAbility(
-                ability, @battle, self.pokemon, pbOwnSide.index, idxTrainer, pokemonIndex, false
+                ability, @battle, pokemon, pbOwnSide.index, idxTrainer, pokemonIndex, false
             )
         end
         return false
@@ -165,9 +165,9 @@ class PokeBattle_Battler
                 break if moveLevel > @level
                 next if moveLevel < 45
                 moveAtThisLevel = learnSetEntry[1]
-                
+
                 hasMoveAlready = false
-                movesArray.each do |existingMove|    
+                movesArray.each do |existingMove|
                     next unless existingMove.id == moveAtThisLevel
                     hasMoveAlready = true
                     break

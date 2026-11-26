@@ -292,7 +292,6 @@ def battleGuideSideEffectsHash
         _INTL("Tailwind") => _INTL("Tailwind doubles the Speed stat of all Pokémon on the active side."),
         _INTL("Natural Protection") => _INTL("Natural Protection halves recoil damage and other passive damage like burn or sandstorm on the active side."),
         _INTL("Coral Overgrowth") => _INTL("Coral Overgrowth causes attacks against the opponent to heal the user for 33% of the damage dealt. This can also overheal."),
-        _INTL("Wishing Well") => _INTL("Wishing Well consumes up to 1000 scattered coins to block random added effects and heal the active side for 1/16th HP each turn. 100 coins per turn for a max. of 10 turns."),
     }
 end
 

@@ -37,9 +37,9 @@ class PokeBattle_Move_EffectDependsOnEnvironment < PokeBattle_Move
     def pbEffectAfterAllHits(user, target)
         return if target.fainted?
         return if target.damageState.unaffected || target.damageState.substitute
-        chance = pbAdditionalEffectChance(user, target, @calcType)
+        chance = pbAdditionalEffectChance(user, target)
         return if @battle.pbRandom(100) >= chance
-        return unless canApplyRandomAddedEffects?(user,target,chance,true)
+        return unless canApplyRandomAddedEffects?(user, target, chance, true)
         case @secretPower
         when 2
             target.applySleep if target.canSleep?(user, false, self)
@@ -58,28 +58,28 @@ class PokeBattle_Move_EffectDependsOnEnvironment < PokeBattle_Move
         end
     end
 
-    def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
-        id = :BODYSLAM # Environment-specific anim
+    def pbShowAnimation(_id, user, targets, hitNum = 0, showAnimation = true)
+        animId = :BODYSLAM # Environment-specific anim
         case @secretPower
-        when 1  then id = :THUNDERSHOCK if GameData::Move.exists?(:THUNDERSHOCK)
-        when 2  then id = :VINEWHIP if GameData::Move.exists?(:VINEWHIP)
-        when 3  then id = :FAIRYWIND if GameData::Move.exists?(:FAIRYWIND)
-        when 4  then id = :MINDWAVES if GameData::Move.exists?(:MINDWAVES)
-        when 5  then id = :WATERPULSE if GameData::Move.exists?(:WATERPULSE)
-        when 6  then id = :MUDSHOT if GameData::Move.exists?(:MUDSHOT)
-        when 7  then id = :ROCKTHROW if GameData::Move.exists?(:ROCKTHROW)
-        when 8  then id = :MUDSLAP if GameData::Move.exists?(:MUDSLAP)
-        when 9  then id = :ICESHARD if GameData::Move.exists?(:ICESHARD)
-        when 10 then id = :INCINERATE if GameData::Move.exists?(:INCINERATE)
-        when 11 then id = :SHADOWSNEAK if GameData::Move.exists?(:SHADOWSNEAK)
-        when 12 then id = :GUST if GameData::Move.exists?(:GUST)
-        when 13 then id = :SWIFT if GameData::Move.exists?(:SWIFT)
-        when 14 then id = :PSYWAVE if GameData::Move.exists?(:PSYWAVE)
+        when 1  then animId = :THUNDERSHOCK if GameData::Move.exists?(:THUNDERSHOCK)
+        when 2  then animId = :VINEWHIP if GameData::Move.exists?(:VINEWHIP)
+        when 3  then animId = :FAIRYWIND if GameData::Move.exists?(:FAIRYWIND)
+        when 4  then animId = :MINDWAVES if GameData::Move.exists?(:MINDWAVES)
+        when 5  then animId = :WATERPULSE if GameData::Move.exists?(:WATERPULSE)
+        when 6  then animId = :MUDSHOT if GameData::Move.exists?(:MUDSHOT)
+        when 7  then animId = :ROCKTHROW if GameData::Move.exists?(:ROCKTHROW)
+        when 8  then animId = :MUDSLAP if GameData::Move.exists?(:MUDSLAP)
+        when 9  then animId = :ICESHARD if GameData::Move.exists?(:ICESHARD)
+        when 10 then animId = :INCINERATE if GameData::Move.exists?(:INCINERATE)
+        when 11 then animId = :SHADOWSNEAK if GameData::Move.exists?(:SHADOWSNEAK)
+        when 12 then animId = :GUST if GameData::Move.exists?(:GUST)
+        when 13 then animId = :SWIFT if GameData::Move.exists?(:SWIFT)
+        when 14 then animId = :PSYWAVE if GameData::Move.exists?(:PSYWAVE)
         end
-        super
+        super(animId, user, targets, hitNum, showAnimation)
     end
 
-    def getTargetAffectingEffectScore(_user, target)
+    def getTargetAffectingEffectScore(_user, _target)
         return 20
     end
 
@@ -147,7 +147,7 @@ class PokeBattle_Move_UseMoveDependingOnEnvironment < PokeBattle_Move
         pseudoMove = calculateNaturePower
         return @battle.getBattleMoveInstanceFromID(pseudoMove).getTargetAffectingEffectScore(user, target)
     end
-	
+
     def getDetailsForMoveDex(detailsList = [])
         detailsList << _INTL("Turns into a different move depending on the environment.")
         detailsList << _INTL("<u>Grassy</u>: Energy Ball")
@@ -162,5 +162,4 @@ class PokeBattle_Move_UseMoveDependingOnEnvironment < PokeBattle_Move
         detailsList << _INTL("<u>Ultraspace</u>: Psycho Boost")
         detailsList << _INTL("<u>Everywhere Else</u>: Ruin")
     end
-
 end
