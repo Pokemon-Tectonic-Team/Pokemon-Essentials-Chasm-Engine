@@ -36,4 +36,15 @@ class SpeakerTagPlacementTest < Minitest::Test
     def test_a_tag_past_the_left_edge_is_kept_on_screen
         assert_equal 0, tagX(:right, 50)
     end
+
+    def test_a_tag_as_wide_as_the_screen_fills_it
+        imageRect = Rect.new(24, 40, 192, 256)
+        assert_equal 0, speakerTagX(:left, imageRect, SCREEN_WIDTH, SCREEN_WIDTH)
+    end
+
+    def test_a_tag_wider_than_the_screen_raises
+        imageRect = Rect.new(24, 40, 192, 256)
+        error = assert_raises(ArgumentError) { speakerTagX(:left, imageRect, SCREEN_WIDTH + 1, SCREEN_WIDTH) }
+        assert_includes error.message, (SCREEN_WIDTH + 1).to_s
+    end
 end

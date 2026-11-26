@@ -21,6 +21,15 @@ class FaceSpecsTest < Minitest::Test
         assert_equal ["Val", 0], parseFaceSpec("Val,happy")
     end
 
+    def test_an_explicit_zero_index_is_frame_zero
+        assert_equal ["Val", 0], parseFaceSpec("Val,0")
+    end
+
+    def test_a_negative_index_raises_naming_the_face
+        error = assert_raises(ArgumentError) { parseFaceSpec("Val,-1") }
+        assert_includes error.message, '"Val,-1"'
+    end
+
     def rectFields(rect)
         return [rect.x, rect.y, rect.width, rect.height]
     end
