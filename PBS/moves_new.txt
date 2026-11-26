@@ -1657,6 +1657,20 @@ EffectChance = 100
 Description = The user attacks while slathered in grime. This poisons the user.
 Animation = POISONJAB
 #-------------------------------
+[HAZARDCLAW]
+Name = Hazard Claw
+Type = POISON
+Category = Physical
+Power = 90
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = Numb
+Flags = CanProtect,Slice
+EffectChance = 100
+Description = The user releases a potent venom through its claws, numbing the target.
+Animation = CROSSPOISON
+#-------------------------------
 [MIASMA]
 Name = Miasma
 Type = POISON
@@ -1682,6 +1696,18 @@ FunctionCode = Poison
 Flags = CanProtect,Punch
 EffectChance = 10
 Description = The user stabs the opponent with a toxin-infused limb. It has a 10% chance to poison.
+#-------------------------------
+[NOXIOUSBARBS]
+Name = Noxious Barbs
+Type = POISON
+Category = Status
+Accuracy = 100
+TotalPP = 8
+Target = NearOther
+FunctionCode = PoisonMoveWorsenPoisonLowerSpeed1
+Flags = CanProtect,CanMagicCoat
+Description = This poisons the target. If the target is already poisoned, their poison worsens and their Speed is lowered.
+Animation = POISONSTING
 #-------------------------------
 [POISONDART]
 Name = Poison Dart
@@ -1903,6 +1929,17 @@ Flags = CanProtect
 Description = The target is consumed by a desert storm, trapping and binding it for three turns.
 Animation = SANDTOMB
 #-------------------------------
+[DUSTBOWL]
+Name = Dustbowl
+Type = GROUND
+Category = Status
+Accuracy = 0
+TotalPP = 15
+Target = FoeSide
+FunctionCode = OppSide30MoreDamageCantHealIfInSand5
+Flags = CanSnatch
+Description = For five turns, Pokémon on the opposing side take 30% more move damage and cannot heal. Only usable in sandstorm.
+#-------------------------------
 [DUSTDEVIL]
 Name = Dust Devil
 Type = GROUND
@@ -1942,19 +1979,6 @@ Flags = CanProtect
 Description = The user cracks the earth under the target with a massive strike. This lowers the user's Attack by four steps.
 Animation = FISSURE
 #-------------------------------
-[ERODE]
-Name = Erode
-Type = GROUND
-Category = Special
-Power = 70
-Accuracy = 100
-TotalPP = 15
-Target = NearOther
-FunctionCode = IncreasedPriorityInSandstorm
-Flags = CanProtect
-Description = Attacks by blasting dirt and debris at the target. This move always goes first in sandstorm.
-Animation = SANDATTACK
-#-------------------------------
 [EXTREMEEFFORT]
 Name = Extreme Effort
 Type = GROUND
@@ -1987,7 +2011,7 @@ Power = 110
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = EffectivenessIncludesPsychicType
+FunctionCode = AlsoPsychicType
 Flags = CanProtect
 Description = Energy is sent through a conduit, erupting under the target. This move is also Psychic-type.
 Animation = EARTHPOWER
@@ -2109,6 +2133,20 @@ Target = NearOther
 FunctionCode = Basic
 Flags = CanProtect,CanRandomCrit
 Description = The user blasts the target with highly pressurized sand. Can random critical hit.
+#-------------------------------
+[SANDSURGE]
+Name = Sand Surge
+Type = GROUND
+Category = Physical
+Power = 110
+Accuracy = 70
+TotalPP = 5
+Target = AllNearFoes
+FunctionCode = BurnTargetAlwaysHitsInSand
+Flags = CanProtect
+EffectChance = 30
+Description = The user crashes into foes on a wave of hot sand. Can't miss in sandstorm. It has a 30% chance to burn.
+Animation = SCORCHINGSANDS
 #-------------------------------
 [SANDTOSS]
 Name = Sand Toss
@@ -2345,6 +2383,32 @@ Flags = CanProtect,CanMagicCoat
 Description = The user weakens the target's bones, making them fracture. They deal 33% less damage.
 Animation = TARSHOT
 #-------------------------------
+[ERODE]
+Name = Erode
+Type = ROCK
+Category = Special
+Power = 70
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = IncreasedPriorityInSandstorm
+Flags = CanProtect
+Description = Attacks by blasting rocks and debris at the target. This move always goes first in sandstorm.
+Animation = SANDATTACK
+#-------------------------------
+[GORMANDIZE]
+Name = Gormandize
+Type = ROCK
+Category = Physical
+Power = 80
+Accuracy = 100
+TotalPP = 12
+Target = NearOther
+FunctionCode = ConsumesTargetBerriesHerbs
+Flags = CanProtect,Biting
+Description = The user bites down on the target’s held item, destroying it. Destroyed Berries and Herbs are consumed.
+Animation = JAWLOCK
+#-------------------------------
 [GRANITEHEAD]
 Name = Granite Head
 Type = ROCK
@@ -2396,19 +2460,6 @@ FunctionCode = RecoilFifthOfDamageDealt
 Flags = CanProtect
 Description = The user slams the target with blunt force, taking 20% recoil.
 #-------------------------------
-[ICEBREAKER]
-Name = Icebreaker
-Type = ROCK
-Category = Physical
-Power = 120
-Accuracy = 100
-TotalPP = 10
-Target = NearOther
-FunctionCode = Icebreaker
-Flags = CanProtect
-Description = The user sweeps away hazards afflicting your side while lunging forward. User also takes 33% recoil.
-Animation = HEADSMASH
-#-------------------------------
 [INVITESANDSTORM]
 Name = Invite Sandstorm
 Type = ROCK
@@ -2459,6 +2510,19 @@ FunctionCode = FractureTarget
 Flags = CanProtect
 EffectChance = 100
 Description = The user drops a single piece of solid bedrock on the target, fracturing them.
+Animation = CONTINENTALCRUSH
+#-------------------------------
+[MOUNTAINCRUSH]
+Name = Mountain Crush
+Type = ROCK
+Category = Physical
+Power = 120
+Accuracy = 100
+TotalPP = 10
+Target = AllNearFoes
+FunctionCode = DestroyRoomsRemovesHazardsBothSides
+Flags = CanProtect
+Description = The user crushes the surrounding area, destroying all hazards and active rooms. The user takes 33% recoil.
 Animation = CONTINENTALCRUSH
 #-------------------------------
 [OMNISHELTER]
@@ -3333,6 +3397,18 @@ FunctionCode = LowerTargetSpd4DrowsyIfHail
 Flags = CanProtect,CanMagicCoat
 Description = The user soothes the target, lowering its Speed by four steps. If in hail, they also become drowsy.
 Animation = YAWN
+#-------------------------------
+[ENTOMB]
+Name = Entomb
+Type = GHOST
+Category = Status
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+FunctionCode = FractureCurseTargetUserPaysQuarterOfHP
+Flags = CanProtect,CanMagicCoat
+Description = The user sacrifices 25% of their HP to put the target in an early grave, cursing and fracturing them.
+Animation = ROCKTOMB
 #-------------------------------
 [FROMBEYOND]
 Name = From Beyond
@@ -5114,7 +5190,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = FixedDamageOneEighthWaterlogTarget
 Flags = CanProtect
-Description = The target gets covered in sticky spines, waterlogging it and losing 1/8th of their current HP.
+Description = The target gets covered in sticky spines, waterlogging it and losing 1/8th of their max HP.
 Animation = SOAK
 #-------------------------------
 [TIDEPULL]
@@ -7196,6 +7272,17 @@ EffectChance = 100
 Description = Injects supercold liquid into the target, damaging them and halving all future healing.
 Animation = FROSTBARB
 #-------------------------------
+[INURE]
+Name = Inure
+Type = ICE
+Category = Status
+Accuracy = 0
+TotalPP = 3
+Target = User
+FunctionCode = StartUserShedTypeWeaknesses3
+Flags = CanSnatch
+Description = The user readies for the harshest environments. The next 3 hits against it cannot be super effective or hyper effective.
+#-------------------------------
 [INVITEHAIL]
 Name = Invite Hail
 Type = ICE
@@ -8385,7 +8472,7 @@ Power = 100
 Accuracy = 100
 TotalPP = 5
 Target = NearOther
-Priority = 4
+Priority = 1
 FunctionCode = TwoTurnAttackInvulnerableVerminCloud
 Flags = CanProtect
 Description = The user transforms into a cloud of vermin, charging and becoming hidden. On the second turn it ambushes the target.

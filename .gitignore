@@ -30,3 +30,4 @@ server.log
 Build files/Releases/
 .env
 .rubocop-https*
+/coverage/

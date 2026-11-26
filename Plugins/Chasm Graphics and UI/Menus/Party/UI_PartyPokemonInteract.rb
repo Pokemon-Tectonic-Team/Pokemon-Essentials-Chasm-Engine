@@ -221,10 +221,12 @@ existingIndex)
         cmdEvolve  = -1
         cmdStyle = -1
         cmdSwapAbility = -1
+        cmdChangeForm = -1
 
         # Build the commands
         commands[cmdStyle = commands.length]        = _INTL("Set Style") if pbHasItem?(:STYLINGKIT)
-        commands[cmdSwapAbility = commands.length]        = _INTL("Swap Ability") if pbHasItem?(:VIRALHELIX)
+        commands[cmdSwapAbility = commands.length]        = _INTL("Swap Ability") if pbHasItem?(:VIRALHELIX) && pbCanSwapAbility?(@pkmn)
+        commands[cmdChangeForm = commands.length]        = _INTL("Change Form") if pbHasItem?(:UNIVERSALFORMALIZER) && pbCanChangePokemonForm?(@pkmn)
         commands[cmdRename = commands.length]       = _INTL("Rename")
         commands[cmdSwapPokeBall = commands.length]   = _INTL("Swap Ball")
         commands[cmdDeleteMove = commands.length] = _INTL("Delete Move") if @pkmn.numMoves > 1
@@ -260,6 +262,10 @@ existingIndex)
             pbStyleValueScreen(@pkmn)
         elsif cmdSwapAbility >= 0 && modifyCommand == cmdSwapAbility
             pbSwapAbility(@pkmn)
+            @partyScene.pbRefresh
+        elsif cmdChangeForm >= 0 && modifyCommand == cmdChangeForm
+            pbChangePokemonForm(@pkmn, @partyScene)
+            @partyScene.pbRefresh
         end
 
         return false

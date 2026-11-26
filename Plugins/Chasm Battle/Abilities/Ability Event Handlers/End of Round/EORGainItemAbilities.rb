@@ -1,5 +1,5 @@
 BattleHandlers::EORGainItemAbility.add(:LARDER,
-    proc { |ability, battler, battle|
+    proc { |ability, battler, _battle|
         next unless battler.recyclableItem
         next unless GameData::Item.get(battler.recyclableItem).is_berry?
         next if battler.hasItem?(battler.recyclableItem)
@@ -14,9 +14,9 @@ BattleHandlers::EORGainItemAbility.add(:GOURMAND,
         GameData::Item.getByFlag("Pinch").each do |pinch|
             next unless GameData::Item.get(pinch).legal?
             next unless battler.canAddItem?(pinch)
-            itemsCanAdd.push(pinch) 
+            itemsCanAdd.push(pinch)
         end
-        next if itemsCanAdd.length == 0
+        next if itemsCanAdd.empty?
         battle.pbShowAbilitySplash(battler, ability)
         itemToAdd = itemsCanAdd.sample
         battler.giveItem(itemToAdd)
@@ -29,15 +29,15 @@ BattleHandlers::EORGainItemAbility.add(:GOURMAND,
 BattleHandlers::EORGainItemAbility.add(:STRATAGEM,
     proc { |ability, battler, battle|
         itemsCanAdd = []
-        attackingMoves = battler.moves.select { |m| m.damagingMove? }
+        attackingMoves = battler.moves.select(&:damagingMove?)
         GameData::Item.getByFlag("TypeGem").each do |gem|
             next unless GameData::Item.get(gem).legal?
             next unless battler.canAddItem?(gem)
             typeName = gem.to_s.chomp("GEM") # ROCKGEM -> ROCK
-            next unless attackingMoves.any? { |m| m.type == typeName.to_sym }
-            itemsCanAdd.push(gem) 
+            next unless attackingMoves.any? { |m| m.types.include?(typeName.to_sym) }
+            itemsCanAdd.push(gem)
         end
-        next if itemsCanAdd.length == 0
+        next if itemsCanAdd.empty?
         battle.pbShowAbilitySplash(battler, ability)
         itemToAdd = itemsCanAdd.sample
         battler.giveItem(itemToAdd)
@@ -56,7 +56,7 @@ BattleHandlers::EORGainItemAbility.add(:HARVEST,
         next unless battler.recyclableItem
         next unless GameData::Item.get(battler.recyclableItem).is_berry?
         next if battler.hasItem?(battler.recyclableItem)
-        next if !battle.sunny? && !(battle.pbRandom(100) < 50)
+        next if !battle.sunny? && battle.pbRandom(100) >= 50
         recyclingMsg = _INTL("{1} harvested one {2}!", battler.pbThis, getItemName(battler.recyclableItem))
         battler.recycleItem(recyclingMsg: recyclingMsg, ability: ability)
     }

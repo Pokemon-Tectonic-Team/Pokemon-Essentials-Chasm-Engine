@@ -31,7 +31,7 @@ GameData::BattleEffect.register_effect(:Battler, {
         healMessage = _INTL("The ring of water restored {1}'s HP!", battler.pbThis(true))
         battler.applyFractionalHealing(fraction, customMessage: healMessage)
     end,
-    :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
+    :stay_in_rating_proc => proc do |_battle, _battler, _value, stay_in_rating|
         stay_in_rating += 15
         next stay_in_rating
     end
@@ -106,7 +106,7 @@ GameData::BattleEffect.register_effect(:Battler, {
         battle.pbDisplay(_INTL("{1} lost its Fire-Type!", battler.pbThis))
         battle.scene.pbRefresh
     end,
-    :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
+    :stay_in_rating_proc => proc do |_battle, _battler, _value, stay_in_rating|
         stay_in_rating -= 15
         next stay_in_rating
     end
@@ -121,7 +121,7 @@ GameData::BattleEffect.register_effect(:Battler, {
         battle.pbDisplay(_INTL("{1} lost its Ice-type!", battler.pbThis))
         battle.scene.pbRefresh
     end,
-    :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
+    :stay_in_rating_proc => proc do |_battle, _battler, _value, stay_in_rating|
         stay_in_rating -= 15
         next stay_in_rating
     end
@@ -333,7 +333,7 @@ GameData::BattleEffect.register_effect(:Battler, {
             end
         end
     end,
-    :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
+    :stay_in_rating_proc => proc do |_battle, _battler, _value, stay_in_rating|
         stay_in_rating -= 25
         next stay_in_rating
     end
@@ -347,7 +347,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :baton_passed => true,
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("{1} is turning into gold!",battler.pbThis))
+        battle.pbDisplay(_INTL("{1} is turning into gold!", battler.pbThis))
     end,
     :eor_proc => proc do |battle, battler, _value|
         if battler.takesIndirectDamage?
@@ -359,7 +359,7 @@ GameData::BattleEffect.register_effect(:Battler, {
             battler.pbOpposingSide.incrementEffect(:PayDay, moneyEarned)
         end
     end,
-    :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
+    :stay_in_rating_proc => proc do |_battle, _battler, _value, stay_in_rating|
         stay_in_rating -= 15
         next stay_in_rating
     end
@@ -510,7 +510,7 @@ GameData::BattleEffect.register_effect(:Battler, {
         battle.pbDisplay(_INTL("{1}'s encore ended!", battler.pbThis))
     end,
     :sub_effects => [:EncoreMove],
-    :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
+    :stay_in_rating_proc => proc do |_battle, _battler, value, stay_in_rating|
         stay_in_rating -= 10 * value
         next stay_in_rating
     end
@@ -583,6 +583,14 @@ GameData::BattleEffect.register_effect(:Battler, {
             battle.pbDisplay(_INTL("Also, critical hits are now possible on all of {1}'s attacks!", battler.pbThis(true)))
         end
     end,
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ProbeWeakness,
+    :real_name => "Probe Weakness",
+    :type => :Integer,
+    :maximum => 4,
+    :critical_rate_buff => true,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -713,7 +721,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :apply_proc => proc do |_battle, battler, _value|
         battler.currentMove = battler.lastMoveUsed
     end,
-    :expire_proc => proc do |battle, battler|
+    :expire_proc => proc do |_battle, battler|
         battler.disableEffect(:BypassExhaustion) if battler.effectActive?(:BypassExhaustion)
     end,
 })
@@ -752,9 +760,9 @@ GameData::BattleEffect.register_effect(:Battler, {
         end
 
         if battler.hasActiveAbility?(:PRIMEVALDISGUISE)
-            fakePikachu = Pokemon.new(:PIKACHU,battler.level,battler.owner,battler.moves)
+            fakePikachu = Pokemon.new(:PIKACHU, battler.level, battler.owner, battler.moves)
             fakePikachu.boss = true
-            battler.applyEffect(:Illusion,fakePikachu)
+            battler.applyEffect(:Illusion, fakePikachu)
         end
     end,
     :disable_proc => proc do |battle, battler|
@@ -824,7 +832,7 @@ GameData::BattleEffect.register_effect(:Battler, {
                 battle.pbDisplay(_INTL("{1} is sapped by the evil roots!", b.pbThis))
                 damageDealt = b.applyFractionalDamage(1.0 / 8.0, false)
                 battler.pbRecoverHPFromDrain(damageDealt, b)
-            end 
+            end
         end
     end,
 })
@@ -885,7 +893,7 @@ GameData::BattleEffect.register_effect(:Battler, {
         recipient = battle.battlers[value]
         next if !recipient || recipient.fainted?
         battle.pbCommonAnimation("LeechSeed", recipient, battler)
-        oldHPRecipient = recipient.hp
+        recipient.hp
         hpLost = battler.applyFractionalDamage(1.0 / 8.0, false)
         recipient.pbRecoverHPFromDrain(hpLost, battler)
     end,
@@ -1089,7 +1097,7 @@ GameData::BattleEffect.register_effect(:Battler, {
         battler.disableEffect(:RampageLocked) if battler.effectActive?(:RampageLocked)
         if battler.effectActive?(:WillFaintAfterRampage)
             battle.pbDisplay(_INTL("Exhaustion finally catches up with {1}!", battler.pbThis(true)))
-            battler.pbReduceHP(battler.hp,false,false)
+            battler.pbReduceHP(battler.hp, false, false)
             battler.pbFaint if battler.fainted?
         end
     end,
@@ -1126,10 +1134,10 @@ GameData::BattleEffect.register_effect(:Battler, {
     :remain_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} is making an uproar!", battler.pbThis))
     end,
-    :disable_proc => proc do |battle, battler|
+    :disable_proc => proc do |_battle, battler|
         battler.currentMove = nil
     end,
-    :expire_proc => proc do |battle, battler|
+    :expire_proc => proc do |_battle, battler|
         battler.currentMove = nil
     end,
 })
@@ -1173,7 +1181,7 @@ GameData::BattleEffect.register_effect(:Battler, {
                 battler.form == 0
             battler.showMyAbilitySplash(:REAPWHATYOUSOW)
             battler.hp = battler.totalhp
-            battler.pbChangeForm(1,_INTL("{1} begins the harvest!",battler.pbThis))
+            battler.pbChangeForm(1, _INTL("{1} begins the harvest!", battler.pbThis))
             battler.pbChangeTypes(battler.species_data.id)
             setDefaultAvatarMoveset(battler.pokemon) if battler.boss?
             battler.resetMoves
@@ -1321,7 +1329,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :apply_proc => proc do |_battle, battler, _value|
         battler.refreshDataBox
     end,
-    :disable_proc => proc do |battle, battler|
+    :disable_proc => proc do |_battle, battler|
         battler.refreshDataBox
     end,
 })
@@ -1411,7 +1419,6 @@ GameData::BattleEffect.register_effect(:Battler, {
     end,
 })
 
-
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :Substitute,
     :real_name => "Substitute Health",
@@ -1460,8 +1467,8 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :TypeRestricted,
     :real_name => "Type Restricted",
     :type => :Type,
-    :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("{1} can only use {2}-type moves!", battler.pbThis, _value.name.capitalize))
+    :apply_proc => proc do |battle, battler, value|
+        battle.pbDisplay(_INTL("{1} can only use {2}-type moves!", battler.pbThis, value.name.capitalize))
     end,
     :disable_proc => proc do |battle, battler|
         battle.pbDisplay(_INTL("{1} is no longer being type-restricted.", battler.pbThis))
@@ -1473,7 +1480,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Type Restricted Turns",
     :type => :Integer,
     :ticks_down_eor => true,
-    :expire_proc => proc do |battle, battler|
+    :expire_proc => proc do |_battle, battler|
         battler.disableEffect(:TypeRestricted)
     end,
 })
@@ -1537,7 +1544,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :type => :Species,
 })
 
-def trappingDamageFraction(battler)
+def trappingDamageFraction(_battler)
     fraction = 1.0 / 8.0
     return fraction
 end
@@ -1560,15 +1567,15 @@ GameData::BattleEffect.register_effect(:Battler, {
     :remain_proc => proc do |battle, battler, _value|
         moveName = battler.getMoveData(:TrappingMove).name
         case battler.effects[:TrappingMove]
-        when :CLAMP, :SLAMSHUT              then battle.pbCommonAnimation("Clamp", battler)
-        when :FIRESPIN, :CRIMSONSTORM       then battle.pbCommonAnimation("FireSpin", battler)
-        when :MAGMASTORM                    then battle.pbCommonAnimation("MagmaStorm", battler)
-        when :PITFALL, :CRUSHINGCHASM       then battle.pbCommonAnimation("SandTomb", battler)
-        when :INFESTATION, :TERRORSWARM     then battle.pbCommonAnimation("Infestation", battler)
-        when :SURGESNARE, :THUNDERCAGE      then battle.pbCommonAnimation("ThunderCage", battler)
-        when :BEARHUG	                    then battle.pbCommonAnimation("BearHug", battler)
-        when :MAGEHAND,:KINETICGRIP         then battle.pbCommonAnimation("KineticGrip", battler)
-        when :MAGNETIZE,:FARADAYCAGE        then battle.pbCommonAnimation("MagnetBomb", battler)
+        when :CLAMP, :SLAMSHUT                          then battle.pbCommonAnimation("Clamp", battler)
+        when :FIRESPIN, :CRIMSONSTORM                   then battle.pbCommonAnimation("FireSpin", battler)
+        when :MAGMASTORM                                then battle.pbCommonAnimation("MagmaStorm", battler)
+        when :PITFALL, :CRUSHINGCHASM, :DEVOURINGDUST   then battle.pbCommonAnimation("SandTomb", battler)
+        when :INFESTATION, :TERRORSWARM                 then battle.pbCommonAnimation("Infestation", battler)
+        when :SURGESNARE, :THUNDERCAGE                  then battle.pbCommonAnimation("ThunderCage", battler)
+        when :BEARHUG                                   then battle.pbCommonAnimation("BearHug", battler)
+        when :MAGEHAND, :KINETICGRIP                    then battle.pbCommonAnimation("KineticGrip", battler)
+        when :MAGNETIZE, :FARADAYCAGE                   then battle.pbCommonAnimation("MagnetBomb", battler)
         else battle.pbCommonAnimation("Wrap", battler)
         end
         if battler.takesIndirectDamage?
@@ -1634,9 +1641,8 @@ GameData::BattleEffect.register_effect(:Battler, {
     :remain_proc => proc do |battle, battler, _value|
         trapAbility = battler.getAbilityData(:TrappingAbility).name
         case battler.effects[:TrappingAbility]
-        when :POWERPINCH    then battle.pbAnimation(:VICEGRIP, battler, battler)
-        when :CONSTRICTOR   then battle.pbCommonAnimation("Wrap", battler)
-        when :MAGNETTRAP    then battle.pbCommonAnimation("MagnetBomb", battler)
+        when :POWERPINCH then battle.pbAnimation(:VICEGRIP, battler, battler)
+        when :MAGNETTRAP then battle.pbCommonAnimation("MagnetBomb", battler)
         else battle.pbCommonAnimation("Wrap", battler)
         end
         if battler.takesIndirectDamage?
@@ -1665,7 +1671,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :TremorSensed,
     :real_name => "Sensed By",
     :type => :Array,
-    :eor_proc => proc do |battle, battler, value|
+    :eor_proc => proc do |_battle, battler, value|
         value.each { |entry| entry[0] -= 1 }
         value.reject! { |entry| entry[0] <= 0 }
         battler.disableEffect(:TremorSensed) if value.empty?
@@ -1724,15 +1730,17 @@ GameData::BattleEffect.register_effect(:Battler, {
     :type => :Integer,
     :ticks_down_eor => true,
     :expire_proc => proc do |_battle, battler|
-        if battler.canSleepYawn?
+        pierce = battler.effectActive?(:YawnPierces)
+        if battler.canSleepYawn?(pierce: pierce)
             PBDebug.log("[Lingering effect] #{battler.pbThis} fell asleep because of Yawn")
-            battler.applySleep
+            battler.applySleep(pierce: pierce)
         end
     end,
+    :sub_effects => [:YawnPierces],
     :apply_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} became drowsy!", battler.pbThis))
     end,
-    :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
+    :stay_in_rating_proc => proc do |_battle, battler, _value, stay_in_rating|
         stay_in_rating -= 25
         battler.eachOpposing do |opponent|
             if opponent.canChooseProtect?
@@ -1742,6 +1750,13 @@ GameData::BattleEffect.register_effect(:Battler, {
         end
         next stay_in_rating
     end
+})
+
+# Drowsiness from a boss's Primeval move, which pierces the target's own protections when it falls asleep
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :YawnPierces,
+    :real_name => "Drowsiness Pierces",
+    :info_displayed => false,
 })
 
 GameData::BattleEffect.register_effect(:Battler, {
@@ -1850,7 +1865,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Chose Status",
     :resets_eor	=> true,
     :info_displayed => false,
-    :apply_proc => proc do |battle, battler, _value|
+    :apply_proc => proc do |_battle, battler, _value|
         echoln(_INTL("{1} is considered to have chosen a status move this turn.", battler.pbThis))
     end,
 })
@@ -1860,7 +1875,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Chose Attack",
     :resets_eor	=> true,
     :info_displayed => false,
-    :apply_proc => proc do |battle, battler, _value|
+    :apply_proc => proc do |_battle, battler, _value|
         echoln(_INTL("{1} is considered to have chosen an attacking move this turn.", battler.pbThis))
     end,
 })
@@ -1870,7 +1885,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Transformed Type",
     :resets_eor	=> true,
     :info_displayed => false,
-    :apply_proc => proc do |battle, battler, _value|
+    :apply_proc => proc do |_battle, battler, _value|
         echoln(_INTL("{1} is considered to have transformed its type this turn.", battler.pbThis))
     end,
 })
@@ -1901,7 +1916,7 @@ GameData::BattleEffect.register_effect(:Battler, {
         battle.pbDisplay(_INTL("{1} is no longer flinch immune!", battler.pbThis))
     end,
     :apply_proc => proc do |battle, battler, value|
-        battle.pbDisplay(_INTL("{1} will be flinch immune for {2} more turns!", battler.pbThis, value-1))
+        battle.pbDisplay(_INTL("{1} will be flinch immune for {2} more turns!", battler.pbThis, value - 1))
     end,
 })
 
@@ -1943,9 +1958,13 @@ GameData::BattleEffect.register_effect(:Battler, {
 
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :Inured,
-    :real_name => "No Weaknesses",
-    :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("{1} shed its weaknesses!", battler.pbThis))
+    :real_name => "Inured Hits",
+    :type => :Integer,
+    :apply_proc => proc do |battle, battler, value|
+        battle.pbDisplay(_INTL("{1} protects its weak points ! It cannot take super-effective damage for the next {2} hits!", battler.pbThis, value))
+    end,
+    :expire_proc => proc do |battle, battler|
+        battle.pbDisplay(_INTL("{1}'s weaknesses are revealed again!", battler.pbThis))
     end,
 })
 
@@ -2072,7 +2091,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :GreaterGlories,
     :real_name => "Extra Turn",
     :resets_eor => true,
-    :apply_proc => proc do |battle, battler, value|
+    :apply_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} gained an extra attack this turn!", battler.pbThis))
     end,
 })
@@ -2081,7 +2100,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :TemporalDistortion,
     :real_name => "Extra Turn",
     :resets_eor => true,
-    :apply_proc => proc do |battle, battler, value|
+    :apply_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} gained an extra attack this turn!", battler.pbThis))
     end,
 })
@@ -2090,7 +2109,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :DisasterResponse,
     :real_name => "Extra Turn",
     :resets_eor => true,
-    :apply_proc => proc do |battle, battler, value|
+    :apply_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} gained an extra attack this turn!", battler.pbThis))
     end,
 })
@@ -2246,10 +2265,9 @@ GameData::BattleEffect.register_effect(:Battler, {
     :multi_turn_tracker => true,
     :apply_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} is exhausted. They must Rest next turn.", battler.pbThis))
-        battler.currentMove = :REST 
+        battler.currentMove = :REST
     end,
 })
-
 
 #######################################################
 # Protection effects
@@ -2369,7 +2387,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Cranial Guard",
     :resets_eor	=> true,
     :protection_info => {
-        :hit_proc => proc do |user, target, move, battle|
+        :hit_proc => proc do |user, target, _move, battle|
             battle.forceUseMove(target, :GRANITEHEAD, user.index)
         end,
         :does_negate_proc => proc do |_user, _target, move, _battle|
@@ -2500,7 +2518,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :apply_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} can't take damage or switch out!", battler.pbThis))
     end,
-    :disable_proc => proc do |battle, battler|
+    :disable_proc => proc do |_battle, _battler|
         raise _INTL("Last Gasp was disabled somehow.")
     end,
 })
@@ -2524,7 +2542,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :expire_proc => proc do |battle, battler|
         battle.pbDisplay(_INTL("{1} recovered from the jinx!", battler.pbThis))
     end,
-    :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
+    :stay_in_rating_proc => proc do |_battle, battler, value, stay_in_rating|
         stay_in_rating -= 5 * value unless battler.hasActiveAbilityAI?(GameData::Ability.getByFlag("CritImmunity"))
         next stay_in_rating
     end
@@ -2549,7 +2567,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :expire_proc => proc do |battle, battler|
         battle.pbDisplay(_INTL("{1} healed from the fracture!", battler.pbThis))
     end,
-    :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
+    :stay_in_rating_proc => proc do |_battle, battler, value, stay_in_rating|
         stay_in_rating -= 5 * value if battler.hasDamagingAttack?
         next stay_in_rating
     end
@@ -2566,7 +2584,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, value|
         battle.pbDisplay(_INTL("{1} is beginning to shrink down!", battler.pbThis))
-        battle.pbDisplay(_INTL("It'll last for {1} more turns!", value-1))
+        battle.pbDisplay(_INTL("It'll last for {1} more turns!", value - 1))
     end,
     :disable_proc => proc do |battle, battler|
         battle.pbDisplay(_INTL("{1} is cured of its shrinking!", battler.pbThis))
@@ -2592,7 +2610,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, value|
         battle.pbDisplay(_INTL("{1} is covered in foam!", battler.pbThis))
-        battle.pbDisplay(_INTL("It'll last for {1} more turns!", value-1))
+        battle.pbDisplay(_INTL("It'll last for {1} more turns!", value - 1))
     end,
     :disable_proc => proc do |battle, battler|
         battle.pbDisplay(_INTL("The foam around {1} is cleared!", battler.pbThis(true)))
@@ -2618,7 +2636,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :avatars_purge => true,
     :apply_proc => proc do |battle, battler, value|
         battle.pbDisplay(_INTL("{1} is experiencing a sugar rush!", battler.pbThis))
-        battle.pbDisplay(_INTL("It'll take double move damage and have doubled speed, for {1} more turns!", value-1))
+        battle.pbDisplay(_INTL("It'll take double move damage and have doubled speed, for {1} more turns!", value - 1))
     end,
     :disable_proc => proc do |battle, battler|
         battle.pbDisplay(_INTL("{1} was forced out of its sugar rush!", battler.pbThis))
@@ -2633,14 +2651,14 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Blinded",
     :baton_passed => true,
     :avatars_purge => true,
-    :apply_proc => proc do |battle, battler, value|
+    :apply_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} is blinded!", battler.pbThis))
         battle.pbDisplay(_INTL("It'll deal half as much damage on its next attack!"))
     end,
     :disable_proc => proc do |battle, battler|
         battle.pbDisplay(_INTL("{1} is no longer blinded.", battler.pbThis))
     end,
-    :stay_in_rating_proc => proc do |battle, battler, value, stay_in_rating|
+    :stay_in_rating_proc => proc do |_battle, battler, _value, stay_in_rating|
         stay_in_rating -= 10 if battler.hasDamagingAttack?
         next stay_in_rating
     end
@@ -2665,9 +2683,9 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :ColorCollector,
     :real_name => "Collecting Colors",
     :type => :Array,
-    :info_custom_description => proc do |value, string, descriptionArray|
+    :info_custom_description => proc do |value, _string, descriptionArray|
         value.each do |typeCollected|
-            descriptionArray.push(GameData::Type.get(typeCollected).name) 
+            descriptionArray.push(GameData::Type.get(typeCollected).name)
         end
     end,
 })
@@ -2689,8 +2707,8 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Tangling Vines",
     :type => :Position,
     :disable_effects_on_other_exit => [:TanglingVines],
-    :apply_proc => proc do |battle, battler, _value|
-        battle.pbDisplay(_INTL("{1} is bound in {2}'s tangling vines!", battler.pbThis, battle.battlers[_value].pbThis))
+    :apply_proc => proc do |battle, battler, value|
+        battle.pbDisplay(_INTL("{1} is bound in {2}'s tangling vines!", battler.pbThis, battle.battlers[value].pbThis))
     end,
     :disable_proc => proc do |battle, battler|
         battle.pbDisplay(_INTL("{1} is no longer bound in tangling vines.", battler.pbThis))
@@ -2715,7 +2733,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :real_name => "Feather Charm Force Switch",
     :info_displayed => false,
     :resets_eor => true,
-    :apply_proc => proc do |battle, battler, value|
+    :apply_proc => proc do |battle, battler, _value|
         battle.pbDisplay(_INTL("{1} is carried off by feathers!", battler.pbThis))
     end,
 })
@@ -2760,7 +2778,7 @@ GameData::BattleEffect.register_effect(:Battler, {
     :id => :HitsThisTurn,
     :real_name => "Hit This Turn",
     :type => :Integer,
-    :eor_proc => proc do |battle, battler, _value|
+    :eor_proc => proc do |_battle, battler, _value|
         battler.disableEffect(:HitsThisTurn)
     end,
 })
@@ -2800,7 +2818,7 @@ def checkHerosJourney(battle, battler)
     battler.showMyAbilitySplash(:HEROSJOURNEY)
     battle.pbDisplay(_INTL("A fierce resolution gathers around {1}!", battler.pbThis))
     battler.applyFractionalHealing(1.0)
-    battler.pbChangeForm(1, _INTL("{1} transformed!",battler.pbThis))
+    battler.pbChangeForm(1, _INTL("{1} transformed!", battler.pbThis))
     battler.hideMyAbilitySplash
 end
 
@@ -2849,5 +2867,17 @@ GameData::BattleEffect.register_effect(:Battler, {
 GameData::BattleEffect.register_effect(:Battler, {
     :id => :BattleHardened,
     :real_name => "Battle-Hardened",
+    :info_displayed => false
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :SteepMomentumDealtDamage,
+    :real_name => "Steep Momentum",
+    :info_displayed => false
+})
+
+GameData::BattleEffect.register_effect(:Battler, {
+    :id => :ConversionUsed,
+    :real_name => "Conversion Used",
     :info_displayed => false
 })

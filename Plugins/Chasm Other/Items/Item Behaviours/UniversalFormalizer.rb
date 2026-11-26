@@ -1,28 +1,39 @@
+def pbChangePokemonForm(pkmn, scene = nil)
+    species = pkmn.species
+    species_data = GameData::Species.get_species_form(species,0) # get base form for the formalizer list
+    valid_forms = species_data.formalizer.clone
+    valid_forms.delete(pkmn.form)
+    if valid_forms.length > 0
+        possibleForms = valid_forms
+        possibleFormNames = valid_forms.map { |form|
+            form_data = GameData::Species.get_species_form(species,form)
+            next form_data.form_name
+        }
+        possibleFormNames.push(_INTL("Cancel"))
+        choice = pbMessage(_INTL("Which form shall the Pokémon take?"),possibleFormNames,possibleFormNames.length)
+        if choice < possibleForms.length
+            pbSceneDefaultDisplay(_INTL("{1} swapped to {2}!", pkmn.name, possibleFormNames[choice]),scene)
+
+            showPokemonChangesWindow(pkmn) {
+                pkmn.form = possibleForms[choice]
+            }
+        return true
+        end
+    else
+        pbSceneDefaultDisplay(_INTL("Cannot use this item on that Pokemon."),scene)
+    end
+    return false
+end
+
+def pbCanChangePokemonForm?(pkmn)
+    species_data = GameData::Species.get_species_form(pkmn.species,0)
+    valid_forms = species_data.formalizer.clone
+    valid_forms.delete(pkmn.form)
+    return valid_forms.length > 0
+end
+
 ItemHandlers::UseOnPokemon.add(:UNIVERSALFORMALIZER,proc { |item,pkmn,scene|
-	species = pkmn.species
-	species_data = GameData::Species.get_species_form(species,0) # get base form for the formalizer list
-	valid_forms = species_data.formalizer.clone
-	valid_forms.delete(pkmn.form)
-	if valid_forms.length > 0
-		possibleForms = valid_forms
-		possibleFormNames = valid_forms.map { |form|
-			form_data = GameData::Species.get_species_form(species,form)
-			next form_data.form_name
-		}
-		possibleFormNames.push(_INTL("Cancel"))
-		choice = pbMessage(_INTL("Which form shall the Pokemon take?"),possibleFormNames,possibleFormNames.length)
-		if choice < possibleForms.length
-			pbSceneDefaultDisplay(_INTL("{1} swapped to {2}!", pkmn.name, possibleFormNames[choice]),scene)
-			
-			showPokemonChangesWindow(pkmn) {
-				pkmn.form = possibleForms[choice]
-			}
-		end
-		next true
-	else
-		pbSceneDefaultDisplay(_INTL("Cannot use this item on that Pokemon."),scene)
-		next false
-	end
+	next pbChangePokemonForm(pkmn, scene)
 })
 
 

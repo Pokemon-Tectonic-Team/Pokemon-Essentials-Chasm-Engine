@@ -109,6 +109,36 @@ BattleHandlers::TargetAbilityKnockedBelowHalf.add(:SUGARCOATED,
     }
 )
 
+BattleHandlers::TargetAbilityKnockedBelowHalf.add(:BERSERK,
+    proc { |ability, target, user, move, _switched, battle|
+        target.pbRaiseMultipleStatSteps(ATTACKING_STATS_2, target, ability: ability)
+        next false
+    }
+)
+
+BattleHandlers::TargetAbilityKnockedBelowHalf.add(:ADRENALINERUSH,
+    proc { |ability, target, user, move, _switched, battle|
+        target.tryRaiseStat(:SPEED, target, increment: 4, ability: ability)
+        next false
+    }
+)
+
+BattleHandlers::TargetAbilityKnockedBelowHalf.add(:REAWAKENEDPOWER,
+    proc { |ability, target, user, move, _switched, battle|
+        target.pbMaximizeStatStep(:SPECIAL_ATTACK, target, self, ability: ability)
+        next false
+    }
+)
+
+BattleHandlers::TargetAbilityKnockedBelowHalf.add(:BATTLEHARDENED,
+    proc { |ability, target, user, move, _switched, battle|
+        next if target.effectActive?(:BattleHardened)
+        target.pbRaiseMultipleStatSteps([:DEFENSE, 3, :SPECIAL_DEFENSE, 3], target, ability: ability)
+        target.applyEffect(:BattleHardened)
+        next false
+    }
+)
+
 ############################################
 # Ability Code for cut or unused abilities
 ############################################

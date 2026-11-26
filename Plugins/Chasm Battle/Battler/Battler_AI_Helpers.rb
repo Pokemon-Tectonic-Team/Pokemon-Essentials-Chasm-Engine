@@ -5,21 +5,21 @@ class PokeBattle_Battler
 
     def getSpeedTier(move = nil)
         speedTiers = [
-            [0,0], # 0 / this should not happen
-            [0,0], # 5 / this should not happen
-            [23,33], # 10 / base 45 (0 investment) / base 60 (10 investment)
-            [26,37], # 15 / base 45 (0 investment) / base 60 (10 investment)
-            [35,48], # 20 / base 60 (0 investment) / base 75 (10 investment)
-            [38,55], # 25 / base 60 (0 investment) / base 80 (10 investment)
-            [41,63], # 30 / base 60 (0 investment) / base 85 (10 investment)
-            [47,72], # 35 / base 65 (0 investment) / base 95 (10 investment)
-            [54,84], # 40 / base 70 (0 investment) / base 100 (10 investment)
-            [57,90], # 45 / base 70 (0 investment) / base 100 (10 investment)
-            [61,97], # 50 / base 70 (0 investment) / base 100 (10 investment)
-            [64,103], # 55 / base 70 (0 investment) / base 100 (10 investment)
-            [68,109], # 60 / base 70 (0 investment) / base 100 (10 investment)
-            [71,115], # 65 / base 70 (0 investment) / base 100 (10 investment)
-            [75,122], # 70 / base 70 (0 investment) / base 100 (10 investment)
+            [0, 0], # 0 / this should not happen
+            [0, 0], # 5 / this should not happen
+            [23, 33], # 10 / base 45 (0 investment) / base 60 (10 investment)
+            [26, 37], # 15 / base 45 (0 investment) / base 60 (10 investment)
+            [35, 48], # 20 / base 60 (0 investment) / base 75 (10 investment)
+            [38, 55], # 25 / base 60 (0 investment) / base 80 (10 investment)
+            [41, 63], # 30 / base 60 (0 investment) / base 85 (10 investment)
+            [47, 72], # 35 / base 65 (0 investment) / base 95 (10 investment)
+            [54, 84], # 40 / base 70 (0 investment) / base 100 (10 investment)
+            [57, 90], # 45 / base 70 (0 investment) / base 100 (10 investment)
+            [61, 97], # 50 / base 70 (0 investment) / base 100 (10 investment)
+            [64, 103], # 55 / base 70 (0 investment) / base 100 (10 investment)
+            [68, 109], # 60 / base 70 (0 investment) / base 100 (10 investment)
+            [71, 115], # 65 / base 70 (0 investment) / base 100 (10 investment)
+            [75, 122], # 70 / base 70 (0 investment) / base 100 (10 investment)
         ]
         tierCheck = speedTiers[(level / 5.0).ceil]
         effectiveSpeed = pbSpeed(true, 0, afterSwitching: true, move: move)
@@ -68,21 +68,20 @@ class PokeBattle_Battler
         normalMissing = [@totalhp - @hp, 0].max
         normalHeal = [healingAmount, normalMissing].min
         overhealHeal = [healingAmount - normalHeal, 0].max
-        effectiveHealing = normalHeal + overhealHeal * OVERHEAL_AI_WEIGHT
+        effectiveHealing = normalHeal + (overhealHeal * OVERHEAL_AI_WEIGHT)
         healingScore = effectiveHealing * (pbDefense + pbSpDef)
         healingScore /= (3 * level)
         healingPercentage = (100 * healingAmount / @totalhp.to_f).round(1)
         echoln("\t\t[EFFECT SCORING] #{pbThis} scores the value of healing #{healingAmount} HP (#{healingPercentage} percent) at #{healingScore}")
         return healingScore
     end
-    
 
     ###############################################################################
     # Understanding the battler's moves
     ###############################################################################
 
     def aiSeesMove(move)
-        @battle.aiSeesMove(self,move)
+        @battle.aiSeesMove(self, move)
     end
 
     def unknownMovesCountAI
@@ -115,7 +114,7 @@ class PokeBattle_Battler
 
     def movesHiddenByIllusion?
         return false unless effectActive?(:Illusion)
-        return false unless pbOwnedByPlayer?  
+        return false unless pbOwnedByPlayer?
         return true unless aiKnowsIllusion?
         return false
     end
@@ -210,7 +209,7 @@ class PokeBattle_Battler
         end
         return false
     end
-    
+
     def hasMediumAccuracyMove?
         eachAIKnownMove do |m|
             next unless m.accuracy <= 75 && m.accuracy > 0 # Moves that always work are accuracy 0
@@ -218,7 +217,7 @@ class PokeBattle_Battler
         end
         return false
     end
-    
+
     def hasLowAccuracyMove?
         eachAIKnownMove do |m|
             next unless m.accuracy <= 65 && m.accuracy > 0 # Moves that always work are accuracy 0
@@ -247,14 +246,14 @@ class PokeBattle_Battler
         return false unless check_type
         check_type = GameData::Type.get(check_type).id
         eachAIKnownMove do |m|
-            return true if m.type == check_type && m.damagingMove?(true)
+            return true if m.types.include?(check_type) && m.damagingMove?(true)
         end
         return false
     end
 
     def hasOffTypeMove?
         eachAIKnownMove do |m|
-            next if pbHasTypeAI?(m.type)
+            next if m.types.any? { |type| pbHasTypeAI?(type) }
             return true
         end
         return false
@@ -279,7 +278,7 @@ class PokeBattle_Battler
             next unless m.is_a?(PokeBattle_StatUpMove) || m.is_a?(PokeBattle_MultiStatUpMove)
             next unless m.statusMove? || m.effectChance == 0 # Moves that always boost stats have 0 effect chance
             uSM = true if m.statusMove?
-            return true,uSM
+            return true, uSM
         end
         return false
     end
@@ -333,7 +332,7 @@ class PokeBattle_Battler
         end
         return false
     end
-    
+
     def hasRedirectionMove?
         eachAIKnownMove do |m|
             next unless m.redirectionMove?
@@ -432,7 +431,7 @@ class PokeBattle_Battler
     ###############################################################################
 
     def aiLearnsAbility(abilityID)
-        @battle.aiLearnsAbility(self,abilityID)
+        @battle.aiLearnsAbility(self, abilityID)
     end
 
     def eachAIKnownActiveAbility
@@ -449,7 +448,7 @@ class PokeBattle_Battler
         end
     end
 
-    def ignoreAbilityInAI?(checkAbility,aiCheck)
+    def ignoreAbilityInAI?(checkAbility, aiCheck)
         return false unless aiCheck
         return aiKnowsAbility?(checkAbility)
     end
@@ -461,10 +460,10 @@ class PokeBattle_Battler
             checkAbility.each do |specificAbility|
                 return true if @addedAbilities.include?(specificAbility)
             end
-        else
-            return true if @addedAbilities.include?(checkAbility)
+        elsif @addedAbilities.include?(checkAbility)
+            return true
         end
-        return @battle.aiKnowsAbility?(@pokemon,checkAbility)
+        return @battle.aiKnowsAbility?(@pokemon, checkAbility)
     end
 
     # A helper method that diverts to an AI-based check or a true calculation check as appropriate
@@ -485,7 +484,7 @@ class PokeBattle_Battler
     # Understanding the battler's items
     ###############################################################################
     def aiLearnsItem(itemID)
-        @battle.aiLearnsItem(self,itemID)
+        @battle.aiLearnsItem(self, itemID)
     end
 
     def aiKnowsItem?(checkItem)
@@ -494,10 +493,10 @@ class PokeBattle_Battler
             checkItem.each do |specificItem|
                 return true if @addedItems.include?(specificItem)
             end
-        else
-            return true if @addedItems.include?(checkItem)
+        elsif @addedItems.include?(checkItem)
+            return true
         end
-        return @battle.aiKnowsItem?(@pokemon,checkItem)
+        return @battle.aiKnowsItem?(@pokemon, checkItem)
     end
 
     def eachAIKnownItem
@@ -535,7 +534,6 @@ class PokeBattle_Battler
         return hasActiveItem?(checkItem, ignore_fainted)
     end
 
-
     ###############################################################################
     # Understanding the battler's type
     ###############################################################################
@@ -560,7 +558,7 @@ class PokeBattle_Battler
     ###############################################################################
 
     def defensiveMatchupAI
-        score,killInfoArray = @battle.battleAI.worstDefensiveMatchupAgainstActiveFoes(self)
+        score, = @battle.battleAI.worstDefensiveMatchupAgainstActiveFoes(self)
         return score
     end
 
@@ -576,15 +574,15 @@ class PokeBattle_Battler
 
     def eachPredictedAttacker(categoryOnly = -1)
         eachPotentialAttacker(categoryOnly) do |b|
-            next unless @battle.aiPredictsAttack?(self,b.index,true,categoryOnly)
+            next unless @battle.aiPredictsAttack?(self, b.index, true, categoryOnly)
             yield b
         end
     end
 
     def eachPredictedTargeter(categoryOnly = -1)
         eachPotentialAttacker(categoryOnly) do |b|
-            next unless @battle.aiPredictsAttack?(self,b.index,true,categoryOnly) ||
-                        @battle.aiPredictsStatus?(self,b.index,true)
+            next unless @battle.aiPredictsAttack?(self, b.index, true, categoryOnly) ||
+                        @battle.aiPredictsStatus?(self, b.index, true)
             yield b
         end
     end
@@ -618,38 +616,38 @@ class PokeBattle_Battler
     def levelNerfDamage(intensity = 1.0)
         return 1 if pbOwnedByPlayer?
         levelPenalty = levelNerfIntensity(intensity)
-        levelPenalty = levelPenalty / 5 / 10 + 1.0
-        PBDebug.log"[LEVEL NERF] Adjusted damage score by (+#{((levelPenalty - 1) * 100).round})%"
+        levelPenalty = (levelPenalty / 5 / 10) + 1.0
+        PBDebug.log "[LEVEL NERF] Adjusted damage score by (+#{((levelPenalty - 1) * 100).round})%"
         return levelPenalty
     end
-    
+
     # Used as a multiplier
     def levelNerfMisc(intensity = 1.0)
         return 1 if pbOwnedByPlayer?
         levelPenalty = levelNerfIntensity(intensity)
-        levelPenalty = -levelPenalty / 5 / 10 + 1.0
-        PBDebug.log"[LEVEL NERF] Adjusted score by (-#{100 - (levelPenalty * 100).round})%"
+        levelPenalty = (-levelPenalty / 5 / 10) + 1.0
+        PBDebug.log "[LEVEL NERF] Adjusted score by (-#{100 - (levelPenalty * 100).round})%"
         return levelPenalty
     end
 
     AI_SCORING_PENALTIES_BY_LEVEL =
-    {
-        5 => 15,
-        10 => 15,
-        15 => 13,
-        20 => 10,
-        25 => 8,
-        30 => 5,
-        35 => 0,
-        40 => 0,
-        45 => 0,
-        50 => 0,
-        55 => 0,
-        60 => 0,
-        65 => 0,
-        70 => 0,
-    }
-    
+        {
+            5 => 15,
+            10 => 15,
+            15 => 13,
+            20 => 10,
+            25 => 8,
+            30 => 5,
+            35 => 0,
+            40 => 0,
+            45 => 0,
+            50 => 0,
+            55 => 0,
+            60 => 0,
+            65 => 0,
+            70 => 0,
+        }.freeze
+
     def levelNerfIntensity(intensity = 1.0)
         levelBracket = (level / 5.0).ceil * 5
         levelPenalty = AI_SCORING_PENALTIES_BY_LEVEL[levelBracket] || 0

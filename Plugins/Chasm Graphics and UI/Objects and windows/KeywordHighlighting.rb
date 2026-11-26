@@ -206,6 +206,7 @@ def battleKeywordsUnimportant
         "doubles",
         "double",
         "doubled",
+        "doubling",
         "tripled",
         "three times",
         "four times",

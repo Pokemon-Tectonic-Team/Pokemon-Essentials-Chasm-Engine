@@ -1,0 +1,42 @@
+name: PR comment
+
+on:
+    workflow_run:
+        workflows: [Tests]
+        types: [completed]
+
+permissions: {}
+
+jobs:
+    comment:
+        if: >-
+            github.repository ==
+            'Pokemon-Tectonic-Team/Pokemon-Essentials-Chasm-Engine' &&
+            github.event.workflow_run.event == 'pull_request' &&
+            github.event.workflow_run.conclusion != 'cancelled'
+        runs-on: ubuntu-latest
+        permissions:
+            actions: read
+            pull-requests: write
+        steps:
+            - uses: actions/download-artifact@v8
+              with:
+                  name: pr-report
+                  path: pr-report
+                  run-id: ${{ github.event.workflow_run.id }}
+                  github-token: ${{ github.token }}
+            - id: pr
+              env:
+                  GH_TOKEN: ${{ github.token }}
+                  HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+              run: |
+                  number=$(cat pr-report/pr-number)
+                  [[ "$number" =~ ^[0-9]+$ ]] || { echo "::error::PR number isn't an integer"; exit 1; }
+                  head=$(gh pr view "$number" --repo "$GITHUB_REPOSITORY" --json headRefOid --jq .headRefOid)
+                  [[ "$head" == "$HEAD_SHA" ]] || { echo "::error::PR $number's head isn't this run's"; exit 1; }
+                  echo "number=$number" >> "$GITHUB_OUTPUT"
+            - uses: marocchino/sticky-pull-request-comment@v3
+              with:
+                  number_force: ${{ steps.pr.outputs.number }}
+                  header: tests-report
+                  path: pr-report/body.md

@@ -9,17 +9,16 @@ module Enumerable
 end
 
 class Array
-    def stable_sort_by!
-        replace(stable_sort_by { |item| yield(item) })
+    def stable_sort_by!(&)
+        replace(stable_sort_by(&))
     end
 end
 
 #=============================================================================
 # Get approximate properties for a battler
 #=============================================================================
-def pbRoughType(move, user)
-    ret = move.pbCalcType(user)
-    return ret
+def pbRoughTypes(move, user)
+    return move.pbCalcTypes(user)
 end
 
 #=============================================================================
@@ -36,7 +35,7 @@ def getUrgency
         urgency += 1 if b.hasUseableHazardMove? && b.lastRoundMoveCategory == 2 # Actively hazard stacking
         urgency += 2 if b.hasActiveAbilityAI?(:CONTRARY) || b.hasActiveAbilityAI?(:INVERSION)
     end
-    if inWeatherTeam && urgency = 0
+    if inWeatherTeam && urgency == 0
         weatherInfo = [
             [:SUN_TEAM, @battle.sunny?, :DROUGHT, :HEATROCK],
             [:RAIN_TEAM, @battle.rainy?, :DRIZZLE, :DAMPROCK],
@@ -44,7 +43,7 @@ def getUrgency
             [:HAIL_TEAM, @battle.icy?, :SNOWWARNING, :ICYROCK],
             [:MOONGLOW_TEAM, @battle.moonGlowing?, :MOONGAZE, :MIRROREDROCK],
             [:ECLIPSE_TEAM, @battle.eclipsed?, :HARBINGER, :PINPOINTROCK],
-        ]    
+        ]
         weatherInfo.each do |weatherEntry|
             weatherPolicy = weatherEntry[0]
             weatherActive = weatherEntry[1]

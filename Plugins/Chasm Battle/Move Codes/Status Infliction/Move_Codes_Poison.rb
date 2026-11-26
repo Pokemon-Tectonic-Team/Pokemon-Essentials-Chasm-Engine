@@ -43,22 +43,18 @@ class PokeBattle_Move_PoisonTargetLowerTargetSpd4 < PokeBattle_Move
     end
 
     def getTargetAffectingEffectScore(user, target)
-        score = getMultiStatDownEffectScore([:SPEED,4],user,target)
+        score = getMultiStatDownEffectScore([:SPEED, 4], user, target)
         score += getPoisonEffectScore(user, target)
         return score
     end
 end
 
 # Empowered Poison Gas
-class PokeBattle_Move_EmpoweredPoisonGas < PokeBattle_Move
+class PokeBattle_Move_EmpoweredPoisonGas < PokeBattle_Move_Poison
     include EmpoweredMove
 
     def pbEffectGeneral(user)
         super
-        @battle.eachOtherSideBattler(user) do |b|
-            next unless b.canPoison?(user, true, self)
-            b.applyPoison(user)
-        end
         transformType(user, :POISON)
     end
 end
@@ -68,4 +64,25 @@ end
 #===============================================================================
 class PokeBattle_Move_HitTwoToFiveTimesPoison < PokeBattle_PoisonMove
     include RandomHitable
+end
+
+#===============================================================================
+# Poisons the target. If already poisoned, worsens the Poison and lowers Speed. (Noxious Barbs)
+#===============================================================================
+class PokeBattle_Move_PoisonMoveWorsenPoisonLowerSpeed1 < PokeBattle_PoisonMove
+    def pbFailsAgainstTarget?(user, target, show_message)
+        return false if target.poisoned? # Don't fail the move because it has more effects ontop of causing poison
+        return super
+    end
+
+    def pbEffectAgainstTarget(user, target)
+        if target.poisoned?
+            target.increaseStatusCount(:POISON)
+            newPoisonCount = target.getStatusCount(:POISON)
+            target.pbDisplayPoisonWorsenedMessage(newPoisonCount, true)
+            target.tryLowerStat(:SPEED, user, increment: 1)
+        else
+            target.applyPoison(user)
+        end
+    end
 end
