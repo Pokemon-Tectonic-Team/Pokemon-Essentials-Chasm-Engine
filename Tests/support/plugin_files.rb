@@ -40,6 +40,8 @@ module PluginFiles
         "Chasm Battle/Items/ItemHandlerHelpers.rb",
         "Chasm Battle/Items/BattleHandlers/Damage/DamageCalcUserItems.rb",
         "Chasm Battle/Abilities/Ability Event Handlers/Modify Move/MoveBaseTypeModifierAbilities.rb",
+        "Chasm Graphics and UI/Objects and windows/FaceSpecs.rb",
+        "Chasm Graphics and UI/Objects and windows/Dialogue Labels/SpeakerTagPlacement.rb",
         "Chasm Graphics and UI/Objects and windows/Dialogue Portraits/DialoguePortraits.rb",
         "Chasm Graphics and UI/Objects and windows/Sprite Window/WindowskinInsets.rb",
     ].freeze

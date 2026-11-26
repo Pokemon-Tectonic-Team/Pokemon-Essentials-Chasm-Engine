@@ -10,6 +10,11 @@ class RuntimeStubsTest < Minitest::Test
         assert_equal 40, Color.new(1, 2, 3, 40).alpha
     end
 
+    def test_rect_keeps_its_position_and_size
+        rect = Rect.new(1, 2, 3, 4)
+        assert_equal [1, 2, 3, 4], [rect.x, rect.y, rect.width, rect.height]
+    end
+
     def test_echoln_prints_nothing
         out, err = capture_io { echoln("a", "b") }
 
