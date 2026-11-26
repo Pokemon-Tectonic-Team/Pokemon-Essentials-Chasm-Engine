@@ -24,6 +24,7 @@ module PluginFiles
         "Chasm Game Data/Compiled Data/Move.rb",
         "Chasm Game Data/Compiled Data/Species.rb",
         "Chasm Game Data/Compiled Data/Trainer.rb",
+        "Chasm Game Data/Compiled Data/TrainerType.rb",
         "Chasm Game Data/Static Data/Stat.rb",
         "Chasm Game Data/Static Data/Status.rb",
         "Chasm Game Data/Static Data/Target.rb",
