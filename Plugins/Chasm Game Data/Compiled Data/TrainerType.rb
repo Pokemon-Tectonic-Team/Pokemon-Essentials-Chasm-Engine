@@ -14,6 +14,7 @@ module GameData
         attr_reader :policies
         attr_reader :cable_club
         attr_reader :cable_club_name
+        attr_reader :defined_in_extension
 
         DATA = {}
         DATA_FILENAME = "trainer_types.dat".freeze
@@ -24,7 +25,7 @@ module GameData
                                              "Female" => 1, "female" => 1, "F" => 1, "f" => 1, "1" => 1,
                                              "Unknown" => 2, "unknown" => 2, "Other" => 2, "other" => 2,
                                              "Mixed" => 2, "mixed" => 2, "X" => 2, "x" => 2, "2" => 2,
-                                             "Wild" => 2, "wild" => 3, "W" => 3, "w" => 3, "3" => 3 }],
+                                             "Wild" => 3, "wild" => 3, "W" => 3, "w" => 3, "3" => 3 }],
         "BaseMoney"  => [:base_money,  "u"],
         "SkillLevel" => [:skill_level, "u"],
         "Policies"   => [:policies, "*e", :Policy],
@@ -113,7 +114,6 @@ module GameData
             @base_money  = hash[:base_money]  || 30
             @battle_BGM  = hash[:battle_BGM]
             @cursed_battle_BGM = hash[:cursed_battle_BGM]
-            @victory_ME  = hash[:victory_ME]
             @victory_ME  = hash[:victory_ME]
             @intro_ME    = hash[:intro_ME]
             @gender      = hash[:gender]      || 2
@@ -214,7 +214,7 @@ module Compiler
                 f.write(format("IntroBGM = %s\r\n", t.intro_ME)) if !nil_or_empty?(t.intro_ME)
                 f.write(format("BattleBGM = %s\r\n", t.battle_BGM)) if !nil_or_empty?(t.battle_BGM)
                 f.write(format("CursedBGM = %s\r\n", t.cursed_battle_BGM)) if !nil_or_empty?(t.cursed_battle_BGM)
-                f.write(format("VictoryME = %s\r\n", t.victory_ME)) if !nil_or_empty?(t.victory_ME)
+                f.write(format("VictoryBGM = %s\r\n", t.victory_ME)) if !nil_or_empty?(t.victory_ME)
                 f.write("CableClub = true\r\n") if t.cable_club
                 f.write(format("CableClubName = %s\r\n", t.cable_club_name)) if t.cable_club_name
             end
