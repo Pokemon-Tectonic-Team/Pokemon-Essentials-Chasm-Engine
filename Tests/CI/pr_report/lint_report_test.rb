@@ -70,7 +70,9 @@ class LintReportTest < Minitest::Test
     end
 
     def test_summary_says_none_when_unique_has_no_file_heading
-        result = L.summary(counts: "1  A/B\n", safe: 0, unique: "# RuboCop Inspection Report\n\nNo offenses\n")
+        unique = "# RuboCop Inspection Report\n\n1 file inspected, no offenses detected:\n\n"
+
+        result = L.summary(counts: "1  A/B\n", safe: 0, unique: unique)
 
         assert result.end_with?("```\n\nNone.\n")
     end
