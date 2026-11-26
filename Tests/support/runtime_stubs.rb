@@ -8,6 +8,11 @@ require_relative "plugin_loader"
 
 def echoln(*); end
 
+# RGSS's save_data: Marshals the object into the file, as the GameData classes' save does
+def save_data(object, filename)
+    File.binwrite(filename, Marshal.dump(object))
+end
+
 class Color
     attr_accessor :red, :green, :blue, :alpha
 

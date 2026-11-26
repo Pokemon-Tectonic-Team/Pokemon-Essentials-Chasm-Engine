@@ -210,6 +210,210 @@ class TrainerTypeTest < Minitest::Test
         assert_equal "Trainer", GameData::TrainerType.new({ id: :LEADER, name: "Leader", cable_club_name: "Trainer" }).cable_club_display_name
     end
 
+    # compile_trainer_types and write_trainer_types. The names compile passes to
+    # MessageTypes.setMessages are untested: reading them back loads the game's message files.
+
+    PBS_HEADER = "\xEF\xBB\xBF# See the documentation on the wiki to learn how to edit this file.\r\n".b.freeze
+
+    FULL_PBS = <<~PBS.freeze
+        [LEADER]
+        Name = Gym Leader
+        Gender = Female
+        BaseMoney = 80
+        SkillLevel = 50
+        Policies = CAREFUL,AGGRO
+        IntroBGM = Intro
+        BattleBGM = Battle
+        CursedBGM = Cursed
+        VictoryBGM = Victory
+        CableClub = true
+        CableClubName = Leader
+    PBS
+
+    # Runs the block in an empty game folder with PBS/ and Data/, restoring the registered PBS
+    # extensions afterwards
+    def in_game_folder
+        extensions = Compiler.class_variable_get(:@@pbs_extentions)
+        saved = extensions.transform_values(&:dup)
+        Dir.mktmpdir do |dir|
+            Dir.chdir(dir) do
+                FileUtils.mkdir_p(%w[PBS Data])
+                yield dir
+            end
+        end
+    ensure
+        extensions.replace(saved)
+    end
+
+    def compile(text, path = "PBS/trainertypes.txt")
+        File.binwrite(path, text)
+        Compiler.compile_trainer_types(path)
+    end
+
+    def attributes(tr_type)
+        return [tr_type.real_name, tr_type.gender, tr_type.base_money, tr_type.skill_level, tr_type.policies, tr_type.intro_ME,
+                tr_type.battle_BGM, tr_type.cursed_battle_BGM, tr_type.victory_ME, tr_type.cable_club, tr_type.cable_club_name]
+    end
+
+    def registered_attributes
+        return GameData::TrainerType.keys.sort.to_h { |id| [id, attributes(GameData::TrainerType.get(id))] }
+    end
+
+    def register_policies
+        GameData::Policy.register({ id: :CAREFUL })
+        GameData::Policy.register({ id: :AGGRO })
+    end
+
+    def test_compile_reads_each_property
+        register_policies
+
+        in_game_folder do
+            compile(FULL_PBS)
+        end
+
+        expected = ["Gym Leader", 1, 80, 50, [:CAREFUL, :AGGRO], "Intro", "Battle", "Cursed", "Victory", true, "Leader"]
+        assert_equal expected, attributes(GameData::TrainerType.get(:LEADER))
+        refute GameData::TrainerType.get(:LEADER).defined_in_extension
+    end
+
+    def test_compile_registers_every_section_including_the_last
+        in_game_folder do
+            compile("[LEADER]\nName = Leader\n[HIKER]\nName = Hiker\n")
+        end
+
+        assert_equal "Leader", GameData::TrainerType.get(:LEADER).real_name
+        assert_equal "Hiker", GameData::TrainerType.get(:HIKER).real_name
+    end
+
+    def test_compile_replaces_the_registered_types
+        register(:OLD)
+
+        in_game_folder do
+            compile("[LEADER]\n")
+        end
+
+        assert_equal [:LEADER], GameData::TrainerType.keys
+    end
+
+    def test_compile_reads_each_spelling_of_wild_as_gender_3
+        in_game_folder do
+            compile(%w[Wild wild W w 3].each_with_index.map { |gender, index| "[TYPE#{index}]\nGender = #{gender}\n" }.join)
+        end
+
+        genders = GameData::TrainerType.keys.sort.map { |id| GameData::TrainerType.get(id).gender }
+        assert_equal [3] * 5, genders
+    end
+
+    def test_compile_ignores_unknown_properties
+        in_game_folder do
+            compile("[LEADER]\nName = Leader\nUnknown = 1\n")
+        end
+
+        assert_equal "Leader", GameData::TrainerType.get(:LEADER).real_name
+    end
+
+    def test_compile_refuses_an_id_used_twice
+        error = in_game_folder do
+            assert_raises(RuntimeError) { compile("[LEADER]\n[LEADER]\n") }
+        end
+
+        assert_match(/Trainer Type ID 'LEADER' is used twice/, error.message)
+    end
+
+    def test_compile_refuses_a_property_before_any_section
+        error = in_game_folder do
+            assert_raises(RuntimeError) { compile("Name = Leader\n") }
+        end
+
+        assert_match(/Expected a section at the beginning of the file/, error.message)
+    end
+
+    def test_compile_marks_the_types_from_extension_files
+        in_game_folder do
+            File.binwrite("PBS/trainertypes_extra.txt", "[HIKER]\n")
+            Compiler.register_extension("trainertypes", "PBS/trainertypes_extra.txt")
+            compile("[LEADER]\n")
+        end
+
+        refute GameData::TrainerType.get(:LEADER).defined_in_extension
+        assert GameData::TrainerType.get(:HIKER).defined_in_extension
+    end
+
+    def test_compile_saves_the_types_to_the_data_file
+        saved = in_game_folder do
+            compile("[LEADER]\nName = Leader\n")
+            Marshal.load(File.binread("Data/trainer_types.dat")) # rubocop:disable Security/MarshalLoad -- the file the compiler just wrote
+        end
+
+        assert_equal [:LEADER], saved.keys
+        assert_equal "Leader", saved[:LEADER].real_name
+    end
+
+    def test_write_writes_each_property
+        register_policies
+        register(:LEADER, name: "Gym Leader", gender: 1, base_money: 80, skill_level: 50, policies: [:CAREFUL, :AGGRO],
+                          intro_ME: "Intro", battle_BGM: "Battle", cursed_battle_BGM: "Cursed", victory_ME: "Victory",
+                          cable_club: true, cable_club_name: "Leader")
+
+        written = in_game_folder do
+            Compiler.write_trainer_types
+            File.binread("PBS/trainertypes.txt")
+        end
+
+        assert_equal PBS_HEADER + "#-------------------------------\r\n#{FULL_PBS.gsub("\n", "\r\n")}".b, written
+    end
+
+    def test_write_leaves_out_unset_properties_and_a_skill_level_equal_to_the_base_money
+        register(:LEADER, name: "Leader", gender: 0, base_money: 40)
+
+        written = in_game_folder do
+            Compiler.write_trainer_types
+            File.binread("PBS/trainertypes.txt")
+        end
+
+        assert_equal "#{PBS_HEADER}#-------------------------------\r\n[LEADER]\r\nName = Leader\r\nGender = Male\r\nBaseMoney = 40\r\n", written
+    end
+
+    def test_write_names_gender_3_wild
+        register(:WILD, gender: 3)
+
+        written = in_game_folder do
+            Compiler.write_trainer_types
+            File.binread("PBS/trainertypes.txt")
+        end
+
+        assert_includes written, "Gender = Wild\r\n"
+    end
+
+    def test_write_leaves_out_the_types_from_extension_files
+        register(:LEADER)
+        register(:HIKER, defined_in_extension: true)
+
+        written = in_game_folder do
+            Compiler.write_trainer_types
+            File.binread("PBS/trainertypes.txt")
+        end
+
+        assert_includes written, "[LEADER]"
+        refute_includes written, "[HIKER]"
+    end
+
+    def test_written_types_compile_back_unchanged
+        register_policies
+        register(:LEADER, name: "Gym Leader", gender: 1, base_money: 80, skill_level: 50, policies: [:CAREFUL, :AGGRO],
+                          intro_ME: "Intro", battle_BGM: "Battle", cursed_battle_BGM: "Cursed", victory_ME: "Victory",
+                          cable_club: true, cable_club_name: "Leader")
+        register(:WILD, name: "Wild", gender: 3, base_money: 0)
+        before = registered_attributes
+
+        in_game_folder do
+            Compiler.write_trainer_types
+            Compiler.compile_trainer_types
+        end
+
+        assert_equal before, registered_attributes
+    end
+
     def test_gender_predicates
         predicates = (0..3).map do |gender|
             tr_type = GameData::TrainerType.new({ id: :LEADER, gender: gender })
