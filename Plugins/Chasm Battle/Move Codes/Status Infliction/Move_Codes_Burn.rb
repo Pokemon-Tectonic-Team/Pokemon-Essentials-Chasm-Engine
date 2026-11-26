@@ -5,6 +5,16 @@ class PokeBattle_Move_Burn < PokeBattle_BurnMove
 end
 
 #===============================================================================
+# Burns the target. Accuracy perfect in sand. (Sand Surge)
+#===============================================================================
+class PokeBattle_Move_BurnTargetAlwaysHitsInSand < PokeBattle_BurnMove
+    def pbBaseAccuracy(user, target)
+        return 0 if @battle.sandy?
+        return super
+    end
+end
+
+#===============================================================================
 # May cause the target to be burned or to lower their Defense by two steps. (Fire Fang, Searing Crunch)
 #===============================================================================
 class PokeBattle_Move_BurnTargetLowerTargetDef2 < PokeBattle_Move_StatusTargetLowerTargetDef2

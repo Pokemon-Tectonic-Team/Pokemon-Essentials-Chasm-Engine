@@ -2134,6 +2134,20 @@ FunctionCode = Basic
 Flags = CanProtect,CanRandomCrit
 Description = The user blasts the target with highly pressurized sand. Can random critical hit.
 #-------------------------------
+[SANDSURGE]
+Name = Sand Surge
+Type = GROUND
+Category = Physical
+Power = 110
+Accuracy = 70
+TotalPP = 5
+Target = AllNearFoes
+FunctionCode = BurnTargetAlwaysHitsInSand
+Flags = CanProtect
+EffectChance = 30
+Description = The user crashes into foes on a wave of hot sand. Can't miss in sandstorm. It has a 30% chance to burn.
+Animation = SCORCHINGSANDS
+#-------------------------------
 [SANDTOSS]
 Name = Sand Toss
 Type = GROUND
@@ -2224,19 +2238,6 @@ Flags = CanProtect
 EffectChance = 40
 Description = The user slams the earth with its tail, creating a shockwave to damage the target. It has a 40% chance to lower Attack.
 Animation = SLAM
-#-------------------------------
-[TERRASLIDE]
-Name = Terraslide
-Type = GROUND
-Category = Physical
-Power = 120
-Accuracy = 100
-TotalPP = 10
-Target = NearOther
-FunctionCode = TwoTurnAttackOneTurnInSand
-Flags = CanProtect
-Description = The user charges, then attacks on the second turn. Charges instantly in sandstorm.
-Animation = SOLARBEAM
 #-------------------------------
 [TRAMPLE]
 Name = Trample
