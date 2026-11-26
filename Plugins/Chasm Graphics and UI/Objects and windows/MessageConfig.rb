@@ -692,9 +692,9 @@ def pbFadeOutInWithMusic(zViewport = 99_999)
     end
 end
 
-def pbFadeOutAndHide(sprites)
+def pbFadeOutAndHide(sprites, duration: 0.4)
     visiblesprites = {}
-    numFrames = (Graphics.frame_rate * 0.4).floor
+    numFrames = (Graphics.frame_rate * duration).floor
     alphaDiff = (255.0 / numFrames).ceil
     pbDeactivateWindows(sprites) do
         for j in 0..numFrames

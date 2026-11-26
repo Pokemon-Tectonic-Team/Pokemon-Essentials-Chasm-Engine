@@ -49,6 +49,8 @@ module GameData
         attr_reader :flags
         attr_reader :formalizer
         attr_reader :sticky_items
+        attr_accessor :signature_moves
+        attr_accessor :signature_abilities
 
         DATA = {}
         DATA_FILENAME = "species.dat"
@@ -181,6 +183,10 @@ module GameData
             @flags                 = hash[:flags]                 || []
             @formalizer            = hash[:formalizer]            || []
             @sticky_items          = hash[:sticky_items]          || []
+
+            # These are filled out during the metadata compilation pass
+            @signature_abilities   = []
+            @signature_moves       = []
 
             unless @stat_rounding == 0 
                 oldBST = 0
@@ -647,6 +653,10 @@ module GameData
 
         def isLegendary?
             return @flags&.include?("Legendary")
+        end
+
+        def isStarter?
+            return @flags&.include?("Starter")
         end
 
         def isTest?
