@@ -414,9 +414,9 @@ DebugMenuCommands.register("getsignatureabilities", {
   "effect"      => proc { |_sprites, _viewport|
       echoln("Ability Name, Weilder")
       abilities = getSignatureAbilities
-      abilities = abilities.sort_by { |_ability, weilder| GameData::Species.get(weilder).id_number }
+      abilities = abilities.sort_by { |_ability, weilder| GameData::Species.get(weilder).id_number }.map(&:first)
       File.open("Analysis/signature_abilities.txt", "wb") { |file|
-          abilities.each_key do |ability|
+          abilities.each do |ability|
               abilityLine = describeAbility(ability)
               abilityLine += "\r\n"
               file.write(abilityLine)
@@ -509,9 +509,9 @@ DebugMenuCommands.register("getsignaturemoves", {
   "description" => _INTL("List each move that is only used by one fully evolved base form."),
   "effect"      => proc { |_sprites, _viewport|
       moves = getSignatureMoves
-      moves = moves.sort_by { |_move, weilder| GameData::Species.get(weilder).id_number }
+      moves = moves.sort_by { |_move, weilder| GameData::Species.get(weilder).id_number }.map(&:first)
       File.open("Analysis/signature_moves.txt", "wb") { |file|
-          moves.each_key do |move|
+          moves.each do |move|
               moveLine = describeMove(move)
               moveLine += "\r\n"
               file.write(moveLine)
@@ -595,7 +595,7 @@ DebugMenuCommands.register("listcutmoves", {
   "effect"      => proc { |_sprites, _viewport|
       moveDataSorted = []
       GameData::Move.each do |moveData|
-          next unless moveData.tectonic_new
+          next unless moveData.cut
           moveDataSorted.push(moveData)
       end
 
@@ -603,7 +603,7 @@ DebugMenuCommands.register("listcutmoves", {
           (GameData::Type.get(data.type).id_number * 10_000) + (data.category * 1000) + data.base_damage
       }
 
-      File.open("Analysis/new_moves.txt", "wb") { |file|
+      File.open("Analysis/cut_moves.txt", "wb") { |file|
           moveDataSorted.each do |moveData|
               moveLine = moveData.real_name
               moveLine += "\r\n"

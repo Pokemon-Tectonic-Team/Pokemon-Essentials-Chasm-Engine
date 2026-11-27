@@ -842,7 +842,6 @@ module Compiler
                         FileLineData.setSection(species_symbol, key, contents[key]) # For error reporting
                         # Compile value for key
                         value = pbGetCsvRecord(contents[key], key, schema[key])
-                        value = nil if value.is_a?(Array) && value.empty?
                         contents[key] = value
                         # Sanitise data
                         case key
@@ -1036,7 +1035,6 @@ module Compiler
                         FileLineData.setSection(section_name, key, contents[key]) # For error reporting
                         # Compile value for key
                         value = pbGetCsvRecord(contents[key], key, schema[key])
-                        value = nil if value.is_a?(Array) && value.empty?
                         contents[key] = value
                         # Sanitise data
                         case key
@@ -1210,11 +1208,10 @@ module Compiler
             iterationCount += 1
             GameData::Species.each do |speciesData|
                 species = speciesData.id
-                hasMin = earliestAquisitionMin.key?(species)
-                hasNormal = earliestAquisitionNormal.key?(species)
-                next unless hasMin || hasNormal
-                earliestLevelForBaseMin = earliestAquisitionMin[species] if hasMin
-                earliestLevelForBaseNormal = earliestAquisitionNormal[species] if hasNormal
+                # Both hashes always gain a species together, so either says whether it is aquirable
+                next unless earliestAquisitionMin.key?(species)
+                earliestLevelForBaseMin = earliestAquisitionMin[species]
+                earliestLevelForBaseNormal = earliestAquisitionNormal[species]
 
                 evolutions = speciesData.get_evolutions
 
@@ -1223,7 +1220,6 @@ module Compiler
                     evoSpecies = evolutionEntry[0]
                     evoMethod = evolutionEntry[1]
                     param = evolutionEntry[2]
-                    evoLevelThreshold = nil
                     case evoMethod
                     # All method based on leveling up to a certain level
                     when :Level, :LevelDay, :LevelNight, :LevelMale, :LevelFemale, :LevelRain,
@@ -1237,19 +1233,20 @@ module Compiler
 
                         # Push this prevo if the evolution from it is gated by an item which is available by this point
                         evoLevelThreshold = getEarliestLevelForItem(param)
+                    # Every other method (happiness, trading, knowing a move...) has no level gate,
+                    # so the evolution is available as soon as its prevolution is
+                    else
+                        evoLevelThreshold = 0
                     end
 
                     # Update min acquisition
-                    if hasMin
-                        earliestLevelForEvolvedMin = [earliestLevelForBaseMin, evoLevelThreshold].max
-                        if !earliestAquisitionMin.key?(evoSpecies) || earliestAquisitionMin[evoSpecies] > earliestLevelForEvolvedMin
-                            earliestAquisitionMin[evoSpecies] = earliestLevelForEvolvedMin
-                            madeAnyChanges = true
-                        end
+                    earliestLevelForEvolvedMin = [earliestLevelForBaseMin, evoLevelThreshold].max
+                    if !earliestAquisitionMin.key?(evoSpecies) || earliestAquisitionMin[evoSpecies] > earliestLevelForEvolvedMin
+                        earliestAquisitionMin[evoSpecies] = earliestLevelForEvolvedMin
+                        madeAnyChanges = true
                     end
 
                     # Update normal acquisition
-                    next unless hasNormal
                     earliestLevelForEvolvedNormal = [earliestLevelForBaseNormal, evoLevelThreshold].max
                     if !earliestAquisitionNormal.key?(evoSpecies) || earliestAquisitionNormal[evoSpecies] > earliestLevelForEvolvedNormal
                         earliestAquisitionNormal[evoSpecies] = earliestLevelForEvolvedNormal
