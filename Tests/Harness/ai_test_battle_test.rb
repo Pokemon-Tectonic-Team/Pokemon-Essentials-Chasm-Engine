@@ -22,19 +22,22 @@ class AITestBattleTest < Minitest::Test
         battler = battle.add_battler(index: 2, level: 30)
 
         assert_kind_of TestBattler, battler
-        assert_same battle, battler.battle
-        assert_equal 2, battler.index
-        assert_equal 30, battler.level
+        assert_attributes({ index: 2, level: 30 }, battler)
         assert_same battler, battle.battlers[2]
+    end
+
+    def test_add_battler_links_the_battler_to_this_battle
+        battle = AITestBattle.new
+
+        assert_same battle, battle.add_battler.battle
     end
 
     def test_the_player_owns_the_even_side_only
         battle = AITestBattle.new
 
-        assert battle.pbOwnedByPlayer?(0)
-        assert battle.pbOwnedByPlayer?(2)
-        refute battle.pbOwnedByPlayer?(1)
-        refute battle.pbOwnedByPlayer?(3)
+        owned = (0..3).map { |index| battle.pbOwnedByPlayer?(index) }
+
+        assert_equal [true, false, true, false], owned
     end
 
     def test_the_opposing_trainer_has_the_policies_given

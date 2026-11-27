@@ -71,10 +71,11 @@ class FieldEffectsTest < Minitest::Test
     # Ticking down
 
     def test_rooms_tick_down_unless_a_battler_has_room_lock
-        ROOMS.each do |room|
-            assert effect(room).ticks_down_eor?(battle_with_abilities(:BLAZE), 3), room.to_s
-            refute effect(room).ticks_down_eor?(battle_with_abilities(:BLAZE, :ROOMLOCK), 3), room.to_s
-        end
+        ticking = ROOMS.select { |room| effect(room).ticks_down_eor?(battle_with_abilities(:BLAZE), 3) }
+        locked_ticking = ROOMS.select { |room| effect(room).ticks_down_eor?(battle_with_abilities(:BLAZE, :ROOMLOCK), 3) }
+
+        assert_equal ROOMS, ticking
+        assert_empty locked_ticking
     end
 
     def test_gravity_ticks_down_unless_a_battler_has_distorted_gravity

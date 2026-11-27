@@ -16,17 +16,8 @@ class TestBattlerTest < Minitest::Test
     end
 
     def test_each_keyword_reaches_its_reader_or_override
-        effects = { some_effect: 3 }
-        battle = Object.new
-        pokemon = TestPokemon.new
-        moves = [:a_move]
-        battler = TestBattler.new(hp: 40, totalhp: 90, index: 2, effects: effects, boss: true, speed: 77,
-                                  name: "Named", hp_resistance: 0.5, fainted: true, moved: true,
-                                  abilities: [:STATIC], battle: battle, pokemon: pokemon, moves: moves, level: 30)
-
-        assert_same battle, battler.battle
-        assert_same pokemon, battler.pokemon
-        assert_same moves, battler.moves
+        battler = TestBattler.new(hp: 40, totalhp: 90, index: 2, boss: true, speed: 77, name: "Named", hp_resistance: 0.5,
+                                  fainted: true, moved: true, abilities: [:STATIC], level: 30)
 
         expected = {
             hp: 40, totalhp: 90, index: 2, boss?: true, pbSpeed: 77, pbThis: "Named", hpBasedEffectResistance: 0.5,
@@ -34,8 +25,25 @@ class TestBattlerTest < Minitest::Test
         }
 
         assert_attributes expected, battler
-        assert_same effects, battler.effects
         assert battler.hasActiveAbility?(:STATIC)
+    end
+
+    def test_battle_and_pokemon_are_held_as_given
+        battle = Object.new
+        pokemon = TestPokemon.new
+        battler = TestBattler.new(battle: battle, pokemon: pokemon)
+
+        assert_same battle, battler.battle
+        assert_same pokemon, battler.pokemon
+    end
+
+    def test_effects_and_moves_are_held_as_given_not_copied
+        effects = { some_effect: 3 }
+        moves = [:a_move]
+        battler = TestBattler.new(effects: effects, moves: moves)
+
+        assert_same effects, battler.effects
+        assert_same moves, battler.moves
     end
 
     def test_overrides_accept_the_real_signatures_arguments
@@ -44,6 +52,10 @@ class TestBattlerTest < Minitest::Test
         assert_equal 5, battler.pbSpeed(true, 2, afterSwitching: true, move: nil)
         assert_equal "Named", battler.pbThis(true)
         assert battler.hasActiveAbility?(:X, true, false, ignoreGas: true)
+    end
+
+    def test_effect_overrides_accept_the_real_signatures_arguments
+        battler = TestBattler.new
         battler.applyEffect(:E, 1, true)
 
         assert_equal [[:E, 1]], battler.applied_effects
@@ -52,12 +64,9 @@ class TestBattlerTest < Minitest::Test
 
     def test_effect_is_active_while_effects_holds_a_truthy_value
         battler = TestBattler.new(effects: { on: true, counted: 2, off: false, cleared: nil })
+        active = %i[on counted off cleared absent].select { |id| battler.effectActive?(id) }
 
-        assert battler.effectActive?(:on)
-        assert battler.effectActive?(:counted)
-        refute battler.effectActive?(:off)
-        refute battler.effectActive?(:cleared)
-        refute battler.effectActive?(:absent)
+        assert_equal %i[on counted], active
     end
 
     def test_no_effect_is_active_while_fainted_unless_fainting_is_ignored
