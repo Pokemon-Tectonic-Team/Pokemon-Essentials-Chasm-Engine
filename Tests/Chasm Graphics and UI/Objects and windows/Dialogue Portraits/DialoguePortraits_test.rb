@@ -142,40 +142,12 @@ class DefaultPortraitAnchorTest < Minitest::Test
         $game_system = nil
     end
 
-    # Runs the block with the screen height given, restoring the stub's after.
-    def withScreenHeight(height)
-        original = Graphics.method(:height)
-        Graphics.define_singleton_method(:height) { height }
-        yield
-    ensure
-        Graphics.define_singleton_method(:height, original)
-    end
-
-    # The message windows the block builds, each with the skins it was given.
-    def messageWindowsBuilt
-        built = []
-        Window_AdvancedTextPokemon.define_singleton_method(:new) do |*args|
-            super(*args).tap do |window|
-                skins = []
-                window.define_singleton_method(:setSkin) do |skin, *rest|
-                    skins.push(skin)
-                    super(skin, *rest)
-                end
-                built.push([window, skins])
-            end
-        end
-        yield
-        return built
-    ensure
-        Window_AdvancedTextPokemon.singleton_class.remove_method(:new)
-    end
-
     def test_a_message_shows_two_lines_on_the_game_screen
         assert_equal 2, pbDefaultMessageLines
     end
 
     def test_a_message_shows_three_lines_on_a_screen_taller_than_400
-        withScreenHeight(401) { assert_equal 3, pbDefaultMessageLines }
+        Graphics.stub(:height, 401) { assert_equal 3, pbDefaultMessageLines }
     end
 
     def test_portraits_stand_on_a_default_message_window_at_the_screen_bottom
@@ -189,9 +161,18 @@ class DefaultPortraitAnchorTest < Minitest::Test
     end
 
     def test_the_stand_in_message_window_is_a_hidden_speech_window_disposed_after
-        built = messageWindowsBuilt { defaultPortraitAnchor }
+        window = Window_AdvancedTextPokemon.new("")
+        skins = []
+        setSkin = window.method(:setSkin)
+        recordSkin = lambda do |skin, *rest|
+            skins.push(skin)
+            setSkin.call(skin, *rest)
+        end
+        Window_AdvancedTextPokemon.stub(:new, window) do
+            window.stub(:setSkin, recordSkin) { defaultPortraitAnchor }
+        end
 
-        assert_equal [[MessageConfig.pbGetSpeechFrame]], built.map(&:last)
-        assert_attributes({ visible: false, disposed?: true }, built.first.first)
+        assert_equal [MessageConfig.pbGetSpeechFrame], skins
+        assert_attributes({ visible: false, disposed?: true }, window)
     end
 end

@@ -33,16 +33,6 @@ class DialogueLabelsTest < Minitest::Test
         return $SpeakerNameWindow
     end
 
-    # Counts the tag's width writes, each of which redraws its text.
-    def countWidthWrites
-        writes = []
-        tag.define_singleton_method(:width=) do |value|
-            writes.push(value)
-            super(value)
-        end
-        return writes
-    end
-
     def test_setting_a_speaker_builds_a_hidden_tag_in_the_speech_skin
         setSpeaker("Val", :viewport)
 
@@ -158,13 +148,21 @@ class DialogueLabelsTest < Minitest::Test
         assert_equal [MESSAGE.y - tag.height + 12, MESSAGE.z + 1], [tag.y, tag.z]
     end
 
+    # Each width write redraws the tag's text.
     def test_the_width_is_only_written_when_it_changes
         setSpeaker("Al")
-        writes = countWidthWrites
-        3.times { positionSpeakerWindow(MESSAGE, nil) }
+        writes = []
+        setWidth = tag.method(:width=)
+        recordWrite = lambda do |value|
+            writes.push(value)
+            setWidth.call(value)
+        end
+        tag.stub(:width=, recordWrite) do
+            3.times { positionSpeakerWindow(MESSAGE, nil) }
 
-        assert_empty writes
-        3.times { positionSpeakerWindow(MESSAGE, [:left, LEFT_IMAGE]) }
+            assert_empty writes
+            3.times { positionSpeakerWindow(MESSAGE, [:left, LEFT_IMAGE]) }
+        end
 
         assert_equal [tag.fitWidth], writes
     end

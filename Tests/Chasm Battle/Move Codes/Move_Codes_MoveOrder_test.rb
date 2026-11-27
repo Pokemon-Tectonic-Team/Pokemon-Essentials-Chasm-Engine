@@ -5,27 +5,21 @@ class MoveOrderMoveCodesTest < Minitest::Test
 
     # A battle of an actor at index 0 and a target at index 1, the target not last in priority.
     # Overrides: choices (the target's is choices[1]), target / actor battler attributes, priority.
-    # The inherited pbMoveFailedTargetAlreadyMoved? is faked to answer already_moved and to record
-    # its arguments in the move's `already_moved_calls`.
-    def setup_quash(target_choice: USE_MOVE, target: {}, actor: {}, last: :actor, id: :TESTMOVE,
-                    already_moved: false)
+    def setup_quash(target_choice: USE_MOVE, target: {}, actor: {}, last: :actor, id: :TESTMOVE)
         actor_battler = TestBattler.new(index: 0, effects: { Quash: 0 }, name: "Actor", **actor)
         target_battler = TestBattler.new(index: 1, effects: { Quash: 0 }, name: "Target", **target)
         priority = last == :actor ? [target_battler, actor_battler] : [actor_battler, target_battler]
         battle = TestBattle.new(battlers: [actor_battler, target_battler], priority: priority,
                                 choices: [USE_MOVE, target_choice])
         move = make_move(PokeBattle_Move_TargetActsLast, battle: battle, id: id)
-        calls = []
-        move.define_singleton_method(:already_moved_calls) { calls }
-        move.define_singleton_method(:pbMoveFailedTargetAlreadyMoved?) do |tgt, show_message = true|
-            calls << [tgt, show_message]
-            already_moved
-        end
         [move, actor_battler, target_battler, battle]
     end
 
-    def fails?(move, user, target, show_message = true)
-        move.pbFailsAgainstTarget?(user, target, show_message)
+    # The inherited pbMoveFailedTargetAlreadyMoved? answers already_moved, or calls it if callable.
+    def fails?(move, user, target, show_message = true, already_moved: false)
+        move.stub(:pbMoveFailedTargetAlreadyMoved?, already_moved) do
+            move.pbFailsAgainstTarget?(user, target, show_message)
+        end
     end
 
     # pbFailsAgainstTarget?
@@ -39,15 +33,20 @@ class MoveOrderMoveCodesTest < Minitest::Test
 
     def test_the_inherited_already_moved_check_is_asked_about_the_target
         move, user, target, _battle = setup_quash
-        fails?(move, user, target, false)
+        calls = []
+        record_call = lambda do |*args|
+            calls.push(args)
+            false
+        end
+        fails?(move, user, target, false, already_moved: record_call)
 
-        assert_equal [[target, false]], move.already_moved_calls
+        assert_equal [[target, false]], calls
     end
 
     def test_a_target_failing_the_inherited_already_moved_check_fails
-        move, user, target, battle = setup_quash(already_moved: true)
+        move, user, target, battle = setup_quash
 
-        assert fails?(move, user, target)
+        assert fails?(move, user, target, already_moved: true)
         assert_empty battle.messages
     end
 

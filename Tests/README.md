@@ -80,10 +80,23 @@ assert_equal [:WATER], attackers.select { |type| super_effective?(type) }
 If your tests rely on game code from another file, add it to the `PLUGIN_FILES`
 list in `Tests/support/plugin_files.rb`.
 
-If the code you're testing relies on Essentials internals, either add a simple
-fake version of that function to the appropriate stub file under
-`Tests/support/`, or to load the real version, add its name to the
-`CORE_SCRIPTS` list in `plugin_files.rb`.
+If it relies on Essentials code instead, add that script's name to the
+`CORE_SCRIPTS` list in the same file.
+
+To swap out a game method while a test runs, for example to record a message
+instead of showing it, use `stub`. The real method comes back once the block
+ends.
+
+```ruby
+Graphics.stub(:height, 401) { assert_equal 3, pbDefaultMessageLines }
+```
+
+For a method that isn't on an object, like `pbMessage`, write `stub` on its own:
+
+```ruby
+messages = []
+stub(:pbMessage, ->(text, *) { messages.push(text) }) { codeThatShowsMessages }
+```
 
 Tests don't read the game's PBS data. Each test registers the records it needs,
 types included, with the helpers in `Tests/support/record_factories.rb`:

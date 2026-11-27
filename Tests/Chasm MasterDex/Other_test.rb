@@ -171,38 +171,34 @@ class OtherTest < Minitest::Test
 
     # openPartyDexScreen
 
-    # The dex screens fade in through this, which resolves to the test's own when a test calls the
-    # helpers. It counts each screen opened instead of opening it, and the first one opened leaves
-    # behind the cross link a test gives.
-    def pbFadeOutIn
-        @screens_opened = screens_opened + 1
-        $dex_cross_link = @cross_link if @screens_opened == 1
-    end
-
-    def screens_opened
-        return @screens_opened || 0
+    # Opens the party dex screen with the test as self, so the dex screens fade in through its stub
+    # of pbFadeOutIn. That counts each screen opened instead of opening it, and the first one opened
+    # leaves behind cross_link. Returns the number of screens opened.
+    def open_party_dex_screen(pokemon, cross_link: nil)
+        opened = 0
+        open_screen = lambda do
+            opened += 1
+            $dex_cross_link = cross_link if opened == 1
+        end
+        stub(:pbFadeOutIn, open_screen) { openPartyDexScreen(pokemon, 0) }
+        return opened
     end
 
     def test_the_party_dex_screen_registers_the_pokemon_as_last_seen_and_opens_once
         pokemon = FakePokemon.new(:BASE)
         $dex_cross_link = { type: :move, id: :EMBER }
 
-        openPartyDexScreen(pokemon, 0)
-
+        assert_equal 1, open_party_dex_screen(pokemon)
         assert_equal [[:register_last_seen, pokemon]], $Trainer.pokedex.calls
-        assert_equal 1, screens_opened
         assert_nil $dex_cross_link
     end
 
     def test_the_party_dex_screen_follows_a_cross_link_left_by_the_screen
         pokemon = FakePokemon.new(:BASE)
         create_species(id: :TOP)
-        @cross_link = { type: :species, id: :TOP }
 
-        openPartyDexScreen(pokemon, 0)
-
+        assert_equal 2, open_party_dex_screen(pokemon, cross_link: { type: :species, id: :TOP })
         assert_equal [[:register_last_seen, pokemon], [:set_last_form_seen, :TOP, 0, 0]], $Trainer.pokedex.calls
-        assert_equal 2, screens_opened
         assert_nil $dex_cross_link
     end
 

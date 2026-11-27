@@ -6,6 +6,7 @@ module PluginFiles
         FileTests
         Intl_Messages
         PBDebug
+        Errors
         Validation
         Compiler
         PluginManager
@@ -70,6 +71,7 @@ module PluginFiles
         "Chasm Graphics and UI/Objects and windows/DrawText.rb",
         "Chasm Graphics and UI/Objects and windows/MessageConfig.rb",
         "Chasm Graphics and UI/Objects and windows/Messages.rb",
+        "Chasm Graphics and UI/Objects and windows/Text Entry/TextEntry.rb",
         "Chasm Graphics and UI/Objects and windows/FaceSpecs.rb",
         "Chasm Graphics and UI/Objects and windows/ShinyFaces.rb",
         "Chasm Graphics and UI/Objects and windows/Dialogue Labels/DialogueLabels.rb",

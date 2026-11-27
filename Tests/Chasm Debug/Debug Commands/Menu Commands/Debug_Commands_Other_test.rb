@@ -1,9 +1,16 @@
 require_relative "../../../support/test_helper"
 
 class DebugCommandsOtherTest < Minitest::Test
-    # The helpers report through echoln, which resolves to this method when a test calls them
-    def echoln(text)
-        echoed.push(text.to_s)
+    # The helpers and commands run with the test as self, so they report and prompt through its
+    # stubs: pbEnterText gives each of answers in turn
+    def run(...)
+        stub(:echoln, ->(text) { echoed.push(text.to_s) }) do
+            stub(:pbEnterText, ->(*) { answers.shift }) do
+                stub(:pbMessage, ->(text, *) { messages.push(text) }) do
+                    stub(:pbPrintException, ->(error) { errors.push(error) }) { super }
+                end
+            end
+        end
     end
 
     def echoed
@@ -155,27 +162,14 @@ class DebugCommandsOtherTest < Minitest::Test
         assert_includes echoed.first, "New internal name 1CINDER must contain only letters"
     end
 
-    # The rename commands. Each runs with the test as self, so the prompts it shows resolve to the
-    # test's own, in a game folder holding only PBS/
-
-    def pbEnterText(*)
-        return answers.shift
-    end
+    # The rename commands, each run in a game folder holding only PBS/
 
     def answers
         return @answers ||= []
     end
 
-    def pbMessage(text, *)
-        messages.push(text)
-    end
-
     def messages
         return @messages ||= []
-    end
-
-    def pbPrintException(error)
-        errors.push(error)
     end
 
     def errors

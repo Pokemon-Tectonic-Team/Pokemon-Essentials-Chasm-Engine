@@ -21,6 +21,7 @@ if %w[1 all].include?(ENV["COVERAGE"])
 end
 
 require "minitest/autorun"
+require "minitest/mock"
 require_relative "harness_error"
 require_relative "runtime_stubs"
 require_relative "core_scripts"

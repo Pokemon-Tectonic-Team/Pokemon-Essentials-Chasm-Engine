@@ -1,18 +1,15 @@
 require_relative "../../../support/test_helper"
 
 class DebugCommandsInformationTest < Minitest::Test
-    # The command runs with the test as self, so its pbMessage and echoln calls resolve to the
-    # test's own
-    def echoln(text)
-        echoed.push(text.to_s)
+    # The command runs with the test as self, so it reports through the test's stubs
+    def run(...)
+        stub(:echoln, ->(text) { echoed.push(text.to_s) }) do
+            stub(:pbMessage, ->(text, *) { messages.push(text) }) { super }
+        end
     end
 
     def echoed
         return @echoed ||= []
-    end
-
-    def pbMessage(text, *)
-        messages.push(text)
     end
 
     def messages

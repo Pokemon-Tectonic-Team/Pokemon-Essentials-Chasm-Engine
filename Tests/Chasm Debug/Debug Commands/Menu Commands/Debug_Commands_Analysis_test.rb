@@ -15,9 +15,11 @@ class DebugCommandsAnalysisTest < Minitest::Test
         return FakeEvent.new(4, name, [FakePage.new(commands)])
     end
 
-    # The helpers report through echoln, which resolves to this method when a test calls them
-    def echoln(text)
-        echoed.push(text.to_s)
+    # The helpers and commands run with the test as self, so they report through its stubs
+    def run(...)
+        stub(:echoln, ->(text) { echoed.push(text.to_s) }) do
+            stub(:pbMessage, ->(text, *) { messages.push(text) }) { super }
+        end
     end
 
     def echoed
@@ -219,13 +221,9 @@ class DebugCommandsAnalysisTest < Minitest::Test
         assert_empty echoed
     end
 
-    # The debug menu commands. Each runs with the test as self, so its pbMessage and echoln calls
-    # resolve to the test's own, in an empty folder holding Analysis/. checkbattlecontentlegality
-    # is untested: it builds every trainer's party, which needs the game's Pokémon and trainers.
-
-    def pbMessage(text, *)
-        messages.push(text)
-    end
+    # The debug menu commands, each run in an empty folder holding Analysis/.
+    # checkbattlecontentlegality is untested: it builds every trainer's party, which needs the
+    # game's Pokémon and trainers.
 
     def messages
         return @messages ||= []
