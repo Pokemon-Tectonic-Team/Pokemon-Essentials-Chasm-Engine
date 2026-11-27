@@ -32,6 +32,63 @@ class BitmapHueShiftsTest < Minitest::Test
         def set_pixel(x, y, color) = @pixels[[x, y]] = color
     end
 
+    # Stands in for a still bitmap: copy returns one copy, not a list of frames
+    class FakeStillBitmap
+        attr_reader :copy, :disposed
+
+        def initialize(copy) = @copy = copy
+        def dispose = @disposed = true
+    end
+
+    FakeHuedPokemon = Struct.new(:hueShift, :shadeShift)
+
+    def test_shift_bitmap_hue_shifts_every_frame_and_disposes_the_original
+        frames = [FakeFrame.new, FakeFrame.new]
+        original = FakeAnimatedBitmap.new(frames)
+
+        assert_same frames, shiftBitmapHue(original, 40)
+        assert_equal [[40], [40]], frames.map(&:hue_changes)
+    end
+
+    def test_shift_bitmap_hue_shifts_a_still_bitmap
+        copy = FakeFrame.new
+        original = FakeStillBitmap.new(copy)
+
+        assert_same copy, shiftBitmapHue(original, 40)
+        assert_equal [40], copy.hue_changes
+        assert original.disposed
+    end
+
+    def test_shift_bitmap_shade_shades_a_still_bitmap
+        copy = FakePixels.new(1, 1, Color.new(250, 64, 5))
+
+        assert_same copy, shiftBitmapShade(FakeStillBitmap.new(copy), 255)
+
+        color = copy.pixels[[0, 0]]
+        assert_equal [255, 128, 0], [color.red, color.green, color.blue]
+    end
+
+    def test_shift_bitmap_shade_shades_every_frame
+        frames = [FakePixels.new(1, 1, Color.new(250, 64, 5)), FakePixels.new(1, 1, Color.new(250, 64, 5))]
+
+        shiftBitmapShade(FakeAnimatedBitmap.new(frames), 255)
+
+        channels = frames.map { |frame| frame.pixels[[0, 0]] }.map { |color| [color.red, color.green, color.blue] }
+        assert_equal [[255, 128, 0]] * 2, channels
+    end
+
+    def test_pokemon_shifts_use_the_pokemon_own_hue_and_shade
+        pokemon = FakeHuedPokemon.new(70, 255)
+        frame = FakeFrame.new
+        pixels = FakePixels.new(1, 1, Color.new(250, 64, 5))
+
+        shiftPokemonBitmapHue(FakeStillBitmap.new(frame), pokemon)
+        shiftPokemonBitmapShade(FakeStillBitmap.new(pixels), pokemon)
+
+        assert_equal [70], frame.hue_changes
+        assert_equal 255, pixels.pixels[[0, 0]].red
+    end
+
     def test_shift_species_bitmap_hue_shifts_by_the_line_start_id_number
         create_species(id: :BASE, id_number: 7, evolutions: [[:MID, :Level, 10, false]])
         create_species(id: :MID, id_number: 8, evolutions: [[:BASE, :Level, 10, true], [:TOP, :Level, 20, false]])

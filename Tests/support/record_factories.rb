@@ -24,6 +24,13 @@ module RecordFactories
         RecordFactories.register(GameData::Species, { type1: :NORMAL }, attributes)
     end
 
+    # Lists no form moves for each species. A species' learnable moves include its forms' form
+    # moves, which compile_pokemon_forms lists for every species, so they can't be worked out
+    # without the entry.
+    def without_form_moves(*species)
+        species.each { |id| GameData::Species::FORM_SPECIFIC_MOVES[id] = [] }
+    end
+
     class << self
         # Registers a klass record from attributes over defaults, with the id capitalised as its
         # name unless one is given, and returns it as klass.get finds it. Refuses a missing id, and

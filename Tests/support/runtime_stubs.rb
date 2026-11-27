@@ -8,6 +8,9 @@ require_relative "plugin_loader"
 
 def echoln(*); end
 
+# Core MKXP_Compatibility's, which titles mkxp-z's window. The compilers and PBS writers call it.
+def pbSetWindowText(_string); end
+
 # RGSS's save_data: Marshals the object into the file, as the GameData classes' save does
 def save_data(object, filename)
     File.binwrite(filename, Marshal.dump(object))
