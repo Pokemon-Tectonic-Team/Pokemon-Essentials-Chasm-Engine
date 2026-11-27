@@ -172,11 +172,25 @@ Flags = Sound
 Description = The user calls its team to a farm-fresh meal, sacrificing 25% HP to heal each of its party members by 25% HP.
 Animation = HEALBELL
 #-------------------------------
+[DISCOURAGE]
+Name = Discourage
+Type = NORMAL
+Category = Special
+Power = 65
+Accuracy = 100
+TotalPP = 10
+Target = NearOther
+Priority = -6
+FunctionCode = SwitchOutTargetDamagingMove
+Flags = CanProtect
+Description = The user forces the target to switch out, to be replaced at random. Always goes last.
+Animation = ROAR
+#-------------------------------
 [DISPELL]
 Name = Dispell
 Type = NORMAL
 Category = Special
-Power = 90
+Power = 95
 Accuracy = 100
 TotalPP = 12
 Target = NearOther
@@ -590,7 +604,7 @@ Animation = BODYSLAM
 Name = Shout
 Type = NORMAL
 Category = Special
-Power = 40
+Power = 45
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
@@ -926,20 +940,6 @@ Target = NearOther
 FunctionCode = DoubleDamageNoItem
 Flags = CanProtect
 Description = The user attacks freed from earthly attachments. Doubles in damage if the user has no item when the move starts.
-#-------------------------------
-[DISCOURAGE]
-Name = Discourage
-Type = FIGHTING
-Category = Special
-Power = 55
-Accuracy = 100
-TotalPP = 10
-Target = NearOther
-Priority = -6
-FunctionCode = SwitchOutTargetDamagingMove
-Flags = CanProtect
-Description = The user forces the target to switch out, to be replaced at random. Always goes last.
-Animation = ROAR
 #-------------------------------
 [DROPKICK]
 Name = Drop Kick
@@ -7451,7 +7451,7 @@ Animation = ICEPUNCH
 Name = Apex Predation
 Type = DRAGON
 Category = Physical
-Power = 90
+Power = 95
 Accuracy = 100
 TotalPP = 12
 Target = NearOther
@@ -7503,10 +7503,10 @@ Power = 80
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = BurnTargetIfInEclipse
+FunctionCode = BurnOrFrostbiteTargetBasedOnHigherStatIfInEclipse
 Flags = CanProtect,Slice
 EffectChance = 100
-Description = The user slashes the foe while menacing. During eclipse, the target also becomes burned.
+Description = The user slashes the foe with disastrous power. During eclipse, the target becomes burned or frostbitten, depending on their stats.
 Animation = DRAGONCLAW
 #-------------------------------
 [CARNAGE]
@@ -7539,7 +7539,7 @@ Animation = BITE
 Name = Clash
 Type = DRAGON
 Category = Physical
-Power = 40
+Power = 45
 Accuracy = 100
 TotalPP = 30
 Target = NearOther
@@ -7628,7 +7628,7 @@ Animation = COACHING
 Name = Dread
 Type = DRAGON
 Category = Special
-Power = 40
+Power = 45
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
@@ -7704,7 +7704,7 @@ Description = Protects the user from attacks. If an eclipse is active, extends i
 Name = Hiss
 Type = DRAGON
 Category = Special
-Power = 40
+Power = 45
 Accuracy = 100
 TotalPP = 30
 Target = NearOther
@@ -7718,14 +7718,14 @@ Animation = GROWL
 Name = Hydra Strike
 Type = DRAGON
 Category = Physical
-Power = 60
+Power = 65
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = Waterlog
 Flags = CanProtect
-EffectChance = 30
-Description = The user strikes from swampy ground like a serpent. It has a 30% chance to waterlog.
+EffectChance = 50
+Description = The user strikes from swampy ground like a serpent. It has a 50% chance to waterlog.
 Animation = DRAGONRUSH
 #-------------------------------
 [JETSPEED]
@@ -7794,7 +7794,7 @@ Animation = PAYDAY
 Name = Scour
 Type = DRAGON
 Category = Special
-Power = 80
+Power = 90
 Accuracy = 100
 TotalPP = 12
 Target = NearOther
@@ -7853,6 +7853,20 @@ FunctionCode = RampageKOsRaiseSpeed1
 Flags = CanProtect
 Description = The user throws a royal fit to rampage for two turns. Raises Speed if a target is knocked out by this move.
 Animation = OUTRAGE
+#-------------------------------
+[UNRELENTINGFORCE]
+Name = Unrelenting Force
+Type = DRAGON
+Category = Special
+Power = 80
+Accuracy = 100
+TotalPP = 5
+Target = NearOther
+Priority = 2
+FunctionCode = Basic
+Flags = CanProtect,Sound
+Description = The user shouts with ancient draconic power. This attack always goes before any other move.
+Animation = HYPERVOICE
 #-------------------------------
 [WINGSPANECLIPSE]
 Name = Wingspan Eclipse

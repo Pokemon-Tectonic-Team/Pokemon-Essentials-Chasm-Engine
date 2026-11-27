@@ -87,21 +87,6 @@ class PokeBattle_Move_BurnAttackerBeforeUserActs < PokeBattle_Move
     end
 end
 
-#===============================================================================
-# Target is burned if in eclipse. (Calamitous Slash)
-#===============================================================================
-class PokeBattle_Move_BurnTargetIfInEclipse < PokeBattle_BurnMove
-    def pbAdditionalEffect(user, target)
-        return unless @battle.eclipsed?
-        super
-    end
-
-    def getTargetAffectingEffectScore(user, target)
-        return 0 unless @battle.eclipsed?
-        super
-    end
-end
-
 # Empowered Ignite
 class PokeBattle_Move_EmpoweredIgnite < PokeBattle_Move_Burn
     include EmpoweredMove
