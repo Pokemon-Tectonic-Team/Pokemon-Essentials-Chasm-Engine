@@ -144,6 +144,88 @@ class DebugCommandsOtherTest < Minitest::Test
         assert_includes echoed.first, "New internal name 1CINDER must contain only letters"
     end
 
+    # The rename commands. Each runs with the test as self, so the prompts it shows resolve to the
+    # test's own, in a game folder holding only PBS/
+
+    def pbEnterText(*)
+        return answers.shift
+    end
+
+    def answers
+        return @answers ||= []
+    end
+
+    def pbMessage(text, *)
+        messages.push(text)
+    end
+
+    def messages
+        return @messages ||= []
+    end
+
+    def pbPrintException(error)
+        errors.push(error)
+    end
+
+    def errors
+        return @errors ||= []
+    end
+
+    # The PBS files the command writes, by name
+    def run_command(option, files = {})
+        Dir.mktmpdir do |dir|
+            Dir.chdir(dir) do
+                FileUtils.mkdir_p("PBS")
+                files.merge("pokemon_server_banlist.txt" => "").each { |name, text| File.binwrite("PBS/#{name}", text) }
+                files_given = Dir.children("PBS")
+                instance_exec(&DebugMenuCommands.getFunction(option, "effect"))
+                return (Dir.children("PBS") - files_given).to_h { |name| [name, File.binread("PBS/#{name}")] }
+            end
+        end
+    end
+
+    def test_rename_from_input_stops_at_the_first_prompt_left_empty
+        create_move(id: :EMBER)
+
+        [[""], ["EMBER", ""], ["EMBER", "cin der", ""]].each do |given|
+            answers.replace(given)
+
+            assert_empty run_command("renamemovefrominput")
+            assert GameData::Move.exists?(:EMBER)
+        end
+        assert_empty messages
+    end
+
+    def test_rename_from_input_renames_the_move_and_rewrites_the_pbs_files
+        create_move(id: :EMBER)
+        answers.replace(["EMBER", "cin der", "Cinder"])
+
+        written = run_command("renamemovefrominput")
+
+        assert GameData::Move.exists?(:CINDER)
+        assert_includes written["moves.txt"], "[CINDER]"
+        assert_empty %w[pokemon.txt pokemonforms.txt trainers.txt avatars.txt] - written.keys
+        assert_equal ["Rename completed."], messages
+    end
+
+    def test_rename_from_file_renames_the_moves_listed_and_rewrites_the_pbs_files
+        create_move(id: :EMBER)
+
+        written = run_command("renamemovefromfile", { "move_renames.txt" => "EMBER,CINDER,Cinder\n" })
+
+        assert GameData::Move.exists?(:CINDER)
+        assert_includes written["moves.txt"], "[CINDER]"
+        assert_equal ["Mass rename completed.", "Or tell a programmer to do it for you :)"], [messages.first, messages.last]
+        assert_empty errors
+    end
+
+    def test_rename_from_file_reports_a_missing_rename_file
+        run_command("renamemovefromfile")
+
+        assert_equal [Errno::ENOENT], errors.map(&:class)
+        assert_empty messages
+    end
+
     # setSaveVersion
 
     # The pit avatar list is a class instance variable, which the per-test reset doesn't restore

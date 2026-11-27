@@ -555,6 +555,17 @@ class SpeciesTest < Minitest::Test
         assert_equal [[5, 10], [12, 16], [35, 35]], earliest_levels
     end
 
+    def test_an_evolution_by_a_method_without_a_level_is_as_early_as_its_prevolution
+        register_encounter(1, 5, 10, :BASE)
+        create_species(id: :BASE, evolutions: [[:TOP, :Happiness, nil, false]])
+        create_species(id: :TOP, evolutions: [[:BASE, :Happiness, nil, true]])
+
+        in_game_folder { Compiler.compile_species_earliest_levels }
+
+        top = GameData::Species.get(:TOP)
+        assert_equal [5, 10], [top.earliest_available, top.earliest_available_normal]
+    end
+
     def test_earliest_level_for_an_item_not_in_the_cap_table_is_100
         assert_equal 35, Compiler.getEarliestLevelForItem(:FIRESTONE)
         assert_equal 100, Compiler.getEarliestLevelForItem(:NOTANITEM)
