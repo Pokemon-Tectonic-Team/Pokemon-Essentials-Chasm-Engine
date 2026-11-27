@@ -1,0 +1,42 @@
+# Publishes main's coverage report and badge to GitHub Pages. A separate
+# workflow, rather than a job in Tests, so PRs don't list it as a skipped check.
+name: Coverage pages
+
+on:
+    workflow_run:
+        workflows: [Tests]
+        types: [completed]
+        branches: [main]
+
+permissions: {}
+
+jobs:
+    deploy:
+        if: >-
+            github.repository ==
+            'Pokemon-Tectonic-Team/Pokemon-Essentials-Chasm-Engine' &&
+            github.event.workflow_run.event == 'push' &&
+            github.event.workflow_run.conclusion == 'success'
+        runs-on: ubuntu-latest
+        permissions:
+            actions: read
+            pages: write
+            id-token: write
+        environment:
+            name: github-pages
+            url: ${{ steps.deploy.outputs.page_url }}
+        concurrency:
+            group: pages
+            cancel-in-progress: false
+        steps:
+            - uses: actions/download-artifact@v8
+              with:
+                  name: coverage-pages
+                  path: coverage
+                  run-id: ${{ github.event.workflow_run.id }}
+                  github-token: ${{ github.token }}
+            - uses: actions/upload-pages-artifact@v5
+              with:
+                  path: coverage/
+            - id: deploy
+              uses: actions/deploy-pages@v5

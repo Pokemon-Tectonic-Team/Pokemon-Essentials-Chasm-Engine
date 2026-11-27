@@ -55,28 +55,10 @@ jobs:
                   'Pokemon-Tectonic-Team/Pokemon-Essentials-Chasm-Engine' &&
                   github.event_name == 'push' && steps.tests.outcome == 'success'
               run: bundle exec ruby .github/scripts/coverage_badge.rb coverage/badge.json
-            - uses: actions/upload-pages-artifact@v5
+            # Deployed to GitHub Pages by coverage_pages.yml.
+            - uses: actions/upload-artifact@v7
               if: ${{ steps.badge.outcome == 'success' }}
               with:
+                  name: coverage-pages
                   path: coverage/
-
-    # Publishes main's coverage report and badge to GitHub Pages.
-    coverage-pages:
-        needs: tests
-        if: >-
-            github.repository ==
-            'Pokemon-Tectonic-Team/Pokemon-Essentials-Chasm-Engine' &&
-            github.event_name == 'push'
-        runs-on: ubuntu-latest
-        permissions:
-            pages: write
-            id-token: write
-        environment:
-            name: github-pages
-            url: ${{ steps.deploy.outputs.page_url }}
-        concurrency:
-            group: pages
-            cancel-in-progress: false
-        steps:
-            - id: deploy
-              uses: actions/deploy-pages@v5
+                  retention-days: 1
