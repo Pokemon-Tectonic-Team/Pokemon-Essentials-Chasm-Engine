@@ -1,5 +1,8 @@
 # Tests
 
+[![Tests](https://github.com/Pokemon-Tectonic-Team/Pokemon-Essentials-Chasm-Engine/actions/workflows/tests.yml/badge.svg?branch=main&event=push)](https://github.com/Pokemon-Tectonic-Team/Pokemon-Essentials-Chasm-Engine/actions/workflows/tests.yml?query=branch%3Amain)
+[![Coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fpokemon-tectonic-team.github.io%2FPokemon-Essentials-Chasm-Engine%2Fbadge.json)](https://pokemon-tectonic-team.github.io/Pokemon-Essentials-Chasm-Engine/)
+
 Unit tests, not part of game code. Maintained by senior programmers and run
 automatically through GitHub actions, so most team members don't have to worry
 about the specifics. If you're interested in learning though, writing your own
@@ -40,6 +43,9 @@ can tackle lint errors as they come, and if your change breaks a test that was
 working before, that might point to an issue in your PR before anyone else has
 to look at it (though sometimes it's intentionally changed behaviour and the
 test needs updating).
+
+The coverage badge above links to the whole-codebase report for `main`, updated
+each time its tests pass.
 
 ## Layout
 
