@@ -136,4 +136,13 @@ class RecordFactoriesTest < Minitest::Test
 
         assert_equal 3, RecordFactories.next_id_number(GameData::Type)
     end
+
+    def test_without_form_moves_lets_a_species_learnable_moves_be_worked_out
+        create_move(id: :TACKLE)
+        species = create_species(id: :SOLO, moves: [[1, :TACKLE]], flags: ["NoStaples"])
+
+        without_form_moves(:SOLO)
+
+        assert_equal [:TACKLE], species.learnable_moves
+    end
 end
