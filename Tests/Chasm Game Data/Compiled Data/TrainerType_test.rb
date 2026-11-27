@@ -177,23 +177,19 @@ class TrainerTypeTest < Minitest::Test
         register(:ACE, cable_club: true)
 
         expected = [:POKEMONTRAINER_Androgynous, :POKEMONTRAINER_Feminine, :POKEMONTRAINER_Masculine, :LEADER, :ACE]
+
         assert_equal expected, GameData::TrainerType.cableClubClasses
     end
 
     # Record
 
     def test_initialize_defaults
-        tr_type = GameData::TrainerType.new({ id: :LEADER })
+        expected = {
+            id: :LEADER, id_number: -1, real_name: "Unnamed", base_money: 30, skill_level: 30, gender: 2, policies: [],
+            cable_club: false, cable_club_name: nil
+        }
 
-        assert_equal :LEADER, tr_type.id
-        assert_equal(-1, tr_type.id_number)
-        assert_equal "Unnamed", tr_type.real_name
-        assert_equal 30, tr_type.base_money
-        assert_equal 30, tr_type.skill_level
-        assert_equal 2, tr_type.gender
-        assert_equal [], tr_type.policies
-        assert_equal false, tr_type.cable_club
-        assert_nil tr_type.cable_club_name
+        assert_attributes expected, GameData::TrainerType.new({ id: :LEADER })
     end
 
     def test_skill_level_defaults_to_the_base_money
@@ -272,6 +268,7 @@ class TrainerTypeTest < Minitest::Test
         end
 
         expected = ["Gym Leader", 1, 80, 50, [:CAREFUL, :AGGRO], "Intro", "Battle", "Cursed", "Victory", true, "Leader"]
+
         assert_equal expected, attributes(GameData::TrainerType.get(:LEADER))
         refute GameData::TrainerType.get(:LEADER).defined_in_extension
     end
@@ -301,6 +298,7 @@ class TrainerTypeTest < Minitest::Test
         end
 
         genders = GameData::TrainerType.keys.sort.map { |id| GameData::TrainerType.get(id).gender }
+
         assert_equal [3] * 5, genders
     end
 

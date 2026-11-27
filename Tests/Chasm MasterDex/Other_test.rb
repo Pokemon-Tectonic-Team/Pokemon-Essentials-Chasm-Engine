@@ -1,6 +1,29 @@
 require_relative "../support/test_helper"
 
 class OtherTest < Minitest::Test
+    # The player's MasterDex, recording what the dex helpers ask of it
+    class FakePokedex
+        attr_reader :calls
+
+        def initialize = @calls = []
+        def register_last_seen(pokemon) = @calls.push([:register_last_seen, pokemon])
+        def set_last_form_seen(*args) = @calls.push([:set_last_form_seen, *args])
+        def unlock(dex) = @calls.push([:unlock, dex])
+        def refresh_accessible_dexes = @calls.push([:refresh_accessible_dexes])
+    end
+
+    FakeTrainer = Struct.new(:pokedex, :has_pokedex)
+    FakePokemon = Struct.new(:species)
+
+    def setup
+        $Trainer = FakeTrainer.new(FakePokedex.new, false)
+    end
+
+    def teardown
+        $Trainer = nil
+        $dex_cross_link = nil
+    end
+
     # catchDifficultyFromRareness
 
     def tiers(*rates)
@@ -34,6 +57,7 @@ class OtherTest < Minitest::Test
         threshold = PokeBattle_Battle.captureThresholdCalcInternals(:NONE, 0, 50, 100, 60)
 
         expected = (threshold / 65_536.0)**4
+
         assert_in_delta expected, theoreticalCaptureChance(:NONE, 50, 100, 60), 1e-12
     end
 
@@ -47,11 +71,18 @@ class OtherTest < Minitest::Test
 
     # describeEvolutionMethod
 
+    # Describes each [method, parameter] key of expected, to compare with expected's descriptions
+    def descriptions(expected)
+        return expected.keys.to_h { |method, parameter| [[method, parameter], describeEvolutionMethod(method, parameter)] }
+    end
+
     def test_level_methods_describe_their_level
-        assert_equal "at level 16", describeEvolutionMethod(:Level, 16)
-        assert_equal "at level 16", describeEvolutionMethod(:Ninjask, 16)
-        assert_equal "at level 20 if it's male", describeEvolutionMethod(:LevelMale, 20)
-        assert_equal "at level 20 during nighttime", describeEvolutionMethod(:LevelNight, 20)
+        expected = {
+            [:Level, 16] => "at level 16", [:Ninjask, 16] => "at level 16",
+            [:LevelMale, 20] => "at level 20 if it's male", [:LevelNight, 20] => "at level 20 during nighttime"
+        }
+
+        assert_equal expected, descriptions(expected)
     end
 
     def test_every_level_method_mentions_its_level
@@ -60,7 +91,7 @@ class OtherTest < Minitest::Test
             Silcoon Cascoon Ability0 Ability1
         ]
 
-        methods.each { |method| assert describeEvolutionMethod(method, 33).start_with?("at level 33"), method }
+        methods.each { |method| assert describeEvolutionMethod(method, 33).start_with?("at level 33"), "method #{method}" }
     end
 
     def test_methods_without_a_parameter
@@ -83,10 +114,13 @@ class OtherTest < Minitest::Test
         create_item(id: :FIRESTONE, name: "Fire Stone")
         create_item(id: :ICESTONE, name: "Ice Stone")
 
-        assert_equal "by using a Fire Stone", describeEvolutionMethod(:Item, :FIRESTONE)
-        assert_equal "by using an Ice Stone", describeEvolutionMethod(:Item, :ICESTONE)
-        assert_equal "by using an Ice Stone if it's male", describeEvolutionMethod(:ItemMale, :ICESTONE)
-        assert_equal "by using a Fire Stone if it's female", describeEvolutionMethod(:ItemFemale, :FIRESTONE)
+        expected = {
+            [:Item, :FIRESTONE] => "by using a Fire Stone", [:Item, :ICESTONE] => "by using an Ice Stone",
+            [:ItemMale, :ICESTONE] => "by using an Ice Stone if it's male",
+            [:ItemFemale, :FIRESTONE] => "by using a Fire Stone if it's female"
+        }
+
+        assert_equal expected, descriptions(expected)
     end
 
     def test_trade_item_names_its_item_with_its_article
@@ -116,29 +150,6 @@ class OtherTest < Minitest::Test
 
     def test_an_undescribed_method_says_so
         assert_equal "via a method the programmer was too lazy to describe", describeEvolutionMethod(:LevelSnow, 10)
-    end
-
-    # The player's MasterDex, recording what the dex helpers ask of it
-    class FakePokedex
-        attr_reader :calls
-
-        def initialize = @calls = []
-        def register_last_seen(pokemon) = @calls.push([:register_last_seen, pokemon])
-        def set_last_form_seen(*args) = @calls.push([:set_last_form_seen, *args])
-        def unlock(dex) = @calls.push([:unlock, dex])
-        def refresh_accessible_dexes = @calls.push([:refresh_accessible_dexes])
-    end
-
-    FakeTrainer = Struct.new(:pokedex, :has_pokedex)
-    FakePokemon = Struct.new(:species)
-
-    def setup
-        $Trainer = FakeTrainer.new(FakePokedex.new, false)
-    end
-
-    def teardown
-        $Trainer = nil
-        $dex_cross_link = nil
     end
 
     # resolveDexSpecies

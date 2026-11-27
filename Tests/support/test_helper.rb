@@ -29,6 +29,7 @@ require_relative "plugin_loader"
 require_relative "test_reset"
 require_relative "record_factories"
 require_relative "move_factory"
+require_relative "assertions"
 
 CoreScripts.load(File.join(repo_root, "Data", "Scripts.rxdata"), PluginFiles::CORE_SCRIPTS)
 require_relative "localisation_stubs"
@@ -40,3 +41,4 @@ TestReset.baseline = StateSnapshot.take
 Minitest::Test.include(TestReset)
 Minitest::Test.include(RecordFactories)
 Minitest::Test.include(MoveFactory)
+Minitest::Test.include(Assertions)

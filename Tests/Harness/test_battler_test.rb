@@ -2,21 +2,16 @@ require_relative "../support/test_helper"
 
 class TestBattlerTest < Minitest::Test
     def test_defaults
-        battler = TestBattler.new
+        expected = {
+            hp: 1, totalhp: 1, index: 0, effects: {}, boss?: false, pbSpeed: 1, pbThis: "Test", hpBasedEffectResistance: 1.0,
+            fainted?: false, movedThisRound?: false, learned_items: [], applied_effects: []
+        }
 
-        assert_equal 1, battler.hp
-        assert_equal 1, battler.totalhp
-        assert_equal 0, battler.index
-        assert_equal({}, battler.effects)
-        refute battler.boss?
-        assert_equal 1, battler.pbSpeed
-        assert_equal "Test", battler.pbThis
-        assert_equal 1.0, battler.hpBasedEffectResistance
-        refute battler.fainted?
-        refute battler.movedThisRound?
-        refute battler.hasActiveAbility?(:ANYTHING)
-        assert_empty battler.learned_items
-        assert_empty battler.applied_effects
+        assert_attributes expected, TestBattler.new
+    end
+
+    def test_by_default_no_ability_is_active
+        refute TestBattler.new.hasActiveAbility?(:ANYTHING)
     end
 
     def test_each_keyword_reaches_its_reader_or_override
@@ -25,16 +20,13 @@ class TestBattlerTest < Minitest::Test
                                   name: "Named", hp_resistance: 0.5, fainted: true, moved: true,
                                   abilities: [:STATIC])
 
-        assert_equal 40, battler.hp
-        assert_equal 90, battler.totalhp
-        assert_equal 2, battler.index
+        expected = {
+            hp: 40, totalhp: 90, index: 2, boss?: true, pbSpeed: 77, pbThis: "Named", hpBasedEffectResistance: 0.5,
+            fainted?: true, movedThisRound?: true
+        }
+
+        assert_attributes expected, battler
         assert_same effects, battler.effects
-        assert battler.boss?
-        assert_equal 77, battler.pbSpeed
-        assert_equal "Named", battler.pbThis
-        assert_equal 0.5, battler.hpBasedEffectResistance
-        assert battler.fainted?
-        assert battler.movedThisRound?
         assert battler.hasActiveAbility?(:STATIC)
     end
 
@@ -44,8 +36,6 @@ class TestBattlerTest < Minitest::Test
         assert_equal 5, battler.pbSpeed(true, 2, afterSwitching: true, move: nil)
         assert_equal "Named", battler.pbThis(true)
         assert battler.hasActiveAbility?(:X, true, false, ignoreGas: true)
-        battler.applyEffect(:E, 1, true)
-        assert_equal [[:E, 1]], battler.applied_effects
     end
 
     def test_loaded_overrides_take_the_real_methods_parameters

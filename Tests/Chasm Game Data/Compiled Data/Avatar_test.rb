@@ -106,6 +106,7 @@ class AvatarTest < Minitest::Test
         expected = "#-------------------------------\r\n[BASE,2]\r\nAbility = BLAZE\r\nMoves1 = EMBER\r\nMoves2 = EMBER\r\n" \
                    "Moves3 = EMBER\r\nMoves4 = EMBER\r\nMoves5 = EMBER\r\nTurns = 9\r\nHPMult = 7\r\nHealthBars = 2\r\n" \
                    "Item = ORB\r\nDMGMult = 3\r\nDMGResist = 0.5\r\nForm = 1\r\nAggression = 5\r\n"
+
         assert_equal expected, written_avatar(avatar)
     end
 

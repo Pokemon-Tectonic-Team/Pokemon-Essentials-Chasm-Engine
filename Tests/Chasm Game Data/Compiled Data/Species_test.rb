@@ -30,14 +30,19 @@ class SpeciesTest < Minitest::Test
 
         assert_empty species.get_prevolutions
         assert_equal [[:BASE, :None, nil]], species.get_prevolutions(false)
-        refute species.has_previous_species?
+    end
+
+    def test_a_none_method_prevolution_is_not_a_previous_species
+        species = create_species(id: :MID, evolutions: [[:BASE, :None, nil, true]])
+
+        refute_predicate species, :has_previous_species?
         assert_equal :MID, species.get_previous_species
     end
 
     def test_previous_species_of_an_unevolved_species_is_itself
         base, = register_line(:BASE, :MID)
 
-        refute base.has_previous_species?
+        refute_predicate base, :has_previous_species?
         assert_equal :BASE, base.get_previous_species
         assert_nil base.get_previous_species_data
     end
@@ -45,7 +50,7 @@ class SpeciesTest < Minitest::Test
     def test_previous_species_of_an_evolved_species
         _, mid, = register_line(:BASE, :MID, :TOP)
 
-        assert mid.has_previous_species?
+        assert_predicate mid, :has_previous_species?
         assert_equal :BASE, mid.get_previous_species
         assert_equal GameData::Species.get(:BASE), mid.get_previous_species_data
     end
@@ -141,20 +146,18 @@ class SpeciesTest < Minitest::Test
 
     def test_family_evolutions_have_method_matches_the_method_and_any_parameter_given
         _, top = register_pair(:Level, 16)
+        queries = [[:Level], [%i[Item Level]], [:Level, 16], [:Level, 20], [:Item], [%i[Item Trade]]]
 
-        assert top.family_evolutions_have_method?(:Level)
-        assert top.family_evolutions_have_method?(%i[Item Level])
-        assert top.family_evolutions_have_method?(:Level, 16)
-        refute top.family_evolutions_have_method?(:Level, 20)
-        refute top.family_evolutions_have_method?(:Item)
-        refute top.family_evolutions_have_method?(%i[Item Trade])
+        matched = queries.select { |arguments| top.family_evolutions_have_method?(*arguments) }
+
+        assert_equal [[:Level], [%i[Item Level]], [:Level, 16]], matched
         refute create_species(id: :SOLO).family_evolutions_have_method?(:Level)
     end
 
     def test_family_item_evolutions_use_item_matches_any_item_or_the_one_given
         _, top = register_pair(:Item, :FIRESTONE)
 
-        assert top.family_item_evolutions_use_item?
+        assert_predicate top, :family_item_evolutions_use_item?
         assert top.family_item_evolutions_use_item?(:FIRESTONE)
         refute top.family_item_evolutions_use_item?(:WATERSTONE)
     end
@@ -162,8 +165,8 @@ class SpeciesTest < Minitest::Test
     def test_family_item_evolutions_use_item_is_false_without_an_item_evolution
         _, top = register_pair(:Level, 16)
 
-        refute top.family_item_evolutions_use_item?
-        refute create_species(id: :SOLO).family_item_evolutions_use_item?
+        refute_predicate top, :family_item_evolutions_use_item?
+        refute_predicate create_species(id: :SOLO), :family_item_evolutions_use_item?
     end
 
     def test_minimum_level_of_an_unevolved_species_is_1
@@ -277,6 +280,7 @@ class SpeciesTest < Minitest::Test
             "Abilities = BLAZE", "Moves = 1,TACKLE", "FormMove = SURF", "TutorMoves = EMBER", "LineMoves = SURF",
             "Tribes = LOYAL", "StickyItems = GEM", "Evolutions = TOP,Level,16"
         ]
+
         expected.each { |line| assert_includes lines, line }
     end
 
@@ -471,6 +475,7 @@ class SpeciesTest < Minitest::Test
         compile_pokemon("[BASE]\nName = Base\nEvolutions = TOP,Level,16\n[TOP]\nName = Top\n[SOLO]\nName = Solo\n")
 
         rates = %i[BASE TOP SOLO].map { |id| GameData::Species.get(id).catch_rate }
+
         assert_equal [145, 60, 95], rates
     end
 
@@ -490,6 +495,7 @@ class SpeciesTest < Minitest::Test
         compile_forms("[BASE,1]\nMoves = 3,EMBER,1,TACKLE\nEvolutions = TOP,Level,20\n")
 
         form = GameData::Species.get(:BASE_1)
+
         assert_equal [[1, :TACKLE], [3, :EMBER]], form.moves
         assert_equal [[:TOP, :Level, 20, false]], form.evolutions
     end
@@ -563,6 +569,7 @@ class SpeciesTest < Minitest::Test
         in_game_folder { Compiler.compile_species_earliest_levels }
 
         top = GameData::Species.get(:TOP)
+
         assert_equal [5, 10], [top.earliest_available, top.earliest_available_normal]
     end
 
@@ -577,6 +584,7 @@ class SpeciesTest < Minitest::Test
         compile_forms("[BASE,1]\nFormName = Alt\n")
 
         form = GameData::Species.get(:BASE_1)
+
         assert_nil form.catch_rate_override
         assert_equal 95, form.catch_rate
     end

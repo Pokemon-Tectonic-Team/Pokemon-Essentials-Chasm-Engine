@@ -21,6 +21,7 @@ class AnimatedBitmapTest < Minitest::Test
 
     def test_a_sheet_splits_into_its_frames
         bitmap = animated("[2,4]Blink")
+
         assert_equal 2, bitmap.length
         assert_equal [100, 50], [bitmap.width, bitmap.height]
     end
@@ -28,13 +29,16 @@ class AnimatedBitmapTest < Minitest::Test
     def test_each_frame_shows_for_the_delay
         bitmap = animated("[2,4]Blink")
         3.times { bitmap.update }
+
         assert_equal 0, bitmap.currentIndex
         bitmap.update
+
         assert_equal 1, bitmap.currentIndex
     end
 
     def test_a_sheet_with_no_delay_shows_each_frame_for_ten
         bitmap = animated("[2]Blink")
+
         assert_equal 2 * 10, bitmap.totalFrames
     end
 

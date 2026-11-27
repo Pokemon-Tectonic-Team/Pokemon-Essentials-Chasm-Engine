@@ -22,6 +22,12 @@ class DebugCommandsOtherTest < Minitest::Test
         end
     end
 
+    # The pit avatar list is a class instance variable, which the per-test reset doesn't restore
+    def teardown
+        FileUtils.rm_f(SaveData::FILE_PATH)
+        GameData::Avatar.pit_avatars.clear
+    end
+
     def test_renames_are_read_from_move_renames_skipping_comments_and_blank_lines
         text = "\xEF\xBB\xBF# Old,New,Display\r\nEMBER,CINDER,Cinder\r\n\r\n  TACKLE,SLAM,Slam  # tidied\r\n"
 
@@ -45,6 +51,7 @@ class DebugCommandsOtherTest < Minitest::Test
 
         refute GameData::Move.exists?(:EMBER)
         cinder = GameData::Move.get(:CINDER)
+
         assert_equal ["Cinder", 7, 40, 25], [cinder.real_name, cinder.id_number, cinder.base_damage, cinder.total_pp]
         assert_same cinder, GameData::Move.get(7)
     end
@@ -57,6 +64,7 @@ class DebugCommandsOtherTest < Minitest::Test
         renameMoves({ "EMBER" => %w[CINDER Cinder] })
 
         renamed = GameData::Species.get(:BASE)
+
         assert_equal [[[1, :TACKLE], [5, :CINDER]], [:CINDER], %i[CINDER TACKLE]], [renamed.moves, renamed.tutor_moves, renamed.line_moves]
         assert_equal 12, renamed.earliest_available
         assert_equal ["Modifying Base"], echoed
@@ -93,6 +101,7 @@ class DebugCommandsOtherTest < Minitest::Test
 
         trainer = GameData::Trainer.get(:LEADER, "Ann", 1)
         party_moves = trainer.pokemon.map { |member| member[:moves] }
+
         assert_equal [%i[CINDER TACKLE], nil], party_moves
         assert_same trainer, GameData::Trainer::DATA[5]
         assert_equal %i[EMBER TACKLE], old_trainer.pokemon[0][:moves] # The old record is left as it was
@@ -106,6 +115,7 @@ class DebugCommandsOtherTest < Minitest::Test
 
         trainer = GameData::Trainer.get(:LEADER, "Ann", 1)
         kept = [trainer.real_name, trainer.name_for_hashing, trainer.items, trainer.real_lose_text, trainer.flags, trainer.defined_in_extension]
+
         assert_equal ["Ann", "Ann2", [:POTION], "Well fought.", ["Rematch"], true], kept
     end
 
@@ -120,6 +130,7 @@ class DebugCommandsOtherTest < Minitest::Test
         renameMoves({ "EMBER" => %w[CINDER Cinder] })
 
         avatar = GameData::Avatar.get(:BASE, 2)
+
         assert_equal [%i[CINDER TACKLE], [:CINDER]], [avatar.moves1, avatar.moves2]
         assert_equal [:BASE, 2, [:POTION], [:BLAZE], true], [avatar.species, avatar.version, avatar.items, avatar.abilities, avatar.defined_in_extension]
         assert_equal [avatar], GameData::Avatar.getPitAvatars
@@ -196,27 +207,41 @@ class DebugCommandsOtherTest < Minitest::Test
         assert_empty messages
     end
 
-    def test_rename_from_input_renames_the_move_and_rewrites_the_pbs_files
+    def rename_from_input
         create_move(id: :EMBER)
         answers.replace(["EMBER", "cin der", "Cinder"])
+        return run_command("renamemovefrominput")
+    end
 
-        written = run_command("renamemovefrominput")
+    def test_rename_from_input_renames_the_move
+        rename_from_input
 
         assert GameData::Move.exists?(:CINDER)
-        assert_includes written["moves.txt"], "[CINDER]"
-        assert_empty %w[pokemon.txt pokemonforms.txt trainers.txt avatars.txt] - written.keys
         assert_equal ["Rename completed."], messages
     end
 
-    def test_rename_from_file_renames_the_moves_listed_and_rewrites_the_pbs_files
-        create_move(id: :EMBER)
+    def test_rename_from_input_rewrites_the_pbs_files
+        written = rename_from_input
 
-        written = run_command("renamemovefromfile", { "move_renames.txt" => "EMBER,CINDER,Cinder\n" })
+        assert_includes written["moves.txt"], "[CINDER]"
+        assert_empty %w[pokemon.txt pokemonforms.txt trainers.txt avatars.txt] - written.keys
+    end
+
+    def rename_from_file
+        create_move(id: :EMBER)
+        return run_command("renamemovefromfile", { "move_renames.txt" => "EMBER,CINDER,Cinder\n" })
+    end
+
+    def test_rename_from_file_renames_the_moves_listed
+        rename_from_file
 
         assert GameData::Move.exists?(:CINDER)
-        assert_includes written["moves.txt"], "[CINDER]"
         assert_equal ["Mass rename completed.", "Or tell a programmer to do it for you :)"], [messages.first, messages.last]
         assert_empty errors
+    end
+
+    def test_rename_from_file_rewrites_the_pbs_files
+        assert_includes rename_from_file["moves.txt"], "[CINDER]"
     end
 
     def test_rename_from_file_reports_a_missing_rename_file
@@ -227,12 +252,6 @@ class DebugCommandsOtherTest < Minitest::Test
     end
 
     # setSaveVersion
-
-    # The pit avatar list is a class instance variable, which the per-test reset doesn't restore
-    def teardown
-        FileUtils.rm_f(SaveData::FILE_PATH)
-        GameData::Avatar.pit_avatars.clear
-    end
 
     def test_set_save_version_rewrites_the_saved_game_version
         File.binwrite(SaveData::FILE_PATH, Marshal.dump({ game_version: "3.0.0", player: "kept" }))

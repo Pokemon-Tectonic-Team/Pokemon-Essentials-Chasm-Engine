@@ -45,16 +45,19 @@ class PortraitCommandsTest < Minitest::Test
 
     def test_there_are_no_portraits_off_the_map
         $scene = Object.new
+
         assert_nil pbDialoguePortraits
     end
 
     def test_there_are_no_portraits_with_no_scene
         $scene = nil
+
         assert_nil pbDialoguePortraits
     end
 
     def test_there_are_no_portraits_before_the_map_has_a_spriteset
         $scene = Scene_Map.new
+
         assert_nil pbDialoguePortraits
     end
 
@@ -63,6 +66,7 @@ class PortraitCommandsTest < Minitest::Test
         anchor = PortraitAnchor.new(Graphics.height - 96, 96, 0, 0)
         expected = portraitWindowPosition(:left, PORTRAIT_FRAME_WIDTH + 32, PORTRAIT_FRAME_HEIGHT + 32,
             anchor, Graphics.width)[1]
+
         assert_equal expected, windowOf(shown(:left)).y
         assert_equal :left, @portraits.speaker
     end
@@ -71,9 +75,11 @@ class PortraitCommandsTest < Minitest::Test
         showPortrait(:left, "Val")
         portrait = shown(:left)
         showPortrait(:left, "")
+
         assert_nil @portraits.speaker
         waitForPortraits
-        assert windowOf(portrait).disposed?
+
+        assert_predicate windowOf(portrait), :disposed?
     end
 
     def test_hiding_one_side_leaves_the_other
@@ -82,8 +88,9 @@ class PortraitCommandsTest < Minitest::Test
         left = shown(:left)
         hidePortrait(:left)
         waitForPortraits
-        assert windowOf(left).disposed?
-        refute windowOf(shown(:right)).disposed?
+
+        assert_predicate windowOf(left), :disposed?
+        refute_predicate windowOf(shown(:right)), :disposed?
     end
 
     def test_hiding_every_side
@@ -92,14 +99,17 @@ class PortraitCommandsTest < Minitest::Test
         portraits = [shown(:left), shown(:right)]
         hidePortraits
         waitForPortraits
+
         assert(portraits.all? { |portrait| windowOf(portrait).disposed? })
     end
 
     def test_setting_the_speaker_and_nobody
         showPortrait(:left, "Val")
         setPortraitSpeaker(:centre)
+
         assert_equal :centre, @portraits.speaker
         setPortraitSpeaker(nil)
+
         assert_nil @portraits.speaker
     end
 
@@ -107,13 +117,15 @@ class PortraitCommandsTest < Minitest::Test
         showPortrait(:left, "Val")
         start = Graphics.frame_count
         waitForPortraits
-        refute @portraits.animating?
+
+        refute_predicate @portraits, :animating?
         assert_in_delta PORTRAIT_SLIDE_SECONDS * Graphics.frame_rate, Graphics.frame_count - start, 1
     end
 
     def test_waiting_with_nothing_moving_returns_at_once
         start = Graphics.frame_count
         waitForPortraits
+
         assert_equal start, Graphics.frame_count
     end
 
@@ -122,7 +134,7 @@ class PortraitCommandsTest < Minitest::Test
             error = assert_raises(ArgumentError, &command)
             assert_includes error.message, ":top"
         end
-        refute @portraits.animating?
+        refute_predicate @portraits, :animating?
     end
 
     def test_every_command_raises_off_the_map

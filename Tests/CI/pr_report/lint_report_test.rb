@@ -15,6 +15,7 @@ class LintReportTest < Minitest::Test
 
     def test_full_section_leaves_a_title_elsewhere
         text = "x\n# RuboCop Inspection Report\n\nbody\n"
+
         assert_equal text, L.full_section(text)
     end
 
@@ -92,6 +93,7 @@ class LintReportTest < Minitest::Test
         result = L.summary(counts: "1  A/B\n", safe: 0, unique: unique)
 
         kept = "### f\n#{"- x\n" * 199}"
+
         assert result.end_with?("\n#{kept}\n#{L::CUT_NOTE}\n")
     end
 

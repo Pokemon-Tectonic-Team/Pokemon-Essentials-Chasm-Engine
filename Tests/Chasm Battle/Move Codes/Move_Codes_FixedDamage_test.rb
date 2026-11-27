@@ -38,7 +38,8 @@ class FixedDamageMoveCodesTest < Minitest::Test
         battle = TestBattle.new
         user = TestBattler.new(hp: 10)
         target = TestBattler.new(hp: 11)
-        assert_equal false, endeavor(battle).pbFailsAgainstTarget?(user, target, true)
+
+        refute endeavor(battle).pbFailsAgainstTarget?(user, target, true)
         assert_empty battle.messages
     end
 
@@ -46,7 +47,8 @@ class FixedDamageMoveCodesTest < Minitest::Test
         battle = TestBattle.new
         user = TestBattler.new(hp: 20, name: "Ursa")
         target = TestBattler.new(hp: 10, name: "Foe")
-        assert_equal true, endeavor(battle).pbFailsAgainstTarget?(user, target, true)
+
+        assert endeavor(battle).pbFailsAgainstTarget?(user, target, true)
         assert_equal ["But it failed, since Ursa's health is greater than Foe's!"], battle.messages
     end
 
@@ -54,22 +56,25 @@ class FixedDamageMoveCodesTest < Minitest::Test
         battle = TestBattle.new
         user = TestBattler.new(hp: 10, name: "Ursa")
         target = TestBattler.new(hp: 10, name: "Foe")
-        assert_equal true, endeavor(battle).pbFailsAgainstTarget?(user, target, true)
+
+        assert endeavor(battle).pbFailsAgainstTarget?(user, target, true)
     end
 
     def test_endeavor_fails_against_a_boss
         battle = TestBattle.new
         user = TestBattler.new(hp: 10)
         target = TestBattler.new(hp: 50, boss: true, name: "Avatar")
-        assert_equal true, endeavor(battle).pbFailsAgainstTarget?(user, target, true)
+
+        assert endeavor(battle).pbFailsAgainstTarget?(user, target, true)
         assert_equal ["But it failed, since Avatar is an Avatar!"], battle.messages
     end
 
     def test_endeavor_displays_nothing_without_show_message
         battle = TestBattle.new
         move = endeavor(battle)
-        assert_equal true, move.pbFailsAgainstTarget?(TestBattler.new(hp: 20), TestBattler.new(hp: 10), false)
-        assert_equal true, move.pbFailsAgainstTarget?(TestBattler.new(hp: 10), TestBattler.new(hp: 50, boss: true), false)
+
+        assert move.pbFailsAgainstTarget?(TestBattler.new(hp: 20), TestBattler.new(hp: 10), false)
+        assert move.pbFailsAgainstTarget?(TestBattler.new(hp: 10), TestBattler.new(hp: 50, boss: true), false)
         assert_empty battle.messages
     end
 

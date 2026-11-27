@@ -3,6 +3,7 @@ require_relative "../support/test_helper"
 class TestResetTest < Minitest::Test
     def test_before_setup_puts_back_a_changed_stat_record
         original = GameData::Stat::DATA[:SPECIAL_ATTACK]
+
         assert_equal "Special Attack", original.real_name
         GameData::Stat::DATA[:SPECIAL_ATTACK] = GameData::Stat.new({ id: :SPECIAL_ATTACK, name: "Changed" })
 

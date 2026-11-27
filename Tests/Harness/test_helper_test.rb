@@ -2,8 +2,8 @@ require_relative "../support/test_helper"
 
 class TestHelperTest < Minitest::Test
     def test_ruby_utilities_is_the_real_one
-        refute " ".blank?
-        assert "".blank?
+        refute_predicate " ", :blank?
+        assert_predicate "", :blank?
     end
 
     def test_validation_is_the_real_one
@@ -37,6 +37,6 @@ class TestHelperTest < Minitest::Test
     end
 
     def test_requiring_the_helper_again_returns_false
-        assert_equal false, require_relative("../support/test_helper")
+        assert_same false, require_relative("../support/test_helper")
     end
 end

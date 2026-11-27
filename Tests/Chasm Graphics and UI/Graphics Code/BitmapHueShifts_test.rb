@@ -65,6 +65,7 @@ class BitmapHueShiftsTest < Minitest::Test
         assert_same copy, shiftBitmapShade(FakeStillBitmap.new(copy), 255)
 
         color = copy.pixels[[0, 0]]
+
         assert_equal [255, 128, 0], [color.red, color.green, color.blue]
     end
 
@@ -74,6 +75,7 @@ class BitmapHueShiftsTest < Minitest::Test
         shiftBitmapShade(FakeAnimatedBitmap.new(frames), 255)
 
         channels = frames.map { |frame| frame.pixels[[0, 0]] }.map { |color| [color.red, color.green, color.blue] }
+
         assert_equal [[255, 128, 0]] * 2, channels
     end
 
@@ -112,6 +114,7 @@ class BitmapHueShiftsTest < Minitest::Test
         shade_change(bitmap, 255) # Doubles each channel, then stretches it away from 128
 
         color = bitmap.pixels[[0, 0]]
+
         assert_equal [255, 128, 0], [color.red, color.green, color.blue]
     end
 
@@ -121,6 +124,7 @@ class BitmapHueShiftsTest < Minitest::Test
         shade_change(bitmap, 255)
 
         color = bitmap.pixels[[0, 0]]
+
         assert_equal [250, 128, 5], [color.red, color.green, color.blue]
     end
 end

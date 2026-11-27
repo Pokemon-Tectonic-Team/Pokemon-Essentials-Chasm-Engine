@@ -9,6 +9,7 @@ class ItemHandlerHelpersTest < Minitest::Test
         user = TestBattler.new
         m = mults
         typeBoostingItem(:CHARCOAL, user, :FIRE, m, [:FIRE], false)
+
         assert_in_delta 1.2, m[:base_damage_multiplier]
         assert_equal [:CHARCOAL], user.learned_items
     end
@@ -17,7 +18,8 @@ class ItemHandlerHelpersTest < Minitest::Test
         user = TestBattler.new
         m = mults
         typeBoostingItem(:CHARCOAL, user, :FIRE, m, [:WATER], false)
-        assert_equal 1.0, m[:base_damage_multiplier]
+
+        assert_in_delta 1.0, m[:base_damage_multiplier]
         assert_empty user.learned_items
     end
 
@@ -25,6 +27,7 @@ class ItemHandlerHelpersTest < Minitest::Test
         user = TestBattler.new
         m = mults
         typeBoostingItem(:CHARCOAL, user, :FIRE, m, [:FIRE], true)
+
         assert_in_delta 1.2, m[:base_damage_multiplier]
         assert_empty user.learned_items
     end
@@ -33,6 +36,7 @@ class ItemHandlerHelpersTest < Minitest::Test
         user = TestBattler.new
         m = mults
         typeBoostingItem(:CHARCOAL, user, :FIRE, m, [:WATER, :FIRE], false)
+
         assert_in_delta 1.2, m[:base_damage_multiplier]
         assert_equal [:CHARCOAL], user.learned_items
     end
@@ -40,6 +44,7 @@ class ItemHandlerHelpersTest < Minitest::Test
     def test_the_boost_multiplies_the_existing_multiplier
         m = { base_damage_multiplier: 2.0 }
         typeBoostingItem(:CHARCOAL, TestBattler.new, :FIRE, m, [:FIRE], true)
+
         assert_in_delta 2.4, m[:base_damage_multiplier]
     end
 end

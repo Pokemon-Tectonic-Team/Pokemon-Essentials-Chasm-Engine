@@ -12,6 +12,7 @@ class MarkdownTest < Minitest::Test
 
     def test_cut_lines_keeps_text_at_the_limit
         text = "x\n" * 200
+
         assert_equal text, M.cut_lines(text, limit: 200, note: "N")
     end
 
@@ -33,12 +34,14 @@ class MarkdownTest < Minitest::Test
 
     def test_cut_chars_keeps_text_at_the_limit
         text = "aaaaaaaaa\n" * 3
+
         assert_equal 30, text.length
         assert_equal text, M.cut_chars(text, limit: 30, note: "NOTE!")
     end
 
     def test_cut_chars_cuts_one_over_at_a_line_end
         text = "#{"aaaaaaa\n" * 3}bbbbbbb"
+
         assert_equal 31, text.length
 
         result = M.cut_chars(text, limit: 30, note: "NOTE!")
@@ -49,6 +52,7 @@ class MarkdownTest < Minitest::Test
 
     def test_cut_chars_closes_an_open_fence_within_the_limit
         text = "```\n#{"abcdefg\n" * 4}"
+
         assert_equal 36, text.length
 
         result = M.cut_chars(text, limit: 30, note: "NOTE!")

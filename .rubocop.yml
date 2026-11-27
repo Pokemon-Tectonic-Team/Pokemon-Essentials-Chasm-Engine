@@ -1,3 +1,6 @@
+plugins:
+    - rubocop-minitest
+
 require:
     - ./.rubocop/cops/inline_tab.rb
     - ./.rubocop/cops/mutable_constant.rb

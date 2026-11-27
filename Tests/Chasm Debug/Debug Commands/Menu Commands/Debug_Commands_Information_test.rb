@@ -40,19 +40,33 @@ class DebugCommandsInformationTest < Minitest::Test
         return create_species(id: id, flags: ["NoStaples"], base_stats: BASE_STATS.dup, **attributes)
     end
 
-    def test_consolidate_moves_a_tutor_move_the_whole_line_shares_into_the_first_stages_line_moves
+    # BASE, MID and TOP form one line, all three tutoring EMBER; SOLO evolves from nothing
+    def register_lines
         %i[EMBER SURF SLASH].each { |id| create_move(id: id) }
-        base = species(:BASE, id_number: 1, tutor_moves: %i[EMBER SURF], line_moves: [:SLASH], evolutions: [[:MID, :Level, 20, false]])
-        mid = species(:MID, id_number: 2, tutor_moves: %i[SURF EMBER], evolutions: [[:BASE, :Level, 20, true], [:TOP, :Level, 40, false]])
-        top = species(:TOP, id_number: 3, tutor_moves: [:EMBER], evolutions: [[:MID, :Level, 40, true]])
-        solo = species(:SOLO, id_number: 4, tutor_moves: [:SURF])
+        return [
+            species(:BASE, id_number: 1, tutor_moves: %i[EMBER SURF], line_moves: [:SLASH], evolutions: [[:MID, :Level, 20, false]]),
+            species(:MID, id_number: 2, tutor_moves: %i[SURF EMBER], evolutions: [[:BASE, :Level, 20, true], [:TOP, :Level, 40, false]]),
+            species(:TOP, id_number: 3, tutor_moves: [:EMBER], evolutions: [[:MID, :Level, 40, true]]),
+            species(:SOLO, id_number: 4, tutor_moves: [:SURF]),
+        ]
+    end
 
-        written = consolidate
+    def test_consolidate_moves_a_tutor_move_the_whole_line_shares_into_the_first_stages_line_moves
+        base, mid, top, solo = register_lines
+
+        consolidate
 
         assert_equal [[:SLASH, :EMBER], [:SURF], [:SURF], []], [base.line_moves, base.tutor_moves, mid.tutor_moves, top.tutor_moves]
         assert_equal [:SURF], solo.tutor_moves
+    end
+
+    def test_consolidate_reports_the_shared_moves_and_rewrites_the_species_pbs
+        register_lines
+
+        written = consolidate
+
         assert_equal ["The evolutionary line starting with BASE shares these tutor moves: [:EMBER]"], echoed
-        assert_includes written, "[BASE]"
         assert_equal ["Tutor moves consolidated!"], messages
+        assert_includes written, "[BASE]"
     end
 end

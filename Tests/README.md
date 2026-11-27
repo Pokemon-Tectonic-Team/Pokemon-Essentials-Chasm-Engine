@@ -66,6 +66,15 @@ class MoveDexEntrySceneTest < Minitest::Test
 end
 ```
 
+Keep each test to one behaviour and at most three assertions (lint checks this).
+The first failing assertion ends a test, so when you check several values of one
+result, compare them together, which shows every wrong value at once:
+
+```ruby
+assert_attributes({ hp: 1, index: 0, boss?: false }, TestBattler.new)
+assert_equal [:WATER], attackers.select { |type| super_effective?(type) }
+```
+
 ## Using game code
 
 If your tests rely on game code from another file, add it to the `PLUGIN_FILES`

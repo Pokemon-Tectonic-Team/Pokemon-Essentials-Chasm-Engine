@@ -7,10 +7,11 @@ class GraphicsFolderTest < Minitest::Test
         folder = nil
         GraphicsFolder.with do |dir|
             folder = dir
+
             assert_equal File.realpath(dir), File.realpath(Dir.pwd)
         end
         assert_equal cwd, Dir.pwd
-        refute File.exist?(folder)
+        refute_path_exists folder
     end
 
     def test_each_image_is_a_png_of_its_size
@@ -34,6 +35,7 @@ class GraphicsFolderTest < Minitest::Test
 
     def test_the_image_cache_starts_empty
         RPG::Cache.setKey("stale", Bitmap.new(1, 1))
+
         GraphicsFolder.with { assert_empty RPG::Cache.instance_variable_get(:@cache) }
     end
 end

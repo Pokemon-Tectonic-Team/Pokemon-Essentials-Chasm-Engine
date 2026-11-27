@@ -43,12 +43,14 @@ class FaceWindowVXTest < Minitest::Test
 
     def test_by_default_a_window_shows_a_small_face
         window = FaceWindowVX.new("Ana")
+
         assert_equal [128, 128], [window.width, window.height]
         assert_equal [0, 0, 96, 96], frameShown(window)
     end
 
     def test_the_frame_size_and_index_choose_the_frame
         window = FaceWindowVX.new("Val,1", 192, 256)
+
         assert_equal [224, 288], [window.width, window.height]
         assert_equal [192, 0, 192, 256], frameShown(window)
     end
@@ -63,6 +65,7 @@ class FaceWindowVXTest < Minitest::Test
 
     def test_a_shiny_face_shows_its_shiny_sheet
         $shiny_faces.setShiny("Val", true)
+
         assert_equal "Graphics/Faces shiny/Val.png", sheetShown(FaceWindowVX.new("Val", 192, 256))
     end
 
@@ -79,12 +82,14 @@ class FaceWindowVXTest < Minitest::Test
 
     def test_with_no_shiny_flags_at_all_faces_are_plain
         $shiny_faces = nil
+
         assert_equal "Graphics/Faces/Val.png", sheetShown(FaceWindowVX.new("Val", 192, 256))
     end
 
     def test_a_still_face_is_drawn_once
         window = FaceWindowVX.new("Ana")
         window.update
+
         assert_equal 1, window.contents.blts.length
     end
 
@@ -92,6 +97,7 @@ class FaceWindowVXTest < Minitest::Test
         window = FaceWindowVX.new("[2,10]Wink,1", 192, 256)
         first = lastBlt(window)[2]
         10.times { window.update }
+
         assert_equal 192, lastBlt(window)[3].x
         refute_same first, lastBlt(window)[2]
     end
@@ -104,12 +110,14 @@ class FaceWindowVXTest < Minitest::Test
         window = FaceWindowVX.new("Blink,1", 192, 256)
         window.update
         frames = window.contents.blts.map { |blt| blt[3].x }
+
         assert_equal [192, 192], frames
     end
 
     def test_changing_the_frame_clears_and_redraws
         window = FaceWindowVX.new("Val", 192, 256)
         window.frame = 4
+
         assert_equal [0, 256, 192, 256], frameShown(window)
         assert_equal 2, window.contents.clears
     end
@@ -119,8 +127,9 @@ class FaceWindowVXTest < Minitest::Test
         sheet = lastBlt(window)[2]
         face = window.contents
         window.dispose
-        assert sheet.disposed?
-        assert face.disposed?
-        assert window.disposed?
+
+        assert_predicate sheet, :disposed?
+        assert_predicate face, :disposed?
+        assert_predicate window, :disposed?
     end
 end

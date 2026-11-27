@@ -29,11 +29,11 @@ class EggMoveTutorTest < Minitest::Test
     end
 
     def test_can_egg_move_while_a_line_start_move_is_unknown
-        assert KnownMovesPokemon.new(:MID, [:EMBER]).can_egg_move?
-        refute KnownMovesPokemon.new(:MID, [:EMBER, :TACKLE]).can_egg_move?
+        assert_predicate KnownMovesPokemon.new(:MID, [:EMBER]), :can_egg_move?
+        refute_predicate KnownMovesPokemon.new(:MID, [:EMBER, :TACKLE]), :can_egg_move?
     end
 
     def test_an_egg_cannot_egg_move
-        refute KnownMovesPokemon.new(:MID, [], egg: true).can_egg_move?
+        refute_predicate KnownMovesPokemon.new(:MID, [], egg: true), :can_egg_move?
     end
 end

@@ -45,6 +45,7 @@ class DialogueLabelsTest < Minitest::Test
 
     def test_setting_a_speaker_builds_a_hidden_tag_in_the_speech_skin
         setSpeaker("Val", :viewport)
+
         assert_instance_of SpeakerNameWindow, tag
         assert_equal "#{MessageConfig.speechFrameName}.png", tag.windowskin.path
         assert_equal ["Val", :viewport, false], [tag.text, tag.viewport, tag.visible]
@@ -52,6 +53,7 @@ class DialogueLabelsTest < Minitest::Test
 
     def test_a_new_tag_stands_at_the_screen_bottom_above_message_windows
         setSpeaker("Val")
+
         assert_equal [Graphics.height - tag.height, 99_999], [tag.y, tag.z]
     end
 
@@ -59,39 +61,46 @@ class DialogueLabelsTest < Minitest::Test
         setSpeaker("Val")
         first = tag
         setSpeaker("Professor Oakwood")
+
         assert_same first, tag
         assert_equal "Professor Oakwood", tag.text
     end
 
     def test_a_short_name_gets_the_minimum_width_but_remembers_its_fit
         setSpeaker("Al")
+
         assert_equal SPEAKER_TAG_MIN_WIDTH, tag.width
         assert_operator tag.fitWidth, :<, SPEAKER_TAG_MIN_WIDTH
     end
 
     def test_a_long_name_is_as_wide_as_its_text
         setSpeaker("Professor Oakwood of the Western Reaches")
+
         assert_operator tag.fitWidth, :>, SPEAKER_TAG_MIN_WIDTH
         assert_equal tag.fitWidth, tag.width
     end
 
     def test_refreshing_with_no_tag_does_nothing
         refreshSpeakerWindow
+
         assert_nil tag
     end
 
     def test_showing_and_hiding_the_tag
         setSpeaker("Val")
         showSpeaker
-        assert speakerNameWindowVisible?
+
+        assert_predicate self, :speakerNameWindowVisible?
         hideSpeaker
-        refute speakerNameWindowVisible?
+
+        refute_predicate self, :speakerNameWindowVisible?
     end
 
     def test_showing_hiding_and_removing_with_no_tag_do_nothing
         showSpeaker
         hideSpeaker
         removeSpeaker
+
         assert_nil speakerNameWindowVisible?
     end
 
@@ -99,23 +108,27 @@ class DialogueLabelsTest < Minitest::Test
         setSpeaker("Val")
         window = tag
         removeSpeaker
-        assert window.disposed?
+
+        assert_predicate window, :disposed?
         assert_nil tag
     end
 
     def test_a_trainer_speaker_is_named_in_full
         GameData::Trainer::DATA[[:LEADER, "Val", 0]] = FakeTrainerRecord.new("Leader Val")
         setSpeakerTrainer(:LEADER, "Val")
+
         assert_equal "Leader Val", tag.text
     end
 
     def test_an_unknown_trainer_is_logged_not_shown
         setSpeakerTrainer(:LEADER, "Nobody")
+
         assert_nil tag
     end
 
     def test_a_trainer_named_by_something_other_than_a_string_is_logged_not_shown
         setSpeakerTrainer(:LEADER, nil)
+
         assert_nil tag
     end
 
@@ -131,6 +144,7 @@ class DialogueLabelsTest < Minitest::Test
     def test_with_no_speaker_the_tag_sits_on_the_message_window_left
         setSpeaker("Al")
         positionSpeakerWindow(MESSAGE, nil)
+
         assert_equal SPEAKER_TAG_MIN_WIDTH, tag.width
         assert_equal [MESSAGE.x + 12, MESSAGE.y - tag.height + 12, MESSAGE.z + 1], [tag.x, tag.y, tag.z]
     end
@@ -138,6 +152,7 @@ class DialogueLabelsTest < Minitest::Test
     def test_beside_a_speaking_portrait_the_tag_shrinks_to_its_text
         setSpeaker("Al")
         positionSpeakerWindow(MESSAGE, [:left, LEFT_IMAGE])
+
         assert_equal tag.fitWidth, tag.width
         assert_equal speakerTagX(:left, LEFT_IMAGE, tag.fitWidth, Graphics.width), tag.x
         assert_equal [MESSAGE.y - tag.height + 12, MESSAGE.z + 1], [tag.y, tag.z]
@@ -147,8 +162,10 @@ class DialogueLabelsTest < Minitest::Test
         setSpeaker("Al")
         writes = countWidthWrites
         3.times { positionSpeakerWindow(MESSAGE, nil) }
+
         assert_empty writes
         3.times { positionSpeakerWindow(MESSAGE, [:left, LEFT_IMAGE]) }
+
         assert_equal [tag.fitWidth], writes
     end
 end

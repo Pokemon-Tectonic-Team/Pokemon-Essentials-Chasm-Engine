@@ -14,6 +14,7 @@ class StateSnapshotTest < Minitest::Test
     def test_restore_undoes_a_record_registered_through_register
         snapshot = StateSnapshot.take
         GameData::Stat.register({ id: :SNAPSHOT_TEST_STAT, id_number: 99, name: "Planted" })
+
         assert GameData::Stat::DATA.key?(:SNAPSHOT_TEST_STAT)
 
         StateSnapshot.restore(snapshot)
@@ -26,6 +27,7 @@ class StateSnapshotTest < Minitest::Test
         assert_empty GameData::Ability::FLAG_INDEX
         snapshot = StateSnapshot.take
         GameData::Ability.register({ id: :SNAPSHOT_TEST_ABILITY, id_number: 99, flags: ["SnapshotFlag"] })
+
         assert_equal [:SNAPSHOT_TEST_ABILITY], GameData::Ability::FLAG_INDEX["SnapshotFlag"]
 
         StateSnapshot.restore(snapshot)
@@ -145,6 +147,7 @@ class StateSnapshotTest < Minitest::Test
     def test_an_unfrozen_constant_is_copied
         with_planted({ a: 1 }) do |planted|
             copy = StateSnapshot.take[planted]
+
             assert_equal({ a: 1 }, copy)
             refute_same planted, copy
         end
@@ -171,6 +174,7 @@ class StateSnapshotTest < Minitest::Test
         with_planted_handlers do |handlers, _event|
             snapshot = StateSnapshot.take
             handlers.add(:ADDED, proc {})
+
             refute_nil handlers[:ADDED]
 
             StateSnapshot.restore(snapshot)
@@ -183,6 +187,7 @@ class StateSnapshotTest < Minitest::Test
         with_planted_handlers do |handlers, _event|
             snapshot = StateSnapshot.take
             handlers.addIf(proc { |item| item == :ADDED_IF }, proc {})
+
             refute_nil handlers[:ADDED_IF]
 
             StateSnapshot.restore(snapshot)
@@ -196,6 +201,7 @@ class StateSnapshotTest < Minitest::Test
             snapshot = StateSnapshot.take
             callback = proc {}
             event += callback
+
             assert_includes event.instance_variable_get(:@callbacks), callback
 
             StateSnapshot.restore(snapshot)

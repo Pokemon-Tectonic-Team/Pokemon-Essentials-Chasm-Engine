@@ -28,11 +28,13 @@ class RuntimeStubsTest < Minitest::Test
 
     def test_tone_defaults_to_no_change
         tone = Tone.new
+
         assert_equal [0, 0, 0, 0], [tone.red, tone.green, tone.blue, tone.gray]
     end
 
     def test_tone_set_replaces_every_field
         tone = Tone.new.set(1, 2, 3, 4)
+
         assert_equal [1, 2, 3, 4], [tone.red, tone.green, tone.blue, tone.gray]
     end
 
@@ -46,8 +48,10 @@ class RuntimeStubsTest < Minitest::Test
 
     def test_rect_set_and_empty
         rect = Rect.new(1, 2, 3, 4)
+
         assert_equal [5, 6, 7, 8], rectOf(rect.set(5, 6, 7, 8))
         rect.empty
+
         assert_equal [0, 0, 0, 0], rectOf(rect)
     end
 
@@ -56,6 +60,7 @@ class RuntimeStubsTest < Minitest::Test
         size = Font.default_size
         Font.default_name = "Test Font"
         Font.default_size = 18
+
         assert_equal ["Test Font", 18], [Font.new.name, Font.new.size]
     ensure
         Font.default_name = name
@@ -65,6 +70,7 @@ class RuntimeStubsTest < Minitest::Test
     def test_a_font_with_no_default_size_is_24
         size = Font.default_size
         Font.default_size = nil
+
         assert_equal 24, Font.new.size
     ensure
         Font.default_size = size
@@ -72,6 +78,7 @@ class RuntimeStubsTest < Minitest::Test
 
     def test_a_blank_bitmap_has_its_size
         bitmap = Bitmap.new(30, 20)
+
         assert_equal [30, 20], [bitmap.width, bitmap.height]
         assert_equal [0, 0, 30, 20], rectOf(bitmap.rect)
         assert_nil bitmap.path
@@ -80,6 +87,7 @@ class RuntimeStubsTest < Minitest::Test
     def test_a_bitmap_from_a_file_has_the_png_size
         GraphicsFolder.with("Graphics/Pictures/Sign" => [40, 50]) do
             bitmap = Bitmap.new("Graphics/Pictures/Sign.png")
+
             assert_equal ["Graphics/Pictures/Sign.png", 40, 50], [bitmap.path, bitmap.width, bitmap.height]
         end
     end
@@ -104,6 +112,7 @@ class RuntimeStubsTest < Minitest::Test
         rect = Rect.new(1, 2, 3, 4)
         target.blt(5, 6, source, rect)
         target.stretch_blt(Rect.new(7, 8, 9, 9), source, rect)
+
         assert_equal [[5, 6, source, rect], [7, 8, source, rect]], target.blts
     end
 
@@ -113,12 +122,14 @@ class RuntimeStubsTest < Minitest::Test
         bitmap.draw_text(Rect.new(0, 0, 50, 20), "aligned", 1)
         bitmap.draw_text(0, 0, 50, 20, 42)
         bitmap.draw_text(Rect.new(0, 0, 50, 20), 7)
+
         assert_equal %w[left aligned 42 7], bitmap.texts
     end
 
     def test_a_bitmap_counts_its_clears
         bitmap = Bitmap.new(10, 10)
         2.times { bitmap.clear }
+
         assert_equal 2, bitmap.clears
     end
 
@@ -132,20 +143,24 @@ class RuntimeStubsTest < Minitest::Test
 
     def test_a_bitmap_is_still_unless_given_frames
         bitmap = Bitmap.new(10, 10)
-        refute bitmap.animated?
+
+        refute_predicate bitmap, :animated?
         bitmap.frame_count = 3
-        assert bitmap.animated?
+
+        assert_predicate bitmap, :animated?
     end
 
     def test_disposing_a_bitmap
         bitmap = Bitmap.new(10, 10)
         bitmap.dispose
-        assert bitmap.disposed?
+
+        assert_predicate bitmap, :disposed?
     end
 
     def test_a_sprite_shows_its_whole_bitmap
         sprite = Sprite.new(:viewport)
         sprite.bitmap = Bitmap.new(30, 20)
+
         assert_equal [0, 0, 30, 20], rectOf(sprite.src_rect)
         assert_equal [30, 20, :viewport], [sprite.width, sprite.height, sprite.viewport]
     end
@@ -158,7 +173,8 @@ class RuntimeStubsTest < Minitest::Test
     def test_disposing_a_sprite_or_viewport
         [Sprite.new, Viewport.new(0, 0, 1, 1)].each do |drawable|
             drawable.dispose
-            assert drawable.disposed?
+
+            assert_predicate drawable, :disposed?
         end
     end
 
@@ -173,6 +189,7 @@ class RuntimeStubsTest < Minitest::Test
     def test_each_graphics_update_is_a_frame
         start = Graphics.frame_count
         2.times { Graphics.update }
+
         assert_equal start + 2, Graphics.frame_count
     end
 

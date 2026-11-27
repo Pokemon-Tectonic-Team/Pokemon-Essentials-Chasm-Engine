@@ -16,12 +16,14 @@ class ShinyFacesTest < Minitest::Test
     def test_a_flagged_face_is_shiny
         faces = ShinyFaces.new
         faces.setShiny("Val", true)
+
         assert faces.shiny?("Val")
     end
 
     def test_flagging_one_face_leaves_the_others_alone
         faces = ShinyFaces.new
         faces.setShiny("Val", true)
+
         refute faces.shiny?("Ana")
     end
 
@@ -29,6 +31,7 @@ class ShinyFacesTest < Minitest::Test
         faces = ShinyFaces.new
         faces.setShiny("Val", true)
         faces.setShiny("Val", false)
+
         refute faces.shiny?("Val")
     end
 
@@ -37,23 +40,27 @@ class ShinyFacesTest < Minitest::Test
         faces.setShiny("Val", true)
         faces.setShiny("Val", true)
         faces.setShiny("Val", false)
+
         refute faces.shiny?("Val")
     end
 
     def test_unflagging_a_face_never_flagged_does_nothing
         faces = ShinyFaces.new
         faces.setShiny("Val", false)
+
         refute faces.shiny?("Val")
     end
 
     def test_a_new_game_starts_with_no_shiny_faces
         saveValue.load_new_game_value
+
         assert_instance_of ShinyFaces, $shiny_faces
         refute $shiny_faces.shiny?("Val")
     end
 
     def test_the_save_holds_the_flags
         $shiny_faces = ShinyFaces.new
+
         assert_same $shiny_faces, saveValue.save
     end
 
@@ -61,6 +68,7 @@ class ShinyFacesTest < Minitest::Test
         faces = ShinyFaces.new
         faces.setShiny("Val", true)
         saveValue.load(faces)
+
         assert $shiny_faces.shiny?("Val")
     end
 

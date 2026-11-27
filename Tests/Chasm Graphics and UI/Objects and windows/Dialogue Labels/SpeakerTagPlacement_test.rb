@@ -26,6 +26,7 @@ class SpeakerTagPlacementTest < Minitest::Test
 
     def test_a_centre_tag_that_does_not_fit_on_the_left_goes_right
         imageX = TAG_WIDTH + SPEAKER_TAG_GAP - 1
+
         assert_equal imageX + 192 + SPEAKER_TAG_GAP, tagX(:centre, imageX)
     end
 
@@ -39,6 +40,7 @@ class SpeakerTagPlacementTest < Minitest::Test
 
     def test_a_tag_as_wide_as_the_screen_fills_it
         imageRect = Rect.new(24, 40, 192, 256)
+
         assert_equal 0, speakerTagX(:left, imageRect, SCREEN_WIDTH, SCREEN_WIDTH)
     end
 

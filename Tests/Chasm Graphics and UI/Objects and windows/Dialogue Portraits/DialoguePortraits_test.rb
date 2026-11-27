@@ -40,61 +40,73 @@ class DialoguePortraitsTest < Minitest::Test
 
     def test_an_anchor_reads_the_window_position_size_and_frame_insets
         anchor = PortraitAnchor.of(FakeWindow.new(288, 96, [4, 6]))
+
         assert_equal [288, 96, 4, 6], anchor.to_a
     end
 
     def test_a_left_portrait_sits_at_the_edge_margin
         x, = position(:left, anchorAt(288))
+
         assert_equal PORTRAIT_EDGE_MARGIN, x
     end
 
     def test_a_centre_portrait_is_centred_on_the_screen
         x, = position(:centre, anchorAt(288))
+
         assert_equal((SCREEN_WIDTH - PORTRAIT_WIDTH) / 2, x)
     end
 
     def test_a_right_portrait_sits_at_the_edge_margin_from_the_right
         x, = position(:right, anchorAt(288))
+
         assert_equal SCREEN_WIDTH - PORTRAIT_WIDTH - PORTRAIT_EDGE_MARGIN, x
     end
 
     def test_a_portrait_stands_with_its_image_on_the_window_top
         _, y = position(:left, anchorAt(288))
+
         assert_equal 288, y + PORTRAIT_HEIGHT - PORTRAIT_WINDOW_PADDING
     end
 
     def test_a_portrait_stands_on_the_visible_frame_below_a_transparent_top
         _, y = position(:left, anchorAt(288, topInset: 10))
+
         assert_equal 298, y + PORTRAIT_HEIGHT - PORTRAIT_WINDOW_PADDING
     end
 
     def test_a_portrait_hangs_from_the_bottom_of_a_window_at_the_screen_top
         _, y = position(:left, anchorAt(0, height: 96))
+
         assert_equal 96, y + PORTRAIT_WINDOW_PADDING
     end
 
     def test_a_hanging_portrait_hangs_from_the_visible_frame_above_a_transparent_bottom
         _, y = position(:left, anchorAt(0, height: 96, bottomInset: 6))
+
         assert_equal 90, y + PORTRAIT_WINDOW_PADDING
     end
 
     def test_a_window_above_the_screen_top_still_counts_as_at_the_top
         _, y = position(:left, anchorAt(-20, height: 96))
+
         assert_equal 76, y + PORTRAIT_WINDOW_PADDING
     end
 
     def test_a_window_one_pixel_below_the_screen_top_has_a_portrait_standing_on_it
         _, y = position(:left, anchorAt(1))
+
         assert_equal 1, y + PORTRAIT_HEIGHT - PORTRAIT_WINDOW_PADDING
     end
 
     def test_a_hanging_portrait_ignores_the_top_inset
         _, y = position(:left, anchorAt(0, height: 96, topInset: 10))
+
         assert_equal 96, y + PORTRAIT_WINDOW_PADDING
     end
 
     def test_a_standing_portrait_ignores_the_bottom_inset
         _, y = position(:left, anchorAt(288, bottomInset: 10))
+
         assert_equal 288, y + PORTRAIT_HEIGHT - PORTRAIT_WINDOW_PADDING
     end
 
@@ -172,15 +184,14 @@ class DefaultPortraitAnchorTest < Minitest::Test
 
     def test_portraits_follow_the_message_position_option
         $game_system = MessageSettings.new(0, 0)
+
         assert_equal 0, defaultPortraitAnchor.y
     end
 
     def test_the_stand_in_message_window_is_a_hidden_speech_window_disposed_after
         built = messageWindowsBuilt { defaultPortraitAnchor }
-        assert_equal 1, built.length
-        window, skins = built.first
-        assert_equal [MessageConfig.pbGetSpeechFrame], skins
-        refute window.visible
-        assert window.disposed?
+
+        assert_equal [[MessageConfig.pbGetSpeechFrame]], built.map(&:last)
+        assert_attributes({ visible: false, disposed?: true }, built.first.first)
     end
 end
