@@ -277,7 +277,7 @@ def replaceAllCodeInstances(regex, newText)
 end
 
 def replaceCodeInstances(map_id, map_name, event, regex, newText)
-    return [] if !event || event.pages.empty?
+    return false if !event || event.pages.empty?
     changed = false
     event.pages.each do |page|
         page.list.each do |eventCommand|

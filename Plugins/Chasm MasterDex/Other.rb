@@ -117,18 +117,23 @@ def describeEvolutionMethod(method, parameter = 0)
     when :MaxHappiness then return _INTL("when leveled up while it has maximum happiness")
     when :Beauty then return _INTL("when leveled up while it has maximum beauty")
     when :HasMove then return _INTL("when leveled up while it knows the move {1}", GameData::Move.get(parameter).name)
-    when :HasMoveType then return _INTL("when leveled up while it knows a move of the {1} type", GameData::Move.get(parameter).name)
+    when :HasMoveType then return _INTL("when leveled up while it knows a move of the {1} type", GameData::Type.get(parameter).name)
     when :Location then return _INTL("when leveled up near a special location")
-    when :Item then return _INTL("by using a {1}", GameData::Item.get(parameter).name)
-    when :ItemMale then return _INTL("by using a {1} if it's male", GameData::Item.get(parameter).name)
-    when :ItemFemale then return _INTL("by using a {1} if it's female", GameData::Item.get(parameter).name)
+    when :Item then return _INTL("by using {1}", withIndefiniteArticle(GameData::Item.get(parameter).name))
+    when :ItemMale then return _INTL("by using {1} if it's male", withIndefiniteArticle(GameData::Item.get(parameter).name))
+    when :ItemFemale then return _INTL("by using {1} if it's female", withIndefiniteArticle(GameData::Item.get(parameter).name))
     when :Trade then return _INTL("when traded")
-    when :TradeItem then return _INTL("when traded holding an {1}", GameData::Item.get(parameter).name)
+    when :TradeItem then return _INTL("when traded holding {1}", withIndefiniteArticle(GameData::Item.get(parameter).name))
     when :HasInParty then return _INTL("when leveled up while a {1} is also in the party", GameData::Species.get(parameter).name)
     when :Shedinja then return _INTL("also if you have an empty Poké Ball and party slot")
-    when :Originize then return _INTL("at level {1} if you spend an {2}", parameter, GameData::Item.get(:ORIGINORE).name)
+    when :Originize then return _INTL("at level {1} if you spend {2}", parameter, withIndefiniteArticle(GameData::Item.get(:ORIGINORE).name))
     end
     return _INTL("via a method the programmer was too lazy to describe")
+end
+
+# "an Ice Stone", "a Metal Coat": the article goes by the name's first letter
+def withIndefiniteArticle(name)
+    return name.match?(/\A[aeiou]/i) ? _INTL("an {1}", name) : _INTL("a {1}", name)
 end
 
 # Only certain catch rates are expected per DEFAULT_CATCH_RATES etc

@@ -69,20 +69,46 @@ class OtherTest < Minitest::Test
         %i[MaxHappiness Beauty Location Shedinja].each { |method| refute_empty describeEvolutionMethod(method) }
     end
 
-    def test_methods_name_their_move_item_or_species
+    def test_methods_name_their_move_type_or_species
         create_move(id: :ROLLOUT)
-        create_item(id: :FIRESTONE)
+        create_type(id: :FAIRY)
         create_species(id: :REMORAID)
 
         assert_equal "when leveled up while it knows the move Rollout", describeEvolutionMethod(:HasMove, :ROLLOUT)
-        assert_equal "by using a Firestone", describeEvolutionMethod(:Item, :FIRESTONE)
-        assert_equal "by using a Firestone if it's male", describeEvolutionMethod(:ItemMale, :FIRESTONE)
-        assert_equal "by using a Firestone if it's female", describeEvolutionMethod(:ItemFemale, :FIRESTONE)
-        assert_equal "when traded holding an Upgrade", describeEvolutionMethod(:TradeItem, create_item(id: :UPGRADE).id)
+        assert_equal "when leveled up while it knows a move of the Fairy type", describeEvolutionMethod(:HasMoveType, :FAIRY)
         assert_equal "when leveled up while a Remoraid is also in the party", describeEvolutionMethod(:HasInParty, :REMORAID)
     end
 
-    def test_originize_names_the_ore_it_spends
+    def test_item_methods_name_their_item_with_its_article
+        create_item(id: :FIRESTONE, name: "Fire Stone")
+        create_item(id: :ICESTONE, name: "Ice Stone")
+
+        assert_equal "by using a Fire Stone", describeEvolutionMethod(:Item, :FIRESTONE)
+        assert_equal "by using an Ice Stone", describeEvolutionMethod(:Item, :ICESTONE)
+        assert_equal "by using an Ice Stone if it's male", describeEvolutionMethod(:ItemMale, :ICESTONE)
+        assert_equal "by using a Fire Stone if it's female", describeEvolutionMethod(:ItemFemale, :FIRESTONE)
+    end
+
+    def test_trade_item_names_its_item_with_its_article
+        create_item(id: :METALCOAT, name: "Metal Coat")
+        create_item(id: :UPGRADE, name: "Upgrade")
+
+        assert_equal "when traded holding a Metal Coat", describeEvolutionMethod(:TradeItem, :METALCOAT)
+        assert_equal "when traded holding an Upgrade", describeEvolutionMethod(:TradeItem, :UPGRADE)
+    end
+
+    # withIndefiniteArticle
+
+    def test_a_name_starting_with_a_vowel_takes_an_whatever_its_case
+        assert_equal "an Orb", withIndefiniteArticle("Orb")
+        assert_equal "an eviolite", withIndefiniteArticle("eviolite")
+    end
+
+    def test_a_name_starting_with_a_consonant_takes_a
+        assert_equal "a King's Rock", withIndefiniteArticle("King's Rock")
+    end
+
+    def test_originize_names_the_ore_it_spends_with_its_article
         create_item(id: :ORIGINORE, name: "Origin Ore")
 
         assert_equal "at level 40 if you spend an Origin Ore", describeEvolutionMethod(:Originize, 40)

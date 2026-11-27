@@ -116,6 +116,12 @@ class DebugCommandsAnalysisTest < Minitest::Test
         refute replaceCodeInstances(3, "Town", event(["keep"]), /pbOld/, "pbNew")
     end
 
+    # replaceAllCodeInstances saves a map when any of its events changed
+    def test_replace_code_instances_is_false_without_an_event_or_pages
+        assert_equal false, replaceCodeInstances(3, "Town", nil, /pbOld/, "pbNew")
+        assert_equal false, replaceCodeInstances(3, "Town", FakeEvent.new(4, "Empty", []), /pbOld/, "pbNew")
+    end
+
     # describeAbility
 
     def test_describe_ability_gives_name_and_description

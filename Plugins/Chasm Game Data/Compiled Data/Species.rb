@@ -827,7 +827,7 @@ module Compiler
                     species_number += 1
                     FileLineData.setSection(species_symbol, "header", nil) # For error reporting
                     # Raise an error if a species number is used twice
-                    if GameData::Species::DATA[species_symbol]
+                    if GameData::Species::DATA[species_symbol.to_sym]
                         raise _INTL("Species ID '{1}' is used twice.\r\n{2}", species_symbol, FileLineData.linereport)
                     end
                     # Go through schema hash of compilable data and compile this section

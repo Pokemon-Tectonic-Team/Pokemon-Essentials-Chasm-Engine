@@ -72,6 +72,59 @@ class DebugCommandsOtherTest < Minitest::Test
         assert_empty echoed
     end
 
+    # A trainer whose party is a sketcher, which registering the trainer checks no moves of
+    def register_trainer
+        create_move(id: :SKETCH, function_code: "ReplaceMoveWithTargetLastMoveUsed")
+        without_form_moves(:SKETCHER)
+        create_species(id: :SKETCHER, moves: [[1, :SKETCH]], flags: ["NoStaples"])
+        return GameData::Trainer.register({
+            id: [:LEADER, "Ann", 1], id_number: 5, trainer_type: :LEADER, name: "Ann", version: 1,
+            name_for_hashing: "Ann2", items: [:POTION], lose_text: "Well fought.", flags: ["Rematch"],
+            defined_in_extension: true,
+            pokemon: [{ species: :SKETCHER, level: 10, moves: %i[EMBER TACKLE] }, { species: :SKETCHER, level: 12 }]
+        })
+    end
+
+    def test_rename_moves_renames_trainer_moves_keeping_the_trainer_findable
+        %i[EMBER TACKLE].each { |id| create_move(id: id) }
+        old_trainer = register_trainer
+
+        renameMoves({ "EMBER" => %w[CINDER Cinder] })
+
+        trainer = GameData::Trainer.get(:LEADER, "Ann", 1)
+        party_moves = trainer.pokemon.map { |member| member[:moves] }
+        assert_equal [%i[CINDER TACKLE], nil], party_moves
+        assert_same trainer, GameData::Trainer::DATA[5]
+        assert_equal %i[EMBER TACKLE], old_trainer.pokemon[0][:moves] # The old record is left as it was
+    end
+
+    def test_rename_moves_keeps_the_rest_of_the_trainer
+        create_move(id: :EMBER)
+        register_trainer
+
+        renameMoves({ "EMBER" => %w[CINDER Cinder] })
+
+        trainer = GameData::Trainer.get(:LEADER, "Ann", 1)
+        kept = [trainer.real_name, trainer.name_for_hashing, trainer.items, trainer.real_lose_text, trainer.flags, trainer.defined_in_extension]
+        assert_equal ["Ann", "Ann2", [:POTION], "Well fought.", ["Rematch"], true], kept
+    end
+
+    def test_rename_moves_renames_avatar_moves_keeping_the_rest_of_the_avatar
+        %i[EMBER TACKLE].each { |id| create_move(id: id) }
+        create_ability(id: :BLAZE)
+        GameData::Avatar.register({
+            id: [:BASE, 2], id_number: 3, species: :BASE, version: 2, moves1: %i[EMBER TACKLE], moves2: [:EMBER],
+            abilities: [:BLAZE], items: [:POTION], aggression: 1, defined_in_extension: true, pit_avatar: true
+        })
+
+        renameMoves({ "EMBER" => %w[CINDER Cinder] })
+
+        avatar = GameData::Avatar.get(:BASE, 2)
+        assert_equal [%i[CINDER TACKLE], [:CINDER]], [avatar.moves1, avatar.moves2]
+        assert_equal [:BASE, 2, [:POTION], [:BLAZE], true], [avatar.species, avatar.version, avatar.items, avatar.abilities, avatar.defined_in_extension]
+        assert_equal [avatar], GameData::Avatar.getPitAvatars
+    end
+
     def test_rename_moves_drops_an_unknown_move
         renames = { "NOTAMOVE" => %w[NEW New] }
 
@@ -93,8 +146,10 @@ class DebugCommandsOtherTest < Minitest::Test
 
     # setSaveVersion
 
+    # The pit avatar list is a class variable, which the per-test reset doesn't restore
     def teardown
         FileUtils.rm_f(SaveData::FILE_PATH)
+        GameData::Avatar.class_variable_get(:@@pit_avatars).clear
     end
 
     def test_set_save_version_rewrites_the_saved_game_version

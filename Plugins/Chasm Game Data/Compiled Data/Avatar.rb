@@ -21,6 +21,7 @@ module GameData
         attr_reader :num_health_bars
         attr_reader :aggression
 		attr_reader :pit_avatar
+        attr_reader :defined_in_extension
 
         DATA = {}
         DATA_FILENAME = "avatars.dat"
@@ -74,6 +75,12 @@ module GameData
         end
 
         @@pit_avatars = []
+
+        # A record registered over another takes its place in the pit avatar list
+        def self.register(hash)
+            @@pit_avatars.delete(self::DATA[hash[:id]])
+            return super
+        end
 
         def self.getPitAvatars
             if @@pit_avatars.empty?

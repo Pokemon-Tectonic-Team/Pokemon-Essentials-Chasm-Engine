@@ -17,6 +17,7 @@ module GameData
       attr_reader :removedPokemon
       attr_reader :name_for_hashing
       attr_reader :monumentTrainer
+      attr_reader :defined_in_extension
   
       DATA = {}
       DATA_FILENAME = "trainers.dat"
@@ -92,6 +93,12 @@ module GameData
       end
 
       @@monumentTrainers = []
+
+      # A record registered over another takes its place in the monument trainer list
+      def self.register(hash)
+        @@monumentTrainers.delete(self::DATA[hash[:id]])
+        return super
+      end
 
       def self.getMonumentTrainers
         if @@monumentTrainers.empty?

@@ -474,6 +474,12 @@ class SpeciesTest < Minitest::Test
         assert_equal [145, 60, 95], rates
     end
 
+    def test_compile_pokemon_refuses_a_species_defined_twice
+        error = assert_raises(RuntimeError) { compile_pokemon("[BASE]\nName = Base\n[BASE]\nName = Again\n") }
+
+        assert_includes error.message, "Species ID 'BASE' is used twice."
+    end
+
     # compile_pokemon_forms, further
 
     def test_a_compiled_form_reads_its_own_moves_and_evolutions

@@ -353,23 +353,30 @@ def renameMoves(renamingHash)
     # GameData::Species.save
 
     GameData::Trainer.each do |trainer_data|
-        new_pokemon = trainer_data.pokemon.clone
-        new_pokemon.each do |party_member|
-            next if party_member[:moves].nil? || party_member[:moves].empty?
-            party_member[:moves].map!(&renameMovesInArray)
+        new_pokemon = trainer_data.pokemon.map do |party_member|
+            renamed_member = party_member.clone
+            renamed_member[:moves] = party_member[:moves].map(&renameMovesInArray) if party_member[:moves]
+            next renamed_member
         end
         new_trainer_hash = {
+          :id                 => trainer_data.id,
           :id_number          => trainer_data.id_number,
           :trainer_type       => trainer_data.trainer_type,
-          :name               => trainer_data.name,
+          :name               => trainer_data.real_name,
+          :name_for_hashing   => trainer_data.name_for_hashing,
+          :trainer_type_label => trainer_data.trainer_type_label,
           :version            => trainer_data.version,
+          :items              => trainer_data.items,
+          :lose_text          => trainer_data.real_lose_text,
           :pokemon            => new_pokemon,
-          :policies => trainer_data.policies,
+          :policies           => trainer_data.policies,
+          :flags              => trainer_data.flags,
           :extends_class      => trainer_data.extendsClass,
           :extends_name       => trainer_data.extendsName,
           :extends_version    => trainer_data.extendsVersion,
           :removed_pokemon    => trainer_data.removedPokemon,
           :monument_trainer   => trainer_data.monumentTrainer,
+          :defined_in_extension => trainer_data.defined_in_extension,
         }
         GameData::Trainer.register(new_trainer_hash)
     end
@@ -384,20 +391,24 @@ def renameMoves(renamingHash)
         new_avatar_hash = {
           :id                   => avatar_data.id,
           :id_number            => avatar_data.id_number,
-          :turns => avatar_data.num_turns,
-          :form => avatar_data.form,
-          :moves1                     => newMoves1,
-          :moves2                     => newMoves2,
-          :moves3                     => newMoves3,
-          :moves4                     => newMoves4,
-          :moves5                     => newMoves5,
-          :abilities                => avatar_data.abilities,
-          :item                     => avatar_data.item,
-          :hp_mult                => avatar_data.hp_mult,
-          :dmg_mult               => avatar_data.dmg_mult,
-          :dmg_resist             => avatar_data.dmg_resist,
-          :health_bars => avatar_data.num_health_bars,
-          :aggression => avatar_data.aggression,
+          :species              => avatar_data.species,
+          :version              => avatar_data.version,
+          :turns                => avatar_data.num_turns,
+          :form                 => avatar_data.form,
+          :moves1               => newMoves1,
+          :moves2               => newMoves2,
+          :moves3               => newMoves3,
+          :moves4               => newMoves4,
+          :moves5               => newMoves5,
+          :abilities            => avatar_data.abilities,
+          :items                => avatar_data.items,
+          :hp_mult              => avatar_data.hp_mult,
+          :dmg_mult             => avatar_data.dmg_mult,
+          :dmg_resist           => avatar_data.dmg_resist,
+          :health_bars          => avatar_data.num_health_bars,
+          :aggression           => avatar_data.aggression,
+          :pit_avatar           => avatar_data.pit_avatar,
+          :defined_in_extension => avatar_data.defined_in_extension,
         }
         GameData::Avatar.register(new_avatar_hash)
     end
