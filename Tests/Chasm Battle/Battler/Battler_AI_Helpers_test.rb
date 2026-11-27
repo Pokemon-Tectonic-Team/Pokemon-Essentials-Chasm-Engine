@@ -49,6 +49,7 @@ class BattlerAIHelpersTest < Minitest::Test
 
     def test_ai_sees_only_the_player_moves_it_knows
         b = battler(%i[TACKLE BITE], auto_known: %i[BITE])
+
         assert_equal %i[BITE], ai_sees(b)
     end
 
@@ -58,6 +59,7 @@ class BattlerAIHelpersTest < Minitest::Test
 
     def test_ai_knows_move_reads_the_known_moves
         b = battler(%i[TACKLE BITE], auto_known: %i[BITE])
+
         refute b.aiKnowsMove?(b.moves[0])
         assert b.aiKnowsMove?(b.moves[1])
     end
@@ -66,12 +68,14 @@ class BattlerAIHelpersTest < Minitest::Test
         b = battler(%i[TACKLE BITE CRUNCH], auto_known: %i[TACKLE CRUNCH])
         seen = []
         b.eachAIKnownMoveWithIndex { |move, index| seen << [move.id, index] }
+
         assert_equal [[:TACKLE, 0], [:CRUNCH, 2]], seen
     end
 
     def test_empty_move_slots_are_skipped
         b = battler(%i[TACKLE], index: FOE)
         b.moves.push(nil)
+
         assert_equal %i[TACKLE], ai_sees(b)
     end
 
@@ -80,6 +84,7 @@ class BattlerAIHelpersTest < Minitest::Test
     def test_reveals_the_fifth_move_without_storing_it
         b = battler(%i[TACKLE])
         room_up
+
         assert_equal %i[SLAM], ai_sees(b)
         assert_empty known(b)
     end
@@ -89,17 +94,20 @@ class BattlerAIHelpersTest < Minitest::Test
         room_up
         seen = []
         b.eachAIKnownMoveWithIndex { |move, index| seen << [move.id, index] }
+
         assert_equal [[:SLAM, 2]], seen
     end
 
     def test_reveals_to_a_battler_entering_while_the_room_is_up
         room_up
+
         assert_equal %i[SLAM], ai_sees(battler(%i[TACKLE]))
     end
 
     def test_reveals_a_move_the_battler_has_without_storing_it
         b = battler(%i[SLAM])
         room_up
+
         assert_equal %i[SLAM], ai_sees(b)
         assert_empty known(b)
     end
@@ -107,12 +115,14 @@ class BattlerAIHelpersTest < Minitest::Test
     def test_reveal_skips_moves_the_ai_already_knows
         b = battler(%i[TACKLE SLAM], auto_known: %i[SLAM])
         room_up
+
         assert_equal %i[SLAM CRUNCH], ai_sees(b)
     end
 
     def test_no_reveal_when_nothing_is_eligible
         b = battler(%i[TACKLE], level: 10, learnset: [[20, :BITE]])
         room_up
+
         assert_empty ai_sees(b)
     end
 
@@ -121,6 +131,7 @@ class BattlerAIHelpersTest < Minitest::Test
         room_up
         ai_sees(b)
         room_ends
+
         assert_empty ai_sees(b)
     end
 
@@ -129,12 +140,14 @@ class BattlerAIHelpersTest < Minitest::Test
         room_up
         ai_sees(b)
         room_ends
+
         assert_empty ai_sees(b)
     end
 
     def test_ai_side_sees_every_move_and_stores_nothing
         b = battler(%i[TACKLE], index: FOE)
         room_up
+
         assert_equal %i[TACKLE SLAM], ai_sees(b)
         assert_empty @battle.instance_variable_get(:@knownMoves)
     end
@@ -142,6 +155,7 @@ class BattlerAIHelpersTest < Minitest::Test
     def test_boss_is_shown_the_reveal_without_storing_it
         b = battler(%i[SLAM], boss: true)
         room_up
+
         assert_equal %i[SLAM], ai_sees(b)
         assert_empty known(b)
     end
@@ -152,6 +166,7 @@ class BattlerAIHelpersTest < Minitest::Test
         b = battler(%i[TACKLE], auto_known: %i[TACKLE])
         hide_behind_illusion(b, ai_knows_illusion: false)
         room_up
+
         assert_empty ai_sees(b)
     end
 
@@ -159,6 +174,7 @@ class BattlerAIHelpersTest < Minitest::Test
         b = battler(%i[TACKLE], auto_known: %i[TACKLE])
         hide_behind_illusion(b, ai_knows_illusion: true)
         room_up
+
         assert_equal %i[TACKLE SLAM], ai_sees(b)
     end
 
@@ -167,6 +183,7 @@ class BattlerAIHelpersTest < Minitest::Test
     def test_ai_sees_move_records_the_move_on_the_battle
         b = battler(%i[TACKLE BITE], auto_known: %i[TACKLE])
         b.aiSeesMove(:BITE)
+
         assert_equal %i[TACKLE BITE], known(b)
         assert_equal %i[TACKLE BITE], ai_sees(b)
     end

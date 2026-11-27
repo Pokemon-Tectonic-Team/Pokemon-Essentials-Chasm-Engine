@@ -99,6 +99,7 @@ class FieldEffectsTest < Minitest::Test
         battle = AITestBattle.new
         effect(:InsightRoom).disable_field(battle)
         effect(:InsightRoom).expire_field(battle)
+
         assert_equal ["The insightful area was dispelled!", "The insightful area fell away."], battle.messages
     end
 

@@ -45,6 +45,7 @@ class CoreScriptsTest < Minitest::Test
     def test_entries_decode_code_as_utf_8
         with_entries([[1, "Accent", deflated("# café".b)]]) do |path|
             code = CoreScripts.entries(path).first.last
+
             assert_equal Encoding::UTF_8, code.encoding
             assert_equal "# café", code
         end
@@ -97,6 +98,7 @@ class CoreScriptsTest < Minitest::Test
     def test_load_evaluates_only_the_named_entries_in_archive_order
         with_entries(logging_archive) do |path|
             CoreScripts.load(path, %w[Third First])
+
             assert_equal %w[first third], $core_scripts_test_log
         end
     end
@@ -104,6 +106,7 @@ class CoreScriptsTest < Minitest::Test
     def test_load_evaluates_each_entry_under_its_core_file_name
         with_entries([[1, "First", deflated("$core_scripts_test_log << __FILE__")]]) do |path|
             CoreScripts.load(path, ["First"])
+
             assert_equal ["[core] First"], $core_scripts_test_log
         end
     end
@@ -111,6 +114,7 @@ class CoreScriptsTest < Minitest::Test
     def test_load_evaluates_at_top_level
         with_entries([[1, "Definer", deflated("def core_scripts_test_top_level_method = 42")]]) do |path|
             CoreScripts.load(path, ["Definer"])
+
             assert_equal 42, Object.new.send(:core_scripts_test_top_level_method)
         end
     ensure

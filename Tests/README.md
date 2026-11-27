@@ -66,6 +66,15 @@ class MoveDexEntrySceneTest < Minitest::Test
 end
 ```
 
+Keep each test to one behaviour and at most three assertions (lint checks this).
+The first failing assertion ends a test, so when you check several values of one
+result, compare them together, which shows every wrong value at once:
+
+```ruby
+assert_attributes({ hp: 1, index: 0, boss?: false }, TestBattler.new)
+assert_equal [:WATER], attackers.select { |type| super_effective?(type) }
+```
+
 ## Using game code
 
 If your tests rely on game code from another file, add it to the `PLUGIN_FILES`
@@ -101,8 +110,18 @@ For code that needs a real battle, such as what the AI knows of the player's
 Pokémon or field effects, `AITestBattle` is a real `PokeBattle_Battle` with a
 real field, and `TestPokemon` stands in for the Pokémon behind a battler:
 
-```ruby
+````ruby
 battle = AITestBattle.new(auto_known_moves: { 0 => [:TACKLE] })
 player = battle.add_battler(index: 0, pokemon: TestPokemon.new(personal_id: 0), level: 50)
 battle.field.applyEffect(:InsightRoom, 5)
 ```
+
+If you're testing something that needs images (e.g. UI), you can use
+`GraphicsFolder.with` to fake it. It can also create fake image files with given
+names as a test needs.
+
+```ruby
+def run(...)
+    GraphicsFolder.with("Graphics/Faces/Val" => [768, 512]) { super }
+end
+````

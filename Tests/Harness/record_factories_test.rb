@@ -15,11 +15,12 @@ class RecordFactoriesTest < Minitest::Test
     end
 
     def test_name_is_the_capitalised_id
-        assert_equal "Fire", create_type(id: :FIRE).real_name
-        assert_equal "Blaze", create_ability(id: :BLAZE).real_name
-        assert_equal "Potion", create_item(id: :POTION).real_name
-        assert_equal "Ember", create_move(id: :EMBER).real_name
-        assert_equal "Charmander", create_species(id: :CHARMANDER).real_name
+        records = [
+            create_type(id: :FIRE), create_ability(id: :BLAZE), create_item(id: :POTION), create_move(id: :EMBER),
+            create_species(id: :CHARMANDER)
+        ]
+
+        assert_equal %w[Fire Blaze Potion Ember Charmander], records.map(&:real_name)
     end
 
     def test_a_given_name_replaces_the_default
@@ -101,14 +102,19 @@ class RecordFactoriesTest < Minitest::Test
         assert_same first, GameData::Move.get(:EMBER)
     end
 
+    # The registry by object, since records compare equal by id alone
+    def registry_objects(klass)
+        return klass::DATA.transform_values(&:object_id)
+    end
+
     def test_register_refuses_a_type_id_number_already_taken
-        first = create_type(id: :FIRE, id_number: 3)
+        create_type(id: :FIRE, id_number: 3)
+        registered = registry_objects(GameData::Type)
 
         error = assert_raises(HarnessError) { create_type(id: :WATER, id_number: 3) }
 
         assert_includes error.message, "3"
-        assert_same first, GameData::Type.get(:FIRE)
-        refute GameData::Type::DATA.key?(:WATER)
+        assert_equal registered, registry_objects(GameData::Type)
     end
 
     def test_register_refuses_an_id_number_already_taken_for_each_class_keyed_by_it
@@ -117,13 +123,13 @@ class RecordFactoriesTest < Minitest::Test
             GameData::Item => [:create_item, :POTION, :ETHER],
             GameData::Species => [:create_species, :CHARMANDER, :RATTATA],
         }.each do |klass, (helper, first_id, second_id)|
-            first = send(helper, id: first_id, id_number: 3)
+            send(helper, id: first_id, id_number: 3)
+            registered = registry_objects(klass)
 
             error = assert_raises(HarnessError) { send(helper, id: second_id, id_number: 3) }
 
             assert_includes error.message, "3"
-            assert_same first, klass.get(first_id)
-            refute klass::DATA.key?(second_id), "#{klass} kept the refused record"
+            assert_equal registered, registry_objects(klass), "#{klass} registry changed"
         end
     end
 
@@ -135,5 +141,14 @@ class RecordFactoriesTest < Minitest::Test
         create_type(id: :FIRE, id_number: 2)
 
         assert_equal 3, RecordFactories.next_id_number(GameData::Type)
+    end
+
+    def test_without_form_moves_lets_a_species_learnable_moves_be_worked_out
+        create_move(id: :TACKLE)
+        species = create_species(id: :SOLO, moves: [[1, :TACKLE]], flags: ["NoStaples"])
+
+        without_form_moves(:SOLO)
+
+        assert_equal [:TACKLE], species.learnable_moves
     end
 end

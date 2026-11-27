@@ -32,8 +32,9 @@ class DamageCalcUserItemsTest < Minitest::Test
     TYPE_ITEMS.each do |item, type|
         define_method("test_#{item.to_s.downcase}_boosts_only_#{type.to_s.downcase}") do
             other = type == :NORMAL ? :FIRE : :NORMAL
+
             assert_in_delta 1.2, boost(item, type)
-            assert_equal 1.0, boost(item, other)
+            assert_in_delta 1.0, boost(item, other)
         end
     end
 end

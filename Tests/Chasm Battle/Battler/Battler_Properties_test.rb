@@ -31,36 +31,42 @@ class BattlerPropertiesTest < Minitest::Test
     def test_fifth_move_is_the_highest_at_or_below_45_never_above
         b = battler(%i[TACKLE])
         room_up
+
         assert_equal %i[TACKLE SLAM], move_ids(b)
     end
 
     def test_fifth_move_is_a_real_battle_move
         b = battler(%i[TACKLE])
         room_up
+
         assert_kind_of PokeBattle_Move, b.getMoves.last
     end
 
     def test_fifth_move_skips_a_move_the_battler_has
         b = battler(%i[SLAM])
         room_up
+
         assert_equal %i[SLAM CRUNCH], move_ids(b)
     end
 
     def test_fifth_move_skips_a_move_an_ability_adds
         b = battler(%i[TACKLE], abilities: [:HIGHJUDGE], learnset: LEARNSET + [[45, :JUDGMENT]])
         room_up
+
         assert_equal %i[TACKLE JUDGMENT SLAM], move_ids(b)
     end
 
     def test_fifth_move_below_the_cap_is_capped_at_the_battlers_level
         b = battler(%i[TACKLE], level: 30)
         room_up
+
         assert_equal %i[TACKLE BITE], move_ids(b)
     end
 
     def test_no_fifth_move_when_nothing_is_eligible
         b = battler(%i[TACKLE], level: 10)
         room_up
+
         assert_equal %i[TACKLE], move_ids(b)
     end
 
@@ -68,6 +74,7 @@ class BattlerPropertiesTest < Minitest::Test
         b = battler(%i[TACKLE])
         b.instance_variable_set(:@pokemon, nil)
         room_up
+
         assert_equal %i[TACKLE], move_ids(b)
     end
 
@@ -75,6 +82,7 @@ class BattlerPropertiesTest < Minitest::Test
         b = battler(%i[TACKLE])
         room_up
         b.getMoves
+
         assert_equal %i[TACKLE], b.moves.map(&:id)
     end
 
@@ -82,6 +90,7 @@ class BattlerPropertiesTest < Minitest::Test
         b = battler(%i[TACKLE])
         room_up
         @battle.field.disableEffect(:InsightRoom)
+
         assert_equal %i[TACKLE], move_ids(b)
     end
 
@@ -89,6 +98,7 @@ class BattlerPropertiesTest < Minitest::Test
 
     def test_insight_room_move_skips_the_moves_given
         b = battler(%i[TACKLE])
+
         assert_equal :SLAM, b.getInsightRoomMove
         assert_equal :CRUNCH, b.getInsightRoomMove(%i[SLAM])
         assert_nil b.getInsightRoomMove(LEARNSET.map(&:last))
@@ -123,6 +133,7 @@ class BattlerPropertiesTest < Minitest::Test
     def test_highest_learnset_move_is_nil_without_a_pokemon
         b = battler([])
         b.instance_variable_set(:@pokemon, nil)
+
         assert_nil b.getHighestLearnsetMoveID
     end
 end

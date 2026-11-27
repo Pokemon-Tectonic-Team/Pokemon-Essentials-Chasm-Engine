@@ -32,6 +32,7 @@ class LocalisationStubsTest < Minitest::Test
     def test_get_message_returns_the_real_name_of_the_type_with_that_number
         GameData::Type.register({ id: :LOCALISATIONTEST, id_number: 77, name: "Localised" })
         GameData::Type.register({ id: :LOCALISATIONOTHER, id_number: 78, name: "Other" })
+
         assert_equal "Localised", pbGetMessage(MessageTypes::Types, 77)
         assert_equal "Other", pbGetMessage(MessageTypes::Types, 78)
     end

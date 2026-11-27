@@ -19,16 +19,24 @@ class CommentBodyTest < Minitest::Test
                      "Lint text\n", result
     end
 
-    def test_build_cuts_to_the_comment_limit_with_a_note
-        result = C.build(syntax: "success", tests: "success", run_url: URL,
-                         patch: { text: "ok\n", exit: 0 }, totals: nil, lint: "line\n" * 20_000)
+    def overlong_body
+        return C.build(syntax: "success", tests: "success", run_url: URL,
+                       patch: { text: "ok\n", exit: 0 }, totals: nil, lint: "line\n" * 20_000)
+    end
+
+    def test_build_cuts_to_the_comment_limit_keeping_the_start_and_whole_lines
+        result = overlong_body
 
         assert_operator result.length, :<=, 60_000
+        assert result.start_with?("## Tests report\n\n")
         assert result.end_with?("\n")
-        note = result.lines.last
+    end
+
+    def test_a_cut_body_ends_with_a_note_linking_the_run
+        note = overlong_body.lines.last
+
         assert_includes note, "GitHub's comment limit"
         assert_includes note, "[the run](#{URL})"
-        assert result.start_with?("## Tests report\n\n")
     end
 
     def test_status_passed

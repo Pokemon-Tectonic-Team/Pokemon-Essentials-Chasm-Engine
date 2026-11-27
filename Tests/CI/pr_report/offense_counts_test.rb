@@ -12,6 +12,7 @@ class OffenseCountsTest < Minitest::Test
             { count: 2, cop: "Lint/AmbiguousRange", correctable: :unsafe },
             { count: 1, cop: "Layout/EndOfLine", correctable: nil }
         ]
+
         assert_equal expected, PrReport::OffenseCounts.parse(text)
     end
 
@@ -36,6 +37,7 @@ class OffenseCountsTest < Minitest::Test
             { count: 2, cop: "D/Two", correctable: nil },
             { count: 11, cop: "E/Many", correctable: :unsafe }
         ]
+
         assert_equal ["A/One", "C/Unsafe"], PrReport::OffenseCounts.detailed(rows)
     end
 
@@ -50,6 +52,7 @@ class OffenseCountsTest < Minitest::Test
             { count: 3, cop: "C/Safe", correctable: :safe },
             { count: 5, cop: "D/Plain", correctable: nil }
         ]
+
         assert_equal 89, PrReport::OffenseCounts.safe_correctable(rows)
     end
 
@@ -64,6 +67,7 @@ class OffenseCountsTest < Minitest::Test
 
         expected = "86   Layout/SpaceAfterComma\n2    Lint/AmbiguousRange\n" \
                    "1    Layout/EndOfLine\n--\n89   Total in 1 files\n"
+
         assert_equal expected, PrReport::OffenseCounts.plain(text)
     end
 end

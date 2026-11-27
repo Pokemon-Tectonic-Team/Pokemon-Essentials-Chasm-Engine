@@ -73,6 +73,7 @@ class PokeBattleMiscTest < Minitest::Test
         b = battler(auto_known: %i[TACKLE])
         first = known(b)
         first.push(:BITE)
+
         assert_same first, known(b)
         assert_equal %i[TACKLE BITE], known(b)
     end
@@ -82,18 +83,21 @@ class PokeBattleMiscTest < Minitest::Test
     def test_a_move_seen_before_the_ai_reads_the_pokemon_is_added_to_the_moves_it_starts_with
         b = battler(auto_known: %i[TACKLE])
         @battle.aiSeesMove(b, :BITE)
+
         assert_equal %i[TACKLE BITE], known(b)
     end
 
     def test_a_move_is_recorded_once
         b = battler
         2.times { @battle.aiSeesMove(b, :TACKLE) }
+
         assert_equal %i[TACKLE], known(b)
     end
 
     def test_a_move_object_is_recorded_by_id
         b = battler
         @battle.aiSeesMove(b, @battle.getBattleMoveInstanceFromID(:BITE))
+
         assert_equal %i[BITE], known(b)
     end
 
@@ -102,12 +106,14 @@ class PokeBattleMiscTest < Minitest::Test
         boss = battler(index: 2, boss: true)
         @battle.aiSeesMove(foe, :TACKLE)
         @battle.aiSeesMove(boss, :TACKLE)
+
         assert_empty stored
     end
 
     def test_a_nil_move_is_ignored
         b = battler
         @battle.aiSeesMove(b, nil)
+
         assert_empty known(b)
     end
 
@@ -140,6 +146,7 @@ class PokeBattleMiscTest < Minitest::Test
         battler
 
         @battle.forceUseMove(user, 0, PLAYER, aiCheck: true)
+
         assert_equal [:PREDICTS_PLAYER], ai.calls[0][4]
     end
 
@@ -179,12 +186,14 @@ class PokeBattleMiscTest < Minitest::Test
 
     def test_predicts_a_switch_for_a_predicted_switch_out
         predicting_battle([:SwitchOut, 1])
+
         assert @battle.aiPredictsSwitch?(@predictor, PLAYER)
         assert @battle.aiPredictsSwitch?(@predictor, PLAYER, true)
     end
 
     def test_predicts_a_switch_for_a_predicted_switch_out_move
         predicting_battle(use_move(switch_out_move))
+
         assert @battle.aiPredictsSwitch?(@predictor, PLAYER)
         assert_empty @ai.calls
     end
@@ -192,33 +201,39 @@ class PokeBattleMiscTest < Minitest::Test
     def test_only_before_predictor_counts_a_switch_out_move_that_goes_first
         move = switch_out_move
         predicting_battle(use_move(move), moves_first: true)
+
         assert @battle.aiPredictsSwitch?(@predictor, PLAYER, true)
         assert_equal [[:userMovesFirst?, move, @player, @predictor]], @ai.calls
     end
 
     def test_only_before_predictor_ignores_a_switch_out_move_that_goes_second
         predicting_battle(use_move(switch_out_move), moves_first: false)
+
         refute @battle.aiPredictsSwitch?(@predictor, PLAYER, true)
     end
 
     def test_predicts_no_switch_for_a_predicted_move_that_doesnt_switch
         predicting_battle(use_move(make_move(id: :STAYMOVE)))
+
         refute @battle.aiPredictsSwitch?(@predictor, PLAYER)
         refute @battle.aiPredictsSwitch?(@predictor, PLAYER, true)
     end
 
     def test_predicts_no_switch_for_another_action
         predicting_battle([:UseItem, :POTION])
+
         refute @battle.aiPredictsSwitch?(@predictor, PLAYER)
     end
 
     def test_predicts_no_switch_without_the_predicting_policy
         predicting_battle([:SwitchOut, 1], policies: [])
+
         refute @battle.aiPredictsSwitch?(@predictor, PLAYER)
     end
 
     def test_predicts_no_switch_without_a_prediction
         predicting_battle(nil)
+
         refute @battle.aiPredictsSwitch?(@predictor, PLAYER)
     end
 
@@ -227,6 +242,7 @@ class PokeBattleMiscTest < Minitest::Test
         battle(battle_ai: @ai, opponent_policies: [:PREDICTS_PLAYER], predicted_actions: [nil, nil, nil, [:SwitchOut, 1]])
         predictor = battler(index: FOE)
         battler(index: 3)
+
         refute @battle.aiPredictsSwitch?(predictor, 3)
     end
 end

@@ -19,6 +19,7 @@ class VariablePowerMoveCodesTest < Minitest::Test
 
     def test_flail_takes_the_ratio_from_hp_over_totalhp
         move = make_move(PokeBattle_Move_ScalesWithLostHP)
+
         assert_equal 50, move.pbBaseDamage(0, battler(hp: 50, totalhp: 100), nil)
         assert_equal 100, move.pbBaseDamage(0, battler(hp: 20, totalhp: 100), nil)
     end
@@ -32,6 +33,7 @@ class VariablePowerMoveCodesTest < Minitest::Test
 
     def test_eruption_at_the_documented_hp
         move = make_move(PokeBattle_Move_ScalesWithUserHP)
+
         { 50 => 65, 75 => 95, 100 => 130, 125 => 160, 150 => 195 }.each do |hp, power|
             assert_equal power, move.pbBaseDamage(0, battler(hp: hp, totalhp: 100), nil), "#{hp}% HP"
         end
@@ -39,6 +41,7 @@ class VariablePowerMoveCodesTest < Minitest::Test
 
     def test_eruption_clamps_below_50_and_above_150_percent
         move = make_move(PokeBattle_Move_ScalesWithUserHP)
+
         assert_equal 65, move.pbBaseDamage(0, battler(hp: 10, totalhp: 100), nil)
         assert_equal 195, move.pbBaseDamage(0, battler(hp: 200, totalhp: 100), nil)
     end

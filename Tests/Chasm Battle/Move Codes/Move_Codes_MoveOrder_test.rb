@@ -32,49 +32,57 @@ class MoveOrderMoveCodesTest < Minitest::Test
 
     def test_an_ordinary_target_does_not_fail
         move, user, target, battle = setup_quash
-        assert_equal false, fails?(move, user, target)
+
+        refute fails?(move, user, target)
         assert_empty battle.messages
     end
 
     def test_the_inherited_already_moved_check_is_asked_about_the_target
         move, user, target, _battle = setup_quash
         fails?(move, user, target, false)
+
         assert_equal [[target, false]], move.already_moved_calls
     end
 
     def test_a_target_failing_the_inherited_already_moved_check_fails
         move, user, target, battle = setup_quash(already_moved: true)
-        assert_equal true, fails?(move, user, target)
+
+        assert fails?(move, user, target)
         assert_empty battle.messages
     end
 
     def test_a_target_with_no_chosen_move_fails
         move, user, target, battle = setup_quash(target_choice: [:UseMove, 0, nil])
-        assert_equal true, fails?(move, user, target)
+
+        assert fails?(move, user, target)
         assert_equal ["But it failed, since Target isn't using a move this turn!"], battle.messages
     end
 
     def test_a_target_holding_the_highest_quash_fails
         move, user, target, battle = setup_quash(target: { effects: { Quash: 2 } }, actor: { effects: { Quash: 1 } })
-        assert_equal true, fails?(move, user, target)
+
+        assert fails?(move, user, target)
         assert_equal ["But it failed!"], battle.messages
     end
 
     def test_a_target_holding_a_lower_quash_does_not_fail
         move, user, target, battle = setup_quash(target: { effects: { Quash: 1 } }, actor: { effects: { Quash: 2 } })
-        assert_equal false, fails?(move, user, target)
+
+        refute fails?(move, user, target)
         assert_empty battle.messages
     end
 
     def test_a_target_last_in_priority_with_no_quash_fails
         move, user, target, battle = setup_quash(last: :target)
-        assert_equal true, fails?(move, user, target)
+
+        assert fails?(move, user, target)
         assert_equal ["But it failed, since Target was already forced to move last!"], battle.messages
     end
 
     def test_a_target_last_in_priority_does_not_fail_while_a_quash_is_active
         move, user, target, battle = setup_quash(last: :target, actor: { effects: { Quash: 1 } })
-        assert_equal false, fails?(move, user, target)
+
+        refute fails?(move, user, target)
         assert_empty battle.messages
     end
 
@@ -82,8 +90,9 @@ class MoveOrderMoveCodesTest < Minitest::Test
         [{ target_choice: [:UseMove, 0, nil] }, { last: :target },
          { target: { effects: { Quash: 2 } }, actor: { effects: { Quash: 1 } } }].each_with_index do |attrs, i|
             move, user, target, battle = setup_quash(id: :"MOVE#{i}", **attrs)
-            assert_equal true, fails?(move, user, target, false), attrs.to_s
-            assert_empty battle.messages, attrs.to_s
+
+            assert fails?(move, user, target, false), "attributes #{attrs}"
+            assert_empty battle.messages, "attributes #{attrs}"
         end
     end
 
@@ -92,18 +101,21 @@ class MoveOrderMoveCodesTest < Minitest::Test
     def test_effect_applies_quash_at_1_when_no_battler_has_it
         move, user, target, _battle = setup_quash
         move.pbEffectAgainstTarget(user, target)
+
         assert_equal [[:Quash, 1]], target.applied_effects
     end
 
     def test_effect_applies_quash_one_above_the_highest_over_all_battlers
         move, user, target, _battle = setup_quash(target: { effects: { Quash: 1 } }, actor: { effects: { Quash: 3 } })
         move.pbEffectAgainstTarget(user, target)
+
         assert_equal [[:Quash, 4]], target.applied_effects
     end
 
     def test_effect_displays_the_postponed_message
         move, user, target, battle = setup_quash
         move.pbEffectAgainstTarget(user, target)
+
         assert_equal ["Target's move was postponed!"], battle.messages
     end
 end

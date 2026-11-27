@@ -18,8 +18,8 @@ class MoveFactoryTest < Minitest::Test
     end
 
     def test_a_record_field_reaches_the_move
-        assert make_move(flags: ["Sound"]).soundMove?
-        refute make_move(id: :OTHERMOVE).soundMove?
+        assert_predicate make_move(flags: ["Sound"]), :soundMove?
+        refute_predicate make_move(id: :OTHERMOVE), :soundMove?
     end
 
     def test_the_record_has_one_total_pp

@@ -2,25 +2,18 @@ require_relative "../../support/test_helper"
 
 class TypeTest < Minitest::Test
     def test_initialize_defaults
-        type = GameData::Type.new({ id: :FIRE })
+        expected = {
+            id: :FIRE, id_number: -1, real_name: "Unnamed", weaknesses: [], resistances: [], immunities: [],
+            pseudo_type: false, special_type: false
+        }
 
-        assert_equal :FIRE, type.id
-        assert_equal(-1, type.id_number)
-        assert_equal "Unnamed", type.real_name
-        assert_equal [], type.weaknesses
-        assert_equal [], type.resistances
-        assert_equal [], type.immunities
-        assert_equal false, type.pseudo_type
-        assert_equal false, type.special_type
+        assert_attributes expected, GameData::Type.new({ id: :FIRE })
     end
 
     def test_initialize_keeps_given_values
         type = GameData::Type.new({ id: :FIRE, id_number: 3, name: "Flame", pseudo_type: true, special_type: true })
 
-        assert_equal 3, type.id_number
-        assert_equal "Flame", type.real_name
-        assert type.pseudo_type
-        assert type.special_type
+        assert_attributes({ id_number: 3, real_name: "Flame", pseudo_type: true, special_type: true }, type)
     end
 
     def test_initialize_keeps_lists_as_given
@@ -42,10 +35,9 @@ class TypeTest < Minitest::Test
     def test_initialize_turns_colours_into_colors
         type = GameData::Type.new({ id: :FIRE, color: [10, 20, 30], dark_color: [1, 2, 3] })
 
-        assert_instance_of Color, type.color
-        assert_equal [10, 20, 30], [type.color.red, type.color.green, type.color.blue]
-        assert_instance_of Color, type.dark_color
-        assert_equal [1, 2, 3], [type.dark_color.red, type.dark_color.green, type.dark_color.blue]
+        colours = [type.color, type.dark_color].map { |colour| [colour.class, colour.red, colour.green, colour.blue] }
+
+        assert_equal [[Color, 10, 20, 30], [Color, 1, 2, 3]], colours
     end
 
     def test_initialize_leaves_colours_unset_when_not_given
@@ -69,29 +61,29 @@ class TypeTest < Minitest::Test
     def test_a_physical_type_is_physical_and_not_special
         type = GameData::Type.new({ id: :ROCK })
 
-        assert type.physical?
-        refute type.special?
+        assert_predicate type, :physical?
+        refute_predicate type, :special?
     end
 
     def test_a_special_type_is_special_and_not_physical
         type = GameData::Type.new({ id: :FIRE, special_type: true })
 
-        assert type.special?
-        refute type.physical?
+        assert_predicate type, :special?
+        refute_predicate type, :physical?
     end
 
     def test_effectiveness_of_no_attacker_is_normal
         type = GameData::Type.new({ id: :FIRE, weaknesses: [:WATER] })
 
-        assert_equal 1.0, type.effectiveness(nil)
+        assert_in_delta 1.0, type.effectiveness(nil)
     end
 
     def test_effectiveness_of_a_weakness_is_double
-        assert_equal 2.0, GameData::Type.new({ id: :FIRE, weaknesses: [:WATER] }).effectiveness(:WATER)
+        assert_in_delta 2.0, GameData::Type.new({ id: :FIRE, weaknesses: [:WATER] }).effectiveness(:WATER)
     end
 
     def test_effectiveness_of_a_resistance_is_half
-        assert_equal 0.5, GameData::Type.new({ id: :FIRE, resistances: [:GRASS] }).effectiveness(:GRASS)
+        assert_in_delta 0.5, GameData::Type.new({ id: :FIRE, resistances: [:GRASS] }).effectiveness(:GRASS)
     end
 
     def test_effectiveness_of_an_immunity_is_zero
@@ -101,65 +93,52 @@ class TypeTest < Minitest::Test
     def test_effectiveness_of_an_unlisted_attacker_is_normal
         type = GameData::Type.new({ id: :FIRE, weaknesses: [:WATER], resistances: [:GRASS], immunities: [:GHOST] })
 
-        assert_equal 1.0, type.effectiveness(:NORMAL)
+        assert_in_delta 1.0, type.effectiveness(:NORMAL)
+    end
+
+    # The effectiveness values each predicate is tried on, from immune to doubly weak
+    EFFECTIVENESS_VALUES = [0, 0.25, 0.5, 1.0, 2.0, 4.0].freeze
+
+    def values_where(predicate)
+        return EFFECTIVENESS_VALUES.select { |value| Effectiveness.public_send(predicate, value) }
     end
 
     def test_ineffective_is_only_zero
-        assert Effectiveness.ineffective?(0)
-        refute Effectiveness.ineffective?(0.25)
-        refute Effectiveness.ineffective?(1.0)
+        assert_equal [0], values_where(:ineffective?)
     end
 
     def test_not_very_effective_is_above_zero_and_below_normal
-        refute Effectiveness.not_very_effective?(0)
-        assert Effectiveness.not_very_effective?(0.25)
-        assert Effectiveness.not_very_effective?(0.5)
-        refute Effectiveness.not_very_effective?(1.0)
-        refute Effectiveness.not_very_effective?(2.0)
+        assert_equal [0.25, 0.5], values_where(:not_very_effective?)
     end
 
     def test_barely_effective_is_above_zero_and_below_half
-        refute Effectiveness.barely_effective?(0)
-        assert Effectiveness.barely_effective?(0.25)
-        refute Effectiveness.barely_effective?(0.5)
-        refute Effectiveness.barely_effective?(1.0)
+        assert_equal [0.25], values_where(:barely_effective?)
     end
 
     def test_resistant_is_above_zero_and_below_normal
-        refute Effectiveness.resistant?(0)
-        assert Effectiveness.resistant?(0.25)
-        assert Effectiveness.resistant?(0.5)
-        refute Effectiveness.resistant?(1.0)
-        refute Effectiveness.resistant?(2.0)
+        assert_equal [0.25, 0.5], values_where(:resistant?)
     end
 
     def test_normal_is_only_one
-        refute Effectiveness.normal?(0.5)
-        assert Effectiveness.normal?(1.0)
-        refute Effectiveness.normal?(2.0)
+        assert_equal [1.0], values_where(:normal?)
     end
 
     def test_super_effective_is_above_normal
-        refute Effectiveness.super_effective?(0.5)
-        refute Effectiveness.super_effective?(1.0)
-        assert Effectiveness.super_effective?(2.0)
-        assert Effectiveness.super_effective?(4.0)
+        assert_equal [2.0, 4.0], values_where(:super_effective?)
     end
 
     def test_hyper_effective_is_above_double
-        refute Effectiveness.hyper_effective?(1.0)
-        refute Effectiveness.hyper_effective?(2.0)
-        assert Effectiveness.hyper_effective?(4.0)
+        assert_equal [4.0], values_where(:hyper_effective?)
     end
 
     def test_calculate_one_reads_the_defending_types_record
         create_type(id: :FIRE, weaknesses: [:WATER], resistances: [:GRASS])
         create_type(id: :WATER, weaknesses: [:GRASS])
+        expected = { [:WATER, :FIRE] => 2.0, [:GRASS, :FIRE] => 0.5, [:GRASS, :WATER] => 2.0, [:FIRE, :WATER] => 1.0 }
 
-        assert_equal 2.0, Effectiveness.calculate_one(:WATER, :FIRE)
-        assert_equal 0.5, Effectiveness.calculate_one(:GRASS, :FIRE)
-        assert_equal 2.0, Effectiveness.calculate_one(:GRASS, :WATER)
-        assert_equal 1.0, Effectiveness.calculate_one(:FIRE, :WATER)
+        calculated = expected.keys.to_h { |pair| [pair, Effectiveness.calculate_one(*pair)] }
+
+        assert_equal expected, calculated
     end
 
     def test_calculate_multiplies_over_the_defending_types
@@ -167,83 +146,60 @@ class TypeTest < Minitest::Test
         create_type(id: :ROCK, weaknesses: [:WATER])
         create_type(id: :GRASS, resistances: [:WATER])
 
-        assert_equal 4.0, Effectiveness.calculate(:WATER, [:FIRE, :ROCK])
-        assert_equal 1.0, Effectiveness.calculate(:WATER, [:FIRE, :GRASS])
+        assert_in_delta 4.0, Effectiveness.calculate(:WATER, [:FIRE, :ROCK])
+        assert_in_delta 1.0, Effectiveness.calculate(:WATER, [:FIRE, :GRASS])
     end
 
     def test_calculate_with_an_immune_defending_type_is_zero
         create_type(id: :NORMAL, immunities: [:GHOST])
         create_type(id: :FIRE)
 
-        assert_equal 0.0, Effectiveness.calculate(:GHOST, [:NORMAL, :FIRE])
+        assert_in_delta 0.0, Effectiveness.calculate(:GHOST, [:NORMAL, :FIRE])
     end
 
     def test_calculate_ignores_nils
         create_type(id: :FIRE, weaknesses: [:WATER])
 
-        assert_equal 2.0, Effectiveness.calculate(:WATER, [:FIRE, nil])
+        assert_in_delta 2.0, Effectiveness.calculate(:WATER, [:FIRE, nil])
     end
 
     def test_calculate_counts_a_duplicate_type_once
         create_type(id: :FIRE, weaknesses: [:WATER])
 
-        assert_equal 2.0, Effectiveness.calculate(:WATER, [:FIRE, :FIRE])
+        assert_in_delta 2.0, Effectiveness.calculate(:WATER, [:FIRE, :FIRE])
     end
 
     def test_calculate_of_no_types_is_one
-        assert_equal 1.0, Effectiveness.calculate(:WATER, [])
-        assert_equal 1.0, Effectiveness.calculate(:WATER)
-        assert_equal 1.0, Effectiveness.calculate(:WATER, [nil])
+        assert_in_delta 1.0, Effectiveness.calculate(:WATER, [])
+        assert_in_delta 1.0, Effectiveness.calculate(:WATER)
+        assert_in_delta 1.0, Effectiveness.calculate(:WATER, [nil])
     end
 
-    # FIRE defends: GHOST 0, GRASS 0.5, WATER 2, NORMAL 1.
-    def create_defending_fire
+    # Registers FIRE, which GHOST is ineffective against, GRASS resisted by, NORMAL neutral against
+    # and WATER super effective against, then gives the attacking types the predicate holds for
+    def attackers_of_fire_where(predicate)
         create_type(id: :FIRE, weaknesses: [:WATER], resistances: [:GRASS], immunities: [:GHOST])
+        return %i[GHOST GRASS NORMAL WATER].select { |attacker| Effectiveness.public_send(predicate, attacker, :FIRE) }
     end
 
     def test_ineffective_type_is_true_only_for_an_immunity
-        create_defending_fire
-
-        assert Effectiveness.ineffective_type?(:GHOST, :FIRE)
-        refute Effectiveness.ineffective_type?(:GRASS, :FIRE)
-        refute Effectiveness.ineffective_type?(:NORMAL, :FIRE)
-        refute Effectiveness.ineffective_type?(:WATER, :FIRE)
+        assert_equal [:GHOST], attackers_of_fire_where(:ineffective_type?)
     end
 
     def test_not_very_effective_type_is_true_only_for_a_resistance
-        create_defending_fire
-
-        assert Effectiveness.not_very_effective_type?(:GRASS, :FIRE)
-        refute Effectiveness.not_very_effective_type?(:GHOST, :FIRE)
-        refute Effectiveness.not_very_effective_type?(:NORMAL, :FIRE)
-        refute Effectiveness.not_very_effective_type?(:WATER, :FIRE)
+        assert_equal [:GRASS], attackers_of_fire_where(:not_very_effective_type?)
     end
 
     def test_resistant_type_is_true_only_for_a_resistance
-        create_defending_fire
-
-        assert Effectiveness.resistant_type?(:GRASS, :FIRE)
-        refute Effectiveness.resistant_type?(:GHOST, :FIRE)
-        refute Effectiveness.resistant_type?(:NORMAL, :FIRE)
-        refute Effectiveness.resistant_type?(:WATER, :FIRE)
+        assert_equal [:GRASS], attackers_of_fire_where(:resistant_type?)
     end
 
     def test_normal_type_is_true_only_for_a_neutral_pair
-        create_defending_fire
-
-        assert Effectiveness.normal_type?(:NORMAL, :FIRE)
-        refute Effectiveness.normal_type?(:GHOST, :FIRE)
-        refute Effectiveness.normal_type?(:GRASS, :FIRE)
-        refute Effectiveness.normal_type?(:WATER, :FIRE)
+        assert_equal [:NORMAL], attackers_of_fire_where(:normal_type?)
     end
 
     def test_super_effective_type_is_true_only_for_a_weakness
-        create_defending_fire
-
-        assert Effectiveness.super_effective_type?(:WATER, :FIRE)
-        refute Effectiveness.super_effective_type?(:GHOST, :FIRE)
-        refute Effectiveness.super_effective_type?(:GRASS, :FIRE)
-        refute Effectiveness.super_effective_type?(:NORMAL, :FIRE)
+        assert_equal [:WATER], attackers_of_fire_where(:super_effective_type?)
     end
 
     def test_modify_boss_effectiveness_returns_the_effectiveness_unchanged_while_dilution_is_off

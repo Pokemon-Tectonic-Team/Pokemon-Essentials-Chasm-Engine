@@ -49,7 +49,7 @@ class PluginLoaderTest < Minitest::Test
             PluginLoader.order(root)
 
             assert_equal cwd, Dir.pwd
-            assert_equal false, $DEBUG
+            assert_same false, $DEBUG
         end
     end
 
@@ -58,7 +58,7 @@ class PluginLoaderTest < Minitest::Test
             $DEBUG = true
             PluginLoader.order(root)
 
-            assert_equal true, $DEBUG
+            assert_same true, $DEBUG
         ensure
             $DEBUG = false
         end
@@ -67,11 +67,36 @@ class PluginLoaderTest < Minitest::Test
     def test_order_restores_cwd_and_debug_after_an_error
         Dir.mktmpdir("no plugins") do |root|
             cwd = Dir.pwd
+
             capture_io { assert_raises(Errno::ENOENT) { PluginLoader.order(root) } }
 
             assert_equal cwd, Dir.pwd
-            assert_equal false, $DEBUG
+            assert_same false, $DEBUG
         end
+    end
+
+    def test_a_plugin_error_raises_instead_of_exiting
+        with_fixture("Name = Beta\nRequires = Gamma\n") do |root|
+            capture_io do
+                error = assert_raises(HarnessError) { PluginLoader.order(root) }
+                assert_includes error.message, "meta.txt"
+            end
+        end
+    end
+
+    def test_it_is_ordering_only_while_order_runs
+        refute_predicate PluginLoader, :ordering?
+        with_fixture { |root| PluginLoader.order(root) }
+
+        refute_predicate PluginLoader, :ordering?
+    end
+
+    def test_ordering_ends_after_an_error
+        with_fixture("Name = Beta\nRequires = Gamma\n") do |root|
+            capture_io { assert_raises(HarnessError) { PluginLoader.order(root) } }
+        end
+
+        refute_predicate PluginLoader, :ordering?
     end
 
     def test_load_requires_the_named_files_in_engine_order

@@ -1,5 +1,9 @@
+plugins:
+    - rubocop-minitest
+
 require:
     - ./.rubocop/cops/inline_tab.rb
+    - ./.rubocop/cops/mutable_constant.rb
 
 AllCops:
     TargetRubyVersion: 3.1
@@ -12,6 +16,20 @@ Layout/IndentationStyle:
 Chasm/InlineTab:
     Description: Use spaces, not tabs, after indentation.
     Enabled: true
+
+# Replaced by Chasm/MutableConstant, which leaves the GameData `DATA = {}` registries alone.
+# Inline disables must name Chasm/MutableConstant.
+Style/MutableConstant:
+    Enabled: false
+
+Chasm/MutableConstant:
+    Description: Freeze mutable objects assigned to constants, except the `DATA = {}` registries.
+    Enabled: true
+    SafeAutoCorrect: false
+    EnforcedStyle: literals
+    SupportedStyles:
+        - literals
+        - strict
 
 Layout/IndentationWidth:
     Width: 4
