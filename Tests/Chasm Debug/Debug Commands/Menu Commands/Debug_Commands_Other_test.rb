@@ -146,10 +146,10 @@ class DebugCommandsOtherTest < Minitest::Test
 
     # setSaveVersion
 
-    # The pit avatar list is a class variable, which the per-test reset doesn't restore
+    # The pit avatar list is a class instance variable, which the per-test reset doesn't restore
     def teardown
         FileUtils.rm_f(SaveData::FILE_PATH)
-        GameData::Avatar.class_variable_get(:@@pit_avatars).clear
+        GameData::Avatar.pit_avatars.clear
     end
 
     def test_set_save_version_rewrites_the_saved_game_version
