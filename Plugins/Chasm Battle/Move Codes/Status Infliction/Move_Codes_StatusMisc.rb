@@ -96,8 +96,7 @@ end
 
 #===============================================================================
 # Burns or frostbites the target, whichever hits the target's better base stat.
-# Requires a charge up turn.
-# (Diametric Breath)
+# Requires a charge up turn. (Frostfire Blast)
 #===============================================================================
 class PokeBattle_Move_TwoTurnAttackBurnOrFrostbiteTargetBasedOnHigherStat < PokeBattle_TwoTurnMove
     def pbFailsAgainstTarget?(user, target, show_message)
@@ -132,6 +131,22 @@ class PokeBattle_Move_TwoTurnAttackBurnOrFrostbiteTargetBasedOnHigherStat < Poke
 
     def getTargetAffectingEffectScore(user, target)
         return getBurnOrFrostbiteEffectScore(user, target)
+    end
+end
+
+#===============================================================================
+# If in eclipse, burns or frostbites the target, whichever hits the target's better base stat.
+# (Calamitous Slash)
+#===============================================================================
+class PokeBattle_Move_BurnOrFrostbiteTargetBasedOnHigherStatIfInEclipse < PokeBattle_Move_BurnOrFrostbiteTargetBasedOnHigherStat
+    def pbAdditionalEffect(user, target)
+        return unless @battle.eclipsed?
+        super
+    end
+
+    def getTargetAffectingEffectScore(user, target)
+        return 0 unless @battle.eclipsed?
+        super
     end
 end
 
