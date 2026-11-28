@@ -883,15 +883,17 @@ BattleHandlers::UserAbilityEndOfMove.add(:MARIACHI,
 )
 
 BattleHandlers::UserAbilityEndOfMove.add(:PROBEWEAKNESS,
-  proc { |_ability, user, targets, move, battle, _switchedBattlers|
+  proc { |ability, user, targets, move, battle, _switchedBattlers|
       next if user.dummy
       next unless move.damagingMove?
       targets.each do |b|
           next if b.damageState.unaffected
           next if b.damageState.critical
           next unless move.allowedToRandomCrit?(user, b)
+          battle.pbShowAbilitySplash(user, ability)
           user.incrementEffect(:ProbeWeakness)
           battle.pbDisplay(_INTL("{1} sharpens its instincts, doubling its critical hit chance!", user.pbThis))
+          battle.pbHideAbilitySplash(user)
           break
       end
   }
