@@ -1,14 +1,15 @@
 # A real PokeBattle_Battler whose state is set from keywords and whose queries that reach the
 # battle, the Pokémon or the effect registry answer from those keywords instead. Each override
-# takes the arguments of the game's method of that name, so callers reach it unchanged; most of
-# those methods aren't loaded by the harness, so keep each signature in step with the game's
-# source by hand. The ones that act on the
-# battle (aiLearnsItem, applyEffect) record their calls in order.
+# takes the arguments of the game's method of that name, so callers reach it unchanged; pbSpeed,
+# effectActive? and applyEffect aren't loaded by the harness, so keep their signatures in step
+# with the game's source by hand. The ones that act on the battle (aiLearnsItem, applyEffect)
+# record their calls in order.
 class TestBattler < PokeBattle_Battler
     attr_reader :learned_items, :applied_effects
 
     def initialize(hp: 1, totalhp: 1, index: 0, effects: {}, boss: false, speed: 1, name: "Test", # rubocop:disable Lint/MissingSuper -- a fake: sets only its own state, skipping the real initializer by design
-                   hp_resistance: 1.0, fainted: false, moved: false, abilities: [])
+                   hp_resistance: 1.0, fainted: false, moved: false, abilities: [],
+                   battle: nil, pokemon: nil, moves: [], level: 1)
         @hp = hp
         @totalhp = totalhp
         @index = index
@@ -20,6 +21,10 @@ class TestBattler < PokeBattle_Battler
         @fainted = fainted
         @moved = moved
         @abilities = abilities
+        @battle = battle
+        @pokemon = pokemon
+        @moves = moves
+        @level = level
         @learned_items = []
         @applied_effects = []
     end
@@ -46,6 +51,13 @@ class TestBattler < PokeBattle_Battler
 
     def hasActiveAbility?(ability, _ignore_fainted = false, _checkingForAI = false, ignoreGas: false) # rubocop:disable Lint/UnusedMethodArgument -- keyword names match the game's signature
         @abilities.include?(ability)
+    end
+
+    # Active while effects holds a truthy value for it, and, as in the game, never while fainted
+    # unless ignoreFainted.
+    def effectActive?(effect, ignoreFainted = false)
+        return false if !ignoreFainted && fainted?
+        !!@effects[effect]
     end
 
     def aiLearnsItem(item)

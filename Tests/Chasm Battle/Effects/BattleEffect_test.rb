@@ -365,7 +365,14 @@ class BattleEffectTest < Minitest::Test
         assert_same record, GameData::BattleEffect.get(:SIDEFX)
     end
 
+    # The loaded effect definitions are cleared for the iterator tests; the reset after each test
+    # puts them back.
+    def clear_registered_effects
+        GameData::BattleEffect::DATA.clear
+    end
+
     def test_each_location_iterator_yields_only_its_locations_effects
+        clear_registered_effects
         battler = register(:Battler, :BFX)
         position = register(:Position, :PFX)
         side = register(:Side, :SFX)
@@ -384,6 +391,7 @@ class BattleEffectTest < Minitest::Test
     end
 
     def test_each_effect_yields_all
+        clear_registered_effects
         records = [register(:Battler, :BFX), register(:Position, :PFX), register(:Side, :SFX), register(:Field, :FFX)]
         yielded = []
         GameData::BattleEffect.each_effect { |data| yielded << data }

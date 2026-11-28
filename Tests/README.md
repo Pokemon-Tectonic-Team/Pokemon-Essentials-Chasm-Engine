@@ -125,6 +125,16 @@ battle = TestBattle.new(battlers: [target])
 quash = make_move(PokeBattle_Move_TargetActsLast, battle: battle)
 ```
 
+For code that needs a real battle, such as what the AI knows of the player's
+Pokémon or field effects, `AITestBattle` is a real `PokeBattle_Battle` with a
+real field, and `TestPokemon` stands in for the Pokémon behind a battler:
+
+````ruby
+battle = AITestBattle.new(auto_known_moves: { 0 => [:TACKLE] })
+player = battle.add_battler(index: 0, pokemon: TestPokemon.new(personal_id: 0), level: 50)
+battle.field.applyEffect(:InsightRoom, 5)
+```
+
 If you're testing something that needs images (e.g. UI), you can use
 `GraphicsFolder.with` to fake it. It can also create fake image files with given
 names as a test needs.
@@ -133,4 +143,4 @@ names as a test needs.
 def run(...)
     GraphicsFolder.with("Graphics/Faces/Val" => [768, 512]) { super }
 end
-```
+````

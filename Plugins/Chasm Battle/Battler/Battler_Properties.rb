@@ -159,36 +159,27 @@ class PokeBattle_Battler
             end
         end
         if @battle.field.effectActive?(:InsightRoom) && @pokemon
-            speciesLearnSet = @pokemon.getMoveList
-            speciesLearnSet.each do |learnSetEntry|
-                moveLevel = learnSetEntry[0]
-                break if moveLevel > @level
-                next if moveLevel < 45
-                moveAtThisLevel = learnSetEntry[1]
-
-                hasMoveAlready = false
-                movesArray.each do |existingMove|
-                    next unless existingMove.id == moveAtThisLevel
-                    hasMoveAlready = true
-                    break
-                end
-                next if hasMoveAlready
-
-                insightMove = @battle.getBattleMoveInstanceFromID(moveAtThisLevel)
-                movesArray.push(insightMove)
-                break
-            end
+            insightMoveID = getInsightRoomMove(movesArray.map(&:id))
+            movesArray.push(@battle.getBattleMoveInstanceFromID(insightMoveID)) unless insightMoveID.nil?
         end
         return movesArray
     end
 
-    def getHighestLearnsetMoveID
+    INSIGHT_ROOM_LEVEL_CAP = 45
+
+    def getInsightRoomMove(exclude = [])
+        return getHighestLearnsetMoveID(INSIGHT_ROOM_LEVEL_CAP, exclude)
+    end
+
+    def getHighestLearnsetMoveID(cap = nil, exclude = [])
         return nil if @pokemon.nil?
+        threshold = cap ? [cap, @level].min : @level
         speciesLearnSet = @pokemon.getMoveList.reverse
         speciesLearnSet.each do |learnSetEntry|
             moveLevel = learnSetEntry[0]
-            next if moveLevel > @level
+            next if moveLevel > threshold
             move = learnSetEntry[1]
+            next if exclude.include?(move)
             return move
         end
         return nil
